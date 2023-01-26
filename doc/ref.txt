@@ -1,0 +1,88 @@
+anusvaara literally means “after-sound.”
+It has the sound of “n” when preceded by a vowel and followed by a fricative (one of sh, SH, s, and h),
+and of “m” when at the end of a morpheme, e.g. धनं takes the sound of धनम्
+
+In other cases, it takes a nasalized sound as per the last letter of the row in which the letter immediately after it occurs.
+
+
+
+    if (isReadable) {
+      // Strng = FixRomanReadable(Strng)
+      // Strng = Strng.replace('\\n', '\uE001')
+      // Strng = re.sub('([aiueo])nj([aeiou])', r'\1' + 'ny' + r'\2', Strng)
+      // Strng = re.sub('(\W)nj([aeiou])', r'\1' + 'ny' + r'\2', Strng)
+      // Strng = re.sub('^nj([aeiou])', 'ny' + r'\1', Strng)
+
+      // Strng = Strng.replace("njnj", "nny")
+
+      // Strng = Strng.replace("Mk", "ngk")
+      // Strng = Strng.replace("Mg", "ngg")
+      // Strng = Strng.replace("Mc", "njc")
+      // Strng = Strng.replace("Mj", "njj")
+      // Strng = Strng.replace("Md", "nd")
+      // Strng = Strng.replace("Mt", "nt")
+      // Strng = Strng.replace("M", 'm')
+
+      // Strng = Strng.replace("ngk", "nk")
+      // Strng = Strng.replace("ngg", "ng")
+      // Strng = Strng.replace("njc", "nc")
+      // Strng = Strng.replace("njj", "nj")
+
+      // Strng = Strng.replace("jnj", "jny")
+
+      // Strng = Strng.replace('\uE001', '\\n')
+
+      // if Source == 'Tamil':
+      //     Strng = Strng.replace('t', 'th').replace("d", "dh").replace("h'","")
+
+      // if Source == 'Deva':
+      // elif Target == "RomanReadable" or Target == "RomanColloquial":
+      //     Strng = Strng.replace('\\"','').replace("\\_", '').replace("\\\'",'')
+      //     Strng = Strng.replace('\\m++', 'ggum')
+      //     Strng = Strng.replace('\\m+', 'gum')
+
+      // Strng = Strng.replace('o', 'oa')
+      // Strng = Strng.replace('oa\'', 'o')
+
+      // Strng = Strng.replace('e', 'ae')
+      // Strng = Strng.replace('ae\'', 'e')
+
+      // Strng = Strng.replace('aeae', 'ee')
+      // Strng = Strng.replace('oaoa', 'oo')
+    } else if (isColloquial) {
+      // if Source == 'Tamil':
+      //     Strng = Strng.replace('t', 'th').replace("d", "dh").replace("h'","")
+      // if Source == 'Oriya':
+      //     Strng = Strng.replace("ksh", "x")
+      //     Strng = re.sub("x(?=[aeiou])", "ksh", Strng)
+      //     Strng = Strng.replace('jny', 'gy').replace("sh", "s").replace('r\'', 'd')
+      // if Source == 'Bengali':
+      //     Strng = Strng.replace('m\'', "ng")
+
+      // FixRomanColloquial(Strng)
+      // Strng = Strng.replace('\\n', '\uE001')
+      // Strng = re.sub('([aiueo])nj([aeiou])', r'\1' + 'ny' + r'\2', Strng)
+      // Strng = re.sub('(\W)nj([aeiou])', r'\1' + 'ny' + r'\2', Strng)
+      // Strng = re.sub('^nj([aeiou])', 'ny' + r'\1', Strng)
+
+      // Strng = Strng.replace("njnj", "nny")
+
+      // Strng = Strng.replace("Mk", "ngk")
+      // Strng = Strng.replace("Mg", "ngg")
+      // Strng = Strng.replace("Mc", "njc")
+      // Strng = Strng.replace("Mj", "njj")
+      // Strng = Strng.replace("Md", "nd")
+      // Strng = Strng.replace("Mt", "nt")
+      // Strng = Strng.replace("M", 'm')
+
+      // Strng = Strng.replace("ngk", "nk")
+      // Strng = Strng.replace("ngg", "ng")
+      // Strng = Strng.replace("njc", "nc")
+      // Strng = Strng.replace("njj", "nj")
+
+      // Strng = Strng.replace("jnj", "jny")
+
+      // Strng = Strng.replace('\uE001', '\\n')
+
+      // Strng = Strng.replace('\'', '').replace("_", "")
+    }
