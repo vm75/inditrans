@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "ts"
+		},
+		{
+			"path": ".vscode"
+		},
+		{
+			"path": "assets"
+		},
+		{
+			"path": "dart"
+		},
+		{
+			"path": "doc"
+		},
+		{
+			"path": "native"
+		},
+		{
+			"path": "scripts"
+		},
+		{
+			"path": "wasm"
+		}
+	]
+}
