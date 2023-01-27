@@ -78,44 +78,42 @@ profileTs() {
 }
 
 DEBUG=false
-while getopts "b:dt:" option; do
+while getopts "b:dp:t:" option; do
+  command=
+  commandArg=
   case "${option}" in
     d)
       DEBUG=true
       ;;
     b)
-      case ${OPTARG} in
-        a|all)
-          buildTargets="Native Ts Wasm"
-          ;;
-        n|native)
-          buildTargets="${buildTargets} Native"
-          ;;
-        t|ts)
-          buildTargets="${buildTargets} Ts"
-          ;;
-        w|wasm)
-          buildTargets="${buildTargets} Wasm"
-          ;;
-      esac
+      command=build
       ;;
     t)
-      case ${OPTARG} in
-        a|all)
-          testTargets="Native Ts Wasm"
-          ;;
-        n|native)
-          testTargets="${testTargets} Native"
-          ;;
-        t|ts)
-          testTargets="${testTargets} Ts"
-          ;;
-        w|wasm)
-          testTargets="${testTargets} Wasm"
-          ;;
-      esac
+      command=test
+      ;;
+    t)
+      command=profile
       ;;
   esac
+  if [[ -n ${command} ]] ; then
+    commandTargets=${command}Targets
+    eval "targets=\$${commandTargets}"
+    case ${OPTARG} in
+      a|all)
+        targets="Native Ts Wasm"
+        ;;
+      n|native)
+        targets="Native ${targets}"
+        ;;
+      t|ts)
+        targets="Ts ${targets}"
+        ;;
+      w|wasm)
+        targets="Wasm ${targets}"
+        ;;
+    esac
+    eval "${commandTargets}=${targets}"
+  fi
 done
 shift $((OPTIND-1))
 
