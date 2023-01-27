@@ -1,4 +1,4 @@
-import Tests from '../tests.json' assert { type: 'json' };
+import Tests from '../../assets/test-cases.json' assert { type: 'json' };
 import fs from 'fs';
 
 const perfTestFile = 'dist/perf.txt';

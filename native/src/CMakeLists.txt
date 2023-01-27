@@ -3,7 +3,7 @@
 # the plugin to fail to compile for some customers of the plugin.
 cmake_minimum_required(VERSION 3.10)
 
-project(indic_trans_library VERSION 0.0.1 LANGUAGES CXX)
+project(inditrans_library VERSION 0.0.1 LANGUAGES CXX)
 
 # set(CMAKE_CXX_STANDARD 17)
 # set_property(TARGET inditrans PROPERTY CXX_STANDARD 20)

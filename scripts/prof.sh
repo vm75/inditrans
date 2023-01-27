@@ -6,7 +6,7 @@ distDir=$(realpath "${scriptDir}/../../dist")
 
 mkdir "${distDir}" 2> /dev/null
 
-targetBin="${distDir}/indic_trans_prof"
+targetBin="${distDir}/inditrans_prof"
 rm -f "${targetBin}"
 g++ -std=c++20 -O1 -fno-exceptions -pg -Wno-normalized ${cppoptions} -I "${scriptDir}/src" "${scriptDir}/src"/*.cpp "${scriptDir}/test"/*.cpp -o "${targetBin}"
 "${targetBin}" -p

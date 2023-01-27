@@ -18,7 +18,7 @@ buildWasm() {
     mkdir -p ${wasmDir}
   fi
   docker run --rm -v "${scriptDir}/src:/src" -v "${wasmDir}:/src/out" -u $(id -u):$(id -g) \
-    emscripten/emsdk emcc inditrans.cpp -o "out/indic_trans_wasm.js" ${cppoptions} \
+    emscripten/emsdk emcc inditrans.cpp -o "out/inditrans_wasm.js" ${cppoptions} \
     -s WASM=1 \
     -s ENVIRONMENT='web,node' \
     -s NO_EXIT_RUNTIME=1 \
@@ -30,13 +30,13 @@ buildWasm() {
     -s ALLOW_MEMORY_GROWTH=1 \
     -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "lengthBytesUTF8", "stringToUTF8"]' \
     -s 'EXPORTED_FUNCTIONS=["_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer", "_malloc", "_free"]' \
-    --extern-pre-js indic_trans_wasm.extern-pre.js \
-    --pre-js indic_trans_wasm.pre.js \
-    --post-js indic_trans_wasm.post.js
+    --extern-pre-js inditrans_wasm.extern-pre.js \
+    --pre-js inditrans_wasm.pre.js \
+    --post-js inditrans_wasm.post.js
 }
 
 buildNative() {
-  targetBin="${distDir}/indic_trans_test"
+  targetBin="${distDir}/inditrans_test"
   if [[ $1 == -d ]] ; then
     cppoptions="-std=c++20 -O3 -fno-exceptions"
   else

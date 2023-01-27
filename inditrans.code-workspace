@@ -1,9 +1,6 @@
 {
 	"folders": [
 		{
-			"path": "ts"
-		},
-		{
 			"path": ".vscode"
 		},
 		{
@@ -20,6 +17,9 @@
 		},
 		{
 			"path": "scripts"
+		},
+		{
+			"path": "ts"
 		},
 		{
 			"path": "wasm"

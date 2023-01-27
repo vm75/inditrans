@@ -1,9 +1,9 @@
 #include <chrono>
 #include <fstream>
+#include <inditrans.h>
 #include <iomanip>
 #include <iostream>
 #include <json.h>
-#include <inditrans.h>
 #include <utilities.h>
 #include <vector>
 
@@ -62,7 +62,7 @@ bool testTranslit(const std::string_view& description, const std::string_view& f
 }
 
 void testAllTranslit() noexcept {
-  std::ifstream testsFile("root/data/tests.json", std::ios::binary);
+  std::ifstream testsFile("assets/test-cases.json", std::ios::binary);
   if (testsFile.is_open()) {
 
     std::vector<char> jsonBuffer(std::istreambuf_iterator<char>(testsFile), {});

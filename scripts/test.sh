@@ -3,7 +3,7 @@
 script=$(realpath "${0}")
 scriptDir=$(dirname "${script}")
 distDir=$(realpath "${scriptDir}/../../dist")
-targetBin="${distDir}/indic_trans_test"
+targetBin="${distDir}/inditrans_test"
 
 mkdir "${distDir}" 2> /dev/null
 
