@@ -1,5 +1,5 @@
-#include "type_defs.h"
 #include "inditrans.h"
+#include "type_defs.h"
 #include "utilities.h"
 #include <memory>
 #include <optional>
@@ -727,9 +727,7 @@ std::string transliterate(const std::string_view& input, const std::string_view&
 
 extern "C" {
 
-unsigned long CALL_CONV translitOptionsToInt(const char* optionStr) {
-  return static_cast<unsigned long>(getTranslitOptions(optionStr));
-}
+unsigned long CALL_CONV translitOptionsToInt(const char* optionStr) { return static_cast<unsigned long>(getTranslitOptions(optionStr)); }
 
 char* CALL_CONV transliterate(const char* input, const char* from, const char* to, unsigned long options) {
   std::unique_ptr<char> output;
@@ -744,13 +742,11 @@ char* CALL_CONV transliterate(const char* input, const char* from, const char* t
   }
 }
 
-char* CALL_CONV translit2(const char* input, const char* from, const char* to, const char* optionStr) {
-  return transliterate(input, from, to, translitOptionsToInt(optionStr));
-}
+char* CALL_CONV transliterate2(const char* input, const char* from, const char* to, const char* optionStr) { return transliterate(input, from, to, translitOptionsToInt(optionStr)); }
 
 void CALL_CONV releaseBuffer(char* buffer) {
   if (buffer) {
-    delete [] buffer;
+    delete[] buffer;
   }
 }
 
