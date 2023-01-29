@@ -17,7 +17,7 @@ add_library(inditrans SHARED
 
 set_target_properties(inditrans PROPERTIES
   PUBLIC_HEADER inditrans.h
-  OUTPUT_NAME "inditrans.h"
+  OUTPUT_NAME "inditrans"
 )
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)

@@ -36,6 +36,31 @@ buildWasm() {
     --post-js js/inditrans_wasm.post.js
 }
 
+# emcc -O3 -s MAIN_MODULE=1 -s EXPORT_NAME=libopus -s MODULARIZE=1 ./.libs/libopus.a -o ./emc_out/libopus.js
+buildWasmFfi() {
+  if ${DEBUG} ; then
+    cppoptions="-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address"
+  else
+    cppoptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -Wl,--gc-sections"
+  fi
+  docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmSourceDir}/src:/src/js" -u $(id -u):$(id -g) \
+    emscripten/emsdk emcc inditrans.cpp -o "js/libinditrans.js" ${cppoptions} \
+    -s WASM=1 \
+    -s MAIN_MODULE=1 \
+    -s NO_EXIT_RUNTIME=1 \
+    -s EXPORT_NAME=libinditrans \
+    -s ENVIRONMENT='web' \
+    -s MODULARIZE=1
+
+  em++ ${cppoptions} -o libinditrans.js inditrans.cpp \
+    -s EXPORT_NAME=libinditrans \
+    -s ENVIRONMENT='web' \
+    -s FILESYSTEM=0 \
+    -s MAIN_MODULE=1 \
+    -s MODULARIZE=1
+
+}
+
 buildNative() {
   mkdir -p "${outDir}/native"
   rm -f "${nativeTarget}"
@@ -110,6 +135,9 @@ while getopts "b:dp:t:" option; do
         ;;
       w|wasm)
         targets="Wasm ${targets}"
+        ;;
+      w2|wasmffi)
+        targets="WasmFfi ${targets}"
         ;;
     esac
     eval "${commandTargets}=${targets}"

@@ -11,6 +11,7 @@ dependencies:
   ffi: ^2.0.1
   flutter:
     sdk: flutter
+  js: ^0.6.5
   plugin_platform_interface: ^2.0.2
 
 dev_dependencies:
@@ -23,8 +24,10 @@ flutter:
   plugin:
     platforms:
       android:
+        package: com.example.hello
         ffiPlugin: true
       ios:
+        pluginClass: HelloPlugin
         ffiPlugin: true
       linux:
         ffiPlugin: true
