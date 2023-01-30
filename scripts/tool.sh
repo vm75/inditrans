@@ -10,55 +10,48 @@ nativeSourceDir="${sourceRoot}/native"
 nativeTarget="${outDir}/native/inditrans_test"
 
 # wasm
-wasmSourceDir="${sourceRoot}/wasm"
+wasmDir="${sourceRoot}/wasm"
 
 buildWasm() {
   if ${DEBUG} ; then
-    cppoptions="-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address"
+    cppoptions="-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address -Wl,--no-entry"
   else
-    cppoptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -Wl,--gc-sections"
+    cppoptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -Wl,--gc-sections,--no-entry"
   fi
-  docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmSourceDir}/src:/src/js" -u $(id -u):$(id -g) \
-    emscripten/emsdk emcc inditrans.cpp -o "js/inditrans_wasm.js" ${cppoptions} \
+  docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
+    emscripten/emsdk emcc inditrans.cpp -o /wasm/embedded/inditrans.mjs ${cppoptions} \
     -s WASM=1 \
     -s ENVIRONMENT='web,node' \
     -s NO_EXIT_RUNTIME=1 \
     -s MODULARIZE=1 \
-    -s EXPORT_ES6=1 \
-    -s EXPORT_NAME=InditransWasm \
+    -s EXPORT_NAME=inditrans \
     -s FILESYSTEM=0 \
     -s SINGLE_FILE=1 \
     -s ALLOW_MEMORY_GROWTH=1 \
-    -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "lengthBytesUTF8", "stringToUTF8"]' \
-    -s 'EXPORTED_FUNCTIONS=["_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer", "_malloc", "_free"]' \
-    --extern-pre-js js/inditrans_wasm.extern-pre.js \
-    --pre-js js/inditrans_wasm.pre.js \
-    --post-js js/inditrans_wasm.post.js
+    -s 'EXPORTED_RUNTIME_METHODS=["cwrap"]' \
+    --extern-pre-js /wasm/js/inditrans_wasm.extern-pre.js \
+    --pre-js /wasm/js/inditrans_wasm.pre.js \
+    --post-js /wasm/js/inditrans_wasm.post.js
 }
 
-# emcc -O3 -s MAIN_MODULE=1 -s EXPORT_NAME=libopus -s MODULARIZE=1 ./.libs/libopus.a -o ./emc_out/libopus.js
 buildWasmFfi() {
   if ${DEBUG} ; then
-    cppoptions="-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address"
+    cppoptions="-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address -Wl,--no-entry"
   else
-    cppoptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -Wl,--gc-sections"
+    cppoptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -Wl,--gc-sections,--no-entry"
   fi
-  docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmSourceDir}/src:/src/js" -u $(id -u):$(id -g) \
-    emscripten/emsdk emcc inditrans.cpp -o "js/libinditrans.js" ${cppoptions} \
-    -s WASM=1 \
-    -s MAIN_MODULE=1 \
-    -s NO_EXIT_RUNTIME=1 \
-    -s EXPORT_NAME=libinditrans \
-    -s ENVIRONMENT='web' \
-    -s MODULARIZE=1
+  docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
+    emscripten/emsdk emcc inditrans.cpp -o /wasm/standalone/inditrans.wasm ${cppoptions}
+}
 
-  em++ ${cppoptions} -o libinditrans.js inditrans.cpp \
-    -s EXPORT_NAME=libinditrans \
-    -s ENVIRONMENT='web' \
-    -s FILESYSTEM=0 \
-    -s MAIN_MODULE=1 \
-    -s MODULARIZE=1
-
+buildWasmJsFfi() {
+  if ${DEBUG} ; then
+    cppoptions="-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address -Wl,--no-entry"
+  else
+    cppoptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -Wl,--gc-sections,--no-entry"
+  fi
+  docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
+    emscripten/emsdk emcc inditrans.cpp -o /wasm/split/inditrans.js ${cppoptions}
 }
 
 buildNative() {
@@ -125,7 +118,7 @@ while getopts "b:dp:t:" option; do
     eval "targets=\$${commandTargets}"
     case ${OPTARG} in
       a|all)
-        targets="Native Ts Wasm"
+        targets="Native Ts Wasm Wasmffi"
         ;;
       n|native)
         targets="Native ${targets}"
@@ -138,6 +131,9 @@ while getopts "b:dp:t:" option; do
         ;;
       w2|wasmffi)
         targets="WasmFfi ${targets}"
+        ;;
+      w3|wasmJsFfi)
+        targets="WasmJsFfi ${targets}"
         ;;
     esac
     eval "${commandTargets}=${targets}"
