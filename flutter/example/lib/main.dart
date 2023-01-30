@@ -46,8 +46,7 @@ class _MyAppState extends State<MyApp> {
             child: Column(
               children: [
                 const Text(
-                  'This calls a native function through FFI that is shipped as source in the package. '
-                  'The native code is built as part of the Flutter Runner build.',
+                  'ffi test',
                   style: textStyle,
                   textAlign: TextAlign.center,
                 ),

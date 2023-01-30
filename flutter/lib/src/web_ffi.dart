@@ -17,10 +17,10 @@ class FfiFacade {
 
   static Future<DynamicLibrary> _initLib() async {
     // Inject the JavaScript into our page
-    await importLibrary('packages/inditrans/assets/inditrans.js');
+    await importLibrary('packages/inditrans/assets/wasm/split/inditrans.js');
 
     // Load the WebAssembly binaries from assets
-    final wasm = await rootBundle.load('packages/inditrans/assets/inditrans.wasm');
+    final wasm = await rootBundle.load('packages/inditrans/assets/wasm/split/inditrans.wasm');
     Uint8List wasmBinaries = (wasm).buffer.asUint8List();
 
     // After we loaded the wasm binaries and injected the js code
