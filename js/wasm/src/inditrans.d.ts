@@ -1,14 +1,14 @@
 /// <reference types="emscripten" />
 /** Above will import declarations from @types/emscripten, including Module etc. */
 
-export class TranslitOptions {
-  public static readonly None = 0;
-  public static readonly IgnoreVedicAccents = 1;
-  public static readonly IgnoreQuotedMarkers = 2;
-  public static readonly TamilTraditional = 4;
-  public static readonly TamilSuperscripted = 8;
-  public static readonly InferAnuswara = 16;
-  public static readonly RetainZeroWidthChars = 32;
+export enum TranslitOptions {
+  None = 0,
+  IgnoreVedicAccents = 1,
+  IgnoreQuotedMarkers = 2,
+  TamilTraditional = 4,
+  TamilSuperscripted = 8,
+  InferAnuswara = 16,
+  RetainZeroWidthChars = 32,
 }
 
 // This will merge to the existing EmscriptenModule interface from @types/emscripten
@@ -29,4 +29,4 @@ export interface InditransModule extends EmscriptenModule {
   transliterate2(text: string, from: string, to: string, options: string): string;
 }
 
-export default function InditransWasm(mod?: any): Promise<InditransModule>;
+export default function InditransWasm(): Promise<InditransModule>;
