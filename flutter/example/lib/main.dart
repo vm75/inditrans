@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final indiTrans = Inditrans();
+  final indiTrans = Inditrans.instance();
   String res = '';
 
   @override
@@ -25,9 +25,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   asyncSet() async {
-    await indiTrans.init();
+    final inst = await indiTrans;
     setState(() {
-      res = indiTrans.transliterate("श्री॒ गु॒रु॒भ्यो नमः॒ । ह॒रिः॒ ओ३म् ॥", "devanagari", "tamil");
+      res = inst.transliterate("श्री॒ गु॒रु॒भ्यो नमः॒ । ह॒रिः॒ ओ३म् ॥", "devanagari", "tamil", TranslitOptions.IgnoreVedicAccents & TranslitOptions.TamilSuperscripted);
     });
   }
 

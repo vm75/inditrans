@@ -6,38 +6,33 @@ import 'src/bindings.dart';
 import 'src/utils.dart';
 import 'src/proxy_ffi.dart';
 
+export 'src/utils.dart' show TranslitOptions;
+
 class Inditrans {
-  late InditransBindings _bindings;
+  static final Future<Inditrans> _instance = _init();
+  final InditransBindings _bindings;
 
-  factory Inditrans() {
-    return Inditrans._();
+  Inditrans._(DynamicLibrary lib) : _bindings = InditransBindings(lib);
+
+  static Future<Inditrans> _init() async {
+    final lib = await FfiFacade.lib;
+    return Inditrans._(lib);
   }
 
-  Inditrans._();
-
-  init() async {
-    _bindings = InditransBindings(await FfiFacade.lib);
-  }
-
-  int translitOptionsToInt(String option) {
-    return _bindings.translitOptionsToInt(_toCString(option));
-  }
+  static get instance => _instance;
 
   String transliterate(String text, String from, String to, [TranslitOptions options = TranslitOptions.None]) {
-    final buffer = _bindings.transliterate(_toCString(text), _toCString(from), _toCString(to), options.value);
+    final cText = _toCString(text);
+    final cFrom = _toCString(from);
+    final cTo = _toCString(to);
+    final buffer = _bindings.transliterate(cText, cFrom, cTo, options.value);
 
     final result = _fromCString(buffer);
     _bindings.releaseBuffer(buffer);
 
-    return result;
-  }
-
-  String transliterate2(String text, String from, String to, [String options = ""]) {
-    final buffer = _bindings.transliterate2(_toCString(text), _toCString(from), _toCString(to), _toCString(options));
-
-    final result = _fromCString(buffer);
-    _bindings.releaseBuffer(buffer);
-
+    FfiFacade.allocator.free(cText);
+    FfiFacade.allocator.free(cFrom);
+    FfiFacade.allocator.free(cTo);
     return result;
   }
 
@@ -57,5 +52,7 @@ class Inditrans {
     return cString;
   }
 
-  static registerWith(registrar) {}
+  static registerWith(registrar) {
+    // TODO
+  }
 }
