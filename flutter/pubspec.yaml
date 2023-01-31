@@ -17,6 +17,7 @@ dependencies:
   inject_js: ^2.0.0
   js: ^0.6.5
   plugin_platform_interface: ^2.0.2
+  wasm_interop: ^2.0.1
   web_ffi: ^0.7.2
 
 dev_dependencies:
@@ -42,5 +43,5 @@ flutter:
         pluginClass: Inditrans
         fileName: inditrans.dart
   assets:
-    - assets/wasm/standalone/
-    - assets/wasm/split/
+    - assets/standalone/
+    - assets/mjs/

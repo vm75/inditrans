@@ -12,6 +12,14 @@ extern InditransLogger* inditransLogger;
 
 void testAssert(std::string_view test, bool result) noexcept { std::cout << "  Test: " << test << (result ? " PASSED" : "FAILED") << std::endl; }
 
+template <class TimeT = std::chrono::milliseconds, class ClockT = std::chrono::steady_clock> struct measure {
+  template <class F, class... Args> static auto duration(F&& func, Args&&... args) {
+    auto start = ClockT::now();
+    std::invoke(std::forward<F>(func), std::forward<Args>(args)...);
+    return std::chrono::duration_cast<TimeT>(ClockT::now() - start);
+  }
+};
+
 void testUtf() noexcept {
   std::cout << std::endl << "Utf tests" << std::endl;
 

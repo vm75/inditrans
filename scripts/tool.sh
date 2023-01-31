@@ -21,7 +21,7 @@ buildWasm() {
 
   docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
     emscripten/emsdk \
-      emcc inditrans.cpp -o /wasm/embedded/inditrans.mjs ${cppoptions} \
+      emcc inditrans.cpp -o /wasm/mjs/inditrans.mjs ${cppoptions} \
         -s WASM=1 \
         -s ENVIRONMENT='web,node' \
         -s NO_EXIT_RUNTIME=1 \
@@ -32,41 +32,41 @@ buildWasm() {
         -s ALLOW_MEMORY_GROWTH=1 \
         -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "ccall"]' \
         -s 'EXPORTED_FUNCTIONS=["_malloc", "_free", "_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer"]' \
-        --extern-pre-js /wasm/js/inditrans_wasm.extern-pre.js \
-        --pre-js /wasm/js/inditrans_wasm.pre.js \
-        --post-js /wasm/js/inditrans_wasm.post.js
+        --extern-pre-js /wasm/snippets/inditrans.extern-pre.js \
+        --pre-js /wasm/snippets/inditrans.pre.js \
+        --post-js /wasm/snippets/inditrans.post.js
 
   docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
     emscripten/emsdk \
       emcc inditrans.cpp -o /wasm/standalone/inditrans.wasm ${cppoptions} \
+        -DNDEBUG \
         -s EXPORT_NAME=inditrans \
         -s FILESYSTEM=0 \
-        -s ALLOW_MEMORY_GROWTH=1 \
         -s 'EXPORTED_FUNCTIONS=["_malloc", "_free", "_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer"]'
 
-  docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
-    emscripten/emsdk \
-      emcc inditrans.cpp -o /wasm/split/inditrans.js ${cppoptions} \
-        -s MODULARIZE=1 \
-        -s EXPORT_NAME=inditrans \
-        -s NO_EXIT_RUNTIME=1 \
-        -s FILESYSTEM=0 \
-        -s ALLOW_MEMORY_GROWTH=1 \
-        -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "ccall"]' \
-        -s 'EXPORTED_FUNCTIONS=["_malloc", "_free", "_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer"]'
+  # docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
+  #   emscripten/emsdk \
+  #     emcc inditrans.cpp -o /wasm/split/inditrans.js ${cppoptions} \
+  #       -s MODULARIZE=1 \
+  #       -s EXPORT_NAME=inditrans \
+  #       -s NO_EXIT_RUNTIME=1 \
+  #       -s FILESYSTEM=0 \
+  #       -s ALLOW_MEMORY_GROWTH=1 \
+  #       -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "ccall"]' \
+  #       -s 'EXPORTED_FUNCTIONS=["_malloc", "_free", "_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer"]'
 
-  docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
-    emscripten/emsdk \
-      emcc inditrans.cpp -o /wasm/embedded/inditrans.js ${cppoptions} \
-        -s WASM=1 \
-        -s NO_EXIT_RUNTIME=1 \
-        -s MODULARIZE=1 \
-        -s EXPORT_NAME=inditrans \
-        -s FILESYSTEM=0 \
-        -s SINGLE_FILE=1 \
-        -s ALLOW_MEMORY_GROWTH=1 \
-        -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "ccall"]' \
-        -s 'EXPORTED_FUNCTIONS=["_malloc", "_free", "_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer"]'
+  # docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
+  #   emscripten/emsdk \
+  #     emcc inditrans.cpp -o /wasm/embedded/inditrans.js ${cppoptions} \
+  #       -s WASM=1 \
+  #       -s NO_EXIT_RUNTIME=1 \
+  #       -s MODULARIZE=1 \
+  #       -s EXPORT_NAME=inditrans \
+  #       -s FILESYSTEM=0 \
+  #       -s SINGLE_FILE=1 \
+  #       -s ALLOW_MEMORY_GROWTH=1 \
+  #       -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "ccall"]' \
+  #       -s 'EXPORTED_FUNCTIONS=["_malloc", "_free", "_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer"]'
 }
 
 buildNative() {
@@ -75,7 +75,7 @@ buildNative() {
   if ${DEBUG} ; then
     cppoptions="-std=c++20 -O3 -fno-exceptions"
   else
-    cppoptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -Wl,--no-entry"
+    cppoptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno"
   fi
   clang++ ${cppoptions} -I "${nativeSourceDir}/src" "${nativeSourceDir}/src"/*.cpp "${nativeSourceDir}/tests"/*.cpp -o "${nativeTarget}"
   if [[ -f "${nativeTarget}" ]] ; then

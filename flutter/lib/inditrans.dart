@@ -42,13 +42,17 @@ class Inditrans {
   }
 
   String _fromCString(Pointer<Uint8> cString) {
-    return utf8.decode(cString.asTypedList(cString.size!));
+    int len = 0;
+    while (cString[len] != 0) {
+      len++;
+    }
+    return len > 0 ? utf8.decode(cString.asTypedList(len)) : '';
   }
 
   /// Don't forget to free the c string using the same allocator if your are done with it!
   Pointer<Uint8> _toCString(String dartString) {
     List<int> bytes = utf8.encode(dartString);
-    Pointer<Uint8> cString = FfiFacade.allocator.allocate<Uint8>(bytes.length);
+    Pointer<Uint8> cString = FfiFacade.allocator.allocate(bytes.length);
     cString.asTypedList(bytes.length).setAll(0, bytes);
     return cString;
   }

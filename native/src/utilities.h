@@ -3,7 +3,6 @@
 #include "utf.h"
 #include <algorithm>
 #include <array>
-#include <chrono>
 #include <memory>
 #include <optional>
 #include <unordered_map>
@@ -146,34 +145,6 @@ public:
 private:
   size_t longestMatch { 0 };
   std::unordered_map<std::basic_string<CharType>, ValueType> map {};
-};
-
-template <class TimeT = std::chrono::milliseconds, class ClockT = std::chrono::steady_clock> class Timer {
-  using timep_t = typename ClockT::time_point;
-
-public:
-  void tick() {
-    _end = timep_t {};
-    _start = ClockT::now();
-  }
-
-  void tock() { _end = ClockT::now(); }
-
-  template <class TT = TimeT> TT duration() const {
-    gsl_Expects(_end != timep_t {} && "toc before reporting");
-    return std::chrono::duration_cast<TT>(_end - _start);
-  }
-
-private:
-  timep_t _start = ClockT::now(), _end = {};
-};
-
-template <class TimeT = std::chrono::milliseconds, class ClockT = std::chrono::steady_clock> struct measure {
-  template <class F, class... Args> static auto duration(F&& func, Args&&... args) {
-    auto start = ClockT::now();
-    std::invoke(std::forward<F>(func), std::forward<Args>(args)...);
-    return std::chrono::duration_cast<TimeT>(ClockT::now() - start);
-  }
 };
 
 template <typename StringType> std::vector<StringType> split(const StringType& str, StringType delims) noexcept {

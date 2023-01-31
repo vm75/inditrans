@@ -41,5 +41,9 @@
   "C_Cpp.default.cStandard": "c17",
   "C_Cpp.default.intelliSenseMode": "linux-clang-x64",
   "C_Cpp.experimentalFeatures": "enabled",
-  "C_Cpp.clang_format_fallbackStyle": "WebKit"
+  "C_Cpp.clang_format_fallbackStyle": "WebKit",
+  "files.associations": {
+    "chrono": "cpp",
+    "limits": "cpp"
+  }
 }

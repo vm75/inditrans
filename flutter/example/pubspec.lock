@@ -236,6 +236,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  wasm_interop:
+    dependency: transitive
+    description:
+      name: wasm_interop
+      sha256: b1b378f07a4cf0103c25faf34d9a64d2c3312135b9efb47e0ec116ec3b14e48f
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   web_ffi:
     dependency: transitive
     description:

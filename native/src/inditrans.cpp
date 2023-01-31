@@ -1,6 +1,8 @@
 #include "inditrans.h"
 #include "type_defs.h"
+#include "wasi_fix.h"
 #include "utilities.h"
+#include <limits>
 #include <memory>
 #include <optional>
 #include <string>
