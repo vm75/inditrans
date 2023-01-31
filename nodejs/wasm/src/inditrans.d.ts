@@ -29,4 +29,4 @@ export interface InditransModule extends EmscriptenModule {
   transliterate2(text: string, from: string, to: string, options: string): string;
 }
 
-export default function InditransWasm(): Promise<InditransModule>;
+export default function InditransWasm(mod?: any): Promise<InditransModule>;
