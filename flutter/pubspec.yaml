@@ -43,5 +43,4 @@ flutter:
         pluginClass: Inditrans
         fileName: inditrans.dart
   assets:
-    - assets/standalone/
-    - assets/mjs/
+    - assets/wasm/

@@ -14,14 +14,19 @@ wasmDir="${sourceRoot}/wasm"
 
 buildWasm() {
   if ${DEBUG} ; then
-    cppoptions="-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address -Wl,--no-entry"
+    compilerOptions="-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address"
+    linkerOptions="-Wl,--no-entry"
   else
-    cppoptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -Wl,--gc-sections,--no-entry"
+    compilerOptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -flto"
+    linkerOptions="-Wl,--gc-sections,--no-entry"
   fi
+
+  runtimeExports='EXPORTED_RUNTIME_METHODS=["cwrap", "ccall"]'
+  compiledExports='EXPORTED_FUNCTIONS=["_malloc", "_free", "_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer"]'
 
   docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
     emscripten/emsdk \
-      emcc inditrans.cpp -o /wasm/mjs/inditrans.mjs ${cppoptions} \
+      emcc inditrans.cpp -o /wasm/dist/inditrans.mjs ${compilerOptions} ${linkerOptions} \
         -s WASM=1 \
         -s ENVIRONMENT='web,node' \
         -s NO_EXIT_RUNTIME=1 \
@@ -30,34 +35,34 @@ buildWasm() {
         -s FILESYSTEM=0 \
         -s SINGLE_FILE=1 \
         -s ALLOW_MEMORY_GROWTH=1 \
-        -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "ccall"]' \
-        -s 'EXPORTED_FUNCTIONS=["_malloc", "_free", "_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer"]' \
-        --extern-pre-js /wasm/snippets/inditrans.extern-pre.js \
-        --pre-js /wasm/snippets/inditrans.pre.js \
-        --post-js /wasm/snippets/inditrans.post.js
+        -s "${runtimeExports}" \
+        -s "${compiledExports}" \
+        --extern-pre-js /wasm/src/inditrans.extern-pre.js \
+        --pre-js /wasm/src/inditrans.pre.js \
+        --post-js /wasm/src/inditrans.post.js
 
   docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
     emscripten/emsdk \
-      emcc inditrans.cpp -o /wasm/standalone/inditrans.wasm ${cppoptions} \
+      emcc inditrans.cpp -o /wasm/dist/inditrans.wasm ${compilerOptions} ${linkerOptions} \
         -DNDEBUG \
         -s EXPORT_NAME=inditrans \
         -s FILESYSTEM=0 \
-        -s 'EXPORTED_FUNCTIONS=["_malloc", "_free", "_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer"]'
+        -s "${compiledExports}"
 
   # docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
   #   emscripten/emsdk \
-  #     emcc inditrans.cpp -o /wasm/split/inditrans.js ${cppoptions} \
+  #     emcc inditrans.cpp -o /wasm/split/inditrans.js ${compilerOptions} ${linkerOptions} \
   #       -s MODULARIZE=1 \
   #       -s EXPORT_NAME=inditrans \
   #       -s NO_EXIT_RUNTIME=1 \
   #       -s FILESYSTEM=0 \
   #       -s ALLOW_MEMORY_GROWTH=1 \
-  #       -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "ccall"]' \
-  #       -s 'EXPORTED_FUNCTIONS=["_malloc", "_free", "_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer"]'
+  #       -s "${runtimeExports}" \
+  #       -s "${compiledExports}"
 
   # docker run --rm -v "${nativeSourceDir}/src:/src" -v "${wasmDir}:/wasm" -u $(id -u):$(id -g) \
   #   emscripten/emsdk \
-  #     emcc inditrans.cpp -o /wasm/embedded/inditrans.js ${cppoptions} \
+  #     emcc inditrans.cpp -o /wasm/embedded/inditrans.js ${compilerOptions} ${linkerOptions} \
   #       -s WASM=1 \
   #       -s NO_EXIT_RUNTIME=1 \
   #       -s MODULARIZE=1 \
@@ -65,19 +70,19 @@ buildWasm() {
   #       -s FILESYSTEM=0 \
   #       -s SINGLE_FILE=1 \
   #       -s ALLOW_MEMORY_GROWTH=1 \
-  #       -s 'EXPORTED_RUNTIME_METHODS=["cwrap", "ccall"]' \
-  #       -s 'EXPORTED_FUNCTIONS=["_malloc", "_free", "_translitOptionsToInt", "_transliterate", "_transliterate2", "_releaseBuffer"]'
+  #       -s "${runtimeExports}" \
+  #       -s "${compiledExports}"
 }
 
 buildNative() {
   mkdir -p "${outDir}/native"
   rm -f "${nativeTarget}"
   if ${DEBUG} ; then
-    cppoptions="-std=c++20 -O3 -fno-exceptions"
+    compilerOptions="-std=c++20 -O3 -fno-exceptions"
   else
-    cppoptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno"
+    compilerOptions="-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno"
   fi
-  clang++ ${cppoptions} -I "${nativeSourceDir}/src" "${nativeSourceDir}/src"/*.cpp "${nativeSourceDir}/tests"/*.cpp -o "${nativeTarget}"
+  clang++ ${compilerOptions} -I "${nativeSourceDir}/src" "${nativeSourceDir}/src"/*.cpp "${nativeSourceDir}/tests"/*.cpp -o "${nativeTarget}"
   if [[ -f "${nativeTarget}" ]] ; then
     strip -s -R .comment -R .gnu.version --strip-unneeded "${nativeTarget}"
   fi
@@ -94,7 +99,7 @@ testWasm() {
 }
 
 profileNative() {
-  g++ -std=c++20 -O1 -fno-exceptions -pg -Wno-normalized ${cppoptions} -I "${scriptDir}/src" "${scriptDir}/src"/*.cpp "${scriptDir}/test"/*.cpp -o "${targetBin}"
+  g++ -std=c++20 -O1 -fno-exceptions -pg -Wno-normalized ${compilerOptions} -I "${scriptDir}/src" "${scriptDir}/src"/*.cpp "${scriptDir}/test"/*.cpp -o "${targetBin}"
   "${targetBin}" -p
   gprof "${targetBin}" gmon.out > "${distDir}/wasm-prof.log"
 }

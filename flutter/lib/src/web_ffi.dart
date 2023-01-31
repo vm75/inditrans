@@ -18,7 +18,7 @@ class FfiFacade {
   static Future<DynamicLibrary> _initLib() async {
     // After we loaded the wasm binaries and injected the js code
     // into our webpage, we obtain a module
-    final module = await WasmModule.initFromAsset('packages/inditrans/wasm/standalone/inditrans.wasm');
+    final module = await WasmModule.initFromAsset('packages/inditrans/assets/wasm/inditrans.wasm');
     return DynamicLibrary.fromModule(module);
   }
 }
