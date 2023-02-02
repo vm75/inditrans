@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final indiTrans = Inditrans.instance();
+  final indiTrans = Inditrans.instance;
   String res = '';
 
   @override

@@ -8,11 +8,14 @@ const String _libName = 'inditrans';
 
 typedef Char = Uint8;
 
-class FfiFacade {
-  static final Future<DynamicLibrary> lib = _initBindings();
-  static final Allocator allocator = Arena();
+class InditransDynamicLib {
+  static final Future<DynamicLibrary> _lib = _initLib();
+  static final Allocator _allocator = Arena();
 
-  static Future<DynamicLibrary> _initBindings() async {
+  static get lib => _lib;
+  static get allocator => _allocator;
+
+  static Future<DynamicLibrary> _initLib() async {
     if (Platform.isMacOS || Platform.isIOS) {
       return DynamicLibrary.open('$_libName.framework/$_libName');
     } else if (Platform.isAndroid || Platform.isLinux) {
@@ -22,9 +25,5 @@ class FfiFacade {
     } else {
       throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
     }
-  }
-
-  Future<DynamicLibrary> getBindings() async {
-    return lib;
   }
 }
