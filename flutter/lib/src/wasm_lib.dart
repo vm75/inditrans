@@ -19,7 +19,7 @@ class InditransDynamicLib {
   }
 
   static Future<DynamicLibrary> _initLib() async {
-    final module = await WasmModule.initFromAsset('packages/inditrans/assets/wasm/inditrans.wasm');
+    final module = await WasmModule.initFromAsset('packages/inditrans/assets/inditrans.wasm');
     return DynamicLibrary.fromModule(module);
   }
 }
