@@ -1,2 +1,2 @@
-# brahmic_trans
-An experimental transliterator library for some Brahmic scripts
+# inditrans
+An experimental transliterator library for some Indic scripts.

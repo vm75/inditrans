@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter",
+            "program": "lib/main.dart",
+            "cwd": "flutter\\example",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run Script: test-wasm-ts",
+            "request": "launch",
+            "command": "npm run test-wasm-ts",
+            "cwd": "${workspaceFolder}\\nodejs"
+        },
+        {
+            "type": "node-terminal",
+            "name": "Run Script: test-ts",
+            "request": "launch",
+            "command": "npm run test-ts",
+            "cwd": "${workspaceFolder}\\nodejs"
+        }
+    ]
+}

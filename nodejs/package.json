@@ -1,0 +1,43 @@
+{
+  "name": "@vm75/inditrans",
+  "version": "1.0.0",
+  "author": "Vijay Mohan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vm75/inditrans"
+  },
+  "type": "module",
+  "main": "./dist/wasm/src/inditrans.js",
+  "types": "./dist/wasm/src/inditrans.d.ts",
+  "scripts": {
+    "clean": "shx rm -rf dist/*",
+    "gen-wasm": "tsc && node --no-warnings --experimental-modules --es-module-specifier-resolution=node dist/wasm/tools/gen-wasm-header.js ../native/src/scripts-gen.h",
+    "build-ts": "tsc",
+    "build": "npm run build-wasm && npm run build-ts",
+    "build-all": "npm run gen-wasm-header && npm run build-wasm && npm run build-ts",
+    "watch": "tsc --watch",
+    "test-ts": "tsc && node --no-warnings --experimental-modules --es-module-specifier-resolution=node dist/tests/test-ts.js",
+    "test-wasm": "tsc && yarn run copy-wasm && node --no-warnings --experimental-modules --es-module-specifier-resolution=node dist/tests/test-wasm.js",
+    "test-am": "./compare/testam.sh",
+    "copy-wasm": "shx cp -f wasm/dist/inditrans.mjs dist/wasm/src/ && shx cp -f wasm/src/inditrans.d.ts dist/wasm/src/",
+    "prepack": "npm run clean && npm run build-all"
+  },
+  "devDependencies": {
+    "@types/emscripten": "^1.39.6",
+    "@types/lodash": "^4.14.149",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^18.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.2.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "gulp": "^4.0.2",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.4.1",
+    "shx": "^0.3.3",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {}
+}

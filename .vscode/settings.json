@@ -1,0 +1,49 @@
+{
+  "editor.wordWrapColumn": 200,
+  "editor.minimap.maxColumn": 200,
+  "editor.hideCursorInOverviewRuler": false,
+  "editor.overviewRulerBorder": true,
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": false,
+    "editor.rulers": [
+      200
+    ],
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": false,
+    "editor.defaultFormatter": "Dart-Code.dart-code"
+  },
+  "dart.lineLength": 200,
+  "files.exclude": {
+    "package-lock.json": true,
+    "node_modules/**": true,
+    "out/**": true,
+    "build/**": true,
+    "dist/**": true,
+    "**.so": true,
+    "**.db": true,
+    "yarn.lock": true
+  },
+  "[typescript], [javascript]": {
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "eslint.validate": [
+      "javascript",
+      "typescript"
+    ],
+  },
+  "C_Cpp.default.cppStandard": "c++20",
+  "C_Cpp.default.cStandard": "c17",
+  "C_Cpp.default.intelliSenseMode": "linux-clang-x64",
+  "C_Cpp.experimentalFeatures": "enabled",
+  "C_Cpp.clang_format_fallbackStyle": "WebKit",
+  "files.associations": {
+    "chrono": "cpp",
+    "limits": "cpp"
+  }
+}
