@@ -1,5 +1,9 @@
 // ignore_for_file: hash_and_equals, constant_identifier_names
 
+import 'dart:convert';
+
+import 'ffi_proxy.dart';
+
 N valueOf<T, N extends num>(dynamic val) {
   if (val is N) {
     return val;
@@ -67,18 +71,38 @@ abstract class AbstractFlag<T> extends AbstractVal<T, int> {
   }
 }
 
-class TranslitOptions extends AbstractFlag<TranslitOptions> {
-  const TranslitOptions(int value) : super(value);
-  static const None = TranslitOptions(0);
-  static const IgnoreVedicAccents = TranslitOptions(1);
-  static const IgnoreQuotedMarkers = TranslitOptions(2);
-  static const TamilTraditional = TranslitOptions(4);
-  static const TamilSuperscripted = TranslitOptions(8);
-  static const InferAnuswara = TranslitOptions(16);
-  static const RetainZeroWidthChars = TranslitOptions(32);
+class StagingMemory {
+  final Allocator _allocator;
+  final List<Pointer<NativeType>> _toFree = [];
 
-  @override
-  TranslitOptions create(int value) {
-    return TranslitOptions(value);
+  StagingMemory(this._allocator);
+
+  Pointer<Uint8> toNativeString(String dartString) {
+    List<int> bytes = utf8.encode(dartString);
+    Pointer<Uint8> nativeString = _allocator.allocate(bytes.length + 1);
+    _toFree.add(nativeString);
+    final charList = nativeString.asTypedList(bytes.length + 1);
+    charList.setAll(0, bytes);
+    charList[bytes.length] = 0;
+    return nativeString;
+  }
+
+  String fromNativeString(Pointer<Uint8> nativeString) {
+    if (nativeString == nullptr) {
+      return '';
+    }
+    _toFree.add(nativeString);
+    int len = 0;
+    while (nativeString[len] != 0) {
+      len++;
+    }
+    return len > 0 ? utf8.decode(nativeString.asTypedList(len)) : '';
+  }
+
+  void freeAll() {
+    for (final entry in _toFree) {
+      _allocator.free(entry);
+    }
+    _toFree.clear();
   }
 }

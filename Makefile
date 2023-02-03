@@ -56,12 +56,19 @@ COMPILED_EXPORTS="EXPORTED_FUNCTIONS=[\"_malloc\", \"_free\", \"_translitOptions
 NODEJS_TARGET=wasm/dist/inditrans.mjs
 FLUTTER_TARGET=assets/inditrans.wasm
 
+ifneq ($(OS), Windows_NT)
+	USER_SPEC=-u $(shell id -u):$(shell id -g)
+else
+	USER_SPEC=
+endif
+
 wasm: nodejs/$(NODEJS_TARGET) flutter/$(FLUTTER_TARGET)
 
 nodejs/$(NODEJS_TARGET): $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
 	docker run --rm -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/nodejs/wasm/src:/src/js" -v "$(CURDIR)/nodejs:/dist" \
 		emscripten/emsdk \
-			emcc inditrans.cpp -o /dist/$(NODEJS_TARGET) $(COMPILER_OPTIONS) $(LINKER_OPTIONS) -flto \
+			emcc inditrans.cpp -o /dist/$(NODEJS_TARGET) $(USER_SPEC) \
+				$(COMPILER_OPTIONS) $(LINKER_OPTIONS) \
 				-s WASM=1 \
 				-s ENVIRONMENT='web,node' \
 				-s NO_EXIT_RUNTIME=1 \
@@ -79,7 +86,8 @@ nodejs/$(NODEJS_TARGET): $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
 flutter/$(FLUTTER_TARGET): $(SOURCES_CC) $(HEADERS_CC)
 	docker run --rm -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/flutter:/dist" \
 		emscripten/emsdk \
-			emcc inditrans.cpp -o /dist/$(FLUTTER_TARGET) $(COMPILER_OPTIONS) $(LINKER_OPTIONS) -flto \
+			emcc inditrans.cpp -o /dist/$(FLUTTER_TARGET) $(USER_SPEC) \
+				$(COMPILER_OPTIONS) $(LINKER_OPTIONS) \
 				-DNDEBUG \
 				-s EXPORT_NAME=inditrans \
 				-s FILESYSTEM=0 \
