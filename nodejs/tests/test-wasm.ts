@@ -1,5 +1,5 @@
-import { TestHelper, testAll } from '../../ts/tests/tests-common';
-import InditransWasm, { InditransModule } from '../gen/inditrans_wasm';
+import { TestHelper, testAll } from './test-utils';
+import InditransWasm, { InditransModule } from '../wasm/src/inditrans';
 
 class TranslitProxy implements TestHelper {
   module: InditransModule;

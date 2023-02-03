@@ -1,4 +1,4 @@
-import TranslitData from '../assets/scripts.json' assert { type: 'json' };
+import TranslitData from '../../assets/scripts.json' assert { type: 'json' };
 import fs from 'fs';
 
 type ScriptInfo = {

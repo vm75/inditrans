@@ -1,4 +1,4 @@
-import Tests from '../../assets/test-cases.json' assert { type: 'json' };
+import Tests from './test-cases.json' assert { type: 'json' };
 import fs from 'fs';
 
 const perfTestFile = 'dist/perf.txt';
@@ -47,6 +47,9 @@ export function testAllTranslit(translitWrapper: TestHelper) {
 }
 
 export function testPerf(translitWrapper: TestHelper) {
+  if (!fs.existsSync(perfTestFile)) {
+    return;
+  }
   try {
     const inBuffer = fs.readFileSync(perfTestFile, 'utf8');
     console.log('Perf test');

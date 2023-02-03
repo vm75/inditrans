@@ -4,11 +4,11 @@ all: native wasm
 
 # Common
 ifdef  DEBUG
-    compilerOptions=-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address
-    linkerOptions=-Wl,--no-entry
+    COMPILER_OPTIONS=-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address
+    LINKER_OPTIONS=-Wl,--no-entry
 else
-    compilerOptions=-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno
-    linkerOptions=-Wl,--gc-sections,--no-entry
+    COMPILER_OPTIONS=-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno
+    LINKER_OPTIONS=-Wl,--gc-sections,--no-entry
 endif
 
 ifeq ($(OS), Windows_NT)
@@ -25,7 +25,7 @@ native: $(NATIVE_EXEC)
 
 $(NATIVE_EXEC): $(SOURCES_CC) $(HEADERS_CC) native/tests/test.cpp
 	-mkdir out
-	clang++ ${compilerOptions} -I native/src $(SOURCES_CC) native/tests/test.cpp -o $@ && \
+	clang++ ${COMPILER_OPTIONS} -I native/src $(SOURCES_CC) native/tests/test.cpp -o $@ && \
 		llvm-strip -s -R .comment -R .gnu.version --strip-unneeded $@
 
 flutter: flutter/assets/inditrans.wasm
@@ -50,15 +50,18 @@ publish_flutter:
 publish_nodejs:
 
 # Wasm
-runtimeExports="EXPORTED_RUNTIME_METHODS=[\"cwrap\", \"ccall\"]"
-compiledExports="EXPORTED_FUNCTIONS=[\"_malloc\", \"_free\", \"_translitOptionsToInt\", \"_transliterate\", \"_transliterate2\", \"_releaseBuffer\"]"
+RUNTIME_EXPORTS="EXPORTED_RUNTIME_METHODS=[\"cwrap\", \"ccall\"]"
+COMPILED_EXPORTS="EXPORTED_FUNCTIONS=[\"_malloc\", \"_free\", \"_translitOptionsToInt\", \"_transliterate\", \"_transliterate2\", \"_releaseBuffer\"]"
 
-wasm: nodejs/dist/inditrans.mjs flutter/assets/inditrans.wasm
+NODEJS_TARGET=wasm/dist/inditrans.mjs
+FLUTTER_TARGET=assets/inditrans.wasm
 
-nodejs/dist/inditrans.mjs: $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
-	docker run --rm -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/nodejs/wasm/src:/src/js" -v "$(CURDIR)/nodejs/dist:/dist" \
+wasm: nodejs/$(NODEJS_TARGET) flutter/$(FLUTTER_TARGET)
+
+nodejs/$(NODEJS_TARGET): $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
+	docker run --rm -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/nodejs/wasm/src:/src/js" -v "$(CURDIR)/nodejs:/dist" \
 		emscripten/emsdk \
-			emcc inditrans.cpp -o /dist/inditrans.mjs $(compilerOptions) $(linkerOptions) -flto \
+			emcc inditrans.cpp -o /dist/$(NODEJS_TARGET) $(COMPILER_OPTIONS) $(LINKER_OPTIONS) -flto \
 				-s WASM=1 \
 				-s ENVIRONMENT='web,node' \
 				-s NO_EXIT_RUNTIME=1 \
@@ -67,17 +70,17 @@ nodejs/dist/inditrans.mjs: $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
 				-s FILESYSTEM=0 \
 				-s SINGLE_FILE=1 \
 				-s ALLOW_MEMORY_GROWTH=1 \
-				-s $(runtimeExports) \
-				-s $(compiledExports) \
+				-s $(RUNTIME_EXPORTS) \
+				-s $(COMPILED_EXPORTS) \
 				--extern-pre-js /src/js/inditrans.extern-pre.js \
 				--pre-js /src/js/inditrans.pre.js \
 				--post-js /src/js/inditrans.post.js
 
-flutter/assets/inditrans.wasm: $(SOURCES_CC) $(HEADERS_CC)
-	docker run --rm -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/flutter/assets:/dist" \
+flutter/$(FLUTTER_TARGET): $(SOURCES_CC) $(HEADERS_CC)
+	docker run --rm -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/flutter:/dist" \
 		emscripten/emsdk \
-			emcc inditrans.cpp -o /dist/inditrans.wasm $(compilerOptions) $(linkerOptions) -flto \
+			emcc inditrans.cpp -o /dist/$(FLUTTER_TARGET) $(COMPILER_OPTIONS) $(LINKER_OPTIONS) -flto \
 				-DNDEBUG \
 				-s EXPORT_NAME=inditrans \
 				-s FILESYSTEM=0 \
-				-s $(compiledExports)
+				-s $(COMPILED_EXPORTS)
