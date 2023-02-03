@@ -16,13 +16,18 @@ class StagingMemory {
 
   Pointer<Uint8> toNativeString(String dartString) {
     List<int> bytes = utf8.encode(dartString);
-    Pointer<Uint8> nativeString = _allocator.allocate(bytes.length);
+    Pointer<Uint8> nativeString = _allocator.allocate(bytes.length + 1);
     _toFree.add(nativeString);
-    nativeString.asTypedList(bytes.length).setAll(0, bytes);
+    final charList = nativeString.asTypedList(bytes.length + 1);
+    charList.setAll(0, bytes);
+    charList[bytes.length] = 0;
     return nativeString;
   }
 
   String fromNativeString(Pointer<Uint8> nativeString) {
+    if (nativeString == nullptr) {
+      return '';
+    }
     _toFree.add(nativeString);
     int len = 0;
     while (nativeString[len] != 0) {
@@ -70,6 +75,6 @@ class Inditrans {
   }
 
   static registerWith(registrar) {
-    // TODO
+    // TODO : check if it is needed
   }
 }

@@ -721,7 +721,7 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
 std::string transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to, TranslitOptions options) noexcept {
   std::unique_ptr<char> output;
   if (!transliterate(input, from, to, options, output)) {
-    return std::string(input);
+    return std::string();
   }
 
   return output.get();
@@ -735,16 +735,16 @@ char* CALL_CONV transliterate(const char* input, const char* from, const char* t
   std::unique_ptr<char> output;
   std::string_view inputView(input);
   if (!transliterate(inputView, from, to, static_cast<TranslitOptions>(options), output)) {
-    auto retval = new char[inputView.length() + 1];
-    std::copy(inputView.begin(), inputView.end(), retval);
-    return retval;
+    return nullptr;
   } else {
     auto retval = output.release();
     return retval;
   }
 }
 
-char* CALL_CONV transliterate2(const char* input, const char* from, const char* to, const char* optionStr) { return transliterate(input, from, to, translitOptionsToInt(optionStr)); }
+char* CALL_CONV transliterate2(const char* input, const char* from, const char* to, const char* optionStr) {
+  return transliterate(input, from, to, translitOptionsToInt(optionStr));
+}
 
 void CALL_CONV releaseBuffer(char* buffer) {
   if (buffer) {
