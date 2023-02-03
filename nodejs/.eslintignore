@@ -1,0 +1,7 @@
+.eslintrc.js
+.prettierrc
+jest.config.js
+ecosystem.config.cjs
+webpack*.config.cjs
+*.json
+out/**
