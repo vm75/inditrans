@@ -8,22 +8,17 @@ import 'src/utils.dart';
 export 'src/types.dart';
 
 class Inditrans {
-  static final Future<Inditrans> _instance = _init();
-  final InditransBindings _bindings;
-  final Allocator _allocator;
+  static late dynamic _platformLib;
+  static late InditransBindings _bindings;
+  static late Allocator _allocator;
 
-  Inditrans._(DynamicLibrary lib, Allocator allocator)
-      : _bindings = InditransBindings(lib),
-        _allocator = allocator;
-
-  static Future<Inditrans> _init() async {
-    final dynLib = await InditransDynamicLib.lib;
-    return Inditrans._(dynLib, InditransDynamicLib.allocator);
+  static init() async {
+    _platformLib = await InditransDynamicLib.lib;
+    _bindings = InditransBindings(_platformLib);
+    _allocator = InditransDynamicLib.allocator;
   }
 
-  static get instance => _instance;
-
-  String transliterate(String text, String from, String to, [TranslitOptions options = TranslitOptions.None]) {
+  static String transliterate(String text, String from, String to, [TranslitOptions options = TranslitOptions.None]) {
     final staging = StagingMemory(_allocator);
 
     final cText = staging.toNativeString(text);
@@ -38,6 +33,6 @@ class Inditrans {
   }
 
   static registerWith(registrar) {
-    // TODO : check if it is needed
+    // ignore
   }
 }
