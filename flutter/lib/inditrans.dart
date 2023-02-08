@@ -13,7 +13,8 @@ class Inditrans {
   static late Allocator _allocator;
 
   static init() async {
-    _platformLib = await InditransDynamicLib.lib;
+    await InditransDynamicLib.init();
+    _platformLib = InditransDynamicLib.lib;
     _bindings = InditransBindings(_platformLib);
     _allocator = InditransDynamicLib.allocator;
   }

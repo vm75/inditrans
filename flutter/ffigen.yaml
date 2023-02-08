@@ -21,3 +21,9 @@ comments:
 enums:
   exclude:
     - TranslitOptions
+type-map:
+  'native-types':
+    'char':
+      'lib': 'ffi'
+      'c-type': 'Uint8'
+      'dart-type': 'int'

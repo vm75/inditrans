@@ -6,8 +6,6 @@ import 'package:ffi/ffi.dart';
 
 const String _libName = 'inditrans';
 
-typedef Char = Uint8;
-
 class InditransDynamicLib {
   static final Future<DynamicLibrary> _lib = _initLib();
   static final Allocator _allocator = Arena();

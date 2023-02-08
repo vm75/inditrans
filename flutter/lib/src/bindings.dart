@@ -23,21 +23,21 @@ class InditransBindings {
   InditransBindings.fromLookup(ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup) : _lookup = lookup;
 
   int translitOptionsToInt(
-    ffi.Pointer<ffi.Char> optionStr,
+    ffi.Pointer<ffi.Uint8> optionStr,
   ) {
     return _translitOptionsToInt(
       optionStr,
     );
   }
 
-  late final _translitOptionsToIntPtr = _lookup<ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>)>>('translitOptionsToInt');
-  late final _translitOptionsToInt = _translitOptionsToIntPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
+  late final _translitOptionsToIntPtr = _lookup<ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<ffi.Uint8>)>>('translitOptionsToInt');
+  late final _translitOptionsToInt = _translitOptionsToIntPtr.asFunction<int Function(ffi.Pointer<ffi.Uint8>)>();
 
   /// transliterate
-  ffi.Pointer<ffi.Char> transliterate(
-    ffi.Pointer<ffi.Char> text,
-    ffi.Pointer<ffi.Char> from,
-    ffi.Pointer<ffi.Char> to,
+  ffi.Pointer<ffi.Uint8> transliterate(
+    ffi.Pointer<ffi.Uint8> text,
+    ffi.Pointer<ffi.Uint8> from,
+    ffi.Pointer<ffi.Uint8> to,
     int options,
   ) {
     return _transliterate(
@@ -48,15 +48,16 @@ class InditransBindings {
     );
   }
 
-  late final _transliteratePtr = _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.UnsignedLong)>>('transliterate');
-  late final _transliterate = _transliteratePtr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+  late final _transliteratePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, ffi.UnsignedLong)>>('transliterate');
+  late final _transliterate = _transliteratePtr.asFunction<ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, int)>();
 
   /// transliterate2
-  ffi.Pointer<ffi.Char> transliterate2(
-    ffi.Pointer<ffi.Char> text,
-    ffi.Pointer<ffi.Char> from,
-    ffi.Pointer<ffi.Char> to,
-    ffi.Pointer<ffi.Char> optionStr,
+  ffi.Pointer<ffi.Uint8> transliterate2(
+    ffi.Pointer<ffi.Uint8> text,
+    ffi.Pointer<ffi.Uint8> from,
+    ffi.Pointer<ffi.Uint8> to,
+    ffi.Pointer<ffi.Uint8> optionStr,
   ) {
     return _transliterate2(
       text,
@@ -67,18 +68,18 @@ class InditransBindings {
   }
 
   late final _transliterate2Ptr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('transliterate2');
-  late final _transliterate2 = _transliterate2Ptr.asFunction<ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>)>>('transliterate2');
+  late final _transliterate2 = _transliterate2Ptr.asFunction<ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>)>();
 
   /// release
   void releaseBuffer(
-    ffi.Pointer<ffi.Char> buffer,
+    ffi.Pointer<ffi.Uint8> buffer,
   ) {
     return _releaseBuffer(
       buffer,
     );
   }
 
-  late final _releaseBufferPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Char>)>>('releaseBuffer');
-  late final _releaseBuffer = _releaseBufferPtr.asFunction<void Function(ffi.Pointer<ffi.Char>)>();
+  late final _releaseBufferPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Uint8>)>>('releaseBuffer');
+  late final _releaseBuffer = _releaseBufferPtr.asFunction<void Function(ffi.Pointer<ffi.Uint8>)>();
 }

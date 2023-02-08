@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
-import 'package:web_ffi/web_ffi_modules.dart';
-import 'package:web_ffi/web_ffi_meta.dart';
+import 'package:wasm_ffi/wasm_ffi_modules.dart';
+import 'package:wasm_ffi/wasm_ffi_meta.dart';
 import 'package:wasm_interop/wasm_interop.dart' as interop;
 import 'package:js/js_util.dart';
 
