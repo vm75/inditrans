@@ -7,11 +7,16 @@ import 'package:ffi/ffi.dart';
 const String _libName = 'inditrans';
 
 class InditransDynamicLib {
-  static final Future<DynamicLibrary> _lib = _initLib();
-  static final Allocator _allocator = Arena();
+  static late DynamicLibrary _lib;
+  static late Allocator _allocator;
 
   static get lib => _lib;
   static get allocator => _allocator;
+
+  static init() async {
+    _lib = await _initLib();
+    _allocator = Arena();
+  }
 
   static Future<DynamicLibrary> _initLib() async {
     if (Platform.isMacOS || Platform.isIOS) {
