@@ -1,13 +1,13 @@
 {
-  "editor.wordWrapColumn": 200,
-  "editor.minimap.maxColumn": 200,
+  "editor.wordWrapColumn": 80,
+  "editor.minimap.maxColumn": 80,
   "editor.hideCursorInOverviewRuler": false,
   "editor.overviewRulerBorder": true,
   "[dart]": {
     "editor.formatOnSave": true,
     "editor.formatOnType": false,
     "editor.rulers": [
-      200
+      80
     ],
     "editor.selectionHighlight": false,
     "editor.suggest.snippetsPreventQuickSuggestions": false,
@@ -16,5 +16,5 @@
     "editor.wordBasedSuggestions": false,
     "editor.defaultFormatter": "Dart-Code.dart-code"
   },
-  "dart.lineLength": 200,
+  "dart.lineLength": 80,
 }

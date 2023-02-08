@@ -1,3 +1,7 @@
+## 0.0.3
+
+- Added comments and fixed formatting and example.
+
 ## 0.0.2
 
 - Fixed ffi_lib for non-web

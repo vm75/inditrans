@@ -29,7 +29,11 @@ class WasmModule extends Module {
     if (s != null) {
       int? length = getProperty(func, 'length');
       if (length != null) {
-        return FunctionDescription(tableIndex: index, name: name, function: func, argumentCount: length);
+        return FunctionDescription(
+            tableIndex: index,
+            name: name,
+            function: func,
+            argumentCount: length);
       }
     }
     throw ArgumentError('$name does not seem to be a function symbol!');

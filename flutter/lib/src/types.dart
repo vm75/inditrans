@@ -2,6 +2,30 @@
 
 import 'package:inditrans/src/utils.dart';
 
+/// Supported scripts
+enum Script {
+  bengali,
+  devanagari,
+  gujarati,
+  gurmukhi,
+  kannada,
+  malayalam,
+  oriya,
+  telugu,
+  tamil,
+  iast,
+  ipa,
+  iso,
+  itrans,
+  romansimple;
+
+  @override
+  String toString() {
+    return super.toString().replaceFirst('Script.', '');
+  }
+}
+
+/// Transliteration options
 class TranslitOptions extends AbstractFlag<TranslitOptions> {
   const TranslitOptions(int value) : super(value);
   static const None = TranslitOptions(0);

@@ -14,7 +14,8 @@ class InditransDynamicLib {
 
   static init() async {
     Memory.init();
-    final module = await WasmModule.initFromAsset('packages/inditrans/assets/inditrans.wasm');
+    final module = await WasmModule.initFromAsset(
+        'packages/inditrans/assets/inditrans.wasm');
     _lib = DynamicLibrary.fromModule(module);
     _allocator = _lib.boundMemory;
   }
