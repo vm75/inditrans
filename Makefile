@@ -65,9 +65,9 @@ endif
 wasm: nodejs/$(NODEJS_TARGET) flutter/$(FLUTTER_TARGET)
 
 nodejs/$(NODEJS_TARGET): $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
-	docker run --rm -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/nodejs/wasm/src:/src/js" -v "$(CURDIR)/nodejs:/dist" \
+	docker run --rm $(USER_SPEC) -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/nodejs/wasm/src:/src/js" -v "$(CURDIR)/nodejs:/dist" \
 		emscripten/emsdk \
-			emcc inditrans.cpp -o /dist/$(NODEJS_TARGET) $(USER_SPEC) \
+			emcc inditrans.cpp -o /dist/$(NODEJS_TARGET) \
 				$(COMPILER_OPTIONS) $(LINKER_OPTIONS) \
 				-s WASM=1 \
 				-s ENVIRONMENT='web,node' \
@@ -84,9 +84,9 @@ nodejs/$(NODEJS_TARGET): $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
 				--post-js /src/js/inditrans.post.js
 
 flutter/$(FLUTTER_TARGET): $(SOURCES_CC) $(HEADERS_CC)
-	docker run --rm -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/flutter:/dist" \
+	docker run --rm $(USER_SPEC) -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/flutter:/dist" \
 		emscripten/emsdk \
-			emcc inditrans.cpp -o /dist/$(FLUTTER_TARGET) $(USER_SPEC) \
+			emcc inditrans.cpp -o /dist/$(FLUTTER_TARGET) \
 				$(COMPILER_OPTIONS) $(LINKER_OPTIONS) \
 				-DNDEBUG \
 				-s EXPORT_NAME=inditrans \
