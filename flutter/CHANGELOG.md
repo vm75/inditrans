@@ -1,3 +1,7 @@
+## 0.0.5
+
+- fixed android build issue.
+
 ## 0.0.4
 
 - removed unnecessary code and files.
