@@ -1,3 +1,7 @@
+## 0.0.6
+
+- fixed example.
+
 ## 0.0.5
 
 - fixed android build issue.

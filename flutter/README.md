@@ -40,7 +40,7 @@ Future<void> main() async {
       "श्री॒ गु॒रु॒भ्यो नमः॒ । ह॒रिः॒ ओ३म् ॥",
       Script.devanagari,
       Script.tamil,
-      TranslitOptions.IgnoreVedicAccents & TranslitOptions.TamilSuperscripted);
+      TranslitOptions.IgnoreVedicAccents | TranslitOptions.TamilSuperscripted);
   ...
 }
 ```

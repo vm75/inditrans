@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
         original,
         from,
         to,
-        inditrans.TranslitOptions.IgnoreVedicAccents &
+        inditrans.TranslitOptions.IgnoreVedicAccents |
             inditrans.TranslitOptions.TamilSuperscripted);
 
     return MaterialApp(

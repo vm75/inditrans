@@ -7,7 +7,7 @@
     "editor.formatOnSave": true,
     "editor.formatOnType": false,
     "editor.rulers": [
-      200
+      80
     ],
     "editor.selectionHighlight": false,
     "editor.suggest.snippetsPreventQuickSuggestions": false,
@@ -16,7 +16,7 @@
     "editor.wordBasedSuggestions": false,
     "editor.defaultFormatter": "Dart-Code.dart-code"
   },
-  "dart.lineLength": 200,
+  "dart.lineLength": 80,
   "files.exclude": {
     "package-lock.json": true,
     "node_modules/**": true,
