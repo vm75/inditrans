@@ -7,7 +7,32 @@ import 'src/utils.dart';
 
 export 'src/types.dart' show TranslitOptions, Script;
 
-/// A transliterate utility for some common [indic](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts
+late dynamic _platformLib;
+late InditransBindings _bindings;
+late Allocator _allocator;
+
+/// Inditrans init. Init should be completed before any use is attempted.
+///
+/// ```dart
+/// import 'package:inditrans/inditrans.dart' as inditrans;
+/// void main() async {
+///   ...
+///   await inditrans.init();
+///   ...
+/// }
+/// ```
+init() async {
+  await InditransDynamicLib.init();
+  _platformLib = InditransDynamicLib.lib;
+  _bindings = InditransBindings(_platformLib);
+  _allocator = InditransDynamicLib.allocator;
+}
+
+/// Transliterates [text] from [from] script to [to] script.
+/// [TranslitOptions] can be used for some specific config.
+/// Should be called only after [init] is completed.
+///
+/// If the transliterate fails, returns an empty string.
 ///
 /// The follwing scripts are currently supported:
 /// * Brahmi scripts:
@@ -26,48 +51,25 @@ export 'src/types.dart' show TranslitOptions, Script;
 ///   * iso 15919 (https://en.wikipedia.org/wiki/ISO_15919)
 ///   * itrans (https://en.wikipedia.org/wiki/ITRANS)
 ///   * romansimple (non-standard)
-class Inditrans {
-  static late dynamic _platformLib;
-  static late InditransBindings _bindings;
-  static late Allocator _allocator;
+///
+/// ```dart
+/// import 'package:inditrans/inditrans.dart' as inditrans;
+/// ...
+/// inditrans.transliterate('text', transliterate.Script.devanagari, transliterate.Script.tamil);
+///
+/// ```
+String transliterate(String text, Script from, Script to,
+    [TranslitOptions options = TranslitOptions.None]) {
+  final staging = StagingMemory(_allocator);
 
-  /// Inditrans init. Init should be completed before any use is attempted.
-  ///
-  /// ```
-  /// void main() async {
-  ///   WidgetsFlutterBinding.ensureInitialized();
-  ///   await Inditrans.init();
-  ///   runApp(const MyApp());
-  /// }
-  /// ```
-  static init() async {
-    await InditransDynamicLib.init();
-    _platformLib = InditransDynamicLib.lib;
-    _bindings = InditransBindings(_platformLib);
-    _allocator = InditransDynamicLib.allocator;
-  }
+  final nativeText = staging.toNativeString(text);
+  final nativeFrom = staging.toNativeString(from.toString());
+  final nativeTo = staging.toNativeString(to.toString());
 
-  /// Transliterates [text] from [from] script to [to] script.
-  /// [TranslitOptions] can be used for some specific config.
-  /// Should be called only after [Inditrans.init] is completed.
-  ///
-  /// If the transliterate fails, returns an empty string.
-  static String transliterate(String text, Script from, Script to,
-      [TranslitOptions options = TranslitOptions.None]) {
-    final staging = StagingMemory(_allocator);
+  final buffer =
+      _bindings.transliterate(nativeText, nativeFrom, nativeTo, options.value);
+  final result = staging.fromNativeString(buffer);
 
-    final cText = staging.toNativeString(text);
-    final cFrom = staging.toNativeString(from.toString());
-    final cTo = staging.toNativeString(to.toString());
-
-    final buffer = _bindings.transliterate(cText, cFrom, cTo, options.value);
-    final result = staging.fromNativeString(buffer);
-
-    staging.freeAll();
-    return result;
-  }
-
-  static registerWith(registrar) {
-    // ignore
-  }
+  staging.freeAll();
+  return result;
 }

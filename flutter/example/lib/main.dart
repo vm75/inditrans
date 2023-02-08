@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:inditrans/inditrans.dart';
+import 'package:inditrans/inditrans.dart' as inditrans;
 import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final stopwatch = Stopwatch()..start();
-  await Inditrans.init();
+  await inditrans.init();
 
   runApp(MyApp(timeToInit: stopwatch.elapsed));
 }
@@ -25,15 +25,15 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     const spacerSmall = SizedBox(height: 10);
 
-    const from = Script.devanagari;
-    const to = Script.tamil;
+    const from = inditrans.Script.devanagari;
+    const to = inditrans.Script.tamil;
     const original = "श्री॒ गु॒रु॒भ्यो नमः॒ । ह॒रिः॒ ओ३म् ॥";
-    final transliterated = Inditrans.transliterate(
+    final transliterated = inditrans.transliterate(
         original,
         from,
         to,
-        TranslitOptions.IgnoreVedicAccents &
-            TranslitOptions.TamilSuperscripted);
+        inditrans.TranslitOptions.IgnoreVedicAccents &
+            inditrans.TranslitOptions.TamilSuperscripted);
 
     return MaterialApp(
       home: Scaffold(

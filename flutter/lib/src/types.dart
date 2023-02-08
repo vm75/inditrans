@@ -1,6 +1,4 @@
-// ignore_for_file: constant_identifier_names
-
-import 'package:inditrans/src/utils.dart';
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
 /// Supported scripts
 enum Script {
@@ -26,18 +24,26 @@ enum Script {
 }
 
 /// Transliteration options
-class TranslitOptions extends AbstractFlag<TranslitOptions> {
-  const TranslitOptions(int value) : super(value);
-  static const None = TranslitOptions(0);
-  static const IgnoreVedicAccents = TranslitOptions(1);
-  static const IgnoreQuotedMarkers = TranslitOptions(2);
-  static const TamilTraditional = TranslitOptions(4);
-  static const TamilSuperscripted = TranslitOptions(8);
-  static const InferAnuswara = TranslitOptions(16);
-  static const RetainZeroWidthChars = TranslitOptions(32);
+class TranslitOptions {
+  final int _value;
 
-  @override
-  TranslitOptions create(int value) {
-    return TranslitOptions(value);
+  const TranslitOptions._(this._value);
+
+  int get value => _value;
+
+  static const None = TranslitOptions._(0);
+  static const IgnoreVedicAccents = TranslitOptions._(1);
+  static const IgnoreQuotedMarkers = TranslitOptions._(2);
+  static const TamilTraditional = TranslitOptions._(4);
+  static const TamilSuperscripted = TranslitOptions._(8);
+  static const InferAnuswara = TranslitOptions._(16);
+  static const RetainZeroWidthChars = TranslitOptions._(32);
+
+  TranslitOptions operator |(TranslitOptions other) {
+    return TranslitOptions._(_value | other._value);
+  }
+
+  TranslitOptions operator &(TranslitOptions other) {
+    return TranslitOptions._(_value & other._value);
   }
 }

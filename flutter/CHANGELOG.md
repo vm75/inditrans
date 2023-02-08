@@ -1,3 +1,7 @@
+## 0.0.4
+
+- removed unnecessary code and files.
+
 ## 0.0.3
 
 - Added comments and fixed formatting and example.

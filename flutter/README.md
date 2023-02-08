@@ -6,6 +6,10 @@ An experimental transliterator library for some [Indic/Brahmi](https://en.wikipe
 * Self-contained and performant.
 * Supports [vedic accents](https://en.wikipedia.org/wiki/Vedic_accent). Useful for vedic scriptures.
 
+References:
+- [inditrans on Github](https://github.com/vm75/inditrans)
+- [inditrans on pub.dev](https://pub.dev/packages/inditrans)
+
 ## Supported scripts
 * Brahmi scripts:
   * bengali
