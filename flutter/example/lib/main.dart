@@ -32,8 +32,8 @@ class _MyAppState extends State<MyApp> {
         original,
         from,
         to,
-        inditrans.TranslitOptions.IgnoreVedicAccents |
-            inditrans.TranslitOptions.TamilSuperscripted);
+        inditrans.Options.IgnoreVedicAccents +
+            inditrans.Options.TamilSuperscripted);
 
     return MaterialApp(
       home: Scaffold(

@@ -30,17 +30,17 @@ References:
 
 ## Usage example
 ```dart
-import 'package:inditrans/inditrans.dart';
+import 'package:inditrans/inditrans.dart' as inditrans;
 
 Future<void> main() async {
   // Init needs to complete before Inditrans could be used
-  await Inditrans.init();
+  await inditrans.init();
 
-  final result = Inditrans.transliterate(
+  final result = inditrans.transliterate(
       "श्री॒ गु॒रु॒भ्यो नमः॒ । ह॒रिः॒ ओ३म् ॥",
-      Script.devanagari,
-      Script.tamil,
-      TranslitOptions.IgnoreVedicAccents | TranslitOptions.TamilSuperscripted);
+      inditrans.Script.devanagari,
+      inditrans.Script.tamil,
+      inditrans.Options.IgnoreVedicAccents + inditrans.Options.TamilSuperscripted);
   ...
 }
 ```

@@ -1,3 +1,7 @@
+## 0.1.0
+
+- Removed unnecessary Inditrans class. Added helpful scripts.
+
 ## 0.0.6
 
 - fixed example.

@@ -2,6 +2,9 @@ default: all
 
 all: native wasm
 
+version:
+	dart ./scripts/bump-version.dart
+
 # Common
 ifdef  DEBUG
     COMPILER_OPTIONS=-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address
@@ -28,7 +31,7 @@ $(NATIVE_EXEC): $(SOURCES_CC) $(HEADERS_CC) native/tests/test.cpp
 	clang++ ${COMPILER_OPTIONS} -I native/src $(SOURCES_CC) native/tests/test.cpp -o $@ && \
 		llvm-strip -s -R .comment -R .gnu.version --strip-unneeded $@
 
-flutter: flutter/assets/inditrans.wasm
+flutter: flutter/assets/inditrans.wasm flutter/lib/src/bindings.dart
 	cd flutter/example && flutter build -d 1
 
 nodejs: nodejs/dist/inditrans.mjs
@@ -43,9 +46,10 @@ test_flutter:
 
 test_nodejs:
 
-publishall: publish_flutter publish_nodejs
+publish: publish_flutter publish_nodejs
 
 publish_flutter:
+	cd flutter && flutter pub publish
 
 publish_nodejs:
 
@@ -92,3 +96,9 @@ flutter/$(FLUTTER_TARGET): $(SOURCES_CC) $(HEADERS_CC)
 				-s EXPORT_NAME=inditrans \
 				-s FILESYSTEM=0 \
 				-s $(COMPILED_EXPORTS)
+
+flutter/lib/src/bindings.dart: flutter/native/src/exports.h
+	dart .\scripts\generate-bindings.dart
+
+flutter/native/src/scripts-gen.h: nodejs/assets/scripts.json
+	dart .\scripts\generate-wasm-header.dart

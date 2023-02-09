@@ -5,7 +5,7 @@ import 'src/ffi_proxy.dart';
 import 'src/types.dart';
 import 'src/utils.dart';
 
-export 'src/types.dart' show TranslitOptions, Script;
+export 'src/types.dart' show Options, Script;
 
 late dynamic _platformLib;
 late InditransBindings _bindings;
@@ -29,7 +29,7 @@ init() async {
 }
 
 /// Transliterates [text] from [from] script to [to] script.
-/// [TranslitOptions] can be used for some specific config.
+/// [Options] can be used for some specific config.
 /// Should be called only after [init] is completed.
 ///
 /// If the transliterate fails, returns an empty string.
@@ -59,7 +59,7 @@ init() async {
 ///
 /// ```
 String transliterate(String text, Script from, Script to,
-    [TranslitOptions options = TranslitOptions.None]) {
+    [Options options = Options.None]) {
   final staging = StagingMemory(_allocator);
 
   final nativeText = staging.toNativeString(text);

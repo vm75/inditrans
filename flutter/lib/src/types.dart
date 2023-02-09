@@ -24,26 +24,22 @@ enum Script {
 }
 
 /// Transliteration options
-class TranslitOptions {
+class Options {
   final int _value;
 
-  const TranslitOptions._(this._value);
+  const Options._(this._value);
 
   int get value => _value;
 
-  static const None = TranslitOptions._(0);
-  static const IgnoreVedicAccents = TranslitOptions._(1);
-  static const IgnoreQuotedMarkers = TranslitOptions._(2);
-  static const TamilTraditional = TranslitOptions._(4);
-  static const TamilSuperscripted = TranslitOptions._(8);
-  static const InferAnuswara = TranslitOptions._(16);
-  static const RetainZeroWidthChars = TranslitOptions._(32);
+  static const None = Options._(0);
+  static const IgnoreVedicAccents = Options._(1);
+  static const IgnoreQuotedMarkers = Options._(2);
+  static const TamilTraditional = Options._(4);
+  static const TamilSuperscripted = Options._(8);
+  static const InferAnuswara = Options._(16);
+  static const RetainZeroWidthChars = Options._(32);
 
-  TranslitOptions operator |(TranslitOptions other) {
-    return TranslitOptions._(_value | other._value);
-  }
-
-  TranslitOptions operator &(TranslitOptions other) {
-    return TranslitOptions._(_value & other._value);
+  Options operator +(Options other) {
+    return Options._(_value | other._value);
   }
 }
