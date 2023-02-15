@@ -34,7 +34,9 @@ $(NATIVE_EXEC): $(SOURCES_CC) $(HEADERS_CC) native/tests/test.cpp
 flutter: flutter/assets/inditrans.wasm flutter/lib/src/bindings.dart
 	cd flutter/example && flutter build -d 1
 
-nodejs: nodejs/dist/inditrans.mjs
+nodejs: nodejs/wasm/dist/inditrans.mjs nodejs/dist/ts/src/inditrans.js
+
+nodejs/dist/ts/src/inditrans.js:
 	cd nodejs && tsc
 
 testall: test_native test_flutter test_nodejs
@@ -45,6 +47,7 @@ test_native: $(NATIVE_EXEC)
 test_flutter:
 
 test_nodejs:
+    node --no-warnings --experimental-modules --es-module-specifier-resolution=node dist/wasm/test/test.js
 
 publish: publish_flutter publish_nodejs
 
