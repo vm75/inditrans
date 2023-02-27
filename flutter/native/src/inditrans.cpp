@@ -471,7 +471,7 @@ protected:
 protected:
   void writeBrahmiTokenUnit(const TokenUnit& tokenUnit) noexcept {
     if (options * TranslitOptions::ASCIINumerals && tokenUnit.leadToken.tokenType == TokenType::Symbol && tokenUnit.leadToken.idx < 10) {
-      char str[2] = { '0' + tokenUnit.leadToken.idx, 0 };
+      char str[2] = { static_cast<char>('0' + tokenUnit.leadToken.idx), 0 };
       push(str);
     } else {
       push(map.lookupChar(tokenUnit.leadToken));
@@ -551,7 +551,7 @@ protected:
     } else {
       previousConsonant = InvalidToken;
       if (options * TranslitOptions::ASCIINumerals && tokenUnit.leadToken.tokenType == TokenType::Symbol && tokenUnit.leadToken.idx < 10) {
-      char str[2] = { '0' + tokenUnit.leadToken.idx, 0 };
+        char str[2] = { static_cast<char>('0' + tokenUnit.leadToken.idx), 0 };
         push(str);
       } else {
         push(leadText);

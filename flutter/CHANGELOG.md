@@ -1,3 +1,7 @@
+## 0.1.3
+
+- Fixed build error
+
 ## 0.1.2
 
 - Added option to use ASCII numerals
