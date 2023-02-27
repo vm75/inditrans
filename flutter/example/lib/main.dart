@@ -64,6 +64,12 @@ class _MyAppState extends State<MyApp> {
                   style: GoogleFonts.notoSansTamil(),
                   textAlign: TextAlign.left,
                 ),
+                spacerSmall,
+                Text(
+                  'Numeral test: ${inditrans.transliterate("०१२३४५६७८९", inditrans.Script.devanagari, inditrans.Script.tamil, inditrans.Options.ASCIINumerals)}',
+                  style: GoogleFonts.notoSansTamil(),
+                  textAlign: TextAlign.left,
+                ),
               ],
             )),
           ),

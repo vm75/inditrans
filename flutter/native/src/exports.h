@@ -47,7 +47,8 @@ enum TranslitOptions {
   TamilTraditional = 4,
   TamilSuperscripted = 8,
   InferAnuswara = 16,
-  RetainZeroWidthChars = 32
+  RetainZeroWidthChars = 32,
+  ASCIINumerals = 64,
 };
 ext_def(unsigned long) translitOptionsToInt(const char* optionStr);
 

@@ -1,3 +1,11 @@
+## 0.1.2
+
+- Added option to use ASCII numerals
+
+## 0.1.1
+
+- fixed inferAnuswara for consonants after ma
+
 ## 0.1.0
 
 - Removed unnecessary Inditrans class. Added helpful scripts.

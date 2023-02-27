@@ -31,6 +31,9 @@ function getTranslitOptions(opts: string): TranslitOptions {
       case 'RetainZeroWidthChars':
         options.RetainZeroWidthChars = true;
         break;
+      case 'ASCIINumerals':
+        options.ASCIINumerals = true;
+        break;
     }
   })
   return options;
@@ -423,7 +426,11 @@ class OutputWriter {
   }
 
   writeBrahmiTokenUnit(tokenUnit: TokenUnit) {
-    this.push(this.map.lookup(tokenUnit.leadToken));
+    if (this.options.ASCIINumerals && tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Symbol && tokenUnit.leadToken.idx < 10) {
+      this.push(String.fromCharCode('0'.charCodeAt(0) + tokenUnit.leadToken.idx));
+    } else {
+      this.push(this.map.lookup(tokenUnit.leadToken));
+    }
     if (tokenUnit.vowelDiacritic) {
       this.push(this.map.lookup(tokenUnit.vowelDiacritic));
     }
@@ -491,7 +498,11 @@ class OutputWriter {
       }
     } else {
       this.previousConsonant = -1;
-      this.push(leadText);
+      if (this.options.ASCIINumerals && tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Symbol && leadIdx < 10) {
+        this.push(String.fromCharCode('0'.charCodeAt(0) + leadIdx));
+      } else {
+        this.push(leadText);
+      }
     }
 
     if (!this.options.IgnoreVedicAccents && tokenUnit.accent && (tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Consonant || tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Vowel)) {
@@ -509,7 +520,7 @@ class OutputWriter {
   }
 
   inferAnuswara(anuswaraPosition: number, idx: number) {
-    let repl = this.map.lookupChar(TranslitTypes.TokenType.Consonant, (idx < TranslitTypes.SpecialIndices.म) ? ((Math.floor(idx / 5) * 5) + 4) : TranslitTypes.SpecialIndices.न);
+    let repl = this.map.lookupChar(TranslitTypes.TokenType.Consonant, (idx < TranslitTypes.SpecialIndices.म) ? ((Math.floor(idx / 5) * 5) + 4) : TranslitTypes.SpecialIndices.म);
     if (this.map.type != TranslitTypes.ScriptType.Roman) {
       repl += this.map.lookupChar(TranslitTypes.TokenType.VowelDiacritic, TranslitTypes.SpecialIndices.Virama);
     }

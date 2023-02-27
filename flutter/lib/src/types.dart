@@ -38,6 +38,7 @@ class Options {
   static const TamilSuperscripted = Options._(8);
   static const InferAnuswara = Options._(16);
   static const RetainZeroWidthChars = Options._(32);
+  static const ASCIINumerals = Options._(64);
 
   Options operator +(Options other) {
     return Options._(_value | other._value);
