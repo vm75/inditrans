@@ -19,7 +19,7 @@ inline constexpr bool operator/(const TranslitOptions& mask, const TranslitOptio
 TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
   Utf8String str(optStr);
   static constexpr std::array<std::string_view, static_cast<size_t>(MaxTranslitOptions)> optionStrings
-      = { "None", "IgnoreVedicAccents", "IgnoreQuotedMarkers", "TamilTraditional", "TamilSuperscripted", "InferAnuswara", "RetainZeroWidthChars" };
+      = { "None", "IgnoreVedicAccents", "IgnoreQuotedMarkers", "TamilTraditional", "TamilSuperscripted", "InferAnuswara", "RetainZeroWidthChars", "ASCIINumerals" };
 
   TranslitOptions mask { TranslitOptions::None };
   for (const auto& opt : str.split(" \t,:;/|&")) {
@@ -470,7 +470,12 @@ protected:
 
 protected:
   void writeBrahmiTokenUnit(const TokenUnit& tokenUnit) noexcept {
-    push(map.lookupChar(tokenUnit.leadToken));
+    if (options * TranslitOptions::ASCIINumerals && tokenUnit.leadToken.tokenType == TokenType::Symbol && tokenUnit.leadToken.idx < 10) {
+      char str[2] = { '0' + tokenUnit.leadToken.idx, 0 };
+      push(str);
+    } else {
+      push(map.lookupChar(tokenUnit.leadToken));
+    }
     if (tokenUnit.vowelDiacritic.idx != InvalidToken) {
       push(map.lookupChar(tokenUnit.vowelDiacritic));
     }
@@ -545,7 +550,12 @@ protected:
       }
     } else {
       previousConsonant = InvalidToken;
-      push(leadText);
+      if (options * TranslitOptions::ASCIINumerals && tokenUnit.leadToken.tokenType == TokenType::Symbol && tokenUnit.leadToken.idx < 10) {
+      char str[2] = { '0' + tokenUnit.leadToken.idx, 0 };
+        push(str);
+      } else {
+        push(leadText);
+      }
     }
 
     if ((options / TranslitOptions::IgnoreVedicAccents) && (tokenUnit.accent.idx != InvalidToken)

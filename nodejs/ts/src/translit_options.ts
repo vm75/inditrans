@@ -6,4 +6,5 @@ export type TranslitOptions = {
   IgnoreVedicAccents?: boolean;
   InferAnuswara?: boolean;
   RetainZeroWidthChars?: boolean;
+  ASCIINumerals?: boolean;
 };
