@@ -1,3 +1,7 @@
+## 0.1.2
+
+- Added option to use ASCII numerals
+
 ## 0.1.1
 
 - fixed inferAnuswara for consonants after ma

@@ -9,6 +9,7 @@ export enum TranslitOptions {
   TamilSuperscripted = 8,
   InferAnuswara = 16,
   RetainZeroWidthChars = 32,
+  ASCIINumerals = 64,
 }
 
 // This will merge to the existing EmscriptenModule interface from @types/emscripten
