@@ -1,3 +1,7 @@
+## 0.1.1
+
+- fixed inferAnuswara for consonants after ma
+
 ## 0.1.0
 
 - Removed unnecessary Inditrans class. Added helpful scripts.

@@ -483,7 +483,7 @@ protected:
   }
 
   void inferAnuswara(size_t anuswaraPosition, uint8_t idx) noexcept {
-    auto repl = map.lookupChar(TokenType::Consonant, (idx < 24 /* म */) ? (((idx / 5) * 5) + 4) : 19 /* न */);
+    auto repl = map.lookupChar(TokenType::Consonant, (idx < 24 /* म */) ? (((idx / 5) * 5) + 4) : 24 /* म */);
     if (scriptType != ScriptType::Roman) {
       std::string repl2 { repl };
       repl2 += map.lookupChar(TokenType::VowelDiacritic, SpecialIndices::Virama);
