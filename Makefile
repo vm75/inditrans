@@ -17,7 +17,7 @@ endif
 ifeq ($(OS), Windows_NT)
     NATIVE_EXEC=out/inditrans_native.exe
 else
-	NATIVE_EXEC=out/inditrans_native
+    NATIVE_EXEC=out/inditrans_native
 endif
 HEADERS_CC = $(wildcard native/src/*.h)
 SOURCES_CC = $(wildcard native/src/*.cpp)
@@ -47,7 +47,7 @@ test_native: $(NATIVE_EXEC)
 test_flutter:
 
 test_nodejs:
-    node --no-warnings --experimental-modules --es-module-specifier-resolution=node dist/wasm/test/test.js
+	node --no-warnings --experimental-modules --es-module-specifier-resolution=node dist/wasm/test/test.js
 
 publish: publish_flutter publish_nodejs
 
