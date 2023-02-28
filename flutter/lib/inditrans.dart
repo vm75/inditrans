@@ -5,7 +5,7 @@ import 'src/ffi_proxy.dart';
 import 'src/types.dart';
 import 'src/utils.dart';
 
-export 'src/types.dart' show Options, Script;
+export 'src/types.dart' show Options, Script, InditransScriptExtension;
 
 late dynamic _platformLib;
 late InditransBindings _bindings;

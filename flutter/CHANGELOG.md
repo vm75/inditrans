@@ -1,3 +1,7 @@
+## 0.1.5
+
+- Added fromString to Script enum
+
 ## 0.1.4
 
 - re-publish from correct branch.

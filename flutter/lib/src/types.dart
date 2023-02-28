@@ -21,6 +21,18 @@ enum Script {
   String toString() {
     return super.toString().replaceFirst('Script.', '');
   }
+
+  static Script? fromString(String name) {
+    try {
+      return Script.values.firstWhere((entry) => entry.toString() == name);
+    } catch (_) {
+      return null;
+    }
+  }
+}
+
+extension InditransScriptExtension on String {
+  Script? toScript() => Script.fromString(this);
 }
 
 /// Transliteration options
