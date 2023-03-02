@@ -2,20 +2,23 @@
 
 /// Supported scripts
 enum Script {
+  assamese,
   bengali,
   devanagari,
+  easyroman,
   gujarati,
   gurmukhi,
-  kannada,
-  malayalam,
-  oriya,
-  telugu,
-  tamil,
   iast,
+  indic,
   ipa,
   iso,
   itrans,
-  romansimple;
+  kannada,
+  malayalam,
+  oriya,
+  sinhala,
+  tamil,
+  telugu;
 
   @override
   String toString() {

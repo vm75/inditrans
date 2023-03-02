@@ -36,7 +36,7 @@ TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
 }
 
 static bool scriptIsReadable(const std::string_view name) noexcept {
-  constexpr std::array<std::string_view, 3> notReadable { "romansimple", "romanreadable", "romancolloquial" };
+  constexpr std::array<std::string_view, 3> notReadable { "easyroman", "romanreadable", "romancolloquial" };
   return std::find(notReadable.begin(), notReadable.end(), name) == notReadable.end();
 }
 
@@ -657,7 +657,7 @@ std::unique_ptr<InputReader> getInputReader(const std::string_view& text, std::s
       entry = readerMapCache.emplace(from, ScriptReaderMap { from, *mapEntry }).first;
 
       for (const auto& scriptInfo : scriptDataMap) {
-        if (scriptInfo.first == "devanagari") {
+        if (scriptInfo.first == "devanagari" || (scriptInfo.second.type != ScriptType::Brahmi && scriptInfo.second.type == ScriptType::Tamil)) {
           continue;
         }
 
@@ -689,7 +689,7 @@ std::unique_ptr<OutputWriter> getOutputWriter(std::string_view to, TranslitOptio
     options = options | TranslitOptions::TamilSuperscripted;
     options = options | TranslitOptions::InferAnuswara;
     options = options | TranslitOptions::IgnoreQuotedMarkers;
-  } else if (to == "romansimple") {
+  } else if (to == "easyroman") {
     options = options | TranslitOptions::InferAnuswara;
   }
 

@@ -1,3 +1,7 @@
+## 0.1.6
+
+- exported indic, added 2 scripts, fixed roman
+
 ## 0.1.5
 
 - Added fromString to Script enum

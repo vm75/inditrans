@@ -40,7 +40,7 @@ function getTranslitOptions(opts: string): TranslitOptions {
 }
 
 function scriptIsReadable(name: string): boolean {
-  const notReadable = ['romansimple', 'romanreadable', 'romancolloquial'];
+  const notReadable = ['easyroman', 'romanreadable', 'romancolloquial'];
   return notReadable.indexOf(name) < 0;
 }
 
@@ -589,7 +589,7 @@ function getInputReader(text: string, from: string, options: TranslitOptions) {
       readerMapCache.set(from, readerMap);
 
       for (const [name, scriptData] of scriptDataMap) {
-        if (name == 'devanagari' || scriptData.type == TranslitTypes.ScriptType.Roman) {
+        if (name == 'devanagari' || (scriptData.type != TranslitTypes.ScriptType.Brahmi && scriptData.type != TranslitTypes.ScriptType.Tamil)) {
           continue;
         }
 
@@ -622,7 +622,7 @@ function getOutputWriter(to: string, options: TranslitOptions) {
     case 'ipa':
       options.IgnoreVedicAccents = true;
       break;
-    case 'romansimple':
+    case 'easyroman':
       options.InferAnuswara = true;
       break
   }
