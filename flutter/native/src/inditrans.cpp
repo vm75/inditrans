@@ -40,6 +40,11 @@ static bool scriptIsReadable(const std::string_view name) noexcept {
   return std::find(notReadable.begin(), notReadable.end(), name) == notReadable.end();
 }
 
+static bool scriptIsIndic(const std::string_view name) noexcept {
+  constexpr std::array<std::string_view, 11> notReadable { "assamese", "bengali", "devanagari", "gujarati", "gurmukhi", "kannada", "malayalam", "oriya", "sinhala", "tamil", "telugu" };
+  return std::find(notReadable.begin(), notReadable.end(), name) == notReadable.end();
+}
+
 constexpr auto InvalidToken = std::numeric_limits<uint8_t>::max();
 constexpr auto InvalidIndex = std::numeric_limits<size_t>::max();
 
@@ -657,7 +662,7 @@ std::unique_ptr<InputReader> getInputReader(const std::string_view& text, std::s
       entry = readerMapCache.emplace(from, ScriptReaderMap { from, *mapEntry }).first;
 
       for (const auto& scriptInfo : scriptDataMap) {
-        if (scriptInfo.first == "devanagari" || (scriptInfo.second.type != ScriptType::Brahmi && scriptInfo.second.type == ScriptType::Tamil)) {
+        if (scriptInfo.first == "devanagari" || scriptIsIndic(scriptInfo.first)) {
           continue;
         }
 

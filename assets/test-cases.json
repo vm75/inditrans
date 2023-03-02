@@ -247,5 +247,16 @@
         "text": "कर्न"
       }
     ]
+  },
+  {
+    "description": "Indic for ascii",
+    "text": "https://www.w3schools.com/images/w3schools_green.jpg",
+    "script": "indic",
+    "targets": [
+      {
+        "script": "itrans",
+        "text": "https://www.w3schools.com/images/w3schools_green.jpg"
+      }
+    ]
   }
 ]

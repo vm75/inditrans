@@ -1,3 +1,7 @@
+## 0.1.7
+
+- fixed bug for indic
+
 ## 0.1.6
 
 - exported indic, added 2 scripts, fixed roman
