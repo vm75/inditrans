@@ -14,11 +14,11 @@
       },
       {
         "script": "easyroman",
-        "text": "shree̱ gu̱ru̱bhyO nama̱h . ha̱ri̱h om .. om ga̱Naanaa̎m tvaa ga̱Napa̍tigum havaamahE ka̱vim ka̍vee̱naamu̍pa̱mashra̍vastamam"
+        "text": "shree̱ gu̱ru̱bhyO nama̱h ! ha̱ri̱h om !! om ga̱Naanaa̎m tvaa ga̱Napa̍tigum havaamahE ka̱vim ka̍vee̱naamu̍pa̱mashra̍vastamam"
       },
       {
         "script": "easyroman",
-        "text": "shree gurubhyO namah . harih om .. om gaNaanaam tvaa gaNapatigum havaamahE kavim kaveenaamupamashravastamam",
+        "text": "shree gurubhyO namah ! harih om !! om gaNaanaam tvaa gaNapatigum havaamahE kavim kaveenaamupamashravastamam",
         "options": "IgnoreVedicAccents"
       },
       {
@@ -149,12 +149,12 @@
       },
       {
         "script": "tamilsimple",
-        "text": "பங்க்தீ பண்டி³த் இத³ம் சந்ச்க்ருதம் சந்ச்க்ருதம்",
+        "text": "பங்க்தீ பண்டி³த் இத³ம் சம்ச்க்ருதம் சம்ச்க்ருதம்",
         "options": "TamilTraditional"
       },
       {
         "script": "easyroman",
-        "text": "panktee paNDit idam sanskritam sanskritam"
+        "text": "panktee paNDit idam samskritam samskritam"
       },
       {
         "script": "iso",
@@ -162,7 +162,7 @@
       },
       {
         "script": "iso",
-        "text": "paṅktī paṇḍit idam sanskr̥tam sanskr̥tam",
+        "text": "paṅktī paṇḍit idam samskr̥tam samskr̥tam",
         "options": "InferAnuswara"
       }
     ]
