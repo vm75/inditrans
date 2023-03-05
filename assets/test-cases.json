@@ -6,11 +6,12 @@
     "targets": [
       {
         "script": "tamil",
-        "text": "ஶ்ரீ॒ கு॒ரு॒ப்யோ நம॒꞉ । ஹ॒ரி॒꞉ ௐ ॥ ௐ க॒ணானாமஂ᳚ த்வா க॒ணப॑திꣳ ஹவாமஹே க॒விமஂ க॑வீ॒னாமு॑ப॒மஶ்ர॑வஸ்தமமஂ"
+        "text": "ஶ்ரீ॒ கு॒ரு॒ப்யோ நம॒꞉ । ஹ॒ரி॒꞉ ௐ ॥ ௐ க॒ணானாம்᳚ த்வா க॒ணப॑திꣳ ஹவாமஹே க॒விம் க॑வீ॒னாமு॑ப॒மஶ்ர॑வஸ்தமம்"
       },
       {
-        "script": "tamilsimple",
-        "text": "ஶ்ரீ॒ கு³॒ரு॒ப்⁴யோ நம॒꞉ । ஹ॒ரி॒꞉ ௐ ॥ ௐ க³॒ணானாம்᳚ த்வா க³॒ணப॑திꣳ ஹவாமஹே க॒விம் க॑வீ॒னாமு॑ப॒மஶ்ர॑வஸ்தமம்"
+        "script": "tamil",
+        "text": "ஶ்ரீ॒ கு³॒ரு॒ப்⁴யோ நம॒꞉ । ஹ॒ரி॒꞉ ௐ ॥ ௐ க³॒ணானாம்᳚ த்வா க³॒ணப॑திꣳ ஹவாமஹே க॒விம் க॑வீ॒னாமு॑ப॒மஶ்ர॑வஸ்தமம்",
+        "options": "TamilSuperscripted"
       },
       {
         "script": "easyroman",
@@ -27,7 +28,8 @@
       },
       {
         "script": "ipa",
-        "text": "ʃɾiː guɾubʰjoː n̪əməh . ɦəɾɪh oːm .. oːm gəɳɑːn̪ɑː̃ t̪ʋɑː gəɳəpət̪ɪgͫ ɦəʋɑːməɦeː kəʋɪ̃ kəʋiːn̪ɑːmupəməʃɾəʋəs̪t̪əmə̃"
+        "text": "ʃɾiː guɾubʰjoː n̪əməh . ɦəɾɪh oːm .. oːm gəɳɑːn̪ɑː̃ t̪ʋɑː gəɳəpət̪ɪgͫ ɦəʋɑːməɦeː kəʋɪ̃ kəʋiːn̪ɑːmupəməʃɾəʋəs̪t̪əmə̃",
+        "options": "IgnoreVedicAccents"
       }
     ]
   },
@@ -37,7 +39,7 @@
     "script": "devanagari",
     "targets": [
       {
-        "script": "tamilsimple",
+        "script": "tamil",
         "text": "க்ஷ த்ர ஜ்ஞ ஶ்ர"
       },
       {
@@ -56,8 +58,9 @@
     "script": "devanagari",
     "targets": [
       {
-        "script": "tamilsimple",
-        "text": "ங்ˆக³  ஞ்ˆஜ³  ண்ˆட³  ந்ˆத³  ம்ˆப³"
+        "script": "tamil",
+        "text": "ங்ˆக³  ஞ்ˆஜ³  ண்ˆட³  ந்ˆத³  ம்ˆப³",
+        "options": "TamilSuperscripted"
       },
       {
         "script": "iast",
@@ -114,16 +117,17 @@
     "targets": [
       {
         "script": "tamil",
-        "text": "நாமஂ᳚ ஏ᳚ˇ ஜி᳚"
+        "text": "நாம்᳚ ஏ᳚ˇ ஜி᳚"
       },
       {
-        "script": "tamilsimple",
-        "text": "நாம்᳚ ஏ᳚ˇ ஜி²᳚"
+        "script": "tamil",
+        "text": "நாம்᳚ ஏ᳚ˇ ஜி²᳚",
+        "options": "TamilSuperscripted"
       },
       {
-        "script": "tamilsimple",
+        "script": "tamil",
         "text": "நாம் ஏˇ ஜி²",
-        "options": "IgnoreVedicAccents"
+        "options": "TamilSuperscripted IgnoreVedicAccents"
       }
     ]
   },
@@ -140,30 +144,29 @@
   },
   {
     "description": "Anuswara",
-    "text": "पंक्ती पंडित् इदं संस्कृतम् संस्कृतं",
+    "text": "पंक्ती पंडित् अंज इदं संस्कृतम् संस्कृतं",
     "script": "devanagari",
     "targets": [
       {
         "script": "tamil",
-        "text": "பமஂக்தீ பமஂடித் இதமஂ ஸமஂஸ்க்ருʼதம் ஸமஂஸ்க்ருʼதமஂ"
+        "text": "பங்க்தீ பண்டித் அஞ்ஜ இதம் ஸம்ஸ்க்ருʼதம் ஸம்ஸ்க்ருʼதம்"
       },
       {
-        "script": "tamilsimple",
-        "text": "பங்க்தீ பண்டி³த் இத³ம் சம்ச்க்ருதம் சம்ச்க்ருதம்",
-        "options": "TamilTraditional"
+        "script": "tamil",
+        "text": "பங்க்தீ பண்டி³த் அஞ்ச³ இத³ம் சம்ச்க்ருʼதம் சம்ச்க்ருʼதம்",
+        "options": "TamilSuperscripted TamilTraditional"
       },
       {
         "script": "easyroman",
-        "text": "panktee paNDit idam samskritam samskritam"
+        "text": "panktee paNDit anja idam samskritam samskritam"
       },
       {
         "script": "iso",
-        "text": "paṁktī paṁḍit idaṁ saṁskr̥tam saṁskr̥taṁ"
+        "text": "paṁktī paṁḍit aṁja idaṁ saṁskr̥tam saṁskr̥taṁ"
       },
       {
         "script": "iso",
-        "text": "paṅktī paṇḍit idam samskr̥tam samskr̥tam",
-        "options": "InferAnuswara"
+        "text": "paṁktī paṁḍit aṁja idaṁ saṁskr̥tam saṁskr̥taṁ"
       }
     ]
   },
@@ -218,11 +221,12 @@
   {
     "description": "tamilsuperscripted-vedic",
     "text": "ஶ்ரீ கு³ருப்⁴யோ நம꞉ । ஹரி꞉ ௐ ॥ ௐ க³ணானாம்ʼ த்வா க³ணபதிꣳ ஹவாமஹே கவிம்ʼ கவீனாமு॑பமஶ்ரவஸ்தமம்ʼ",
-    "script": "tamilsuperscripted",
+    "script": "tamil",
     "targets": [
       {
         "script": "devanagari",
-        "text": "श्री गुरुभ्यो नमः । हरिः ॐ ॥ ॐ गणाऩां त्वा गणपतिꣳ हवामहे कविं कवीऩामु॑पमश्रवस्तमं"
+        "text": "श्री गुरुभ्यो नमः । हरिः ॐ ॥ ॐ गणाऩां त्वा गणपतिꣳ हवामहे कविं कवीऩामु॑पमश्रवस्तमं",
+        "options":"TamilSuperscripted"
       }
     ]
   },
@@ -256,6 +260,17 @@
       {
         "script": "itrans",
         "text": "https://www.w3schools.com/images/w3schools_green.jpg"
+      }
+    ]
+  },
+  {
+    "description": "Indic->easyroman",
+    "text": "धन्य अंजनीच्या सुता",
+    "script": "indic",
+    "targets": [
+      {
+        "script": "easyroman",
+        "text": "dhanya anjaneechyaa sutaa"
       }
     ]
   }

@@ -51,9 +51,8 @@ class Options {
   static const IgnoreQuotedMarkers = Options._(2);
   static const TamilTraditional = Options._(4);
   static const TamilSuperscripted = Options._(8);
-  static const InferAnuswara = Options._(16);
-  static const RetainZeroWidthChars = Options._(32);
-  static const ASCIINumerals = Options._(64);
+  static const RetainZeroWidthChars = Options._(16);
+  static const ASCIINumerals = Options._(32);
 
   Options operator +(Options other) {
     return Options._(_value | other._value);

@@ -4,7 +4,6 @@ export type TranslitOptions = {
   TamilSuperscripted?: boolean;
   IgnoreQuotedMarkers?: boolean;
   IgnoreVedicAccents?: boolean;
-  InferAnuswara?: boolean;
   RetainZeroWidthChars?: boolean;
   ASCIINumerals?: boolean;
 };

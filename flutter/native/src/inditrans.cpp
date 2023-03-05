@@ -19,7 +19,7 @@ inline constexpr bool operator/(const TranslitOptions& mask, const TranslitOptio
 TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
   Utf8String str(optStr);
   static constexpr std::array<std::string_view, static_cast<size_t>(MaxTranslitOptions)> optionStrings
-      = { "None", "IgnoreVedicAccents", "IgnoreQuotedMarkers", "TamilTraditional", "TamilSuperscripted", "InferAnuswara", "RetainZeroWidthChars", "ASCIINumerals" };
+      = { "None", "IgnoreVedicAccents", "IgnoreQuotedMarkers", "TamilTraditional", "TamilSuperscripted", "RetainZeroWidthChars", "ASCIINumerals" };
 
   TranslitOptions mask { TranslitOptions::None };
   for (const auto& opt : str.split(" \t,:;/|&")) {
@@ -272,12 +272,19 @@ private:
         iter++;
       }
     } else if (start.tokenType == TokenType::Vowel) {
-      if (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
+      while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
         const auto nextToken = GetScriptToken(*iter);
-        if (nextToken.tokenType == TokenType::Accent) {
+        switch (nextToken.tokenType) {
+        case TokenType::ConsonantDiacritic:
+          tokenUnit.consonantDiacritic = nextToken;
+          break;
+        case TokenType::Accent:
           tokenUnit.accent = nextToken;
-          iter++;
+          break;
+        default:
+          return tokenUnit;
         }
+        iter++;
       }
     }
     return tokenUnit;
@@ -419,7 +426,7 @@ public:
     const auto anuswaraPosition = previousAnuswaraPosition;
     previousAnuswaraPosition = InvalidIndex;
     if (HoldsString(tokenUnitOrString)) {
-      if (anuswaraPosition != InvalidIndex && options * TranslitOptions::InferAnuswara) {
+      if (anuswaraPosition != InvalidIndex && anuswaraMissing) {
         inferAnuswara(anuswaraPosition, 20 /* प */);
       }
       push(GetString(tokenUnitOrString));
@@ -450,7 +457,7 @@ public:
   }
 
   Utf8StringBuilder& text() noexcept {
-    if (previousAnuswaraPosition != InvalidIndex && options * TranslitOptions::InferAnuswara) {
+    if (previousAnuswaraPosition != InvalidIndex && anuswaraMissing) {
       inferAnuswara(previousAnuswaraPosition, 20 /* प */);
     }
     return buffer;
@@ -459,7 +466,8 @@ public:
   OutputWriter(const ScriptWriterMap& map, const TranslitOptions options, size_t inputSize) noexcept
       : map(map)
       , options(options)
-      , scriptType(map.getType()) {
+      , scriptType(map.getType())
+      , anuswaraMissing (map.lookupChar(TokenType::ConsonantDiacritic, SpecialIndices::Anuswara).length() == 0) {
     buffer.reserve(inputSize);
     setNasalConsonantSize();
   }
@@ -521,7 +529,7 @@ protected:
           leadText = repl->second;
         }
       }
-      if (anuswaraPosition != InvalidIndex && options * TranslitOptions::InferAnuswara) {
+      if (anuswaraPosition != InvalidIndex && anuswaraMissing) {
         inferAnuswara(anuswaraPosition, leadIdx);
       }
 
@@ -555,7 +563,18 @@ protected:
       }
     } else {
       previousConsonant = InvalidToken;
-      if (options * TranslitOptions::ASCIINumerals && tokenUnit.leadToken.tokenType == TokenType::Symbol && tokenUnit.leadToken.idx < 10) {
+      if (tokenUnit.leadToken.tokenType == TokenType::Vowel) {
+        push(leadText);      
+        
+        if (tokenUnit.consonantDiacritic.idx != InvalidToken) {
+          auto consonantDiacriticText = map.lookupChar(tokenUnit.consonantDiacritic);
+          if (tokenUnit.consonantDiacritic.idx == SpecialIndices::Anuswara) {
+            previousAnuswaraPosition = buffer.size();
+          }
+          push(consonantDiacriticText);
+          previousConsonant = InvalidToken;
+        }
+      } else if (options * TranslitOptions::ASCIINumerals && tokenUnit.leadToken.tokenType == TokenType::Symbol && tokenUnit.leadToken.idx < 10) {
         char str[2] = { static_cast<char>('0' + tokenUnit.leadToken.idx), 0 };
         push(str);
       } else {
@@ -581,7 +600,7 @@ protected:
     auto& leadToken = tokenUnit.leadToken;
     push(map.lookupChar(leadToken.tokenType, leadToken.idx));
     if (leadToken.tokenType == TokenType::Consonant) {
-      if (anuswaraPosition != InvalidIndex && options * TranslitOptions::InferAnuswara) {
+      if (anuswaraPosition != InvalidIndex && anuswaraMissing) {
         inferAnuswara(anuswaraPosition, leadToken.idx);
       }
 
@@ -632,6 +651,7 @@ private:
   Utf8StringBuilder buffer {};
   uint8_t previousConsonant { InvalidToken };
   size_t previousConsonantPosition {};
+  bool anuswaraMissing {};
   size_t previousAnuswaraPosition { InvalidIndex };
   size_t anuswaraSize {};
   std::unordered_map<std::string_view, std::string_view> tamilTraditionalMap { { "ஸ", "ச" }, { "ஜ", "ச³" }, { "ஜ²", "ச⁴" } };
@@ -642,11 +662,6 @@ static constexpr auto scriptDataMap = ConstexprMap<std::string_view, ScriptData,
 
 std::unique_ptr<InputReader> getInputReader(const std::string_view& text, std::string_view from, TranslitOptions options) noexcept {
   static std::unordered_map<std::string, ScriptReaderMap> readerMapCache {};
-
-  if (from == "tamilsuperscripted") {
-    from = "tamil";
-    options = options | TranslitOptions::TamilSuperscripted;
-  }
 
   if (!scriptIsReadable(from)) {
     return nullptr;
@@ -683,20 +698,6 @@ std::unique_ptr<InputReader> getInputReader(const std::string_view& text, std::s
 
 std::unique_ptr<OutputWriter> getOutputWriter(std::string_view to, TranslitOptions options, size_t inputSize) noexcept {
   static std::unordered_map<std::string, ScriptWriterMap> writerMapCache {};
-
-  if (to == "ipa") {
-    options = options | TranslitOptions::IgnoreVedicAccents;
-  } else if (to == "tamilsuperscripted") {
-    to = "tamil";
-    options = options | TranslitOptions::TamilSuperscripted;
-  } else if (to == "tamilsimple") {
-    to = "tamil";
-    options = options | TranslitOptions::TamilSuperscripted;
-    options = options | TranslitOptions::InferAnuswara;
-    options = options | TranslitOptions::IgnoreQuotedMarkers;
-  } else if (to == "easyroman") {
-    options = options | TranslitOptions::InferAnuswara;
-  }
 
   auto entry = writerMapCache.find(std::string(to));
   if (entry == writerMapCache.end()) {
