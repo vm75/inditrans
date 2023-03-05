@@ -1,3 +1,7 @@
+## 0.2.0
+
+- Fixed Sinhara symbols
+
 ## 0.1.9
 
 - modified easyroman and renamed to indicroman

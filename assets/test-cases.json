@@ -260,6 +260,14 @@
       {
         "script": "itrans",
         "text": "https://www.w3schools.com/images/w3schools_green.jpg"
+      },
+      {
+        "script": "devanagari",
+        "text": "https://www.w3schools.com/images/w3schools_green.jpg"
+      },
+      {
+        "script": "tamil",
+        "text": "https://www.w3schools.com/images/w3schools_green.jpg"
       }
     ]
   },
