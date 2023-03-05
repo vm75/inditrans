@@ -36,7 +36,7 @@ TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
 }
 
 static bool scriptIsReadable(const std::string_view name) noexcept {
-  constexpr std::array<std::string_view, 3> notReadable { "easyroman", "romanreadable", "romancolloquial" };
+  constexpr std::array<std::string_view, 3> notReadable { "indicroman", "romanreadable", "romancolloquial" };
   return std::find(notReadable.begin(), notReadable.end(), name) == notReadable.end();
 }
 

@@ -40,11 +40,11 @@ constexpr std::array<std::pair<std::string_view, ScriptData>, 118> ScriptDataMap
     { "ँ", "ं", "ः", "ःʼ", "़" },
     { "०", "१", "२", "३", "४", "५", "६", "७", "८", "९", "ॐ", "ऽ", "।", "॥", "ꣳ", "ꣴ", "​", "‌", "‍" }
   }},
-  { "easyroman", {
+  { "indicroman", {
     ScriptType::Roman,
-    { "a", "aa", "i", "ee", "u", "oo", "ri", "ree", "li", "lee", "e", "E", "ai", "o", "O", "au", "a", "e", "o" },
-    { "", "aa", "i", "ee", "u", "oo", "ri", "ree", "li", "lee", "e", "E", "ai", "o", "O", "au", "a", "e", "o" },
-    { "k", "kh", "g", "gh", "n", "ch", "chh", "j", "jh", "n", "T", "Th", "D", "Dh", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "sh", "sh", "s", "h", "L", "zh", "R", "n", "q", "kh", "g", "z", "r", "rh", "f", "y", "ng", "nj", "nD", "nd", "mb" },
+    { "a", "aa", "i", "ee", "u", "oo", "ru̥", "rru̥", "lu̥", "llu̥", "e", "E", "ai", "o", "O", "au", "a", "e", "o" },
+    { "", "aa", "i", "ee", "u", "oo", "ru̥", "rru̥", "lu̥", "llu̥", "e", "E", "ai", "o", "O", "au", "a", "e", "o" },
+    { "k", "kh", "g", "gh", "n", "ch", "chh", "j", "jh", "n", "T", "Th", "D", "Dh", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "sh", "sh", "s", "h", "L", "zh", "RR", "n", "q", "qh", "gh", "z", "D", "Dh", "f", "y", "ng", "nj", "nD", "nd", "mb" },
     { "n̐", "", "h", "g", "" },
     { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "om", "~", "!", "!!", "gum", "ggum", "​", "‌", "‍" }
   }},
