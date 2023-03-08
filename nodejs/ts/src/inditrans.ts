@@ -259,15 +259,15 @@ class InputReader {
     return next.tokenType == TranslitTypes.TokenType.Symbol || next.tokenType == TranslitTypes.TokenType.ToggleTrans;
   }
 
-  previousVisargaConsonant = -1;
+  previousViramaConsonant = -1;
   readTamilTokenUnit(start: Token): TokenUnit {
     const tokenUnit: TokenUnit = { leadToken: start };
     if (start.tokenType == TranslitTypes.TokenType.Consonant) {
-      const prevVisargaConsonant = this.previousVisargaConsonant;
+      const prevViramaConsonant = this.previousViramaConsonant;
       const isPrimary = start.idx <= TranslitTypes.SpecialIndices.ப && start.idx % 5 == 0;
-      this.previousVisargaConsonant = -1;
+      this.previousViramaConsonant = -1;
       if (isPrimary && !this.options.TamilSuperscripted) {
-        if (prevVisargaConsonant != start.idx) {
+        if (prevViramaConsonant != start.idx) {
           if (!this.wordStart) {
             tokenUnit.leadToken = { tokenType: start.tokenType, scriptType: TranslitTypes.ScriptType.Tamil, idx: start.idx + 2 };
           } else if (start.idx == TranslitTypes.SpecialIndices.ச) {
@@ -287,7 +287,7 @@ class InputReader {
             case TranslitTypes.TokenType.VowelDiacritic:
               this.tokenUnitIndex++;
               if (isPrimary && nextToken.idx == TranslitTypes.SpecialIndices.Virama && !this.options.TamilSuperscripted) {
-                this.previousVisargaConsonant = start.idx;
+                this.previousViramaConsonant = start.idx;
                 tokenUnit.leadToken = { tokenType: start.tokenType, scriptType: TranslitTypes.ScriptType.Tamil, idx: start.idx };
                 if (this.isEndOfWord()) {
                   return { leadToken: { tokenType: TranslitTypes.TokenType.Ignore, scriptType: TranslitTypes.ScriptType.Tamil, idx: 0 } };

@@ -49,7 +49,7 @@ constexpr auto InvalidToken = std::numeric_limits<uint8_t>::max();
 constexpr auto InvalidIndex = std::numeric_limits<size_t>::max();
 
 struct Token {
-  TokenType tokenType;
+  TokenType tokenType { TokenType::Ignore };
   uint8_t idx { InvalidToken };
   bool operator==(const Token& other) const noexcept { return tokenType == other.tokenType && idx == other.idx; }
   bool operator!=(const Token& other) const noexcept { return tokenType != other.tokenType || idx != other.idx; }
@@ -182,6 +182,9 @@ template <typename T> inline std::string_view GetString(const T& var) { return s
 template <typename T> inline ScriptToken GetScriptToken(const T& var) { return std::get<ScriptToken>(var); }
 template <typename T> inline TokenUnit GetTokenUnit(const T& var) { return std::get<TokenUnit>(var); }
 
+constexpr TokenUnitOrString endOfText("");
+const TokenUnit invalidToken { Token() };
+
 class InputReader {
 public:
   InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options) noexcept
@@ -224,6 +227,7 @@ public:
 
   inline bool hasMore() noexcept { return iter < tokenUnits.end(); }
 
+  TokenUnit lastToken = invalidToken;
   TokenUnitOrString getNext() noexcept {
     const auto& next = *iter++;
     if (HoldsString(next)) {
@@ -247,6 +251,11 @@ public:
       break;
     }
     wordStart = (token.tokenType == TokenType::Symbol && token.idx < SpecialIndices::ZeroWidthSpace);
+    if (wordStart) {
+      lastToken = invalidToken;
+    } else {
+      lastToken = tokenUnit;
+    }
     return tokenUnit;
   }
 
@@ -290,19 +299,35 @@ private:
     return tokenUnit;
   }
 
+  inline bool isHardConsonant(uint8_t idx) {
+    return (idx <= 20 && idx % 5 == 0 /* க ச ட த ப */) || idx == 35 /* ற */;              
+  }
+
+  inline bool isSoftConsonant(uint8_t idx) {
+    return (idx <= 24 && idx % 5 == 4 /* ங ஞ ண ந ம */) || idx == 36 /* ன */;              
+  }
+
+  inline bool isMediumConsonant(uint8_t idx) {
+    return (idx >= 25 && idx <= 28 /* ய ர ல வ */) || idx == 33 /* ள */ || idx == 34 /* ழ */;              
+  }
+
   TokenUnit readTamilTokenUnit(Token start) noexcept {
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
-      uint8_t prevVisargaConsonant = previousVisargaConsonant;
-      previousVisargaConsonant = InvalidToken;
+      uint8_t prevViramaConsonant = previousViramaConsonant;
+      previousViramaConsonant = InvalidToken;
       bool isPrimary = start.idx <= 20 /* ப */ && start.idx % 5 == 0;
-      if (isPrimary && options / TranslitOptions::TamilSuperscripted) {
-        if (prevVisargaConsonant != start.idx) {
-          if (!wordStart) {
-            tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(start.idx + 2) }; // no validate
-          } else if (start.idx == 5 /* ச */) {
-            tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(31 /* ஸ */) }; // no validate
+      if (options / TranslitOptions::TamilSuperscripted) {
+        if (isPrimary) {
+          if (prevViramaConsonant != start.idx) {
+            if (!wordStart) {
+              tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(start.idx + 2) }; // no validate
+            } else if (start.idx == 5 /* ச */) {
+              tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(31 /* ஸ */) }; // no validate
+            }
           }
+        } else if (start.idx == 35 /* ற */) {
+
         }
       }
       while (iter < tokenUnits.end()) {
@@ -316,7 +341,7 @@ private:
           case TokenType::VowelDiacritic:
             iter++;
             if (isPrimary && nextToken.idx == SpecialIndices::Virama && options / TranslitOptions::TamilSuperscripted) {
-              previousVisargaConsonant = start.idx;
+              previousViramaConsonant = start.idx;
               tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(start.idx) }; // no validate
               if (isEndOfWord()) {
                 return { { TokenType::Ignore, 0 } };
@@ -415,20 +440,15 @@ private:
   std::vector<TokenOrString>::iterator iter;
   bool wordStart { true };
   // For Tamil
-  int8_t previousVisargaConsonant {};
+  int8_t previousViramaConsonant {};
 };
 
 class OutputWriter {
 public:
   virtual ~OutputWriter() = default;
 
-  void writeTokenUnit(TokenUnitOrString&& tokenUnitOrString) noexcept {
-    const auto anuswaraPosition = previousAnuswaraPosition;
-    previousAnuswaraPosition = InvalidIndex;
+  void writeTokenUnit(const TokenUnitOrString& tokenUnitOrString, const TokenUnitOrString& next) noexcept {
     if (HoldsString(tokenUnitOrString)) {
-      if (anuswaraPosition != InvalidIndex && anuswaraMissing) {
-        inferAnuswara(anuswaraPosition, 20 /* प */);
-      }
       push(GetString(tokenUnitOrString));
       wordStart = true;
     } else {
@@ -444,10 +464,10 @@ public:
         writeBrahmiTokenUnit(tokenUnit);
         break;
       case ScriptType::Tamil:
-        writeTamilTokenUnit(tokenUnit, anuswaraPosition);
+        writeTamilTokenUnit(tokenUnit, next);
         break;
       case ScriptType::Roman:
-        writeRomanTokenUnit(tokenUnit, anuswaraPosition);
+        writeRomanTokenUnit(tokenUnit, next);
         break;
       default:
         return;
@@ -457,9 +477,6 @@ public:
   }
 
   Utf8StringBuilder& text() noexcept {
-    if (previousAnuswaraPosition != InvalidIndex && anuswaraMissing) {
-      inferAnuswara(previousAnuswaraPosition, 20 /* प */);
-    }
     return buffer;
   }
 
@@ -500,37 +517,34 @@ protected:
     }
   }
 
-  void inferAnuswara(size_t anuswaraPosition, uint8_t idx) noexcept {
-    auto repl = map.lookupChar(TokenType::Consonant, (idx < 24 /* म */) ? (((idx / 5) * 5) + 4) : 24 /* म */);
-    if (scriptType != ScriptType::Roman) {
-      std::string repl2 { repl };
-      repl2 += map.lookupChar(TokenType::VowelDiacritic, SpecialIndices::Virama);
-      replaceChars(anuswaraPosition, anuswaraSize, repl2);
-    } else {
-      replaceChars(anuswaraPosition, anuswaraSize, repl);
+  void inferAnuswara(const TokenUnitOrString& next) noexcept {
+    size_t idx = 24 /* म */;
+    if (next != endOfText && !HoldsString(next)) {
+      auto tokenUnit = GetTokenUnit(next);
+      if (tokenUnit.leadToken.idx < 24) {
+        idx = (((tokenUnit.leadToken.idx / 5) * 5) + 4);
+      }
+    }
+    push(map.lookupChar(TokenType::Consonant, idx));
+    if (scriptType == ScriptType::Tamil) {
+      push(map.lookupChar(TokenType::VowelDiacritic, SpecialIndices::Virama));
     }
   }
 
-  // void replaceChar(size_t position, char32_t repl) noexcept { buffer[position] = repl; }
-  void replaceChars(size_t position, size_t numChar, const std::string_view& repl) noexcept { buffer.replace(position, numChar, repl); }
-
-  void writeTamilTokenUnit(const TokenUnit& tokenUnit, size_t anuswaraPosition) noexcept {
+  void writeTamilTokenUnit(const TokenUnit& tokenUnit, const TokenUnitOrString& next) noexcept {
     auto leadIdx = tokenUnit.leadToken.idx;
     auto leadText = map.lookupChar(tokenUnit.leadToken);
 
     if (tokenUnit.leadToken.tokenType == TokenType::Consonant) {
       if (leadIdx == 19 /* ந */ && !wordStart) {
-        leadText = "ன";
-      } else if (previousConsonant == 36 /* ன */ && leadIdx / 5 == 3) {
-        replaceChars(previousConsonantPosition, "ன"_len, "ந");
+        if(next == endOfText || tokenUnit.vowelDiacritic.idx != SpecialIndices::Virama) {
+          leadText = "ன";
+        }
       } else if (options * TranslitOptions::TamilTraditional) {
         auto repl = tamilTraditionalMap.find(leadText);
         if (repl != tamilTraditionalMap.end()) {
           leadText = repl->second;
         }
-      }
-      if (anuswaraPosition != InvalidIndex && anuswaraMissing) {
-        inferAnuswara(anuswaraPosition, leadIdx);
       }
 
       auto superscript = Utf8String::trailingChar(leadText).view();
@@ -551,28 +565,22 @@ protected:
       }
 
       if (tokenUnit.consonantDiacritic.idx != InvalidToken) {
-        auto consonantDiacriticText = map.lookupChar(tokenUnit.consonantDiacritic);
         if (tokenUnit.consonantDiacritic.idx == SpecialIndices::Anuswara) {
-          previousAnuswaraPosition = buffer.size();
+          inferAnuswara(next);
+        } else {
+          push(map.lookupChar(tokenUnit.consonantDiacritic));
         }
-        push(consonantDiacriticText);
-        previousConsonant = InvalidToken;
-      } else {
-        previousConsonant = leadIdx;
-        previousConsonantPosition = consonantPosition;
       }
     } else {
-      previousConsonant = InvalidToken;
       if (tokenUnit.leadToken.tokenType == TokenType::Vowel) {
         push(leadText);      
         
         if (tokenUnit.consonantDiacritic.idx != InvalidToken) {
-          auto consonantDiacriticText = map.lookupChar(tokenUnit.consonantDiacritic);
           if (tokenUnit.consonantDiacritic.idx == SpecialIndices::Anuswara) {
-            previousAnuswaraPosition = buffer.size();
+            inferAnuswara(next);
+          } else {
+            push(map.lookupChar(tokenUnit.consonantDiacritic));
           }
-          push(consonantDiacriticText);
-          previousConsonant = InvalidToken;
         }
       } else if (options * TranslitOptions::ASCIINumerals && tokenUnit.leadToken.tokenType == TokenType::Symbol && tokenUnit.leadToken.idx < 10) {
         char str[2] = { static_cast<char>('0' + tokenUnit.leadToken.idx), 0 };
@@ -596,14 +604,10 @@ protected:
     }
   }
 
-  void writeRomanTokenUnit(const TokenUnit& tokenUnit, size_t anuswaraPosition) noexcept {
+  void writeRomanTokenUnit(const TokenUnit& tokenUnit, const TokenUnitOrString& next) noexcept {
     auto& leadToken = tokenUnit.leadToken;
     push(map.lookupChar(leadToken.tokenType, leadToken.idx));
     if (leadToken.tokenType == TokenType::Consonant) {
-      if (anuswaraPosition != InvalidIndex && anuswaraMissing) {
-        inferAnuswara(anuswaraPosition, leadToken.idx);
-      }
-
       if (tokenUnit.vowelDiacritic.idx == InvalidToken) {
         push(map.lookupChar(TokenType::Vowel, SpecialIndices::Virama));
       } else if (tokenUnit.vowelDiacritic.idx != SpecialIndices::Virama) {
@@ -615,9 +619,10 @@ protected:
     }
     if (tokenUnit.consonantDiacritic.idx != InvalidToken) {
       if (tokenUnit.consonantDiacritic.idx == SpecialIndices::Anuswara) {
-        previousAnuswaraPosition = buffer.size();
+        inferAnuswara(next);
+      } else {
+        push(map.lookupChar(tokenUnit.consonantDiacritic));
       }
-      push(map.lookupChar(tokenUnit.consonantDiacritic));
     }
   }
 
@@ -649,10 +654,7 @@ private:
   const TranslitOptions options;
   const ScriptType scriptType;
   Utf8StringBuilder buffer {};
-  uint8_t previousConsonant { InvalidToken };
-  size_t previousConsonantPosition {};
   bool anuswaraMissing {};
-  size_t previousAnuswaraPosition { InvalidIndex };
   size_t anuswaraSize {};
   std::unordered_map<std::string_view, std::string_view> tamilTraditionalMap { { "ஸ", "ச" }, { "ஜ", "ச³" }, { "ஜ²", "ச⁴" } };
   bool wordStart { true };
@@ -725,8 +727,11 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
     return false;
   }
 
-  while (reader->hasMore()) {
-    writer->writeTokenUnit(reader->getNext());
+  TokenUnitOrString curr = (reader->hasMore() ? reader->getNext() : endOfText);
+  while (curr != endOfText) {
+    TokenUnitOrString next = (reader->hasMore() ? reader->getNext() : endOfText);
+    writer->writeTokenUnit(curr, next);
+    curr = next;
   }
 
   output.reset(writer->text().release());
