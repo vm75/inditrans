@@ -198,12 +198,12 @@
   },
   {
     "description": "tamil - infer",
-    "text": "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா",
+    "text": "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப​",
     "script": "tamil",
     "targets": [
       {
         "script": "indicroman",
-        "text": "tanga padakkam charchchaikkuriya cheydigaL paappaa pambaa"
+        "text": "tanga padakkam charchchaikkuriya cheydigaL paappaa pambaa ambaa krubai tandu rakshiyamba"
       }
     ]
   },

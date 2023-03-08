@@ -127,7 +127,7 @@ private:
         continue;
       }
       auto res = tokenMap.addLookup(map[idx], { tokenType, static_cast<uint8_t>(idx), scriptType });
-      if (res != std::nullopt && inditransLogger != nullptr) {
+      if (res != std::nullopt && inditransLogger != nullptr && res->idx != idx) {
         std::string error = "Error adding for: " + std::string(name)
             + ", tokenType: " + std::string(tokenTypeStr(tokenType)) + ", idx: " + std::to_string(idx)
             + ", new value: " + std::string(map[idx]);
@@ -208,7 +208,7 @@ template <typename T> inline TokenUnit GetTokenUnit(const T& var) { return std::
 const TokenUnitOrString endOfText("");
 const TokenUnit invalidTokenUnit { Token() };
 
-inline constexpr bool operator==(const TokenUnitOrString& a, const TokenUnitOrString& b) noexcept {
+inline bool operator==(const TokenUnitOrString& a, const TokenUnitOrString& b) noexcept {
   if (HoldsString(a) && HoldsString(b)) {
     return GetString(a) == GetString(b);
   }
@@ -217,7 +217,7 @@ inline constexpr bool operator==(const TokenUnitOrString& a, const TokenUnitOrSt
   }
   return false;
 }
-inline constexpr bool operator!=(const TokenUnitOrString& a, const TokenUnitOrString& b) noexcept { return !(a == b); }
+inline bool operator!=(const TokenUnitOrString& a, const TokenUnitOrString& b) noexcept { return !(a == b); }
 
 class InputReader {
 public:
@@ -406,13 +406,11 @@ private:
             } else {
               tokenUnit.leadToken = { start.tokenType, 31 /* ஸ */ };
             }
-          } else {
-            return tokenUnit;
           }
-        } else if (isHardConsonant(lastToken) && isVirama(lastToken)) {
-          return tokenUnit;
-        } else if (isSoftConsonant(lastToken) && isVirama(lastToken)) {
-          tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(start.idx + 2) };
+        } else if (isVirama(lastToken)) {
+          if (lastToken.leadToken != tokenUnit.leadToken) {
+            tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(start.idx + 2) };
+          }
         } else {
           if (tokenUnit.leadToken.idx == 5 /* ச */) {
             tokenUnit.leadToken = { start.tokenType, 31 /* ஸ */ };
