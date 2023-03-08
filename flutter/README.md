@@ -19,8 +19,8 @@ References:
   * kannada
   * malayalam
   * oriya
-  * telugu
   * tamil
+  * telugu
 * Roman scripts
   * iast (https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration)
   * ipa (https://en.wikipedia.org/wiki/International_Phonetic_Alphabet)
