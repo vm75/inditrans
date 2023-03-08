@@ -185,6 +185,8 @@ private:
 };
 
 using TokenOrString = std::variant<ScriptToken, std::string_view>;
+template <typename T> inline bool HoldsScriptToken(const T& var) { return std::holds_alternative<ScriptToken>(var); }
+template <typename T> inline ScriptToken GetScriptToken(const T& var) { return std::get<ScriptToken>(var); }
 
 struct TokenUnit {
   TokenUnit(Token leadToken) noexcept
@@ -197,13 +199,12 @@ struct TokenUnit {
 };
 
 using TokenUnitOrString = std::variant<TokenUnit, std::string_view>;
-
-template <typename T> inline bool HoldsScriptToken(const T& var) { return std::holds_alternative<ScriptToken>(var); }
-template <typename T> inline ScriptToken GetScriptToken(const T& var) { return std::get<ScriptToken>(var); }
-template <typename T> inline bool HoldsString(const T& var) { return std::holds_alternative<std::string_view>(var); }
-template <typename T> inline std::string_view GetString(const T& var) { return std::get<std::string_view>(var); }
 template <typename T> inline bool HoldsTokenUnit(const T& var) { return std::holds_alternative<TokenUnit>(var); }
 template <typename T> inline TokenUnit GetTokenUnit(const T& var) { return std::get<TokenUnit>(var); }
+
+// Common for TokenOrString & TokenUnitOrString
+template <typename T> inline bool HoldsString(const T& var) { return std::holds_alternative<std::string_view>(var); }
+template <typename T> inline std::string_view GetString(const T& var) { return std::get<std::string_view>(var); }
 
 const TokenUnitOrString endOfText("");
 const TokenUnit invalidTokenUnit { Token() };
@@ -333,24 +334,6 @@ private:
     return tokenUnit;
   }
 
-  inline bool isHardConsonant(const TokenUnit& token) {
-    return token.leadToken.tokenType == TokenType::Consonant
-        && ((token.leadToken.idx <= 20 && token.leadToken.idx % 5 == 0 /* க ச ட த ப */)
-            || token.leadToken.idx == 35 /* ற */);
-  }
-
-  inline bool isSoftConsonant(const TokenUnit& token) {
-    auto idx = token.leadToken.idx;
-    return token.leadToken.tokenType == TokenType::Consonant
-        && ((idx <= 24 && idx % 5 == 4 /* ங ஞ ண ந ம */) || idx == 36 /* ன */ || (idx >= 25 && idx <= 28 /* ய ர ல வ */)
-            || idx == 33 /* ள */ || idx == 34 /* ழ */);
-  }
-
-  inline bool isVirama(const TokenUnit& token) {
-    return token.vowelDiacritic.tokenType == TokenType::VowelDiacritic
-        && token.vowelDiacritic.idx == SpecialIndices::Virama;
-  }
-
   TokenUnit readTamilTokenUnit(const Token start) noexcept {
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
@@ -390,26 +373,53 @@ private:
         }
       }
     done:
-      if (hasVirama) {
-        return (isPrimary && isEndOfWord()) ? invalidTokenUnit : tokenUnit;
-      }
       if (options * TranslitOptions::TamilSuperscripted) {
         return tokenUnit;
       }
+      // Thus க is pronounced ka when it is the initial letter of a word, k when it
+      // is muted (க்), kka when it is geminated (க்க), ka when it follows any other
+      // muted hard consonant (such as ட் or ற்), ga when it follows a muted soft
+      // consonant (as in the frequently occurring cluster ங்க, which is pronounced
+      // ṅga) or a muted medial consonant (such as ய் or ர்), and ha when it follows
+      // a verb. Likewise ச is pronounced ca (or arbitrarily sa, as in fact it is
+      // customarily pronounced in many if not most cases, though strictly speaking
+      // this contravenes the ancient rule described here) when it is the initial letter
+      // of a word, c when it is muted (ச்), cca when it is geminated (ச்ச), ca when
+      // it follows any other muted hard consonant, ja when it follows a muted soft
+      // consonant (as in the frequently occurring cluster ஞ்ச, which is
+      // pronounced ñja), and sa when it follows a verb. ட is not the initial letter of
+      // any word of Tamil origin, but it is pronounced ṭ when it is muted (ட்), ṭṭa
+      // when it is geminated (ட்ட), and ḍa when it follows either a muted soft
+      // consonant (as in the frequently occurring cluster ண் ட, which is
+      // pronounced ṇḍa) or a verb. த is pronounced ta when it is the initial letter
+      // of a word, t when it is muted (த்), tta when it is geminated (த்த), and da
+      // when it follows either a muted soft consonant (as in the frequently
+      // occurring cluster ந்த, which is pronounced nda), a muted medial
+      // consonant or a verb. ப is pronounced pa when it is the initial letter of a
+      // word, p when it is muted (ப்), ppa when it is geminated (ப்ப), pa when it
+      // follows any other muted hard consonant, and ba when it follows either a
+      // muted soft consonant (as in the frequently occurring cluster ம்ப, which is
+      // pronounced mba, or in the clusters ண் ப and ன்ப, which are pronounced
+      // respectively ṇba and ṉba) or a verb.
+      if (hasVirama) {
+        // ignore virama if end of word
+        return (isPrimary && isEndOfWord()) ? invalidTokenUnit : tokenUnit;
+      }
       if (isPrimary) {
         if (wordStart) {
-          if (tokenUnit.leadToken.idx == 5 /* ச */) {
-            if (tokenUnit.vowelDiacritic.idx == InvalidToken || tokenUnit.vowelDiacritic.idx == 2
-                || tokenUnit.vowelDiacritic.idx == 4 || tokenUnit.vowelDiacritic.idx == 10
-                || tokenUnit.vowelDiacritic.idx == 13 || tokenUnit.vowelDiacritic.idx == 16) {
-              // ignore
-            } else {
-              tokenUnit.leadToken = { start.tokenType, 31 /* ஸ */ };
-            }
+          const std::array<uint8_t, 6> specialVowelDiactritics = { 2, 4, 10, 13, 16, InvalidToken };
+          if (tokenUnit.leadToken.idx == 5 /* ச */ && lastToken.leadToken != tokenUnit.leadToken && !isVirama(lastToken)
+              && std::find(specialVowelDiactritics.begin(), specialVowelDiactritics.end(), lastToken.vowelDiacritic.idx)
+                  == specialVowelDiactritics.end()) {
+            tokenUnit.leadToken = { start.tokenType, 31 /* ஸ */ };
           }
         } else if (isVirama(lastToken)) {
-          if (lastToken.leadToken != tokenUnit.leadToken) {
-            tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(start.idx + 2) };
+          if (lastToken.leadToken != tokenUnit.leadToken && !isHardConsonant(lastToken)) {
+            if (tokenUnit.leadToken.idx == 5 /* ச */ && !isSoftConsonant(lastToken)) {
+              tokenUnit.leadToken = { start.tokenType, 31 /* ஸ */ };
+            } else {
+              tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(start.idx + 2) };
+            }
           }
         } else {
           if (tokenUnit.leadToken.idx == 5 /* ச */) {
@@ -473,6 +483,24 @@ private:
       }
     }
     return tokenUnit;
+  }
+
+  inline bool isHardConsonant(const TokenUnit& token) {
+    return token.leadToken.tokenType == TokenType::Consonant
+        && ((token.leadToken.idx <= 20 && token.leadToken.idx % 5 == 0 /* க ச ட த ப */)
+            || token.leadToken.idx == 35 /* ற */);
+  }
+
+  inline bool isSoftConsonant(const TokenUnit& token) {
+    auto idx = token.leadToken.idx;
+    return token.leadToken.tokenType == TokenType::Consonant
+        && ((idx <= 24 && idx % 5 == 4 /* ங ஞ ண ந ம */) || idx == 36 /* ன */ || (idx >= 25 && idx <= 28 /* ய ர ல வ */)
+            || idx == 33 /* ள */ || idx == 34 /* ழ */);
+  }
+
+  inline bool isVirama(const TokenUnit& token) {
+    return token.vowelDiacritic.tokenType == TokenType::VowelDiacritic
+        && token.vowelDiacritic.idx == SpecialIndices::Virama;
   }
 
   bool isEndOfWord() const noexcept {
@@ -567,20 +595,6 @@ protected:
     }
     if (tokenUnit.accent.idx != InvalidToken && options / TranslitOptions::IgnoreVedicAccents) {
       push(map.lookupChar(tokenUnit.accent));
-    }
-  }
-
-  void inferAnuswara(const TokenUnitOrString& next) noexcept {
-    size_t idx = 24 /* म */;
-    if (next != endOfText && !HoldsString(next)) {
-      auto tokenUnit = GetTokenUnit(next);
-      if (tokenUnit.leadToken.idx < 24) {
-        idx = (((tokenUnit.leadToken.idx / 5) * 5) + 4);
-      }
-    }
-    push(map.lookupChar(TokenType::Consonant, idx));
-    if (scriptType == ScriptType::Tamil) {
-      push(map.lookupChar(TokenType::VowelDiacritic, SpecialIndices::Virama));
     }
   }
 
@@ -679,6 +693,20 @@ protected:
       } else {
         push(lookup);
       }
+    }
+  }
+
+  void inferAnuswara(const TokenUnitOrString& next) noexcept {
+    size_t idx = 24 /* म */;
+    if (next != endOfText && !HoldsString(next)) {
+      auto tokenUnit = GetTokenUnit(next);
+      if (tokenUnit.leadToken.idx < 24) {
+        idx = (((tokenUnit.leadToken.idx / 5) * 5) + 4);
+      }
+    }
+    push(map.lookupChar(TokenType::Consonant, idx));
+    if (scriptType == ScriptType::Tamil) {
+      push(map.lookupChar(TokenType::VowelDiacritic, SpecialIndices::Virama));
     }
   }
 
