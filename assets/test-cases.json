@@ -14,11 +14,11 @@
         "options": "TamilSuperscripted"
       },
       {
-        "script": "indicroman",
+        "script": "readablelatin",
         "text": "shree̱ gu̱ru̱bhyO nama̱h ! ha̱ri̱h om !! om ga̱Naanaa̎m tvaa ga̱Napa̍tigum havaamahE ka̱vim ka̍vee̱naamu̍pa̱mashra̍vastamam"
       },
       {
-        "script": "indicroman",
+        "script": "readablelatin",
         "text": "shree gurubhyO namah ! harih om !! om gaNaanaam tvaa gaNapatigum havaamahE kavim kaveenaamupamashravastamam",
         "options": "IgnoreVedicAccents"
       },
@@ -43,7 +43,7 @@
         "text": "க்ஷ த்ர ஜ்ஞ ஶ்ர"
       },
       {
-        "script": "indicroman",
+        "script": "readablelatin",
         "text": "ksha tra jna shra"
       },
       {
@@ -67,7 +67,7 @@
         "text": "n̆ga  n̆ja  n̆ḍa  n̆da  m̆ba"
       },
       {
-        "script": "indicroman",
+        "script": "readablelatin",
         "text": "nga  nja  nDa  nda  mba"
       }
     ]
@@ -82,7 +82,7 @@
         "text": "chaTha (with virama)chTha (with virama and zwnj)chTha (with udaat)chTha"
       },
       {
-        "script": "indicroman",
+        "script": "readablelatin",
         "text": "chaTha (with virama)chTha (with virama and zwnj)chTha (with udaat)chTha"
       }
     ]
@@ -137,7 +137,7 @@
     "script": "tamil",
     "targets": [
       {
-        "script": "indicroman",
+        "script": "readablelatin",
         "text": "ko kO kau"
       }
     ]
@@ -157,7 +157,7 @@
         "options": "TamilSuperscripted TamilTraditional"
       },
       {
-        "script": "indicroman",
+        "script": "readablelatin",
         "text": "panktee paNDit anja idam samskru̥tam samskru̥tam"
       },
       {
@@ -180,7 +180,7 @@
         "text": "ஃபகீர ஃபிக்ர ஃபேக"
       },
       {
-        "script": "indicroman",
+        "script": "readablelatin",
         "text": "fakeera fikra fEka"
       }
     ]
@@ -202,7 +202,7 @@
     "script": "tamil",
     "targets": [
       {
-        "script": "indicroman",
+        "script": "readablelatin",
         "text": "tanga padakkam charchchaikkuriya cheydigaL paappaa pambaa ambaa krubai tandu rakshiyamba"
       }
     ]
@@ -236,7 +236,7 @@
     "script": "devanagari",
     "targets": [
       {
-        "script": "indicroman",
+        "script": "readablelatin",
         "text": "kru̥shNa"
       }
     ]
@@ -272,12 +272,12 @@
     ]
   },
   {
-    "description": "Indic->indicroman",
+    "description": "Indic->readablelatin",
     "text": "धन्य अंजनीच्या सुता",
     "script": "indic",
     "targets": [
       {
-        "script": "indicroman",
+        "script": "readablelatin",
         "text": "dhanya anjaneechyaa sutaa"
       }
     ]

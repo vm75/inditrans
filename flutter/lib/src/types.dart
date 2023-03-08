@@ -5,7 +5,7 @@ enum Script {
   assamese,
   bengali,
   devanagari,
-  indicroman,
+  readablelatin,
   gujarati,
   gurmukhi,
   iast,

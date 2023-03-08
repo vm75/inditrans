@@ -1,3 +1,7 @@
+## 0.3.2
+
+- Renamed indicroman to readablelatin
+
 ## 0.3.1
 
 - Improved Tamil transliteration based on rules
@@ -8,7 +12,7 @@
 
 ## 0.1.9
 
-- modified easyroman and renamed to indicroman
+- modified easyroman and renamed to readablelatin
 
 ## 0.1.8
 

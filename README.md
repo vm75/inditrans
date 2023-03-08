@@ -27,4 +27,4 @@ References:
   * ipa (https://en.wikipedia.org/wiki/International_Phonetic_Alphabet)
   * iso 15919 (https://en.wikipedia.org/wiki/ISO_15919)
   * itrans (https://en.wikipedia.org/wiki/ITRANS)
-  * indicroman (custom)
+  * readablelatin (easy to read in Latin alphabets with some customizations)

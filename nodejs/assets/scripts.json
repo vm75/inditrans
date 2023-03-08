@@ -82,7 +82,7 @@
       ]
     },
     "Roman": {
-      "indicroman": [
+      "readablelatin": [
         [ "a", "aa", "i", "ee", "u", "oo", "ru̥", "rru̥", "lu̥", "llu̥", "e", "E", "ai", "o", "O", "au", "a", "e", "o" ],
         [ "", "aa", "i", "ee", "u", "oo", "ru̥", "rru̥", "lu̥", "llu̥", "e", "E", "ai", "o", "O", "au", "a", "e", "o" ],
         [ "k", "kh", "g", "gh", "n", "ch", "chh", "j", "jh", "n", "T", "Th", "D", "Dh", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "sh", "sh", "s", "h", "L", "zh", "RR", "n", "q", "qh", "gh", "z", "D", "Dh", "f", "y", "ng", "nj", "nD", "nd", "mb" ],

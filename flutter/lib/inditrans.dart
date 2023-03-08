@@ -50,7 +50,7 @@ init() async {
 ///   * ipa (https://en.wikipedia.org/wiki/International_Phonetic_Alphabet)
 ///   * iso 15919 (https://en.wikipedia.org/wiki/ISO_15919)
 ///   * itrans (https://en.wikipedia.org/wiki/ITRANS)
-///   * indicroman (non-standard)
+///   * readablelatin (non-standard)
 ///
 /// ```dart
 /// import 'package:inditrans/inditrans.dart' as inditrans;
@@ -58,16 +58,14 @@ init() async {
 /// inditrans.transliterate('text', transliterate.Script.devanagari, transliterate.Script.tamil);
 ///
 /// ```
-String transliterate(String text, Script from, Script to,
-    [Options options = Options.None]) {
+String transliterate(String text, Script from, Script to, [Options options = Options.None]) {
   final staging = StagingMemory(_allocator);
 
   final nativeText = staging.toNativeString(text);
   final nativeFrom = staging.toNativeString(from.toString());
   final nativeTo = staging.toNativeString(to.toString());
 
-  final buffer =
-      _bindings.transliterate(nativeText, nativeFrom, nativeTo, options.value);
+  final buffer = _bindings.transliterate(nativeText, nativeFrom, nativeTo, options.value);
   final result = staging.fromNativeString(buffer);
 
   staging.freeAll();

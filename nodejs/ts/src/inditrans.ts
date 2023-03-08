@@ -37,7 +37,7 @@ function getTranslitOptions(opts: string): TranslitOptions {
 }
 
 function scriptIsReadable(name: string): boolean {
-  const notReadable = ['indicroman', 'romanreadable', 'romancolloquial'];
+  const notReadable = ['readablelatin', 'romanreadable', 'romancolloquial'];
   return notReadable.indexOf(name) < 0;
 }
 
