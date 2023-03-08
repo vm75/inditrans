@@ -54,20 +54,32 @@ static bool scriptIsIndic(const std::string_view name) noexcept {
 constexpr auto InvalidToken = std::numeric_limits<uint8_t>::max();
 
 struct Token {
-  TokenType tokenType { TokenType::Ignore };
-  uint8_t idx { InvalidToken };
+  TokenType tokenType;
+  uint8_t idx;
+
+  Token(TokenType tokenType = TokenType::Ignore, uint8_t idx = InvalidToken)
+      : tokenType(tokenType)
+      , idx(idx) { }
+
   bool operator==(const Token& other) const noexcept { return tokenType == other.tokenType && idx == other.idx; }
   bool operator!=(const Token& other) const noexcept { return tokenType != other.tokenType || idx != other.idx; }
 };
 
 struct ScriptToken : public Token {
   ScriptType scriptType;
+
+  ScriptToken(TokenType tokenType, uint8_t idx, ScriptType scriptType)
+      : Token(tokenType, idx)
+      , scriptType(scriptType) { }
+
   bool operator==(const ScriptToken& other) const noexcept {
     return tokenType == other.tokenType && scriptType == other.scriptType && idx == other.idx;
   }
   bool operator!=(const ScriptToken& other) const noexcept {
     return tokenType != other.tokenType || scriptType != other.scriptType || idx != other.idx;
   }
+
+  ScriptToken clone(uint8_t newIdx) const noexcept { return { tokenType, newIdx, scriptType }; }
 };
 
 using LookupTable = Char32Trie<ScriptToken>;
@@ -189,10 +201,10 @@ template <typename T> inline bool HoldsScriptToken(const T& var) { return std::h
 template <typename T> inline ScriptToken GetScriptToken(const T& var) { return std::get<ScriptToken>(var); }
 
 struct TokenUnit {
-  TokenUnit(Token leadToken) noexcept
+  TokenUnit(ScriptToken leadToken) noexcept
       : leadToken(leadToken) { }
 
-  Token leadToken;
+  ScriptToken leadToken;
   Token vowelDiacritic {};
   Token consonantDiacritic {};
   Token accent {};
@@ -207,7 +219,7 @@ template <typename T> inline bool HoldsString(const T& var) { return std::holds_
 template <typename T> inline std::string_view GetString(const T& var) { return std::get<std::string_view>(var); }
 
 const TokenUnitOrString endOfText("");
-const TokenUnit invalidTokenUnit { Token() };
+const TokenUnit invalidTokenUnit { ScriptToken(TokenType::Ignore, InvalidToken, ScriptType::Others) };
 
 inline bool operator==(const TokenUnitOrString& a, const TokenUnitOrString& b) noexcept {
   if (HoldsString(a) && HoldsString(b)) {
@@ -295,7 +307,7 @@ public:
   }
 
 private:
-  TokenUnit readBrahmiTokenUnit(Token start) noexcept {
+  TokenUnit readBrahmiTokenUnit(const ScriptToken& start) noexcept {
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
       while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
@@ -334,7 +346,7 @@ private:
     return tokenUnit;
   }
 
-  TokenUnit readTamilTokenUnit(const Token start) noexcept {
+  TokenUnit readTamilTokenUnit(const ScriptToken& start) noexcept {
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
       bool isPrimary = start.idx <= 20 /* ப */ && start.idx % 5 == 0;
@@ -363,7 +375,7 @@ private:
         } else if ((isPrimary || start.idx == 7 /* ஜ */) && iter < tokenUnits.end()) {
           auto superscriptPos = TamilSuperscripts.find(GetString(*iter));
           if (superscriptPos != TamilSuperscripts.npos) {
-            tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(start.idx + superscriptPos / "²"_len) };
+            tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + superscriptPos / "²"_len));
             iter++;
           } else {
             break;
@@ -400,7 +412,15 @@ private:
       // follows any other muted hard consonant, and ba when it follows either a
       // muted soft consonant (as in the frequently occurring cluster ம்ப, which is
       // pronounced mba, or in the clusters ண் ப and ன்ப, which are pronounced
-      // respectively ṇba and ṉba) or a verb.
+      // respectively ṇba and ṉba) or a verb. The final hard consonant, ற, also has
+      // several allophones or variant forms of pronunciation. Like ட (ṭa), it is
+      // never the initial letter of a word. Its default pronunciation is considered to
+      // be ṟa (in which ṟ is a trilled ‘r’, described technically as an alveolar trill),
+      // but its mute form (ற்) is pronounced ṯ (or sometimes slightly more like ṟ,
+      // depending upon which consonant it precedes, and when it is used in the
+      // transliteration of a word of Sanskrit origin, it can also be pronounced d or
+      // l). Its geminated form (ற்ற) is pronounced ṯṟa, and the cluster ன்ற is
+      // pronounced ṉḏṟa, the extra ḏ sound being a natural euphonic increment.
       if (hasVirama) {
         // ignore virama if end of word
         return (isPrimary && isEndOfWord()) ? invalidTokenUnit : tokenUnit;
@@ -411,21 +431,21 @@ private:
           if (tokenUnit.leadToken.idx == 5 /* ச */ && lastToken.leadToken != tokenUnit.leadToken && !isVirama(lastToken)
               && std::find(specialVowelDiactritics.begin(), specialVowelDiactritics.end(), lastToken.vowelDiacritic.idx)
                   == specialVowelDiactritics.end()) {
-            tokenUnit.leadToken = { start.tokenType, 31 /* ஸ */ };
+            tokenUnit.leadToken = start.clone(31 /* ஸ */);
           }
         } else if (isVirama(lastToken)) {
           if (lastToken.leadToken != tokenUnit.leadToken && !isHardConsonant(lastToken)) {
             if (tokenUnit.leadToken.idx == 5 /* ச */ && !isSoftConsonant(lastToken)) {
-              tokenUnit.leadToken = { start.tokenType, 31 /* ஸ */ };
+              tokenUnit.leadToken = start.clone(31 /* ஸ */);
             } else {
-              tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(start.idx + 2) };
+              tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + 2));
             }
           }
         } else {
           if (tokenUnit.leadToken.idx == 5 /* ச */) {
-            tokenUnit.leadToken = { start.tokenType, 31 /* ஸ */ };
+            tokenUnit.leadToken = start.clone(31 /* ஸ */);
           } else {
-            tokenUnit.leadToken = { start.tokenType, static_cast<uint8_t>(start.idx + 2) };
+            tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + 2));
           }
         }
       }
@@ -442,7 +462,7 @@ private:
     return tokenUnit;
   }
 
-  TokenUnit readRomanTokenUnit(Token start) noexcept {
+  TokenUnit readRomanTokenUnit(const ScriptToken& start) noexcept {
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
       bool vowelAdded = false;
@@ -741,8 +761,11 @@ private:
   Utf8StringBuilder buffer {};
   bool anuswaraMissing {};
   size_t anuswaraSize {};
-  std::unordered_map<std::string_view, std::string_view> tamilTraditionalMap { { "ஸ", "ச" }, { "ஜ", "ச³" },
-    { "ஜ²", "ச⁴" } };
+  std::unordered_map<std::string_view, std::string_view> tamilTraditionalMap {
+    { "ஸ", "ச" },
+    { "ஜ", "ச³" },
+    { "ஜ²", "ச⁴" },
+  };
   bool wordStart { true };
 };
 

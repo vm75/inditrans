@@ -10,7 +10,9 @@
 using InditransLogger = void(const std::string&);
 extern InditransLogger* inditransLogger;
 
-void testAssert(std::string_view test, bool result) noexcept { std::cout << "  Test: " << test << (result ? " PASSED" : "FAILED") << std::endl; }
+void testAssert(std::string_view test, bool result) noexcept {
+  std::cout << "  Test: " << test << (result ? " PASSED" : "FAILED") << std::endl;
+}
 
 template <class TimeT = std::chrono::milliseconds, class ClockT = std::chrono::steady_clock> struct measure {
   template <class F, class... Args> static auto duration(F&& func, Args&&... args) {
@@ -54,12 +56,13 @@ void testJson() noexcept {
   std::cout << std::endl;
 }
 
-bool testTranslit(const std::string_view& description, const std::string_view& from, const std::string_view& to, const std::string_view& text, const std::string_view& expected,
-    const std::string_view& optStr) noexcept {
+bool testTranslit(const std::string_view& description, const std::string_view& from, const std::string_view& to,
+    const std::string_view& text, const std::string_view& expected, const std::string_view& optStr) noexcept {
   static size_t testNum { 1 };
   auto res = transliterate(text, from, to, getTranslitOptions(optStr));
   bool result = res == expected;
-  std::cout << "  Test #" << std::setw(3) << testNum++ << ": " << description << ": (" << from << " -> " << to << ", options=" << optStr << "): " << (result ? " PASSED" : "FAILED") << std::endl;
+  std::cout << "  Test #" << std::setw(3) << testNum++ << ": " << description << ": (" << from << " -> " << to
+            << ", options=" << optStr << "): " << (result ? " PASSED" : "FAILED") << std::endl;
   if (!result) {
     std::cout << "    Input   : " << text << std::endl;
     std::cout << "    Expected: " << expected << std::endl;
@@ -121,7 +124,8 @@ void testCopy(const std::vector<char>& buffer) noexcept {
   memcpy(copy.data(), buffer.data(), buffer.size());
 }
 
-void translitProxy(const std::string_view& input, const std::string_view& from, const std::string_view& to, TranslitOptions options, std::unique_ptr<char>& out) noexcept {
+void translitProxy(const std::string_view& input, const std::string_view& from, const std::string_view& to,
+    TranslitOptions options, std::unique_ptr<char>& out) noexcept {
   transliterate(input, from, to, options, out);
 }
 
@@ -131,13 +135,23 @@ void testPerf(bool prof) noexcept {
     std::cout << std::endl << "Perf test" << std::endl;
     std::vector<char> inBuffer(std::istreambuf_iterator<char>(input), {});
     std::unique_ptr<char> out;
-    std::cout << "  Transliterate to telugu: " << measure<>::duration(translitProxy, inBuffer.data(), "devanagari", "telugu", TranslitOptions::None, out).count() << " ms" << std::endl;
+    std::cout << "  Transliterate to telugu: "
+              << measure<>::duration(translitProxy, inBuffer.data(), "devanagari", "telugu", TranslitOptions::None, out)
+                     .count()
+              << " ms" << std::endl;
 
-    std::cout << "  Transliterate to tamil: " << measure<>::duration(translitProxy, inBuffer.data(), "devanagari", "tamil", TranslitOptions::None, out).count() << " ms" << std::endl;
+    std::cout << "  Transliterate to tamil: "
+              << measure<>::duration(translitProxy, inBuffer.data(), "devanagari", "tamil", TranslitOptions::None, out)
+                     .count()
+              << " ms" << std::endl;
 
-    std::cout << "  Transliterate to roman: " << measure<>::duration(translitProxy, inBuffer.data(), "devanagari", "iso", TranslitOptions::None, out).count() << " ms" << std::endl;
+    std::cout
+        << "  Transliterate to roman: "
+        << measure<>::duration(translitProxy, inBuffer.data(), "devanagari", "iso", TranslitOptions::None, out).count()
+        << " ms" << std::endl;
     if (!prof) {
-      std::cout << "  TestConvert Runtime: " << measure<>::duration(testConvert, inBuffer).count() << " ms" << std::endl;
+      std::cout << "  TestConvert Runtime: " << measure<>::duration(testConvert, inBuffer).count() << " ms"
+                << std::endl;
       std::cout << "  TestCopy Runtime: " << measure<>::duration(testCopy, inBuffer).count() << " ms" << std::endl;
     }
   }
@@ -149,6 +163,12 @@ int main(int argc, const char** argv) {
     std::cout << std::endl;
   };
   bool prof = argc > 1 && std::string(argv[1]) == std::string("-p");
+  if (argc > 4 && std::string(argv[1]) == std::string("-t")) {
+    std::unique_ptr<char> out;
+    translitProxy(argv[2], argv[3], argv[4], TranslitOptions::None, out);
+    std::cout << out.get() << std::endl;
+    return 0;
+  }
   if (!prof) {
     testJson();
     testUtf();
