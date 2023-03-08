@@ -3,8 +3,8 @@
   "editor.minimap.maxColumn": 200,
   "editor.hideCursorInOverviewRuler": false,
   "editor.overviewRulerBorder": true,
+  "editor.formatOnSave": true,
   "[dart]": {
-    "editor.formatOnSave": true,
     "editor.formatOnType": false,
     "editor.rulers": [
       80

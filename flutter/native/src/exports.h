@@ -12,21 +12,21 @@
   verify compiler option __cdecl for un-decorated and __stdcall for decorated */
 /*#define UNDECO_DLL*/
 #ifdef MAKE_DLL
-  #if defined (PASCAL) || defined(__stdcall)
-   #if defined UNDECO_DLL
-    #define CALL_CONV EMSCRIPTEN_KEEPALIVE __cdecl
-   #else
-    #define CALL_CONV EMSCRIPTEN_KEEPALIVE __stdcall
-   #endif
-  #else
-    #define CALL_CONV EMSCRIPTEN_KEEPALIVE
-  #endif
-  /* To export symbols in the new DLL model of Win32, Microsoft
-     recommends the following approach */
-  #define EXP32  __declspec( dllexport )
+#if defined(PASCAL) || defined(__stdcall)
+#if defined UNDECO_DLL
+#define CALL_CONV EMSCRIPTEN_KEEPALIVE __cdecl
 #else
-  #define CALL_CONV EMSCRIPTEN_KEEPALIVE
-  #define EXP32
+#define CALL_CONV EMSCRIPTEN_KEEPALIVE __stdcall
+#endif
+#else
+#define CALL_CONV EMSCRIPTEN_KEEPALIVE
+#endif
+/* To export symbols in the new DLL model of Win32, Microsoft
+   recommends the following approach */
+#define EXP32 __declspec(dllexport)
+#else
+#define CALL_CONV EMSCRIPTEN_KEEPALIVE
+#define EXP32
 #endif
 
 /* ext_def(x) evaluates to x on Unix */

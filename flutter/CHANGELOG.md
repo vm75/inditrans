@@ -1,3 +1,7 @@
+## 0.3.1
+
+- Improved Tamil transliteration based on rules
+
 ## 0.2.0
 
 - Fixed Sinhara symbols
