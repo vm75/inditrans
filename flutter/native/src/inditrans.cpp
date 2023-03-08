@@ -127,7 +127,7 @@ private:
         continue;
       }
       auto res = tokenMap.addLookup(map[idx], { tokenType, static_cast<uint8_t>(idx), scriptType });
-      if (res != std::nullopt && inditransLogger != nullptr && res->idx != idx) {
+      if (res != std::nullopt && inditransLogger != nullptr && (res->tokenType != tokenType || res->idx != idx)) {
         std::string error = "Error adding for: " + std::string(name)
             + ", tokenType: " + std::string(tokenTypeStr(tokenType)) + ", idx: " + std::to_string(idx)
             + ", new value: " + std::string(map[idx]);
