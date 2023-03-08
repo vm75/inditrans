@@ -28,10 +28,27 @@ enum SpecialIndices : uint8_t {
   // clang-format on
 };
 
-enum class TokenType : uint8_t { Vowel, VowelDiacritic, Consonant, ConsonantDiacritic, Symbol, Accent, ToggleTrans, Ignore };
+enum class TokenType : uint8_t {
+  Vowel,
+  VowelDiacritic,
+  Consonant,
+  ConsonantDiacritic,
+  Symbol,
+  Accent,
+  ToggleTrans,
+  Ignore
+};
 
 std::string_view tokenTypeStr(TokenType type) noexcept {
-  constexpr std::string_view str[] = { "Vowel", "VowelDiacritic", "Consonant", "ConsonantDiacritic", "Symbol", "Accent", "ToggleTrans" };
+  constexpr std::string_view str[] = {
+    "Vowel",
+    "VowelDiacritic",
+    "Consonant",
+    "ConsonantDiacritic",
+    "Symbol",
+    "Accent",
+    "ToggleTrans",
+  };
   return str[static_cast<size_t>(type)];
 }
 

@@ -150,7 +150,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.1.2"
+    version: "0.3.1"
   inject_js:
     dependency: transitive
     description:

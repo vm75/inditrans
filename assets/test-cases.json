@@ -203,7 +203,7 @@
     "targets": [
       {
         "script": "indicroman",
-        "text": "tanga padakkam sarchchaikkuriya seydigaL paappaa pambaa"
+        "text": "tanga padakkam charchchaikkuriya cheydigaL paappaa pambaa"
       }
     ]
   },
@@ -226,7 +226,7 @@
       {
         "script": "devanagari",
         "text": "श्री गुरुभ्यो नमः । हरिः ॐ ॥ ॐ गणाऩां त्वा गणपतिꣳ हवामहे कविं कवीऩामु॑पमश्रवस्तमं",
-        "options":"TamilSuperscripted"
+        "options": "TamilSuperscripted"
       }
     ]
   },

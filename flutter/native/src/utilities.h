@@ -19,8 +19,13 @@ template <typename Key, typename Value, std::size_t Size> struct ConstexprMap {
     }
   }
 
-  [[nodiscard]] constexpr const typename std::array<std::pair<Key, Value>, Size>::const_iterator begin() const noexcept { return data.begin(); }
-  [[nodiscard]] constexpr const typename std::array<std::pair<Key, Value>, Size>::const_iterator end() const noexcept { return data.end(); }
+  [[nodiscard]] constexpr const typename std::array<std::pair<Key, Value>, Size>::const_iterator
+  begin() const noexcept {
+    return data.begin();
+  }
+  [[nodiscard]] constexpr const typename std::array<std::pair<Key, Value>, Size>::const_iterator end() const noexcept {
+    return data.end();
+  }
 };
 
 template <typename ValueType> struct TrieNode {
@@ -168,7 +173,9 @@ template <typename StringType> std::vector<StringType> split(const StringType& s
   return strs;
 }
 
-template <typename CharType> std::size_t replaceAll(std::basic_string<CharType>& text, const std::basic_string_view<CharType>& what, const std::basic_string_view<CharType>& with) noexcept {
+template <typename CharType>
+std::size_t replaceAll(std::basic_string<CharType>& text, const std::basic_string_view<CharType>& what,
+    const std::basic_string_view<CharType>& with) noexcept {
   std::size_t count {};
   for (size_t pos {}; text.npos != (pos = text.find(what.data(), pos, what.length())); pos += with.length(), ++count) {
     text.replace(pos, what.length(), with.data(), with.length());
@@ -176,7 +183,8 @@ template <typename CharType> std::size_t replaceAll(std::basic_string<CharType>&
   return count;
 }
 
-template <typename CharType> std::size_t removeAll(std::basic_string<CharType>& inout, const std::basic_string_view<CharType>& what) {
+template <typename CharType>
+std::size_t removeAll(std::basic_string<CharType>& inout, const std::basic_string_view<CharType>& what) {
   return replaceAll(inout, what, std::basic_string_view<CharType>());
 }
 
