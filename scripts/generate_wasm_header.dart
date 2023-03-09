@@ -123,6 +123,6 @@ void main(List<String> args) async {
 
   buffer.write(headerSuffix);
 
-  File genFile = File('flutter/native/src/scripts-gen.h');
+  File genFile = File('flutter/native/src/scripts_gen.h');
   genFile.writeAsStringSync(buffer.toString());
 }

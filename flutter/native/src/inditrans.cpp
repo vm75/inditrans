@@ -2,6 +2,7 @@
 #include "type_defs.h"
 #include "utilities.h"
 #include "wasi_fix.h"
+#include "tamil_prefix.h"
 #include <limits>
 #include <memory>
 #include <optional>
@@ -232,10 +233,37 @@ inline bool operator==(const TokenUnitOrString& a, const TokenUnitOrString& b) n
 }
 inline bool operator!=(const TokenUnitOrString& a, const TokenUnitOrString& b) noexcept { return !(a == b); }
 
+class TamilPrefixLookup {
+public:
+  TamilPrefixLookup(const ScriptReaderMap& map) noexcept {
+    if (!tamilPrefixes.isEmpty() || map.lookupToken("அ").value == std::nullopt) {
+      return;
+    }
+    for(const auto& prefix : TamilPrefixes) {
+      std::vector<TokenUnit> tokens;
+      tokens.reserve(prefix.size());
+      auto ptr = prefix.data();
+      auto end = ptr + prefix.length();
+      while (ptr < end) {
+        auto match = map.lookupToken(ptr);
+        if (match.value == std::nullopt) {
+          break;
+        }
+        tokens.emplace_back(match.value.value());
+      }
+      if (tokens.size() == prefix.size()) {
+        tamilPrefixes.addLookup(tokens, true);
+      }
+    }
+  }
+private:
+  static StatefulTrie<TokenUnit, bool> tamilPrefixes;
+};
+
 class InputReader {
 public:
   InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options) noexcept
-      : options(options) {
+      : options(options), prefixLookup(map) {
     auto ptr = input.data();
     auto end = ptr + input.length();
     bool skipTrans = false;
@@ -541,6 +569,7 @@ private:
   std::vector<TokenOrString> tokenUnits;
   std::vector<TokenOrString>::iterator iter;
   bool wordStart { true };
+  TamilPrefixLookup prefixLookup;
 };
 
 class OutputWriter {

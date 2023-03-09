@@ -1,7 +1,9 @@
+#pragma once
+
 #include <array>
 #include <string>
 
-constexpr std::array<std::string_view, 6> ScriptDataMap {
+constexpr std::array<std::string_view, 6> TamilPrefixes {
   "அது",
   "இது",
   "மா",

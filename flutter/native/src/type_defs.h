@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scripts-gen.h"
+#include "scripts_gen.h"
 #include <vector>
 
 enum SpecialIndices : uint8_t {

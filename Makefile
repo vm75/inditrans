@@ -100,5 +100,5 @@ flutter/$(FLUTTER_TARGET): $(SOURCES_CC) $(HEADERS_CC)
 flutter/lib/src/bindings.dart: flutter/native/src/exports.h
 	dart .\scripts\generate_bindings.dart
 
-flutter/native/src/scripts-gen.h: nodejs/assets/scripts.json
+flutter/native/src/scripts_gen.h: nodejs/assets/scripts.json
 	dart .\scripts\generate_wasm_header.dart

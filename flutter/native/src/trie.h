@@ -79,6 +79,10 @@ public:
     return true;
   }
 
+  bool isEmpty() const noexcept {
+    return root.empty();
+  }
+
 private:
   typename TrieNode<KeyType, ValueType>::NodeMap root {};
 };

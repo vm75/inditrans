@@ -12,7 +12,6 @@
   "types": "./dist/wasm/src/inditrans.d.ts",
   "scripts": {
     "clean": "shx rm -rf dist/*",
-    "gen-wasm": "tsc && node --no-warnings --experimental-modules --es-module-specifier-resolution=node dist/wasm/tools/gen-wasm-header.js ../native/src/scripts-gen.h",
     "build-ts": "tsc",
     "build": "npm run build-wasm && npm run build-ts",
     "build-all": "npm run gen-wasm-header && npm run build-wasm && npm run build-ts",
