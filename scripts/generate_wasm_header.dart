@@ -1,7 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 
-const HEADER = '''#pragma once
+const headerPrefix = '''#pragma once
 
 #include <array>
 #include <string>
@@ -21,7 +23,7 @@ struct ScriptData {
 constexpr std::array<std::pair<std::string_view, ScriptData>, 118> ScriptDataMap {{
 ''';
 
-const FOOTER = '''}};
+const headerSuffix = '''}};
 // clang-format on
 ''';
 
@@ -91,16 +93,13 @@ void main(List<String> args) async {
     return;
   }
 
-  final inditransScripts =
-      jsonDecode(File('nodejs/assets/scripts.json').readAsStringSync())
-          as Map<String, dynamic>;
+  final inditransScripts = jsonDecode(File('nodejs/assets/scripts.json').readAsStringSync()) as Map<String, dynamic>;
 
   final List<ScriptInfo> primary = parseScriptInfo(inditransScripts['Primary']);
-  final List<ScriptInfo> secondary =
-      parseScriptInfo(inditransScripts['Secondary']);
+  final List<ScriptInfo> secondary = parseScriptInfo(inditransScripts['Secondary']);
 
   final buffer = StringBuffer();
-  buffer.write(HEADER);
+  buffer.write(headerPrefix);
 
   var first = true;
   for (final entry in primary) {
@@ -122,7 +121,7 @@ void main(List<String> args) async {
 #endif
 ''');
 
-  buffer.write(FOOTER);
+  buffer.write(headerSuffix);
 
   File genFile = File('flutter/native/src/scripts-gen.h');
   genFile.writeAsStringSync(buffer.toString());

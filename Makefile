@@ -3,7 +3,7 @@ default: all
 all: native wasm
 
 version:
-	dart ./scripts/bump-version.dart
+	dart ./scripts/bump_version.dart
 
 # Common
 ifdef  DEBUG
@@ -98,7 +98,7 @@ flutter/$(FLUTTER_TARGET): $(SOURCES_CC) $(HEADERS_CC)
 				-s $(COMPILED_EXPORTS)
 
 flutter/lib/src/bindings.dart: flutter/native/src/exports.h
-	dart .\scripts\generate-bindings.dart
+	dart .\scripts\generate_bindings.dart
 
 flutter/native/src/scripts-gen.h: nodejs/assets/scripts.json
-	dart .\scripts\generate-wasm-header.dart
+	dart .\scripts\generate_wasm_header.dart
