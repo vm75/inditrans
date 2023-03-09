@@ -281,5 +281,27 @@
         "text": "dhanya anjaneechyaa sutaa"
       }
     ]
+  },
+  {
+    "description": "tamil-read prefix tests",
+    "text": "அதுபோல",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "readablelatin",
+        "text": "adupOla"
+      }
+    ]
+  },
+  {
+    "description": "tamil-write prefix tests",
+    "text": "andanāl̤ mānilā",
+    "script": "iast",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "அந்தநாள் மாநிலா"
+      }
+    ]
   }
 ]

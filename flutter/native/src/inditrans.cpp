@@ -1,8 +1,8 @@
 #include "inditrans.h"
+#include "tamil_prefix.h"
 #include "type_defs.h"
 #include "utilities.h"
 #include "wasi_fix.h"
-#include "tamil_prefix.h"
 #include <limits>
 #include <memory>
 #include <optional>
@@ -81,6 +81,7 @@ struct ScriptToken : public Token {
   }
 
   ScriptToken clone(uint8_t newIdx) const noexcept { return { tokenType, newIdx, scriptType }; }
+  ScriptToken clone(ScriptType newScriptType) const noexcept { return { tokenType, idx, newScriptType }; }
 };
 
 using LookupTable = Char32Trie<ScriptToken>;
@@ -209,7 +210,24 @@ struct TokenUnit {
   Token vowelDiacritic {};
   Token consonantDiacritic {};
   Token accent {};
+
+  bool operator==(const TokenUnit& other) const noexcept {
+    return leadToken == other.leadToken && vowelDiacritic == other.vowelDiacritic
+        && consonantDiacritic == other.consonantDiacritic && accent == other.accent;
+  }
+
+  bool operator!=(const TokenUnit& other) const noexcept { return !(*this == other); }
 };
+
+namespace std {
+
+template <> struct hash<TokenUnit> {
+  std::size_t operator()(const TokenUnit& k) const {
+    return (k.leadToken.idx ^ (k.vowelDiacritic.idx << 1) >> 1) ^ (k.consonantDiacritic.idx << 1) ^ (k.accent.idx << 1);
+  }
+};
+
+}
 
 using TokenUnitOrString = std::variant<TokenUnit, std::string_view>;
 template <typename T> inline bool HoldsTokenUnit(const T& var) { return std::holds_alternative<TokenUnit>(var); }
@@ -233,37 +251,114 @@ inline bool operator==(const TokenUnitOrString& a, const TokenUnitOrString& b) n
 }
 inline bool operator!=(const TokenUnitOrString& a, const TokenUnitOrString& b) noexcept { return !(a == b); }
 
+static constexpr auto scriptDataMap
+    = ConstexprMap<std::string_view, ScriptData, ScriptDataMap.size()> { { ScriptDataMap } };
+
+const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexcept {
+  static std::unordered_map<std::string, ScriptReaderMap> readerMapCache {};
+
+  if (!scriptIsReadable(script)) {
+    return nullptr;
+  }
+
+  auto entry = readerMapCache.find(std::string(script));
+  if (entry == readerMapCache.end()) {
+    if (script == "indic") {
+      auto mapEntry = scriptDataMap.get("devanagari");
+      if (mapEntry == nullptr) {
+        return nullptr;
+      }
+      entry = readerMapCache.emplace(script, ScriptReaderMap { script, *mapEntry }).first;
+
+      for (const auto& scriptInfo : scriptDataMap) {
+        if (scriptInfo.first == "devanagari" || scriptIsIndic(scriptInfo.first)) {
+          continue;
+        }
+
+        entry->second.addScript(scriptInfo.first, scriptInfo.second);
+      }
+    } else {
+      auto mapEntry = scriptDataMap.get(script);
+      if (mapEntry == nullptr) {
+        return nullptr;
+      }
+
+      entry = readerMapCache.emplace(script, ScriptReaderMap { script, *mapEntry }).first;
+    }
+  }
+
+  return &entry->second;
+}
+
 class TamilPrefixLookup {
 public:
-  TamilPrefixLookup(const ScriptReaderMap& map) noexcept {
-    if (!tamilPrefixes.isEmpty() || map.lookupToken("அ").value == std::nullopt) {
+  TamilPrefixLookup() noexcept {
+    if (!tamilPrefixes.isEmpty()) {
       return;
     }
-    for(const auto& prefix : TamilPrefixes) {
+    auto map = getScriptReaderMap("tamil");
+    if (map == nullptr) {
+      return;
+    }
+    for (const auto& prefix : TamilPrefixes) {
       std::vector<TokenUnit> tokens;
       tokens.reserve(prefix.size());
       auto ptr = prefix.data();
       auto end = ptr + prefix.length();
       while (ptr < end) {
-        auto match = map.lookupToken(ptr);
+        auto match = map->lookupToken(ptr);
         if (match.value == std::nullopt) {
           break;
         }
-        tokens.emplace_back(match.value.value());
+        switch (match.value->tokenType) {
+          case TokenType::Consonant:
+          case TokenType::Vowel:
+          case TokenType::Symbol:
+            tokens.emplace_back(match.value.value());
+            break;
+          case TokenType::ConsonantDiacritic:
+            tokens.back().consonantDiacritic = match.value.value();
+            break;
+          case TokenType::VowelDiacritic:
+            tokens.back().vowelDiacritic = match.value.value();
+            break;
+          case TokenType::Accent:
+            tokens.back().accent = match.value.value();
+            break;
+          default:
+            break;
+        }
+        ptr += match.matchLen;
       }
-      if (tokens.size() == prefix.size()) {
+      if (ptr == end) {
         tamilPrefixes.addLookup(tokens, true);
       }
     }
   }
+
+  bool lookup(const TokenUnit& token, StatefulTrie<TokenUnit, bool>::LookupState& lookupState) {
+    if (token.leadToken.scriptType == ScriptType::Tamil) {
+      return tamilPrefixes.lookup(token, lookupState);
+    }
+    TokenUnit tokenCopy = token;
+    tokenCopy.leadToken.scriptType = ScriptType::Tamil;
+    if (tokenCopy.leadToken.tokenType == TokenType::Consonant && tokenCopy.leadToken.idx <= 24) {
+      if (tokenCopy.leadToken.idx % 5 != 4) {
+        tokenCopy.leadToken.idx -= tokenCopy.leadToken.idx % 5;
+      }
+    }
+    return tamilPrefixes.lookup(tokenCopy, lookupState);
+  }
+
 private:
   static StatefulTrie<TokenUnit, bool> tamilPrefixes;
 };
+StatefulTrie<TokenUnit, bool> TamilPrefixLookup::tamilPrefixes {};
 
 class InputReader {
 public:
   InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options) noexcept
-      : options(options), prefixLookup(map) {
+      : options(options) {
     auto ptr = input.data();
     auto end = ptr + input.length();
     bool skipTrans = false;
@@ -375,6 +470,13 @@ private:
   }
 
   TokenUnit readTamilTokenUnit(const ScriptToken& start) noexcept {
+    bool endOfPrefix = false;
+    if (wordStart) {
+      prefixLookupState.reset();
+    } else {
+      endOfPrefix = (prefixLookupState.value != std::nullopt);
+    }
+
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
       bool isPrimary = start.idx <= 20 /* ப */ && start.idx % 5 == 0;
@@ -416,6 +518,10 @@ private:
       if (options * TranslitOptions::TamilSuperscripted) {
         return tokenUnit;
       }
+
+      // lookup before it is modified
+      prefixLookup.lookup(tokenUnit, prefixLookupState);
+
       // Thus க is pronounced ka when it is the initial letter of a word, k when it
       // is muted (க்), kka when it is geminated (க்க), ka when it follows any other
       // muted hard consonant (such as ட் or ற்), ga when it follows a muted soft
@@ -454,7 +560,7 @@ private:
         return (isPrimary && isEndOfWord()) ? invalidTokenUnit : tokenUnit;
       }
       if (isPrimary) {
-        if (wordStart) {
+        if (wordStart || endOfPrefix) {
           const std::array<uint8_t, 6> specialVowelDiactritics = { 2, 4, 10, 13, 16, InvalidToken };
           if (tokenUnit.leadToken.idx == 5 /* ச */ && lastToken.leadToken != tokenUnit.leadToken && !isVirama(lastToken)
               && std::find(specialVowelDiactritics.begin(), specialVowelDiactritics.end(), lastToken.vowelDiacritic.idx)
@@ -477,15 +583,21 @@ private:
           }
         }
       }
-      return tokenUnit;
     } else if (start.tokenType == TokenType::Vowel) {
-      if (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
+      while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
         const auto nextToken = GetScriptToken(*iter);
-        if (nextToken.tokenType == TokenType::Accent) {
+        if (nextToken.tokenType == TokenType::ConsonantDiacritic) {
+          tokenUnit.consonantDiacritic = nextToken;
+        } else if (nextToken.tokenType == TokenType::Accent) {
           tokenUnit.accent = nextToken;
-          iter++;
+        } else {
+          break;
         }
+        iter++;
       }
+    }
+    if (tokenUnit.leadToken.tokenType != TokenType::Consonant) {
+      prefixLookup.lookup(tokenUnit, prefixLookupState);
     }
     return tokenUnit;
   }
@@ -570,6 +682,7 @@ private:
   std::vector<TokenOrString>::iterator iter;
   bool wordStart { true };
   TamilPrefixLookup prefixLookup;
+  StatefulTrie<TokenUnit, bool>::LookupState prefixLookupState {};
 };
 
 class OutputWriter {
@@ -648,11 +761,17 @@ protected:
   }
 
   void writeTamilTokenUnit(const TokenUnit& tokenUnit, const TokenUnitOrString& next) noexcept {
+    bool endOfPrefix = prefixLookupState.value != std::nullopt;
+    if (wordStart) {
+      prefixLookupState.reset();
+    }
+    prefixLookup.lookup(tokenUnit, prefixLookupState);
+
     auto leadIdx = tokenUnit.leadToken.idx;
     auto leadText = map.lookupChar(tokenUnit.leadToken);
 
     if (tokenUnit.leadToken.tokenType == TokenType::Consonant) {
-      if (leadIdx == 19 /* ந */ && !wordStart) {
+      if (leadIdx == 19 /* ந */ && !(wordStart || endOfPrefix)) {
         if (next == endOfText || tokenUnit.vowelDiacritic.idx != SpecialIndices::Virama) {
           leadText = "ன";
         }
@@ -796,46 +915,19 @@ private:
     { "ஜ²", "ச⁴" },
   };
   bool wordStart { true };
+  TamilPrefixLookup prefixLookup;
+  StatefulTrie<TokenUnit, bool>::LookupState prefixLookupState {};
 };
-
-static constexpr auto scriptDataMap
-    = ConstexprMap<std::string_view, ScriptData, ScriptDataMap.size()> { { ScriptDataMap } };
 
 std::unique_ptr<InputReader> getInputReader(
     const std::string_view& text, std::string_view from, TranslitOptions options) noexcept {
-  static std::unordered_map<std::string, ScriptReaderMap> readerMapCache {};
 
-  if (!scriptIsReadable(from)) {
+  auto map = getScriptReaderMap(from);
+  if (map == nullptr) {
     return nullptr;
   }
 
-  auto entry = readerMapCache.find(std::string(from));
-  if (entry == readerMapCache.end()) {
-    if (from == "indic") {
-      auto mapEntry = scriptDataMap.get("devanagari");
-      if (mapEntry == nullptr) {
-        return nullptr;
-      }
-      entry = readerMapCache.emplace(from, ScriptReaderMap { from, *mapEntry }).first;
-
-      for (const auto& scriptInfo : scriptDataMap) {
-        if (scriptInfo.first == "devanagari" || scriptIsIndic(scriptInfo.first)) {
-          continue;
-        }
-
-        entry->second.addScript(scriptInfo.first, scriptInfo.second);
-      }
-    } else {
-      auto mapEntry = scriptDataMap.get(from);
-      if (mapEntry == nullptr) {
-        return nullptr;
-      }
-
-      entry = readerMapCache.emplace(from, ScriptReaderMap { from, *mapEntry }).first;
-    }
-  }
-
-  return std::make_unique<InputReader>(text, entry->second, options);
+  return std::make_unique<InputReader>(text, *map, options);
 }
 
 std::unique_ptr<OutputWriter> getOutputWriter(std::string_view to, TranslitOptions options, size_t inputSize) noexcept {

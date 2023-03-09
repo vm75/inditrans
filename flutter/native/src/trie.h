@@ -11,7 +11,7 @@ template <typename KeyType, typename ValueType> struct TrieNode {
 template <typename KeyType, typename ValueType> class StatefulTrie {
 public:
   struct LookupState {
-    const TrieNode<KeyType, ValueType>* node { nullptr };
+    const typename TrieNode<KeyType, ValueType>::NodeMap* node { nullptr };
     std::optional<ValueType> value { std::nullopt };
     size_t matchLen { 0 };
 
@@ -79,9 +79,7 @@ public:
     return true;
   }
 
-  bool isEmpty() const noexcept {
-    return root.empty();
-  }
+  bool isEmpty() const noexcept { return root.empty(); }
 
 private:
   typename TrieNode<KeyType, ValueType>::NodeMap root {};

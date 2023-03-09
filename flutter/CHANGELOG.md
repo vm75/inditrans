@@ -1,3 +1,7 @@
+## 0.3.3
+
+- Added support for Tamil prefix
+
 ## 0.3.2
 
 - Renamed indicroman to readablelatin
