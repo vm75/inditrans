@@ -2,25 +2,40 @@
 
 /// Supported scripts
 enum Script {
+  assamese,
   bengali,
   devanagari,
+  readablelatin,
   gujarati,
   gurmukhi,
-  kannada,
-  malayalam,
-  oriya,
-  telugu,
-  tamil,
   iast,
+  indic,
   ipa,
   iso,
   itrans,
-  romansimple;
+  kannada,
+  malayalam,
+  oriya,
+  sinhala,
+  tamil,
+  telugu;
 
   @override
   String toString() {
     return super.toString().replaceFirst('Script.', '');
   }
+
+  static Script? fromString(String name) {
+    try {
+      return Script.values.firstWhere((entry) => entry.toString() == name);
+    } catch (_) {
+      return null;
+    }
+  }
+}
+
+extension InditransScriptExtension on String {
+  Script? toScript() => Script.fromString(this);
 }
 
 /// Transliteration options
@@ -36,9 +51,8 @@ class Options {
   static const IgnoreQuotedMarkers = Options._(2);
   static const TamilTraditional = Options._(4);
   static const TamilSuperscripted = Options._(8);
-  static const InferAnuswara = Options._(16);
-  static const RetainZeroWidthChars = Options._(32);
-  static const ASCIINumerals = Options._(64);
+  static const RetainZeroWidthChars = Options._(16);
+  static const ASCIINumerals = Options._(32);
 
   Options operator +(Options other) {
     return Options._(_value | other._value);

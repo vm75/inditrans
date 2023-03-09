@@ -195,13 +195,17 @@ public:
   }
 
   static constexpr Char32 leadingChar32(std::string_view str) noexcept { return leadingChar32(str.data()); }
-  static constexpr Char32 trailingChar32(std::string_view str) noexcept { return trailingChar32(str.data() + str.length()); }
+  static constexpr Char32 trailingChar32(std::string_view str) noexcept {
+    return trailingChar32(str.data() + str.length());
+  }
 
   static constexpr Utf8Char trailingChar(const char* end) noexcept {
     auto len = UtfUtils::prevCharLen(end);
     return Utf8Char(end - len);
   }
-  static constexpr Utf8Char trailingChar(std::string_view str) noexcept { return trailingChar(str.data() + str.length()); }
+  static constexpr Utf8Char trailingChar(std::string_view str) noexcept {
+    return trailingChar(str.data() + str.length());
+  }
 
   constexpr Utf8String(const char* str, size_t len) noexcept
       : start(str)

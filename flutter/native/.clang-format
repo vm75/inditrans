@@ -1,5 +1,5 @@
 BasedOnStyle: WebKit
-ColumnLimit: 200
+ColumnLimit: 120
 UseTab: Never
 IndentWidth: 2
 TabWidth: 2
@@ -8,3 +8,4 @@ SortIncludes: true
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterClass: false
+IndentCaseLabels: true

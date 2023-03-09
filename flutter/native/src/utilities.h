@@ -1,5 +1,6 @@
 #pragma once
 
+#include "trie.h"
 #include "utf.h"
 #include <algorithm>
 #include <array>
@@ -19,14 +20,13 @@ template <typename Key, typename Value, std::size_t Size> struct ConstexprMap {
     }
   }
 
-  [[nodiscard]] constexpr const typename std::array<std::pair<Key, Value>, Size>::const_iterator begin() const noexcept { return data.begin(); }
-  [[nodiscard]] constexpr const typename std::array<std::pair<Key, Value>, Size>::const_iterator end() const noexcept { return data.end(); }
-};
-
-template <typename ValueType> struct TrieNode {
-  using NodeMap = std::unordered_map<char32_t, std::unique_ptr<TrieNode<ValueType>>>;
-  std::optional<ValueType> value { std::nullopt };
-  std::unique_ptr<NodeMap> nodes { nullptr };
+  [[nodiscard]] constexpr const typename std::array<std::pair<Key, Value>, Size>::const_iterator
+  begin() const noexcept {
+    return data.begin();
+  }
+  [[nodiscard]] constexpr const typename std::array<std::pair<Key, Value>, Size>::const_iterator end() const noexcept {
+    return data.end();
+  }
 };
 
 template <typename ValueType> class Char32Trie {
@@ -47,12 +47,10 @@ public:
     auto* lookupNode = &root;
 
     while (text < end) {
-      auto nextChar32 = *text;
-      text++;
-      auto nextChar = nextChar32;
+      auto nextChar = *text++;
       auto mapEntry = lookupNode->find(nextChar);
       if (mapEntry == lookupNode->end()) {
-        mapEntry = lookupNode->emplace(nextChar, std::make_unique<TrieNode<ValueType>>()).first;
+        mapEntry = lookupNode->emplace(nextChar, std::make_unique<TrieNode<char32_t, ValueType>>()).first;
       }
 
       auto& lookup = mapEntry->second;
@@ -68,7 +66,7 @@ public:
         lookup->value = value;
       } else {
         if (lookup->nodes == nullptr) {
-          lookup->nodes = std::make_unique<typename TrieNode<ValueType>::NodeMap>();
+          lookup->nodes = std::make_unique<typename TrieNode<char32_t, ValueType>::NodeMap>();
         }
         lookupNode = lookup->nodes.get();
       }
@@ -109,7 +107,7 @@ public:
   }
 
 private:
-  typename TrieNode<ValueType>::NodeMap root {};
+  typename TrieNode<char32_t, ValueType>::NodeMap root {};
 };
 
 template <typename CharType, typename ValueType> class StringMap {
@@ -168,7 +166,9 @@ template <typename StringType> std::vector<StringType> split(const StringType& s
   return strs;
 }
 
-template <typename CharType> std::size_t replaceAll(std::basic_string<CharType>& text, const std::basic_string_view<CharType>& what, const std::basic_string_view<CharType>& with) noexcept {
+template <typename CharType>
+std::size_t replaceAll(std::basic_string<CharType>& text, const std::basic_string_view<CharType>& what,
+    const std::basic_string_view<CharType>& with) noexcept {
   std::size_t count {};
   for (size_t pos {}; text.npos != (pos = text.find(what.data(), pos, what.length())); pos += with.length(), ++count) {
     text.replace(pos, what.length(), with.data(), with.length());
@@ -176,7 +176,8 @@ template <typename CharType> std::size_t replaceAll(std::basic_string<CharType>&
   return count;
 }
 
-template <typename CharType> std::size_t removeAll(std::basic_string<CharType>& inout, const std::basic_string_view<CharType>& what) {
+template <typename CharType>
+std::size_t removeAll(std::basic_string<CharType>& inout, const std::basic_string_view<CharType>& what) {
   return replaceAll(inout, what, std::basic_string_view<CharType>());
 }
 

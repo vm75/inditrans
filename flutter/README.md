@@ -19,14 +19,14 @@ References:
   * kannada
   * malayalam
   * oriya
-  * telugu
   * tamil
+  * telugu
 * Roman scripts
   * iast (https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration)
   * ipa (https://en.wikipedia.org/wiki/International_Phonetic_Alphabet)
   * iso 15919 (https://en.wikipedia.org/wiki/ISO_15919)
   * itrans (https://en.wikipedia.org/wiki/ITRANS)
-  * romansimple (custom)
+  * readablelatin (custom)
 
 ## Usage example
 ```dart

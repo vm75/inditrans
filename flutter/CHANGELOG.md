@@ -1,3 +1,43 @@
+## 0.3.3
+
+- Added support for Tamil prefix
+
+## 0.3.2
+
+- Renamed indicroman to readablelatin
+
+## 0.3.1
+
+- Improved Tamil transliteration based on rules
+
+## 0.2.0
+
+- Fixed Sinhara symbols
+
+## 0.1.9
+
+- modified easyroman and renamed to readablelatin
+
+## 0.1.8
+
+- Made InferAnuswara automatic. Fixed Diactric for Vowels.
+
+## 0.1.7
+
+- fixed bug for indic
+
+## 0.1.6
+
+- exported indic, added 2 scripts, fixed roman
+
+## 0.1.5
+
+- Added fromString to Script enum
+
+## 0.1.4
+
+- re-publish from correct branch.
+
 ## 0.1.3
 
 - Fixed build error

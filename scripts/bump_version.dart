@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -62,14 +64,14 @@ List<String> getopt(String parseOptions, List<String> args) {
   List<String> options = [];
   List<String> result = [];
   outer:
-  while (!args.isEmpty) {
+  while (args.isNotEmpty) {
     var nextArg = args.removeAt(0);
     if (nextArg == "--") {
       stopParsing = true;
       continue;
     }
 
-    if (!stopParsing && !nextArg.isEmpty) {
+    if (!stopParsing && nextArg.isNotEmpty) {
       switch (nextArg) {
         case '--d':
           continue outer;
@@ -80,7 +82,7 @@ List<String> getopt(String parseOptions, List<String> args) {
       }
       if (optString.contains(RegExp('.*,$nextArg:,.*'))) {
         options.add(nextArg);
-        if (!args.isEmpty) {
+        if (args.isNotEmpty) {
           options.add(args.removeAt(0));
         }
         continue outer;
@@ -111,7 +113,7 @@ void main(List<String> args) {
   final currentVersion = Version.fromString(versionFile.readAsStringSync());
   Version? nextVersion;
 
-  if (args.length > 0) {
+  if (args.isNotEmpty) {
     if (args.first == '-M') {
       nextVersion = currentVersion.bumpMajor();
     } else if (args.first == '-m') {
@@ -132,7 +134,7 @@ void main(List<String> args) {
     nextVersion = Version.fromString(versionStr);
   }
   late String? log;
-  if (!args.isEmpty) {
+  if (args.isNotEmpty) {
     log = args.first;
   } else {
     stdout.write("Enter changelog: ");

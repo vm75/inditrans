@@ -6,19 +6,20 @@
     "targets": [
       {
         "script": "tamil",
-        "text": "ஶ்ரீ॒ கு॒ரு॒ப்யோ நம॒꞉ । ஹ॒ரி॒꞉ ௐ ॥ ௐ க॒ணானாமஂ᳚ த்வா க॒ணப॑திꣳ ஹவாமஹே க॒விமஂ க॑வீ॒னாமு॑ப॒மஶ்ர॑வஸ்தமமஂ"
+        "text": "ஶ்ரீ॒ கு॒ரு॒ப்யோ நம॒꞉ । ஹ॒ரி॒꞉ ௐ ॥ ௐ க॒ணானாம்᳚ த்வா க॒ணப॑திꣳ ஹவாமஹே க॒விம் க॑வீ॒னாமு॑ப॒மஶ்ர॑வஸ்தமம்"
       },
       {
-        "script": "tamilsimple",
-        "text": "ஶ்ரீ॒ கு³॒ரு॒ப்⁴யோ நம॒꞉ । ஹ॒ரி॒꞉ ௐ ॥ ௐ க³॒ணானாம்᳚ த்வா க³॒ணப॑திꣳ ஹவாமஹே க॒விம் க॑வீ॒னாமு॑ப॒மஶ்ர॑வஸ்தமம்"
+        "script": "tamil",
+        "text": "ஶ்ரீ॒ கு³॒ரு॒ப்⁴யோ நம॒꞉ । ஹ॒ரி॒꞉ ௐ ॥ ௐ க³॒ணானாம்᳚ த்வா க³॒ணப॑திꣳ ஹவாமஹே க॒விம் க॑வீ॒னாமு॑ப॒மஶ்ர॑வஸ்தமம்",
+        "options": "TamilSuperscripted"
       },
       {
-        "script": "romansimple",
-        "text": "shree̱ gu̱ru̱bhyO nama̱h . ha̱ri̱h om .. om ga̱Naanaa̎m tvaa ga̱Napa̍tigum havaamahE ka̱vim ka̍vee̱naamu̍pa̱mashra̍vastamam"
+        "script": "readablelatin",
+        "text": "shree̱ gu̱ru̱bhyO nama̱h ! ha̱ri̱h om !! om ga̱Naanaa̎m tvaa ga̱Napa̍tigum havaamahE ka̱vim ka̍vee̱naamu̍pa̱mashra̍vastamam"
       },
       {
-        "script": "romansimple",
-        "text": "shree gurubhyO namah . harih om .. om gaNaanaam tvaa gaNapatigum havaamahE kavim kaveenaamupamashravastamam",
+        "script": "readablelatin",
+        "text": "shree gurubhyO namah ! harih om !! om gaNaanaam tvaa gaNapatigum havaamahE kavim kaveenaamupamashravastamam",
         "options": "IgnoreVedicAccents"
       },
       {
@@ -27,7 +28,8 @@
       },
       {
         "script": "ipa",
-        "text": "ʃɾiː guɾubʰjoː n̪əməh . ɦəɾɪh oːm .. oːm gəɳɑːn̪ɑː̃ t̪ʋɑː gəɳəpət̪ɪgͫ ɦəʋɑːməɦeː kəʋɪ̃ kəʋiːn̪ɑːmupəməʃɾəʋəs̪t̪əmə̃"
+        "text": "ʃɾiː guɾubʰjoː n̪əməh . ɦəɾɪh oːm .. oːm gəɳɑːn̪ɑː̃ t̪ʋɑː gəɳəpət̪ɪgͫ ɦəʋɑːməɦeː kəʋɪ̃ kəʋiːn̪ɑːmupəməʃɾəʋəs̪t̪əmə̃",
+        "options": "IgnoreVedicAccents"
       }
     ]
   },
@@ -37,11 +39,11 @@
     "script": "devanagari",
     "targets": [
       {
-        "script": "tamilsimple",
+        "script": "tamil",
         "text": "க்ஷ த்ர ஜ்ஞ ஶ்ர"
       },
       {
-        "script": "romansimple",
+        "script": "readablelatin",
         "text": "ksha tra jna shra"
       },
       {
@@ -56,15 +58,16 @@
     "script": "devanagari",
     "targets": [
       {
-        "script": "tamilsimple",
-        "text": "ங்ˆக³  ஞ்ˆஜ³  ண்ˆட³  ந்ˆத³  ம்ˆப³"
+        "script": "tamil",
+        "text": "ங்ˆக³  ஞ்ˆஜ³  ண்ˆட³  ந்ˆத³  ம்ˆப³",
+        "options": "TamilSuperscripted"
       },
       {
         "script": "iast",
         "text": "n̆ga  n̆ja  n̆ḍa  n̆da  m̆ba"
       },
       {
-        "script": "romansimple",
+        "script": "readablelatin",
         "text": "nga  nja  nDa  nda  mba"
       }
     ]
@@ -79,7 +82,7 @@
         "text": "chaTha (with virama)chTha (with virama and zwnj)chTha (with udaat)chTha"
       },
       {
-        "script": "romansimple",
+        "script": "readablelatin",
         "text": "chaTha (with virama)chTha (with virama and zwnj)chTha (with udaat)chTha"
       }
     ]
@@ -114,16 +117,17 @@
     "targets": [
       {
         "script": "tamil",
-        "text": "நாமஂ᳚ ஏ᳚ˇ ஜி᳚"
+        "text": "நாம்᳚ ஏ᳚ˇ ஜி᳚"
       },
       {
-        "script": "tamilsimple",
-        "text": "நாம்᳚ ஏ᳚ˇ ஜி²᳚"
+        "script": "tamil",
+        "text": "நாம்᳚ ஏ᳚ˇ ஜி²᳚",
+        "options": "TamilSuperscripted"
       },
       {
-        "script": "tamilsimple",
+        "script": "tamil",
         "text": "நாம் ஏˇ ஜி²",
-        "options": "IgnoreVedicAccents"
+        "options": "TamilSuperscripted IgnoreVedicAccents"
       }
     ]
   },
@@ -133,37 +137,36 @@
     "script": "tamil",
     "targets": [
       {
-        "script": "romansimple",
+        "script": "readablelatin",
         "text": "ko kO kau"
       }
     ]
   },
   {
     "description": "Anuswara",
-    "text": "पंक्ती पंडित् इदं संस्कृतम् संस्कृतं",
+    "text": "पंक्ती पंडित् अंज इदं संस्कृतम् संस्कृतं",
     "script": "devanagari",
     "targets": [
       {
         "script": "tamil",
-        "text": "பமஂக்தீ பமஂடித் இதமஂ ஸமஂஸ்க்ருʼதம் ஸமஂஸ்க்ருʼதமஂ"
+        "text": "பங்க்தீ பண்டித் அஞ்ஜ இதம் ஸம்ஸ்க்ருʼதம் ஸம்ஸ்க்ருʼதம்"
       },
       {
-        "script": "tamilsimple",
-        "text": "பங்க்தீ பண்டி³த் இத³ம் சந்ச்க்ருதம் சந்ச்க்ருதம்",
-        "options": "TamilTraditional"
+        "script": "tamil",
+        "text": "பங்க்தீ பண்டி³த் அஞ்ச³ இத³ம் சம்ச்க்ருʼதம் சம்ச்க்ருʼதம்",
+        "options": "TamilSuperscripted TamilTraditional"
       },
       {
-        "script": "romansimple",
-        "text": "panktee paNDit idam sanskritam sanskritam"
-      },
-      {
-        "script": "iso",
-        "text": "paṁktī paṁḍit idaṁ saṁskr̥tam saṁskr̥taṁ"
+        "script": "readablelatin",
+        "text": "panktee paNDit anja idam samskru̥tam samskru̥tam"
       },
       {
         "script": "iso",
-        "text": "paṅktī paṇḍit idam sanskr̥tam sanskr̥tam",
-        "options": "InferAnuswara"
+        "text": "paṁktī paṁḍit aṁja idaṁ saṁskr̥tam saṁskr̥taṁ"
+      },
+      {
+        "script": "iso",
+        "text": "paṁktī paṁḍit aṁja idaṁ saṁskr̥tam saṁskr̥taṁ"
       }
     ]
   },
@@ -177,7 +180,7 @@
         "text": "ஃபகீர ஃபிக்ர ஃபேக"
       },
       {
-        "script": "romansimple",
+        "script": "readablelatin",
         "text": "fakeera fikra fEka"
       }
     ]
@@ -195,12 +198,12 @@
   },
   {
     "description": "tamil - infer",
-    "text": "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா",
+    "text": "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப​",
     "script": "tamil",
     "targets": [
       {
-        "script": "romansimple",
-        "text": "tanga padakkam sarchchaikkuriya seydigaL paappaa pambaa"
+        "script": "readablelatin",
+        "text": "tanga padakkam charchchaikkuriya cheydigaL paappaa pambaa ambaa krubai tandu rakshiyamba"
       }
     ]
   },
@@ -218,11 +221,12 @@
   {
     "description": "tamilsuperscripted-vedic",
     "text": "ஶ்ரீ கு³ருப்⁴யோ நம꞉ । ஹரி꞉ ௐ ॥ ௐ க³ணானாம்ʼ த்வா க³ணபதிꣳ ஹவாமஹே கவிம்ʼ கவீனாமு॑பமஶ்ரவஸ்தமம்ʼ",
-    "script": "tamilsuperscripted",
+    "script": "tamil",
     "targets": [
       {
         "script": "devanagari",
-        "text": "श्री गुरुभ्यो नमः । हरिः ॐ ॥ ॐ गणाऩां त्वा गणपतिꣳ हवामहे कविं कवीऩामु॑पमश्रवस्तमं"
+        "text": "श्री गुरुभ्यो नमः । हरिः ॐ ॥ ॐ गणाऩां त्वा गणपतिꣳ हवामहे कविं कवीऩामु॑पमश्रवस्तमं",
+        "options": "TamilSuperscripted"
       }
     ]
   },
@@ -232,8 +236,8 @@
     "script": "devanagari",
     "targets": [
       {
-        "script": "romansimple",
-        "text": "krishNa"
+        "script": "readablelatin",
+        "text": "kru̥shNa"
       }
     ]
   },
@@ -249,18 +253,54 @@
     ]
   },
   {
-    "description": "ASCII Numerals",
-    "text": "०१२३४५६७८९",
-    "script": "devanagari",
+    "description": "Indic for ascii",
+    "text": "https://www.w3schools.com/images/w3schools_green.jpg",
+    "script": "indic",
     "targets": [
       {
-        "script": "tamil",
-        "text": "௦௧௨௩௪௫௬௭௮௯"
+        "script": "itrans",
+        "text": "https://www.w3schools.com/images/w3schools_green.jpg"
+      },
+      {
+        "script": "devanagari",
+        "text": "https://www.w3schools.com/images/w3schools_green.jpg"
       },
       {
         "script": "tamil",
-        "text": "0123456789",
-        "options": "ASCIINumerals"
+        "text": "https://www.w3schools.com/images/w3schools_green.jpg"
+      }
+    ]
+  },
+  {
+    "description": "Indic->readablelatin",
+    "text": "धन्य अंजनीच्या सुता",
+    "script": "indic",
+    "targets": [
+      {
+        "script": "readablelatin",
+        "text": "dhanya anjaneechyaa sutaa"
+      }
+    ]
+  },
+  {
+    "description": "tamil-read prefix tests",
+    "text": "அதுபோல",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "readablelatin",
+        "text": "adupOla"
+      }
+    ]
+  },
+  {
+    "description": "tamil-write prefix tests",
+    "text": "andanāl̤ mānilā",
+    "script": "iast",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "அந்தநாள் மாநிலா"
       }
     ]
   }

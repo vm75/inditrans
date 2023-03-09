@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 void main(List<String> args) async {
@@ -9,7 +11,7 @@ void main(List<String> args) async {
     return;
   }
 
-  Directory.current = new Directory('flutter');
+  Directory.current = Directory('flutter');
   final result =
       await Process.run('dart', ['run', 'ffigen', '--config', 'ffigen.yaml']);
 
