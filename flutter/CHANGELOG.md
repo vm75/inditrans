@@ -1,3 +1,7 @@
+## 0.3.4
+
+- Fixed some corner case
+
 ## 0.3.3
 
 - Added support for Tamil prefix

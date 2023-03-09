@@ -771,10 +771,14 @@ protected:
     auto leadText = map.lookupChar(tokenUnit.leadToken);
 
     if (tokenUnit.leadToken.tokenType == TokenType::Consonant) {
-      if (leadIdx == 19 /* ந */ && !(wordStart || endOfPrefix)) {
-        if (next == endOfText || tokenUnit.vowelDiacritic.idx != SpecialIndices::Virama) {
-          leadText = "ன";
-        }
+      // The consonant “ந்” will come in the middle of the words only.
+      // The consonant “ண்” and the consonant “ன்” will come at the middle and at the end of words
+      // When the consonant “ண்” becomes a uyir meiy it will not come in the beginning of any word
+      // When the consonant “ந்” becomes a uyir meiy it will only come at the beginning of the word. It will not come at
+      // the end of a any word When the consonant “ன்” becomes a uyir meiy it will not come in the beginning of any word
+      if (leadIdx == 19 /* ந */ && !(wordStart || endOfPrefix)
+          && (tokenUnit.vowelDiacritic.idx != SpecialIndices::Virama || isEndOfWord(next))) {
+        leadText = "ன";
       } else if (options * TranslitOptions::TamilTraditional) {
         auto repl = tamilTraditionalMap.find(leadText);
         if (repl != tamilTraditionalMap.end()) {
@@ -900,6 +904,18 @@ protected:
     } else {
       anuswaraSize = anuswara.size();
     }
+  }
+
+  bool isEndOfWord(const TokenUnitOrString& next) const noexcept {
+    if (next == endOfText) {
+      return true;
+    }
+    if (HoldsString(next)) {
+      return TamilSuperscripts.find(GetString(next)) == TamilSuperscripts.npos;
+    }
+    const auto token = GetTokenUnit(next);
+    return (token.leadToken.tokenType == TokenType::Symbol && token.leadToken.idx < SpecialIndices::ZeroWidthSpace)
+        || token.leadToken.tokenType == TokenType::ToggleTrans;
   }
 
 private:

@@ -295,12 +295,24 @@
   },
   {
     "description": "tamil-write prefix tests",
-    "text": "andanāl̤ mānilā",
+    "text": "andanāl̤ mānilā sarvān",
     "script": "iast",
     "targets": [
       {
         "script": "tamil",
-        "text": "அந்தநாள் மாநிலா"
+        "text": "அந்தநாள் மாநிலா ஸர்வான்"
+      }
+    ]
+  },
+  {
+    "description": "devanagari to tamil",
+    "text": "देवासुरगणाँल्लोकान् पाति",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "தே³வாஸுரக³ணானஂல்லோகான் பாதி",
+        "options": "TamilSuperscripted"
       }
     ]
   }

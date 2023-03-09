@@ -6,7 +6,7 @@ version:
 	dart ./scripts/bump_version.dart
 
 # Common
-ifdef  DEBUG
+ifdef DEBUG
     COMPILER_OPTIONS=-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address
     LINKER_OPTIONS=-Wl,--no-entry
 else
@@ -17,7 +17,7 @@ endif
 ifeq ($(OS), Windows_NT)
     NATIVE_EXEC=out/inditrans_native.exe
 else
-	NATIVE_EXEC=out/inditrans_native
+    NATIVE_EXEC=out/inditrans_native
 endif
 HEADERS_CC = $(wildcard native/src/*.h)
 SOURCES_CC = $(wildcard native/src/*.cpp)
