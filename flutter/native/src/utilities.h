@@ -1,5 +1,6 @@
 #pragma once
 
+#include "trie.h"
 #include "utf.h"
 #include <algorithm>
 #include <array>
@@ -28,12 +29,6 @@ template <typename Key, typename Value, std::size_t Size> struct ConstexprMap {
   }
 };
 
-template <typename ValueType> struct TrieNode {
-  using NodeMap = std::unordered_map<char32_t, std::unique_ptr<TrieNode<ValueType>>>;
-  std::optional<ValueType> value { std::nullopt };
-  std::unique_ptr<NodeMap> nodes { nullptr };
-};
-
 template <typename ValueType> class Char32Trie {
 public:
   struct LookupResult {
@@ -52,12 +47,10 @@ public:
     auto* lookupNode = &root;
 
     while (text < end) {
-      auto nextChar32 = *text;
-      text++;
-      auto nextChar = nextChar32;
+      auto nextChar = *text++;
       auto mapEntry = lookupNode->find(nextChar);
       if (mapEntry == lookupNode->end()) {
-        mapEntry = lookupNode->emplace(nextChar, std::make_unique<TrieNode<ValueType>>()).first;
+        mapEntry = lookupNode->emplace(nextChar, std::make_unique<TrieNode<char32_t, ValueType>>()).first;
       }
 
       auto& lookup = mapEntry->second;
@@ -73,7 +66,7 @@ public:
         lookup->value = value;
       } else {
         if (lookup->nodes == nullptr) {
-          lookup->nodes = std::make_unique<typename TrieNode<ValueType>::NodeMap>();
+          lookup->nodes = std::make_unique<typename TrieNode<char32_t, ValueType>::NodeMap>();
         }
         lookupNode = lookup->nodes.get();
       }
@@ -114,7 +107,7 @@ public:
   }
 
 private:
-  typename TrieNode<ValueType>::NodeMap root {};
+  typename TrieNode<char32_t, ValueType>::NodeMap root {};
 };
 
 template <typename CharType, typename ValueType> class StringMap {

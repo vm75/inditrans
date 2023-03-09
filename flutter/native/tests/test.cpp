@@ -22,40 +22,6 @@ template <class TimeT = std::chrono::milliseconds, class ClockT = std::chrono::s
   }
 };
 
-void testUtf() noexcept {
-  std::cout << std::endl << "Utf tests" << std::endl;
-
-  constexpr Utf8Char utf8Char = "न"_uc8;
-  constexpr Utf32Char utf32Char = U'न'_uc32;
-  testAssert("utf8Char.char32", utf8Char.char32().ch == utf32Char);
-  testAssert("utf8Char.string", utf8Char.string() == "न");
-  testAssert("utf8Char.view", utf8Char.view() == "न");
-  testAssert("utf32Char.string", utf32Char.string() == "न");
-
-  constexpr auto in = "श्री॒ गु॒रु॒भ्यो नमः॒ । ह॒रिः॒ ओ३म् ॥"_us8;
-  std::string out;
-  size_t offset {};
-  while (!in.emptyAt(offset)) {
-    out += (in(offset)).string();
-  }
-
-  testAssert("utf8String iterate", in == std::string_view(out.c_str(), out.length()));
-
-  testAssert("Utf8Char.isZero", Utf8Char("").isZero());
-}
-
-void testJson() noexcept {
-  auto val = JsonReader::parseJson(std::string_view(R"(
-    {
-      "types" : ["om=\u0950", 123, -123, 1234.5678, true, false, null],
-      "nested": [ "val1", "val2", {
-        "x" : "y"
-      } ]
-    }
-  )"));
-  std::cout << std::endl;
-}
-
 bool testTranslit(const std::string_view& description, const std::string_view& from, const std::string_view& to,
     const std::string_view& text, const std::string_view& expected, const std::string_view& optStr) noexcept {
   static size_t testNum { 1 };
@@ -163,15 +129,13 @@ int main(int argc, const char** argv) {
     std::cout << std::endl;
   };
   bool prof = argc > 1 && std::string(argv[1]) == std::string("-p");
-  if (argc > 4 && std::string(argv[1]) == std::string("-t")) {
+  if (argc > 2 && std::string(argv[1]) == std::string("-t")) {
     std::unique_ptr<char> out;
-    translitProxy(argv[2], argv[3], argv[4], TranslitOptions::None, out);
+    translitProxy(argv[2], "tamil", "readablelatin", TranslitOptions::None, out);
     std::cout << out.get() << std::endl;
     return 0;
   }
   if (!prof) {
-    testJson();
-    testUtf();
     testAllTranslit();
   }
   testPerf(prof);
