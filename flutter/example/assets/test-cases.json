@@ -1,0 +1,335 @@
+[
+  {
+    "description": "vedic with accents",
+    "text": "श्री॒ गु॒रु॒भ्यो नमः॒ । ह॒रिः॒ ओ३म् ॥ ॐ ग॒णानां᳚ त्वा ग॒णप॑तिꣳ हवामहे क॒विं क॑वी॒नामु॑प॒मश्र॑वस्तमं",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "ஶ்ரீ॒ கு॒ரு॒ப்யோ நம॒꞉ । ஹ॒ரி॒꞉ ௐ ॥ ௐ க॒ணானாம்᳚ த்வா க॒ணப॑திꣳ ஹவாமஹே க॒விம் க॑வீ॒னாமு॑ப॒மஶ்ர॑வஸ்தமம்"
+      },
+      {
+        "script": "tamil",
+        "text": "ஶ்ரீ॒ கு³॒ரு॒ப்⁴யோ நம॒꞉ । ஹ॒ரி॒꞉ ௐ ॥ ௐ க³॒ணானாம்᳚ த்வா க³॒ணப॑திꣳ ஹவாமஹே க॒விம் க॑வீ॒னாமு॑ப॒மஶ்ர॑வஸ்தமம்",
+        "options": "TamilSuperscripted"
+      },
+      {
+        "script": "readablelatin",
+        "text": "shree̱ gu̱ru̱bhyO nama̱h ! ha̱ri̱h om !! om ga̱Naanaa̎m tvaa ga̱Napa̍tigum havaamahE ka̱vim ka̍vee̱naamu̍pa̱mashra̍vastamam"
+      },
+      {
+        "script": "readablelatin",
+        "text": "shree gurubhyO namah ! harih om !! om gaNaanaam tvaa gaNapatigum havaamahE kavim kaveenaamupamashravastamam",
+        "options": "IgnoreVedicAccents"
+      },
+      {
+        "script": "iast",
+        "text": "śrī̱ gu̱ru̱bhyo nama̱ḥ . ha̱ri̱ḥ oṃ .. oṃ ga̱ṇānā̎ṃ tvā ga̱ṇapa̍tigͫ havāmahe ka̱viṃ ka̍vī̱nāmu̍pa̱maśra̍vastamaṃ"
+      },
+      {
+        "script": "ipa",
+        "text": "ʃɾiː guɾubʰjoː n̪əməh . ɦəɾɪh oːm .. oːm gəɳɑːn̪ɑː̃ t̪ʋɑː gəɳəpət̪ɪgͫ ɦəʋɑːməɦeː kəʋɪ̃ kəʋiːn̪ɑːmupəməʃɾəʋəs̪t̪əmə̃",
+        "options": "IgnoreVedicAccents"
+      }
+    ]
+  },
+  {
+    "description": "Consonant clusters",
+    "text": "क्ष त्र ज्ञ श्र",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "க்ஷ த்ர ஜ்ஞ ஶ்ர"
+      },
+      {
+        "script": "readablelatin",
+        "text": "ksha tra jna shra"
+      },
+      {
+        "script": "itrans",
+        "text": "kSha tra j~na shra"
+      }
+    ]
+  },
+  {
+    "description": "Sinhala consonants",
+    "text": "ँˆग  ँˆज  ँˆड  ँˆद  ँˆब",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "ங்ˆக³  ஞ்ˆஜ³  ண்ˆட³  ந்ˆத³  ம்ˆப³",
+        "options": "TamilSuperscripted"
+      },
+      {
+        "script": "iast",
+        "text": "n̆ga  n̆ja  n̆ḍa  n̆da  m̆ba"
+      },
+      {
+        "script": "readablelatin",
+        "text": "nga  nja  nDa  nda  mba"
+      }
+    ]
+  },
+  {
+    "description": "ZWNJ - From Devanagari",
+    "text": "चठ (with virama)च्ठ (with virama and zwnj)च्‌ठ (with udaat)च᳭ठ",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "itrans",
+        "text": "chaTha (with virama)chTha (with virama and zwnj)chTha (with udaat)chTha"
+      },
+      {
+        "script": "readablelatin",
+        "text": "chaTha (with virama)chTha (with virama and zwnj)chTha (with udaat)chTha"
+      }
+    ]
+  },
+  {
+    "description": "ZWNJ - From itrans",
+    "text": "chaTha ##(with virama)## - chTha ##(with virama and zwnj)## - ch{}Tha",
+    "script": "itrans",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "चठ (with virama) - च्ठ (with virama and zwnj) - च्‌ठ",
+        "options": "RetainZeroWidthChars"
+      }
+    ]
+  },
+  {
+    "description": "iast - vedic",
+    "text": "śrī̱ gu̱ru̱bhyo nama̱ḥ . ha̱ri̱ḥ oṃ .. oṃ ga̱ṇānā̎ṃ tvā ga̱ṇapa̍tigͫ havāmahe ka̱viṃ ka̍vī̱nāmu̍pa̱maśra̍vastamaṃ",
+    "script": "iast",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "श्री॒ गु॒रु॒भ्यो नमः॒ । ह॒रिः॒ ॐ ॥ ॐ ग॒णानां᳚ त्वा ग॒णप॑तिꣳ हवामहे क॒विं क॑वी॒नामु॑प॒मश्र॑वस्तमं"
+      }
+    ]
+  },
+  {
+    "description": "Tamil accent after special chars",
+    "text": "नां᳚ एॕ᳚ झि᳚",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "நாம்᳚ ஏ᳚ˇ ஜி᳚"
+      },
+      {
+        "script": "tamil",
+        "text": "நாம்᳚ ஏ᳚ˇ ஜி²᳚",
+        "options": "TamilSuperscripted"
+      },
+      {
+        "script": "tamil",
+        "text": "நாம் ஏˇ ஜி²",
+        "options": "TamilSuperscripted IgnoreVedicAccents"
+      }
+    ]
+  },
+  {
+    "description": "Tamil compound vowel diactirics",
+    "text": "கொ கோ கௌ",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "readablelatin",
+        "text": "ko kO kau"
+      }
+    ]
+  },
+  {
+    "description": "Anuswara",
+    "text": "पंक्ती पंडित् अंज इदं संस्कृतम् संस्कृतं",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "பங்க்தீ பண்டித் அஞ்ஜ இதம் ஸம்ஸ்க்ருʼதம் ஸம்ஸ்க்ருʼதம்"
+      },
+      {
+        "script": "tamil",
+        "text": "பங்க்தீ பண்டி³த் அஞ்ச³ இத³ம் சம்ச்க்ருʼதம் சம்ச்க்ருʼதம்",
+        "options": "TamilSuperscripted TamilTraditional"
+      },
+      {
+        "script": "readablelatin",
+        "text": "panktee paNDit anja idam samskru̥tam samskru̥tam"
+      },
+      {
+        "script": "iso",
+        "text": "paṁktī paṁḍit aṁja idaṁ saṁskr̥tam saṁskr̥taṁ"
+      },
+      {
+        "script": "iso",
+        "text": "paṁktī paṁḍit aṁja idaṁ saṁskr̥tam saṁskr̥taṁ"
+      }
+    ]
+  },
+  {
+    "description": "Devanagari - arabic",
+    "text": "फ़कीर फ़िक्र फ़ेक",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "ஃபகீர ஃபிக்ர ஃபேக"
+      },
+      {
+        "script": "readablelatin",
+        "text": "fakeera fikra fEka"
+      }
+    ]
+  },
+  {
+    "description": "arabic - compound",
+    "text": "क़ ख़ ग़ ज़ ड़ ढ़ फ़ य़",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "qa k͟ha ġa za ṛa ṛha fa ẏa"
+      }
+    ]
+  },
+  {
+    "description": "tamil - infer",
+    "text": "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப​",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "readablelatin",
+        "text": "tanga padakkam charchchaikkuriya cheydigaL paappaa pambaa ambaa krubai tandu rakshiyamba"
+      }
+    ]
+  },
+  {
+    "description": "tamil - arabic",
+    "text": "ஃப ஃபி ஃபே",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "फ़ फ़ि फ़े"
+      }
+    ]
+  },
+  {
+    "description": "tamilsuperscripted-vedic",
+    "text": "ஶ்ரீ கு³ருப்⁴யோ நம꞉ । ஹரி꞉ ௐ ॥ ௐ க³ணானாம்ʼ த்வா க³ணபதிꣳ ஹவாமஹே கவிம்ʼ கவீனாமு॑பமஶ்ரவஸ்தமம்ʼ",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "श्री गुरुभ्यो नमः । हरिः ॐ ॥ ॐ गणाऩां त्वा गणपतिꣳ हवामहे कविं कवीऩामु॑पमश्रवस्तमं",
+        "options": "TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "devanagari",
+    "text": "कृष्ण",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "readablelatin",
+        "text": "kru̥shNa"
+      }
+    ]
+  },
+  {
+    "description": "Malayalam",
+    "text": "കര്‍ന",
+    "script": "malayalam",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "कर्न"
+      }
+    ]
+  },
+  {
+    "description": "Indic for ascii",
+    "text": "https://www.w3schools.com/images/w3schools_green.jpg",
+    "script": "indic",
+    "targets": [
+      {
+        "script": "itrans",
+        "text": "https://www.w3schools.com/images/w3schools_green.jpg"
+      },
+      {
+        "script": "devanagari",
+        "text": "https://www.w3schools.com/images/w3schools_green.jpg"
+      },
+      {
+        "script": "tamil",
+        "text": "https://www.w3schools.com/images/w3schools_green.jpg"
+      }
+    ]
+  },
+  {
+    "description": "Indic->readablelatin",
+    "text": "धन्य अंजनीच्या सुता",
+    "script": "indic",
+    "targets": [
+      {
+        "script": "readablelatin",
+        "text": "dhanya anjaneechyaa sutaa"
+      }
+    ]
+  },
+  {
+    "description": "tamil-read prefix tests",
+    "text": "அதுபோல",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "readablelatin",
+        "text": "adupOla"
+      }
+    ]
+  },
+  {
+    "description": "tamil-write prefix tests",
+    "text": "andanāl̤ mānilā sarvān",
+    "script": "iast",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "அந்தநாள் மாநிலா ஸர்வான்"
+      }
+    ]
+  },
+  {
+    "description": "devanagari to tamil",
+    "text": "देवासुरगणाँल्लोकान् पाति",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "தே³வாஸுரக³ணானஂல்லோகான் பாதி",
+        "options": "TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "numerals",
+    "text": "०१२३४५६७८९",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "௦௧௨௩௪௫௬௭௮௯"
+      },
+      {
+        "script": "tamil",
+        "text": "0123456789",
+        "options": "ASCIINumerals"
+      }
+    ]
+  }
+]

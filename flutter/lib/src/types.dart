@@ -57,4 +57,17 @@ class Options {
   Options operator +(Options other) {
     return Options._(_value | other._value);
   }
+
+  static const Map<String, Options> values = {
+    'None': None,
+    'IgnoreVedicAccents': IgnoreVedicAccents,
+    'IgnoreQuotedMarkers': IgnoreQuotedMarkers,
+    'TamilTraditional': TamilTraditional,
+    'TamilSuperscripted': TamilSuperscripted,
+    'RetainZeroWidthChars': RetainZeroWidthChars,
+    'ASCIINumerals': ASCIINumerals,
+  };
+  static Options fromString(String name) {
+    return values[name] ?? None;
+  }
 }
