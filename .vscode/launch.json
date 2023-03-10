@@ -41,5 +41,14 @@
               }
             ]
         },
+        {
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/nodejs/dist/src/index.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
     ]
 }

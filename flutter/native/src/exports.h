@@ -49,15 +49,11 @@ enum TranslitOptions {
   RetainZeroWidthChars = 16,
   ASCIINumerals = 32,
 };
-ext_def(unsigned long) translitOptionsToInt(const char* optionStr);
 
 /// transliterate
 ext_def(char*) transliterate(const char* text, const char* from, const char* to, unsigned long options);
 
-/// transliterate2
-ext_def(char*) transliterate2(const char* text, const char* from, const char* to, const char* optionStr);
-
-/// release
+/// releaseBuffer
 ext_def(void) releaseBuffer(char* buffer);
 
 #ifdef __cplusplus

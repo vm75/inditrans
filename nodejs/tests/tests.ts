@@ -1,11 +1,6 @@
-import { IndiTrans, TranslitOptions } from '../src';
+import { IndiTrans } from '../src/IndiTrans';
 import Tests from './test-cases.json';
-
-async function withIndiTrans(callback: (indiTrans: IndiTrans) => void) {
-  IndiTrans.instance.then((indiTrans) => {
-    callback(indiTrans);
-  });
-}
+import { TranslitOptions } from '../src/TranslitOptions';
 
 function getOptionsMap(): Map<string, TranslitOptions> {
   const map = new Map<string, TranslitOptions>();
@@ -31,37 +26,62 @@ function getOptions(options: string): TranslitOptions {
   return result;
 }
 
-try {
-  IndiTrans.instance.then((inditrans) => {
-    for (const input of Tests) {
-      for (const target of input.targets) {
-        test(input.description, (done) => {
-          const result = inditrans.transliterate(
-            input.text,
-            input.script,
-            target.script,
-            getOptions(target.options || '')
-          );
-          // console.log(result);
-          expect(result).toBe(target.text);
-          done();
-        });
-      }
-    }
-  });
-} catch (error) {
-  console.error('*********************');
+class TestData {
+  description: string;
+  text: string;
+  fromScript: string;
+  toScript: string;
+  options: string;
+  expected: string;
+
+  constructor(
+    description: string,
+    text: string,
+    fromScript: string,
+    toScript: string,
+    options: string,
+    expected: string
+  ) {
+    this.description = description;
+    this.text = text;
+    this.fromScript = fromScript;
+    this.toScript = toScript;
+    this.options = options;
+    this.expected = expected;
+  }
 }
 
-// test('Calling wasm methods', async () => {
-//   await withIndiTrans((inditrans) => {
-//     expect(
-//       inditrans.transliterate(
-//         'தங்கப் பதக்கம்',
-//         'tamil',
-//         'readablelatin',
-//         TranslitOptions.None
-//       )
-//     ).toBe('tanga padakkam');
-//   });
-// });
+const testData = [];
+
+for (const input of Tests) {
+  for (const target of input.targets) {
+    testData.push(
+      new TestData(
+        input.description,
+        input.text,
+        input.script,
+        target.script,
+        target.options || '',
+        target.text
+      )
+    );
+  }
+}
+
+let inditrans: IndiTrans;
+beforeAll(async () => {
+  inditrans = await IndiTrans.instance;
+});
+
+test.each(testData)(
+  '$description',
+  ({ text, fromScript, toScript, options, expected }) => {
+    const result = inditrans.transliterate(
+      text,
+      fromScript,
+      toScript,
+      getOptions(options)
+    );
+    expect(result).toBe(expected);
+  }
+);

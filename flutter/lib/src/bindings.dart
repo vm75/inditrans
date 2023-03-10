@@ -28,21 +28,6 @@ class InditransBindings {
           lookup)
       : _lookup = lookup;
 
-  int translitOptionsToInt(
-    ffi.Pointer<ffi.Uint8> optionStr,
-  ) {
-    return _translitOptionsToInt(
-      optionStr,
-    );
-  }
-
-  late final _translitOptionsToIntPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(
-              ffi.Pointer<ffi.Uint8>)>>('translitOptionsToInt');
-  late final _translitOptionsToInt = _translitOptionsToIntPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Uint8>)>();
-
   /// transliterate
   ffi.Pointer<ffi.Uint8> transliterate(
     ffi.Pointer<ffi.Uint8> text,
@@ -69,36 +54,7 @@ class InditransBindings {
       ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>,
           ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, int)>();
 
-  /// transliterate2
-  ffi.Pointer<ffi.Uint8> transliterate2(
-    ffi.Pointer<ffi.Uint8> text,
-    ffi.Pointer<ffi.Uint8> from,
-    ffi.Pointer<ffi.Uint8> to,
-    ffi.Pointer<ffi.Uint8> optionStr,
-  ) {
-    return _transliterate2(
-      text,
-      from,
-      to,
-      optionStr,
-    );
-  }
-
-  late final _transliterate2Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Uint8> Function(
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Pointer<ffi.Uint8>,
-              ffi.Pointer<ffi.Uint8>)>>('transliterate2');
-  late final _transliterate2 = _transliterate2Ptr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(
-          ffi.Pointer<ffi.Uint8>,
-          ffi.Pointer<ffi.Uint8>,
-          ffi.Pointer<ffi.Uint8>,
-          ffi.Pointer<ffi.Uint8>)>();
-
-  /// release
+  /// releaseBuffer
   void releaseBuffer(
     ffi.Pointer<ffi.Uint8> buffer,
   ) {

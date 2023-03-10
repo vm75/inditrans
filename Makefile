@@ -55,7 +55,7 @@ publish_nodejs:
 
 # Wasm defines
 RUNTIME_EXPORTS="EXPORTED_RUNTIME_METHODS=[\"cwrap\", \"ccall\"]"
-COMPILED_EXPORTS="EXPORTED_FUNCTIONS=[\"_malloc\", \"_free\", \"_translitOptionsToInt\", \"_transliterate\", \"_transliterate2\", \"_releaseBuffer\"]"
+COMPILED_EXPORTS="EXPORTED_FUNCTIONS=[\"_malloc\", \"_free\", \"_transliterate\", \"_releaseBuffer\"]"
 
 ifneq ($(OS), Windows_NT)
 	USER_SPEC=-u $(shell id -u):$(shell id -g)
@@ -65,11 +65,11 @@ endif
 
 wasm: nodejs-wasm flutter-wasm
 
-NODEJS_TARGET=dist/src/inditrans.js
+NODEJS_TARGET=dist/src/inditrans_wasm.js
 nodejs-wasm: nodejs/$(NODEJS_TARGET)
 nodejs/$(NODEJS_TARGET): $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
 	-mkdir -p nodejs/dist/src
-	docker run --rm $(USER_SPEC) -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/nodejs/src:/src/js" -v "$(CURDIR)/nodejs/dist:/dist" \
+	docker run --rm $(USER_SPEC) -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/nodejs/dist:/dist" \
 		emscripten/emsdk \
 			emcc inditrans.cpp -o /$(NODEJS_TARGET) \
 				$(COMPILER_OPTIONS) $(LINKER_OPTIONS) \
@@ -81,10 +81,7 @@ nodejs/$(NODEJS_TARGET): $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
 				-s SINGLE_FILE=1 \
 				-s ALLOW_MEMORY_GROWTH=1 \
 				-s $(RUNTIME_EXPORTS) \
-				-s $(COMPILED_EXPORTS) \
-				--extern-pre-js /src/js/inditrans.extern-pre.js \
-				--pre-js /src/js/inditrans.pre.js \
-				--post-js /src/js/inditrans.post.js
+				-s $(COMPILED_EXPORTS)
 
 FLUTTER_TARGET=assets/inditrans.wasm
 flutter-wasm: flutter/$(FLUTTER_TARGET)

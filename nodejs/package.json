@@ -15,12 +15,12 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "clean": "shx rm -rf dist/*",
-    "build": "yarn build-wasm && tsc",
+    "build": "yarn build-wasm && yarn copy-files && tsc",
     "build-wasm": "make -C .. nodejs-wasm",
     "watch": "tsc --watch",
     "test": "yarn jest --config jestconfig.json",
-    "copy-files": "shx mkdir -p s dist/src && shx cp -f src/inditrans.d.ts dist/src/",
-    "prepack": "yarn clean && yarn build-all"
+    "copy-files": "shx mkdir -p dist/src && shx cp -f src/inditrans.wasm dist/src/",
+    "prepack": "yarn clean && yarn build"
   },
   "devDependencies": {
     "@types/jest": "^27.0.2",

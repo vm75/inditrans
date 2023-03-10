@@ -21,26 +21,6 @@ inline constexpr bool operator/(const TranslitOptions& mask, const TranslitOptio
   return (mask & val) != val;
 }
 
-TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
-  Utf8String str(optStr);
-  static constexpr std::array<std::string_view, static_cast<size_t>(MaxTranslitOptions)> optionStrings
-      = { "None", "IgnoreVedicAccents", "IgnoreQuotedMarkers", "TamilTraditional", "TamilSuperscripted",
-          "RetainZeroWidthChars", "ASCIINumerals" };
-
-  TranslitOptions mask { TranslitOptions::None };
-  for (const auto& opt : str.split(" \t,:;/|&")) {
-    auto match = std::find(optionStrings.begin(), optionStrings.end(), opt);
-    if (match != optionStrings.end()) {
-      const auto idx = std::distance(optionStrings.begin(), match);
-      if (idx > 0) {
-        mask = mask | static_cast<TranslitOptions>(1 << (idx - 1));
-      }
-    }
-  }
-
-  return mask;
-}
-
 static bool scriptIsReadable(const std::string_view name) noexcept {
   constexpr std::array<std::string_view, 3> notReadable { "readablelatin", "romanreadable", "romancolloquial" };
   return std::find(notReadable.begin(), notReadable.end(), name) == notReadable.end();
@@ -1000,10 +980,6 @@ std::string transliterate(const std::string_view& input, const std::string_view&
 
 extern "C" {
 
-unsigned long CALL_CONV translitOptionsToInt(const char* optionStr) {
-  return static_cast<unsigned long>(getTranslitOptions(optionStr));
-}
-
 char* CALL_CONV transliterate(const char* input, const char* from, const char* to, unsigned long options) {
   std::unique_ptr<char> output;
   std::string_view inputView(input);
@@ -1013,10 +989,6 @@ char* CALL_CONV transliterate(const char* input, const char* from, const char* t
     auto retval = output.release();
     return retval;
   }
-}
-
-char* CALL_CONV transliterate2(const char* input, const char* from, const char* to, const char* optionStr) {
-  return transliterate(input, from, to, translitOptionsToInt(optionStr));
 }
 
 void CALL_CONV releaseBuffer(char* buffer) {
