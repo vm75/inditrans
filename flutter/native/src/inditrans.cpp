@@ -218,7 +218,7 @@ template <typename T> inline bool HoldsString(const T& var) { return std::holds_
 template <typename T> inline std::string_view GetString(const T& var) { return std::get<std::string_view>(var); }
 
 const TokenUnitOrString endOfText("");
-const TokenUnit invalidTokenUnit { ScriptToken(TokenType::Ignore, InvalidToken, ScriptType::Others) };
+// const TokenUnit invalidTokenUnit(ScriptToken(TokenType::Ignore, InvalidToken, ScriptType::Others));
 
 inline bool operator==(const TokenUnitOrString& a, const TokenUnitOrString& b) noexcept {
   if (HoldsString(a) && HoldsString(b)) {
@@ -377,7 +377,7 @@ public:
 
   inline bool hasMore() noexcept { return iter < tokenUnits.end(); }
 
-  TokenUnit lastToken = invalidTokenUnit;
+  TokenUnit lastToken = ScriptToken(TokenType::Ignore, InvalidToken, ScriptType::Others);
   TokenUnitOrString getNext() noexcept {
     const auto& next = *iter++;
     if (HoldsString(next)) {
@@ -402,7 +402,7 @@ public:
     }
     wordStart = (token.tokenType == TokenType::Symbol && token.idx < SpecialIndices::ZeroWidthSpace);
     if (wordStart) {
-      lastToken = invalidTokenUnit;
+      lastToken = ScriptToken(TokenType::Ignore, InvalidToken, ScriptType::Others);
     } else {
       lastToken = tokenUnit;
     }
@@ -537,7 +537,8 @@ private:
       // pronounced ṉḏṟa, the extra ḏ sound being a natural euphonic increment.
       if (hasVirama) {
         // ignore virama if end of word
-        return (isPrimary && isEndOfWord()) ? invalidTokenUnit : tokenUnit;
+        return (isPrimary && isEndOfWord()) ? ScriptToken(TokenType::Ignore, InvalidToken, ScriptType::Others)
+                                            : tokenUnit;
       }
       if (isPrimary) {
         if (wordStart || endOfPrefix) {
