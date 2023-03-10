@@ -97,5 +97,9 @@
     "streambuf": "cpp",
     "typeinfo": "cpp",
     "variant": "cpp"
-  }
+  },
+  "eslint.workingDirectories": [
+    "./nodejs"
+  ],
+  "eslint.format.enable": true
 }

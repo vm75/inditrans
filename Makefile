@@ -27,7 +27,7 @@ SOURCES_JS = $(wildcard nodejs/wasm/src/*.js)
 native: $(NATIVE_EXEC)
 
 $(NATIVE_EXEC): $(SOURCES_CC) $(HEADERS_CC) native/tests/test.cpp
-	-mkdir out
+	-mkdir -p out
 	clang++ ${COMPILER_OPTIONS} -I native/src $(SOURCES_CC) native/tests/test.cpp -o $@ && \
 		llvm-strip -s -R .comment -R .gnu.version --strip-unneeded $@
 
@@ -53,12 +53,9 @@ publish_flutter:
 
 publish_nodejs:
 
-# Wasm
+# Wasm defines
 RUNTIME_EXPORTS="EXPORTED_RUNTIME_METHODS=[\"cwrap\", \"ccall\"]"
 COMPILED_EXPORTS="EXPORTED_FUNCTIONS=[\"_malloc\", \"_free\", \"_translitOptionsToInt\", \"_transliterate\", \"_transliterate2\", \"_releaseBuffer\"]"
-
-NODEJS_TARGET=wasm/dist/inditrans.mjs
-FLUTTER_TARGET=assets/inditrans.wasm
 
 ifneq ($(OS), Windows_NT)
 	USER_SPEC=-u $(shell id -u):$(shell id -g)
@@ -66,17 +63,19 @@ else
 	USER_SPEC=
 endif
 
-wasm: nodejs/$(NODEJS_TARGET) flutter/$(FLUTTER_TARGET)
+wasm: nodejs-wasm flutter-wasm
 
+NODEJS_TARGET=dist/src/inditrans.js
+nodejs-wasm: nodejs/$(NODEJS_TARGET)
 nodejs/$(NODEJS_TARGET): $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
-	docker run --rm $(USER_SPEC) -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/nodejs/wasm/src:/src/js" -v "$(CURDIR)/nodejs:/dist" \
+	-mkdir -p nodejs/dist/src
+	docker run --rm $(USER_SPEC) -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/nodejs/src:/src/js" -v "$(CURDIR)/nodejs/dist:/dist" \
 		emscripten/emsdk \
-			emcc inditrans.cpp -o /dist/$(NODEJS_TARGET) \
+			emcc inditrans.cpp -o /$(NODEJS_TARGET) \
 				$(COMPILER_OPTIONS) $(LINKER_OPTIONS) \
 				-s WASM=1 \
 				-s ENVIRONMENT='web,node' \
 				-s NO_EXIT_RUNTIME=1 \
-				-s MODULARIZE=1 \
 				-s EXPORT_NAME=inditrans \
 				-s FILESYSTEM=0 \
 				-s SINGLE_FILE=1 \
@@ -87,6 +86,8 @@ nodejs/$(NODEJS_TARGET): $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
 				--pre-js /src/js/inditrans.pre.js \
 				--post-js /src/js/inditrans.post.js
 
+FLUTTER_TARGET=assets/inditrans.wasm
+flutter-wasm: flutter/$(FLUTTER_TARGET)
 flutter/$(FLUTTER_TARGET): $(SOURCES_CC) $(HEADERS_CC)
 	docker run --rm $(USER_SPEC) -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/flutter:/dist" \
 		emscripten/emsdk \

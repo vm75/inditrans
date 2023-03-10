@@ -1,25 +1,29 @@
 {
   "compilerOptions": {
+    "strict": true,
     "rootDir": ".",
     "outDir": "dist",
+    "module": "commonjs",
     "target": "esnext",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "useDefineForClassFields": true,
+    "allowJs": true,
     "lib": [
       "esnext",
       "dom"
     ],
-    "module": "esnext",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "useDefineForClassFields": true,
-    "strict": true,
-    "declaration": true,
-    "sourceMap": true,
-    "jsx": "preserve"
   },
   "include": [
-    "**/*.ts",
-    "**/*.d.ts",
-    "data"
-  ]
+    "src/**/*.ts",
+    "tests/**/*.ts",
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "archive",
+  ],
 }

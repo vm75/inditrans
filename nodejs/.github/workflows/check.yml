@@ -1,0 +1,40 @@
+name: Check
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            **/cpm_modules
+            **/node_modules
+          key: cpm-node-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake', '**/yarn.lock') }}
+
+      - uses: mymindstorm/setup-emsdk@v10
+        with:
+          version: 2.0.31
+
+      - name: Install C++/CMake style checkers
+        run: pip3 install clang-format==14.0.6 cmake_format==0.6.11 pyyaml
+
+      - name: install
+        env:
+          CPM_SOURCE_CACHE: ${{ github.workspace }}/cpm_modules
+        run: yarn install
+
+      - name: test
+        run: yarn run test
+
+      - name: check style
+        run: yarn run check:style

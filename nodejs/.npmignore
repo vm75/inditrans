@@ -1,1 +1,5 @@
-ts/
+/build
+/node_modules
+/.vscode
+/wasm
+/archive

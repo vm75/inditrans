@@ -10,8 +10,8 @@
   </div>
 
   <script type="module" defer>
-    import { InditransWasm } from 'inditrans_wasm.js';
-    InditransWasm().then(inditrans => {
+    import { Inditrans } from 'inditrans_wasm.js';
+    Inditrans().then(inditrans => {
       document.querySelector('.mybutton')
         .addEventListener('click', function () {
           var out = inditrans.transliterate("श्री॒ गु॒रु॒भ्यो नमः॒ । ह॒रिः॒ ओ३म् ॥", "devanagari", "tamil", "");
