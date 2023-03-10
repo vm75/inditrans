@@ -315,5 +315,21 @@
         "options": "TamilSuperscripted"
       }
     ]
+  },
+  {
+    "description": "numerals",
+    "text": "०१२३४५६७८९",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "௦௧௨௩௪௫௬௭௮௯"
+      },
+      {
+        "script": "tamil",
+        "text": "0123456789",
+        "options": "ASCIINumerals"
+      }
+    ]
   }
 ]
