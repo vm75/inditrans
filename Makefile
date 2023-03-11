@@ -48,6 +48,7 @@ publish_flutter:
 	cd flutter && flutter pub publish
 
 publish_nodejs:
+	cd nodejs && npm publish --access=public
 
 # Wasm defines
 RUNTIME_EXPORTS="EXPORTED_RUNTIME_METHODS=[\"cwrap\", \"ccall\"]"

@@ -1,6 +1,6 @@
 # inditrans
 
-An experimental transliterator library for some [Indic/Brahmi](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
+A transliterator transliterator library for some [Indic/Brahmi](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
 
 - Available on all platforms. Uses ffi for non-Web platforms and wasm for Web.
 - Self-contained and performant.
@@ -32,7 +32,7 @@ References:
   - ipa (https://en.wikipedia.org/wiki/International_Phonetic_Alphabet)
   - iso 15919 (https://en.wikipedia.org/wiki/ISO_15919)
   - itrans (https://en.wikipedia.org/wiki/ITRANS)
-  - readablelatin (easy to read latin script)
+  - readablelatin (easy to read in Latin alphabets with some customizations)
 
 ## Installation
 

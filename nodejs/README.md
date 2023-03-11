@@ -1,10 +1,11 @@
 # inditrans
 
-An experimental transliterator library for some [Indic/Brahmi](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
+A transliterator transliterator library for some [Indic/Brahmi](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
 
 - Self-contained and performant. Uses wasm.
 - Supports [vedic accents](https://en.wikipedia.org/wiki/Vedic_accent). Useful for vedic scriptures.
 - Smart transliteration to and from Tamil. Supports tamil superscript.
+- Very small footprint (< 80kb uncompressed).
 
 References:
 
@@ -31,7 +32,7 @@ References:
   - ipa (https://en.wikipedia.org/wiki/International_Phonetic_Alphabet)
   - iso 15919 (https://en.wikipedia.org/wiki/ISO_15919)
   - itrans (https://en.wikipedia.org/wiki/ITRANS)
-  - readablelatin (easy to read latin script)
+  - readablelatin (easy to read in Latin alphabets with some customizations)
 
 ## Installation
 
