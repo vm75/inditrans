@@ -39,26 +39,26 @@ extension InditransScriptExtension on String {
 }
 
 /// Transliteration options
-class Options {
+class Option {
   final int _value;
 
-  const Options._(this._value);
+  const Option._(this._value);
 
   int get value => _value;
 
-  static const None = Options._(0);
-  static const IgnoreVedicAccents = Options._(1);
-  static const IgnoreQuotedMarkers = Options._(2);
-  static const TamilTraditional = Options._(4);
-  static const TamilSuperscripted = Options._(8);
-  static const RetainZeroWidthChars = Options._(16);
-  static const ASCIINumerals = Options._(32);
+  static const None = Option._(0);
+  static const IgnoreVedicAccents = Option._(1);
+  static const IgnoreQuotedMarkers = Option._(2);
+  static const TamilTraditional = Option._(4);
+  static const TamilSuperscripted = Option._(8);
+  static const RetainZeroWidthChars = Option._(16);
+  static const ASCIINumerals = Option._(32);
 
-  Options operator +(Options other) {
-    return Options._(_value | other._value);
+  Option operator +(Option other) {
+    return Option._(_value | other._value);
   }
 
-  static const Map<String, Options> values = {
+  static const Map<String, Option> values = {
     'None': None,
     'IgnoreVedicAccents': IgnoreVedicAccents,
     'IgnoreQuotedMarkers': IgnoreQuotedMarkers,
@@ -67,7 +67,7 @@ class Options {
     'RetainZeroWidthChars': RetainZeroWidthChars,
     'ASCIINumerals': ASCIINumerals,
   };
-  static Options fromString(String name) {
+  static Option fromString(String name) {
     return values[name] ?? None;
   }
 }

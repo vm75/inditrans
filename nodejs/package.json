@@ -1,6 +1,6 @@
 {
   "name": "@vm75/inditrans",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "An experimental transliterator library for some Indic scripts.",
   "main": "./dist/src/index.js",
   "author": "VM75",
@@ -23,7 +23,7 @@
     "test": "yarn build && yarn jest --config jestconfig.json",
     "copy-files": "shx mkdir -p dist/src && shx cp -f src/inditrans.wasm dist/src/",
     "prepack": "yarn clean && yarn build",
-    "publish": "yarn test && npm publish --access=public"
+    "pub": "yarn test && npm publish --access=public"
   },
   "devDependencies": {
     "@types/jest": "^27.0.2",

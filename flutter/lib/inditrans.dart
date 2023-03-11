@@ -5,7 +5,7 @@ import 'src/ffi_proxy.dart';
 import 'src/types.dart';
 import 'src/utils.dart';
 
-export 'src/types.dart' show Options, Script, InditransScriptExtension;
+export 'src/types.dart' show Option, Script, InditransScriptExtension;
 
 late dynamic _platformLib;
 late InditransBindings _bindings;
@@ -29,7 +29,7 @@ init() async {
 }
 
 /// Transliterates [text] from [from] script to [to] script.
-/// [Options] can be used for some specific config.
+/// [Option] can be used for some specific config.
 /// Should be called only after [init] is completed.
 ///
 /// If the transliterate fails, returns an empty string.
@@ -58,14 +58,16 @@ init() async {
 /// inditrans.transliterate('text', transliterate.Script.devanagari, transliterate.Script.tamil);
 ///
 /// ```
-String transliterate(String text, Script from, Script to, [Options options = Options.None]) {
+String transliterate(String text, Script from, Script to,
+    [Option options = Option.None]) {
   final staging = StagingMemory(_allocator);
 
   final nativeText = staging.toNativeString(text);
   final nativeFrom = staging.toNativeString(from.toString());
   final nativeTo = staging.toNativeString(to.toString());
 
-  final buffer = _bindings.transliterate(nativeText, nativeFrom, nativeTo, options.value);
+  final buffer =
+      _bindings.transliterate(nativeText, nativeFrom, nativeTo, options.value);
   final result = staging.fromNativeString(buffer);
 
   staging.freeAll();

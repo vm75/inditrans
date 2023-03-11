@@ -9,7 +9,7 @@
 //   stackSave
 //   stackRestore
 //   stackAlloc
-export interface IndiTransModule {
+export interface InditransModule {
   transliterate(
     text: number,
     from: number,

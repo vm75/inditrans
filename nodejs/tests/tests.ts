@@ -1,24 +1,23 @@
-import { IndiTrans } from '../src/IndiTrans';
+import * as inditrans from '../src';
 import Tests from './test-cases.json';
-import { TranslitOptions } from '../src/TranslitOptions';
 
-function getOptionsMap(): Map<string, TranslitOptions> {
-  const map = new Map<string, TranslitOptions>();
-  const optionStrings = Object.values(TranslitOptions).filter((value) =>
+function getOptionsMap(): Map<string, inditrans.Option> {
+  const map = new Map<string, inditrans.Option>();
+  const optionStrings = Object.values(inditrans.Option).filter((value) =>
     isNaN(Number(value))
   ) as string[];
-  const optionValue = Object.values(TranslitOptions).filter(
+  const optionValue = Object.values(inditrans.Option).filter(
     (value) => !isNaN(Number(value))
-  ) as TranslitOptions[];
+  ) as inditrans.Option[];
   for (let i = 0; i < optionStrings.length; i++) {
     map.set(optionStrings[i], optionValue[i]);
   }
   return map;
 }
 
-function getOptions(options: string): TranslitOptions {
+function getOptions(options: string): inditrans.Option {
   const optionsMap = getOptionsMap();
-  let result = TranslitOptions.None;
+  let result = inditrans.Option.None;
   options.split(' ').forEach((option) => {
     result += optionsMap.get(option) || 0;
   });
@@ -68,9 +67,8 @@ for (const input of Tests) {
   }
 }
 
-let inditrans: IndiTrans;
 beforeAll(async () => {
-  inditrans = await IndiTrans.instance;
+  await inditrans.init();
 });
 
 test.each(testData)(
@@ -78,8 +76,8 @@ test.each(testData)(
   ({ text, fromScript, toScript, options, expected }) => {
     const result = inditrans.transliterate(
       text,
-      fromScript,
-      toScript,
+      <inditrans.Script>fromScript,
+      <inditrans.Script>toScript,
       getOptions(options)
     );
     expect(result).toBe(expected);

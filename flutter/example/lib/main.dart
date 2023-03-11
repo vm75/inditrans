@@ -11,18 +11,18 @@ class TestSpec {
   final String text;
   final inditrans.Script fromScript;
   final inditrans.Script toScript;
-  final inditrans.Options options;
+  final inditrans.Option options;
   final String expected;
 
   TestSpec(this.description, this.text, this.fromScript, this.toScript,
       this.options, this.expected);
 }
 
-inditrans.Options getOptions(String optionsString) {
-  inditrans.Options options = inditrans.Options.None;
+inditrans.Option getOptions(String optionsString) {
+  inditrans.Option options = inditrans.Option.None;
   final optionString = optionsString.split(' ');
   for (final entry in optionString) {
-    options = options + inditrans.Options.fromString(entry);
+    options = options + inditrans.Option.fromString(entry);
   }
   return options;
 }

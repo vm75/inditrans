@@ -1,4 +1,4 @@
-export enum TranslitOptions {
+export enum Option {
   None = 0,
   IgnoreVedicAccents = 1,
   IgnoreQuotedMarkers = 2,

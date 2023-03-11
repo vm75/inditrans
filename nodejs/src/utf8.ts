@@ -1,10 +1,10 @@
-import { IndiTransModule } from './IndiTransModule';
+import { InditransModule } from './InditransModule';
 
 export class Codec {
-  private module: IndiTransModule;
+  private module: InditransModule;
   private memory: Uint8Array;
 
-  constructor(module: IndiTransModule) {
+  constructor(module: InditransModule) {
     this.module = module;
     this.memory = new Uint8Array(module.memory.buffer);
   }

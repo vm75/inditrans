@@ -1,3 +1,7 @@
+## 0.3.6
+
+- Refactored nodejs interface. Updated readme.
+
 ## 0.3.5
 
 - Fixed wasm, tests and nodejs support

@@ -1,21 +1,22 @@
-import { IndiTransModule } from './IndiTransModule';
-import { TranslitOptions } from './TranslitOptions';
+import { InditransModule } from './InditransModule';
+import { Option } from './Option';
+import { Script } from './Script';
 import fs from 'fs';
 
-export class IndiTrans {
-  static instance = IndiTrans._init();
+export class Inditrans {
+  static instance = Inditrans._init();
 
-  private static async _init(): Promise<IndiTrans> {
+  private static async _init(): Promise<Inditrans> {
     const { instance } = await WebAssembly.instantiate(
       fs.readFileSync(`${__dirname}/inditrans.wasm`)
     );
-    return new IndiTrans(instance.exports as unknown as IndiTransModule);
+    return new Inditrans(instance.exports as unknown as InditransModule);
   }
 
-  private module: IndiTransModule;
+  private module: InditransModule;
   private memory: Uint8Array;
 
-  private constructor(wrapper: IndiTransModule) {
+  private constructor(wrapper: InditransModule) {
     this.module = wrapper;
     this.memory = new Uint8Array(wrapper.memory.buffer);
   }
@@ -50,11 +51,13 @@ export class IndiTrans {
 
   transliterate(
     text: string,
-    from: string,
-    to: string,
-    options: TranslitOptions
+    from: Script,
+    to: Script,
+    options: Option
   ): string {
-    const pointers = [text, from, to].map((str) => this.stringToUtf8(str));
+    const pointers = [text, from, to].map((str) =>
+      this.stringToUtf8(str.toString())
+    );
     const resultPtr = this.module.transliterate(
       pointers[0],
       pointers[1],
