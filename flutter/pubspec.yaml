@@ -1,6 +1,6 @@
 name: inditrans
 description: An experimental transliterator library for some Indic scripts.
-version: 0.3.4
+version: 0.3.5
 repository: https://github.com/vm75/inditrans/
 
 environment:
@@ -20,7 +20,7 @@ dependencies:
   wasm_ffi: ^0.9.3
 
 dev_dependencies:
-  ffigen: ^6.1.2
+  ffigen: ^7.2.7
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0

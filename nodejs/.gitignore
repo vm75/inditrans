@@ -14,3 +14,5 @@ ref/
 __pycache__/
 *.pyc
 *.out
+
+*.tgz

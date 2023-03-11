@@ -12,7 +12,8 @@ void main(List<String> args) async {
   }
 
   Directory.current = Directory('flutter');
-  final result = await Process.run('dart', ['run', 'ffigen', '--config', 'ffigen.yaml']);
+  final result =
+      await Process.run('dart', ['run', 'ffigen', '--config', 'ffigen.yaml']);
 
   stdout.write(result.stdout);
   if (result.exitCode != 0) {
@@ -22,5 +23,6 @@ void main(List<String> args) async {
 
   final file = File('lib/src/bindings.dart');
   final contents = file.readAsStringSync();
-  file.writeAsStringSync(contents.replaceAll("import 'dart:ffi' as ffi", "import 'ffi_proxy.dart' as ffi"));
+  file.writeAsStringSync(contents.replaceAll(
+      "import 'dart:ffi' as ffi", "import 'ffi_proxy.dart' as ffi"));
 }

@@ -1,7 +1,7 @@
 // The Android Gradle Plugin builds the native code with the Android NDK.
 
-group 'com.example.inditrans'
-version '1.0'
+group 'vm75.inditrans'
+version '0.3.5'
 
 buildscript {
     repositories {

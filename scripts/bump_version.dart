@@ -3,12 +3,17 @@
 import 'dart:convert';
 import 'dart:io';
 
-const changeLogFiles = ["flutter/CHANGELOG.md"];
+const changeLogFiles = [
+  "flutter/CHANGELOG.md",
+  "nodejs/CHANGELOG.md",
+];
 const filesToUpdate = [
   ".version",
   "flutter/pubspec.yaml",
+  "flutter/android/build.gradle",
   "flutter/ios/inditrans.podspec",
   "flutter/macos/inditrans.podspec",
+  "nodejs/package.json",
 ];
 
 class Version {
@@ -34,7 +39,8 @@ class Version {
   }
 
   static Version fromString(String versionStr) {
-    final versionParts = versionStr.split('.').map((str) => int.parse(str)).toList();
+    final versionParts =
+        versionStr.split('.').map((str) => int.parse(str)).toList();
     return Version(versionParts[0], versionParts[1], versionParts[2]);
   }
 }
@@ -145,5 +151,6 @@ void main(List<String> args) {
   updateVersion(currentVersion, nextVersion);
   changeLog(nextVersion, log);
 
-  print("Updated version from '$currentVersion' to $nextVersion with log: $log");
+  print(
+      "Updated version from '$currentVersion' to $nextVersion with log: $log");
 }

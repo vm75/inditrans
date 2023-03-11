@@ -8,6 +8,7 @@ An experimental transliterator library for some [Indic/Brahmi](https://en.wikipe
 References:
 - [inditrans on Github](https://github.com/vm75/inditrans)
 - [inditrans for flutter/dart](https://pub.dev/packages/inditrans)
+- [inditrans for nodejs](https://www.npmjs.com/package/inditrans)
 
 ## Supported scripts
 * Brahmi scripts:
@@ -20,8 +21,8 @@ References:
   * malayalam
   * oriya
   * sinhala
-  * telugu
   * tamil
+  * telugu
 * Roman scripts
   * iast (https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration)
   * ipa (https://en.wikipedia.org/wiki/International_Phonetic_Alphabet)

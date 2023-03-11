@@ -93,10 +93,13 @@ void main(List<String> args) async {
     return;
   }
 
-  final inditransScripts = jsonDecode(File('nodejs/assets/scripts.json').readAsStringSync()) as Map<String, dynamic>;
+  final inditransScripts =
+      jsonDecode(File('nodejs/assets/scripts.json').readAsStringSync())
+          as Map<String, dynamic>;
 
   final List<ScriptInfo> primary = parseScriptInfo(inditransScripts['Primary']);
-  final List<ScriptInfo> secondary = parseScriptInfo(inditransScripts['Secondary']);
+  final List<ScriptInfo> secondary =
+      parseScriptInfo(inditransScripts['Secondary']);
 
   final buffer = StringBuffer();
   buffer.write(headerPrefix);

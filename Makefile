@@ -21,30 +21,26 @@ else
 endif
 HEADERS_CC = $(wildcard native/src/*.h)
 SOURCES_CC = $(wildcard native/src/*.cpp)
-SOURCES_JS = $(wildcard nodejs/wasm/src/*.js)
+SOURCES_NODEJS = $(wildcard nodejs/src/*.ts)
+SOURCES_FLUTTER = $(wildcard flutter/lib/src/*.dart)
 
 # Native
 native: $(NATIVE_EXEC)
 
 $(NATIVE_EXEC): $(SOURCES_CC) $(HEADERS_CC) native/tests/test.cpp
-	-mkdir -p out
 	clang++ ${COMPILER_OPTIONS} -I native/src $(SOURCES_CC) native/tests/test.cpp -o $@ && \
 		llvm-strip -s -R .comment -R .gnu.version --strip-unneeded $@
 
-flutter: wasm flutter/lib/src/bindings.dart
-	cd flutter/example && flutter build -d 1
+testall: test test_flutter test_nodejs
 
-nodejs: wasm
-	cd nodejs && tsc
-
-testall: test_native test_flutter test_nodejs
-
-test_native: $(NATIVE_EXEC)
+test: $(NATIVE_EXEC)
 	$(NATIVE_EXEC)
 
-test_flutter:
+test_flutter: wasm flutter/lib/src/bindings.dart
+	cd flutter/example && flutter run -d chrome
 
 test_nodejs:
+	cd nodejs && yarn test
 
 publish: publish_flutter publish_nodejs
 
@@ -77,6 +73,3 @@ flutter/$(WASM_TARGET): $(SOURCES_CC) $(HEADERS_CC)
 
 flutter/lib/src/bindings.dart: flutter/native/src/exports.h
 	dart ./scripts/generate_bindings.dart
-
-flutter/native/src/scripts_gen.h: nodejs/assets/scripts.json
-	dart ./scripts/generate_wasm_header.dart
