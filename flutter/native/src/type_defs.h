@@ -1,6 +1,7 @@
 #pragma once
 
 #include "scripts_gen.h"
+#include <limits>
 #include <string_view>
 #include <vector>
 

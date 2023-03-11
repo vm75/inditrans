@@ -52,14 +52,14 @@ export class IndiTrans {
     text: string,
     from: string,
     to: string,
-    _options: TranslitOptions
+    options: TranslitOptions
   ): string {
     const pointers = [text, from, to].map((str) => this.stringToUtf8(str));
     const resultPtr = this.module.transliterate(
       pointers[0],
       pointers[1],
       pointers[2],
-      0
+      options
     );
     let result = '';
     if (resultPtr !== 0) {

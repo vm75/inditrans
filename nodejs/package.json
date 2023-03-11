@@ -16,9 +16,9 @@
   "scripts": {
     "clean": "shx rm -rf dist/*",
     "build": "yarn build-wasm && yarn copy-files && tsc",
-    "build-wasm": "make -C .. nodejs-wasm",
+    "build-wasm": "make -C .. wasm",
     "watch": "tsc --watch",
-    "test": "yarn jest --config jestconfig.json",
+    "test": "yarn build && yarn jest --config jestconfig.json",
     "copy-files": "shx mkdir -p dist/src && shx cp -f src/inditrans.wasm dist/src/",
     "prepack": "yarn clean && yarn build"
   },

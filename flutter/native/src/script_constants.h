@@ -2,7 +2,7 @@
 
 #include "type_defs.h"
 #include <array>
-#include <string>
+#include <string_view>
 
 constexpr std::array<std::string_view, 3> WriteOnlyScripts { "readablelatin", "romanreadable", "romancolloquial" };
 auto isWriteOnlyScript = [](std::string_view script) noexcept {
