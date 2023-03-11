@@ -10,7 +10,7 @@ ifdef DEBUG
     COMPILER_OPTIONS=-std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address
     LINKER_OPTIONS=-Wl,--no-entry
 else
-    COMPILER_OPTIONS=-std=c++20 -O3 -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno
+    COMPILER_OPTIONS=-std=c++20 -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno
     LINKER_OPTIONS=-Wl,--gc-sections,--no-entry
 endif
 
@@ -31,10 +31,10 @@ $(NATIVE_EXEC): $(SOURCES_CC) $(HEADERS_CC) native/tests/test.cpp
 	clang++ ${COMPILER_OPTIONS} -I native/src $(SOURCES_CC) native/tests/test.cpp -o $@ && \
 		llvm-strip -s -R .comment -R .gnu.version --strip-unneeded $@
 
-flutter: flutter/assets/inditrans.wasm flutter/lib/src/bindings.dart
+flutter: wasm flutter/lib/src/bindings.dart
 	cd flutter/example && flutter build -d 1
 
-nodejs: nodejs/dist/inditrans.mjs
+nodejs: wasm
 	cd nodejs && tsc
 
 testall: test_native test_flutter test_nodejs
@@ -63,32 +63,12 @@ else
 	USER_SPEC=
 endif
 
-wasm: nodejs-wasm flutter-wasm
-
-NODEJS_TARGET=dist/src/inditrans_wasm.js
-nodejs-wasm: nodejs/$(NODEJS_TARGET)
-nodejs/$(NODEJS_TARGET): $(SOURCES_CC) $(HEADERS_CC) $(SOURCES_JS)
-	-mkdir -p nodejs/dist/src
-	docker run --rm $(USER_SPEC) -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/nodejs/dist:/dist" \
-		emscripten/emsdk \
-			emcc inditrans.cpp -o /$(NODEJS_TARGET) \
-				$(COMPILER_OPTIONS) $(LINKER_OPTIONS) \
-				-s WASM=1 \
-				-s ENVIRONMENT='web,node' \
-				-s NO_EXIT_RUNTIME=1 \
-				-s EXPORT_NAME=inditrans \
-				-s FILESYSTEM=0 \
-				-s SINGLE_FILE=1 \
-				-s ALLOW_MEMORY_GROWTH=1 \
-				-s $(RUNTIME_EXPORTS) \
-				-s $(COMPILED_EXPORTS)
-
-FLUTTER_TARGET=assets/inditrans.wasm
-flutter-wasm: flutter/$(FLUTTER_TARGET)
-flutter/$(FLUTTER_TARGET): $(SOURCES_CC) $(HEADERS_CC)
+WASM_TARGET=assets/inditrans.wasm
+wasm: flutter/$(WASM_TARGET)
+flutter/$(WASM_TARGET): $(SOURCES_CC) $(HEADERS_CC)
 	docker run --rm $(USER_SPEC) -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/flutter:/dist" \
 		emscripten/emsdk \
-			emcc inditrans.cpp -o /dist/$(FLUTTER_TARGET) \
+			emcc inditrans.cpp -o /dist/$(WASM_TARGET) \
 				$(COMPILER_OPTIONS) $(LINKER_OPTIONS) \
 				-DNDEBUG \
 				-s EXPORT_NAME=inditrans \
@@ -96,7 +76,7 @@ flutter/$(FLUTTER_TARGET): $(SOURCES_CC) $(HEADERS_CC)
 				-s $(COMPILED_EXPORTS)
 
 flutter/lib/src/bindings.dart: flutter/native/src/exports.h
-	dart .\scripts\generate_bindings.dart
+	dart ./scripts/generate_bindings.dart
 
 flutter/native/src/scripts_gen.h: nodejs/assets/scripts.json
-	dart .\scripts\generate_wasm_header.dart
+	dart ./scripts/generate_wasm_header.dart
