@@ -10,6 +10,26 @@
 using InditransLogger = void(const std::string&);
 extern InditransLogger* inditransLogger;
 
+TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
+  Utf8String str(optStr);
+  static constexpr std::array<std::string_view, static_cast<size_t>(MaxTranslitOptions)> optionStrings
+      = { "None", "IgnoreVedicAccents", "IgnoreQuotedMarkers", "TamilTraditional", "TamilSuperscripted",
+          "RetainZeroWidthChars", "ASCIINumerals" };
+
+  TranslitOptions mask { TranslitOptions::None };
+  for (const auto& opt : str.split(" \t,:;/|&")) {
+    auto match = std::find(optionStrings.begin(), optionStrings.end(), opt);
+    if (match != optionStrings.end()) {
+      const auto idx = std::distance(optionStrings.begin(), match);
+      if (idx > 0) {
+        mask = mask | static_cast<TranslitOptions>(1 << (idx - 1));
+      }
+    }
+  }
+
+  return mask;
+}
+
 void testAssert(std::string_view test, bool result) noexcept {
   std::cout << "  Test: " << test << (result ? " PASSED" : "FAILED") << std::endl;
 }
@@ -39,7 +59,7 @@ bool testTranslit(const std::string_view& description, const std::string_view& f
 }
 
 void testAllTranslit() noexcept {
-  std::ifstream testsFile("assets/test-cases.json", std::ios::binary);
+  std::ifstream testsFile("test-files/test-cases.json", std::ios::binary);
   if (testsFile.is_open()) {
 
     std::vector<char> jsonBuffer(std::istreambuf_iterator<char>(testsFile), {});

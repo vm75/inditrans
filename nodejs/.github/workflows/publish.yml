@@ -1,0 +1,40 @@
+# Publish new commits to npm. See https://github.com/mikeal/merge-release/blob/master/README.md for more info. 
+
+name: Publish
+
+on:
+  push:
+    branches:
+      - master
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            **/cpm_modules
+            **/node_modules
+          key: cpm-node-modules-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake', '**/yarn.lock') }}
+
+      - uses: mymindstorm/setup-emsdk@v10
+        with:
+          version: 2.0.31
+
+      - name: install
+        env:
+          CPM_SOURCE_CACHE: ${{ github.workspace }}/cpm_modules
+        run: yarn install
+
+      - name: test
+        run: yarn run test
+
+      - name: Publish
+        if: github.ref == 'refs/heads/master'
+        uses: mikeal/merge-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

@@ -1,7 +1,11 @@
 #pragma once
 
 #include "scripts_gen.h"
+#include <limits>
+#include <string_view>
 #include <vector>
+
+using namespace std::literals::string_view_literals;
 
 enum SpecialIndices : uint8_t {
   Virama = 0,
@@ -39,65 +43,49 @@ enum class TokenType : uint8_t {
   Ignore
 };
 
-std::string_view tokenTypeStr(TokenType type) noexcept {
-  constexpr std::string_view str[] = {
-    "Vowel",
-    "VowelDiacritic",
-    "Consonant",
-    "ConsonantDiacritic",
-    "Symbol",
-    "Accent",
-    "ToggleTrans",
-  };
-  return str[static_cast<size_t>(type)];
-}
+constexpr auto InvalidToken = std::numeric_limits<uint8_t>::max();
+
+struct Token {
+  TokenType tokenType;
+  uint8_t idx;
+
+  constexpr Token(TokenType type = TokenType::Ignore, uint8_t idx = InvalidToken) noexcept
+      : tokenType(type)
+      , idx(idx) { }
+
+  bool operator==(const Token& other) const noexcept { return tokenType == other.tokenType && idx == other.idx; }
+  bool operator!=(const Token& other) const noexcept { return tokenType != other.tokenType || idx != other.idx; }
+};
+
+struct ScriptToken : public Token {
+  ScriptType scriptType;
+
+  constexpr ScriptToken(TokenType tokenType, uint8_t idx, ScriptType scriptType) noexcept
+      : Token(tokenType, idx)
+      , scriptType(scriptType) { }
+
+  bool operator==(const ScriptToken& other) const noexcept {
+    return tokenType == other.tokenType && scriptType == other.scriptType && idx == other.idx;
+  }
+  bool operator!=(const ScriptToken& other) const noexcept {
+    return tokenType != other.tokenType || scriptType != other.scriptType || idx != other.idx;
+  }
+
+  ScriptToken clone(uint8_t newIdx) const noexcept { return { tokenType, newIdx, scriptType }; }
+  ScriptToken clone(ScriptType newScriptType) const noexcept { return { tokenType, idx, newScriptType }; }
+};
+
+constexpr const ScriptToken invalidScriptToken(TokenType::Ignore, InvalidToken, ScriptType::Others);
 
 struct AliasEntry {
-  TokenType tokenType;
-  ScriptType scriptType;
-  uint8_t idx;
-  const std::vector<std::string_view> alts;
+  const TokenType tokenType;
+  const ScriptType scriptType;
+  const uint8_t idx;
+  const std::string_view alt;
+
+  constexpr AliasEntry(TokenType tokenType, ScriptType scriptType, uint8_t idx, std::string_view alt) noexcept
+      : tokenType(tokenType)
+      , scriptType(scriptType)
+      , idx(idx)
+      , alt(alt) { }
 };
-
-// clang-format off
-static const AliasEntry PositionalAliases[] {
-  { TokenType::Consonant,          ScriptType::Brahmi, 37 /* क़ */,     { "क़" } },
-  { TokenType::Consonant,          ScriptType::Brahmi, 38 /* ख़ */,     { "ख़" }},
-  { TokenType::Consonant,          ScriptType::Brahmi, 39 /* ग़ */,      { "ग़" }},
-  { TokenType::Consonant,          ScriptType::Brahmi, 40 /* ज़ */,     { "ज़" }},
-  { TokenType::Consonant,          ScriptType::Brahmi, 41 /* ड़ */,     { "ड़" }},
-  { TokenType::Consonant,          ScriptType::Brahmi, 42 /* ढ़ */,      { "ढ़" }},
-  { TokenType::Consonant,          ScriptType::Brahmi, 43 /* फ़ */,     { "फ़"}},
-  { TokenType::Consonant,          ScriptType::Brahmi, 44 /* य़ */,      { "य़" }},
-  { TokenType::VowelDiacritic,     ScriptType::Brahmi,  0 /* ् */,      { "᳭", "്‍" /*virama + ZWJ*/, "‍್" /*ZWJ+virama*/, "්‍" /*virama + ZWJ*/, "्‍" /*virama + ZWJ*/ }},
-  { TokenType::VowelDiacritic,     ScriptType::Tamil,  13 /* ொ */,   { "ொ" }},
-  { TokenType::VowelDiacritic,     ScriptType::Tamil,  14 /* ோ */,   { "ோ" }},
-  { TokenType::VowelDiacritic,     ScriptType::Tamil,  15 /* ௌ */,  { "ௌ" }},
-  { TokenType::Accent,             ScriptType::Brahmi,  1 /*꠰  ॑ */,      { "◌॑" }},
-  { TokenType::Accent,             ScriptType::Roman,   0 /*꠰  ॒ */,      { "̱", "↓", "\\_", "\\`", "'", "`" }},
-  { TokenType::Accent,             ScriptType::Roman,   1 /*꠰  ॑ */,      { "̍", "↑", "\\'", "\\’", "̭" }},
-  { TokenType::Accent,             ScriptType::Roman,   2 /*꠰  ᳚ */,      { "̎", "↑↑", "\\\"", "\\''", "\\’’" }},
-  { TokenType::ConsonantDiacritic, ScriptType::Tamil,   0 /* ँ */,      { "ம்ˮ" }},
-  { TokenType::ConsonantDiacritic, ScriptType::Tamil,   1 /* ं */,      { "ம்ʼ" }},
-  { TokenType::ConsonantDiacritic, ScriptType::Roman,   0 /* ँ */,      { "~", "m̐", "ṁ" }},
-  { TokenType::ConsonantDiacritic, ScriptType::Roman,   1 /* ं */,      { "ṃ", "ṃ" }},
-  { TokenType::ConsonantDiacritic, ScriptType::Roman,   2 /* ः */,      { "ḥ", "ḥ" }},
-  { TokenType::Symbol,             ScriptType::Brahmi, 10 /* ॐ */,     { "ओ३म्" }},
-  { TokenType::Symbol,             ScriptType::Roman,  10 /* ॐ */,     { "o3m", "OM", "AUM", "oṃ", "ŏṃ" }},
-  { TokenType::Symbol,             ScriptType::Roman,  12 /* ꠰ */,       { "|", "." }},
-  { TokenType::Symbol,             ScriptType::Roman,  13 /* ॥ */,      { "||", "꠰꠰", ".." }},
-  { TokenType::Symbol,             ScriptType::Roman,  14 /* ꣳ */,      { "gͫ", "\\m+", "{\\m+}", "\\м+" }},
-  { TokenType::Symbol,             ScriptType::Roman,  15 /* ꣴ */,      { "gͫ̄", "\\m++", "\\м++" }},
-  { TokenType::Symbol,             ScriptType::Roman,  17 /* \u200C */, { "{}", "^^" }},
-  { TokenType::Symbol,             ScriptType::Roman,  18 /* \u200D */, { "()", "^" }},
-};
-
-constexpr std::array<std::string_view, 21> Accents      = { /*꠰*/ "॒", "॑", "᳚", "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱" };
-constexpr std::array<std::string_view, 21> RomanAccents = { /*꠰*/ "̱", "̍", "̎", "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱" };
-
-constexpr std::string_view TamilSuperscripts = "¹²³⁴";
-constexpr std::string_view SkipTrans { "##" };
-// clang-format on
-
-constexpr std::string_view TamilSpecialChars { "ʼˮˇ꞉ஃ·" };
-constexpr std::string_view QuotedMarkers { "ʼˮ" };

@@ -1,45 +1,38 @@
 {
-    "configurations": [
+  "configurations": [
+    {
+      "name": "Debug flutter example",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "flutter/example",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "Debug nodejs",
+      "type": "node-terminal",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/nodejs",
+      "command": "yarn test"
+    },
+    {
+      "name": "Debug native (gdb)",
+      "type": "cppdbg",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/out/inditrans_native",
+      "args": [],
+      "stopAtEntry": false,
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "preLaunchTask": "C/C++: clang++ build inditrans_native",
+      "setupCommands": [
         {
-            "name": "Flutter",
-            "program": "lib/main.dart",
-            "cwd": "flutter\\example",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "type": "node-terminal",
-            "name": "Run Script: test-wasm-ts",
-            "request": "launch",
-            "command": "npm run test-wasm-ts",
-            "cwd": "${workspaceFolder}\\nodejs"
-        },
-        {
-            "type": "node-terminal",
-            "name": "Run Script: test-ts",
-            "request": "launch",
-            "command": "npm run test-ts",
-            "cwd": "${workspaceFolder}\\nodejs"
-        },
-        {
-            "name": "Inditrans native (gdb)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/out/inditrans_native",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "preLaunchTask": "C/C++: clang++ build inditrans_native",
-            "setupCommands": [
-              {
-                "description": "Enable pretty-printing for gdb",
-                "text": "-enable-pretty-printing",
-                "ignoreFailures": true
-              }
-            ]
-        },
-    ]
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    },
+  ]
 }

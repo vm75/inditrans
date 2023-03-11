@@ -1,6 +1,5 @@
 #include "inditrans.h"
-#include "tamil_prefix.h"
-#include "type_defs.h"
+#include "script_constants.h"
 #include "utilities.h"
 #include "wasi_fix.h"
 #include <limits>
@@ -21,69 +20,6 @@ inline constexpr bool operator/(const TranslitOptions& mask, const TranslitOptio
   return (mask & val) != val;
 }
 
-TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
-  Utf8String str(optStr);
-  static constexpr std::array<std::string_view, static_cast<size_t>(MaxTranslitOptions)> optionStrings
-      = { "None", "IgnoreVedicAccents", "IgnoreQuotedMarkers", "TamilTraditional", "TamilSuperscripted",
-          "RetainZeroWidthChars", "ASCIINumerals" };
-
-  TranslitOptions mask { TranslitOptions::None };
-  for (const auto& opt : str.split(" \t,:;/|&")) {
-    auto match = std::find(optionStrings.begin(), optionStrings.end(), opt);
-    if (match != optionStrings.end()) {
-      const auto idx = std::distance(optionStrings.begin(), match);
-      if (idx > 0) {
-        mask = mask | static_cast<TranslitOptions>(1 << (idx - 1));
-      }
-    }
-  }
-
-  return mask;
-}
-
-static bool scriptIsReadable(const std::string_view name) noexcept {
-  constexpr std::array<std::string_view, 3> notReadable { "readablelatin", "romanreadable", "romancolloquial" };
-  return std::find(notReadable.begin(), notReadable.end(), name) == notReadable.end();
-}
-
-static bool scriptIsIndic(const std::string_view name) noexcept {
-  constexpr std::array<std::string_view, 11> notReadable { "assamese", "bengali", "devanagari", "gujarati", "gurmukhi",
-    "kannada", "malayalam", "oriya", "sinhala", "tamil", "telugu" };
-  return std::find(notReadable.begin(), notReadable.end(), name) == notReadable.end();
-}
-
-constexpr auto InvalidToken = std::numeric_limits<uint8_t>::max();
-
-struct Token {
-  TokenType tokenType;
-  uint8_t idx;
-
-  Token(TokenType tokenType = TokenType::Ignore, uint8_t idx = InvalidToken)
-      : tokenType(tokenType)
-      , idx(idx) { }
-
-  bool operator==(const Token& other) const noexcept { return tokenType == other.tokenType && idx == other.idx; }
-  bool operator!=(const Token& other) const noexcept { return tokenType != other.tokenType || idx != other.idx; }
-};
-
-struct ScriptToken : public Token {
-  ScriptType scriptType;
-
-  ScriptToken(TokenType tokenType, uint8_t idx, ScriptType scriptType)
-      : Token(tokenType, idx)
-      , scriptType(scriptType) { }
-
-  bool operator==(const ScriptToken& other) const noexcept {
-    return tokenType == other.tokenType && scriptType == other.scriptType && idx == other.idx;
-  }
-  bool operator!=(const ScriptToken& other) const noexcept {
-    return tokenType != other.tokenType || scriptType != other.scriptType || idx != other.idx;
-  }
-
-  ScriptToken clone(uint8_t newIdx) const noexcept { return { tokenType, newIdx, scriptType }; }
-  ScriptToken clone(ScriptType newScriptType) const noexcept { return { tokenType, idx, newScriptType }; }
-};
-
 using LookupTable = Char32Trie<ScriptToken>;
 using LookupResult = LookupTable::LookupResult;
 
@@ -92,7 +28,7 @@ public:
   ScriptReaderMap(const std::string_view name, const ScriptData& scriptData) noexcept
       : name(name)
       , scriptData(scriptData) {
-    if (!scriptIsReadable(name)) {
+    if (isWriteOnlyScript(name)) {
       return;
     }
 
@@ -106,14 +42,12 @@ public:
       if (aliasEntry.scriptType != scriptData.type) {
         continue;
       }
-      for (auto& alias : aliasEntry.alts) {
-        tokenMap.addLookup(alias, { aliasEntry.tokenType, aliasEntry.idx, aliasEntry.scriptType });
-      }
+      tokenMap.addLookup(aliasEntry.alt, { aliasEntry.tokenType, aliasEntry.idx, aliasEntry.scriptType });
     }
   }
 
   void addScript(const std::string_view name, const ScriptData& scriptData) noexcept {
-    if (!scriptIsReadable(name)) {
+    if (isWriteOnlyScript(name)) {
       return;
     }
     addCharMap(name, TokenType::Vowel, scriptData.type, scriptData.vowels.data(), scriptData.vowels.size());
@@ -143,7 +77,7 @@ private:
       auto res = tokenMap.addLookup(map[idx], { tokenType, static_cast<uint8_t>(idx), scriptType });
       if (res != std::nullopt && inditransLogger != nullptr && (res->tokenType != tokenType || res->idx != idx)) {
         std::string error = "Error adding for: " + std::string(name)
-            + ", tokenType: " + std::string(tokenTypeStr(tokenType)) + ", idx: " + std::to_string(idx)
+            + ", tokenType: " + std::to_string(static_cast<int>(tokenType)) + ", idx: " + std::to_string(idx)
             + ", new value: " + std::string(map[idx]);
         (*inditransLogger)(error);
       }
@@ -203,7 +137,7 @@ template <typename T> inline bool HoldsScriptToken(const T& var) { return std::h
 template <typename T> inline ScriptToken GetScriptToken(const T& var) { return std::get<ScriptToken>(var); }
 
 struct TokenUnit {
-  TokenUnit(ScriptToken leadToken) noexcept
+  constexpr TokenUnit(ScriptToken leadToken) noexcept
       : leadToken(leadToken) { }
 
   ScriptToken leadToken;
@@ -238,7 +172,7 @@ template <typename T> inline bool HoldsString(const T& var) { return std::holds_
 template <typename T> inline std::string_view GetString(const T& var) { return std::get<std::string_view>(var); }
 
 const TokenUnitOrString endOfText("");
-const TokenUnit invalidTokenUnit { ScriptToken(TokenType::Ignore, InvalidToken, ScriptType::Others) };
+constexpr TokenUnit invalidTokenUnit(invalidScriptToken);
 
 inline bool operator==(const TokenUnitOrString& a, const TokenUnitOrString& b) noexcept {
   if (HoldsString(a) && HoldsString(b)) {
@@ -257,7 +191,7 @@ static constexpr auto scriptDataMap
 const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexcept {
   static std::unordered_map<std::string, ScriptReaderMap> readerMapCache {};
 
-  if (!scriptIsReadable(script)) {
+  if (isWriteOnlyScript(script)) {
     return nullptr;
   }
 
@@ -271,7 +205,7 @@ const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexcept {
       entry = readerMapCache.emplace(script, ScriptReaderMap { script, *mapEntry }).first;
 
       for (const auto& scriptInfo : scriptDataMap) {
-        if (scriptInfo.first == "devanagari" || scriptIsIndic(scriptInfo.first)) {
+        if (scriptInfo.first == "devanagari" || !isIndicScript(scriptInfo.first)) {
           continue;
         }
 
@@ -1000,10 +934,6 @@ std::string transliterate(const std::string_view& input, const std::string_view&
 
 extern "C" {
 
-unsigned long CALL_CONV translitOptionsToInt(const char* optionStr) {
-  return static_cast<unsigned long>(getTranslitOptions(optionStr));
-}
-
 char* CALL_CONV transliterate(const char* input, const char* from, const char* to, unsigned long options) {
   std::unique_ptr<char> output;
   std::string_view inputView(input);
@@ -1013,10 +943,6 @@ char* CALL_CONV transliterate(const char* input, const char* from, const char* t
     auto retval = output.release();
     return retval;
   }
-}
-
-char* CALL_CONV transliterate2(const char* input, const char* from, const char* to, const char* optionStr) {
-  return transliterate(input, from, to, translitOptionsToInt(optionStr));
 }
 
 void CALL_CONV releaseBuffer(char* buffer) {
