@@ -33,7 +33,7 @@ public:
     }
 
     addScript(name, scriptData);
-    const std::array<std::string_view, 21>& accentMap = scriptData.type == ScriptType::Roman ? RomanAccents : Accents;
+    const std::array<std::string_view, 21>& accentMap = scriptData.type == ScriptType::Latin ? LatinAccents : Accents;
     addCharMap(name, TokenType::Accent, scriptData.type, accentMap.data(), accentMap.size());
 
     tokenMap.addLookup(SkipTrans, { TokenType::ToggleTrans, 0, scriptData.type });
@@ -71,7 +71,7 @@ private:
   void addCharMap(const std::string_view name, TokenType tokenType, ScriptType scriptType, const std::string_view* map,
       size_t count) noexcept {
     for (size_t idx = 0; idx < count; idx++) {
-      if (scriptType == ScriptType::Roman && tokenType == TokenType::VowelDiacritic && idx > SpecialIndices::Virama) {
+      if (scriptType == ScriptType::Latin && tokenType == TokenType::VowelDiacritic && idx > SpecialIndices::Virama) {
         continue;
       }
       auto res = tokenMap.addLookup(map[idx], { tokenType, static_cast<uint8_t>(idx), scriptType });
@@ -102,7 +102,7 @@ public:
     addCharMap(name, TokenType::ConsonantDiacritic, scriptType, charMaps.consonantDiacritic.data(),
         charMaps.consonantDiacritic.size());
     addCharMap(name, TokenType::Symbol, scriptType, charMaps.symbols.data(), charMaps.symbols.size());
-    const std::array<std::string_view, 21>& accentMap = scriptType == ScriptType::Roman ? RomanAccents : Accents;
+    const std::array<std::string_view, 21>& accentMap = scriptType == ScriptType::Latin ? LatinAccents : Accents;
     addCharMap(name, TokenType::Accent, scriptType, accentMap.data(), accentMap.size());
   }
 
@@ -342,14 +342,14 @@ public:
     const auto& token = GetScriptToken(next);
     TokenUnit tokenUnit = { token };
     switch (token.scriptType) {
-      case ScriptType::Brahmi:
-        tokenUnit = readBrahmiTokenUnit(token);
+      case ScriptType::Indic:
+        tokenUnit = readIndicTokenUnit(token);
         break;
       case ScriptType::Tamil:
         tokenUnit = readTamilTokenUnit(token);
         break;
-      case ScriptType::Roman:
-        tokenUnit = readRomanTokenUnit(token);
+      case ScriptType::Latin:
+        tokenUnit = readLatinTokenUnit(token);
         break;
       default:
         break;
@@ -364,7 +364,7 @@ public:
   }
 
 private:
-  TokenUnit readBrahmiTokenUnit(const ScriptToken& start) noexcept {
+  TokenUnit readIndicTokenUnit(const ScriptToken& start) noexcept {
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
       while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
@@ -536,7 +536,7 @@ private:
     return tokenUnit;
   }
 
-  TokenUnit readRomanTokenUnit(const ScriptToken& start) noexcept {
+  TokenUnit readLatinTokenUnit(const ScriptToken& start) noexcept {
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
       bool vowelAdded = false;
@@ -638,14 +638,14 @@ public:
         return;
       }
       switch (scriptType) {
-        case ScriptType::Brahmi:
-          writeBrahmiTokenUnit(tokenUnit);
+        case ScriptType::Indic:
+          writeIndicTokenUnit(tokenUnit);
           break;
         case ScriptType::Tamil:
           writeTamilTokenUnit(tokenUnit, next);
           break;
-        case ScriptType::Roman:
-          writeRomanTokenUnit(tokenUnit, next);
+        case ScriptType::Latin:
+          writeLatinTokenUnit(tokenUnit, next);
           break;
         default:
           return;
@@ -675,7 +675,7 @@ protected:
   }
 
 protected:
-  void writeBrahmiTokenUnit(const TokenUnit& tokenUnit) noexcept {
+  void writeIndicTokenUnit(const TokenUnit& tokenUnit) noexcept {
     if (options * TranslitOptions::ASCIINumerals && tokenUnit.leadToken.tokenType == TokenType::Symbol
         && tokenUnit.leadToken.idx < 10) {
       char str[2] = { static_cast<char>('0' + tokenUnit.leadToken.idx), 0 };
@@ -779,7 +779,7 @@ protected:
     }
   }
 
-  void writeRomanTokenUnit(const TokenUnit& tokenUnit, const TokenUnitOrString& next) noexcept {
+  void writeLatinTokenUnit(const TokenUnit& tokenUnit, const TokenUnitOrString& next) noexcept {
     auto& leadToken = tokenUnit.leadToken;
     push(map.lookupChar(leadToken.tokenType, leadToken.idx));
     if (leadToken.tokenType == TokenType::Consonant) {

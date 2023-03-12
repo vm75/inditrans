@@ -8,7 +8,7 @@ const headerPrefix = '''#pragma once
 #include <array>
 #include <string>
 
-enum class ScriptType : uint8_t { Tamil, Brahmi, Roman, Others };
+enum class ScriptType : uint8_t { Tamil, Indic, Latin, Others };
 
 struct ScriptData {
   ScriptType type {};

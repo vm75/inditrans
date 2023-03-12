@@ -1,18 +1,18 @@
 export enum ScriptType {
   Tamil,
-  Brahmi,
-  Roman,
-  Others
+  Indic,
+  Latin,
+  Others,
 }
 
 export function getScriptTypeFromString(name: string) {
   switch (name) {
     case 'Tamil':
       return ScriptType.Tamil;
-    case 'Brahmi':
-      return ScriptType.Brahmi;
-    case 'Roman':
-      return ScriptType.Roman;
+    case 'Indic':
+      return ScriptType.Indic;
+    case 'Latin':
+      return ScriptType.Latin;
     default:
       return ScriptType.Others;
   }
@@ -26,11 +26,20 @@ export enum TokenType {
   Symbol = 4,
   Accent = 5,
   ToggleTrans = 6,
-  Ignore = 7
+  Ignore = 7,
 }
 
 export function tokenTypeStr(type: TokenType) {
-  const str = ['Vowel', 'VowelDiacritic', 'Consonant', 'ConsonantDiacritic', 'Symbol', 'Accent', 'ToggleTrans', 'Ignore'];
+  const str = [
+    'Vowel',
+    'VowelDiacritic',
+    'Consonant',
+    'ConsonantDiacritic',
+    'Symbol',
+    'Accent',
+    'ToggleTrans',
+    'Ignore',
+  ];
   return str[type];
 }
 
@@ -45,55 +54,248 @@ export enum SpecialIndices {
   ZeroWidthSpace = 16,
   ZeroWidthNonJoiner = 17,
   ZeroWidthJoiner = 18,
-  क = 0, ख = 1, ग = 2, घ = 3, ङ = 4,
-  च = 5, छ = 6, ज = 7, झ = 8, ञ = 9,
-  ट = 10, ठ = 11, ड = 12, ढ = 13, ण = 14,
-  त = 15, थ = 16, द = 17, ध = 18, न = 19,
-  प = 20, फ = 21, ब = 22, भ = 23, म = 24,
-  य = 25, र = 26, ल = 27, व = 28, श = 29, ष = 30, स = 31, ह = 32,
-  ळ = 33, ழ = 34, ற = 35, ன = 36,
-  क़ = 37, ख़ = 38, ग़ = 39, ज़ = 40, ड़ = 41, ढ़ = 42, फ़ = 43, य़ = 44,
-  ඟ = 45, ඦ = 46, ඬ = 47, ඳ = 48, ඹ = 49,
-  க = 0, ச = 5, ஜ = 7, ட = 10, த = 15, ந = 19, ப = 20, ஸ = 31,
-};
+  क = 0,
+  ख = 1,
+  ग = 2,
+  घ = 3,
+  ङ = 4,
+  च = 5,
+  छ = 6,
+  ज = 7,
+  झ = 8,
+  ञ = 9,
+  ट = 10,
+  ठ = 11,
+  ड = 12,
+  ढ = 13,
+  ण = 14,
+  त = 15,
+  थ = 16,
+  द = 17,
+  ध = 18,
+  न = 19,
+  प = 20,
+  फ = 21,
+  ब = 22,
+  भ = 23,
+  म = 24,
+  य = 25,
+  र = 26,
+  ल = 27,
+  व = 28,
+  श = 29,
+  ष = 30,
+  स = 31,
+  ह = 32,
+  ळ = 33,
+  ழ = 34,
+  ற = 35,
+  ன = 36,
+  क़ = 37,
+  ख़ = 38,
+  ग़ = 39,
+  ज़ = 40,
+  ड़ = 41,
+  ढ़ = 42,
+  फ़ = 43,
+  य़ = 44,
+  ඟ = 45,
+  ඦ = 46,
+  ඬ = 47,
+  ඳ = 48,
+  ඹ = 49,
+  க = 0,
+  ச = 5,
+  ஜ = 7,
+  ட = 10,
+  த = 15,
+  ந = 19,
+  ப = 20,
+  ஸ = 31,
+}
 
 export type AliasEntry = {
-  tokenType: TokenType,
-  scriptType: ScriptType,
-  idx: number
-  alts: string[]
+  tokenType: TokenType;
+  scriptType: ScriptType;
+  idx: number;
+  alts: string[];
 };
 
 export const PositionalAliases: AliasEntry[] = [
-  { tokenType: TokenType.Consonant, scriptType: ScriptType.Brahmi, idx: 37 /* क़ */, alts: ['क़'] },
-  { tokenType: TokenType.Consonant, scriptType: ScriptType.Brahmi, idx: 38 /* ख़ */, alts: ['ख़'] },
-  { tokenType: TokenType.Consonant, scriptType: ScriptType.Brahmi, idx: 39 /* ग़ */, alts: ['ग़'] },
-  { tokenType: TokenType.Consonant, scriptType: ScriptType.Brahmi, idx: 40 /* ज़ */, alts: ['ज़'] },
-  { tokenType: TokenType.Consonant, scriptType: ScriptType.Brahmi, idx: 41 /* ड़ */, alts: ['ड़'] },
-  { tokenType: TokenType.Consonant, scriptType: ScriptType.Brahmi, idx: 42 /* ढ़ */, alts: ['ढ़'] },
-  { tokenType: TokenType.Consonant, scriptType: ScriptType.Brahmi, idx: 43 /* फ़ */, alts: ['फ़'] },
-  { tokenType: TokenType.Consonant, scriptType: ScriptType.Brahmi, idx: 44 /* य़ */, alts: ['य़'] },
-  { tokenType: TokenType.VowelDiacritic, scriptType: ScriptType.Brahmi, idx: 0 /* ् */, alts: ['᳭', '്‍', '‍್', '්‍', '्‍'] },
-  { tokenType: TokenType.VowelDiacritic, scriptType: ScriptType.Tamil, idx: 13 /* ொ */, alts: ['ொ'] },
-  { tokenType: TokenType.VowelDiacritic, scriptType: ScriptType.Tamil, idx: 14 /* ோ */, alts: ['ோ'] },
-  { tokenType: TokenType.VowelDiacritic, scriptType: ScriptType.Tamil, idx: 15 /* ௌ */, alts: ['ௌ'] },
-  { tokenType: TokenType.Accent, scriptType: ScriptType.Brahmi, idx: 1 /*꠰  ॑ */, alts: ['◌॑'] },
-  { tokenType: TokenType.Accent, scriptType: ScriptType.Roman, idx: 0 /*꠰  ॒ */, alts: ['̱', '↓', '\\_', '\\`', "'", '`'] },
-  { tokenType: TokenType.Accent, scriptType: ScriptType.Roman, idx: 1 /*꠰  ॑ */, alts: ['̍', '↑', "\\'", '\\’', '̭'] },
-  { tokenType: TokenType.Accent, scriptType: ScriptType.Roman, idx: 2 /*꠰  ᳚ */, alts: ['̎', '↑↑', '\\"', "\\''", '\\’’'] },
-  { tokenType: TokenType.ConsonantDiacritic, scriptType: ScriptType.Tamil, idx: 0 /* ँ */, alts: ['ம்ˮ'] },
-  { tokenType: TokenType.ConsonantDiacritic, scriptType: ScriptType.Tamil, idx: 1 /* ं */, alts: ['ம்ʼ'] },
-  { tokenType: TokenType.ConsonantDiacritic, scriptType: ScriptType.Roman, idx: 0 /* ँ */, alts: ['~', 'm̐', 'ṁ'] },
-  { tokenType: TokenType.ConsonantDiacritic, scriptType: ScriptType.Roman, idx: 1 /* ं */, alts: ['ṃ', 'ṃ'] },
-  { tokenType: TokenType.ConsonantDiacritic, scriptType: ScriptType.Roman, idx: 2 /* ः */, alts: ['ḥ', 'ḥ'] },
-  { tokenType: TokenType.Symbol, scriptType: ScriptType.Brahmi, idx: 10 /* ॐ */, alts: ['ओ३म्'] },
-  { tokenType: TokenType.Symbol, scriptType: ScriptType.Roman, idx: 10 /* ॐ */, alts: ['o3m', 'OM', 'AUM', 'oṃ', 'ŏṃ'] },
-  { tokenType: TokenType.Symbol, scriptType: ScriptType.Roman, idx: 12 /* ꠰ */, alts: ['|', '.'] },
-  { tokenType: TokenType.Symbol, scriptType: ScriptType.Roman, idx: 13 /* ॥ */, alts: ['||', '꠰꠰', '..'] },
-  { tokenType: TokenType.Symbol, scriptType: ScriptType.Roman, idx: 14 /* ꣳ */, alts: ['gͫ', '\\m+', '{\\m+}', '\\м+'] },
-  { tokenType: TokenType.Symbol, scriptType: ScriptType.Roman, idx: 15 /* ꣴ */, alts: ['gͫ̄', '\\m++', '\\м++'] },
-  { tokenType: TokenType.Symbol, scriptType: ScriptType.Roman, idx: 17 /* \u200C */, alts: ['{}', '^^'] },
-  { tokenType: TokenType.Symbol, scriptType: ScriptType.Roman, idx: 18 /* \u200D */, alts: ['()', '^'] },
+  {
+    tokenType: TokenType.Consonant,
+    scriptType: ScriptType.Indic,
+    idx: 37 /* क़ */,
+    alts: ['क़'],
+  },
+  {
+    tokenType: TokenType.Consonant,
+    scriptType: ScriptType.Indic,
+    idx: 38 /* ख़ */,
+    alts: ['ख़'],
+  },
+  {
+    tokenType: TokenType.Consonant,
+    scriptType: ScriptType.Indic,
+    idx: 39 /* ग़ */,
+    alts: ['ग़'],
+  },
+  {
+    tokenType: TokenType.Consonant,
+    scriptType: ScriptType.Indic,
+    idx: 40 /* ज़ */,
+    alts: ['ज़'],
+  },
+  {
+    tokenType: TokenType.Consonant,
+    scriptType: ScriptType.Indic,
+    idx: 41 /* ड़ */,
+    alts: ['ड़'],
+  },
+  {
+    tokenType: TokenType.Consonant,
+    scriptType: ScriptType.Indic,
+    idx: 42 /* ढ़ */,
+    alts: ['ढ़'],
+  },
+  {
+    tokenType: TokenType.Consonant,
+    scriptType: ScriptType.Indic,
+    idx: 43 /* फ़ */,
+    alts: ['फ़'],
+  },
+  {
+    tokenType: TokenType.Consonant,
+    scriptType: ScriptType.Indic,
+    idx: 44 /* य़ */,
+    alts: ['य़'],
+  },
+  {
+    tokenType: TokenType.VowelDiacritic,
+    scriptType: ScriptType.Indic,
+    idx: 0 /* ् */,
+    alts: ['᳭', '്‍', '‍್', '්‍', '्‍'],
+  },
+  {
+    tokenType: TokenType.VowelDiacritic,
+    scriptType: ScriptType.Tamil,
+    idx: 13 /* ொ */,
+    alts: ['ொ'],
+  },
+  {
+    tokenType: TokenType.VowelDiacritic,
+    scriptType: ScriptType.Tamil,
+    idx: 14 /* ோ */,
+    alts: ['ோ'],
+  },
+  {
+    tokenType: TokenType.VowelDiacritic,
+    scriptType: ScriptType.Tamil,
+    idx: 15 /* ௌ */,
+    alts: ['ௌ'],
+  },
+  {
+    tokenType: TokenType.Accent,
+    scriptType: ScriptType.Indic,
+    idx: 1 /*꠰  ॑ */,
+    alts: ['◌॑'],
+  },
+  {
+    tokenType: TokenType.Accent,
+    scriptType: ScriptType.Latin,
+    idx: 0 /*꠰  ॒ */,
+    alts: ['̱', '↓', '\\_', '\\`', "'", '`'],
+  },
+  {
+    tokenType: TokenType.Accent,
+    scriptType: ScriptType.Latin,
+    idx: 1 /*꠰  ॑ */,
+    alts: ['̍', '↑', "\\'", '\\’', '̭'],
+  },
+  {
+    tokenType: TokenType.Accent,
+    scriptType: ScriptType.Latin,
+    idx: 2 /*꠰  ᳚ */,
+    alts: ['̎', '↑↑', '\\"', "\\''", '\\’’'],
+  },
+  {
+    tokenType: TokenType.ConsonantDiacritic,
+    scriptType: ScriptType.Tamil,
+    idx: 0 /* ँ */,
+    alts: ['ம்ˮ'],
+  },
+  {
+    tokenType: TokenType.ConsonantDiacritic,
+    scriptType: ScriptType.Tamil,
+    idx: 1 /* ं */,
+    alts: ['ம்ʼ'],
+  },
+  {
+    tokenType: TokenType.ConsonantDiacritic,
+    scriptType: ScriptType.Latin,
+    idx: 0 /* ँ */,
+    alts: ['~', 'm̐', 'ṁ'],
+  },
+  {
+    tokenType: TokenType.ConsonantDiacritic,
+    scriptType: ScriptType.Latin,
+    idx: 1 /* ं */,
+    alts: ['ṃ', 'ṃ'],
+  },
+  {
+    tokenType: TokenType.ConsonantDiacritic,
+    scriptType: ScriptType.Latin,
+    idx: 2 /* ः */,
+    alts: ['ḥ', 'ḥ'],
+  },
+  {
+    tokenType: TokenType.Symbol,
+    scriptType: ScriptType.Indic,
+    idx: 10 /* ॐ */,
+    alts: ['ओ३म्'],
+  },
+  {
+    tokenType: TokenType.Symbol,
+    scriptType: ScriptType.Latin,
+    idx: 10 /* ॐ */,
+    alts: ['o3m', 'OM', 'AUM', 'oṃ', 'ŏṃ'],
+  },
+  {
+    tokenType: TokenType.Symbol,
+    scriptType: ScriptType.Latin,
+    idx: 12 /* ꠰ */,
+    alts: ['|', '.'],
+  },
+  {
+    tokenType: TokenType.Symbol,
+    scriptType: ScriptType.Latin,
+    idx: 13 /* ॥ */,
+    alts: ['||', '꠰꠰', '..'],
+  },
+  {
+    tokenType: TokenType.Symbol,
+    scriptType: ScriptType.Latin,
+    idx: 14 /* ꣳ */,
+    alts: ['gͫ', '\\m+', '{\\m+}', '\\м+'],
+  },
+  {
+    tokenType: TokenType.Symbol,
+    scriptType: ScriptType.Latin,
+    idx: 15 /* ꣴ */,
+    alts: ['gͫ̄', '\\m++', '\\м++'],
+  },
+  {
+    tokenType: TokenType.Symbol,
+    scriptType: ScriptType.Latin,
+    idx: 17 /* \u200C */,
+    alts: ['{}', '^^'],
+  },
+  {
+    tokenType: TokenType.Symbol,
+    scriptType: ScriptType.Latin,
+    idx: 18 /* \u200D */,
+    alts: ['()', '^'],
+  },
 ];
 
 /*
@@ -146,9 +348,75 @@ export const DependantAliases = {
   // 'á': ['á'], 'é': ['é'], 'í': ['í'], 'ó': ['ó'], 'ú': ['ú'], 'à': ['à'], 'è': ['è'], 'ì': ['ì'], 'ò': ['ò'], 'ù': ['ù'], 'ṛ́': ['ŕ̥'], 'ṛ̀': ['r̥̀', 'ṛ̀'],
 };
 
-export const VedicAccents = [/*꠰*/'॒', '॑', '᳚', '᳡', '꣡', '꣢', '꣣', '꣤', '꣥', '꣦', '꣧', '꣨', '꣩', '꣪', '꣫', '꣬', '꣭', '꣮', '꣯', '꣰', '꣱'];
-export const BasicAccents = [/*꠰*/'॒', '॑', '᳚', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
-export const AltAccents = [/*꠰*/ '̱', '̍', '̎', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
+export const VedicAccents = [
+  /*꠰*/ '॒',
+  '॑',
+  '᳚',
+  '᳡',
+  '꣡',
+  '꣢',
+  '꣣',
+  '꣤',
+  '꣥',
+  '꣦',
+  '꣧',
+  '꣨',
+  '꣩',
+  '꣪',
+  '꣫',
+  '꣬',
+  '꣭',
+  '꣮',
+  '꣯',
+  '꣰',
+  '꣱',
+];
+export const BasicAccents = [
+  /*꠰*/ '॒',
+  '॑',
+  '᳚',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+];
+export const AltAccents = [
+  /*꠰*/ '̱',
+  '̍',
+  '̎',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '',
+];
 
 export const TamilSuperscripts = '¹²³⁴';
 export const TamilSpecialChars = 'ʼˮˇ꞉ஃ·';
