@@ -72,5 +72,8 @@ flutter/$(WASM_TARGET): $(SOURCES_CC) $(HEADERS_CC)
 				-s FILESYSTEM=0 \
 				-s $(COMPILED_EXPORTS)
 
-flutter/lib/src/bindings.dart: flutter/native/src/exports.h
+flutter/lib/src/bindings.dart: native/src/exports.h
 	dart ./scripts/generate_bindings.dart
+
+native/src/script_data.h: scripts/script_data.json
+	dart ./scripts/generate_script_data_header.dart

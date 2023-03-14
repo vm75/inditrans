@@ -16,23 +16,12 @@ auto isIndicScript = [](std::string_view script) noexcept {
 };
 
 // clang-format off
-constexpr std::array<AliasEntry, 64> PositionalAliases {{
-  { TokenType::Consonant,          ScriptType::Indic,  37 /* क़ */,      "क़" },
-  { TokenType::Consonant,          ScriptType::Indic,  38 /* ख़ */,      "ख़" },
-  { TokenType::Consonant,          ScriptType::Indic,  39 /* ग़ */,       "ग़" },
-  { TokenType::Consonant,          ScriptType::Indic,  40 /* ज़ */,      "ज़" },
-  { TokenType::Consonant,          ScriptType::Indic,  41 /* ड़ */,      "ड़" },
-  { TokenType::Consonant,          ScriptType::Indic,  42 /* ढ़ */,       "ढ़" },
-  { TokenType::Consonant,          ScriptType::Indic,  43 /* फ़ */,      "फ़" },
-  { TokenType::Consonant,          ScriptType::Indic,  44 /* य़ */,       "य़" },
+constexpr std::array<AliasEntry, 50> PositionalAliases {{
   { TokenType::VowelDiacritic,     ScriptType::Indic,   0 /* ् */,       "᳭" }, 
   { TokenType::VowelDiacritic,     ScriptType::Indic,   0 /* ् */,       "്‍"sv /*virama + ZWJ*/ }, 
   { TokenType::VowelDiacritic,     ScriptType::Indic,   0 /* ् */,       "‍್"sv /*ZWJ+virama*/ }, 
   { TokenType::VowelDiacritic,     ScriptType::Indic,   0 /* ् */,       "්‍"sv /*virama + ZWJ*/ }, 
   { TokenType::VowelDiacritic,     ScriptType::Indic,   0 /* ् */,       "्‍"sv /*virama + ZWJ*/ },
-  { TokenType::VowelDiacritic,     ScriptType::Tamil,  13 /* ொ */,    "ொ" },
-  { TokenType::VowelDiacritic,     ScriptType::Tamil,  14 /* ோ */,    "ோ" },
-  { TokenType::VowelDiacritic,     ScriptType::Tamil,  15 /* ௌ */,   "ௌ" },
   { TokenType::Accent,             ScriptType::Indic,   1 /*꠰  ॑ */,       "◌॑" },
   { TokenType::Accent,             ScriptType::Latin,   0 /*꠰  ॒ */,       "̱" }, 
   { TokenType::Accent,             ScriptType::Latin,   0 /*꠰  ॒ */,       "↓" }, 
@@ -50,8 +39,6 @@ constexpr std::array<AliasEntry, 64> PositionalAliases {{
   { TokenType::Accent,             ScriptType::Latin,   2 /*꠰  ᳚ */,       "\\\"" }, 
   { TokenType::Accent,             ScriptType::Latin,   2 /*꠰  ᳚ */,       "\\''" }, 
   { TokenType::Accent,             ScriptType::Latin,   2 /*꠰  ᳚ */,       "\\’’" },
-  { TokenType::ConsonantDiacritic, ScriptType::Tamil,   0 /* ँ */,       "ம்ˮ" },
-  { TokenType::ConsonantDiacritic, ScriptType::Tamil,   1 /* ं */,       "ம்ʼ" },
   { TokenType::ConsonantDiacritic, ScriptType::Latin,   0 /* ँ */,       "~" }, 
   { TokenType::ConsonantDiacritic, ScriptType::Latin,   0 /* ँ */,       "m̐" }, 
   { TokenType::ConsonantDiacritic, ScriptType::Latin,   0 /* ँ */,       "ṁ" },
@@ -59,7 +46,6 @@ constexpr std::array<AliasEntry, 64> PositionalAliases {{
   { TokenType::ConsonantDiacritic, ScriptType::Latin,   1 /* ं */,       "ṃ" },
   { TokenType::ConsonantDiacritic, ScriptType::Latin,   2 /* ः */,       "ḥ" }, 
   { TokenType::ConsonantDiacritic, ScriptType::Latin,   2 /* ः */,       "ḥ" },
-  { TokenType::Symbol,             ScriptType::Indic,  10 /* ॐ */,      "ओ३म्" },
   { TokenType::Symbol,             ScriptType::Latin,  10 /* ॐ */,      "o3m" }, 
   { TokenType::Symbol,             ScriptType::Latin,  10 /* ॐ */,      "OM" }, 
   { TokenType::Symbol,             ScriptType::Latin,  10 /* ॐ */,      "AUM" }, 

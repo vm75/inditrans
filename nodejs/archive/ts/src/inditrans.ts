@@ -511,7 +511,7 @@ class OutputWriter {
         tokenUnitOrString.leadToken.tokenType ==
           TranslitTypes.TokenType.Symbol &&
         tokenUnitOrString.leadToken.idx >=
-          TranslitTypes.SpecialIndices.ZeroWidthSpace &&
+          TranslitTypes.SpecialIndices.ZeroWidthSymbolStart &&
         !this.options.RetainZeroWidthChars
       ) {
         return;
