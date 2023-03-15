@@ -32,7 +32,7 @@
 
 ## 0.1.8
 
-- Made InferAnuswara automatic. Fixed Diactric for Vowels.
+- Made InferAnuswara automatic. Fixed Diacritic for Vowels.
 
 ## 0.1.7
 

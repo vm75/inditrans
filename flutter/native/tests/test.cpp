@@ -132,7 +132,7 @@ void testPerf(bool prof) noexcept {
               << " ms" << std::endl;
 
     std::cout
-        << "  Transliterate to roman: "
+        << "  Transliterate to Latin: "
         << measure<>::duration(translitProxy, inBuffer.data(), "devanagari", "iso", TranslitOptions::None, out).count()
         << " ms" << std::endl;
     if (!prof) {

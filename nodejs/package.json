@@ -1,7 +1,7 @@
 {
   "name": "@vm75/inditrans",
   "version": "0.3.6",
-  "description": "An experimental transliterator library for some Indic scripts.",
+  "description": "An experimental transliterator library for some Indic/Brahmic scripts.",
   "main": "./dist/src/index.js",
   "author": "VM75",
   "license": "MIT",

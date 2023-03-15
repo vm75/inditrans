@@ -34,24 +34,6 @@ init() async {
 ///
 /// If the transliterate fails, returns an empty string.
 ///
-/// The follwing scripts are currently supported:
-/// * Brahmi scripts:
-///   * bengali
-///   * devanagari
-///   * gujarati
-///   * gurmukhi
-///   * kannada
-///   * malayalam
-///   * oriya
-///   * telugu
-///   * tamil
-/// * Roman scripts
-///   * iast (https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration)
-///   * ipa (https://en.wikipedia.org/wiki/International_Phonetic_Alphabet)
-///   * iso 15919 (https://en.wikipedia.org/wiki/ISO_15919)
-///   * itrans (https://en.wikipedia.org/wiki/ITRANS)
-///   * readablelatin (non-standard)
-///
 /// ```dart
 /// import 'package:inditrans/inditrans.dart' as inditrans;
 /// ...

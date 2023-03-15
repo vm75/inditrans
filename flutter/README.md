@@ -1,6 +1,6 @@
 # inditrans
 
-A transliterator transliterator library for some [Indic/Brahmi](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
+A transliterator transliterator library for some [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
 
 - Available on all platforms. Uses ffi for non-Web platforms and wasm for Web.
 - Self-contained and performant.
@@ -15,7 +15,7 @@ References:
 
 ## Supported scripts
 
-- Brahmi scripts:
+- Indic/Brahmic scripts:
   - assamese
   - bengali
   - devanagari
@@ -27,7 +27,7 @@ References:
   - sinhala
   - tamil
   - telugu
-- Roman scripts
+- Latin/Roman scripts:
   - iast (https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration)
   - ipa (https://en.wikipedia.org/wiki/International_Phonetic_Alphabet)
   - iso 15919 (https://en.wikipedia.org/wiki/ISO_15919)

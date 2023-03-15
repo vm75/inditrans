@@ -11,7 +11,7 @@ export function setErrorLogger(func: (text: string) => void) {
 
 function getTranslitOptions(opts: string): TranslitOptions {
   const options: TranslitOptions = {};
-  opts.split(/\s+/).forEach(opt => {
+  opts.split(/\s+/).forEach((opt) => {
     switch (opt) {
       case 'TamilTraditional':
         options.TamilTraditional = true;
@@ -32,7 +32,7 @@ function getTranslitOptions(opts: string): TranslitOptions {
         options.ASCIINumerals = true;
         break;
     }
-  })
+  });
   return options;
 }
 
@@ -42,9 +42,9 @@ function scriptIsReadable(name: string): boolean {
 }
 
 type Token = {
-  readonly tokenType: TranslitTypes.TokenType,
-  readonly scriptType: TranslitTypes.ScriptType,
-  readonly idx: number
+  readonly tokenType: TranslitTypes.TokenType;
+  readonly scriptType: TranslitTypes.ScriptType;
+  readonly idx: number;
 };
 
 type ScriptData = {
@@ -57,14 +57,30 @@ class ScriptReaderMap {
   type: TranslitTypes.ScriptType;
   tokenMap = new Trie<Token>();
 
-  addCharMap(script: string, tokenType: TranslitTypes.TokenType, scriptType: TranslitTypes.ScriptType, map: string[], count: number) {
+  addCharMap(
+    script: string,
+    tokenType: TranslitTypes.TokenType,
+    scriptType: TranslitTypes.ScriptType,
+    map: string[],
+    count: number
+  ) {
     for (let idx = 0; idx < count; idx++) {
-      if (scriptType == TranslitTypes.ScriptType.Roman && tokenType == TranslitTypes.TokenType.VowelDiacritic && idx > TranslitTypes.SpecialIndices.Virama) {
+      if (
+        scriptType == TranslitTypes.ScriptType.Latin &&
+        tokenType == TranslitTypes.TokenType.VowelDiacritic &&
+        idx > TranslitTypes.SpecialIndices.Virama
+      ) {
         continue;
       }
-      const res = this.tokenMap.addLookup(map[idx], { scriptType, tokenType, idx });
+      const res = this.tokenMap.addLookup(map[idx], {
+        scriptType,
+        tokenType,
+        idx,
+      });
       if (res != undefined && errorLogger != undefined) {
-        const error = `Error adding for: ${script}, tokenType: ${TranslitTypes.tokenTypeStr(tokenType)}, idx: ${idx.toString()}, new value: ${map[idx]}`;
+        const error = `Error adding for: ${script}, tokenType: ${TranslitTypes.tokenTypeStr(
+          tokenType
+        )}, idx: ${idx.toString()}, new value: ${map[idx]}`;
         errorLogger(error);
       }
     }
@@ -77,31 +93,61 @@ class ScriptReaderMap {
     const scriptType = scriptData.type;
 
     this.addScript(name, scriptData);
-    this.addCharMap(name, TranslitTypes.TokenType.Accent, scriptType, TranslitTypes.VedicAccents, TranslitTypes.VedicAccents.length);
+    this.addCharMap(
+      name,
+      TranslitTypes.TokenType.Accent,
+      scriptType,
+      TranslitTypes.VedicAccents,
+      TranslitTypes.VedicAccents.length
+    );
 
-    this.tokenMap.addLookup('##', { tokenType: TranslitTypes.TokenType.ToggleTrans, scriptType: scriptData.type, idx: 0 });
+    this.tokenMap.addLookup('##', {
+      tokenType: TranslitTypes.TokenType.ToggleTrans,
+      scriptType: scriptData.type,
+      idx: 0,
+    });
 
-    TranslitTypes.PositionalAliases.forEach(aliasEntry => {
+    TranslitTypes.PositionalAliases.forEach((aliasEntry) => {
       if (aliasEntry.scriptType != scriptType) {
         return;
       }
-      aliasEntry.alts.forEach(alt => {
-        this.tokenMap.addLookup(alt, { tokenType: aliasEntry.tokenType, scriptType: aliasEntry.scriptType, idx: aliasEntry.idx });
+      aliasEntry.alts.forEach((alt) => {
+        this.tokenMap.addLookup(alt, {
+          tokenType: aliasEntry.tokenType,
+          scriptType: aliasEntry.scriptType,
+          idx: aliasEntry.idx,
+        });
       });
     });
   }
 
   addScript(name: string, scriptData: ScriptData) {
-    for (let tokenType = TranslitTypes.TokenType.Vowel; tokenType <= TranslitTypes.TokenType.Symbol; tokenType++) {
-      this.addCharMap(name, tokenType, scriptData.type, scriptData.charMaps[tokenType], scriptData.charMaps[tokenType].length);
+    for (
+      let tokenType = TranslitTypes.TokenType.Vowel;
+      tokenType <= TranslitTypes.TokenType.Symbol;
+      tokenType++
+    ) {
+      this.addCharMap(
+        name,
+        tokenType,
+        scriptData.type,
+        scriptData.charMaps[tokenType],
+        scriptData.charMaps[tokenType].length
+      );
     }
   }
 
-  lookupToken(text: string, startIndex: number): { match: Token | undefined, len: number } {
+  lookupToken(
+    text: string,
+    startIndex: number
+  ): { match: Token | undefined; len: number } {
     return this.tokenMap.lookup(text, startIndex);
   }
 
-  findNextToken(text: string, startIndex: number): { match: Token | undefined, len: number, index: number } {
+  findNextToken(
+    text: string,
+    startIndex: number
+  ): { match: Token | undefined; len: number; index: number } {
     let index = startIndex;
     let result;
     while ((result = this.tokenMap.lookup(text, index)).match == undefined) {
@@ -124,22 +170,29 @@ class ScriptWriterMap {
     this.name = name;
     this.type = scriptData.type;
     this.charMaps = [...scriptData.charMaps];
-    const accents = this.type == TranslitTypes.ScriptType.Roman ? TranslitTypes.AltAccents : TranslitTypes.VedicAccents;
+    const accents =
+      this.type == TranslitTypes.ScriptType.Latin
+        ? TranslitTypes.AltAccents
+        : TranslitTypes.VedicAccents;
     this.charMaps.push(accents);
   }
 
-  lookupChar(type: TranslitTypes.TokenType, idx: number): string { return this.charMaps[type][idx]; }
-  lookup(token: Token): string { return this.charMaps[token.tokenType][token.idx]; }
+  lookupChar(type: TranslitTypes.TokenType, idx: number): string {
+    return this.charMaps[type][idx];
+  }
+  lookup(token: Token): string {
+    return this.charMaps[token.tokenType][token.idx];
+  }
 }
 
 type TokenOrString = Token | string;
 
 type TokenUnit = {
-  leadToken: Token,
-  vowelDiacritic?: Token,
-  consonantDiacritic?: Token,
-  accent?: Token,
-}
+  leadToken: Token;
+  vowelDiacritic?: Token;
+  consonantDiacritic?: Token;
+  accent?: Token;
+};
 
 type TokenUnitOrString = TokenUnit | string;
 
@@ -160,7 +213,11 @@ class InputReader {
     while (index < end) {
       if (skipTrans) {
         const start = index;
-        while (text.charAt(index) != '#' && text.charAt(index + 1) != '#' && index < end) {
+        while (
+          text.charAt(index) != '#' &&
+          text.charAt(index + 1) != '#' &&
+          index < end
+        ) {
           index++;
         }
         if (index > start) {
@@ -200,27 +257,32 @@ class InputReader {
 
     let tokenUnit: TokenUnit = { leadToken: next };
     switch (next.scriptType) {
-      case TranslitTypes.ScriptType.Brahmi:
-        tokenUnit = this.readBrahmiTokenUnit(next);
+      case TranslitTypes.ScriptType.Indic:
+        tokenUnit = this.readIndicTokenUnit(next);
         break;
       case TranslitTypes.ScriptType.Tamil:
         tokenUnit = this.readTamilTokenUnit(next);
         break;
-      case TranslitTypes.ScriptType.Roman:
-        tokenUnit = this.readRomanTokenUnit(next);
+      case TranslitTypes.ScriptType.Latin:
+        tokenUnit = this.readLatinTokenUnit(next);
         break;
       default:
         break;
     }
-    this.wordStart = (tokenUnit.leadToken.tokenType == TranslitTypes.TokenType.Symbol || tokenUnit.leadToken.tokenType == TranslitTypes.TokenType.ToggleTrans);
+    this.wordStart =
+      tokenUnit.leadToken.tokenType == TranslitTypes.TokenType.Symbol ||
+      tokenUnit.leadToken.tokenType == TranslitTypes.TokenType.ToggleTrans;
     return tokenUnit;
   }
 
-  readBrahmiTokenUnit(start: Token): TokenUnit {
+  readIndicTokenUnit(start: Token): TokenUnit {
     const tokens: TokenUnit = { leadToken: start };
     if (start.tokenType == TranslitTypes.TokenType.Consonant) {
       let nextToken;
-      while (this.tokenUnitIndex < this.numTokenUnits && typeof (nextToken = this.tokenUnits[this.tokenUnitIndex]) !== 'string') {
+      while (
+        this.tokenUnitIndex < this.numTokenUnits &&
+        typeof (nextToken = this.tokenUnits[this.tokenUnitIndex]) !== 'string'
+      ) {
         switch (nextToken.tokenType) {
           case TranslitTypes.TokenType.ConsonantDiacritic:
             tokens.consonantDiacritic = nextToken;
@@ -238,7 +300,10 @@ class InputReader {
       }
     } else if (start.tokenType == TranslitTypes.TokenType.Vowel) {
       let nextToken;
-      if (this.tokenUnitIndex < this.numTokenUnits && typeof (nextToken = this.tokenUnits[this.tokenUnitIndex]) !== 'string') {
+      if (
+        this.tokenUnitIndex < this.numTokenUnits &&
+        typeof (nextToken = this.tokenUnits[this.tokenUnitIndex]) !== 'string'
+      ) {
         if (nextToken.tokenType == TranslitTypes.TokenType.Accent) {
           tokens.accent = nextToken;
           this.tokenUnitIndex++;
@@ -256,7 +321,10 @@ class InputReader {
     if (typeof next === 'string') {
       return TranslitTypes.TamilSuperscripts.indexOf(next) < 0;
     }
-    return next.tokenType == TranslitTypes.TokenType.Symbol || next.tokenType == TranslitTypes.TokenType.ToggleTrans;
+    return (
+      next.tokenType == TranslitTypes.TokenType.Symbol ||
+      next.tokenType == TranslitTypes.TokenType.ToggleTrans
+    );
   }
 
   previousViramaConsonant = -1;
@@ -264,14 +332,23 @@ class InputReader {
     const tokenUnit: TokenUnit = { leadToken: start };
     if (start.tokenType == TranslitTypes.TokenType.Consonant) {
       const prevViramaConsonant = this.previousViramaConsonant;
-      const isPrimary = start.idx <= TranslitTypes.SpecialIndices.ப && start.idx % 5 == 0;
+      const isPrimary =
+        start.idx <= TranslitTypes.SpecialIndices.ப && start.idx % 5 == 0;
       this.previousViramaConsonant = -1;
       if (isPrimary && !this.options.TamilSuperscripted) {
         if (prevViramaConsonant != start.idx) {
           if (!this.wordStart) {
-            tokenUnit.leadToken = { tokenType: start.tokenType, scriptType: TranslitTypes.ScriptType.Tamil, idx: start.idx + 2 };
+            tokenUnit.leadToken = {
+              tokenType: start.tokenType,
+              scriptType: TranslitTypes.ScriptType.Tamil,
+              idx: start.idx + 2,
+            };
           } else if (start.idx == TranslitTypes.SpecialIndices.ச) {
-            tokenUnit.leadToken = { tokenType: start.tokenType, scriptType: TranslitTypes.ScriptType.Tamil, idx: TranslitTypes.SpecialIndices.ஸ };
+            tokenUnit.leadToken = {
+              tokenType: start.tokenType,
+              scriptType: TranslitTypes.ScriptType.Tamil,
+              idx: TranslitTypes.SpecialIndices.ஸ,
+            };
           }
         }
       }
@@ -286,11 +363,25 @@ class InputReader {
               break;
             case TranslitTypes.TokenType.VowelDiacritic:
               this.tokenUnitIndex++;
-              if (isPrimary && nextToken.idx == TranslitTypes.SpecialIndices.Virama && !this.options.TamilSuperscripted) {
+              if (
+                isPrimary &&
+                nextToken.idx == TranslitTypes.SpecialIndices.Virama &&
+                !this.options.TamilSuperscripted
+              ) {
                 this.previousViramaConsonant = start.idx;
-                tokenUnit.leadToken = { tokenType: start.tokenType, scriptType: TranslitTypes.ScriptType.Tamil, idx: start.idx };
+                tokenUnit.leadToken = {
+                  tokenType: start.tokenType,
+                  scriptType: TranslitTypes.ScriptType.Tamil,
+                  idx: start.idx,
+                };
                 if (this.isEndOfWord()) {
-                  return { leadToken: { tokenType: TranslitTypes.TokenType.Ignore, scriptType: TranslitTypes.ScriptType.Tamil, idx: 0 } };
+                  return {
+                    leadToken: {
+                      tokenType: TranslitTypes.TokenType.Ignore,
+                      scriptType: TranslitTypes.ScriptType.Tamil,
+                      idx: 0,
+                    },
+                  };
                 }
               }
               tokenUnit.vowelDiacritic = nextToken;
@@ -302,10 +393,18 @@ class InputReader {
             default:
               return tokenUnit;
           }
-        } else if ((isPrimary || start.idx == TranslitTypes.SpecialIndices.ஜ) && this.tokenUnitIndex < this.numTokenUnits) {
-          const superscriptIndex = TranslitTypes.TamilSuperscripts.indexOf(nextToken);
+        } else if (
+          (isPrimary || start.idx == TranslitTypes.SpecialIndices.ஜ) &&
+          this.tokenUnitIndex < this.numTokenUnits
+        ) {
+          const superscriptIndex =
+            TranslitTypes.TamilSuperscripts.indexOf(nextToken);
           if (superscriptIndex > 0) {
-            tokenUnit.leadToken = { tokenType: tokenUnit.leadToken.tokenType, scriptType: TranslitTypes.ScriptType.Tamil, idx: start.idx + superscriptIndex }; // no validate
+            tokenUnit.leadToken = {
+              tokenType: tokenUnit.leadToken.tokenType,
+              scriptType: TranslitTypes.ScriptType.Tamil,
+              idx: start.idx + superscriptIndex,
+            }; // no validate
             this.tokenUnitIndex++;
           } else {
             break;
@@ -314,7 +413,10 @@ class InputReader {
           break;
         }
       }
-    } else if (start.tokenType == TranslitTypes.TokenType.Vowel && this.tokenUnitIndex < this.numTokenUnits) {
+    } else if (
+      start.tokenType == TranslitTypes.TokenType.Vowel &&
+      this.tokenUnitIndex < this.numTokenUnits
+    ) {
       const nextToken = this.tokenUnits[this.tokenUnitIndex];
       if (typeof nextToken !== 'string') {
         tokenUnit.accent = nextToken;
@@ -324,21 +426,27 @@ class InputReader {
     return tokenUnit;
   }
 
-  readRomanTokenUnit(start: Token): TokenUnit {
+  readLatinTokenUnit(start: Token): TokenUnit {
     const tokens: TokenUnit = { leadToken: start };
     if (start.tokenType === TranslitTypes.TokenType.Consonant) {
       let nextToken;
       let vowelAdded = false;
-      while (this.tokenUnitIndex < this.numTokenUnits && typeof (nextToken = this.tokenUnits[this.tokenUnitIndex]) !== 'string') {
+      while (
+        this.tokenUnitIndex < this.numTokenUnits &&
+        typeof (nextToken = this.tokenUnits[this.tokenUnitIndex]) !== 'string'
+      ) {
         let consume = false;
         switch (nextToken.tokenType) {
           case TranslitTypes.TokenType.Vowel:
           case TranslitTypes.TokenType.VowelDiacritic:
             if (!vowelAdded) {
-
               vowelAdded = true;
               if (nextToken.idx !== TranslitTypes.SpecialIndices.Virama) {
-                tokens.vowelDiacritic = { tokenType: TranslitTypes.TokenType.VowelDiacritic, scriptType: TranslitTypes.ScriptType.Roman, idx: nextToken.idx };
+                tokens.vowelDiacritic = {
+                  tokenType: TranslitTypes.TokenType.VowelDiacritic,
+                  scriptType: TranslitTypes.ScriptType.Latin,
+                  idx: nextToken.idx,
+                };
               }
               consume = true;
             }
@@ -358,7 +466,11 @@ class InputReader {
         this.tokenUnitIndex++;
       }
       if (!vowelAdded) {
-        tokens.vowelDiacritic = { tokenType: TranslitTypes.TokenType.VowelDiacritic, scriptType: TranslitTypes.ScriptType.Roman, idx: 0 };
+        tokens.vowelDiacritic = {
+          tokenType: TranslitTypes.TokenType.VowelDiacritic,
+          scriptType: TranslitTypes.ScriptType.Latin,
+          idx: 0,
+        };
       }
     }
     return tokens;
@@ -374,7 +486,10 @@ class OutputWriter {
   constructor(map: ScriptWriterMap, options: TranslitOptions) {
     this.map = map;
     this.options = options;
-    this.anuswaraMissing = map.charMaps[TranslitTypes.TokenType.ConsonantDiacritic][TranslitTypes.SpecialIndices.Anuswara] === "";
+    this.anuswaraMissing =
+      map.charMaps[TranslitTypes.TokenType.ConsonantDiacritic][
+        TranslitTypes.SpecialIndices.Anuswara
+      ] === '';
   }
 
   writeTokenUnit(tokenUnitOrString: string | TokenUnit) {
@@ -387,32 +502,44 @@ class OutputWriter {
       this.push(tokenUnitOrString);
       this.wordStart = true;
     } else {
-      if (tokenUnitOrString.leadToken.tokenType == TranslitTypes.TokenType.Ignore) {
+      if (
+        tokenUnitOrString.leadToken.tokenType == TranslitTypes.TokenType.Ignore
+      ) {
         return;
       }
-      if (tokenUnitOrString.leadToken.tokenType == TranslitTypes.TokenType.Symbol && tokenUnitOrString.leadToken.idx >= TranslitTypes.SpecialIndices.ZeroWidthSpace && !this.options.RetainZeroWidthChars) {
+      if (
+        tokenUnitOrString.leadToken.tokenType ==
+          TranslitTypes.TokenType.Symbol &&
+        tokenUnitOrString.leadToken.idx >=
+          TranslitTypes.SpecialIndices.ZeroWidthSymbolStart &&
+        !this.options.RetainZeroWidthChars
+      ) {
         return;
       }
       switch (this.map.type) {
-        case TranslitTypes.ScriptType.Brahmi:
-          this.writeBrahmiTokenUnit(tokenUnitOrString);
+        case TranslitTypes.ScriptType.Indic:
+          this.writeIndicTokenUnit(tokenUnitOrString);
           break;
         case TranslitTypes.ScriptType.Tamil:
           this.writeTamilTokenUnit(tokenUnitOrString, anuswaraPosition);
           break;
-        case TranslitTypes.ScriptType.Roman:
-          this.writeRomanTokenUnit(tokenUnitOrString, anuswaraPosition);
+        case TranslitTypes.ScriptType.Latin:
+          this.writeLatinTokenUnit(tokenUnitOrString, anuswaraPosition);
           break;
         default:
           return;
       }
-      this.wordStart = (tokenUnitOrString.leadToken.tokenType == TranslitTypes.TokenType.Symbol);
+      this.wordStart =
+        tokenUnitOrString.leadToken.tokenType == TranslitTypes.TokenType.Symbol;
     }
   }
 
   text(): string {
     if (this.previousAnuswaraPosition != undefined && this.anuswaraMissing) {
-      this.inferAnuswara(this.previousAnuswaraPosition, TranslitTypes.SpecialIndices.प);
+      this.inferAnuswara(
+        this.previousAnuswaraPosition,
+        TranslitTypes.SpecialIndices.प
+      );
     }
     return this.buffer.join('');
   }
@@ -424,9 +551,15 @@ class OutputWriter {
     this.buffer.push(text);
   }
 
-  writeBrahmiTokenUnit(tokenUnit: TokenUnit) {
-    if (this.options.ASCIINumerals && tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Symbol && tokenUnit.leadToken.idx < 10) {
-      this.push(String.fromCharCode('0'.charCodeAt(0) + tokenUnit.leadToken.idx));
+  writeIndicTokenUnit(tokenUnit: TokenUnit) {
+    if (
+      this.options.ASCIINumerals &&
+      tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Symbol &&
+      tokenUnit.leadToken.idx < 10
+    ) {
+      this.push(
+        String.fromCharCode('0'.charCodeAt(0) + tokenUnit.leadToken.idx)
+      );
     } else {
       this.push(this.map.lookup(tokenUnit.leadToken));
     }
@@ -444,10 +577,10 @@ class OutputWriter {
   previousConsonant = 0;
   previousConsonantPosition = 0;
   modernMap: Record<string, string> = {
-    'ஸ': 'ச',
-    'ஜ': 'ச³',
-    'ஜ²': 'ச⁴'
-  }
+    ஸ: 'ச',
+    ஜ: 'ச³',
+    'ஜ²': 'ச⁴',
+  };
   wordStart = true;
   writeTamilTokenUnit(tokenUnit: TokenUnit, anuswaraPosition?: number) {
     let leadText = this.map.lookup(tokenUnit.leadToken);
@@ -456,7 +589,10 @@ class OutputWriter {
     if (tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Consonant) {
       if (leadIdx === TranslitTypes.SpecialIndices.ந && !this.wordStart) {
         leadText = 'ன';
-      } else if (this.previousConsonant === TranslitTypes.SpecialIndices.ன && Math.floor(leadIdx / 5) === 3) {
+      } else if (
+        this.previousConsonant === TranslitTypes.SpecialIndices.ன &&
+        Math.floor(leadIdx / 5) === 3
+      ) {
         this.buffer[this.previousConsonantPosition] = 'ந';
       } else if (this.options.TamilTraditional) {
         const repl = this.modernMap[leadText];
@@ -469,7 +605,10 @@ class OutputWriter {
       }
 
       let superscript = '';
-      if (leadText.length > 1 && TranslitTypes.TamilSuperscripts.indexOf(leadText.slice(-1)) >= 0) {
+      if (
+        leadText.length > 1 &&
+        TranslitTypes.TamilSuperscripts.indexOf(leadText.slice(-1)) >= 0
+      ) {
         superscript = leadText.slice(-1);
         leadText = leadText.slice(0, -1);
       }
@@ -485,8 +624,13 @@ class OutputWriter {
       }
 
       if (tokenUnit.consonantDiacritic) {
-        const consonantDiacriticText = this.map.lookup(tokenUnit.consonantDiacritic);
-        if (tokenUnit.consonantDiacritic.idx === TranslitTypes.SpecialIndices.Anuswara) {
+        const consonantDiacriticText = this.map.lookup(
+          tokenUnit.consonantDiacritic
+        );
+        if (
+          tokenUnit.consonantDiacritic.idx ===
+          TranslitTypes.SpecialIndices.Anuswara
+        ) {
           this.previousAnuswaraPosition = this.buffer.length + this.text.length;
         }
         this.push(consonantDiacriticText);
@@ -497,14 +641,23 @@ class OutputWriter {
       }
     } else {
       this.previousConsonant = -1;
-      if (this.options.ASCIINumerals && tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Symbol && leadIdx < 10) {
+      if (
+        this.options.ASCIINumerals &&
+        tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Symbol &&
+        leadIdx < 10
+      ) {
         this.push(String.fromCharCode('0'.charCodeAt(0) + leadIdx));
       } else {
         this.push(leadText);
       }
     }
 
-    if (!this.options.IgnoreVedicAccents && tokenUnit.accent && (tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Consonant || tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Vowel)) {
+    if (
+      !this.options.IgnoreVedicAccents &&
+      tokenUnit.accent &&
+      (tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Consonant ||
+        tokenUnit.leadToken.tokenType === TranslitTypes.TokenType.Vowel)
+    ) {
       const lastTokenText = this.buffer.slice(-1)[0];
       const accent = this.map.lookup(tokenUnit.accent);
       if (TranslitTypes.TamilSpecialChars.includes(lastTokenText.slice(-1))) {
@@ -519,15 +672,23 @@ class OutputWriter {
   }
 
   inferAnuswara(anuswaraPosition: number, idx: number) {
-    let repl = this.map.lookupChar(TranslitTypes.TokenType.Consonant, (idx < TranslitTypes.SpecialIndices.म) ? ((Math.floor(idx / 5) * 5) + 4) : TranslitTypes.SpecialIndices.म);
-    if (this.map.type != TranslitTypes.ScriptType.Roman) {
-      repl += this.map.lookupChar(TranslitTypes.TokenType.VowelDiacritic, TranslitTypes.SpecialIndices.Virama);
+    let repl = this.map.lookupChar(
+      TranslitTypes.TokenType.Consonant,
+      idx < TranslitTypes.SpecialIndices.म
+        ? Math.floor(idx / 5) * 5 + 4
+        : TranslitTypes.SpecialIndices.म
+    );
+    if (this.map.type != TranslitTypes.ScriptType.Latin) {
+      repl += this.map.lookupChar(
+        TranslitTypes.TokenType.VowelDiacritic,
+        TranslitTypes.SpecialIndices.Virama
+      );
     }
     this.buffer[anuswaraPosition] = repl;
   }
 
   previousAnuswaraPosition?: number;
-  writeRomanTokenUnit(tokenUnit: TokenUnit, anuswaraPosition?: number) {
+  writeLatinTokenUnit(tokenUnit: TokenUnit, anuswaraPosition?: number) {
     const leadToken = tokenUnit.leadToken;
     this.push(this.map.lookup(leadToken));
     if (leadToken.tokenType === TranslitTypes.TokenType.Consonant) {
@@ -535,8 +696,15 @@ class OutputWriter {
         this.inferAnuswara(anuswaraPosition, leadToken.idx);
       }
       if (!tokenUnit.vowelDiacritic) {
-        this.push(this.map.lookupChar(TranslitTypes.TokenType.Vowel, TranslitTypes.SpecialIndices.Virama));
-      } else if (tokenUnit.vowelDiacritic.idx !== TranslitTypes.SpecialIndices.Virama) {
+        this.push(
+          this.map.lookupChar(
+            TranslitTypes.TokenType.Vowel,
+            TranslitTypes.SpecialIndices.Virama
+          )
+        );
+      } else if (
+        tokenUnit.vowelDiacritic.idx !== TranslitTypes.SpecialIndices.Virama
+      ) {
         this.push(this.map.lookup(tokenUnit.vowelDiacritic));
       }
     }
@@ -544,7 +712,10 @@ class OutputWriter {
       this.push(this.map.lookup(tokenUnit.accent));
     }
     if (tokenUnit.consonantDiacritic) {
-      if (tokenUnit.consonantDiacritic.idx == TranslitTypes.SpecialIndices.Anuswara) {
+      if (
+        tokenUnit.consonantDiacritic.idx ==
+        TranslitTypes.SpecialIndices.Anuswara
+      ) {
         this.previousAnuswaraPosition = this.buffer.length;
       }
       this.push(this.map.lookup(tokenUnit.consonantDiacritic));
@@ -556,11 +727,11 @@ function populateScriptDataMap() {
   const scriptDataMap: Map<string, ScriptData> = new Map();
   for (const [scriptType, scripts] of Object.entries(TranslitData.Primary)) {
     for (const [name, scriptInfo] of Object.entries(scripts)) {
-      const maps = (scriptInfo as unknown) as string[][];
+      const maps = scriptInfo as unknown as string[][];
       const type = TranslitTypes.getScriptTypeFromString(scriptType);
       scriptDataMap.set(name, {
         type,
-        charMaps: maps
+        charMaps: maps,
       });
     }
   }
@@ -584,7 +755,11 @@ function getInputReader(text: string, from: string, options: TranslitOptions) {
       readerMapCache.set(from, readerMap);
 
       for (const [name, scriptData] of scriptDataMap) {
-        if (name == 'devanagari' || (scriptData.type != TranslitTypes.ScriptType.Brahmi && scriptData.type != TranslitTypes.ScriptType.Tamil)) {
+        if (
+          name == 'devanagari' ||
+          (scriptData.type != TranslitTypes.ScriptType.Indic &&
+            scriptData.type != TranslitTypes.ScriptType.Tamil)
+        ) {
           continue;
         }
 
@@ -617,7 +792,12 @@ function getOutputWriter(to: string, options: TranslitOptions) {
   return new OutputWriter(writerMap, options);
 }
 
-export function transliterate(text: string, from: string, to: string, opts: string): string {
+export function transliterate(
+  text: string,
+  from: string,
+  to: string,
+  opts: string
+): string {
   const options = getTranslitOptions(opts);
   const reader = getInputReader(text, from, options);
   const writer = getOutputWriter(to, options);

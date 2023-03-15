@@ -1,11 +1,15 @@
 #pragma once
 
-#include "scripts_gen.h"
+#include <cassert>
 #include <limits>
+#include <map>
+#include <optional>
 #include <string_view>
 #include <vector>
 
 using namespace std::literals::string_view_literals;
+
+enum class ScriptType : uint8_t { Indic, Tamil, Latin, Others };
 
 enum SpecialIndices : uint8_t {
   Virama = 0,
@@ -15,9 +19,8 @@ enum SpecialIndices : uint8_t {
   AyudaEzhuttu = 3,
   Nukta = 4,
   Om = 10,
-  ZeroWidthSpace = 16,
-  ZeroWidthNonJoiner = 17,
-  ZeroWidthJoiner = 18,
+  InWordSymbolStart = 14,
+  ZeroWidthSymbolStart = 16,
   // clang-format off
   // क = 0, ख = 1, ग = 2, घ = 3, ङ = 4,
   // च = 5, छ = 6, ज = 7, झ = 8, ञ = 9,
@@ -53,6 +56,7 @@ struct Token {
       : tokenType(type)
       , idx(idx) { }
 
+  bool operator<(const Token& other) const noexcept { return tokenType < other.tokenType || idx < other.idx; }
   bool operator==(const Token& other) const noexcept { return tokenType == other.tokenType && idx == other.idx; }
   bool operator!=(const Token& other) const noexcept { return tokenType != other.tokenType || idx != other.idx; }
 };
@@ -88,4 +92,14 @@ struct AliasEntry {
       , scriptType(scriptType)
       , idx(idx)
       , alt(alt) { }
+};
+
+struct ScriptInfo {
+  ScriptType type {};
+  std::vector<std::string_view> vowels {};
+  std::vector<std::string_view> vowelDiacritics {};
+  std::vector<std::string_view> consonants {};
+  std::vector<std::string_view> consonantDiacritic {};
+  std::vector<std::string_view> symbols {};
+  std::vector<AliasEntry> alts {};
 };

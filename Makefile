@@ -70,5 +70,8 @@ flutter/assets/inditrans.wasm: $(SOURCES_CC) $(HEADERS_CC)
 js/dist/inditrans.js: $(SOURCES_CC) $(HEADERS_CC) js/src/inditrans.post.js
 	./scripts/build_wasm.$(SCRIPT_EXT) js
 
-flutter/lib/src/bindings.dart: flutter/native/src/exports.h
+flutter/lib/src/bindings.dart: native/src/exports.h
 	dart ./scripts/generate_bindings.dart
+
+native/src/script_data.h: scripts/script_data.json
+	dart ./scripts/generate_script_data_header.dart
