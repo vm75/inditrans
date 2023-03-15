@@ -34,5 +34,12 @@
         }
       ]
     },
+    {
+      "name": "Build wasm (powershell)",
+      "type": "PowerShell",
+      "request": "launch",
+      "script": "${workspaceFolder}/scripts/build_wasm.ps1 wasm",
+      "cwd": "${cwd}"
+    },
   ]
 }

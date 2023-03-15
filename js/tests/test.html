@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Inditrans test</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+
+<body>
+    <h1>Inditrans tests</h1>
+
+    <div id="test-results"></div>
+
+    <script src='../dist/inditrans.js'></script>
+    <script>
+        window.addEventListener("load", (event) => {
+            // fetch test cases from '../../test-files/test-cases.json' and print
+            // the results
+            fetch('../../test-files/test-cases.json')
+                .then((response) => response.json())
+                .then((json) => {
+                    inditrans = Module.inditrans;
+
+                    testNumber = 1;
+                    // iterate over each test case
+                    json.forEach((testCase) => {
+                        // get the original text
+                        description = testCase['description'];
+                        originalText = testCase['text'];
+                        fromScript = testCase['script'];
+                        testCase["targets"].forEach((target) => {
+                            toScript = target['script'];
+                            expectedTransliteratedText = target['text'];
+                            options = inditrans.optionsToInt(target['options'] || "");
+                            actualTransliteratedText = inditrans.transliterate(originalText, fromScript, toScript, options);
+
+                            // add result to the test-results div
+                            testResults = document.getElementById("test-results");
+
+                            // create a result paragraph with the test case number, description, and colored result
+                            resultParagraph = document.createElement("p");
+                            resultParagraph.innerText = "Test Case " + testNumber + ": " + description + " (" + fromScript + " -> " + toScript + ") ";
+                            if (actualTransliteratedText == expectedTransliteratedText) {
+                                resultParagraph.style.color = "green";
+                                resultParagraph.innerText += "PASSED";
+                            } else {
+                                resultParagraph.style.color = "red";
+                                resultParagraph.innerText += "FAILED";
+                            }
+
+                            // add to div
+                            testResults.appendChild(resultParagraph);
+
+                            testNumber++;
+                        });
+                    });
+                });
+        });
+
+
+    </script>
+</body>
+
+</html>

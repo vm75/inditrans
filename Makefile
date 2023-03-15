@@ -16,8 +16,10 @@ endif
 
 ifeq ($(OS), Windows_NT)
     NATIVE_EXEC=out/inditrans_native.exe
+    SCRIPT_EXT=ps1
 else
     NATIVE_EXEC=out/inditrans_native
+	SCRIPT_EXT=sh
 endif
 HEADERS_CC = $(wildcard native/src/*.h)
 SOURCES_CC = $(wildcard native/src/*.cpp)
@@ -60,17 +62,13 @@ else
 	USER_SPEC=
 endif
 
-WASM_TARGET=assets/inditrans.wasm
-wasm: flutter/$(WASM_TARGET)
-flutter/$(WASM_TARGET): $(SOURCES_CC) $(HEADERS_CC)
-	docker run --rm $(USER_SPEC) -v "$(CURDIR)/native/src:/src" -v "$(CURDIR)/flutter:/dist" \
-		emscripten/emsdk \
-			emcc inditrans.cpp -o /dist/$(WASM_TARGET) \
-				$(COMPILER_OPTIONS) $(LINKER_OPTIONS) \
-				-DNDEBUG \
-				-s EXPORT_NAME=inditrans \
-				-s FILESYSTEM=0 \
-				-s $(COMPILED_EXPORTS)
+wasm: flutter/assets/inditrans.wasm js/dist/inditrans.js
+
+flutter/assets/inditrans.wasm: $(SOURCES_CC) $(HEADERS_CC)
+	./scripts/build_wasm.$(SCRIPT_EXT) wasm
+
+js/dist/inditrans.js: $(SOURCES_CC) $(HEADERS_CC) js/src/inditrans.post.js
+	./scripts/build_wasm.$(SCRIPT_EXT) js
 
 flutter/lib/src/bindings.dart: flutter/native/src/exports.h
 	dart ./scripts/generate_bindings.dart
