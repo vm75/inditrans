@@ -31,7 +31,7 @@ $(NATIVE_EXEC): $(SOURCES_CC) $(HEADERS_CC) $(TEST_CC)
 
 testall: test test_flutter test_nodejs
 
-test: $(NATIVE_EXEC)
+test: $(NATIVE_EXEC) test-files/test-cases.json
 	$(NATIVE_EXEC)
 
 test_flutter: wasm flutter/lib/src/bindings.dart

@@ -40,22 +40,6 @@ template <class TimeT = std::chrono::milliseconds, class ClockT = std::chrono::s
   }
 };
 
-bool testTranslit(const std::string_view& description, const std::string_view& from, const std::string_view& to,
-    const std::string_view& text, const std::string_view& expected, const std::string_view& optStr) noexcept {
-  static size_t testNum { 1 };
-  auto res = transliterate(text, from, to, getTranslitOptions(optStr));
-  bool result = res == expected;
-  std::cout << "  Test #" << std::setw(3) << testNum++ << ": " << description << ": (" << from << " -> " << to
-            << ", options=" << optStr << "): " << (result ? " PASSED" : "FAILED") << std::endl;
-  if (!result) {
-    std::cout << "    Input   : " << text << std::endl;
-    std::cout << "    Expected: " << expected << std::endl;
-    std::cout << "    Observed: " << res << std::endl;
-  }
-
-  return result;
-}
-
 void testAllTranslit() noexcept {
   std::ifstream testsFile("test-files/test-cases.json", std::ios::binary);
   if (testsFile.is_open()) {
@@ -69,8 +53,6 @@ void testAllTranslit() noexcept {
 
     auto inputs = std::get<JsonArray>(*inputsHolder);
 
-    std::cout << std::endl << "Inditrans tests" << std::endl;
-    size_t failedCount {};
     for (const auto& input : inputs) {
       auto inputObj = std::get<JsonOject>(input);
 
@@ -89,11 +71,13 @@ void testAllTranslit() noexcept {
           options = *targetObj.get<std::string>("options");
         }
 
-        failedCount += !testTranslit(*description, *source, *target, *text, *expected, options);
+        std::string str = *description + " ( " + *source + " -> " + *target + ", " + options + " )";
+        SUBCASE(str.c_str()) {
+          auto res = transliterate(*text, *source, *target, getTranslitOptions(options));
+          CHECK(res == *expected);
+        }
       }
     }
-
-    std::cout << "Summary: " << failedCount << " tests failed." << std::endl;
   }
 }
 
