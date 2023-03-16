@@ -14,8 +14,6 @@ function init_emcc {
             .\emsdk install latest
             .\emsdk activate latest
             [Environment]::SetEnvironmentVariable("EMSDK", $emsdk, "User")
-  
-            Set-Location $currDir
         }
         else {
             # set EMSDK environment variable and persist it
@@ -110,6 +108,8 @@ function build_wasm_js {
 
 # initialize emcc
 init_emcc
+
+cd $PSScriptRoot\..
 
 # build 
 if ($args[0] -eq "standalone") {

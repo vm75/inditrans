@@ -50,7 +50,7 @@ publish_nodejs:
 wasm: flutter/assets/inditrans.wasm js/dist/inditrans.js
 
 flutter/assets/inditrans.wasm: $(SOURCES_CC) $(HEADERS_CC)
-	./scripts/build_wasm.$(SCRIPT_EXT) wasm
+	./scripts/build_wasm.$(SCRIPT_EXT) standalone
 
 js/dist/inditrans.js: $(SOURCES_CC) $(HEADERS_CC) js/src/inditrans.post.js
 	./scripts/build_wasm.$(SCRIPT_EXT) js
