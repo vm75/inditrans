@@ -1,17 +1,19 @@
 #pragma once
 
+#include "type_defs.h"
 #include <cstdint>
 #include <optional>
 #include <stddef.h>
 
 #pragma pack(push, 1)
 
-struct NodeArrayEntry {
-  uint16_t key;
-  uint16_t offset;
-};
+struct TrieNode {
+private:
+  struct NodeArrayEntry {
+    uint16_t key;
+    uint16_t offset;
+  };
 
-class Node {
 public:
   // look for child and return offset
   // if not found, return 0
@@ -33,6 +35,10 @@ public:
     return 0;
   }
 
+  ScriptToken getScriptToken() const noexcept {
+    return ScriptToken { static_cast<TokenType>(scriptType), tokenType, static_cast<ScriptType>(idx) };
+  }
+
   const uint8_t isLeaf : 1;
   const uint8_t scriptType : 3;
   const uint8_t tokenType : 4;
@@ -43,17 +49,11 @@ public:
 
 #pragma pack(pop)
 
-struct Result {
-  uint8_t scriptType;
-  uint8_t tokenType;
-  uint8_t idx;
-};
-
 class CharTrie {
 public:
   struct LookupState {
-    const Node* node { nullptr };
-    std::optional<Result> value { std::nullopt };
+    const TrieNode* node { nullptr };
+    std::optional<ScriptToken> value { std::nullopt };
     size_t matchLen { 0 };
 
     void reset() noexcept {
@@ -63,16 +63,14 @@ public:
     }
   };
 
-  CharTrie(const uint8_t* data)
-      : data(data) {
-    root = reinterpret_cast<const Node*>(data);
-  }
+  constexpr CharTrie(const uint8_t* data) noexcept
+      : data(reinterpret_cast<const uint16_t*>(data)) { }
 
   ~CharTrie() = default;
 
   bool lookup(const uint16_t& key, LookupState& state) const noexcept {
     if (state.node == nullptr) {
-      state.node = root;
+      state.node = reinterpret_cast<const TrieNode*>(data);
     }
 
     auto mapEntry = state.node->find(key);
@@ -80,10 +78,10 @@ public:
       return false;
     }
 
-    auto lookup = reinterpret_cast<const Node*>(data + mapEntry);
+    auto lookup = reinterpret_cast<const TrieNode*>(data + mapEntry);
 
     if (lookup->isLeaf) {
-      state.value = Result { lookup->scriptType, lookup->tokenType, lookup->idx };
+      state.value = lookup->getScriptToken();
       state.matchLen++;
     }
 
@@ -95,6 +93,5 @@ public:
   }
 
 private:
-  const uint8_t* data;
-  const Node* root { nullptr };
+  const uint16_t* data;
 };
