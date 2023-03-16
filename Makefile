@@ -16,6 +16,7 @@ HEADERS_CC = $(wildcard native/src/*.h)
 SOURCES_CC = $(wildcard native/src/*.cpp)
 SOURCES_NODEJS = $(wildcard nodejs/src/*.ts)
 SOURCES_FLUTTER = $(wildcard flutter/lib/src/*.dart)
+TEST_CC = $(wildcard native/tests/*.cpp)
 
 # Native
 native: $(NATIVE_EXEC)
@@ -25,8 +26,8 @@ profile:
 	out/prof_$(NATIVE_EXEC) -p
 	gprof out/prof_$(NATIVE_EXEC) gmon.out > out/native-prof.log
 
-$(NATIVE_EXEC): $(SOURCES_CC) $(HEADERS_CC) native/tests/test.cpp
-	clang++ -std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address -I native/src $(SOURCES_CC) native/tests/test.cpp -o $@
+$(NATIVE_EXEC): $(SOURCES_CC) $(HEADERS_CC) $(TEST_CC)
+	clang++ -std=c++20 -g3 -I native/src $(SOURCES_CC) $(TEST_CC) -o $@
 
 testall: test test_flutter test_nodejs
 

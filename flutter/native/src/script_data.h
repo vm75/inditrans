@@ -19,15 +19,15 @@
 
 const char scriptData[] =
   "assamese" Z INDIC
-    VOWELS "অ" Z "আ" Z "ই" Z "ঈ" Z "উ" Z "ঊ" Z "ঋ" Z "ৠ" Z "ঌ" Z "ৡ" Z "এ˘" Z "এ" Z "ঐ" Z "ও˘" Z "ও" Z "ঔ" Z "এʼ" Z "এˇ" Z "আʼ" Z E
-    VOWELDIACRITICS "্" Z "া" Z "ি" Z "ী" Z "ু" Z "ূ" Z "ৃ" Z "ৄ" Z "ৢ" Z "ৣ" Z "ে˘" Z "ে" Z "ৈ" Z "ো˘" Z "ো" Z "ৌ" Z "েʼ" Z "েˇ" Z "াʼ" Z E
+    VOWELS "অ" Z "আ" Z "ই" Z "ঈ" Z "উ" Z "ঊ" Z "ঋ" Z "ৠ" Z "ঌ" Z "ৡ" Z "এ᳴" Z "এ" Z "ঐ" Z "ও᳴" Z "ও" Z "ঔ" Z "এ᳴" Z "এˇ" Z "আ᳴" Z E
+    VOWELDIACRITICS "্" Z "া" Z "ি" Z "ী" Z "ু" Z "ূ" Z "ৃ" Z "ৄ" Z "ৢ" Z "ৣ" Z "ে᳴" Z "ে" Z "ৈ" Z "ো᳴" Z "ো" Z "ৌ" Z "ে᳴" Z "েˇ" Z "া᳴" Z E
     CONSONANTS "ক" Z "খ" Z "গ" Z "ঘ" Z "ঙ" Z "চ" Z "ছ" Z "জ" Z "ঝ" Z "ঞ" Z "ট" Z "ঠ" Z "ড" Z "ঢ" Z "ণ" Z "ত" Z "থ" Z "দ" Z "ধ" Z "ন" Z "প" Z "ফ" Z "ব" Z "ভ" Z "ম" Z "য" Z "র" Z "ল" Z "ৱ" Z "শ" Z "ষ" Z "স" Z "হ" Z "ল়" Z "ষ়" Z "র়" Z "ন়" Z "ক়" Z "খ়" Z "গ়" Z "জ়" Z "ড়" Z "ঢ়" Z "ফ়" Z "য়" Z "ঁˆগ" Z "ঁˆজ" Z "ঁˆড" Z "ঁˆদ" Z "ঁˆব" Z E
     CONSONANTDIACRITICS "ঁ" Z "ং" Z "ঃ" Z "ঃʼ" Z E
     SYMBOLS "০" Z "১" Z "২" Z "৩" Z "৪" Z "৫" Z "৬" Z "৭" Z "৮" Z "৯" Z "ওঁ" Z "।" Z "॥" Z "ঽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
   E
   "bengali" Z INDIC
-    VOWELS "অ" Z "আ" Z "ই" Z "ঈ" Z "উ" Z "ঊ" Z "ঋ" Z "ৠ" Z "ঌ" Z "ৡ" Z "এ˘" Z "এ" Z "ঐ" Z "ও˘" Z "ও" Z "ঔ" Z "এʼ" Z "এˇ" Z "আʼ" Z E
-    VOWELDIACRITICS "্" Z "া" Z "ি" Z "ী" Z "ু" Z "ূ" Z "ৃ" Z "ৄ" Z "ৢ" Z "ৣ" Z "ে˘" Z "ে" Z "ৈ" Z "ো˘" Z "ো" Z "ৌ" Z "েʼ" Z "েˇ" Z "াʼ" Z E
+    VOWELS "অ" Z "আ" Z "ই" Z "ঈ" Z "উ" Z "ঊ" Z "ঋ" Z "ৠ" Z "ঌ" Z "ৡ" Z "এ᳴" Z "এ" Z "ঐ" Z "ও᳴" Z "ও" Z "ঔ" Z "এ᳴" Z "এˇ" Z "আ᳴" Z E
+    VOWELDIACRITICS "্" Z "া" Z "ি" Z "ী" Z "ু" Z "ূ" Z "ৃ" Z "ৄ" Z "ৢ" Z "ৣ" Z "ে᳴" Z "ে" Z "ৈ" Z "ো᳴" Z "ো" Z "ৌ" Z "ে᳴" Z "েˇ" Z "া᳴" Z E
     CONSONANTS "ক" Z "খ" Z "গ" Z "ঘ" Z "ঙ" Z "চ" Z "ছ" Z "জ" Z "ঝ" Z "ঞ" Z "ট" Z "ঠ" Z "ড" Z "ঢ" Z "ণ" Z "ত" Z "থ" Z "দ" Z "ধ" Z "ন" Z "প" Z "ফ" Z "ব" Z "ভ" Z "ম" Z "য" Z "র" Z "ল" Z "ৱ" Z "শ" Z "ষ" Z "স" Z "হ" Z "ল়" Z "ষ়" Z "র়" Z "ন়" Z "ক়" Z "খ়" Z "গ়" Z "জ়" Z "ড়" Z "ঢ়" Z "ফ়" Z "য়" Z "ঁˆগ" Z "ঁˆজ" Z "ঁˆড" Z "ঁˆদ" Z "ঁˆব" Z E
     CONSONANTDIACRITICS "ঁ" Z "ং" Z "ঃ" Z "ঃʼ" Z E
     SYMBOLS "০" Z "১" Z "২" Z "৩" Z "৪" Z "৫" Z "৬" Z "৭" Z "৮" Z "৯" Z "ওঁ" Z "।" Z "॥" Z "ঽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
@@ -52,16 +52,16 @@ const char scriptData[] =
     E
   E
   "gujarati" Z INDIC
-    VOWELS "અ" Z "આ" Z "ઇ" Z "ઈ" Z "ઉ" Z "ઊ" Z "ઋ" Z "ૠ" Z "ઌ" Z "ૡ" Z "એ˘" Z "એ" Z "ઐ" Z "ઓ˘" Z "ઓ" Z "ઔ" Z "ઍ" Z "ઍˇ" Z "ઑ" Z E
-    VOWELDIACRITICS "્" Z "ા" Z "િ" Z "ી" Z "ુ" Z "ૂ" Z "ૃ" Z "ૄ" Z "ૢ" Z "ૣ" Z "ે˘" Z "ે" Z "ૈ" Z "ો˘" Z "ો" Z "ૌ" Z "ૅ" Z "ૅˇ" Z "ૉ" Z E
+    VOWELS "અ" Z "આ" Z "ઇ" Z "ઈ" Z "ઉ" Z "ઊ" Z "ઋ" Z "ૠ" Z "ઌ" Z "ૡ" Z "એ᳴" Z "એ" Z "ઐ" Z "ઓ᳴" Z "ઓ" Z "ઔ" Z "ઍ" Z "ઍˇ" Z "ઑ" Z E
+    VOWELDIACRITICS "્" Z "ા" Z "િ" Z "ી" Z "ુ" Z "ૂ" Z "ૃ" Z "ૄ" Z "ૢ" Z "ૣ" Z "ે᳴" Z "ે" Z "ૈ" Z "ો᳴" Z "ો" Z "ૌ" Z "ૅ" Z "ૅˇ" Z "ૉ" Z E
     CONSONANTS "ક" Z "ખ" Z "ગ" Z "ઘ" Z "ઙ" Z "ચ" Z "છ" Z "જ" Z "ઝ" Z "ઞ" Z "ટ" Z "ઠ" Z "ડ" Z "ઢ" Z "ણ" Z "ત" Z "થ" Z "દ" Z "ધ" Z "ન" Z "પ" Z "ફ" Z "બ" Z "ભ" Z "મ" Z "ય" Z "ર" Z "લ" Z "વ" Z "શ" Z "ષ" Z "સ" Z "હ" Z "ળ" Z "ળ઼" Z "ર઼" Z "ન઼" Z "ક઼" Z "ખ઼" Z "ગ઼" Z "જ઼" Z "ડ઼" Z "ઢ઼" Z "ફ઼" Z "ય઼" Z "ઁˆગ" Z "ઁˆજ" Z "ઁˆડ" Z "ઁˆદ" Z "ઁˆબ" Z E
     CONSONANTDIACRITICS "ઁ" Z "ં" Z "ઃ" Z "ઃʼ" Z E
     SYMBOLS "૦" Z "૧" Z "૨" Z "૩" Z "૪" Z "૫" Z "૬" Z "૭" Z "૮" Z "૯" Z "ૐ" Z "।" Z "॥" Z "ઽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
   E
   "gurmukhi" Z INDIC
     LANGUAGES "punjabi" Z E
-    VOWELS "ਅ" Z "ਆ" Z "ਇ" Z "ਈ" Z "ਉ" Z "ਊ" Z "ਰੁʼ" Z "ਰੂʼ" Z "ਲੁʼ" Z "ਲੂʼ" Z "ਏ˘" Z "ਏ" Z "ਐ" Z "ਓ˘" Z "ਓ" Z "ਔ" Z "ਏʼ" Z "ਏˇ" Z "ਆʼ" Z E
-    VOWELDIACRITICS "੍" Z "ਾ" Z "ਿ" Z "ੀ" Z "ੁ" Z "ੂ" Z "੍ਰੁʼ" Z "੍ਰੂʼ" Z "੍ਲੁʼ" Z "੍ਲੂʼ" Z "ੇ˘" Z "ੇ" Z "ੈ" Z "ੋ˘" Z "ੋ" Z "ੌ" Z "ੇʼ" Z "ੇˇ" Z "ਾʼ" Z E
+    VOWELS "ਅ" Z "ਆ" Z "ਇ" Z "ਈ" Z "ਉ" Z "ਊ" Z "ਰੁʼ" Z "ਰੂʼ" Z "ਲੁʼ" Z "ਲੂʼ" Z "ਏ᳴" Z "ਏ" Z "ਐ" Z "ਓ᳴" Z "ਓ" Z "ਔ" Z "ਏ᳴" Z "ਏˇ" Z "ਆ᳴" Z E
+    VOWELDIACRITICS "੍" Z "ਾ" Z "ਿ" Z "ੀ" Z "ੁ" Z "ੂ" Z "੍ਰੁʼ" Z "੍ਰੂʼ" Z "੍ਲੁʼ" Z "੍ਲੂʼ" Z "ੇ᳴" Z "ੇ" Z "ੈ" Z "ੋ᳴" Z "ੋ" Z "ੌ" Z "ੇ᳴" Z "ੇˇ" Z "ਾ᳴" Z E
     CONSONANTS "ਕ" Z "ਖ" Z "ਗ" Z "ਘ" Z "ਙ" Z "ਚ" Z "ਛ" Z "ਜ" Z "ਝ" Z "ਞ" Z "ਟ" Z "ਠ" Z "ਡ" Z "ਢ" Z "ਣ" Z "ਤ" Z "ਥ" Z "ਦ" Z "ਧ" Z "ਨ" Z "ਪ" Z "ਫ" Z "ਬ" Z "ਭ" Z "ਮ" Z "ਯ" Z "ਰ" Z "ਲ" Z "ਵ" Z "ਸ਼" Z "ਸ਼਼" Z "ਸ" Z "ਹ" Z "ਲ਼" Z "ਲ਼਼" Z "ਰ਼" Z "ਨ਼" Z "ਕ਼" Z "ਖ਼" Z "ਗ਼" Z "ਜ਼" Z "ੜ" Z "ਢ਼" Z "ਫ਼" Z "ਯ਼" Z "ਁˆਗ" Z "ਁˆਜ" Z "ਁˆਡ" Z "ਁˆਦ" Z "ਁˆਬ" Z E
     CONSONANTDIACRITICS "ਁ" Z "ਂ" Z "ਃ" Z "ਃʼ" Z E
     SYMBOLS "੦" Z "੧" Z "੨" Z "੩" Z "੪" Z "੫" Z "੬" Z "੭" Z "੮" Z "੯" Z "ੴ" Z "।" Z "॥" Z "(ਅ)" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
@@ -95,22 +95,22 @@ const char scriptData[] =
     SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oM" Z "." Z ".." Z ".a" Z "gͫ" Z "gͫ̄" Z "​" Z "‌" Z "‍" Z E
   E
   "kannada" Z INDIC
-    VOWELS "ಅ" Z "ಆ" Z "ಇ" Z "ಈ" Z "ಉ" Z "ಊ" Z "ಋ" Z "ೠ" Z "ಌ" Z "ೡ" Z "ಎ" Z "ಏ" Z "ಐ" Z "ಒ" Z "ಓ" Z "ಔ" Z "ಎʼ" Z "ಏˇ" Z "ಆʼ" Z E
-    VOWELDIACRITICS "್" Z "ಾ" Z "ಿ" Z "ೀ" Z "ು" Z "ೂ" Z "ೃ" Z "ೄ" Z "ೢ" Z "ೣ" Z "ೆ" Z "ೇ" Z "ೈ" Z "ೊ" Z "ೋ" Z "ೌ" Z "ೆʼ" Z "ೇˇ" Z "ಾʼ" Z E
+    VOWELS "ಅ" Z "ಆ" Z "ಇ" Z "ಈ" Z "ಉ" Z "ಊ" Z "ಋ" Z "ೠ" Z "ಌ" Z "ೡ" Z "ಎ" Z "ಏ" Z "ಐ" Z "ಒ" Z "ಓ" Z "ಔ" Z "ಎ᳴" Z "ಏˇ" Z "ಆ᳴" Z E
+    VOWELDIACRITICS "್" Z "ಾ" Z "ಿ" Z "ೀ" Z "ು" Z "ೂ" Z "ೃ" Z "ೄ" Z "ೢ" Z "ೣ" Z "ೆ" Z "ೇ" Z "ೈ" Z "ೊ" Z "ೋ" Z "ೌ" Z "ೆ᳴" Z "ೇˇ" Z "ಾ᳴" Z E
     CONSONANTS "ಕ" Z "ಖ" Z "ಗ" Z "ಘ" Z "ಙ" Z "ಚ" Z "ಛ" Z "ಜ" Z "ಝ" Z "ಞ" Z "ಟ" Z "ಠ" Z "ಡ" Z "ಢ" Z "ಣ" Z "ತ" Z "ಥ" Z "ದ" Z "ಧ" Z "ನ" Z "ಪ" Z "ಫ" Z "ಬ" Z "ಭ" Z "ಮ" Z "ಯ" Z "ರ" Z "ಲ" Z "ವ" Z "ಶ" Z "ಷ" Z "ಸ" Z "ಹ" Z "ಳ" Z "ೞ" Z "ಱ" Z "ನ಼" Z "ಕ಼" Z "ಖ಼" Z "ಗ಼" Z "ಜ಼" Z "ಡ಼" Z "ಢ಼" Z "ಫ಼" Z "ಯ಼" Z "ಂˆಗ" Z "ಂˆಜ" Z "ಂˆಡ" Z "ಂˆದ" Z "ಂˆಬ" Z E
     CONSONANTDIACRITICS "ಁ" Z "ಂ" Z "ಃ" Z "ಃʼ" Z E
     SYMBOLS "೦" Z "೧" Z "೨" Z "೩" Z "೪" Z "೫" Z "೬" Z "೭" Z "೮" Z "೯" Z "ಓಂ" Z "।" Z "॥" Z "ಽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
   E
   "malayalam" Z INDIC
-    VOWELS "അ" Z "ആ" Z "ഇ" Z "ഈ" Z "ഉ" Z "ഊ" Z "ഋ" Z "ൠ" Z "ഌ" Z "ൡ" Z "എ" Z "ഏ" Z "ഐ" Z "ഒ" Z "ഓ" Z "ഔ" Z "എʼ" Z "ഏˇ" Z "ആʼ" Z E
-    VOWELDIACRITICS "്" Z "ാ" Z "ി" Z "ീ" Z "ു" Z "ൂ" Z "ൃ" Z "ൄ" Z "ൢ" Z "ൣ" Z "െ" Z "േ" Z "ൈ" Z "ൊ" Z "ോ" Z "ൗ" Z "െʼ" Z "േˇ" Z "ാʼ" Z E
+    VOWELS "അ" Z "ആ" Z "ഇ" Z "ഈ" Z "ഉ" Z "ഊ" Z "ഋ" Z "ൠ" Z "ഌ" Z "ൡ" Z "എ" Z "ഏ" Z "ഐ" Z "ഒ" Z "ഓ" Z "ഔ" Z "എ᳴" Z "ഏˇ" Z "ആ᳴" Z E
+    VOWELDIACRITICS "്" Z "ാ" Z "ി" Z "ീ" Z "ു" Z "ൂ" Z "ൃ" Z "ൄ" Z "ൢ" Z "ൣ" Z "െ" Z "േ" Z "ൈ" Z "ൊ" Z "ോ" Z "ൗ" Z "െ᳴" Z "േˇ" Z "ാ᳴" Z E
     CONSONANTS "ക" Z "ഖ" Z "ഗ" Z "ഘ" Z "ങ" Z "ച" Z "ഛ" Z "ജ" Z "ഝ" Z "ഞ" Z "ട" Z "ഠ" Z "ഡ" Z "ഢ" Z "ണ" Z "ത" Z "ഥ" Z "ദ" Z "ധ" Z "ന" Z "പ" Z "ഫ" Z "ബ" Z "ഭ" Z "മ" Z "യ" Z "ര" Z "ല" Z "വ" Z "ശ" Z "ഷ" Z "സ" Z "ഹ" Z "ള" Z "ഴ" Z "റ" Z "ഩ" Z "ക·" Z "ഖ·" Z "ഗ·" Z "ജ·" Z "ഡ·" Z "ഢ·" Z "ഫ·" Z "യ·" Z "ംˆഗ" Z "ംˆജ" Z "ംˆഡ" Z "ംˆദ" Z "ംˆബ" Z E
     CONSONANTDIACRITICS "ഁ" Z "ം" Z "ഃ" Z "ഃʼ" Z E
     SYMBOLS "൦" Z "൧" Z "൨" Z "൩" Z "൪" Z "൫" Z "൬" Z "൭" Z "൮" Z "൯" Z "ഓം" Z "।" Z "॥" Z "ഽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
   E
   "oriya" Z INDIC
-    VOWELS "ଅ" Z "ଆ" Z "ଇ" Z "ଈ" Z "ଉ" Z "ଊ" Z "ଋ" Z "ୠ" Z "ଌ" Z "ୡ" Z "ଏ˘" Z "ଏ" Z "ଐ" Z "ଓ˘" Z "ଓ" Z "ଔ" Z "ଏʼ" Z "ଏˇ" Z "ଆʼ" Z E
-    VOWELDIACRITICS "୍" Z "ା" Z "ି" Z "ୀ" Z "ୁ" Z "ୂ" Z "ୃ" Z "ୄ" Z "ୢ" Z "ୣ" Z "େ˘" Z "େ" Z "ୈ" Z "ୋ˘" Z "ୋ" Z "ୌ" Z "େʼ" Z "େˇ" Z "ାʼ" Z E
+    VOWELS "ଅ" Z "ଆ" Z "ଇ" Z "ଈ" Z "ଉ" Z "ଊ" Z "ଋ" Z "ୠ" Z "ଌ" Z "ୡ" Z "ଏ᳴" Z "ଏ" Z "ଐ" Z "ଓ᳴" Z "ଓ" Z "ଔ" Z "ଏ᳴" Z "ଏˇ" Z "ଆ᳴" Z E
+    VOWELDIACRITICS "୍" Z "ା" Z "ି" Z "ୀ" Z "ୁ" Z "ୂ" Z "ୃ" Z "ୄ" Z "ୢ" Z "ୣ" Z "େ᳴" Z "େ" Z "ୈ" Z "ୋ᳴" Z "ୋ" Z "ୌ" Z "େ᳴" Z "େˇ" Z "ା᳴" Z E
     CONSONANTS "କ" Z "ଖ" Z "ଗ" Z "ଘ" Z "ଙ" Z "ଚ" Z "ଛ" Z "ଜ" Z "ଝ" Z "ଞ" Z "ଟ" Z "ଠ" Z "ଡ" Z "ଢ" Z "ଣ" Z "ତ" Z "ଥ" Z "ଦ" Z "ଧ" Z "ନ" Z "ପ" Z "ଫ" Z "ବ" Z "ଭ" Z "ମ" Z "ଯ" Z "ର" Z "ଲ" Z "ୱ" Z "ଶ" Z "ଷ" Z "ସ" Z "ହ" Z "ଳ" Z "ଳ଼" Z "ର଼" Z "ନ଼" Z "କ଼" Z "ଖ଼" Z "ଗ଼" Z "ଜ଼" Z "ଡ଼" Z "ଢ଼" Z "ଫ଼" Z "ୟ" Z "ଁˆଗ" Z "ଁˆଜ" Z "ଁˆଡ" Z "ଁˆଦ" Z "ଁˆବ" Z E
     CONSONANTDIACRITICS "ଁ" Z "ଂ" Z "ଃ" Z "ଃʼ" Z E
     SYMBOLS "୦" Z "୧" Z "୨" Z "୩" Z "୪" Z "୫" Z "୬" Z "୭" Z "୮" Z "୯" Z "ଓଁ" Z "।" Z "॥" Z "ଽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
@@ -130,15 +130,15 @@ const char scriptData[] =
     SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "Om" Z "." Z ".." Z "'" Z "gͫ" Z "gͫ̄" Z "​" Z "‌" Z "‍" Z E
   E
   "sinhala" Z INDIC
-    VOWELS "අ" Z "ආ" Z "ඉ" Z "ඊ" Z "උ" Z "ඌ" Z "ඍ" Z "ඎ" Z "ඏ" Z "ඐ" Z "එ" Z "ඒ" Z "ඓ" Z "ඔ" Z "ඕ" Z "ඖ" Z "ඇ" Z "ඈ" Z "ආʼ" Z E
-    VOWELDIACRITICS "්" Z "ා" Z "ි" Z "ී" Z "ු" Z "ූ" Z "ෘ" Z "ෲ" Z "ෟ" Z "ෳ" Z "ෙ" Z "ේ" Z "ෛ" Z "ො" Z "ෝ" Z "ෞ" Z "ැ" Z "ෑ" Z "ාʼ" Z E
+    VOWELS "අ" Z "ආ" Z "ඉ" Z "ඊ" Z "උ" Z "ඌ" Z "ඍ" Z "ඎ" Z "ඏ" Z "ඐ" Z "එ" Z "ඒ" Z "ඓ" Z "ඔ" Z "ඕ" Z "ඖ" Z "ඇ" Z "ඈ" Z "ආ᳴" Z E
+    VOWELDIACRITICS "්" Z "ා" Z "ි" Z "ී" Z "ු" Z "ූ" Z "ෘ" Z "ෲ" Z "ෟ" Z "ෳ" Z "ෙ" Z "ේ" Z "ෛ" Z "ො" Z "ෝ" Z "ෞ" Z "ැ" Z "ෑ" Z "ා᳴" Z E
     CONSONANTS "ක" Z "ඛ" Z "ග" Z "ඝ" Z "ඞ" Z "ච" Z "ඡ" Z "ජ" Z "ඣ" Z "ඤ" Z "ට" Z "ඨ" Z "ඩ" Z "ඪ" Z "ණ" Z "ත" Z "ථ" Z "ද" Z "ධ" Z "න" Z "ප" Z "ඵ" Z "බ" Z "භ" Z "ම" Z "ය" Z "ර" Z "ල" Z "ව" Z "ශ" Z "ෂ" Z "ස" Z "හ" Z "ළ" Z "ළ·" Z "ර·" Z "න·" Z "ක·" Z "ඛ·" Z "ග·" Z "ජ·" Z "ඩ·" Z "ඪ·" Z "ෆ" Z "ය·" Z "ඟ" Z "ඦ" Z "ඬ" Z "ඳ" Z "ඹ" Z E
     CONSONANTDIACRITICS "ංʼ" Z "ං" Z "ඃ" Z "ඃʼ" Z E
     SYMBOLS "෦" Z "෧" Z "෨" Z "෩" Z "෪" Z "෫" Z "෬" Z "෭" Z "෮" Z "෯" Z "ඕං" Z "।" Z "॥" Z "(අ)" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
   E
   "tamil" Z TAMIL
-    VOWELS "அ" Z "ஆ" Z "இ" Z "ஈ" Z "உ" Z "ஊ" Z "ருʼ" Z "ரூʼ" Z "லுʼ" Z "லூʼ" Z "எ" Z "ஏ" Z "ஐ" Z "ஒ" Z "ஓ" Z "ஔ" Z "எʼ" Z "ஏˇ" Z "ஆʼ" Z E
-    VOWELDIACRITICS "்" Z "ா" Z "ி" Z "ீ" Z "ு" Z "ூ" Z "்ருʼ" Z "்ரூʼ" Z "்லுʼ" Z "்லூʼ" Z "ெ" Z "ே" Z "ை" Z "ொ" Z "ோ" Z "ௌ" Z "ெʼ" Z "ேˇ" Z "ாʼ" Z E
+    VOWELS "அ" Z "ஆ" Z "இ" Z "ஈ" Z "உ" Z "ஊ" Z "ருʼ" Z "ரூʼ" Z "லுʼ" Z "லூʼ" Z "எ" Z "ஏ" Z "ஐ" Z "ஒ" Z "ஓ" Z "ஔ" Z "எ᳴" Z "ஏ᳴" Z "ஆ᳴" Z E
+    VOWELDIACRITICS "்" Z "ா" Z "ி" Z "ீ" Z "ு" Z "ூ" Z "்ருʼ" Z "்ரூʼ" Z "்லுʼ" Z "்லூʼ" Z "ெ" Z "ே" Z "ை" Z "ொ" Z "ோ" Z "ௌ" Z "ெ᳴" Z "ே᳴" Z "ா᳴" Z E
     CONSONANTS "க" Z "க²" Z "க³" Z "க⁴" Z "ங" Z "ச" Z "ச²" Z "ஜ" Z "ஜ²" Z "ஞ" Z "ட" Z "ட²" Z "ட³" Z "ட⁴" Z "ண" Z "த" Z "த²" Z "த³" Z "த⁴" Z "ந" Z "ப" Z "ப²" Z "ப³" Z "ப⁴" Z "ம" Z "ய" Z "ர" Z "ல" Z "வ" Z "ஶ" Z "ஷ" Z "ஸ" Z "ஹ" Z "ள" Z "ழ" Z "ற" Z "ன" Z "ஃக" Z "ஃக²" Z "ஃக³" Z "ஃஜ" Z "ஃட²" Z "ஃட³" Z "ஃப" Z "ஃய" Z "ங்ˆக³" Z "ஞ்ˆஜ³" Z "ண்ˆட³" Z "ந்ˆத³" Z "ம்ˆப³" Z E
     CONSONANTDIACRITICS "னஂ" Z "" Z "꞉" Z "ஃ" Z E
     SYMBOLS "௦" Z "௧" Z "௨" Z "௩" Z "௪" Z "௫" Z "௬" Z "௭" Z "௮" Z "௯" Z "ௐ" Z "।" Z "॥" Z "(அ)" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
@@ -151,21 +151,21 @@ const char scriptData[] =
     E
   E
   "tamilextended" Z INDIC
-    VOWELS "അ" Z "ആ" Z "ഇ" Z "ഈ" Z "ഉ" Z "ഊ" Z "ഋ" Z "ൠ" Z "ഌ" Z "ൡ" Z "എ" Z "ഏ" Z "ഐ" Z "ഒ" Z "ഓ" Z "ഔ" Z "എʼ" Z "ഏˇ" Z "ആʼ" Z E
-    VOWELDIACRITICS "്‌" Z "ാ" Z "ി" Z "ീ" Z "ു" Z "ൂ" Z "ൃ" Z "ൄ" Z "ൢ" Z "ൣ" Z "െ" Z "േ" Z "ൈ" Z "ൊ" Z "ോ" Z "ൗ" Z "െʼ" Z "േˇ" Z "ാʼ" Z E
+    VOWELS "അ" Z "ആ" Z "ഇ" Z "ഈ" Z "ഉ" Z "ഊ" Z "ഋ" Z "ൠ" Z "ഌ" Z "ൡ" Z "എ" Z "ഏ" Z "ഐ" Z "ഒ" Z "ഓ" Z "ഔ" Z "എ᳴" Z "ഏ᳴" Z "ആ᳴" Z E
+    VOWELDIACRITICS "്‌" Z "ാ" Z "ി" Z "ീ" Z "ു" Z "ൂ" Z "ൃ" Z "ൄ" Z "ൢ" Z "ൣ" Z "െ" Z "േ" Z "ൈ" Z "ൊ" Z "ോ" Z "ൗ" Z "െ᳴" Z "േ᳴" Z "ാ᳴" Z E
     CONSONANTS "ക" Z "ഖ" Z "ഗ" Z "ഘ" Z "ങ" Z "ച" Z "ഛ" Z "ജ" Z "ഝ" Z "ഞ" Z "ട" Z "ഠ" Z "ഡ" Z "ഢ" Z "ണ" Z "ത" Z "ഥ" Z "ദ" Z "ധ" Z "ന" Z "പ" Z "ഫ" Z "ബ" Z "ഭ" Z "മ" Z "യ" Z "ര" Z "ല" Z "വ" Z "ശ" Z "ഷ" Z "സ" Z "ഹ" Z "ള" Z "ഴ" Z "റ" Z "ഩ" Z "ക·" Z "ഖ·" Z "ഗ·" Z "ജ·" Z "ഡ·" Z "ഢ·" Z "ഫ·" Z "യ·" Z "ംˆഗ" Z "ംˆജ" Z "ംˆഡ" Z "ംˆദ" Z "ംˆബ" Z E
     CONSONANTDIACRITICS "ഁ" Z "ം" Z "ഃ" Z "ஃ" Z E
     SYMBOLS "௦" Z "௧" Z "௨" Z "௩" Z "௪" Z "௫" Z "௬" Z "௭" Z "௮" Z "௯" Z "ௐ" Z "ഽ" Z "." Z ".." Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
   E
   "tamilgrantha" Z INDIC
-    VOWELS "அ" Z "ஆ" Z "இ" Z "ஈ" Z "உ" Z "ஊ" Z "ঋ" Z "ৠ" Z "ঌ" Z "ৡ" Z "எ" Z "ஏ" Z "ஐ" Z "ஒ" Z "ஓ" Z "ஔ" Z "எʼ" Z "ஏˇ" Z "ஆʼ" Z E
-    VOWELDIACRITICS "்" Z "ா" Z "ி" Z "ீ" Z "ு" Z "ூ" Z "ৃ" Z "ৄ" Z "ৢ" Z "ৣ" Z "ெ" Z "ே" Z "ை" Z "ொ" Z "ோ" Z "ௌ" Z "ெʼ" Z "ேˇ" Z "ாʼ" Z E
+    VOWELS "அ" Z "ஆ" Z "இ" Z "ஈ" Z "உ" Z "ஊ" Z "ঋ" Z "ৠ" Z "ঌ" Z "ৡ" Z "எ" Z "ஏ" Z "ஐ" Z "ஒ" Z "ஓ" Z "ஔ" Z "எ᳴" Z "ஏ᳴" Z "ஆ᳴" Z E
+    VOWELDIACRITICS "்" Z "ா" Z "ி" Z "ீ" Z "ு" Z "ூ" Z "ৃ" Z "ৄ" Z "ৢ" Z "ৣ" Z "ெ" Z "ே" Z "ை" Z "ொ" Z "ோ" Z "ௌ" Z "ெ᳴" Z "ே᳴" Z "ா᳴" Z E
     CONSONANTS "க" Z "খ" Z "গ" Z "ঘ" Z "ங" Z "ச" Z "ছ" Z "ஜ" Z "ঝ" Z "ஞ" Z "ட" Z "ঠ" Z "ড" Z "ঢ" Z "ண" Z "த" Z "থ" Z "দ" Z "ধ" Z "ந" Z "ப" Z "ফ" Z "ব" Z "ভ" Z "ம" Z "ய" Z "ர" Z "ல" Z "வ" Z "ஶ" Z "ஷ" Z "ஸ" Z "ஹ" Z "ள" Z "ழ" Z "ற" Z "ன" Z "க়" Z "খ়" Z "গ়" Z "ஜ়" Z "ড়" Z "ঢ়" Z "ফ়" Z "ய়" Z "ங்ˆগ" Z "ஞ்ˆஜ" Z "ண்ˆড" Z "ந்ˆদ" Z "ம்ˆব" Z E
     CONSONANTDIACRITICS "ঁ" Z "ং" Z "ঃ" Z "ঃʼ" Z E
     SYMBOLS "০" Z "১" Z "২" Z "৩" Z "৪" Z "৫" Z "৬" Z "৭" Z "৮" Z "৯" Z "ௐ" Z "।" Z "॥" Z "ঽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
   E
   "telugu" Z INDIC
-    VOWELS "అ" Z "ఆ" Z "ఇ" Z "ఈ" Z "ఉ" Z "ఊ" Z "ఋ" Z "ౠ" Z "ఌ" Z "ౡ" Z "ఎ" Z "ఏ" Z "ఐ" Z "ఒ" Z "ఓ" Z "ఔ" Z "ఎ॒​" Z "ఏ॒​" Z "ఒ॒​" Z E
+    VOWELS "అ" Z "ఆ" Z "ఇ" Z "ఈ" Z "ఉ" Z "ఊ" Z "ఋ" Z "ౠ" Z "ఌ" Z "ౡ" Z "ఎ" Z "ఏ" Z "ఐ" Z "ఒ" Z "ఓ" Z "ఔ" Z "ఎ᳴​" Z "ఏ᳴" Z "ఒ᳴​" Z E
     VOWELDIACRITICS "్" Z "ా" Z "ి" Z "ీ" Z "ు" Z "ూ" Z "ృ" Z "ౄ" Z "ౢ" Z "ౣ" Z "ె" Z "ే" Z "ై" Z "ొ" Z "ో" Z "ౌ" Z "ె॒​" Z "ే॒​" Z "ొ॒​" Z E
     CONSONANTS "క" Z "ఖ" Z "గ" Z "ఘ" Z "ఙ" Z "చ" Z "ఛ" Z "జ" Z "ఝ" Z "ఞ" Z "ట" Z "ఠ" Z "డ" Z "ఢ" Z "ణ" Z "త" Z "థ" Z "ద" Z "ధ" Z "న" Z "ప" Z "ఫ" Z "బ" Z "భ" Z "మ" Z "య" Z "ర" Z "ల" Z "వ" Z "శ" Z "ష" Z "స" Z "హ" Z "ళ" Z "ఴ" Z "ఱ" Z "న·" Z "క·" Z "ఖ·" Z "గ·" Z "జ·" Z "డ·" Z "ఢ·" Z "ఫ·" Z "య·" Z "ఁˆగ" Z "ఁˆజ" Z "ఁˆడ" Z "ఁˆద" Z "ఁˆబ" Z E
     CONSONANTDIACRITICS "ఀ" Z "ం" Z "ః" Z "ఃʼ" Z E

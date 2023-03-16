@@ -1,3 +1,5 @@
+#include "doctest.h"
+
 #include <chrono>
 #include <fstream>
 #include <inditrans.h>
@@ -28,10 +30,6 @@ TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
   }
 
   return mask;
-}
-
-void testAssert(std::string_view test, bool result) noexcept {
-  std::cout << "  Test: " << test << (result ? " PASSED" : "FAILED") << std::endl;
 }
 
 template <class TimeT = std::chrono::milliseconds, class ClockT = std::chrono::steady_clock> struct measure {
@@ -143,22 +141,4 @@ void testPerf(bool prof) noexcept {
   }
 }
 
-int main(int argc, const char** argv) {
-  inditransLogger = [](const std::string& msg) {
-    std::cout << msg;
-    std::cout << std::endl;
-  };
-  bool prof = argc > 1 && std::string(argv[1]) == std::string("-p");
-  if (argc > 2 && std::string(argv[1]) == std::string("-t")) {
-    std::unique_ptr<char> out;
-    translitProxy(argv[2], "tamil", "readablelatin", TranslitOptions::None, out);
-    std::cout << out.get() << std::endl;
-    return 0;
-  }
-  if (!prof) {
-    testAllTranslit();
-  }
-  testPerf(prof);
-
-  return 0;
-}
+TEST_CASE("Testing inditrans.transliterate") { testAllTranslit(); }

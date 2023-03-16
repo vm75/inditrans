@@ -16,7 +16,7 @@
         "-g",
         "-I",
         "${workspaceRoot}/native/src",
-        "${workspaceRoot}/native/tests/json-tests.cpp"
+        "${workspaceRoot}/native/tests/test-json.cpp"
       ],
       "options": {
         "cwd": "${workspaceRoot}"

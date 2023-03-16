@@ -1,28 +1,23 @@
-#include <cassert>
-#include <iostream>
-#include <trie.h>
+#include "doctest.h"
 
-void testStatefulTrie() {
+#include "trie.h"
+
+TEST_CASE("Testing StatefulTrie") {
   StatefulTrie<char32_t, std::string> trie;
 
   auto result = trie.addLookup({ U'न', U'म', U'स', U'्', U'त', U'े' }, "नमस्ते");
-  assert(result == std::nullopt);
+  CHECK(result == std::nullopt);
 
   result = trie.addLookup({ U'न', U'म', U'स', U'्', U'त', U'े' }, "नमस्ते");
-  assert(result != std::nullopt);
+  CHECK(result == std::nullopt);
 
   StatefulTrie<char32_t, std::string>::LookupState state {};
-  assert(trie.lookup(U'न', state));
-  assert(trie.lookup(U'म', state));
-  assert(trie.lookup(U'स', state));
-  assert(trie.lookup(U'्', state));
-  assert(trie.lookup(U'त', state));
-  assert(trie.lookup(U'े', state));
-  assert(state.value == "नमस्ते");
-  assert(state.matchLen == 6);
-}
-
-int main() {
-  testStatefulTrie();
-  return 0;
+  CHECK(trie.lookup(U'न', state));
+  CHECK(trie.lookup(U'म', state));
+  CHECK(trie.lookup(U'स', state));
+  CHECK(trie.lookup(U'्', state));
+  CHECK(trie.lookup(U'त', state));
+  CHECK(!trie.lookup(U'े', state));
+  CHECK(state.value == "नमस्ते");
+  CHECK(state.matchLen == 6);
 }
