@@ -76,7 +76,22 @@ constexpr std::array<std::string_view, 21> LatinAccents = {
   /*꠰*/ "̱", "̍", "̎", "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱" 
 };
 
+constexpr std::array<std::string_view, 43> VedicSigns = { 
+ /*꠰*/ "᳐", "᳑", "᳒", "᳓", "᳔", "᳕", "᳖", "᳗", "᳘", "᳙", "᳚", "᳛", "᳜", "᳝", "᳞", "᳟",
+ /*꠰*/ "᳠", "᳡", "᳢", "᳣", "᳤", "᳥", "᳦", "᳧", "᳨", "ᳩ", "ᳪ", "ᳫ", "ᳬ", "᳭", "ᳮ", "ᳯ",
+ /*꠰*/ "ᳰ", "ᳱ", "ᳲ", "ᳳ", "᳴", "ᳵ", "ᳶ", "᳷", "᳸", "᳹", "ᳺ" 
+};
+
+constexpr std::array<std::string_view, 18> SpecialVedicAccents = { 
+  /*꠰*/ "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱" 
+};
+
+constexpr std::array<std::string_view, 12> SpecialVedicSymbols = { 
+  /*꠰*/ "ꣲ", "ꣵ", "ꣶ", "ꣷ", "꣸", "꣹", "꣺", "ꣻ", "꣼", "ꣽ", 
+};
+
 constexpr std::string_view TamilSuperscripts = "¹²³⁴";
+constexpr std::string_view TamilSubscripts = "₁₂₃₄";
 constexpr std::string_view SkipTrans { "##" };
 
 constexpr std::string_view TamilSpecialChars { "ʼˮˇ꞉ஃ·" };

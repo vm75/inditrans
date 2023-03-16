@@ -745,6 +745,36 @@ private:
         || token.tokenType == TokenType::ToggleTrans;
   }
 
+  inline bool isDevanagariExtended(int ch) { return ch >= 0xA8E0 && ch <= 0xA8FF; }
+
+  inline bool isVedicExtension(int ch) { return ch >= 0x1CD0 && ch <= 0x1CFA; }
+
+  inline size_t remaining() noexcept { return tokenUnits.end() - iter; }
+
+  std::optional<TokenOrString> peekNext(size_t offset = 0) noexcept {
+    if (remaining() <= offset) {
+      return std::nullopt;
+    }
+    return *(iter + offset);
+  }
+
+  bool isNextSpace(size_t offset = 0) noexcept {
+    auto next = peekNext(offset);
+    if (next == std::nullopt) {
+      return false;
+    }
+    if (!HoldsString(*iter)) {
+      return false;
+    }
+    auto str = GetString(*iter);
+    for (auto c : str) {
+      if (!std::isspace(c)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 private:
   const TranslitOptions options;
   std::vector<TokenOrString> tokenUnits;
