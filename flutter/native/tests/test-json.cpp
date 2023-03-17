@@ -1,7 +1,5 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
 
-#include <iostream>
 #include <json.h>
 #include <vector>
 
@@ -19,10 +17,7 @@ TEST_CASE("Testing JsonReader") {
       ]
     }
   )"));
-  if (!val) {
-    std::cout << "Failed to parse JSON" << std::endl;
-    return;
-  }
+  CHECK(val != std::nullopt);
   auto obj = std::get<JsonOject>(*val);
   auto types = obj.get<JsonArray>("types");
   CHECK(types != std::nullopt);

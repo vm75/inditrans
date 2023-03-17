@@ -1,13 +1,10 @@
 #include "doctest.h"
 
-#include <iostream>
 #include <string_view>
 #include <utf.h>
 #include <vector>
 
 TEST_CASE("Testing UTF-8") {
-  std::cout << std::endl << "Utf tests" << std::endl;
-
   constexpr Utf8Char utf8Char = "न"_uc8;
   constexpr Utf32Char utf32Char = U'न'_uc32;
   CHECK(utf8Char.char32().ch == utf32Char);
