@@ -15,8 +15,9 @@
 
 # Code reference for alternatives
 * https://raw.githubusercontent.com/virtualvinodh/aksharamukha-python/main/aksharamukha/ConvertFix.py
+* https://raw.githubusercontent.com/virtualvinodh/aksharamukha-python/main/aksharamukha/PostProcess.py
+* https://raw.githubusercontent.com/virtualvinodh/aksharamukha-python/main/aksharamukha/PreProcess.py
 * https://raw.githubusercontent.com/virtualvinodh/aksharamukha/master/aksharamukha-back/resources/script_mapping/script_mapping.json
-* https://raw.githubusercontent.com/virtualvinodh/aksharamukha-python/e4b4c89493bfc6120031856ff7d7bed1db631bc6/aksharamukha/PostProcess.py
 * https://github.com/indic-transliteration/common_maps/blob/master/roman/iso.toml
 
 # Conjuncts in ITRANS
