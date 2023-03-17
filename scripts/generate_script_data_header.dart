@@ -22,11 +22,9 @@ const headerPrefix = '''#pragma once
 
 // clang-format off
 
-const char scriptData[] =
 ''';
 
-const headerSuffix = ''';
-
+const headerSuffix = '''
 // clang-format on
 ''';
 
@@ -61,17 +59,18 @@ class ScriptInfo {
     buffer.write('E\n');
   }
 
-  void writeAlternates(StringBuffer buffer, List<dynamic> alts) {
+  void writeAlternates(StringBuffer buffer, Map<String, dynamic> alts) {
     if (alts.isEmpty) {
       return;
     }
+
     buffer.write('    ALTERNATES\n');
-    for (final entry in alts) {
-      final alt = entry as Map<String, dynamic>;
-      final type = alt['type'] as String;
-      final idx = alt['idx'] as int;
-      final value = alt['alt'] as String;
-      buffer.write('      ${type.toUpperCase()} "$idx" Z "$value" Z E\n');
+    for (final entry in alts.entries) {
+      buffer.write('      "${entry.key}" Z ');
+      for (final alt in entry.value) {
+        writeString(buffer, alt);
+      }
+      buffer.write('E\n');
     }
     buffer.write('    E\n');
   }
@@ -115,15 +114,38 @@ void main(List<String> args) async {
     return;
   }
 
-  final inditransScripts =
+  final jsonData =
       jsonDecode(File('scripts/script_data.json').readAsStringSync())
           as Map<String, dynamic>;
 
   final buffer = StringBuffer();
   buffer.write(headerPrefix);
 
-  for (final entry in parseScriptInfo(inditransScripts)) {
-    entry.write(buffer);
+  // scripts
+  if (jsonData['scripts'] != null) {
+    buffer.write("const char scriptData[] =\n");
+    for (final entry in parseScriptInfo(jsonData['scripts'])) {
+      entry.write(buffer);
+    }
+    buffer.write(";\n\n");
+  }
+
+  // languages
+  if (jsonData['languages'] != null) {
+    buffer.write("const char languages[] =\n");
+    for (final entry in jsonData['languages']) {
+      entry.write(buffer);
+    }
+    buffer.write(";\n\n");
+  }
+
+  // alternates
+  if (jsonData['alternates'] != null) {
+    buffer.write("const char alternates[] =\n");
+    for (final entry in jsonData['alternates']) {
+      entry.write(buffer);
+    }
+    buffer.write(";\n\n");
   }
 
   buffer.write(headerSuffix);

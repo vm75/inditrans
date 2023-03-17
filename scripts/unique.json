@@ -24,7 +24,3 @@
         "ᳰ", "ᳱ", "ᳲ", "ᳳ", "᳴", "ᳵ", "ᳶ", "᳷", "᳸", "᳹", "ᳺ" 
     ]
 }
-
-// https://github.com/indic-transliteration/common_maps/blob/master/roman/iso.toml
-// https://raw.githubusercontent.com/virtualvinodh/aksharamukha/master/aksharamukha-back/resources/script_mapping/script_mapping.json
-// https://raw.githubusercontent.com/virtualvinodh/aksharamukha-python/e4b4c89493bfc6120031856ff7d7bed1db631bc6/aksharamukha/PostProcess.py

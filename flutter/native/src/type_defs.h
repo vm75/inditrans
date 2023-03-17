@@ -101,5 +101,5 @@ struct ScriptInfo {
   std::vector<std::string_view> consonants {};
   std::vector<std::string_view> consonantDiacritic {};
   std::vector<std::string_view> symbols {};
-  std::vector<AliasEntry> alts {};
+  std::map<std::string_view, std::vector<std::string_view>> alts {};
 };

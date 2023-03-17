@@ -96,31 +96,14 @@ private:
           break;
         case 'a':
           while (ptr < end && *ptr != fieldEnd) {
-            auto typeStr = readString(ptr, end);
-            auto idxStr = readString(ptr, end);
-            auto alt = readString(ptr, end);
-            auto idx = static_cast<uint8_t>(std::stoi(idxStr.data()));
+            auto keyStr = readString(ptr, end);
+            std::vector<std::string_view> list;
+            while (ptr < end && *ptr != fieldEnd) {
+              list.push_back(readString(ptr, end));
+            }
             assert(*ptr == fieldEnd);
             ptr++;
-            TokenType tokenType {};
-            switch (typeStr[0]) {
-              case 'v':
-                tokenType = TokenType::Vowel;
-                break;
-              case 'V':
-                tokenType = TokenType::VowelDiacritic;
-                break;
-              case 'c':
-                tokenType = TokenType::Consonant;
-                break;
-              case 'C':
-                tokenType = TokenType::ConsonantDiacritic;
-                break;
-              case 's':
-                tokenType = TokenType::Symbol;
-                break;
-            }
-            data.alts.emplace_back(AliasEntry { tokenType, data.type, idx, alt });
+            data.alts[keyStr] = std::move(list);
           }
           assert(*ptr == fieldEnd);
           ptr++;
@@ -173,7 +156,10 @@ public:
     tokenMap.addLookup(SkipTrans, { TokenType::ToggleTrans, 0, scriptData.type });
 
     for (auto aliasEntry : scriptData.alts) {
-      tokenMap.addLookup(aliasEntry.alt, { aliasEntry.tokenType, aliasEntry.idx, aliasEntry.scriptType });
+      auto result = tokenMap.lookup(aliasEntry.first.data());
+      for (auto alias : aliasEntry.second) {
+        tokenMap.addLookup(alias, *result.value);
+      }
     }
 
     for (auto aliasEntry : PositionalAliases) {

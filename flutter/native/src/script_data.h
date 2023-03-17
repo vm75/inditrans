@@ -40,15 +40,15 @@ const char scriptData[] =
     CONSONANTDIACRITICS "ँ" Z "ं" Z "ः" Z "ःʼ" Z E
     SYMBOLS "०" Z "१" Z "२" Z "३" Z "४" Z "५" Z "६" Z "७" Z "८" Z "९" Z "ॐ" Z "।" Z "॥" Z "ऽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
     ALTERNATES
-      SYMBOLS "10" Z "ओ३म्" Z E
-      CONSONANTS "37" Z "क़" Z E
-      CONSONANTS "38" Z "ख़" Z E
-      CONSONANTS "39" Z "ग़" Z E
-      CONSONANTS "40" Z "ज़" Z E
-      CONSONANTS "41" Z "ड़" Z E
-      CONSONANTS "42" Z "ढ़" Z E
-      CONSONANTS "43" Z "फ़" Z E
-      CONSONANTS "44" Z "य़" Z E
+      "ॐ" Z "ओ३म्" Z E
+      "क़" Z "क़" Z E
+      "ख़" Z "ख़" Z E
+      "ग़" Z "ग़" Z E
+      "ज़" Z "ज़" Z E
+      "ड़" Z "ड़" Z E
+      "ढ़" Z "ढ़" Z E
+      "फ़" Z "फ़" Z E
+      "य़" Z "य़" Z E
     E
   E
   "gujarati" Z INDIC
@@ -140,14 +140,14 @@ const char scriptData[] =
     VOWELS "அ" Z "ஆ" Z "இ" Z "ஈ" Z "உ" Z "ஊ" Z "ருʼ" Z "ரூʼ" Z "லுʼ" Z "லூʼ" Z "எ" Z "ஏ" Z "ஐ" Z "ஒ" Z "ஓ" Z "ஔ" Z "எ᳴" Z "ஏ᳴" Z "ஆ᳴" Z E
     VOWELDIACRITICS "்" Z "ா" Z "ி" Z "ீ" Z "ு" Z "ூ" Z "்ருʼ" Z "்ரூʼ" Z "்லுʼ" Z "்லூʼ" Z "ெ" Z "ே" Z "ை" Z "ொ" Z "ோ" Z "ௌ" Z "ெ᳴" Z "ே᳴" Z "ா᳴" Z E
     CONSONANTS "க" Z "க²" Z "க³" Z "க⁴" Z "ங" Z "ச" Z "ச²" Z "ஜ" Z "ஜ²" Z "ஞ" Z "ட" Z "ட²" Z "ட³" Z "ட⁴" Z "ண" Z "த" Z "த²" Z "த³" Z "த⁴" Z "ந" Z "ப" Z "ப²" Z "ப³" Z "ப⁴" Z "ம" Z "ய" Z "ர" Z "ல" Z "வ" Z "ஶ" Z "ஷ" Z "ஸ" Z "ஹ" Z "ள" Z "ழ" Z "ற" Z "ன" Z "ஃக" Z "ஃக²" Z "ஃக³" Z "ஃஜ" Z "ஃட²" Z "ஃட³" Z "ஃப" Z "ஃய" Z "ங்ˆக³" Z "ஞ்ˆஜ³" Z "ண்ˆட³" Z "ந்ˆத³" Z "ம்ˆப³" Z E
-    CONSONANTDIACRITICS "னஂ" Z "" Z "꞉" Z "ஃ" Z E
+    CONSONANTDIACRITICS "னஂ" Z "மஂ" Z "꞉" Z "ஃ" Z E
     SYMBOLS "௦" Z "௧" Z "௨" Z "௩" Z "௪" Z "௫" Z "௬" Z "௭" Z "௮" Z "௯" Z "ௐ" Z "।" Z "॥" Z "(அ)" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
     ALTERNATES
-      VOWELDIACRITICS "13" Z "ொ" Z E
-      VOWELDIACRITICS "14" Z "ோ" Z E
-      VOWELDIACRITICS "15" Z "ௌ" Z E
-      CONSONANTDIACRITICS "0" Z "ம்ˮ" Z E
-      CONSONANTDIACRITICS "1" Z "ம்ʼ" Z E
+      "ொ" Z "ொ" Z E
+      "ோ" Z "ோ" Z E
+      "ௌ" Z "ௌ" Z E
+      "னஂ" Z "ம்ˮ" Z E
+      "மஂ" Z "ம்ʼ" Z E
     E
   E
   "tamilextended" Z INDIC
