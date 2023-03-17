@@ -5,19 +5,10 @@
   "tasks": [
     {
       // "type": "cppbuild",
-      "label": "C/C++: clang++ build inditrans_native",
-      "command": "/usr/bin/clang++",
+      "label": "C/C++: clang++ build inditrans_test",
+      "command": "make",
       "args": [
-        "-fdiagnostics-color=always",
-        "-std=c++20",
-        "-O0",
-        "-o",
-        "${workspaceRoot}/out/inditrans_native",
-        "-g",
-        "-I",
-        "${workspaceRoot}/native/src",
-        "${workspaceRoot}/native/src/inditrans.cpp",
-        "${workspaceRoot}/native/tests/test.cpp"
+        "native"
       ],
       "options": {
         "cwd": "${workspaceRoot}"

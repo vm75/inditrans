@@ -1,3 +1,5 @@
+#include "doctest.h"
+
 #include <chrono>
 #include <fstream>
 #include <inditrans.h>
@@ -30,10 +32,6 @@ TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
   return mask;
 }
 
-void testAssert(std::string_view test, bool result) noexcept {
-  std::cout << "  Test: " << test << (result ? " PASSED" : "FAILED") << std::endl;
-}
-
 template <class TimeT = std::chrono::milliseconds, class ClockT = std::chrono::steady_clock> struct measure {
   template <class F, class... Args> static auto duration(F&& func, Args&&... args) {
     auto start = ClockT::now();
@@ -41,22 +39,6 @@ template <class TimeT = std::chrono::milliseconds, class ClockT = std::chrono::s
     return std::chrono::duration_cast<TimeT>(ClockT::now() - start);
   }
 };
-
-bool testTranslit(const std::string_view& description, const std::string_view& from, const std::string_view& to,
-    const std::string_view& text, const std::string_view& expected, const std::string_view& optStr) noexcept {
-  static size_t testNum { 1 };
-  auto res = transliterate(text, from, to, getTranslitOptions(optStr));
-  bool result = res == expected;
-  std::cout << "  Test #" << std::setw(3) << testNum++ << ": " << description << ": (" << from << " -> " << to
-            << ", options=" << optStr << "): " << (result ? " PASSED" : "FAILED") << std::endl;
-  if (!result) {
-    std::cout << "    Input   : " << text << std::endl;
-    std::cout << "    Expected: " << expected << std::endl;
-    std::cout << "    Observed: " << res << std::endl;
-  }
-
-  return result;
-}
 
 void testAllTranslit() noexcept {
   std::ifstream testsFile("test-files/test-cases.json", std::ios::binary);
@@ -71,8 +53,6 @@ void testAllTranslit() noexcept {
 
     auto inputs = std::get<JsonArray>(*inputsHolder);
 
-    std::cout << std::endl << "Inditrans tests" << std::endl;
-    size_t failedCount {};
     for (const auto& input : inputs) {
       auto inputObj = std::get<JsonOject>(input);
 
@@ -91,11 +71,13 @@ void testAllTranslit() noexcept {
           options = *targetObj.get<std::string>("options");
         }
 
-        failedCount += !testTranslit(*description, *source, *target, *text, *expected, options);
+        std::string str = *description + " ( " + *source + " -> " + *target + ", " + options + " )";
+        SUBCASE(str.c_str()) {
+          auto res = transliterate(*text, *source, *target, getTranslitOptions(options));
+          CHECK(res == *expected);
+        }
       }
     }
-
-    std::cout << "Summary: " << failedCount << " tests failed." << std::endl;
   }
 }
 
@@ -143,22 +125,4 @@ void testPerf(bool prof) noexcept {
   }
 }
 
-int main(int argc, const char** argv) {
-  inditransLogger = [](const std::string& msg) {
-    std::cout << msg;
-    std::cout << std::endl;
-  };
-  bool prof = argc > 1 && std::string(argv[1]) == std::string("-p");
-  if (argc > 2 && std::string(argv[1]) == std::string("-t")) {
-    std::unique_ptr<char> out;
-    translitProxy(argv[2], "tamil", "readablelatin", TranslitOptions::None, out);
-    std::cout << out.get() << std::endl;
-    return 0;
-  }
-  if (!prof) {
-    testAllTranslit();
-  }
-  testPerf(prof);
-
-  return 0;
-}
+TEST_CASE("Testing inditrans.transliterate") { testAllTranslit(); }

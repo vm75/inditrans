@@ -39,7 +39,10 @@ public:
 private:
   using stringpos = const char*;
   static JsonValue parseValue(stringpos& curr, stringpos end) noexcept {
-    skipSpaces(curr, end);
+    if (!skipSpaces(curr, end)) {
+      return "";
+    }
+
     switch (*curr) {
       case '[': {
         curr++;
@@ -51,14 +54,16 @@ private:
             return "";
           }
           arr.emplace_back(std::move(val));
-          skipSpaces(curr, end);
+          if (!skipSpaces(curr, end)) {
+            return "";
+          }
           if (*curr != ',') {
             break;
           }
           curr++;
           skipSpaces(curr, end);
         }
-        if (*curr == ']') {
+        if (curr < end && *curr == ']') {
           curr++;
           return arr;
         }
@@ -74,12 +79,14 @@ private:
           }
           curr++;
           auto key = readUntil(curr, end, "\"");
-          if (*curr != '"') {
+          if (curr == end || *curr != '"') {
             curr = end;
             return "";
           }
           curr++;
-          skipSpaces(curr, end);
+          if (!skipSpaces(curr, end)) {
+            return "";
+          }
           if (*curr != ':') {
             curr = end;
             return "";
@@ -90,7 +97,9 @@ private:
             return "";
           }
           obj.emplace_back(std::move(key), std::move(val));
-          skipSpaces(curr, end);
+          if (!skipSpaces(curr, end)) {
+            return "";
+          }
           if (*curr != ',') {
             break;
           }
@@ -172,11 +181,30 @@ private:
     return 0;
   }
 
-  static void skipSpaces(stringpos& curr, stringpos end) noexcept {
+  static bool skipSpaces(stringpos& curr, stringpos end) noexcept {
     static constexpr std::string_view Spaces { " \t\n\r" };
-    while (curr < end && Spaces.find(*curr) != Spaces.npos) {
+    while (curr < end) {
+      if (Spaces.find(*curr) == Spaces.npos) {
+        if (end - curr < 2 || *curr != '/') {
+          break;
+        }
+        if (*(curr + 1) == '/') {
+          curr = std::find(curr + 2, end, '\n');
+        } else if (*(curr + 1) == '*') {
+          constexpr std::string_view EndComment { "*/" };
+          curr = std::search(curr + 2, end, EndComment.begin(), EndComment.end());
+          if (curr != end) {
+            curr += 2;
+          }
+        } else {
+          break;
+        }
+        continue;
+      }
       curr++;
     }
+
+    return curr < end;
   }
 
   // Reads all chars until the delimitters (excluded).

@@ -1,6 +1,6 @@
 # inditrans
 
-A transliterator transliterator library for some [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
+An experimental transliterator library for some [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
 
 - Available on all platforms. Uses ffi for non-Web platforms and wasm for Web.
 - Self-contained and performant.

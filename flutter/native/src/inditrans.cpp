@@ -33,17 +33,22 @@ public:
   }
 
   const ScriptInfo* get(std::string_view name) const noexcept {
-    auto entry = map.find(name);
-    if (entry == map.end()) {
-      return nullptr;
+    auto entry = scriptMap.find(name);
+    if (entry != scriptMap.end()) {
+      return &entry->second;
     }
-    return &entry->second;
+    auto mapName = aliasMap.find(name);
+    if (mapName != aliasMap.end()) {
+      return &scriptMap.find(mapName->second)->second;
+    }
+
+    return nullptr;
   }
 
   // begin and end
-  std::map<std::string_view, ScriptInfo>::const_iterator begin() const noexcept { return map.begin(); }
+  std::map<std::string_view, ScriptInfo>::const_iterator begin() const noexcept { return scriptMap.begin(); }
 
-  std::map<std::string_view, ScriptInfo>::const_iterator end() const noexcept { return map.end(); }
+  std::map<std::string_view, ScriptInfo>::const_iterator end() const noexcept { return scriptMap.end(); }
 
   static const ScriptData& getScripts() noexcept {
     static auto scriptDataMap = ScriptData(scriptData, sizeof(scriptData));
@@ -72,13 +77,6 @@ private:
     while (*ptr != fieldEnd) {
       auto typeStr = readString(ptr, end);
       switch (typeStr[0]) {
-        case 'l':
-          while (ptr < end && *ptr != fieldEnd) {
-            readString(ptr, end);
-          }
-          assert(*ptr == fieldEnd);
-          ptr++;
-          break;
         case 'v':
           readList(ptr, end, data.vowels);
           break;
@@ -89,47 +87,28 @@ private:
           readList(ptr, end, data.consonants);
           break;
         case 'C':
-          readList(ptr, end, data.consonantDiacritic);
+          readList(ptr, end, data.commonDiacritic);
           break;
         case 's':
           readList(ptr, end, data.symbols);
           break;
+        case 'A':
+          readList(ptr, end, data.aliases);
+          break;
         case 'a':
-          while (ptr < end && *ptr != fieldEnd) {
-            auto typeStr = readString(ptr, end);
-            auto idxStr = readString(ptr, end);
-            auto alt = readString(ptr, end);
-            auto idx = static_cast<uint8_t>(std::stoi(idxStr.data()));
-            assert(*ptr == fieldEnd);
-            ptr++;
-            TokenType tokenType {};
-            switch (typeStr[0]) {
-              case 'v':
-                tokenType = TokenType::Vowel;
-                break;
-              case 'V':
-                tokenType = TokenType::VowelDiacritic;
-                break;
-              case 'c':
-                tokenType = TokenType::Consonant;
-                break;
-              case 'C':
-                tokenType = TokenType::ConsonantDiacritic;
-                break;
-              case 's':
-                tokenType = TokenType::Symbol;
-                break;
-            }
-            data.alts.emplace_back(AliasEntry { tokenType, data.type, idx, alt });
-          }
-          assert(*ptr == fieldEnd);
-          ptr++;
+          readMap(ptr, end, data.alternates);
+          break;
+        case 'l':
+          readMap(ptr, end, data.languages);
           break;
       }
     }
     assert(*ptr == fieldEnd);
     ptr++;
-    map.insert({ name, std::move(data) });
+    scriptMap.insert({ name, std::move(data) });
+    for (auto alias : data.aliases) {
+      aliasMap.insert({ alias, name });
+    }
   }
 
   std::string_view readString(const char*& ptr, const char* end) noexcept {
@@ -150,8 +129,25 @@ private:
     ptr++;
   }
 
+  void readMap(
+      const char*& ptr, const char* end, std::map<std::string_view, std::vector<std::string_view>>& map) noexcept {
+    while (ptr < end && *ptr != fieldEnd) {
+      auto keyStr = readString(ptr, end);
+      std::vector<std::string_view> list;
+      while (ptr < end && *ptr != fieldEnd) {
+        list.push_back(readString(ptr, end));
+      }
+      assert(*ptr == fieldEnd);
+      ptr++;
+      map[keyStr] = std::move(list);
+    }
+    assert(*ptr == fieldEnd);
+    ptr++;
+  }
+
   static constexpr char fieldEnd = 0x01;
-  std::map<std::string_view, ScriptInfo> map;
+  std::map<std::string_view, ScriptInfo> scriptMap;
+  std::map<std::string_view, std::string_view> aliasMap;
 };
 
 using LookupTable = Char32Trie<ScriptToken>;
@@ -172,15 +168,28 @@ public:
 
     tokenMap.addLookup(SkipTrans, { TokenType::ToggleTrans, 0, scriptData.type });
 
-    for (auto aliasEntry : scriptData.alts) {
-      tokenMap.addLookup(aliasEntry.alt, { aliasEntry.tokenType, aliasEntry.idx, aliasEntry.scriptType });
-    }
-
-    for (auto aliasEntry : PositionalAliases) {
-      if (aliasEntry.scriptType != scriptData.type) {
+    for (auto aliasEntry : scriptData.alternates) {
+      auto tokenStr = aliasEntry.first;
+      ScriptToken token = invalidScriptToken;
+      if (tokenStr.length() >= 3 && tokenStr[1] == ':') {
+        auto type = getTokenType(tokenStr[0]);
+        if (type == TokenType::Ignore) {
+          continue;
+        }
+        uint8_t idx = std::atoi(tokenStr.data() + 2);
+        token = ScriptToken { type, idx, scriptData.type };
+      } else {
+        auto result = tokenMap.lookup(tokenStr.data());
+        if (result.value) {
+          token = *result.value;
+        }
+      }
+      if (token == invalidScriptToken) {
         continue;
       }
-      tokenMap.addLookup(aliasEntry.alt, { aliasEntry.tokenType, aliasEntry.idx, aliasEntry.scriptType });
+      for (auto alias : aliasEntry.second) {
+        tokenMap.addLookup(alias, token);
+      }
     }
   }
 
@@ -192,8 +201,8 @@ public:
     addCharMap(name, TokenType::VowelDiacritic, scriptData.type, scriptData.vowelDiacritics.data(),
         scriptData.vowelDiacritics.size());
     addCharMap(name, TokenType::Consonant, scriptData.type, scriptData.consonants.data(), scriptData.consonants.size());
-    addCharMap(name, TokenType::ConsonantDiacritic, scriptData.type, scriptData.consonantDiacritic.data(),
-        scriptData.consonantDiacritic.size());
+    addCharMap(name, TokenType::CommonDiacritic, scriptData.type, scriptData.commonDiacritic.data(),
+        scriptData.commonDiacritic.size());
     addCharMap(name, TokenType::Symbol, scriptData.type, scriptData.symbols.data(), scriptData.symbols.size());
   }
 
@@ -222,7 +231,25 @@ private:
     }
   }
 
-private:
+  TokenType getTokenType(char ch) {
+    switch (ch) {
+      case 'v':
+        return TokenType::Vowel;
+      case 'V':
+        return TokenType::VowelDiacritic;
+      case 'c':
+        return TokenType::Consonant;
+      case 'C':
+        return TokenType::CommonDiacritic;
+      case 's':
+        return TokenType::Symbol;
+      case 'a':
+        return TokenType::Accent;
+      default:
+        return TokenType::Ignore;
+    }
+  }
+
   const std::string_view name;
   const ScriptInfo& scriptData;
   LookupTable tokenMap;
@@ -237,8 +264,8 @@ public:
     addCharMap(
         name, TokenType::VowelDiacritic, scriptType, charMaps.vowelDiacritics.data(), charMaps.vowelDiacritics.size());
     addCharMap(name, TokenType::Consonant, scriptType, charMaps.consonants.data(), charMaps.consonants.size());
-    addCharMap(name, TokenType::ConsonantDiacritic, scriptType, charMaps.consonantDiacritic.data(),
-        charMaps.consonantDiacritic.size());
+    addCharMap(
+        name, TokenType::CommonDiacritic, scriptType, charMaps.commonDiacritic.data(), charMaps.commonDiacritic.size());
     addCharMap(name, TokenType::Symbol, scriptType, charMaps.symbols.data(), charMaps.symbols.size());
     const auto& accentMap = scriptType == ScriptType::Latin ? LatinAccents : Accents;
     addCharMap(name, TokenType::Accent, scriptType, accentMap.data(), accentMap.size());
@@ -280,12 +307,12 @@ struct TokenUnit {
 
   ScriptToken leadToken;
   Token vowelDiacritic {};
-  Token consonantDiacritic {};
+  Token commonDiacritic {};
   Token accent {};
 
   bool operator==(const TokenUnit& other) const noexcept {
     return leadToken == other.leadToken && vowelDiacritic == other.vowelDiacritic
-        && consonantDiacritic == other.consonantDiacritic && accent == other.accent;
+        && commonDiacritic == other.commonDiacritic && accent == other.accent;
   }
 
   bool operator!=(const TokenUnit& other) const noexcept { return !(*this == other); }
@@ -295,7 +322,7 @@ namespace std {
 
 template <> struct hash<TokenUnit> {
   std::size_t operator()(const TokenUnit& k) const {
-    return (k.leadToken.idx ^ (k.vowelDiacritic.idx << 1) >> 1) ^ (k.consonantDiacritic.idx << 1) ^ (k.accent.idx << 1);
+    return (k.leadToken.idx ^ (k.vowelDiacritic.idx << 1) >> 1) ^ (k.commonDiacritic.idx << 1) ^ (k.accent.idx << 1);
   }
 };
 
@@ -340,7 +367,7 @@ const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexcept {
       entry = readerMapCache.emplace(script, ScriptReaderMap { script, *mapEntry }).first;
 
       for (const auto& scriptInfo : ScriptData::getScripts()) {
-        if (scriptInfo.first == "devanagari" || !isIndicScript(scriptInfo.first)) {
+        if (scriptInfo.first == "devanagari" || scriptInfo.second.type == ScriptType::Latin) {
           continue;
         }
 
@@ -385,8 +412,8 @@ public:
           case TokenType::Symbol:
             tokens.emplace_back(match.value.value());
             break;
-          case TokenType::ConsonantDiacritic:
-            tokens.back().consonantDiacritic = match.value.value();
+          case TokenType::CommonDiacritic:
+            tokens.back().commonDiacritic = match.value.value();
             break;
           case TokenType::VowelDiacritic:
             tokens.back().vowelDiacritic = match.value.value();
@@ -505,8 +532,8 @@ private:
       while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
         const auto nextToken = GetScriptToken(*iter);
         switch (nextToken.tokenType) {
-          case TokenType::ConsonantDiacritic:
-            tokenUnit.consonantDiacritic = nextToken;
+          case TokenType::CommonDiacritic:
+            tokenUnit.commonDiacritic = nextToken;
             break;
           case TokenType::VowelDiacritic:
             tokenUnit.vowelDiacritic = nextToken;
@@ -523,8 +550,8 @@ private:
       while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
         const auto nextToken = GetScriptToken(*iter);
         switch (nextToken.tokenType) {
-          case TokenType::ConsonantDiacritic:
-            tokenUnit.consonantDiacritic = nextToken;
+          case TokenType::CommonDiacritic:
+            tokenUnit.commonDiacritic = nextToken;
             break;
           case TokenType::Accent:
             tokenUnit.accent = nextToken;
@@ -555,9 +582,9 @@ private:
         if (HoldsScriptToken(*iter)) {
           auto nextToken = GetScriptToken(*iter);
           switch (nextToken.tokenType) {
-            case TokenType::ConsonantDiacritic:
+            case TokenType::CommonDiacritic:
               iter++;
-              tokenUnit.consonantDiacritic = nextToken;
+              tokenUnit.commonDiacritic = nextToken;
               break;
             case TokenType::VowelDiacritic:
               iter++;
@@ -655,8 +682,8 @@ private:
     } else if (start.tokenType == TokenType::Vowel) {
       while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
         const auto nextToken = GetScriptToken(*iter);
-        if (nextToken.tokenType == TokenType::ConsonantDiacritic) {
-          tokenUnit.consonantDiacritic = nextToken;
+        if (nextToken.tokenType == TokenType::CommonDiacritic) {
+          tokenUnit.commonDiacritic = nextToken;
         } else if (nextToken.tokenType == TokenType::Accent) {
           tokenUnit.accent = nextToken;
         } else {
@@ -690,8 +717,8 @@ private:
               consume = true;
             }
             break;
-          case TokenType::ConsonantDiacritic:
-            tokenUnit.consonantDiacritic = nextToken;
+          case TokenType::CommonDiacritic:
+            tokenUnit.commonDiacritic = nextToken;
             consume = true;
             break;
           case TokenType::Accent:
@@ -745,6 +772,36 @@ private:
         || token.tokenType == TokenType::ToggleTrans;
   }
 
+  inline bool isDevanagariExtended(int ch) { return ch >= 0xA8E0 && ch <= 0xA8FF; }
+
+  inline bool isVedicExtension(int ch) { return ch >= 0x1CD0 && ch <= 0x1CFA; }
+
+  inline size_t remaining() noexcept { return tokenUnits.end() - iter; }
+
+  std::optional<TokenOrString> peekNext(size_t offset = 0) noexcept {
+    if (remaining() <= offset) {
+      return std::nullopt;
+    }
+    return *(iter + offset);
+  }
+
+  bool isNextSpace(size_t offset = 0) noexcept {
+    auto next = peekNext(offset);
+    if (next == std::nullopt) {
+      return false;
+    }
+    if (!HoldsString(*iter)) {
+      return false;
+    }
+    auto str = GetString(*iter);
+    for (auto c : str) {
+      if (!std::isspace(c)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 private:
   const TranslitOptions options;
   std::vector<TokenOrString> tokenUnits;
@@ -795,7 +852,7 @@ public:
       : map(map)
       , options(options)
       , scriptType(map.getType())
-      , anuswaraMissing(map.lookupChar(TokenType::ConsonantDiacritic, SpecialIndices::Anuswara).length() == 0) {
+      , anuswaraMissing(map.lookupChar(TokenType::CommonDiacritic, SpecialIndices::Anuswara).length() == 0) {
     buffer.reserve(inputSize);
     setNasalConsonantSize();
   }
@@ -821,8 +878,8 @@ protected:
     if (tokenUnit.vowelDiacritic.idx != InvalidToken) {
       push(map.lookupChar(tokenUnit.vowelDiacritic));
     }
-    if (tokenUnit.consonantDiacritic.idx != InvalidToken) {
-      push(map.lookupChar(tokenUnit.consonantDiacritic));
+    if (tokenUnit.commonDiacritic.idx != InvalidToken) {
+      push(map.lookupChar(tokenUnit.commonDiacritic));
     }
     if (tokenUnit.accent.idx != InvalidToken && options / TranslitOptions::IgnoreVedicAccents) {
       push(map.lookupChar(tokenUnit.accent));
@@ -872,22 +929,22 @@ protected:
         push(superscript);
       }
 
-      if (tokenUnit.consonantDiacritic.idx != InvalidToken) {
-        if (tokenUnit.consonantDiacritic.idx == SpecialIndices::Anuswara) {
+      if (tokenUnit.commonDiacritic.idx != InvalidToken) {
+        if (tokenUnit.commonDiacritic.idx == SpecialIndices::Anuswara) {
           inferAnuswara(next);
         } else {
-          push(map.lookupChar(tokenUnit.consonantDiacritic));
+          push(map.lookupChar(tokenUnit.commonDiacritic));
         }
       }
     } else {
       if (tokenUnit.leadToken.tokenType == TokenType::Vowel) {
         push(leadText);
 
-        if (tokenUnit.consonantDiacritic.idx != InvalidToken) {
-          if (tokenUnit.consonantDiacritic.idx == SpecialIndices::Anuswara) {
+        if (tokenUnit.commonDiacritic.idx != InvalidToken) {
+          if (tokenUnit.commonDiacritic.idx == SpecialIndices::Anuswara) {
             inferAnuswara(next);
           } else {
-            push(map.lookupChar(tokenUnit.consonantDiacritic));
+            push(map.lookupChar(tokenUnit.commonDiacritic));
           }
         }
       } else if (options * TranslitOptions::ASCIINumerals && tokenUnit.leadToken.tokenType == TokenType::Symbol
@@ -927,9 +984,9 @@ protected:
     if (tokenUnit.accent.idx != InvalidToken && options / TranslitOptions::IgnoreVedicAccents) {
       push(map.lookupChar(tokenUnit.accent));
     }
-    if (tokenUnit.consonantDiacritic.idx != InvalidToken) {
-      auto lookup = map.lookupChar(tokenUnit.consonantDiacritic);
-      if (tokenUnit.consonantDiacritic.idx == SpecialIndices::Anuswara && lookup.size() == 0) {
+    if (tokenUnit.commonDiacritic.idx != InvalidToken) {
+      auto lookup = map.lookupChar(tokenUnit.commonDiacritic);
+      if (tokenUnit.commonDiacritic.idx == SpecialIndices::Anuswara && lookup.size() == 0) {
         inferAnuswara(next);
       } else {
         push(lookup);
@@ -965,7 +1022,7 @@ protected:
   }
 
   void setNasalConsonantSize() noexcept {
-    const auto& anuswara = map.lookupChar(TokenType::ConsonantDiacritic, SpecialIndices::Anuswara);
+    const auto& anuswara = map.lookupChar(TokenType::CommonDiacritic, SpecialIndices::Anuswara);
     if (options * TranslitOptions::IgnoreQuotedMarkers) {
       std::string out {};
       stripChars(anuswara, QuotedMarkers, out);

@@ -12,33 +12,33 @@ const headerPrefix = '''#pragma once
 #define TAMIL "t\\u0000"
 #define LATIN "l\\u0000"
 
-#define LANGUAGES "l\\u0000"
 #define VOWELS "v\\u0000"
 #define VOWELDIACRITICS "V\\u0000"
 #define CONSONANTS "c\\u0000"
-#define CONSONANTDIACRITICS "C\\u0000"
+#define COMMONDIACRITICS "C\\u0000"
 #define SYMBOLS "s\\u0000"
 #define ALTERNATES "a\\u0000"
+#define ALIASES "A\\u0000"
+#define LANGUAGES "l\\u0000"
 
 // clang-format off
 
-const char scriptData[] =
 ''';
 
-const headerSuffix = ''';
-
+const headerSuffix = '''
 // clang-format on
 ''';
 
 class ScriptInfo {
   static const Map<String, int?> arrayTypes = {
-    'languages': null,
+    'aliases': null,
     'vowels': 19,
     'vowelDiacritics': 19,
     'consonants': 50,
-    'consonantDiacritics': 4,
+    'commonDiacritics': 4,
     'symbols': 19
   };
+  static const List<String> arrayGroupTypes = ['languages', 'alternates'];
   final String type;
   final String name;
   final Map<String, dynamic> info;
@@ -61,17 +61,19 @@ class ScriptInfo {
     buffer.write('E\n');
   }
 
-  void writeAlternates(StringBuffer buffer, List<dynamic> alts) {
+  void writeArrayGroup(
+      StringBuffer buffer, String type, Map<String, dynamic> alts) {
     if (alts.isEmpty) {
       return;
     }
-    buffer.write('    ALTERNATES\n');
-    for (final entry in alts) {
-      final alt = entry as Map<String, dynamic>;
-      final type = alt['type'] as String;
-      final idx = alt['idx'] as int;
-      final value = alt['alt'] as String;
-      buffer.write('      ${type.toUpperCase()} "$idx" Z "$value" Z E\n');
+
+    buffer.write('    ${type.toUpperCase()}\n');
+    for (final entry in alts.entries) {
+      buffer.write('      "${entry.key}" Z ');
+      for (final alt in entry.value) {
+        writeString(buffer, alt);
+      }
+      buffer.write('E\n');
     }
     buffer.write('    E\n');
   }
@@ -84,8 +86,10 @@ class ScriptInfo {
             buffer, entry.key, info[entry.key] as List<dynamic>, entry.value);
       }
     }
-    if (info['alternates'] != null) {
-      writeAlternates(buffer, info['alternates']);
+    for (final entry in arrayGroupTypes) {
+      if (info[entry] != null) {
+        writeArrayGroup(buffer, entry, info[entry]);
+      }
     }
 
     buffer.write('  E\n');
@@ -115,16 +119,19 @@ void main(List<String> args) async {
     return;
   }
 
-  final inditransScripts =
+  final jsonData =
       jsonDecode(File('scripts/script_data.json').readAsStringSync())
           as Map<String, dynamic>;
 
   final buffer = StringBuffer();
   buffer.write(headerPrefix);
 
-  for (final entry in parseScriptInfo(inditransScripts)) {
+  // scripts
+  buffer.write("const char scriptData[] =\n");
+  for (final entry in parseScriptInfo(jsonData)) {
     entry.write(buffer);
   }
+  buffer.write(";\n\n");
 
   buffer.write(headerSuffix);
 

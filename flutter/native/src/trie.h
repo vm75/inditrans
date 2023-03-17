@@ -1,6 +1,7 @@
 #include <memory>
 #include <optional>
 #include <unordered_map>
+#include <vector>
 
 template <typename KeyType, typename ValueType> struct TrieNode {
   using NodeMap = std::unordered_map<KeyType, std::unique_ptr<TrieNode<KeyType, ValueType>>>;
@@ -64,12 +65,12 @@ public:
     if (mapEntry == state.node->end()) {
       return false;
     }
+    state.matchLen++;
 
     auto& lookup = mapEntry->second;
 
     if (lookup->value != std::nullopt) {
       state.value = lookup->value;
-      state.matchLen++;
     }
 
     if (!lookup->nodes) {

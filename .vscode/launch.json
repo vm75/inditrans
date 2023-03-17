@@ -19,13 +19,13 @@
       "type": "cppdbg",
       "request": "launch",
       "cwd": "${workspaceFolder}",
-      "program": "${workspaceFolder}/out/inditrans_native",
+      "program": "${workspaceFolder}/out/inditrans_test",
       "args": [],
       "stopAtEntry": false,
       "environment": [],
       "externalConsole": false,
       "MIMode": "gdb",
-      "preLaunchTask": "C/C++: clang++ build inditrans_native",
+      "preLaunchTask": "C/C++: clang++ build inditrans_test",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",

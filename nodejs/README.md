@@ -1,6 +1,6 @@
 # inditrans
 
-A transliterator transliterator library for some [Indic/Indic](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
+An experimental transliterator library for some [Indic/Indic](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
 
 - Self-contained and performant. Uses wasm.
 - Supports [vedic accents](https://en.wikipedia.org/wiki/Vedic_accent). Useful for vedic scriptures.

@@ -6,32 +6,33 @@ version:
 	dart ./scripts/bump_version.dart
 
 ifeq ($(OS), Windows_NT)
-    NATIVE_EXEC=out/inditrans_native.exe
-    SCRIPT_EXT=ps1
+    EXEC_EXT = .exe
+    SCRIPT_EXT = ps1
 else
-    NATIVE_EXEC=out/inditrans_native
-	SCRIPT_EXT=sh
+    SCRIPT_EXT = sh
 endif
+NATIVE_TEST = out/inditrans_test$(EXEC_EXT)
 HEADERS_CC = $(wildcard native/src/*.h)
 SOURCES_CC = $(wildcard native/src/*.cpp)
 SOURCES_NODEJS = $(wildcard nodejs/src/*.ts)
 SOURCES_FLUTTER = $(wildcard flutter/lib/src/*.dart)
+TEST_CC = $(wildcard native/tests/*.cpp)
 
 # Native
-native: $(NATIVE_EXEC)
+native: $(NATIVE_TEST)
 
 profile:
-	g++ -std=c++20 -O1 -fno-exceptions -pg -Wno-normalized -I native/src $(SOURCES_CC) native/tests/test.cpp -o out/prof_$(NATIVE_EXEC)
-	out/prof_$(NATIVE_EXEC) -p
-	gprof out/prof_$(NATIVE_EXEC) gmon.out > out/native-prof.log
+	g++ -std=c++20 -O1 -fno-exceptions -pg -Wno-normalized -I native/src $(SOURCES_CC) native/tests/test.cpp -o out/prof_$(NATIVE_TEST)
+	out/prof_$(NATIVE_TEST) -p
+	gprof out/prof_$(NATIVE_TEST) gmon.out > out/native-prof.log
 
-$(NATIVE_EXEC): $(SOURCES_CC) $(HEADERS_CC) native/tests/test.cpp
-	clang++ -std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address -I native/src $(SOURCES_CC) native/tests/test.cpp -o $@
+$(NATIVE_TEST): $(SOURCES_CC) $(HEADERS_CC) $(TEST_CC)
+	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I native/src $(SOURCES_CC) $(TEST_CC) -o $@
 
 testall: test test_flutter test_nodejs
 
-test: $(NATIVE_EXEC)
-	$(NATIVE_EXEC)
+test: $(NATIVE_TEST) test-files/test-cases.json
+	$(NATIVE_TEST)
 
 test_flutter: wasm flutter/lib/src/bindings.dart
 	cd flutter/example && flutter run -d chrome
