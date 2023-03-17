@@ -47,6 +47,21 @@
     "indian language",
     "indian script",
     "devanagari",
-    "tamil"
+    "tamil",
+    "sanskrit",
+    "telugu",
+    "kannada",
+    "malayalam",
+    "bengali",
+    "gurmukhi",
+    "gujarati",
+    "oriya",
+    "brahmic",
+    "vedic accents",
+    "wasm",
+    "ISO 15919",
+    "IAST",
+    "ITRANS",
+    "IPA"
   ]
 }
