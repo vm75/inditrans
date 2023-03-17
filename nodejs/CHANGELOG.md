@@ -1,3 +1,7 @@
+## 0.4.0
+
+- Lot of refactoring.
+
 ## 0.3.6
 
 - Refactored nodejs interface. Updated readme.

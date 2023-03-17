@@ -4,10 +4,10 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'inditrans'
-  s.version          = '0.3.6'
-  s.summary          = 'A new Flutter FFI plugin project.'
+  s.version          = '0.4.0'
+  s.summary          = 'Inditrans example.'
   s.description      = <<-DESC
-A new Flutter FFI plugin project.
+Inditrans example.
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }

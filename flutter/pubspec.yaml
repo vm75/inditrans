@@ -1,6 +1,6 @@
 name: inditrans
 description: An experimental transliterator library for some Indic/Brahmic scripts.
-version: 0.3.6
+version: 0.4.0
 repository: https://github.com/vm75/inditrans/
 
 environment:
