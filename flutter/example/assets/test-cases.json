@@ -117,16 +117,16 @@
     "targets": [
       {
         "script": "tamil",
-        "text": "நாம்᳚ ஏ᳚ˇ ஜி᳚"
+        "text": "நாம்᳚ ஏ᳴᳚ ஜி᳚"
       },
       {
         "script": "tamil",
-        "text": "நாம்᳚ ஏ᳚ˇ ஜி²᳚",
+        "text": "நாம்᳚ ஏ᳴᳚ ஜி²᳚",
         "options": "TamilSuperscripted"
       },
       {
         "script": "tamil",
-        "text": "நாம் ஏˇ ஜி²",
+        "text": "நாம் ஏ᳴ ஜி²",
         "options": "TamilSuperscripted IgnoreVedicAccents"
       }
     ]
