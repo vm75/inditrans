@@ -6,10 +6,10 @@ version:
 	dart ./scripts/bump_version.dart
 
 ifeq ($(OS), Windows_NT)
-    EXEC_EXT=.exe
-    SCRIPT_EXT=ps1
+    EXEC_EXT = .exe
+    SCRIPT_EXT = ps1
 else
-	SCRIPT_EXT=sh
+    SCRIPT_EXT = sh
 endif
 NATIVE_TEST = out/inditrans_test$(EXEC_EXT)
 HEADERS_CC = $(wildcard native/src/*.h)

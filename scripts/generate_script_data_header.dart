@@ -12,13 +12,14 @@ const headerPrefix = '''#pragma once
 #define TAMIL "t\\u0000"
 #define LATIN "l\\u0000"
 
-#define LANGUAGES "l\\u0000"
 #define VOWELS "v\\u0000"
 #define VOWELDIACRITICS "V\\u0000"
 #define CONSONANTS "c\\u0000"
-#define CONSONANTDIACRITICS "C\\u0000"
+#define COMMONDIACRITICS "C\\u0000"
 #define SYMBOLS "s\\u0000"
 #define ALTERNATES "a\\u0000"
+#define ALIASES "A\\u0000"
+#define LANGUAGES "l\\u0000"
 
 // clang-format off
 
@@ -30,13 +31,14 @@ const headerSuffix = '''
 
 class ScriptInfo {
   static const Map<String, int?> arrayTypes = {
-    'languages': null,
+    'aliases': null,
     'vowels': 19,
     'vowelDiacritics': 19,
     'consonants': 50,
-    'consonantDiacritics': 4,
+    'commonDiacritics': 4,
     'symbols': 19
   };
+  static const List<String> arrayGroupTypes = ['languages', 'alternates'];
   final String type;
   final String name;
   final Map<String, dynamic> info;
@@ -59,12 +61,13 @@ class ScriptInfo {
     buffer.write('E\n');
   }
 
-  void writeAlternates(StringBuffer buffer, Map<String, dynamic> alts) {
+  void writeArrayGroup(
+      StringBuffer buffer, String type, Map<String, dynamic> alts) {
     if (alts.isEmpty) {
       return;
     }
 
-    buffer.write('    ALTERNATES\n');
+    buffer.write('    ${type.toUpperCase()}\n');
     for (final entry in alts.entries) {
       buffer.write('      "${entry.key}" Z ');
       for (final alt in entry.value) {
@@ -83,8 +86,10 @@ class ScriptInfo {
             buffer, entry.key, info[entry.key] as List<dynamic>, entry.value);
       }
     }
-    if (info['alternates'] != null) {
-      writeAlternates(buffer, info['alternates']);
+    for (final entry in arrayGroupTypes) {
+      if (info[entry] != null) {
+        writeArrayGroup(buffer, entry, info[entry]);
+      }
     }
 
     buffer.write('  E\n');
@@ -122,31 +127,11 @@ void main(List<String> args) async {
   buffer.write(headerPrefix);
 
   // scripts
-  if (jsonData['scripts'] != null) {
-    buffer.write("const char scriptData[] =\n");
-    for (final entry in parseScriptInfo(jsonData['scripts'])) {
-      entry.write(buffer);
-    }
-    buffer.write(";\n\n");
+  buffer.write("const char scriptData[] =\n");
+  for (final entry in parseScriptInfo(jsonData)) {
+    entry.write(buffer);
   }
-
-  // languages
-  if (jsonData['languages'] != null) {
-    buffer.write("const char languages[] =\n");
-    for (final entry in jsonData['languages']) {
-      entry.write(buffer);
-    }
-    buffer.write(";\n\n");
-  }
-
-  // alternates
-  if (jsonData['alternates'] != null) {
-    buffer.write("const char alternates[] =\n");
-    for (final entry in jsonData['alternates']) {
-      entry.write(buffer);
-    }
-    buffer.write(";\n\n");
-  }
+  buffer.write(";\n\n");
 
   buffer.write(headerSuffix);
 

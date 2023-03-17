@@ -39,7 +39,7 @@ enum class TokenType : uint8_t {
   Vowel,
   VowelDiacritic,
   Consonant,
-  ConsonantDiacritic,
+  CommonDiacritic,
   Symbol,
   Accent,
   ToggleTrans,
@@ -99,7 +99,9 @@ struct ScriptInfo {
   std::vector<std::string_view> vowels {};
   std::vector<std::string_view> vowelDiacritics {};
   std::vector<std::string_view> consonants {};
-  std::vector<std::string_view> consonantDiacritic {};
+  std::vector<std::string_view> commonDiacritic {};
   std::vector<std::string_view> symbols {};
-  std::map<std::string_view, std::vector<std::string_view>> alts {};
+  std::vector<std::string_view> aliases {};
+  std::map<std::string_view, std::vector<std::string_view>> alternates {};
+  std::map<std::string_view, std::vector<std::string_view>> languages {};
 };
