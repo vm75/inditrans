@@ -53,6 +53,9 @@ enum TranslitOptions {
 /// transliterate
 ext_def(char*) transliterate(const char* text, const char* from, const char* to, unsigned long options);
 
+/// returns a comma-separated list of scripts
+ext_def(int) isScriptSupported(const char* script);
+
 /// releaseBuffer
 ext_def(void) releaseBuffer(char* buffer);
 

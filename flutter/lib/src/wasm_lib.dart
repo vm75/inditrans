@@ -4,6 +4,7 @@ import 'package:wasm_ffi/wasm_ffi_modules.dart';
 import 'wasm_module.dart';
 
 typedef UnsignedLong = Uint64;
+typedef Int = Int32;
 
 class InditransDynamicLib {
   static late DynamicLibrary _lib;

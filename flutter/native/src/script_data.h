@@ -22,17 +22,27 @@ const char scriptData[] =
   "assamese" Z INDIC
     VOWELS "অ" Z "আ" Z "ই" Z "ঈ" Z "উ" Z "ঊ" Z "ঋ" Z "ৠ" Z "ঌ" Z "ৡ" Z "এ᳴" Z "এ" Z "ঐ" Z "ও᳴" Z "ও" Z "ঔ" Z "এ᳴" Z "এˇ" Z "আ᳴" Z E
     VOWELDIACRITICS "্" Z "া" Z "ি" Z "ী" Z "ু" Z "ূ" Z "ৃ" Z "ৄ" Z "ৢ" Z "ৣ" Z "ে᳴" Z "ে" Z "ৈ" Z "ো᳴" Z "ো" Z "ৌ" Z "ে᳴" Z "েˇ" Z "া᳴" Z E
-    CONSONANTS "ক" Z "খ" Z "গ" Z "ঘ" Z "ঙ" Z "চ" Z "ছ" Z "জ" Z "ঝ" Z "ঞ" Z "ট" Z "ঠ" Z "ড" Z "ঢ" Z "ণ" Z "ত" Z "থ" Z "দ" Z "ধ" Z "ন" Z "প" Z "ফ" Z "ব" Z "ভ" Z "ম" Z "য" Z "র" Z "ল" Z "ৱ" Z "শ" Z "ষ" Z "স" Z "হ" Z "ল়" Z "ষ়" Z "র়" Z "ন়" Z "ক়" Z "খ়" Z "গ়" Z "জ়" Z "ড়" Z "ঢ়" Z "ফ়" Z "য়" Z "ঁˆগ" Z "ঁˆজ" Z "ঁˆড" Z "ঁˆদ" Z "ঁˆব" Z E
+    CONSONANTS "ক" Z "খ" Z "গ" Z "ঘ" Z "ঙ" Z "চ" Z "ছ" Z "জ" Z "ঝ" Z "ঞ" Z "ট" Z "ঠ" Z "ড" Z "ঢ" Z "ণ" Z "ত" Z "থ" Z "দ" Z "ধ" Z "ন" Z "প" Z "ফ" Z "ব" Z "ভ" Z "ম" Z "য" Z "ৰ" Z "ল" Z "ৱ" Z "শ" Z "ষ" Z "স" Z "হ" Z "ল়" Z "ষ়" Z "ৰ়" Z "ন়" Z "ক়" Z "খ়" Z "গ়" Z "জ়" Z "ড়" Z "ঢ়" Z "ফ়" Z "য়" Z "ঁˆগ" Z "ঁˆজ" Z "ঁˆড" Z "ঁˆদ" Z "ঁˆব" Z E
     COMMONDIACRITICS "ঁ" Z "ং" Z "ঃ" Z "ঃʼ" Z E
     SYMBOLS "০" Z "১" Z "২" Z "৩" Z "৪" Z "৫" Z "৬" Z "৭" Z "৮" Z "৯" Z "ওঁ" Z "।" Z "॥" Z "ঽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
+    ALTERNATES
+      "ৰ" Z "র" Z E
+      "ৱ" Z "ভ়" Z E
+      "ৰ়" Z "র়" Z E
+    E
   E
   "bengali" Z INDIC
     ALIASES "bangla" Z E
     VOWELS "অ" Z "আ" Z "ই" Z "ঈ" Z "উ" Z "ঊ" Z "ঋ" Z "ৠ" Z "ঌ" Z "ৡ" Z "এ᳴" Z "এ" Z "ঐ" Z "ও᳴" Z "ও" Z "ঔ" Z "এ᳴" Z "এˇ" Z "আ᳴" Z E
     VOWELDIACRITICS "্" Z "া" Z "ি" Z "ী" Z "ু" Z "ূ" Z "ৃ" Z "ৄ" Z "ৢ" Z "ৣ" Z "ে᳴" Z "ে" Z "ৈ" Z "ো᳴" Z "ো" Z "ৌ" Z "ে᳴" Z "েˇ" Z "া᳴" Z E
-    CONSONANTS "ক" Z "খ" Z "গ" Z "ঘ" Z "ঙ" Z "চ" Z "ছ" Z "জ" Z "ঝ" Z "ঞ" Z "ট" Z "ঠ" Z "ড" Z "ঢ" Z "ণ" Z "ত" Z "থ" Z "দ" Z "ধ" Z "ন" Z "প" Z "ফ" Z "ব" Z "ভ" Z "ম" Z "য" Z "র" Z "ল" Z "ৱ" Z "শ" Z "ষ" Z "স" Z "হ" Z "ল়" Z "ষ়" Z "র়" Z "ন়" Z "ক়" Z "খ়" Z "গ়" Z "জ়" Z "ড়" Z "ঢ়" Z "ফ়" Z "য়" Z "ঁˆগ" Z "ঁˆজ" Z "ঁˆড" Z "ঁˆদ" Z "ঁˆব" Z E
+    CONSONANTS "ক" Z "খ" Z "গ" Z "ঘ" Z "ঙ" Z "চ" Z "ছ" Z "জ" Z "ঝ" Z "ঞ" Z "ট" Z "ঠ" Z "ড" Z "ঢ" Z "ণ" Z "ত" Z "থ" Z "দ" Z "ধ" Z "ন" Z "প" Z "ফ" Z "ব" Z "ভ" Z "ম" Z "য" Z "র" Z "ল" Z "ভ়" Z "শ" Z "ষ" Z "স" Z "হ" Z "ল়" Z "ষ়" Z "র়" Z "ন়" Z "ক়" Z "খ়" Z "গ়" Z "জ়" Z "ড়" Z "ঢ়" Z "ফ়" Z "য়" Z "ঁˆগ" Z "ঁˆজ" Z "ঁˆড" Z "ঁˆদ" Z "ঁˆব" Z E
     COMMONDIACRITICS "ঁ" Z "ং" Z "ঃ" Z "ঃʼ" Z E
     SYMBOLS "০" Z "১" Z "২" Z "৩" Z "৪" Z "৫" Z "৬" Z "৭" Z "৮" Z "৯" Z "ওঁ" Z "।" Z "॥" Z "ঽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
+    ALTERNATES
+      "র" Z "ৰ" Z E
+      "ভ়" Z "ৱ" Z E
+      "র়" Z "ৰ়" Z E
+    E
   E
   "devanagari" Z INDIC
     ALIASES "samskrit" Z "sanskrit" Z E
@@ -77,7 +87,7 @@ const char scriptData[] =
     VOWELDIACRITICS "" Z "ā" Z "i" Z "ī" Z "u" Z "ū" Z "ṛ" Z "ṝ" Z "ḷ" Z "ḹ" Z "ĕ" Z "e" Z "ai" Z "ŏ" Z "o" Z "au" Z "æ" Z "ǣ" Z "ô" Z E
     CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "ṅ" Z "c" Z "ch" Z "j" Z "jh" Z "ñ" Z "ṭ" Z "ṭh" Z "ḍ" Z "ḍh" Z "ṇ" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "ś" Z "ṣ" Z "s" Z "h" Z "l̤" Z "ḻ" Z "ṟ" Z "ṉ" Z "q" Z "k͟h" Z "ġ" Z "z" Z "r̤" Z "r̤h" Z "f" Z "ẏ" Z "n̆g" Z "n̆j" Z "n̆ḍ" Z "n̆d" Z "m̆b" Z E
     COMMONDIACRITICS "m̐" Z "ṃ" Z "ḥ" Z "ḵ" Z E
-    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oṃ" Z "." Z ".." Z "'" Z "gͫ" Z "gͫ̄" Z "​" Z "‌" Z "‍" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oṃ" Z "." Z ".." Z "'" Z "gͫ" Z "gͫ̄" Z "" Z "" Z "" Z E
     ALTERNATES
       "s:17" Z "{}" Z "^^" Z E
       "s:18" Z "()" Z "^" Z E
@@ -88,7 +98,7 @@ const char scriptData[] =
     VOWELDIACRITICS "" Z "ɑː" Z "ɪ" Z "iː" Z "u" Z "uː" Z "ɾɨ" Z "ɾɨː" Z "lɨ" Z "lɨː" Z "e" Z "eː" Z "əɪ" Z "o" Z "oː" Z "əu" Z "æ" Z "æː" Z "ɔ" Z E
     CONSONANTS "k" Z "kʰ" Z "g" Z "gʰ" Z "ŋ" Z "t͡ʃ" Z "t͡ʃʰ" Z "d͡ʒ" Z "d͡ʒʰ" Z "ɲ" Z "ʈ" Z "ʈʰ" Z "ɖ" Z "ɖʰ" Z "ɳ" Z "t̪" Z "t̪ʰ" Z "d̪" Z "d̪ʰ" Z "n̪" Z "p" Z "pʰ" Z "b" Z "bʰ" Z "m" Z "j" Z "ɾ" Z "l" Z "ʋ" Z "ʃ" Z "ʂ" Z "s̪" Z "ɦ" Z "ɭ" Z "ɻ" Z "r" Z "n" Z "q" Z "x" Z "ɣ" Z "z" Z "ɽ" Z "ɽʰ" Z "f" Z "ẏ" Z "ᵑɡ" Z "ᶮd͡ʒ" Z "ᶯɖ" Z "ⁿd" Z "ᵐb" Z E
     COMMONDIACRITICS "̃ʽ" Z "̃" Z "h" Z "xʽ" Z E
-    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oːm" Z "." Z ".." Z "ə̸" Z "gͫ" Z "gͫ̄" Z "​" Z "‌" Z "‍" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oːm" Z "." Z ".." Z "ə̸" Z "gͫ" Z "gͫ̄" Z "" Z "" Z "" Z E
     ALTERNATES
       "s:17" Z "{}" Z "^^" Z E
       "s:18" Z "()" Z "^" Z E
@@ -99,7 +109,7 @@ const char scriptData[] =
     VOWELDIACRITICS "" Z "ā" Z "i" Z "ī" Z "u" Z "ū" Z "r̥" Z "r̥̄" Z "l̥" Z "l̥̄" Z "e" Z "ē" Z "ai" Z "o" Z "ō" Z "au" Z "æ" Z "ǣ" Z "ô" Z E
     CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "ṅ" Z "c" Z "ch" Z "j" Z "jh" Z "ñ" Z "ṭ" Z "ṭh" Z "ḍ" Z "ḍh" Z "ṇ" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "ś" Z "ṣ" Z "s" Z "h" Z "ḷ" Z "ḻ" Z "ṟ" Z "ṉ" Z "q" Z "k͟h" Z "ġ" Z "z" Z "ṛ" Z "ṛh" Z "f" Z "ẏ" Z "n̆g" Z "n̆j" Z "n̆ḍ" Z "n̆d" Z "m̆b" Z E
     COMMONDIACRITICS "m̐" Z "ṁ" Z "ḥ" Z "ḵ" Z E
-    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "ōṁ" Z "." Z ".." Z "’" Z "gͫ" Z "gͫ̄" Z "​" Z "‌" Z "‍" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "ōṁ" Z "." Z ".." Z "’" Z "gͫ" Z "gͫ̄" Z "" Z "" Z "" Z E
     ALTERNATES
       "s:17" Z "{}" Z "^^" Z E
       "s:18" Z "()" Z "^" Z E
@@ -131,6 +141,7 @@ const char scriptData[] =
     SYMBOLS "൦" Z "൧" Z "൨" Z "൩" Z "൪" Z "൫" Z "൬" Z "൭" Z "൮" Z "൯" Z "ഓം" Z "।" Z "॥" Z "ഽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
   E
   "oriya" Z INDIC
+    ALIASES "odia" Z E
     VOWELS "ଅ" Z "ଆ" Z "ଇ" Z "ଈ" Z "ଉ" Z "ଊ" Z "ଋ" Z "ୠ" Z "ଌ" Z "ୡ" Z "ଏ᳴" Z "ଏ" Z "ଐ" Z "ଓ᳴" Z "ଓ" Z "ଔ" Z "ଏ᳴" Z "ଏˇ" Z "ଆ᳴" Z E
     VOWELDIACRITICS "୍" Z "ା" Z "ି" Z "ୀ" Z "ୁ" Z "ୂ" Z "ୃ" Z "ୄ" Z "ୢ" Z "ୣ" Z "େ᳴" Z "େ" Z "ୈ" Z "ୋ᳴" Z "ୋ" Z "ୌ" Z "େ᳴" Z "େˇ" Z "ା᳴" Z E
     CONSONANTS "କ" Z "ଖ" Z "ଗ" Z "ଘ" Z "ଙ" Z "ଚ" Z "ଛ" Z "ଜ" Z "ଝ" Z "ଞ" Z "ଟ" Z "ଠ" Z "ଡ" Z "ଢ" Z "ଣ" Z "ତ" Z "ଥ" Z "ଦ" Z "ଧ" Z "ନ" Z "ପ" Z "ଫ" Z "ବ" Z "ଭ" Z "ମ" Z "ଯ" Z "ର" Z "ଲ" Z "ୱ" Z "ଶ" Z "ଷ" Z "ସ" Z "ହ" Z "ଳ" Z "ଳ଼" Z "ର଼" Z "ନ଼" Z "କ଼" Z "ଖ଼" Z "ଗ଼" Z "ଜ଼" Z "ଡ଼" Z "ଢ଼" Z "ଫ଼" Z "ୟ" Z "ଁˆଗ" Z "ଁˆଜ" Z "ଁˆଡ" Z "ଁˆଦ" Z "ଁˆବ" Z E
@@ -138,11 +149,11 @@ const char scriptData[] =
     SYMBOLS "୦" Z "୧" Z "୨" Z "୩" Z "୪" Z "୫" Z "୬" Z "୭" Z "୮" Z "୯" Z "ଓଁ" Z "।" Z "॥" Z "ଽ" Z "ꣳ" Z "ꣴ" Z "​" Z "‌" Z "‍" Z E
   E
   "readablelatin" Z LATIN
-    VOWELS "a" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "ru̥" Z "rru̥" Z "lu̥" Z "llu̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "a" Z "e" Z "o" Z E
-    VOWELDIACRITICS "" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "ru̥" Z "rru̥" Z "lu̥" Z "llu̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "a" Z "e" Z "o" Z E
+    VOWELS "a" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "r̥" Z "rr̥" Z "l̥" Z "ll̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "a" Z "e" Z "o" Z E
+    VOWELDIACRITICS "" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "r̥" Z "rr̥" Z "l̥" Z "ll̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "a" Z "e" Z "o" Z E
     CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "n" Z "ch" Z "chh" Z "j" Z "jh" Z "n" Z "T" Z "Th" Z "D" Z "Dh" Z "N" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "sh" Z "sh" Z "s" Z "h" Z "L" Z "zh" Z "R" Z "n" Z "q" Z "qh" Z "gh" Z "z" Z "D" Z "Dh" Z "f" Z "y" Z "ng" Z "nj" Z "nD" Z "nd" Z "mb" Z E
     COMMONDIACRITICS "n̐" Z "" Z "h" Z "q" Z E
-    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "om" Z "!" Z "!!" Z "~" Z "gum" Z "ggum" Z "​" Z "‌" Z "‍" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "om" Z "!" Z "!!" Z "~" Z "gum" Z "ggum" Z "" Z "" Z "" Z E
   E
   "sinhala" Z INDIC
     VOWELS "අ" Z "ආ" Z "ඉ" Z "ඊ" Z "උ" Z "ඌ" Z "ඍ" Z "ඎ" Z "ඏ" Z "ඐ" Z "එ" Z "ඒ" Z "ඓ" Z "ඔ" Z "ඕ" Z "ඖ" Z "ඇ" Z "ඈ" Z "ආ᳴" Z E

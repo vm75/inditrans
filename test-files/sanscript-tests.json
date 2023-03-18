@@ -1,0 +1,901 @@
+[
+  {
+    "description": "any-to-any: vowels",
+    "type": "any-to-any",
+    "targets": [
+      {
+        "script": "bengali",
+        "text": "অ আ ই ঈ উ ঊ ঋ ৠ ঌ ৡ এ ঐ ও ঔ"
+      },
+      {
+        "script": "devanagari",
+        "text": "अ आ इ ई उ ऊ ऋ ॠ ऌ ॡ ए ऐ ओ औ"
+      },
+      {
+        "script": "gujarati",
+        "text": "અ આ ઇ ઈ ઉ ઊ ઋ ૠ ઌ ૡ એ ઐ ઓ ઔ"
+      },
+      {
+        "script": "titus",
+        "text": "a ā i ī u ū r̥ r̥̄ l̥ l̥̄ e ai o au"
+      },
+      {
+        "script": "hk",
+        "text": "a A i I u U R RR lR lRR e ai o au"
+      },
+      {
+        "script": "itrans",
+        "text": "a A i I u U RRi RRI LLi LLI e ai o au"
+      },
+      {
+        "script": "optitrans",
+        "text": "a A i I u U R RR LLi LLI e ai o au"
+      },
+      {
+        "script": "velthuis",
+        "text": "a aa i ii u uu .r .rr .l .ll e ai o au"
+      },
+      {
+        "script": "iast",
+        "text": "a ā i ī u ū ṛ ṝ ḷ ḹ e ai o au"
+      },
+      {
+        "script": "kolkata_v2",
+        "text": "a ā i ī u ū ṛ ṝ ḷ ḹ ē ai ō au"
+      },
+      {
+        "script": "kannada",
+        "text": "ಅ ಆ ಇ ಈ ಉ ಊ ಋ ೠ ಌ ೡ ಏ ಐ ಓ ಔ"
+      },
+      {
+        "script": "malayalam",
+        "text": "അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ"
+      },
+      {
+        "script": "slp1",
+        "text": "a A i I u U f F x X e E o O"
+      },
+      {
+        "script": "wx",
+        "text": "a A i I u U q Q L ḹ e E o O"
+      },
+      {
+        "script": "telugu",
+        "text": "అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఏ ఐ ఓ ఔ"
+      },
+      {
+        "script": "gunjala_gondi",
+        "text": "𑵠 𑵡 𑵢 𑵣 𑵤 𑵥 ఋ ౠ ఌ ౡ 𑵧 𑵨 𑵪 𑵫"
+      }
+    ]
+  },
+  {
+    "description": "any-to-any: marks",
+    "type": "any-to-any",
+    "targets": [
+      {
+        "script": "bengali",
+        "text": "ক খা গি ঘী ঙু চূ ছৃ জৄ ঝৢ ঞৣ টে ঠৈ ডো ঢৌ ণং তঃ থ্"
+      },
+      {
+        "script": "devanagari",
+        "text": "क खा गि घी ङु चू छृ जॄ झॢ ञॣ टे ठै डो ढौ णं तः थ्"
+      },
+      {
+        "script": "gujarati",
+        "text": "ક ખા ગિ ઘી ઙુ ચૂ છૃ જૄ ઝૢ ઞૣ ટે ઠૈ ડો ઢૌ ણં તઃ થ્"
+      },
+      {
+        "script": "titus",
+        "text": "ka kʰā gi gʰī ṅu cū cʰr̥ jr̥̄ jʰl̥ ñl̥̄ ṭe ṭʰai ḍo ḍʰau ṇaṃ taḥ tʰ"
+      },
+      {
+        "script": "hk",
+        "text": "ka khA gi ghI Gu cU chR jRR jhlR JlRR Te Thai Do Dhau NaM taH th"
+      },
+      {
+        "script": "itrans",
+        "text": "ka khA gi ghI ~Nu chU ChRRi jRRI jhLLi ~nLLI Te Thai Do Dhau NaM taH th"
+      },
+      {
+        "script": "optitrans",
+        "text": "ka khA gi ghI ~Nu chU ChR jRR jhLLi ~nLLI Te Thai Do Dhau NaM taH th"
+      },
+      {
+        "script": "velthuis",
+        "text": "ka khaa gi ghii \"nu cuu ch.r j.rr jh.l ~n.ll .te .thai .do .dhau .na.m ta.h th"
+      },
+      {
+        "script": "iast",
+        "text": "ka khā gi ghī ṅu cū chṛ jṝ jhḷ ñḹ ṭe ṭhai ḍo ḍhau ṇaṃ taḥ th"
+      },
+      {
+        "script": "kolkata_v2",
+        "text": "ka khā gi ghī ṅu cū chṛ jṝ jhḷ ñḹ ṭē ṭhai ḍō ḍhau ṇaṃ taḥ th"
+      },
+      {
+        "script": "kannada",
+        "text": "ಕ ಖಾ ಗಿ ಘೀ ಙು ಚೂ ಛೃ ಜೄ ಝೢ ಞೣ ಟೇ ಠೈ ಡೋ ಢೌ ಣಂ ತಃ ಥ್"
+      },
+      {
+        "script": "malayalam",
+        "text": "ക ഖാ ഗി ഘീ ങു ചൂ ഛൃ ജൄ ഝൢ ഞൣ ടേ ഠൈ ഡോ ഢൌ ണം തഃ ഥ്"
+      },
+      {
+        "script": "slp1",
+        "text": "ka KA gi GI Nu cU Cf jF Jx YX we WE qo QO RaM taH T"
+      },
+      {
+        "script": "wx",
+        "text": "ka KA gi GI fu cU Cq jQ JL Fḹ te TE do DO NaM waH W"
+      },
+      {
+        "script": "telugu",
+        "text": "క ఖా గి ఘీ ఙు చూ ఛృ జౄ ఝౢ ఞౣ టే ఠై డో ఢౌ ణం తః థ్"
+      },
+      {
+        "script": "gunjala_gondi",
+        "text": "𑵱 𑵲𑶊 𑵶𑶋 𑵷𑶌 𑶄𑶍 𑵻𑶎 𑵼ృ 𑶀ౄ 𑶁ౢ ఞౣ 𑵽𑶐 𑵾𑶑 𑶂𑶓 𑶃𑶔 𑵿𑶕 𑵳𑶖 𑵴𑶗"
+      }
+    ]
+  },
+  {
+    "description": "any-to-any: consonants",
+    "type": "any-to-any",
+    "targets": [
+      {
+        "script": "bengali",
+        "text": "ক খ গ ঘ ঙ চ ছ জ ঝ ঞ ট ঠ ড ঢ ণ ত থ দ ধ ন প ফ ব ভ ম য র ল ব শ ষ স হ ল়"
+      },
+      {
+        "script": "devanagari",
+        "text": "क ख ग घ ङ च छ ज झ ञ ट ठ ड ढ ण त थ द ध न प फ ब भ म य र ल व श ष स ह ळ"
+      },
+      {
+        "script": "gujarati",
+        "text": "ક ખ ગ ઘ ઙ ચ છ જ ઝ ઞ ટ ઠ ડ ઢ ણ ત થ દ ધ ન પ ફ બ ભ મ ય ર લ વ શ ષ સ હ ળ"
+      },
+      {
+        "script": "titus",
+        "text": "ka kʰa ga gʰa ṅa ca cʰa ja jʰa ña ṭa ṭʰa ḍa ḍʰa ṇa ta tʰa da dʰa na pa pʰa ba bʰa ma ya ra la va śa ṣa sa ha ḷa"
+      },
+      {
+        "script": "hk",
+        "text": "ka kha ga gha Ga ca cha ja jha Ja Ta Tha Da Dha Na ta tha da dha na pa pha ba bha ma ya ra la va za Sa sa ha La"
+      },
+      {
+        "script": "itrans",
+        "text": "ka kha ga gha ~Na cha Cha ja jha ~na Ta Tha Da Dha Na ta tha da dha na pa pha ba bha ma ya ra la va sha Sha sa ha La"
+      },
+      {
+        "script": "optitrans",
+        "text": "ka kha ga gha ~Na cha Cha ja jha ~na Ta Tha Da Dha Na ta tha da dha na pa pha ba bha ma ya ra la va sha Sha sa ha La"
+      },
+      {
+        "script": "velthuis",
+        "text": "ka kha ga gha \"na ca cha ja jha ~na .ta .tha .da .dha .na ta tha da dha na pa pha ba bha ma ya ra la va \"sa .sa sa ha La"
+      },
+      {
+        "script": "iast",
+        "text": "ka kha ga gha ṅa ca cha ja jha ña ṭa ṭha ḍa ḍha ṇa ta tha da dha na pa pha ba bha ma ya ra la va śa ṣa sa ha l̤a"
+      },
+      {
+        "script": "kolkata_v2",
+        "text": "ka kha ga gha ṅa ca cha ja jha ña ṭa ṭha ḍa ḍha ṇa ta tha da dha na pa pha ba bha ma ya ra la va śa ṣa sa ha l̤a"
+      },
+      {
+        "script": "kannada",
+        "text": "ಕ ಖ ಗ ಘ ಙ ಚ ಛ ಜ ಝ ಞ ಟ ಠ ಡ ಢ ಣ ತ ಥ ದ ಧ ನ ಪ ಫ ಬ ಭ ಮ ಯ ರ ಲ ವ ಶ ಷ ಸ ಹ ಳ"
+      },
+      {
+        "script": "malayalam",
+        "text": "ക ഖ ഗ ഘ ങ ച ഛ ജ ഝ ഞ ട ഠ ഡ ഢ ണ ത ഥ ദ ധ ന പ ഫ ബ ഭ മ യ ര ല വ ശ ഷ സ ഹ ള"
+      },
+      {
+        "script": "slp1",
+        "text": "ka Ka ga Ga Na ca Ca ja Ja Ya wa Wa qa Qa Ra ta Ta da Da na pa Pa ba Ba ma ya ra la va Sa za sa ha La"
+      },
+      {
+        "script": "wx",
+        "text": "ka Ka ga Ga fa ca Ca ja Ja Fa ta Ta da Da Na wa Wa xa Xa na pa Pa ba Ba ma ya ra la va Sa Ra sa ha l̤a"
+      },
+      {
+        "script": "telugu",
+        "text": "క ఖ గ ఘ ఙ చ ఛ జ ఝ ఞ ట ఠ డ ఢ ణ త థ ద ధ న ప ఫ బ భ మ య ర ల వ శ ష స హ ళ"
+      },
+      {
+        "script": "gunjala_gondi",
+        "text": "𑵱 𑵲 𑵶 𑵷 𑶄 𑵻 𑵼 𑶀 𑶁 ఞ 𑵽 𑵾 𑶂 𑶃 𑵿 𑵳 𑵴 𑵸 𑵹 𑵺 𑶅 𑶆 𑵮 𑵯 𑵰 𑵬 𑶈 𑵵 𑵭 శ ష 𑶉 𑶇 ళ"
+      }
+    ]
+  },
+  {
+    "description": "any-to-any: symbols",
+    "type": "any-to-any",
+    "targets": [
+      {
+        "script": "bengali",
+        "text": "ওঁ । ॥ ০ ১ ২ ৩ ৪ ৫ ৬ ৭ ৮ ৯"
+      },
+      {
+        "script": "devanagari",
+        "text": "ॐ । ॥ ० १ २ ३ ४ ५ ६ ७ ८ ९"
+      },
+      {
+        "script": "gujarati",
+        "text": "ૐ । ॥ ૦ ૧ ૨ ૩ ૪ ૫ ૬ ૭ ૮ ૯"
+      },
+      {
+        "script": "titus",
+        "text": "oṃ . .. 0 1 2 3 4 5 6 7 8 9"
+      },
+      {
+        "script": "hk",
+        "text": "OM | || 0 1 2 3 4 5 6 7 8 9"
+      },
+      {
+        "script": "itrans",
+        "text": "OM | || 0 1 2 3 4 5 6 7 8 9"
+      },
+      {
+        "script": "optitrans",
+        "text": "OM | || 0 1 2 3 4 5 6 7 8 9"
+      },
+      {
+        "script": "velthuis",
+        "text": "O | || 0 1 2 3 4 5 6 7 8 9"
+      },
+      {
+        "script": "iast",
+        "text": "oṃ | || 0 1 2 3 4 5 6 7 8 9"
+      },
+      {
+        "script": "kolkata_v2",
+        "text": "ōṃ | || 0 1 2 3 4 5 6 7 8 9"
+      },
+      {
+        "script": "kannada",
+        "text": "ಓಂ । ॥ ೦ ೧ ೨ ೩ ೪ ೫ ೬ ೭ ೮ ೯"
+      },
+      {
+        "script": "malayalam",
+        "text": "ഓം । ॥ ൦ ൧ ൨ ൩ ൪ ൫ ൬ ൭ ൮ ൯"
+      },
+      {
+        "script": "slp1",
+        "text": "AUM . .. 0 1 2 3 4 5 6 7 8 9"
+      },
+      {
+        "script": "wx",
+        "text": "oM . .. 0 1 2 3 4 5 6 7 8 9"
+      },
+      {
+        "script": "telugu",
+        "text": "ఓం । ॥ ౦ ౧ ౨ ౩ ౪ ౫ ౬ ౭ ౮ ౯"
+      },
+      {
+        "script": "gunjala_gondi",
+        "text": "𑶘 । ॥ 𑶠 𑶡 𑶢 𑶣 𑶤 𑶥 𑶦 𑶧 𑶨 𑶩"
+      }
+    ]
+  },
+  {
+    "description": "any-to-any: putra",
+    "type": "any-to-any",
+    "targets": [
+      {
+        "script": "bengali",
+        "text": "পুত্র"
+      },
+      {
+        "script": "devanagari",
+        "text": "पुत्र"
+      },
+      {
+        "script": "gujarati",
+        "text": "પુત્ર"
+      },
+      {
+        "script": "titus",
+        "text": "putra"
+      },
+      {
+        "script": "hk",
+        "text": "putra"
+      },
+      {
+        "script": "itrans",
+        "text": "putra"
+      },
+      {
+        "script": "optitrans",
+        "text": "putra"
+      },
+      {
+        "script": "velthuis",
+        "text": "putra"
+      },
+      {
+        "script": "iast",
+        "text": "putra"
+      },
+      {
+        "script": "kolkata_v2",
+        "text": "putra"
+      },
+      {
+        "script": "kannada",
+        "text": "ಪುತ್ರ"
+      },
+      {
+        "script": "malayalam",
+        "text": "പുത്ര"
+      },
+      {
+        "script": "slp1",
+        "text": "putra"
+      },
+      {
+        "script": "wx",
+        "text": "puwra"
+      },
+      {
+        "script": "telugu",
+        "text": "పుత్ర"
+      },
+      {
+        "script": "gunjala_gondi",
+        "text": "𑶅𑶍𑵳𑶗𑶈"
+      }
+    ]
+  },
+  {
+    "description": "any-to-any: naraIti",
+    "type": "any-to-any",
+    "targets": [
+      {
+        "script": "bengali",
+        "text": "নর ইতি"
+      },
+      {
+        "script": "devanagari",
+        "text": "नर इति"
+      },
+      {
+        "script": "gujarati",
+        "text": "નર ઇતિ"
+      },
+      {
+        "script": "titus",
+        "text": "nara iti"
+      },
+      {
+        "script": "hk",
+        "text": "nara iti"
+      },
+      {
+        "script": "itrans",
+        "text": "nara iti"
+      },
+      {
+        "script": "optitrans",
+        "text": "nara iti"
+      },
+      {
+        "script": "velthuis",
+        "text": "nara iti"
+      },
+      {
+        "script": "iast",
+        "text": "nara iti"
+      },
+      {
+        "script": "kolkata_v2",
+        "text": "nara iti"
+      },
+      {
+        "script": "kannada",
+        "text": "ನರ ಇತಿ"
+      },
+      {
+        "script": "malayalam",
+        "text": "നര ഇതി"
+      },
+      {
+        "script": "slp1",
+        "text": "nara iti"
+      },
+      {
+        "script": "wx",
+        "text": "nara iwi"
+      },
+      {
+        "script": "telugu",
+        "text": "నర ఇతి"
+      },
+      {
+        "script": "gunjala_gondi",
+        "text": "𑵺𑶈 𑵢𑵳𑶋"
+      }
+    ]
+  },
+  {
+    "description": "any-to-any: sentence",
+    "type": "any-to-any",
+    "targets": [
+      {
+        "script": "bengali",
+        "text": "ধর্মক্ষেত্রে কুরুক্ষেত্রে সমবেতা যুযুত্সবঃ ।"
+      },
+      {
+        "script": "devanagari",
+        "text": "धर्मक्षेत्रे कुरुक्षेत्रे समवेता युयुत्सवः ।"
+      },
+      {
+        "script": "gujarati",
+        "text": "ધર્મક્ષેત્રે કુરુક્ષેત્રે સમવેતા યુયુત્સવઃ ।"
+      },
+      {
+        "script": "titus",
+        "text": "dʰarmakṣetre kurukṣetre samavetā yuyutsavaḥ ."
+      },
+      {
+        "script": "hk",
+        "text": "dharmakSetre kurukSetre samavetA yuyutsavaH |"
+      },
+      {
+        "script": "itrans",
+        "text": "dharmakShetre kurukShetre samavetA yuyutsavaH |"
+      },
+      {
+        "script": "optitrans",
+        "text": "dharmaxetre kuruxetre samavetA yuyutsavaH |"
+      },
+      {
+        "script": "velthuis",
+        "text": "dharmak.setre kuruk.setre samavetaa yuyutsava.h |"
+      },
+      {
+        "script": "iast",
+        "text": "dharmakṣetre kurukṣetre samavetā yuyutsavaḥ |"
+      },
+      {
+        "script": "kolkata_v2",
+        "text": "dharmakṣētrē kurukṣētrē samavētā yuyutsavaḥ |"
+      },
+      {
+        "script": "kannada",
+        "text": "ಧರ್ಮಕ್ಷೇತ್ರೇ ಕುರುಕ್ಷೇತ್ರೇ ಸಮವೇತಾ ಯುಯುತ್ಸವಃ ।"
+      },
+      {
+        "script": "malayalam",
+        "text": "ധര്മക്ഷേത്രേ കുരുക്ഷേത്രേ സമവേതാ യുയുത്സവഃ ।"
+      },
+      {
+        "script": "slp1",
+        "text": "Darmakzetre kurukzetre samavetA yuyutsavaH ."
+      },
+      {
+        "script": "wx",
+        "text": "XarmakRewre kurukRewre samavewA yuyuwsavaH ."
+      },
+      {
+        "script": "telugu",
+        "text": "ధర్మక్షేత్రే కురుక్షేత్రే సమవేతా యుయుత్సవః ।"
+      },
+      {
+        "script": "gunjala_gondi",
+        "text": "𑵹𑶈𑶗𑵰𑵱𑶗ష𑶐𑵳𑶗𑶈𑶐 𑵱𑶍𑶈𑶍𑵱𑶗ష𑶐𑵳𑶗𑶈𑶐 𑶉𑵰𑵭𑶐𑵳𑶊 𑵬𑶍𑵬𑶍𑵳𑶗𑶉𑵭𑶖 ।"
+      }
+    ]
+  },
+  {
+    "description": "to-and-fro: A general test. Checks punctuations, OM.",
+    "type": "to-and-fro",
+    "script": "devanagari",
+    "text": "असय औषधिः ग्रन्थः! ॡकारो नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  कष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्।",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "asaya auṣadhiḥ granthaḥ! ḹkāro nāsti leśo'pi saṃśayaḥ. kīlakam? kūpiḥ?  kaṣṭhaṃ bhoḥ. śaṅkara! jñānam.  sañjīvaya. 12345.. oṃ tat."
+      },
+      {
+        "script": "iastDcs",
+        "text": "asaya auṣadhiḥ granthaḥ! ḹkāro nāsti leśo'pi saṃśayaḥ/ kīlakam? kūpiḥ?  kaṣṭhaṃ bhoḥ/ śaṅkara! jñānam/  sañjīvaya/ 12345// aum tat/"
+      },
+      {
+        "script": "hk",
+        "text": "asaya auSadhiH granthaH! lRRkAro nAsti lezo'pi saMzayaH| kIlakam? kUpiH?  kaSThaM bhoH| zaGkara! jJAnam|  saJjIvaya| 12345|| OM tat|"
+      },
+      {
+        "script": "optitrans",
+        "text": "asaya auShadhiH granthaH! LLIkaaro naasti lesho.api saMshayaH. kiilakam? kuupiH?  kaShThaM bhoH. shankara! jnaanam.  sanjiivaya. 12345.. OM tat."
+      },
+      {
+        "script": "slp",
+        "text": "asaya OzaDiH granTaH! XkAro nAsti leSo'pi saMSayaH. kIlakam? kUpiH?  kazWaM BoH. SaNkara! jYAnam.  saYjIvaya. 12345.. AUM tat."
+      },
+      {
+        "script": "wx",
+        "text": "asaya ORaXiH granWaH! ḹkAro nAswi leSo'pi saMSayaH. kIlakam? kUpiH?  kaRTaM BoH. Safkara! jFAnam.  saFjIvaya. 12345.. oM waw."
+      },
+      {
+        "script": "kannada",
+        "text": "ಅಸಯ ಔಷಧಿಃ ಗ್ರನ್ಥಃ! ೡಕಾರೋ ನಾಸ್ತಿ ಲೇಶೋಽಪಿ ಸಂಶಯಃ। ಕೀಲಕಮ್? ಕೂಪಿಃ?  ಕಷ್ಠಂ ಭೋಃ। ಶಙ್ಕರ! ಜ್ಞಾನಮ್।  ಸಞ್ಜೀವಯ। ೧೨೩೪೫॥ ಓಂ ತತ್।"
+      },
+      {
+        "script": "malayalam",
+        "text": "അസയ ഔഷധിഃ ഗ്രന്ഥഃ! ൡകാരോ നാസ്തി ലേശോഽപി സംശയഃ। കീലകമ്? കൂപിഃ?  കഷ്ഠം ഭോഃ। ശങ്കര! ജ്ഞാനമ്।  സഞ്ജീവയ। ൧൨൩൪൫॥ ഓം തത്।"
+      },
+      {
+        "script": "telugu",
+        "text": "అసయ ఔషధిః గ్రన్థః! ౡకారో నాస్తి లేశోఽపి సంశయః। కీలకమ్? కూపిః?  కష్ఠం భోః। శఙ్కర! జ్ఞానమ్।  సఞ్జీవయ। ౧౨౩౪౫॥ ఓం తత్।"
+      },
+      {
+        "script": "gujarati",
+        "text": "અસય ઔષધિઃ ગ્રન્થઃ! ૡકારો નાસ્તિ લેશોઽપિ સંશયઃ। કીલકમ્? કૂપિઃ?  કષ્ઠં ભોઃ। શઙ્કર! જ્ઞાનમ્।  સઞ્જીવય। ૧૨૩૪૫॥ ૐ તત્।"
+      },
+      {
+        "script": "assamese",
+        "text": "অসয ঔষধিঃ গ্ৰন্থঃ! ৡকাৰো নাস্তি লেশোঽপি সংশযঃ। কীলকম্? কূপিঃ?  কষ্ঠং ভোঃ। শঙ্কৰ! জ্ঞানম্।  সঞ্জীৱয। ১২৩৪৫॥ ॐ তত্।"
+      },
+      {
+        "script": "oriya",
+        "text": "ଅସଯ ଔଷଧିଃ ଗ୍ରନ୍ଥଃ! ୡକାରୋ ନାସ୍ତି ଲେଶୋଽପି ସଂଶଯଃ। କୀଲକମ୍? କୂପିଃ?  କଷ୍ଠଂ ଭୋଃ। ଶଙ୍କର! ଜ୍ଞାନମ୍।  ସଞ୍ଜୀଵଯ। ୧୨୩୪୫॥ ଓଁ ତତ୍।"
+      },
+      {
+        "script": "titus",
+        "text": "asaya auṣadʰiḥ grantʰaḥ! l̥̄kāro nāsti leśo'pi saṃśayaḥ. kīlakam? kūpiḥ?  kaṣṭʰaṃ bʰoḥ. śaṅkara! jñānam.  sañjīvaya. 12345.. oṃ tat."
+      }
+    ]
+  },
+  {
+    "description": "to-and-fro: Tests La",
+    "type": "to-and-fro",
+    "script": "devanagari",
+    "text": "अग्निमीळे पुरोहितं यज्ञस्य देवमृत्विजम्",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "agnimīl̤e purohitaṃ yajñasya devamṛtvijam"
+      },
+      {
+        "script": "iastDcs",
+        "text": "agnimīl̤e purohitaṃ yajñasya devamṛtvijam"
+      },
+      {
+        "script": "hk",
+        "text": "agnimILe purohitaM yajJasya devamRtvijam"
+      },
+      {
+        "script": "optitrans",
+        "text": "agnimiiLe purohitaM yajnasya devamRtvijam"
+      },
+      {
+        "script": "slp",
+        "text": "agnimILe purohitaM yajYasya devamftvijam"
+      },
+      {
+        "script": "wx",
+        "text": "agnimIl̤e purohiwaM yajFasya xevamqwvijam"
+      },
+      {
+        "script": "kannada",
+        "text": "ಅಗ್ನಿಮೀಳೇ ಪುರೋಹಿತಂ ಯಜ್ಞಸ್ಯ ದೇವಮೃತ್ವಿಜಮ್"
+      },
+      {
+        "script": "malayalam",
+        "text": "അഗ്നിമീളേ പുരോഹിതം യജ്ഞസ്യ ദേവമൃത്വിജമ്"
+      },
+      {
+        "script": "telugu",
+        "text": "అగ్నిమీళే పురోహితం యజ్ఞస్య దేవమృత్విజమ్"
+      },
+      {
+        "script": "sinhala",
+        "text": "අග්නිමීළේ පුරෝහිතං යජ්ඤස්ය දේවමෘත්විජම්"
+      },
+      {
+        "script": "oriya",
+        "text": "ଅଗ୍ନିମୀଳେ ପୁରୋହିତଂ ଯଜ୍ଞସ୍ଯ ଦେଵମୃତ୍ଵିଜମ୍"
+      },
+      {
+        "script": "gurmukhi",
+        "text": "ਅਗ੍ਨਿਮੀਲ਼ੇ ਪੁਰੋਹਿਤਂ ਯਜ੍ਞਸ੍ਯ ਦੇਵਮृਤ੍ਵਿਜਮ੍"
+      },
+      {
+        "script": "gujarati",
+        "text": "અગ્નિમીળે પુરોહિતં યજ્ઞસ્ય દેવમૃત્વિજમ્"
+      },
+      {
+        "script": "assamese",
+        "text": "অগ্নিমীळে পুৰোহিতং যজ্ঞস্য দেৱমৃত্ৱিজম্"
+      }
+    ]
+  },
+  {
+    "description": "to-and-fro: Tests WX avagraha and anunAsika options",
+    "type": "to-and-fro",
+    "script": "devanagari",
+    "text": "लेशोऽपि, साँयि",
+    "targets": [
+      {
+        "script": "wx",
+        "text": "leSo'pi, sAzyi"
+      }
+    ]
+  },
+  {
+    "description": "to-and-fro: Test Lha",
+    "type": "to-and-fro",
+    "script": "devanagari",
+    "text": "मीळ्हुषे",
+    "targets": [
+      {
+        "script": "slp1",
+        "text": "mI|uze"
+      }
+    ]
+  },
+  {
+    "description": "to-and-fro: Tests glyphs with nuTka",
+    "type": "to-and-fro",
+    "script": "devanagari",
+    "text": "अंशाइ पड़िब फ़कीर ज़रूर",
+    "targets": [
+      {
+        "script": "oriya",
+        "text": "ଅଂଶାଇ ପଡ଼ିବ ଫ଼କୀର ଜ଼ରୂର"
+      },
+      {
+        "script": "gujarati",
+        "text": "અંશાઇ પડ઼િબ ફ઼કીર જ઼રૂર"
+      },
+      {
+        "script": "assamese",
+        "text": "অংশাই পড়িব फ़কীৰ ज़ৰূৰ"
+      },
+      {
+        "script": "gurmukhi",
+        "text": "ਅਂਸ਼ਾਇ ਪੜਿਬ ਫ਼ਕੀਰ ਜ਼ਰੂਰ"
+      },
+      {
+        "script": "itrans",
+        "text": "aMshaai pa.Diba fakiira zaruura"
+      }
+    ]
+  },
+  {
+    "description": "to-and-fro: Tests R RR",
+    "type": "to-and-fro",
+    "script": "devanagari",
+    "text": "वृक्ष्यं हवींषि गृह्यन्त ॠणमु पितॄन्॥",
+    "targets": [
+      {
+        "script": "titus",
+        "text": "vr̥kṣyaṃ havīṃṣi gr̥hyanta r̥̄ṇamu pitr̥̄n//"
+      }
+    ]
+  },
+  {
+    "description": "to-and-fro: Tests glyphs with nuTka - ऱ ऴ set",
+    "type": "to-and-fro",
+    "script": "devanagari",
+    "text": "ऱ ऴ",
+    "targets": [
+      {
+        "script": "malayalam",
+        "text": "റ ഴ"
+      },
+      {
+        "script": "kannada",
+        "text": "ಱ ೞ"
+      }
+    ]
+  },
+  {
+    "description": "to-and-fro: ᳵ ᳶ",
+    "type": "to-and-fro",
+    "script": "devanagari",
+    "text": "ᳵ ᳶ",
+    "targets": [
+      {
+        "script": "kannada",
+        "text": "ೱ ೲ"
+      }
+    ]
+  },
+  {
+    "description": "to-and-fro: Tests nuTka",
+    "type": "to-and-fro",
+    "script": "devanagari",
+    "text": "़",
+    "targets": [
+      {
+        "script": "oriya",
+        "text": "଼"
+      },
+      {
+        "script": "gujarati",
+        "text": "઼"
+      },
+      {
+        "script": "assamese",
+        "text": "়"
+      },
+      {
+        "script": "bengali",
+        "text": "়"
+      },
+      {
+        "script": "kannada",
+        "text": "಼"
+      },
+      {
+        "script": "gurmukhi",
+        "text": "਼"
+      }
+    ]
+  },
+  {
+    "description": "to-and-fro: Tests anunAsika",
+    "type": "to-and-fro",
+    "script": "devanagari",
+    "text": "अँअळा",
+    "targets": [
+      {
+        "script": "oriya",
+        "text": "ଅଁଅଳା"
+      },
+      {
+        "script": "kannada",
+        "text": "ಅಁಅಳಾ"
+      },
+      {
+        "script": "malayalam",
+        "text": "അഁഅളാ"
+      },
+      {
+        "script": "gujarati",
+        "text": "અઁઅળા"
+      },
+      {
+        "script": "assamese",
+        "text": "অঁঅল়া"
+      },
+      {
+        "script": "bengali",
+        "text": "অঁঅল়া"
+      },
+      {
+        "script": "gurmukhi",
+        "text": "ਅਁਅਲ਼ਾ"
+      }
+    ]
+  },
+  {
+    "description": "Tests optitrans anunAsikas",
+    "script": "optitrans",
+    "text": "sanxepaH",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "सङ्क्षेपः"
+      }
+    ]
+  },
+  {
+    "description": "Check aDDak and tippee",
+    "script": "gurmukhi",
+    "text": "ਅੱਭਰ ਅੱਕ ਮੂੰਡਾ ਭੁੱਲਾ",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "अब्भर अक्क मूंडा भुल्ला"
+      }
+    ]
+  },
+  {
+    "description": "Tests Capitalized IAST",
+    "script": "iast",
+    "text": "Asaya Auṣadhiḥ granthaḥ! ḹkāro.'sti. nāsti leśo'pi saṃśayaḥ. kīlakam? kūpiḥ?  kāṣṭhaṃ bhoḥ. Śaṅkara! jñānam.  sañjīvaya. 12345|| oṃ tat.",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "असय औषधिः ग्रन्थः! ॡकारो।ऽस्ति। नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  काष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्।"
+      }
+    ]
+  },
+  {
+    "description": "Tests Capitalized ISO",
+    "script": "iso",
+    "text": "BHUŚUṆḌŌPĀKHYĀNAM",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "भुशुण्डोपाख्यानम्"
+      }
+    ]
+  },
+  {
+    "description": "svaras",
+    "script": "iast",
+    "text": "tuvé asuryàṃ vásavo ní r̥ṇvan ókaso agna āja",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "तुवे꣡ असुर्यं᳡ व꣡सवो नि꣡ ऋण्वन् ओ꣡कसो अग्न आज"
+      }
+    ]
+  },
+  {
+    "description": "alternate diacritics",
+    "script": "iast",
+    "text": "pātre dhanaṃ vā paryāptaṃ. saṃvased yo vai vatsaraṃ so 'pi tatsamaḥ",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "पात्रे धनं वा पर्याप्तं। संवसेद् यो वै वत्सरं सो ऽपि तत्समः"
+      }
+    ]
+  },
+  {
+    "description": "A general test for scripts without equivalents for some devanAgarI letters, like gurmukhI, bengali and tamil",
+    "script": "devanagari",
+    "text": "असय औषधिः ग्रन्थः! ॡकारो नास्ति लेशोऽपि संशयः। कीलकम्? कूपिः?  कष्ठं भोः। शङ्कर! ज्ञानम्।  सञ्जीवय। १२३४५॥ ॐ तत्। अब अव",
+    "targets": [
+      {
+        "script": "bengali",
+        "text": "অসয ঔষধিঃ গ্রন্থঃ! ৡকারো নাস্তি লেশোঽপি সংশযঃ। কীলকম্? কূপিঃ?  কষ্ঠং ভোঃ। শঙ্কর! জ্ঞানম্।  সঞ্জীবয। ১২৩৪৫॥ ওঁ তত্। অব অব"
+      },
+      {
+        "script": "gurmukhi",
+        "text": "ਅਸਯ ਔਸ਼ਧਿਃ ਗ੍ਰਨ੍ਥਃ! ॡਕਾਰੋ ਨਾਸ੍ਤਿ ਲੇਸ਼ੋऽਪਿ ਸਂਸ਼ਯਃ। ਕੀਲਕਮ੍? ਕੂਪਿਃ?  ਕਸ਼੍ਠਂ ਭੋਃ। ਸ਼ਙ੍ਕਰ! ਜ੍ਞਾਨਮ੍।  ਸਞ੍ਜੀਵਯ। ੧੨੩੪੫॥ ੴ ਤਤ੍। ਅਬ ਅਵ"
+      }
+    ]
+  },
+  {
+    "description": "A general test for Roman scripts without equivalents for some devanAgarI letters, like optitrans",
+    "script": "devanagari",
+    "text": "पड़िब छीड़ा ऴ ऱ",
+    "targets": [
+      {
+        "script": "optitrans",
+        "text": "pa.Diba ChI.DA .La .Rha"
+      }
+    ]
+  },
+  {
+    "description": "hrasva e and o",
+    "script": "devanagari",
+    "text": "ऎट ऒट कॆकॊकि",
+    "targets": [
+      {
+        "script": "optitrans",
+        "text": "ETa OTa kEkOki"
+      }
+    ]
+  },
+  {
+    "description": "Fake OM",
+    "script": "devanagari",
+    "text": "तेजोंशसम्भवम्",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "tejoṃśasaṃbhavam"
+      }
+    ]
+  },
+  {
+    "description": "ea and oa",
+    "script": "devanagari",
+    "text": "कॉफी ऍक ऑक",
+    "targets": [
+      {
+        "script": "optitrans",
+        "text": "koaphI eaka oaka"
+      }
+    ]
+  }
+]

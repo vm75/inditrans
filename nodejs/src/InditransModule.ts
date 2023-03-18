@@ -1,6 +1,7 @@
 // Exported functions:
 //   memory: WebAssembly.Memory
 //   transliterate
+//   isScriptSupported
 //   releaseBuffer
 //   free
 //   __indirect_function_table: WebAssembly.Table
@@ -16,6 +17,7 @@ export interface InditransModule {
     to: number,
     options: number
   ): number;
+  isScriptSupported(script: number): number;
   releaseBuffer(ptr: number): void;
   stackAlloc(size: number): number;
   stackRestore(ptr: number): void;

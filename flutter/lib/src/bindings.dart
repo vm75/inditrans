@@ -54,6 +54,21 @@ class InditransBindings {
       ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>,
           ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, int)>();
 
+  /// returns a comma-separated list of scripts
+  int isScriptSupported(
+    ffi.Pointer<ffi.Uint8> script,
+  ) {
+    return _isScriptSupported(
+      script,
+    );
+  }
+
+  late final _isScriptSupportedPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Uint8>)>>(
+          'isScriptSupported');
+  late final _isScriptSupported =
+      _isScriptSupportedPtr.asFunction<int Function(ffi.Pointer<ffi.Uint8>)>();
+
   /// releaseBuffer
   void releaseBuffer(
     ffi.Pointer<ffi.Uint8> buffer,

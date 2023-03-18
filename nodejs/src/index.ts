@@ -22,4 +22,11 @@ export function transliterate(
   return inditrans.transliterate(text, from, to, options);
 }
 
-export default [Option, Script, init, transliterate];
+export function isScriptSupported(script: string): boolean {
+  if (!inditrans) {
+    throw new Error('Inditrans not initialized');
+  }
+  return inditrans.isScriptSupported(script);
+}
+
+export default [Option, Script, init, transliterate, isScriptSupported];

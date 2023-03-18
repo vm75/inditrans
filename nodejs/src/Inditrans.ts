@@ -73,4 +73,11 @@ export class Inditrans {
 
     return result;
   }
+
+  isScriptSupported(script: string): boolean {
+    const ptr = this.stringToUtf8(script);
+    const result = this.module.isScriptSupported(ptr);
+    this.module.stackRestore(ptr);
+    return result == 1;
+  }
 }

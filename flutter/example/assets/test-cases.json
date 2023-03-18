@@ -158,7 +158,7 @@
       },
       {
         "script": "readablelatin",
-        "text": "panktee paNDit anja idam samskru̥tam samskru̥tam"
+        "text": "panktee paNDit anja idam samskr̥tam samskr̥tam"
       },
       {
         "script": "iso",
@@ -237,7 +237,7 @@
     "targets": [
       {
         "script": "readablelatin",
-        "text": "kru̥shNa"
+        "text": "kr̥shNa"
       }
     ]
   },

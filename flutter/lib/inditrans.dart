@@ -55,3 +55,14 @@ String transliterate(String text, Script from, Script to,
   staging.freeAll();
   return result;
 }
+
+bool isScriptSupported(String script) {
+  final staging = StagingMemory(_allocator);
+
+  final nativeScript = staging.toNativeString(script);
+
+  final result = _bindings.isScriptSupported(nativeScript);
+
+  staging.freeAll();
+  return result == 1;
+}

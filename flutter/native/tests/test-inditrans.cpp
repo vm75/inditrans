@@ -40,8 +40,8 @@ template <class TimeT = std::chrono::milliseconds, class ClockT = std::chrono::s
   }
 };
 
-void testAllTranslit() noexcept {
-  std::ifstream testsFile("test-files/test-cases.json", std::ios::binary);
+void testAllTranslit(std::string_view file) noexcept {
+  std::ifstream testsFile(file.data(), std::ios::binary);
   if (testsFile.is_open()) {
 
     std::vector<char> jsonBuffer(std::istreambuf_iterator<char>(testsFile), {});
@@ -59,11 +59,17 @@ void testAllTranslit() noexcept {
       auto description = inputObj.get<std::string>("description");
       auto text = inputObj.get<std::string>("text");
       auto source = inputObj.get<std::string>("script");
+      if (source == std::nullopt) {
+        continue;
+      }
 
       auto targets = inputObj.get<JsonArray>("targets");
       for (auto& entry : *targets) {
         auto targetObj = std::get<JsonOject>(entry);
         auto target = targetObj.get<std::string>("script");
+        if (!isScriptSupported(target->c_str())) {
+          continue;
+        }
         auto expected = targetObj.get<std::string>("text");
 
         std::string options {};
@@ -125,4 +131,6 @@ void testPerf(bool prof) noexcept {
   }
 }
 
-TEST_CASE("Testing inditrans.transliterate") { testAllTranslit(); }
+TEST_CASE("inditrans.transliterate: test-cases") { testAllTranslit("test-files/test-cases.json"); }
+
+TEST_CASE("inditrans.transliterate: sanscript-tests") { testAllTranslit("test-files/sanscript-tests.json"); }

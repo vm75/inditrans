@@ -133,5 +133,7 @@
   "eslint.workingDirectories": [
     "./nodejs"
   ],
-  "eslint.format.enable": true
+  "eslint.format.enable": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true
 }

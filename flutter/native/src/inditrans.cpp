@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <variant>
 #include <vector>
 
@@ -49,6 +50,10 @@ public:
   std::map<std::string_view, ScriptInfo>::const_iterator begin() const noexcept { return scriptMap.begin(); }
 
   std::map<std::string_view, ScriptInfo>::const_iterator end() const noexcept { return scriptMap.end(); }
+
+  const std::map<std::string_view, ScriptInfo>& getScriptMap() const noexcept { return scriptMap; }
+
+  const std::map<std::string_view, std::string_view> getAliasMap() const noexcept { return aliasMap; }
 
   static const ScriptData& getScripts() noexcept {
     static auto scriptDataMap = ScriptData(scriptData, sizeof(scriptData));
@@ -1126,6 +1131,7 @@ std::string transliterate(const std::string_view& input, const std::string_view&
 
 extern "C" {
 
+/// transliterate
 char* CALL_CONV transliterate(const char* input, const char* from, const char* to, unsigned long options) {
   std::unique_ptr<char> output;
   std::string_view inputView(input);
@@ -1137,6 +1143,10 @@ char* CALL_CONV transliterate(const char* input, const char* from, const char* t
   }
 }
 
+/// returns a comma-separated list of scripts
+int CALL_CONV isScriptSupported(const char* script) { return ScriptData::getScript(script) != nullptr; }
+
+/// releaseBuffer
 void CALL_CONV releaseBuffer(char* buffer) {
   if (buffer) {
     delete[] buffer;

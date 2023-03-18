@@ -27,6 +27,10 @@ Module['onRuntimeInitialized'] = function () {
             const result = UTF8ToString(stringPtr);
             releaseBuffer(stringPtr);
             return result;
+        },
+        'isScriptSupported' : (script) => {
+            const isScriptSupported = cwrap('isScriptSupported', 'number', ['string']);
+            return isScriptSupported(script) == 1;
         }
     }
 }
