@@ -56,6 +56,7 @@ String transliterate(String text, Script from, Script to,
   return result;
 }
 
+/// Checks if [script] is supported by the library.
 bool isScriptSupported(String script) {
   final staging = StagingMemory(_allocator);
 
