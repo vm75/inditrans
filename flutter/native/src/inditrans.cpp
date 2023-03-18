@@ -51,10 +51,6 @@ public:
 
   std::map<std::string_view, ScriptInfo>::const_iterator end() const noexcept { return scriptMap.end(); }
 
-  const std::map<std::string_view, ScriptInfo>& getScriptMap() const noexcept { return scriptMap; }
-
-  const std::map<std::string_view, std::string_view> getAliasMap() const noexcept { return aliasMap; }
-
   static const ScriptData& getScripts() noexcept {
     static auto scriptDataMap = ScriptData(scriptData, sizeof(scriptData));
     return scriptDataMap;
@@ -151,8 +147,8 @@ private:
   }
 
   static constexpr char fieldEnd = 0x01;
-  std::map<std::string_view, ScriptInfo> scriptMap;
-  std::map<std::string_view, std::string_view> aliasMap;
+  std::map<std::string_view, ScriptInfo, detail::CaseInsensitiveComparator> scriptMap;
+  std::map<std::string_view, std::string_view, detail::CaseInsensitiveComparator> aliasMap;
 };
 
 using LookupTable = Char32Trie<ScriptToken>;

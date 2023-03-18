@@ -8,6 +8,16 @@
 #include <optional>
 #include <unordered_map>
 
+namespace detail {
+
+struct CaseInsensitiveComparator {
+  bool operator()(const std::string_view& a, const std::string_view& b) const noexcept {
+    return ::strcasecmp(a.data(), b.data()) < 0;
+  }
+};
+
+} // namespace detail
+
 template <typename Key, typename Value, std::size_t Size> struct ConstexprMap {
   std::array<std::pair<Key, Value>, Size> data;
 

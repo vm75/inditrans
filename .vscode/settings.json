@@ -135,5 +135,6 @@
   ],
   "eslint.format.enable": true,
   "files.trimFinalNewlines": true,
-  "files.trimTrailingWhitespace": true
+  "files.trimTrailingWhitespace": true,
+  "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools"
 }

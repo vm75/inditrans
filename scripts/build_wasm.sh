@@ -24,6 +24,7 @@ init_emcc() {
   fi
 
   # set emsdk environment variables
+  export EMSDK_QUIET=1
   source "${EMSDK}/emsdk_env.sh"
 }
 
