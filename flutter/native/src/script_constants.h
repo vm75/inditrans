@@ -11,25 +11,43 @@ auto isWriteOnlyScript = [](std::string_view script) noexcept {
 
 // clang-format off
 
-constexpr std::array<std::string_view, 21> Accents      = { 
-  /*꠰*/ "॒", "॑", "᳚", "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱" 
+// क = 0, ख = 1, ग = 2, घ = 3, ङ = 4,
+// च = 5, छ = 6, ज = 7, झ = 8, ञ = 9,
+// ट = 10, ठ = 11, ड = 12, ढ = 13, ण = 14,
+// त = 15, थ = 16, द = 17, ध = 18, न = 19,
+// प = 20, फ = 21, ब = 22, भ = 23, म = 24,
+// य = 25, र = 26, ल = 27, व = 28, श = 29, ष = 30, स = 31, ह = 32,
+// ळ = 33, ழ = 34, ற = 35, ன = 36,
+// क़ = 37, ख़ = 38, ग़ = 39, ज़ = 40, ड़ = 41, ढ़ = 42, फ़ = 43, य़ = 44,
+// ඟ = 45, ඦ = 46, ඬ = 47, ඳ = 48, ඹ = 49,
+// க = 0, ச = 5, ஜ = 7, ட = 10, த = 15, ந = 19, ப = 20, ஸ = 31,
+
+constexpr std::array<std::string_view, 21> Accents      = {
+  /*꠰*/ "॒", "॑", "᳚", "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱"
 };
-constexpr std::array<std::string_view, 21> LatinAccents = { 
-  /*꠰*/ "̱", "̍", "̎", "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱" 
+constexpr std::array<std::string_view, 21> LatinAccents = {
+  /*꠰*/ "̱", "̍", "̎", "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱"
 };
 
-constexpr std::array<std::string_view, 43> VedicSigns = { 
+constexpr std::array<std::string_view, 3> IndicZeroWidthChars = {
+  "‌", "‍"
+};
+constexpr std::array<std::string_view, 3> DefaultZeroWidthChars = {
+  "", ""
+};
+
+constexpr std::array<std::string_view, 43> VedicSigns = {
  /*꠰*/ "᳐", "᳑", "᳒", "᳓", "᳔", "᳕", "᳖", "᳗", "᳘", "᳙", "᳚", "᳛", "᳜", "᳝", "᳞", "᳟",
  /*꠰*/ "᳠", "᳡", "᳢", "᳣", "᳤", "᳥", "᳦", "᳧", "᳨", "ᳩ", "ᳪ", "ᳫ", "ᳬ", "᳭", "ᳮ", "ᳯ",
- /*꠰*/ "ᳰ", "ᳱ", "ᳲ", "ᳳ", "᳴", "ᳵ", "ᳶ", "᳷", "᳸", "᳹", "ᳺ" 
+ /*꠰*/ "ᳰ", "ᳱ", "ᳲ", "ᳳ", "᳴", "ᳵ", "ᳶ", "᳷", "᳸", "᳹", "ᳺ"
 };
 
-constexpr std::array<std::string_view, 18> SpecialVedicAccents = { 
-  /*꠰*/ "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱" 
+constexpr std::array<std::string_view, 18> SpecialVedicAccents = {
+  /*꠰*/ "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱"
 };
 
-constexpr std::array<std::string_view, 12> SpecialVedicSymbols = { 
-  /*꠰*/ "ꣲ", "ꣵ", "ꣶ", "ꣷ", "꣸", "꣹", "꣺", "ꣻ", "꣼", "ꣽ", 
+constexpr std::array<std::string_view, 12> SpecialVedicSymbols = {
+  /*꠰*/ "ꣲ", "ꣵ", "ꣶ", "ꣷ", "꣸", "꣹", "꣺", "ꣻ", "꣼", "ꣽ",
 };
 
 constexpr std::string_view TamilSuperscripts = "¹²³⁴";
@@ -37,7 +55,7 @@ constexpr std::string_view TamilSubscripts = "₁₂₃₄";
 constexpr std::string_view SkipTrans { "##" };
 
 constexpr std::string_view TamilSpecialChars { "ʼˮˇ꞉ஃ·" };
-constexpr std::string_view QuotedMarkers { "ʼˮ" };
+constexpr std::string_view QuotedMarkers { "ʼˮˇ" };
 
 // clang-format on
 

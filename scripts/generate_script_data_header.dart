@@ -17,6 +17,7 @@ const headerPrefix = '''#pragma once
 #define CONSONANTS "c\\u0000"
 #define COMMONDIACRITICS "C\\u0000"
 #define SYMBOLS "s\\u0000"
+#define VEDICSYMBOLS "S\\u0000"
 #define ALTERNATES "a\\u0000"
 #define ALIASES "A\\u0000"
 #define LANGUAGES "l\\u0000"
@@ -36,9 +37,13 @@ class ScriptInfo {
     'vowelDiacritics': 19,
     'consonants': 50,
     'commonDiacritics': 4,
-    'symbols': 19
+    'symbols': 13,
+    'vedicSymbols': 3,
   };
-  static const List<String> arrayGroupTypes = ['languages', 'alternates'];
+  static const List<String> arrayGroupTypes = [
+    'languages',
+    'alternates',
+  ];
   final String type;
   final String name;
   final Map<String, dynamic> info;

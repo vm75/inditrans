@@ -23,6 +23,7 @@
     "out/**": true,
     "build/**": true,
     "dist/**": true,
+    "./native/**": true,
     "**.so": true,
     "**.db": true,
     "yarn.lock": true
@@ -37,9 +38,17 @@
       "typescript"
     ],
   },
-  "C_Cpp.default.cppStandard": "c++20",
+  "C_Cpp.default.cppStandard": "c++23",
   "C_Cpp.default.cStandard": "c17",
   "C_Cpp.default.intelliSenseMode": "linux-clang-x64",
+  "C_Cpp.default.includePath": [
+    "${workspaceFolder}/flutter/native/src"
+  ],
+  "C_Cpp.default.defines": [
+    "_DEBUG",
+    "UNICODE",
+    "_UNICODE"
+  ],
   "C_Cpp.experimentalFeatures": "enabled",
   "C_Cpp.clang_format_fallbackStyle": "WebKit",
   "files.associations": {

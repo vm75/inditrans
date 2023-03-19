@@ -93,6 +93,9 @@ private:
         case 's':
           readList(ptr, end, data.symbols);
           break;
+        case 'S':
+          readList(ptr, end, data.vedicSymbols);
+          break;
         case 'A':
           readList(ptr, end, data.aliases);
           break;
@@ -205,6 +208,16 @@ public:
     addCharMap(name, TokenType::CommonDiacritic, scriptData.type, scriptData.commonDiacritic.data(),
         scriptData.commonDiacritic.size());
     addCharMap(name, TokenType::Symbol, scriptData.type, scriptData.symbols.data(), scriptData.symbols.size());
+    addCharMap(
+        name, TokenType::VedicSymbol, scriptData.type, scriptData.vedicSymbols.data(), scriptData.vedicSymbols.size());
+
+    const auto& accentMap = isIndicScript(scriptData.type) ? Accents : LatinAccents;
+    addCharMap(name, TokenType::Accent, scriptData.type, accentMap.data(), accentMap.size());
+
+    if (isIndicScript(scriptData.type)) {
+      addCharMap(
+          name, TokenType::ZeroWidthChar, scriptData.type, IndicZeroWidthChars.data(), IndicZeroWidthChars.size());
+    }
   }
 
   template <typename CharType> inline LookupResult lookupToken(const CharType* text) const noexcept {
@@ -244,8 +257,12 @@ private:
         return TokenType::CommonDiacritic;
       case 's':
         return TokenType::Symbol;
+      case 'S':
+        return TokenType::VedicSymbol;
       case 'a':
         return TokenType::Accent;
+      case 'z':
+        return TokenType::ZeroWidthChar;
       default:
         return TokenType::Ignore;
     }
@@ -258,18 +275,22 @@ private:
 
 class ScriptWriterMap {
 public:
-  ScriptWriterMap(const std::string_view name, const ScriptInfo& charMaps) noexcept
+  ScriptWriterMap(const std::string_view name, const ScriptInfo& scriptInfo) noexcept
       : name(name)
-      , scriptType(charMaps.type) {
-    addCharMap(name, TokenType::Vowel, scriptType, charMaps.vowels.data(), charMaps.vowels.size());
+      , scriptType(scriptInfo.type) {
+    addCharMap(name, TokenType::Vowel, scriptType, scriptInfo.vowels.data(), scriptInfo.vowels.size());
+    addCharMap(name, TokenType::VowelDiacritic, scriptType, scriptInfo.vowelDiacritics.data(),
+        scriptInfo.vowelDiacritics.size());
+    addCharMap(name, TokenType::Consonant, scriptType, scriptInfo.consonants.data(), scriptInfo.consonants.size());
+    addCharMap(name, TokenType::CommonDiacritic, scriptType, scriptInfo.commonDiacritic.data(),
+        scriptInfo.commonDiacritic.size());
+    addCharMap(name, TokenType::Symbol, scriptType, scriptInfo.symbols.data(), scriptInfo.symbols.size());
     addCharMap(
-        name, TokenType::VowelDiacritic, scriptType, charMaps.vowelDiacritics.data(), charMaps.vowelDiacritics.size());
-    addCharMap(name, TokenType::Consonant, scriptType, charMaps.consonants.data(), charMaps.consonants.size());
-    addCharMap(
-        name, TokenType::CommonDiacritic, scriptType, charMaps.commonDiacritic.data(), charMaps.commonDiacritic.size());
-    addCharMap(name, TokenType::Symbol, scriptType, charMaps.symbols.data(), charMaps.symbols.size());
-    const auto& accentMap = scriptType == ScriptType::Latin ? LatinAccents : Accents;
+        name, TokenType::VedicSymbol, scriptType, scriptInfo.vedicSymbols.data(), scriptInfo.vedicSymbols.size());
+    const auto& accentMap = isIndicScript(scriptType) ? Accents : LatinAccents;
     addCharMap(name, TokenType::Accent, scriptType, accentMap.data(), accentMap.size());
+    const auto& zwCharsMap = isIndicScript(scriptType) ? IndicZeroWidthChars : DefaultZeroWidthChars;
+    addCharMap(name, TokenType::ZeroWidthChar, scriptType, zwCharsMap.data(), zwCharsMap.size());
   }
 
   inline std::string_view lookupChar(TokenType type, size_t idx) const noexcept {
@@ -295,7 +316,7 @@ private:
 private:
   const std::string_view name;
   ScriptType scriptType;
-  std::array<std::vector<std::string_view>, 6> charMaps {};
+  std::array<std::vector<std::string_view>, 8> charMaps {};
 };
 
 using TokenOrString = std::variant<ScriptToken, std::string_view>;
@@ -411,6 +432,7 @@ public:
           case TokenType::Consonant:
           case TokenType::Vowel:
           case TokenType::Symbol:
+          case TokenType::ZeroWidthChar:
             tokens.emplace_back(match.value.value());
             break;
           case TokenType::CommonDiacritic:
@@ -517,7 +539,7 @@ public:
       default:
         break;
     }
-    wordStart = (token.tokenType == TokenType::Symbol && token.idx < SpecialIndices::InWordSymbolStart);
+    wordStart = (token.tokenType == TokenType::Symbol);
     if (wordStart) {
       lastToken = invalidTokenUnit;
     } else {
@@ -769,8 +791,7 @@ private:
       return TamilSuperscripts.find(GetString(next)) == TamilSuperscripts.npos;
     }
     const auto token = GetScriptToken(next);
-    return (token.tokenType == TokenType::Symbol && token.idx < SpecialIndices::InWordSymbolStart)
-        || token.tokenType == TokenType::ToggleTrans;
+    return token.tokenType == TokenType::Symbol || token.tokenType == TokenType::ToggleTrans;
   }
 
   inline bool isDevanagariExtended(int ch) { return ch >= 0xA8E0 && ch <= 0xA8FF; }
@@ -825,11 +846,6 @@ public:
       if (tokenUnit.leadToken.tokenType == TokenType::Ignore) {
         return;
       }
-      if (tokenUnit.leadToken.tokenType == TokenType::Symbol
-          && tokenUnit.leadToken.idx >= SpecialIndices::ZeroWidthSymbolStart
-          && options / TranslitOptions::RetainZeroWidthChars) {
-        return;
-      }
       switch (scriptType) {
         case ScriptType::Indic:
           writeIndicTokenUnit(tokenUnit);
@@ -860,7 +876,7 @@ public:
 
 protected:
   inline void push(const std::string_view& text) {
-    if (options * TranslitOptions::IgnoreQuotedMarkers) {
+    if (options / TranslitOptions::ShowQuotedMarkers) {
       stripChars(text, QuotedMarkers, buffer);
     } else {
       buffer += text;
@@ -1024,7 +1040,7 @@ protected:
 
   void setNasalConsonantSize() noexcept {
     const auto& anuswara = map.lookupChar(TokenType::CommonDiacritic, SpecialIndices::Anuswara);
-    if (options * TranslitOptions::IgnoreQuotedMarkers) {
+    if (options / TranslitOptions::ShowQuotedMarkers) {
       std::string out {};
       stripChars(anuswara, QuotedMarkers, out);
       anuswaraSize = out.size();
@@ -1041,8 +1057,7 @@ protected:
       return TamilSuperscripts.find(GetString(next)) == TamilSuperscripts.npos;
     }
     const auto token = GetTokenUnit(next);
-    return (token.leadToken.tokenType == TokenType::Symbol && token.leadToken.idx < SpecialIndices::InWordSymbolStart)
-        || token.leadToken.tokenType == TokenType::ToggleTrans;
+    return token.leadToken.tokenType == TokenType::Symbol || token.leadToken.tokenType == TokenType::ToggleTrans;
   }
 
 private:

@@ -42,12 +42,11 @@ extern "C" {
 /// translitOptionsToInt
 enum TranslitOptions {
   None = 0,
-  IgnoreVedicAccents = 1,
-  IgnoreQuotedMarkers = 2,
-  TamilTraditional = 4,
-  TamilSuperscripted = 8,
-  RetainZeroWidthChars = 16,
-  ASCIINumerals = 32,
+  TamilTraditional = 1,
+  TamilSuperscripted = 2,
+  ASCIINumerals = 4,
+  IgnoreVedicAccents = 8,
+  ShowQuotedMarkers = 16,
 };
 
 /// transliterate

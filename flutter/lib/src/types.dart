@@ -54,23 +54,20 @@ class Option {
   /// No options (default)
   static const None = Option._(0);
 
-  /// Ignore Vedic accents in transliterated text
-  static const IgnoreVedicAccents = Option._(1);
-
-  /// Ignore quoted markers in transliterated text
-  static const IgnoreQuotedMarkers = Option._(2);
-
-  /// Use traditional Tamil consonants
-  static const TamilTraditional = Option._(4);
+  /// Use traditional Tamil consonants only
+  static const TamilTraditional = Option._(1);
 
   /// Use superscripted Tamil consonants
-  static const TamilSuperscripted = Option._(8);
-
-  /// Retain zero-width characters in transliterated text
-  static const RetainZeroWidthChars = Option._(16);
+  static const TamilSuperscripted = Option._(2);
 
   /// Force ASCII numerals in transliterated text
-  static const ASCIINumerals = Option._(32);
+  static const ASCIINumerals = Option._(4);
+
+  /// Ignore Vedic accents in transliterated text
+  static const IgnoreVedicAccents = Option._(8);
+
+  /// Ignore quoted markers in transliterated text
+  static const ShowQuotedMarkers = Option._(16);
 
   /// Joins two options
   Option operator +(Option other) {
@@ -79,12 +76,11 @@ class Option {
 
   static const Map<String, Option> _values = {
     'None': None,
-    'IgnoreVedicAccents': IgnoreVedicAccents,
-    'IgnoreQuotedMarkers': IgnoreQuotedMarkers,
     'TamilTraditional': TamilTraditional,
     'TamilSuperscripted': TamilSuperscripted,
-    'RetainZeroWidthChars': RetainZeroWidthChars,
     'ASCIINumerals': ASCIINumerals,
+    'IgnoreVedicAccents': IgnoreVedicAccents,
+    'ShowQuotedMarkers': ShowQuotedMarkers,
   };
   static Option fromString(String name) {
     return _values[name] ?? None;

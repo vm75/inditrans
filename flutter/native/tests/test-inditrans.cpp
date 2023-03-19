@@ -14,9 +14,14 @@ extern InditransLogger* inditransLogger;
 
 TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
   Utf8String str(optStr);
-  static constexpr std::array<std::string_view, static_cast<size_t>(MaxTranslitOptions)> optionStrings
-      = { "None", "IgnoreVedicAccents", "IgnoreQuotedMarkers", "TamilTraditional", "TamilSuperscripted",
-          "RetainZeroWidthChars", "ASCIINumerals" };
+  static constexpr std::array<std::string_view, static_cast<size_t>(MaxTranslitOptions)> optionStrings = {
+    "None",
+    "TamilTraditional",
+    "TamilSuperscripted",
+    "ASCIINumerals",
+    "IgnoreVedicAccents",
+    "ShowQuotedMarkers",
+  };
 
   TranslitOptions mask { TranslitOptions::None };
   for (const auto& opt : str.split(" \t,:;/|&")) {
@@ -67,7 +72,7 @@ void testAllTranslit(std::string_view file) noexcept {
       for (auto& entry : *targets) {
         auto targetObj = std::get<JsonOject>(entry);
         auto target = targetObj.get<std::string>("script");
-        if (!isScriptSupported(target->c_str())) {
+        if (!isScriptSupported(source->c_str()) || !isScriptSupported(target->c_str())) {
           continue;
         }
         auto expected = targetObj.get<std::string>("text");

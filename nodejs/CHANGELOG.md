@@ -1,3 +1,7 @@
+## 0.4.1
+
+- Split symbols, Zero Width chars and Vedic symbols
+
 ## 0.4.0
 
 - Lot of refactoring.

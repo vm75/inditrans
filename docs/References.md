@@ -31,6 +31,7 @@
 * https://raw.githubusercontent.com/virtualvinodh/aksharamukha-python/main/aksharamukha/PreProcess.py
 * https://raw.githubusercontent.com/virtualvinodh/aksharamukha/master/aksharamukha-back/resources/script_mapping/script_mapping.json
 * https://github.com/indic-transliteration/common_maps/blob/master/roman/iso.toml
+* https://github.com/indic-transliteration/common_maps/blob/master/roman/iast.toml
 
 # Conjuncts in ITRANS
 A full (live) consonant with visible virama in middle of words can be typed using ^, e.g. k ^ S produces क्‌ष.
@@ -54,7 +55,15 @@ To type a Zero Width Joiner, + can be typed between the letters, for example: k 
 * http://www.virtualvinodh.com/projects/vajranandi
 * https://www.fonts4free.net/samarkan-font.html
 
-# Alternate encodings
+# Special handling
+## Nutka
+* https://en.wikipedia.org/wiki/Nuqta
+## Malayalam chillu
+* https://en.wiktionary.org/wiki/chillu
+## Gurmukhi adhak
+* https://www.discoversikhism.com/punjabi/punjabi_gurmukhi_alphabet.html
+
+## Alternate encodings
 * 'ŭ' => 'u\u00D7' # special explicit Virama
 * { TokenType::Accent,          ScriptType::Indic,   1 /*꠰  ॑ */,       "◌॑" },
 * { TokenType::Accent,          ScriptType::Latin,   0 /*꠰  ॒ */,       "̱" },
@@ -76,8 +85,6 @@ To type a Zero Width Joiner, + can be typed between the letters, for example: k 
 * { TokenType::CommonDiacritic, ScriptType::Latin,   0 /* ँ */,       "~" },
 * { TokenType::CommonDiacritic, ScriptType::Latin,   0 /* ँ */,       "m̐" },
 * { TokenType::CommonDiacritic, ScriptType::Latin,   0 /* ँ */,       "ṁ" },
-* { TokenType::CommonDiacritic, ScriptType::Latin,   1 /* ं */,       "ṃ" },
-* { TokenType::CommonDiacritic, ScriptType::Latin,   1 /* ं */,       "ṃ" },
 * { TokenType::CommonDiacritic, ScriptType::Latin,   2 /* ः */,       "ḥ" },
 * { TokenType::CommonDiacritic, ScriptType::Latin,   2 /* ः */,       "ḥ" },
 * { TokenType::Symbol,          ScriptType::Latin,  10 /* ॐ */,      "o3m" },

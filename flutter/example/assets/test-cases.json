@@ -94,8 +94,7 @@
     "targets": [
       {
         "script": "devanagari",
-        "text": "चठ (with virama) - च्ठ (with virama and zwnj) - च्‌ठ",
-        "options": "RetainZeroWidthChars"
+        "text": "चठ (with virama) - च्ठ (with virama and zwnj) - च्‌ठ"
       }
     ]
   },
@@ -149,11 +148,11 @@
     "targets": [
       {
         "script": "tamil",
-        "text": "பங்க்தீ பண்டித் அஞ்ஜ இதம் ஸம்ஸ்க்ருʼதம் ஸம்ஸ்க்ருʼதம்"
+        "text": "பங்க்தீ பண்டித் அஞ்ஜ இதம் ஸம்ஸ்க்ருதம் ஸம்ஸ்க்ருதம்"
       },
       {
         "script": "tamil",
-        "text": "பங்க்தீ பண்டி³த் அஞ்ச³ இத³ம் சம்ச்க்ருʼதம் சம்ச்க்ருʼதம்",
+        "text": "பங்க்தீ பண்டி³த் அஞ்ச³ இத³ம் சம்ச்க்ருதம் சம்ச்க்ருதம்",
         "options": "TamilSuperscripted TamilTraditional"
       },
       {
@@ -198,7 +197,7 @@
   },
   {
     "description": "tamil - infer",
-    "text": "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப​",
+    "text": "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப",
     "script": "tamil",
     "targets": [
       {

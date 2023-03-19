@@ -65,7 +65,7 @@ build_wasm_js() {
   exportedFunctions='["_malloc", "_free", "_transliterate", "_releaseBuffer"]'
 
   # get the path to the output directory
-  outDir='./js/dist'
+  outDir='./js/public'
 
   # create the output directory if it does not exist
   if [ ! -d "$outDir" ]; then
