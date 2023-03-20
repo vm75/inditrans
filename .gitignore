@@ -8,6 +8,7 @@ node_modules/
 
 *.bak
 *~
+.DS_Store
 var/
 *.log
 ref/

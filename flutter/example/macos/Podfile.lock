@@ -1,0 +1,29 @@
+PODS:
+  - FlutterMacOS (1.0.0)
+  - inditrans (0.4.3):
+    - FlutterMacOS
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - FlutterMacOS (from `Flutter/ephemeral`)
+  - inditrans (from `Flutter/ephemeral/.symlinks/plugins/inditrans/macos`)
+  - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos`)
+
+EXTERNAL SOURCES:
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+  inditrans:
+    :path: Flutter/ephemeral/.symlinks/plugins/inditrans/macos
+  path_provider_foundation:
+    :path: Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/macos
+
+SPEC CHECKSUMS:
+  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  inditrans: 11de9b6c66f36ac09c9ebea03ef2e9b87da7b514
+  path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
+
+PODFILE CHECKSUM: 353c8bcc5d5b0994e508d035b5431cfe18c1dea7
+
+COCOAPODS: 1.11.3

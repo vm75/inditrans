@@ -4,33 +4,33 @@ init_emcc() {
   # check if EMSDK is not defined or if the path does not exist
   if [[ -z "${EMSDK}" || ! -d "${EMSDK}" ]]; then
     # look for emsdk in the default location - AppData\Local\Programs\emsdk
-    emsdk="~/.local/share/emsdk"
+    emsdk=~/.local/share/emsdk
 
     # if not installed clone https://github.com/emscripten-core/emsdk.git and install
     if [[ ! -d "${emsdk}" ]]; then
-      mkdir -p "~/.local/share"
-      git clone https://github.com/emscripten-core/emsdk.git "${emsdk}"
+      mkdir -p ~/.local/share
+      git clone https://github.com/emscripten-core/emsdk.git ${emsdk}
 
       currDir=$(pwd)
 
-      cd "${emsdk}" || exit
+      cd ${emsdk} || exit
       ./emsdk install latest
       ./emsdk activate latest
-      export EMSDK="${emsdk}"
+      export EMSDK=${emsdk}
     else
       # set EMSDK environment variable and persist it
-      export EMSDK="${emsdk}"
+      export EMSDK=${emsdk}
     fi
   fi
 
   # set emsdk environment variables
   export EMSDK_QUIET=1
-  source "${EMSDK}/emsdk_env.sh"
+  source ${EMSDK}/emsdk_env.sh
 }
 
 # create a function
 build_wasm_standalone() {
-  exportedFunctions='["_malloc", "_free", "_transliterate", "_releaseBuffer"]'
+  exportedFunctions='["_malloc", "_free", "_transliterate", "_isScriptSupported", "_releaseBuffer"]'
 
   # get the path to the output directory
   outDir='./flutter/assets'
@@ -62,7 +62,7 @@ build_wasm_standalone() {
 
 build_wasm_js() {
   exportedRuntimeMethods='["ccall", "cwrap"]'
-  exportedFunctions='["_malloc", "_free", "_transliterate", "_releaseBuffer"]'
+  exportedFunctions='["_malloc", "_free", "_transliterate", "_isScriptSupported", "_releaseBuffer"]'
 
   # get the path to the output directory
   outDir='./js/public'

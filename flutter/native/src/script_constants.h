@@ -4,12 +4,12 @@
 #include <array>
 #include <string_view>
 
-constexpr std::array<std::string_view, 3> WriteOnlyScripts { "readablelatin" };
+constexpr std::array<std::string_view, 1> WriteOnlyScripts { "readablelatin" };
 auto isWriteOnlyScript = [](std::string_view script) noexcept {
   return std::find(WriteOnlyScripts.begin(), WriteOnlyScripts.end(), script) != WriteOnlyScripts.end();
 };
 
-constexpr std::array<std::string_view, 3> CaseInsensitiveScripts { "iast", "iso" };
+constexpr std::array<std::string_view, 2> CaseInsensitiveScripts { "iast", "iso" };
 auto isCaseInsensitiveScripts = [](std::string_view script) noexcept {
   return std::find(CaseInsensitiveScripts.begin(), CaseInsensitiveScripts.end(), script)
       != CaseInsensitiveScripts.end();
@@ -52,8 +52,8 @@ constexpr std::array<std::string_view, 28> DevanagariExtSymbols = {
   /*꠰*/ "ꣲ", "ꣵ", "ꣶ", "ꣷ", "꣸", "꣹", "꣺", "ꣻ", "꣼", "ꣽ",
 };
 
-constexpr std::string_view TamilSuperscripts = "¹²³⁴";
-constexpr std::string_view TamilSubscripts = "₁₂₃₄";
+constexpr std::string_view TamilSuperscripts { "¹²³⁴" };
+constexpr std::string_view TamilSubscripts { "₁₂₃₄" };
 
 constexpr std::string_view TamilSpecialChars { "ʼˮˇ꞉ஃ·" };
 constexpr std::string_view QuotedMarkers { "ʼˮˇ" };
