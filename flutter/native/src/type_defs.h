@@ -33,7 +33,6 @@ enum class TokenType : uint8_t {
   Symbol,
   VedicSymbol,
   ZeroWidthChar,
-  ToggleTrans,
   Ignore
 };
 

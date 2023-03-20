@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'inditrans'
-  s.version          = '0.4.2'
+  s.version          = '0.4.3'
   s.summary          = 'Inditrans example.'
   s.description      = <<-DESC
 Inditrans example.

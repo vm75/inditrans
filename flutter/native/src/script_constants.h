@@ -58,7 +58,6 @@ constexpr std::array<std::string_view, 12> SpecialVedicSymbols = {
 
 constexpr std::string_view TamilSuperscripts = "¹²³⁴";
 constexpr std::string_view TamilSubscripts = "₁₂₃₄";
-constexpr std::string_view SkipTrans { "##" };
 
 constexpr std::string_view TamilSpecialChars { "ʼˮˇ꞉ஃ·" };
 constexpr std::string_view QuotedMarkers { "ʼˮˇ" };

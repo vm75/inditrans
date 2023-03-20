@@ -171,8 +171,6 @@ public:
     const auto& accentMap = scriptData.type == ScriptType::Latin ? LatinAccents : Accents;
     addCharMap(name, TokenType::Accent, scriptData.type, accentMap.data(), accentMap.size());
 
-    tokenMap.addLookup(SkipTrans, { TokenType::ToggleTrans, 0, scriptData.type });
-
     for (auto aliasEntry : scriptData.alternates) {
       auto tokenStr = aliasEntry.first;
       ScriptToken token = invalidScriptToken;
@@ -488,35 +486,53 @@ public:
       : options(options) {
     auto ptr = input.data();
     auto end = ptr + input.length();
-    bool skipTrans = false;
     tokenUnits.reserve(input.size());
     while (ptr < end) {
-      if (skipTrans) {
-        const auto* start = ptr;
-        while (ptr[0] != '#' && ptr[1] != '#' && ptr < end) {
-          ptr++;
-        }
-        if (ptr > start) {
-          tokenUnits.emplace_back(std::string_view(start, ptr - start));
-          continue;
-        }
-      }
       auto match = map.lookupToken(ptr);
       if (match.value != std::nullopt) {
-        if (match.value->tokenType == TokenType::ToggleTrans) {
-          skipTrans = !skipTrans;
-        } else {
-          if (match.value->tokenType != TokenType::Accent || options / TranslitOptions::IgnoreVedicAccents) {
-            tokenUnits.emplace_back(*match.value);
-          }
+        if (match.value->tokenType != TokenType::Accent || options / TranslitOptions::IgnoreVedicAccents) {
+          tokenUnits.emplace_back(*match.value);
         }
         ptr += match.matchLen;
       } else {
-        auto start = ptr++;
-        while (ptr < end && map.lookupToken(ptr).value == std::nullopt) {
-          ptr++;
+        while (ptr < end) {
+          const auto* start = ptr;
+          const char* lookFor = nullptr;
+          if (*ptr == '<') {
+            lookFor = ">";
+            ptr++;
+          } else if (*ptr == '#' && ptr + 1 < end && ptr[1] == '#') {
+            lookFor = "##";
+            ptr += 2;
+            start = ptr;
+          }
+          if (lookFor != nullptr) {
+            while (ptr < end) {
+              if (*ptr == *lookFor) {
+                ptr++;
+                if (lookFor[1] == 0) {
+                  tokenUnits.emplace_back(std::string_view(start, ptr - start));
+                  break;
+                } else if (ptr < end && *ptr == lookFor[1]) {
+                  tokenUnits.emplace_back(std::string_view(start, ptr - start - 1));
+                  ptr++;
+                  break;
+                }
+              } else {
+                ptr++;
+              }
+            }
+            continue;
+          } else if (map.lookupToken(ptr).value != std::nullopt) {
+            break;
+          } else {
+            ptr++;
+            while (ptr < end && *ptr != '#' && *ptr != '<' && map.lookupToken(ptr).value == std::nullopt) {
+              ptr++;
+            }
+            tokenUnits.emplace_back(std::string_view(start, ptr - start));
+          }
         }
-        tokenUnits.emplace_back(std::string_view(start, ptr - start));
       }
     }
     iter = tokenUnits.begin();
@@ -799,7 +815,7 @@ private:
       return TamilSuperscripts.find(GetString(next)) == TamilSuperscripts.npos;
     }
     const auto token = GetScriptToken(next);
-    return token.tokenType == TokenType::Symbol || token.tokenType == TokenType::ToggleTrans;
+    return token.tokenType == TokenType::Symbol;
   }
 
   inline bool isDevanagariExtended(int ch) { return ch >= 0xA8E0 && ch <= 0xA8FF; }
@@ -1065,7 +1081,7 @@ protected:
       return TamilSuperscripts.find(GetString(next)) == TamilSuperscripts.npos;
     }
     const auto token = GetTokenUnit(next);
-    return token.leadToken.tokenType == TokenType::Symbol || token.leadToken.tokenType == TokenType::ToggleTrans;
+    return token.leadToken.tokenType == TokenType::Symbol;
   }
 
 private:

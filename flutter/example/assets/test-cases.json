@@ -330,5 +330,16 @@
         "options": "ASCIINumerals"
       }
     ]
+  },
+  {
+    "description": "Skip transliteration",
+    "text": "śrī̱ <gu̱ru̱bhyo> ##nama̱ḥ . ha̱ri̱ḥ## oṃ",
+    "script": "iast",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "श्री॒ <gu̱ru̱bhyo> nama̱ḥ . ha̱ri̱ḥ ॐ"
+      }
+    ]
   }
 ]

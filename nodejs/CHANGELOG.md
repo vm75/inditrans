@@ -1,3 +1,7 @@
+## 0.4.3
+
+- added support for xml tag skip
+
 ## 0.4.2
 
 - Added case insensitive support for iast, iso and ipa. Added support for extended latin chars with composition
