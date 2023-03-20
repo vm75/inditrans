@@ -11,6 +11,7 @@ ifeq ($(OS), Windows_NT)
 else
     SCRIPT_EXT = sh
 endif
+NATIVE_CLI = out/inditrans$(EXEC_EXT)
 NATIVE_TEST = out/inditrans_test$(EXEC_EXT)
 HEADERS_CC = $(wildcard native/src/*.h)
 SOURCES_CC = $(wildcard native/src/*.cpp)
@@ -19,7 +20,7 @@ SOURCES_FLUTTER = $(wildcard flutter/lib/src/*.dart)
 TEST_CC = $(wildcard native/tests/*.cpp)
 
 # build
-native: $(NATIVE_TEST)
+native: $(NATIVE_TEST) $(NATIVE_CLI)
 
 profile:
 	g++ -std=c++20 -O1 -fno-exceptions -pg -Wno-normalized -I native/src $(SOURCES_CC) native/tests/test.cpp -o out/prof_$(NATIVE_TEST)
@@ -28,6 +29,9 @@ profile:
 
 $(NATIVE_TEST): $(SOURCES_CC) $(HEADERS_CC) $(TEST_CC)
 	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I native/src $(SOURCES_CC) $(TEST_CC) -o $@
+
+$(NATIVE_CLI): $(SOURCES_CC) $(HEADERS_CC) native/cli/main.cpp
+	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I native/src $(SOURCES_CC) native/cli/main.cpp -o $@
 
 native/src/script_data.h: scripts/script_data.json
 	dart ./scripts/generate_script_data_header.dart
@@ -56,6 +60,9 @@ test_flutter: wasm flutter/lib/src/bindings.dart
 
 test_nodejs:
 	cd nodejs && yarn test
+
+cli: $(NATIVE_CLI)
+	$(NATIVE_CLI)
 
 # publish
 publish: publish_flutter publish_nodejs

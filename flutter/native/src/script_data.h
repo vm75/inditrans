@@ -359,6 +359,10 @@ const char scriptData[] =
     ALTERNATES
       "z:0" Z "{}" Z "^^" Z E
       "z:1" Z "()" Z "^" Z E
+      "A" Z "aa" Z E
+      "I" Z "ee" Z E
+      "U" Z "oo" Z E
+      "oM" Z "aum" Z "OM" Z E
     E
   E
   "kannada" Z INDIC

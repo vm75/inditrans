@@ -1,4 +1,7 @@
 # References
+## Keyboards
+* https://www.lexilogos.com/keyboard/devanagari.htm
+## Script info
 * https://aksharamukha.appspot.com/script-matrix
 * https://aksharamukha.appspot.com/roman
 ## ITRANS
