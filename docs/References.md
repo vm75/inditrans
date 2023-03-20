@@ -58,10 +58,6 @@ To type a Zero Width Joiner, + can be typed between the letters, for example: k 
 * https://www.fonts4free.net/samarkan-font.html
 
 # Special handling
-## Nutka
-* https://en.wikipedia.org/wiki/Nuqta
-## Kannada
-* ᳵ => ೱ ᳶ => ೲ
 ## Malayalam chillu
 * https://en.wiktionary.org/wiki/chillu
 ## Gurmukhi adhak
@@ -87,24 +83,15 @@ To type a Zero Width Joiner, + can be typed between the letters, for example: k 
 * { TokenType::Accent,          ScriptType::Latin,   2 /*꠰  ᳚ */,       "\\''" },
 * { TokenType::Accent,          ScriptType::Latin,   2 /*꠰  ᳚ */,       "\\’’" },
 * { TokenType::CommonDiacritic, ScriptType::Latin,   0 /* ँ */,       "~" },
-* { TokenType::CommonDiacritic, ScriptType::Latin,   0 /* ँ */,       "m̐" },
-* { TokenType::CommonDiacritic, ScriptType::Latin,   0 /* ँ */,       "ṁ" },
-* { TokenType::CommonDiacritic, ScriptType::Latin,   2 /* ः */,       "ḥ" },
-* { TokenType::CommonDiacritic, ScriptType::Latin,   2 /* ः */,       "ḥ" },
 * { TokenType::Symbol,          ScriptType::Latin,  10 /* ॐ */,      "o3m" },
 * { TokenType::Symbol,          ScriptType::Latin,  10 /* ॐ */,      "OM" },
 * { TokenType::Symbol,          ScriptType::Latin,  10 /* ॐ */,      "AUM" },
 * { TokenType::Symbol,          ScriptType::Latin,  10 /* ॐ */,      "oṃ" },
 * { TokenType::Symbol,          ScriptType::Latin,  10 /* ॐ */,      "ŏṃ" },
-* { TokenType::Symbol,          ScriptType::Latin,  12 /* ꠰ */,        "|" },
-* { TokenType::Symbol,          ScriptType::Latin,  12 /* ꠰ */,        "." },
-* { TokenType::Symbol,          ScriptType::Latin,  13 /* ॥ */,       "||" },
 * { TokenType::Symbol,          ScriptType::Latin,  13 /* ॥ */,       "꠰꠰" },
 * { TokenType::Symbol,          ScriptType::Latin,  13 /* ॥ */,       ".." },
-* { TokenType::Symbol,          ScriptType::Latin,  14 /* ꣳ */,       "gͫ" },
 * { TokenType::Symbol,          ScriptType::Latin,  14 /* ꣳ */,       "\\m+" },
 * { TokenType::Symbol,          ScriptType::Latin,  14 /* ꣳ */,       "{\\m+}" },
 * { TokenType::Symbol,          ScriptType::Latin,  14 /* ꣳ */,       "\\м+" },
-* { TokenType::Symbol,          ScriptType::Latin,  15 /* ꣴ */,       "gͫ̄" },
 * { TokenType::Symbol,          ScriptType::Latin,  15 /* ꣴ */,       "\\m++" },
 * { TokenType::Symbol,          ScriptType::Latin,  15 /* ꣴ */,       "\\м++" },

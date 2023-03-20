@@ -4,7 +4,7 @@
 #include <array>
 #include <string_view>
 
-constexpr std::array<std::string_view, 3> WriteOnlyScripts { "readablelatin", "romancolloquial" };
+constexpr std::array<std::string_view, 3> WriteOnlyScripts { "readablelatin" };
 auto isWriteOnlyScript = [](std::string_view script) noexcept {
   return std::find(WriteOnlyScripts.begin(), WriteOnlyScripts.end(), script) != WriteOnlyScripts.end();
 };
@@ -28,11 +28,14 @@ auto isCaseInsensitiveScripts = [](std::string_view script) noexcept {
 // ඟ = 45, ඦ = 46, ඬ = 47, ඳ = 48, ඹ = 49,
 // க = 0, ச = 5, ஜ = 7, ட = 10, த = 15, ந = 19, ப = 20, ஸ = 31,
 
-constexpr std::array<std::string_view, 21> Accents      = {
-  /*꠰*/ "॒", "॑", "᳚", "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱"
+constexpr std::array<std::string_view, 41> VedicAccents = {
+  /*꠰*/ "॒", "॑", "᳚",
+  /*꠰*/ "᳐", "᳑", "᳒", "᳓", "᳔", "᳕", "᳖", "᳗", "᳘", "᳙", "᳛", "᳜", "᳝", "᳞", "᳟",
+  /*꠰*/ "᳠", "᳢", "᳣", "᳤", "᳥", "᳦", "᳧", "᳨", "ᳩ", "ᳪ", "ᳫ", "ᳬ", "ᳮ", "ᳯ",
+  /*꠰*/ "ᳰ", "ᳱ", "ᳲ", "ᳳ", "᳴", "᳷", "᳸", "᳹", "ᳺ"
 };
-constexpr std::array<std::string_view, 21> LatinAccents = {
-  /*꠰*/ "̱", "̍", "̎", "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱"
+constexpr std::array<std::string_view, 3> LatinAccents = {
+  /*꠰*/ "̱", "̍", "̎",
 };
 
 constexpr std::array<std::string_view, 3> IndicZeroWidthChars = {
@@ -42,17 +45,10 @@ constexpr std::array<std::string_view, 3> DefaultZeroWidthChars = {
   "", ""
 };
 
-constexpr std::array<std::string_view, 43> VedicSigns = {
- /*꠰*/ "᳐", "᳑", "᳒", "᳓", "᳔", "᳕", "᳖", "᳗", "᳘", "᳙", "᳚", "᳛", "᳜", "᳝", "᳞", "᳟",
- /*꠰*/ "᳠", "᳡", "᳢", "᳣", "᳤", "᳥", "᳦", "᳧", "᳨", "ᳩ", "ᳪ", "ᳫ", "ᳬ", "᳭", "ᳮ", "ᳯ",
- /*꠰*/ "ᳰ", "ᳱ", "ᳲ", "ᳳ", "᳴", "ᳵ", "ᳶ", "᳷", "᳸", "᳹", "ᳺ"
-};
-
-constexpr std::array<std::string_view, 18> SpecialVedicAccents = {
-  /*꠰*/ "᳡", "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩", "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱"
-};
-
-constexpr std::array<std::string_view, 12> SpecialVedicSymbols = {
+constexpr std::array<std::string_view, 28> DevanagariExtSymbols = {
+  /*꠰*/ "᳡",
+  /*꠰*/ "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩",
+  /*꠰*/ "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱",
   /*꠰*/ "ꣲ", "ꣵ", "ꣶ", "ꣷ", "꣸", "꣹", "꣺", "ꣻ", "꣼", "ꣽ",
 };
 

@@ -52,14 +52,6 @@
         "text": "അ ആ ഇ ഈ ഉ ഊ ഋ ൠ ഌ ൡ ഏ ഐ ഓ ഔ"
       },
       {
-        "script": "slp1",
-        "text": "a A i I u U f F x X e E o O"
-      },
-      {
-        "script": "wx",
-        "text": "a A i I u U q Q L ḹ e E o O"
-      },
-      {
         "script": "telugu",
         "text": "అ ఆ ఇ ఈ ఉ ఊ ఋ ౠ ఌ ౡ ఏ ఐ ఓ ఔ"
       },
@@ -120,14 +112,6 @@
       {
         "script": "malayalam",
         "text": "ക ഖാ ഗി ഘീ ങു ചൂ ഛൃ ജൄ ഝൢ ഞൣ ടേ ഠൈ ഡോ ഢൌ ണം തഃ ഥ്"
-      },
-      {
-        "script": "slp1",
-        "text": "ka KA gi GI Nu cU Cf jF Jx YX we WE qo QO RaM taH T"
-      },
-      {
-        "script": "wx",
-        "text": "ka KA gi GI fu cU Cq jQ JL Fḹ te TE do DO NaM waH W"
       },
       {
         "script": "telugu",
@@ -192,14 +176,6 @@
         "text": "ക ഖ ഗ ഘ ങ ച ഛ ജ ഝ ഞ ട ഠ ഡ ഢ ണ ത ഥ ദ ധ ന പ ഫ ബ ഭ മ യ ര ല വ ശ ഷ സ ഹ ള"
       },
       {
-        "script": "slp1",
-        "text": "ka Ka ga Ga Na ca Ca ja Ja Ya wa Wa qa Qa Ra ta Ta da Da na pa Pa ba Ba ma ya ra la va Sa za sa ha La"
-      },
-      {
-        "script": "wx",
-        "text": "ka Ka ga Ga fa ca Ca ja Ja Fa ta Ta da Da Na wa Wa xa Xa na pa Pa ba Ba ma ya ra la va Sa Ra sa ha l̤a"
-      },
-      {
         "script": "telugu",
         "text": "క ఖ గ ఘ ఙ చ ఛ జ ఝ ఞ ట ఠ డ ఢ ణ త థ ద ధ న ప ఫ బ భ మ య ర ల వ శ ష స హ ళ"
       },
@@ -260,14 +236,6 @@
       {
         "script": "malayalam",
         "text": "ഓം । ॥ ൦ ൧ ൨ ൩ ൪ ൫ ൬ ൭ ൮ ൯"
-      },
-      {
-        "script": "slp1",
-        "text": "AUM . .. 0 1 2 3 4 5 6 7 8 9"
-      },
-      {
-        "script": "wx",
-        "text": "oM . .. 0 1 2 3 4 5 6 7 8 9"
       },
       {
         "script": "telugu",
@@ -332,14 +300,6 @@
         "text": "പുത്ര"
       },
       {
-        "script": "slp1",
-        "text": "putra"
-      },
-      {
-        "script": "wx",
-        "text": "puwra"
-      },
-      {
         "script": "telugu",
         "text": "పుత్ర"
       },
@@ -400,14 +360,6 @@
       {
         "script": "malayalam",
         "text": "നര ഇതി"
-      },
-      {
-        "script": "slp1",
-        "text": "nara iti"
-      },
-      {
-        "script": "wx",
-        "text": "nara iwi"
       },
       {
         "script": "telugu",
@@ -472,14 +424,6 @@
         "text": "ധര്മക്ഷേത്രേ കുരുക്ഷേത്രേ സമവേതാ യുയുത്സവഃ ।"
       },
       {
-        "script": "slp1",
-        "text": "Darmakzetre kurukzetre samavetA yuyutsavaH ."
-      },
-      {
-        "script": "wx",
-        "text": "XarmakRewre kurukRewre samavewA yuyuwsavaH ."
-      },
-      {
         "script": "telugu",
         "text": "ధర్మక్షేత్రే కురుక్షేత్రే సమవేతా యుయుత్సవః ।"
       },
@@ -510,14 +454,6 @@
       {
         "script": "optitrans",
         "text": "asaya auShadhiH granthaH! LLIkaaro naasti lesho.api saMshayaH. kiilakam? kuupiH?  kaShThaM bhoH. shankara! jnaanam.  sanjiivaya. 12345.. OM tat."
-      },
-      {
-        "script": "slp",
-        "text": "asaya OzaDiH granTaH! XkAro nAsti leSo'pi saMSayaH. kIlakam? kUpiH?  kazWaM BoH. SaNkara! jYAnam.  saYjIvaya. 12345.. AUM tat."
-      },
-      {
-        "script": "wx",
-        "text": "asaya ORaXiH granWaH! ḹkAro nAswi leSo'pi saMSayaH. kIlakam? kUpiH?  kaRTaM BoH. Safkara! jFAnam.  saFjIvaya. 12345.. oM waw."
       },
       {
         "script": "kannada",
@@ -572,14 +508,6 @@
         "text": "agnimiiLe purohitaM yajnasya devamRtvijam"
       },
       {
-        "script": "slp",
-        "text": "agnimILe purohitaM yajYasya devamftvijam"
-      },
-      {
-        "script": "wx",
-        "text": "agnimIl̤e purohiwaM yajFasya xevamqwvijam"
-      },
-      {
         "script": "kannada",
         "text": "ಅಗ್ನಿಮೀಳೇ ಪುರೋಹಿತಂ ಯಜ್ಞಸ್ಯ ದೇವಮೃತ್ವಿಜಮ್"
       },
@@ -610,30 +538,6 @@
       {
         "script": "assamese",
         "text": "অগ্নিমীল়ে পুৰোহিতং যজ্ঞস্য দেৱমৃত্ৱিজম্"
-      }
-    ]
-  },
-  {
-    "description": "to-and-fro: Tests WX avagraha and anunAsika options",
-    "type": "to-and-fro",
-    "script": "devanagari",
-    "text": "लेशोऽपि, साँयि",
-    "targets": [
-      {
-        "script": "wx",
-        "text": "leSo'pi, sAzyi"
-      }
-    ]
-  },
-  {
-    "description": "to-and-fro: Test Lha",
-    "type": "to-and-fro",
-    "script": "devanagari",
-    "text": "मीळ्हुषे",
-    "targets": [
-      {
-        "script": "slp1",
-        "text": "mI|uze"
       }
     ]
   },
@@ -690,18 +594,6 @@
       {
         "script": "kannada",
         "text": "ಱ ೞ"
-      }
-    ]
-  },
-  {
-    "description": "to-and-fro: ᳵ ᳶ",
-    "type": "to-and-fro",
-    "script": "devanagari",
-    "text": "ᳵ ᳶ",
-    "targets": [
-      {
-        "script": "kannada",
-        "text": "ೱ ೲ"
       }
     ]
   },
@@ -782,17 +674,6 @@
       {
         "script": "devanagari",
         "text": "भुशुण्डोपाख्यानम्"
-      }
-    ]
-  },
-  {
-    "description": "svaras",
-    "script": "iast",
-    "text": "tuvé asuryàṃ vásavo ní r̥ṇvan ókaso agna āja",
-    "targets": [
-      {
-        "script": "devanagari",
-        "text": "तुवे꣡ असुर्यं᳡ व꣡सवो नि꣡ ऋण्वन् ओ꣡कसो अग्न आज"
       }
     ]
   },

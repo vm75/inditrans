@@ -69,6 +69,7 @@ const char scriptData[] =
       "फ़" Z "फ़" Z E
       "य़" Z "य़" Z E
       "्" Z "᳭" Z "्‍" Z "‍्" Z E
+      "ऽ" Z "ᳵ" Z "ᳶ" Z E
     E
   E
   "gujarati" Z INDIC
@@ -102,8 +103,6 @@ const char scriptData[] =
       "z:0" Z "{}" Z "^^" Z E
       "z:1" Z "()" Z "^" Z E
       "ṛ" Z "r̥" Z "Ṛ" Z "ṛ" Z "Ṛ" Z E
-      "a:4" Z "́" Z E
-      "a:3" Z "̀" Z E
       ".." Z "||" Z E
       "." Z "|" Z E
       "a" Z "A" Z E
@@ -371,6 +370,7 @@ const char scriptData[] =
     VEDICSYMBOLS "ಽ" Z "ꣳ" Z "ꣴ" Z E
     ALTERNATES
       "್" Z "್‍" Z "‍್" Z E
+      "ಽ" Z "ೱ" Z "ೲ" Z E
     E
   E
   "malayalam" Z INDIC

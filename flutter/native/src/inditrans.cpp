@@ -168,8 +168,6 @@ public:
     }
 
     addScript(name, scriptData);
-    const auto& accentMap = scriptData.type == ScriptType::Latin ? LatinAccents : Accents;
-    addCharMap(name, TokenType::Accent, scriptData.type, accentMap.data(), accentMap.size());
 
     for (auto aliasEntry : scriptData.alternates) {
       auto tokenStr = aliasEntry.first;
@@ -210,12 +208,12 @@ public:
     addCharMap(
         name, TokenType::VedicSymbol, scriptData.type, scriptData.vedicSymbols.data(), scriptData.vedicSymbols.size());
 
-    const auto& accentMap = isIndicScript(scriptData.type) ? Accents : LatinAccents;
-    addCharMap(name, TokenType::Accent, scriptData.type, accentMap.data(), accentMap.size());
-
     if (isIndicScript(scriptData.type)) {
+      addCharMap(name, TokenType::Accent, scriptData.type, VedicAccents.data(), VedicAccents.size());
       addCharMap(
           name, TokenType::ZeroWidthChar, scriptData.type, IndicZeroWidthChars.data(), IndicZeroWidthChars.size());
+    } else {
+      addCharMap(name, TokenType::Accent, scriptData.type, LatinAccents.data(), LatinAccents.size());
     }
   }
 
@@ -287,10 +285,14 @@ public:
     addCharMap(name, TokenType::Symbol, scriptType, scriptInfo.symbols.data(), scriptInfo.symbols.size());
     addCharMap(
         name, TokenType::VedicSymbol, scriptType, scriptInfo.vedicSymbols.data(), scriptInfo.vedicSymbols.size());
-    const auto& accentMap = isIndicScript(scriptType) ? Accents : LatinAccents;
-    addCharMap(name, TokenType::Accent, scriptType, accentMap.data(), accentMap.size());
-    const auto& zwCharsMap = isIndicScript(scriptType) ? IndicZeroWidthChars : DefaultZeroWidthChars;
-    addCharMap(name, TokenType::ZeroWidthChar, scriptType, zwCharsMap.data(), zwCharsMap.size());
+    if (isIndicScript(scriptType)) {
+      addCharMap(name, TokenType::Accent, scriptType, VedicAccents.data(), VedicAccents.size());
+      addCharMap(name, TokenType::ZeroWidthChar, scriptType, IndicZeroWidthChars.data(), IndicZeroWidthChars.size());
+    } else {
+      addCharMap(name, TokenType::Accent, scriptType, LatinAccents.data(), LatinAccents.size());
+      addCharMap(
+          name, TokenType::ZeroWidthChar, scriptType, DefaultZeroWidthChars.data(), DefaultZeroWidthChars.size());
+    }
   }
 
   inline std::string_view lookupChar(TokenType type, size_t idx) const noexcept {
