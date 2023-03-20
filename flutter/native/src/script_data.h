@@ -101,7 +101,86 @@ const char scriptData[] =
     ALTERNATES
       "z:0" Z "{}" Z "^^" Z E
       "z:1" Z "()" Z "^" Z E
-      "ṃ" Z "ṃ" Z E
+      "ṛ" Z "r̥" Z "Ṛ" Z "ṛ" Z "Ṛ" Z E
+      "a:4" Z "́" Z E
+      "a:3" Z "̀" Z E
+      ".." Z "||" Z E
+      "." Z "|" Z E
+      "a" Z "A" Z E
+      "ā" Z "Ā" Z "ā" Z "Ā" Z E
+      "i" Z "I" Z E
+      "ī" Z "Ī" Z "ī" Z "Ī" Z E
+      "u" Z "U" Z E
+      "ū" Z "Ū" Z "ū" Z "Ū" Z E
+      "ṝ" Z "Ṝ" Z "ṝ" Z "Ṝ" Z E
+      "ḷ" Z "Ḷ" Z "ḷ" Z "Ḷ" Z E
+      "ḹ" Z "Ḹ" Z "ḹ" Z "Ḹ" Z E
+      "ĕ" Z "Ĕ" Z "ĕ" Z "Ĕ" Z E
+      "e" Z "E" Z E
+      "ai" Z "AI" Z E
+      "ŏ" Z "Ŏ" Z "ŏ" Z "Ŏ" Z E
+      "o" Z "O" Z E
+      "au" Z "AU" Z E
+      "æ" Z "Æ" Z E
+      "ǣ" Z "Ǣ" Z E
+      "ô" Z "Ô" Z "ô" Z "Ô" Z E
+      "k" Z "K" Z E
+      "kh" Z "KH" Z E
+      "g" Z "G" Z E
+      "gh" Z "GH" Z E
+      "ṅ" Z "Ṅ" Z "ṅ" Z "Ṅ" Z E
+      "c" Z "C" Z E
+      "ch" Z "CH" Z E
+      "j" Z "J" Z E
+      "jh" Z "JH" Z E
+      "ñ" Z "Ñ" Z "ñ" Z "Ñ" Z E
+      "ṭ" Z "Ṭ" Z "ṭ" Z "Ṭ" Z E
+      "ṭh" Z "ṬH" Z "ṭh" Z "ṬH" Z E
+      "ḍ" Z "Ḍ" Z "ḍ" Z "Ḍ" Z E
+      "ḍh" Z "ḌH" Z "ḍh" Z "ḌH" Z E
+      "ṇ" Z "Ṇ" Z "ṇ" Z "Ṇ" Z E
+      "t" Z "T" Z E
+      "th" Z "TH" Z E
+      "d" Z "D" Z E
+      "dh" Z "DH" Z E
+      "n" Z "N" Z E
+      "p" Z "P" Z E
+      "ph" Z "PH" Z E
+      "b" Z "B" Z E
+      "bh" Z "BH" Z E
+      "m" Z "M" Z E
+      "y" Z "Y" Z E
+      "r" Z "R" Z E
+      "l" Z "L" Z E
+      "v" Z "V" Z E
+      "ś" Z "Ś" Z "ś" Z "Ś" Z E
+      "ṣ" Z "Ṣ" Z "ṣ" Z "Ṣ" Z E
+      "s" Z "S" Z E
+      "h" Z "H" Z E
+      "l̤" Z "L̤" Z E
+      "ḻ" Z "Ḻ" Z E
+      "ṟ" Z "Ṟ" Z E
+      "ṉ" Z "Ṉ" Z E
+      "q" Z "Q" Z E
+      "k͟h" Z "K͟H" Z E
+      "ġ" Z "Ġ" Z "ġ" Z "Ġ" Z E
+      "z" Z "Z" Z E
+      "r̤" Z "R̤" Z E
+      "r̤h" Z "R̤H" Z E
+      "f" Z "F" Z E
+      "ẏ" Z "Ẏ" Z "ẏ" Z "Ẏ" Z E
+      "n̆g" Z "N̆G" Z E
+      "n̆j" Z "N̆J" Z E
+      "n̆ḍ" Z "N̆Ḍ" Z "n̆ḍ" Z "N̆Ḍ" Z E
+      "n̆d" Z "N̆D" Z E
+      "m̆b" Z "M̆B" Z E
+      "m̐" Z "M̐" Z E
+      "ṃ" Z "Ṃ" Z "ṃ" Z "Ṃ" Z E
+      "ḥ" Z "Ḥ" Z "ḥ" Z "Ḥ" Z E
+      "ḵ" Z "Ḵ" Z E
+      "oṃ" Z "OṂ" Z "oṃ" Z "OṂ" Z E
+      "gͫ" Z "Gͫ" Z E
+      "gͫ̄" Z "Gͫ̄" Z E
     E
   E
   "ipa" Z LATIN
@@ -114,6 +193,73 @@ const char scriptData[] =
     ALTERNATES
       "z:0" Z "{}" Z "^^" Z E
       "z:1" Z "()" Z "^" Z E
+      "ɑː" Z "aː" Z "Ɑː" Z E
+      "ə" Z "Ə" Z E
+      "iː" Z "Iː" Z E
+      "u" Z "U" Z E
+      "uː" Z "Uː" Z E
+      "ɾɨ" Z "ɾƗ" Z E
+      "ɾɨː" Z "ɾƗː" Z E
+      "lɨ" Z "LƗ" Z E
+      "lɨː" Z "LƗː" Z E
+      "e" Z "E" Z E
+      "eː" Z "Eː" Z E
+      "əɪ" Z "Əɪ" Z E
+      "o" Z "O" Z E
+      "oː" Z "Oː" Z E
+      "əu" Z "ƏU" Z E
+      "æ" Z "Æ" Z E
+      "æː" Z "Æː" Z E
+      "ɔ" Z "Ɔ" Z E
+      "k" Z "K" Z E
+      "kʰ" Z "Kʰ" Z E
+      "g" Z "G" Z E
+      "gʰ" Z "Gʰ" Z E
+      "ŋ" Z "Ŋ" Z E
+      "t͡ʃ" Z "T͡Ʃ" Z E
+      "t͡ʃʰ" Z "T͡Ʃʰ" Z E
+      "d͡ʒ" Z "D͡Ʒ" Z E
+      "d͡ʒʰ" Z "D͡Ʒʰ" Z E
+      "ɲ" Z "Ɲ" Z E
+      "ʈ" Z "Ʈ" Z E
+      "ʈʰ" Z "Ʈʰ" Z E
+      "ɖ" Z "Ɖ" Z E
+      "ɖʰ" Z "Ɖʰ" Z E
+      "t̪" Z "T̪" Z E
+      "t̪ʰ" Z "T̪ʰ" Z E
+      "d̪" Z "D̪" Z E
+      "d̪ʰ" Z "D̪ʰ" Z E
+      "n̪" Z "N̪" Z E
+      "p" Z "P" Z E
+      "pʰ" Z "Pʰ" Z E
+      "b" Z "B" Z E
+      "bʰ" Z "Bʰ" Z E
+      "m" Z "M" Z E
+      "j" Z "J" Z E
+      "l" Z "L" Z E
+      "ʋ" Z "Ʋ" Z E
+      "ʃ" Z "Ʃ" Z E
+      "s̪" Z "S̪" Z E
+      "r" Z "R" Z E
+      "n" Z "N" Z E
+      "q" Z "Q" Z E
+      "x" Z "X" Z E
+      "ɣ" Z "Ɣ" Z E
+      "z" Z "Z" Z E
+      "ɽ" Z "Ɽ" Z E
+      "ɽʰ" Z "Ɽʰ" Z E
+      "f" Z "F" Z E
+      "ẏ" Z "Ẏ" Z "ẏ" Z "Ẏ" Z E
+      "ᶮd͡ʒ" Z "ᶮD͡Ʒ" Z E
+      "ᶯɖ" Z "ᶯƉ" Z E
+      "ⁿd" Z "ⁿD" Z E
+      "ᵐb" Z "ᵐB" Z E
+      "h" Z "H" Z E
+      "xʽ" Z "Xʽ" Z E
+      "oːm" Z "OːM" Z E
+      "ə̸" Z "Ə̸" Z E
+      "gͫ" Z "Gͫ" Z E
+      "gͫ̄" Z "Gͫ̄" Z E
     E
   E
   "iso" Z LATIN
@@ -126,6 +272,82 @@ const char scriptData[] =
     ALTERNATES
       "z:0" Z "{}" Z "^^" Z E
       "z:1" Z "()" Z "^" Z E
+      "a" Z "A" Z E
+      "ā" Z "Ā" Z "ā" Z "Ā" Z E
+      "i" Z "I" Z E
+      "ī" Z "Ī" Z "ī" Z "Ī" Z E
+      "u" Z "U" Z E
+      "ū" Z "Ū" Z "ū" Z "Ū" Z E
+      "r̥" Z "R̥" Z E
+      "r̥̄" Z "R̥̄" Z E
+      "l̥" Z "L̥" Z E
+      "l̥̄" Z "L̥̄" Z E
+      "e" Z "E" Z E
+      "ē" Z "Ē" Z "ē" Z "Ē" Z E
+      "ai" Z "AI" Z E
+      "o" Z "O" Z E
+      "ō" Z "Ō" Z "ō" Z "Ō" Z E
+      "au" Z "AU" Z E
+      "æ" Z "Æ" Z E
+      "ǣ" Z "Ǣ" Z E
+      "ô" Z "Ô" Z "ô" Z "Ô" Z E
+      "k" Z "K" Z E
+      "kh" Z "KH" Z E
+      "g" Z "G" Z E
+      "gh" Z "GH" Z E
+      "ṅ" Z "Ṅ" Z "ṅ" Z "Ṅ" Z E
+      "c" Z "C" Z E
+      "ch" Z "CH" Z E
+      "j" Z "J" Z E
+      "jh" Z "JH" Z E
+      "ñ" Z "Ñ" Z "ñ" Z "Ñ" Z E
+      "ṭ" Z "Ṭ" Z "ṭ" Z "Ṭ" Z E
+      "ṭh" Z "ṬH" Z "ṭh" Z "ṬH" Z E
+      "ḍ" Z "Ḍ" Z "ḍ" Z "Ḍ" Z E
+      "ḍh" Z "ḌH" Z "ḍh" Z "ḌH" Z E
+      "ṇ" Z "Ṇ" Z "ṇ" Z "Ṇ" Z E
+      "t" Z "T" Z E
+      "th" Z "TH" Z E
+      "d" Z "D" Z E
+      "dh" Z "DH" Z E
+      "n" Z "N" Z E
+      "p" Z "P" Z E
+      "ph" Z "PH" Z E
+      "b" Z "B" Z E
+      "bh" Z "BH" Z E
+      "m" Z "M" Z E
+      "y" Z "Y" Z E
+      "r" Z "R" Z E
+      "l" Z "L" Z E
+      "v" Z "V" Z E
+      "ś" Z "Ś" Z "ś" Z "Ś" Z E
+      "ṣ" Z "Ṣ" Z "ṣ" Z "Ṣ" Z E
+      "s" Z "S" Z E
+      "h" Z "H" Z E
+      "ḷ" Z "Ḷ" Z "ḷ" Z "Ḷ" Z E
+      "ḻ" Z "Ḻ" Z E
+      "ṟ" Z "Ṟ" Z E
+      "ṉ" Z "Ṉ" Z E
+      "q" Z "Q" Z E
+      "k͟h" Z "K͟H" Z E
+      "ġ" Z "Ġ" Z "ġ" Z "Ġ" Z E
+      "z" Z "Z" Z E
+      "ṛ" Z "Ṛ" Z "ṛ" Z "Ṛ" Z E
+      "ṛh" Z "ṚH" Z "ṛh" Z "ṚH" Z E
+      "f" Z "F" Z E
+      "ẏ" Z "Ẏ" Z "ẏ" Z "Ẏ" Z E
+      "n̆g" Z "N̆G" Z E
+      "n̆j" Z "N̆J" Z E
+      "n̆ḍ" Z "N̆Ḍ" Z "n̆ḍ" Z "N̆Ḍ" Z E
+      "n̆d" Z "N̆D" Z E
+      "m̆b" Z "M̆B" Z E
+      "m̐" Z "M̐" Z E
+      "ṁ" Z "Ṁ" Z "ṁ" Z "Ṁ" Z E
+      "ḥ" Z "Ḥ" Z "ḥ" Z "Ḥ" Z E
+      "ḵ" Z "Ḵ" Z E
+      "ōṁ" Z "ŌṀ" Z "ōṁ" Z "ŌṀ" Z E
+      "gͫ" Z "Gͫ" Z E
+      "gͫ̄" Z "Gͫ̄" Z E
     E
   E
   "itrans" Z LATIN
@@ -170,6 +392,9 @@ const char scriptData[] =
     COMMONDIACRITICS "ଁ" Z "ଂ" Z "ଃ" Z "ଃʼ" Z E
     SYMBOLS "୦" Z "୧" Z "୨" Z "୩" Z "୪" Z "୫" Z "୬" Z "୭" Z "୮" Z "୯" Z "ଓଁ" Z "।" Z "॥" Z E
     VEDICSYMBOLS "ଽ" Z "ꣳ" Z "ꣴ" Z E
+    ALTERNATES
+      "ୱ" Z "ଵ" Z "ଵ" Z "ବ଼" Z E
+    E
   E
   "readablelatin" Z LATIN
     VOWELS "a" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "r̥" Z "rr̥" Z "l̥" Z "ll̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "a" Z "e" Z "o" Z E
@@ -211,8 +436,8 @@ const char scriptData[] =
     VOWELDIACRITICS "്‌" Z "ാ" Z "ി" Z "ീ" Z "ു" Z "ൂ" Z "ൃ" Z "ൄ" Z "ൢ" Z "ൣ" Z "െ" Z "േ" Z "ൈ" Z "ൊ" Z "ോ" Z "ൗ" Z "െ᳴" Z "േ᳴" Z "ാ᳴" Z E
     CONSONANTS "ക" Z "ഖ" Z "ഗ" Z "ഘ" Z "ങ" Z "ച" Z "ഛ" Z "ജ" Z "ഝ" Z "ഞ" Z "ട" Z "ഠ" Z "ഡ" Z "ഢ" Z "ണ" Z "ത" Z "ഥ" Z "ദ" Z "ധ" Z "ന" Z "പ" Z "ഫ" Z "ബ" Z "ഭ" Z "മ" Z "യ" Z "ര" Z "ല" Z "വ" Z "ശ" Z "ഷ" Z "സ" Z "ഹ" Z "ള" Z "ഴ" Z "റ" Z "ഩ" Z "ക·" Z "ഖ·" Z "ഗ·" Z "ജ·" Z "ഡ·" Z "ഢ·" Z "ഫ·" Z "യ·" Z "ംˆഗ" Z "ംˆജ" Z "ംˆഡ" Z "ംˆദ" Z "ംˆബ" Z E
     COMMONDIACRITICS "ഁ" Z "ം" Z "ഃ" Z "ஃ" Z E
-    SYMBOLS "௦" Z "௧" Z "௨" Z "௩" Z "௪" Z "௫" Z "௬" Z "௭" Z "௮" Z "௯" Z "ௐ" Z "ഽ" Z "।" Z "॥" Z E
-    VEDICSYMBOLS "(அ)" Z "ꣳ" Z "ꣴ" Z E
+    SYMBOLS "௦" Z "௧" Z "௨" Z "௩" Z "௪" Z "௫" Z "௬" Z "௭" Z "௮" Z "௯" Z "ௐ" Z "।" Z "॥" Z E
+    VEDICSYMBOLS "ഽ" Z "ꣳ" Z "ꣴ" Z E
   E
   "telugu" Z INDIC
     VOWELS "అ" Z "ఆ" Z "ఇ" Z "ఈ" Z "ఉ" Z "ఊ" Z "ఋ" Z "ౠ" Z "ఌ" Z "ౡ" Z "ఎ" Z "ఏ" Z "ఐ" Z "ఒ" Z "ఓ" Z "ఔ" Z "ఎ᳴​" Z "ఏ᳴" Z "ఒ᳴​" Z E

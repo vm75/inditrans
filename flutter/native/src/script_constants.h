@@ -9,6 +9,12 @@ auto isWriteOnlyScript = [](std::string_view script) noexcept {
   return std::find(WriteOnlyScripts.begin(), WriteOnlyScripts.end(), script) != WriteOnlyScripts.end();
 };
 
+constexpr std::array<std::string_view, 3> CaseInsensitiveScripts { "iast", "iso" };
+auto isCaseInsensitiveScripts = [](std::string_view script) noexcept {
+  return std::find(CaseInsensitiveScripts.begin(), CaseInsensitiveScripts.end(), script)
+      != CaseInsensitiveScripts.end();
+};
+
 // clang-format off
 
 // क = 0, ख = 1, ग = 2, घ = 3, ङ = 4,

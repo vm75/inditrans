@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${default}",
+                "${workspaceFolder}/flutter/native/src"
+            ],
+            "compilerPath": "/usr/bin/clang++",
+            "configurationProvider": "ms-vscode.makefile-tools",
+            "intelliSenseMode": "linux-clang-x64",
+            "cppStandard": "c++23",
+            "cStandard": "c23"
+        }
+    ],
+    "version": 4
+}

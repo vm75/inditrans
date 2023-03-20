@@ -161,7 +161,8 @@ class ScriptReaderMap {
 public:
   ScriptReaderMap(const std::string_view name, const ScriptInfo& scriptData) noexcept
       : name(name)
-      , scriptData(scriptData) {
+      , scriptData(scriptData)
+      , caseInsensitive(isCaseInsensitiveScripts(name)) {
     if (isWriteOnlyScript(name)) {
       return;
     }
@@ -221,7 +222,7 @@ public:
   }
 
   template <typename CharType> inline LookupResult lookupToken(const CharType* text) const noexcept {
-    return tokenMap.lookup(text);
+    return tokenMap.lookup(text, caseInsensitive);
   }
 
   ScriptType getType() const noexcept { return scriptData.type; }
@@ -270,6 +271,7 @@ private:
 
   const std::string_view name;
   const ScriptInfo& scriptData;
+  const bool caseInsensitive;
   LookupTable tokenMap;
 };
 
@@ -294,9 +296,15 @@ public:
   }
 
   inline std::string_view lookupChar(TokenType type, size_t idx) const noexcept {
+    if (idx >= charMaps[static_cast<size_t>(type)].size()) {
+      return "";
+    }
     return charMaps[static_cast<size_t>(type)][idx];
   }
   inline std::string_view lookupChar(const Token& token) const noexcept {
+    if (token.idx >= charMaps[static_cast<size_t>(token.tokenType)].size()) {
+      return "";
+    }
     return charMaps[static_cast<size_t>(token.tokenType)][token.idx];
   }
 

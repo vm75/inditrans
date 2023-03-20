@@ -5,8 +5,10 @@
 * https://help.keyman.com/keyboard/itrans_devanagari_hindi/1.2.0/itrans_devanagari_hindi
 * https://en.wikipedia.org/wiki/ITRANS
 * https://sanskritdocuments.org/learning_tools/sanskritvedic.html
-## ISO
+## ISO 15919
 * https://en.wikipedia.org/wiki/ISO_15919
+## ISO/IEC 8859
+* https://en.wikipedia.org/wiki/ISO/IEC_8859
 ## IPA
 * http://www.sanskritweb.net/deutsch/ipa_sans.pdf
 * https://en.wikipedia.org/wiki/Help:IPA/Sanskrit
@@ -58,6 +60,8 @@ To type a Zero Width Joiner, + can be typed between the letters, for example: k 
 # Special handling
 ## Nutka
 * https://en.wikipedia.org/wiki/Nuqta
+## Kannada
+* ᳵ => ೱ ᳶ => ೲ
 ## Malayalam chillu
 * https://en.wiktionary.org/wiki/chillu
 ## Gurmukhi adhak

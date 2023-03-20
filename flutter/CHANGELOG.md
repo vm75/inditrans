@@ -1,3 +1,7 @@
+## 0.4.2
+
+- Added case insensitive support for iast, iso and ipa. Added support for extended latin chars with composition
+
 ## 0.4.1
 
 - Split symbols, Zero Width chars and Vedic symbols

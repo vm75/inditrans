@@ -85,7 +85,7 @@ public:
     return std::nullopt;
   }
 
-  LookupResult lookup(const char* text) const noexcept {
+  LookupResult lookup(const char* text, bool caseInsensitive = false) const noexcept {
     LookupResult result {};
     auto* lookupNode = &root;
     const char* start = text;
@@ -95,6 +95,9 @@ public:
       auto nextChar32 = ch.ch;
       if (nextChar32 == 0) {
         break;
+      }
+      if (caseInsensitive && nextChar32 >= 'A' && nextChar32 <= 'Z') {
+        nextChar32 += 'a' - 'A';
       }
       auto mapEntry = lookupNode->find(nextChar32);
       if (mapEntry == lookupNode->end()) {

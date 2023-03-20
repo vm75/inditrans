@@ -1,0 +1,942 @@
+U+00C0	À	Latin Capital Letter A with grave
+U+00C1	Á	Latin Capital Letter A with acute
+U+00C2	Â	Latin Capital Letter A with circumflex
+U+00C3	Ã	Latin Capital Letter A with tilde
+U+00C4	Ä	Latin Capital Letter A with diaeresis
+U+00C5	Å	Latin Capital Letter A with ring above
+U+00C6	Æ	Latin Capital Letter AE
+U+00C7	Ç	Latin Capital Letter C with cedilla
+U+00C8	È	Latin Capital Letter E with grave
+U+00C9	É	Latin Capital Letter E with acute
+U+00CA	Ê	Latin Capital Letter E with circumflex
+U+00CB	Ë	Latin Capital Letter E with diaeresis
+U+00CC	Ì	Latin Capital Letter I with grave
+U+00CD	Í	Latin Capital Letter I with acute
+U+00CE	Î	Latin Capital Letter I with circumflex
+U+00CF	Ï	Latin Capital Letter I with diaeresis
+U+00D0	Ð	Latin Capital Letter Eth
+U+00D1	Ñ	Latin Capital Letter N with tilde
+U+00D2	Ò	Latin Capital Letter O with grave
+U+00D3	Ó	Latin Capital Letter O with acute
+U+00D4	Ô	Latin Capital Letter O with circumflex
+U+00D5	Õ	Latin Capital Letter O with tilde
+U+00D6	Ö	Latin Capital Letter O with diaeresis
+U+00D8	Ø	Latin Capital Letter O with stroke
+U+00D9	Ù	Latin Capital Letter U with grave
+U+00DA	Ú	Latin Capital Letter U with acute
+U+00DB	Û	Latin Capital Letter U with circumflex
+U+00DC	Ü	Latin Capital Letter U with diaeresis
+U+00DD	Ý	Latin Capital Letter Y with acute
+U+00DE	Þ	Latin Capital Letter Thorn
+U+00DF	ß	Latin Small Letter sharp S
+U+00E0	à	Latin Small Letter A with grave
+U+00E1	á	Latin Small Letter A with acute
+U+00E2	â	Latin Small Letter A with circumflex
+U+00E3	ã	Latin Small Letter A with tilde
+U+00E4	ä	Latin Small Letter A with diaeresis
+U+00E5	å	Latin Small Letter A with ring above
+U+00E6	æ	Latin Small Letter AE
+U+00E7	ç	Latin Small Letter C with cedilla
+U+00E8	è	Latin Small Letter E with grave
+U+00E9	é	Latin Small Letter E with acute
+U+00EA	ê	Latin Small Letter E with circumflex
+U+00EB	ë	Latin Small Letter E with diaeresis
+U+00EC	ì	Latin Small Letter I with grave
+U+00ED	í	Latin Small Letter I with acute
+U+00EE	î	Latin Small Letter I with circumflex
+U+00EF	ï	Latin Small Letter I with diaeresis
+U+00F0	ð	Latin Small Letter Eth
+U+00F1	ñ	Latin Small Letter N with tilde
+U+00F2	ò	Latin Small Letter O with grave
+U+00F3	ó	Latin Small Letter O with acute
+U+00F4	ô	Latin Small Letter O with circumflex
+U+00F5	õ	Latin Small Letter O with tilde
+U+00F6	ö	Latin Small Letter O with diaeresis
+U+00F8	ø	Latin Small Letter O with stroke
+U+00F9	ù	Latin Small Letter U with grave
+U+00FA	ú	Latin Small Letter U with acute
+U+00FB	û	Latin Small Letter U with circumflex
+U+00FC	ü	Latin Small Letter U with diaeresis
+U+00FD	ý	Latin Small Letter Y with acute
+U+00FE	þ	Latin Small Letter Thorn
+U+00FF	ÿ	Latin Small Letter Y with diaeresis
+U+0100	Ā	Latin Capital Letter A with macron
+U+0101	ā	Latin Small Letter A with macron
+U+0102	Ă	Latin Capital Letter A with breve
+U+0103	ă	Latin Small Letter A with breve
+U+0104	Ą	Latin Capital Letter A with ogonek
+U+0105	ą	Latin Small Letter A with ogonek
+U+0106	Ć	Latin Capital Letter C with acute
+U+0107	ć	Latin Small Letter C with acute
+U+0108	Ĉ	Latin Capital Letter C with circumflex
+U+0109	ĉ	Latin Small Letter C with circumflex
+U+010A	Ċ	Latin Capital Letter C with dot above
+U+010B	ċ	Latin Small Letter C with dot above
+U+010C	Č	Latin Capital Letter C with caron
+U+010D	č	Latin Small Letter C with caron
+U+010E	Ď	Latin Capital Letter D with caron
+U+010F	ď	Latin Small Letter D with caron
+U+0110	Đ	Latin Capital Letter D with stroke
+U+0111	đ	Latin Small Letter D with stroke
+U+0112	Ē	Latin Capital Letter E with macron
+U+0113	ē	Latin Small Letter E with macron
+U+0114	Ĕ	Latin Capital Letter E with breve
+U+0115	ĕ	Latin Small Letter E with breve
+U+0116	Ė	Latin Capital Letter E with dot above
+U+0117	ė	Latin Small Letter E with dot above
+U+0118	Ę	Latin Capital Letter E with ogonek
+U+0119	ę	Latin Small Letter E with ogonek
+U+011A	Ě	Latin Capital Letter E with caron
+U+011B	ě	Latin Small Letter E with caron
+U+011C	Ĝ	Latin Capital Letter G with circumflex
+U+011D	ĝ	Latin Small Letter G with circumflex
+U+011E	Ğ	Latin Capital Letter G with breve
+U+011F	ğ	Latin Small Letter G with breve
+U+0120	Ġ	Latin Capital Letter G with dot above
+U+0121	ġ	Latin Small Letter G with dot above
+U+0122	Ģ	Latin Capital Letter G with cedilla
+U+0123	ģ	Latin Small Letter G with cedilla
+U+0124	Ĥ	Latin Capital Letter H with circumflex
+U+0125	ĥ	Latin Small Letter H with circumflex
+U+0126	Ħ	Latin Capital Letter H with stroke
+U+0127	ħ	Latin Small Letter H with stroke
+U+0128	Ĩ	Latin Capital Letter I with tilde
+U+0129	ĩ	Latin Small Letter I with tilde
+U+012A	Ī	Latin Capital Letter I with macron
+U+012B	ī	Latin Small Letter I with macron
+U+012C	Ĭ	Latin Capital Letter I with breve
+U+012D	ĭ	Latin Small Letter I with breve
+U+012E	Į	Latin Capital Letter I with ogonek
+U+012F	į	Latin Small Letter I with ogonek
+U+0130	İ	Latin Capital Letter I with dot above
+U+0131	ı	Latin Small Letter dotless I
+U+0132	Ĳ	Latin Capital Ligature IJ
+U+0133	ĳ	Latin Small Ligature IJ
+U+0134	Ĵ	Latin Capital Letter J with circumflex
+U+0135	ĵ	Latin Small Letter J with circumflex
+U+0136	Ķ	Latin Capital Letter K with cedilla
+U+0137	ķ	Latin Small Letter K with cedilla
+U+0138	ĸ	Latin Small Letter Kra
+U+0139	Ĺ	Latin Capital Letter L with acute
+U+013A	ĺ	Latin Small Letter L with acute
+U+013B	Ļ	Latin Capital Letter L with cedilla
+U+013C	ļ	Latin Small Letter L with cedilla
+U+013D	Ľ	Latin Capital Letter L with caron
+U+013E	ľ	Latin Small Letter L with caron
+U+013F	Ŀ	Latin Capital Letter L with middle dot
+U+0140	ŀ	Latin Small Letter L with middle dot
+U+0141	Ł	Latin Capital Letter L with stroke
+U+0142	ł	Latin Small Letter L with stroke
+U+0143	Ń	Latin Capital Letter N with acute
+U+0144	ń	Latin Small Letter N with acute
+U+0145	Ņ	Latin Capital Letter N with cedilla
+U+0146	ņ	Latin Small Letter N with cedilla
+U+0147	Ň	Latin Capital Letter N with caron
+U+0148	ň	Latin Small Letter N with caron
+U+0149	ŉ	Latin Small Letter N preceded by apostrophe
+U+014A	Ŋ	Latin Capital Letter Eng
+U+014B	ŋ	Latin Small Letter Eng
+U+014C	Ō	Latin Capital Letter O with macron
+U+014D	ō	Latin Small Letter O with macron
+U+014E	Ŏ	Latin Capital Letter O with breve
+U+014F	ŏ	Latin Small Letter O with breve
+U+0150	Ő	Latin Capital Letter O with double acute
+U+0151	ő	Latin Small Letter O with double acute
+U+0152	Œ	Latin Capital Ligature OE
+U+0153	œ	Latin Small Ligature OE
+U+0154	Ŕ	Latin Capital Letter R with acute
+U+0155	ŕ	Latin Small Letter R with acute
+U+0156	Ŗ	Latin Capital Letter R with cedilla
+U+0157	ŗ	Latin Small Letter R with cedilla
+U+0158	Ř	Latin Capital Letter R with caron
+U+0159	ř	Latin Small Letter R with caron
+U+015A	Ś	Latin Capital Letter S with acute
+U+015B	ś	Latin Small Letter S with acute
+U+015C	Ŝ	Latin Capital Letter S with circumflex
+U+015D	ŝ	Latin Small Letter S with circumflex
+U+015E	Ş	Latin Capital Letter S with cedilla
+U+015F	ş	Latin Small Letter S with cedilla
+U+0160	Š	Latin Capital Letter S with caron
+U+0161	š	Latin Small Letter S with caron
+U+0162	Ţ	Latin Capital Letter T with cedilla
+U+0163	ţ	Latin Small Letter T with cedilla
+U+0164	Ť	Latin Capital Letter T with caron
+U+0165	ť	Latin Small Letter T with caron
+U+0166	Ŧ	Latin Capital Letter T with stroke
+U+0167	ŧ	Latin Small Letter T with stroke
+U+0168	Ũ	Latin Capital Letter U with tilde
+U+0169	ũ	Latin Small Letter U with tilde
+U+016A	Ū	Latin Capital Letter U with macron
+U+016B	ū	Latin Small Letter U with macron
+U+016C	Ŭ	Latin Capital Letter U with breve
+U+016D	ŭ	Latin Small Letter U with breve
+U+016E	Ů	Latin Capital Letter U with ring above
+U+016F	ů	Latin Small Letter U with ring above
+U+0170	Ű	Latin Capital Letter U with double acute
+U+0171	ű	Latin Small Letter U with double acute
+U+0172	Ų	Latin Capital Letter U with ogonek
+U+0173	ų	Latin Small Letter U with ogonek
+U+0174	Ŵ	Latin Capital Letter W with circumflex
+U+0175	ŵ	Latin Small Letter W with circumflex
+U+0176	Ŷ	Latin Capital Letter Y with circumflex
+U+0177	ŷ	Latin Small Letter Y with circumflex
+U+0178	Ÿ	Latin Capital Letter Y with diaeresis
+U+0179	Ź	Latin Capital Letter Z with acute
+U+017A	ź	Latin Small Letter Z with acute
+U+017B	Ż	Latin Capital Letter Z with dot above
+U+017C	ż	Latin Small Letter Z with dot above
+U+017D	Ž	Latin Capital Letter Z with caron
+U+017E	ž	Latin Small Letter Z with caron
+U+017F	ſ	Latin Small Letter long S
+U+0180	ƀ	Latin Small Letter B with Stroke
+U+0181	Ɓ	Latin Capital Letter B with Hook
+U+0182	Ƃ	Latin Capital Letter B with Top Bar
+U+0183	ƃ	Latin Small Letter B with Top Bar
+U+0184	Ƅ	Latin Capital Letter Tone Six
+U+0185	ƅ	Latin Small Letter Tone Six
+U+0186	Ɔ	Latin Capital Letter Open O
+U+0187	Ƈ	Latin Capital Letter C with Hook
+U+0188	ƈ	Latin Small Letter C with Hook
+U+0189	Ɖ	Latin Capital Letter African D
+U+018A	Ɗ	Latin Capital Letter D with Hook
+U+018B	Ƌ	Latin Capital Letter D with Top Bar
+U+018C	ƌ	Latin Small Letter D with Top Bar
+U+018D	ƍ	Latin Small Letter Turned Delta
+U+018E	Ǝ	Latin Capital Letter Reversed E
+U+018F	Ə	Latin Capital Letter Schwa
+U+0190	Ɛ	Latin Capital Letter Open E (= Latin Capital Letter Epsilon)
+U+0191	Ƒ	Latin Capital Letter F with Hook
+U+0192	ƒ	Latin Small Letter F with Hook
+U+0193	Ɠ	Latin Capital Letter G with Hook
+U+0194	Ɣ	Latin Capital Letter Gamma
+U+0195	ƕ	Latin Small Letter HV
+U+0196	Ɩ	Latin Capital Letter Iota
+U+0197	Ɨ	Latin Capital Letter I with Stroke
+U+0198	Ƙ	Latin Capital Letter K with Hook
+U+0199	ƙ	Latin Small Letter K with Hook
+U+019A	ƚ	Latin Small Letter L with Bar
+U+019B	ƛ	Latin Small Letter Lambda with Stroke
+U+019C	Ɯ	Latin Capital Letter Turned M
+U+019D	Ɲ	Latin Capital Letter N with Left Hook
+U+019E	ƞ	Latin Small Letter N with Long Right Leg
+U+019F	Ɵ	Latin Capital Letter O with Middle Tilde
+U+01A0	Ơ	Latin Capital Letter O with Horn
+U+01A1	ơ	Latin Small Letter O with Horn
+U+01A2	Ƣ	Latin Capital Letter OI (= Latin Capital Letter Gha)
+U+01A3	ƣ	Latin Small Letter OI (= Latin Small Letter Gha)
+U+01A4	Ƥ	Latin Capital Letter P with Hook
+U+01A5	ƥ	Latin Small Letter P with Hook
+U+01A6	Ʀ	Latin Letter YR
+U+01A7	Ƨ	Latin Capital Letter Tone Two
+U+01A8	ƨ	Latin Small Letter Tone Two
+U+01A9	Ʃ	Latin Capital Letter Esh
+U+01AA	ƪ	Latin Letter Reversed Esh Loop
+U+01AB	ƫ	Latin Small Letter T with Palatal Hook
+U+01AC	Ƭ	Latin Capital Letter T with Hook
+U+01AD	ƭ	Latin Small Letter T with Hook
+U+01AE	Ʈ	Latin Capital Letter T with Retroflex Hook
+U+01AF	Ư	Latin Capital Letter U with Horn
+U+01B0	ư	Latin Small Letter U with Horn
+U+01B1	Ʊ	Latin Capital Letter Upsilon
+U+01B2	Ʋ	Latin Capital Letter V with Hook
+U+01B3	Ƴ	Latin Capital Letter Y with Hook
+U+01B4	ƴ	Latin Small Letter Y with Hook
+U+01B5	Ƶ	Latin Capital Letter Z with Stroke
+U+01B6	ƶ	Latin Small Letter Z with Stroke
+U+01B7	Ʒ	Latin Capital Letter Ezh
+U+01B8	Ƹ	Latin Capital Letter Ezh Reversed
+U+01B9	ƹ	Latin Small Letter Ezh Reversed
+U+01BA	ƺ	Latin Small Letter Ezh with Tail
+U+01BB	ƻ	Latin Letter Two with Stroke
+U+01BC	Ƽ	Latin Capital Letter Tone Five
+U+01BD	ƽ	Latin Small Letter Tone Five
+U+01BE	ƾ	Latin Letter Inverted Glottal Stop with Stroke
+U+01BF	ƿ	Latin Letter Wynn
+U+01C0	ǀ	Latin Letter Dental Click
+U+01C1	ǁ	Latin Letter Lateral Click
+U+01C2	ǂ	Latin Letter Alveolar Click
+U+01C3	ǃ	Latin Letter Retroflex Click
+U+01C4	Ǆ	Latin Capital Letter DZ with Caron
+U+01C5	ǅ	Latin Capital Letter D with Small Letter Z with Caron
+U+01C6	ǆ	Latin Small Letter DZ with Caron
+U+01C7	Ǉ	Latin Capital Letter LJ
+U+01C8	ǈ	Latin Capital Letter L with Small Letter J
+U+01C9	ǉ	Latin Small Letter LJ
+U+01CA	Ǌ	Latin Capital Letter NJ
+U+01CB	ǋ	Latin Capital Letter N with Small Letter J
+U+01CC	ǌ	Latin Small Letter NJ
+U+01CD	Ǎ	Latin Capital Letter A with Caron
+U+01CE	ǎ	Latin Small Letter A with Caron
+U+01CF	Ǐ	Latin Capital Letter I with Caron
+U+01D0	ǐ	Latin Small Letter I with Caron
+U+01D1	Ǒ	Latin Capital Letter O with Caron
+U+01D2	ǒ	Latin Small Letter O with Caron
+U+01D3	Ǔ	Latin Capital Letter U with Caron
+U+01D4	ǔ	Latin Small Letter U with Caron
+U+01D5	Ǖ	Latin Capital Letter U with Diaeresis and Macron
+U+01D6	ǖ	Latin Small Letter U with Diaeresis and Macron
+U+01D7	Ǘ	Latin Capital Letter U with Diaeresis and Acute
+U+01D8	ǘ	Latin Small Letter U with Diaeresis and Acute
+U+01D9	Ǚ	Latin Capital Letter U with Diaeresis and Caron
+U+01DA	ǚ	Latin Small Letter U with Diaeresis and Caron
+U+01DB	Ǜ	Latin Capital Letter U with Diaeresis and Grave
+U+01DC	ǜ	Latin Small Letter U with Diaeresis and Grave
+U+01DD	ǝ	Latin Small Letter Turned E
+U+01DE	Ǟ	Latin Capital Letter A with Diaeresis and Macron
+U+01DF	ǟ	Latin Small Letter A with Diaeresis and Macron
+U+01E0	Ǡ	Latin Capital Letter A with Dot Above and Macron
+U+01E1	ǡ	Latin Small Letter A with Dot Above and Macron
+U+01E2	Ǣ	Latin Capital Letter AE with Macron
+U+01E3	ǣ	Latin Small Letter AE with Macron
+U+01E4	Ǥ	Latin Capital Letter G with Stroke
+U+01E5	ǥ	Latin Small Letter G with Stroke
+U+01E6	Ǧ	Latin Capital Letter G with Caron
+U+01E7	ǧ	Latin Small Letter G with Caron
+U+01E8	Ǩ	Latin Capital Letter K with Caron
+U+01E9	ǩ	Latin Small Letter K with Caron
+U+01EA	Ǫ	Latin Capital Letter O with Ogonek
+U+01EB	ǫ	Latin Small Letter O with Ogonek
+U+01EC	Ǭ	Latin Capital Letter O with Ogonek and Macron (=Latin Capital Letter O with Macron and Ogonek)
+U+01ED	ǭ	Latin Small Letter O with Ogonek and Macron (=Latin Small Letter O with Macron and Ogonek)
+U+01EE	Ǯ	Latin Capital Letter Ezh with Caron
+U+01EF	ǯ	Latin Small Letter Ezh with Caron
+U+01F0	ǰ	Latin Small Letter J with Caron
+U+01F1	Ǳ	Latin Capital Letter DZ
+U+01F2	ǲ	Latin Capital Letter D with Small Letter Z
+U+01F3	ǳ	Latin Small Letter DZ
+U+01F4	Ǵ	Latin Capital Letter G with Acute
+U+01F5	ǵ	Latin Small Letter G with Acute
+U+01F6	Ƕ	Latin Capital Letter Hwair
+U+01F7	Ƿ	Latin Capital Letter Wynn
+U+01F8	Ǹ	Latin Capital Letter N with Grave
+U+01F9	ǹ	Latin Small Letter N with Grave
+U+01FA	Ǻ	Latin Capital Letter A with Ring Above and Acute
+U+01FB	ǻ	Latin Small Letter A with Ring Above and Acute
+U+01FC	Ǽ	Latin Capital Letter AE with Acute
+U+01FD	ǽ	Latin Small Letter AE with Acute
+U+01FE	Ǿ	Latin Capital Letter O with Stroke and Acute
+U+01FF	ǿ	Latin Small Letter O with Stroke and Acute
+U+0200	Ȁ	Latin Capital Letter A with Double Grave
+U+0201	ȁ	Latin Small Letter A with Double Grave
+U+0202	Ȃ	Latin Capital Letter A with Inverted Breve
+U+0203	ȃ	Latin Small Letter A with Inverted Breve
+U+0204	Ȅ	Latin Capital Letter E with Double Grave
+U+0205	ȅ	Latin Small Letter E with Double Grave
+U+0206	Ȇ	Latin Capital Letter E with Inverted Breve
+U+0207	ȇ	Latin Small Letter E with Inverted Breve
+U+0208	Ȉ	Latin Capital Letter I with Double Grave
+U+0209	ȉ	Latin Small Letter I with Double Grave
+U+020A	Ȋ	Latin Capital Letter I with Inverted Breve
+U+020B	ȋ	Latin Small Letter I with Inverted Breve
+U+020C	Ȍ	Latin Capital Letter O with Double Grave
+U+020D	ȍ	Latin Small Letter O with Double Grave
+U+020E	Ȏ	Latin Capital Letter O with Inverted Breve
+U+020F	ȏ	Latin Small Letter O with Inverted Breve
+U+0210	Ȑ	Latin Capital Letter R with Double Grave
+U+0211	ȑ	Latin Small Letter R with Double Grave
+U+0212	Ȓ	Latin Capital Letter R with Inverted Breve
+U+0213	ȓ	Latin Small Letter R with Inverted Breve
+U+0214	Ȕ	Latin Capital Letter U with Double Grave
+U+0215	ȕ	Latin Small Letter U with Double Grave
+U+0216	Ȗ	Latin Capital Letter U with Inverted Breve
+U+0217	ȗ	Latin Small Letter U with Inverted Breve
+U+0218	Ș	Latin Capital Letter S with Comma Below
+U+0219	ș	Latin Small Letter S with Comma Below
+U+021A	Ț	Latin Capital Letter T with Comma Below
+U+021B	ț	Latin Small Letter T with Comma Below
+U+021C	Ȝ	Latin Capital Letter Yogh
+U+021D	ȝ	Latin Small Letter Yogh
+U+021E	Ȟ	Latin Capital Letter H with Caron
+U+021F	ȟ	Latin Small Letter H with Caron
+U+0220	Ƞ	Latin Capital Letter N with Long Right Leg
+U+0221	ȡ	Latin Small Letter D with Curl
+U+0222	Ȣ	Latin Capital Letter OU
+U+0223	ȣ	Latin Small Letter OU
+U+0224	Ȥ	Latin Capital Letter Z with Hook
+U+0225	ȥ	Latin Small Letter Z with Hook
+U+0226	Ȧ	Latin Capital Letter A with Dot Above
+U+0227	ȧ	Latin Small Letter A with Dot Above
+U+0228	Ȩ	Latin Capital Letter E with Cedilla
+U+0229	ȩ	Latin Small Letter E with Cedilla
+U+022A	Ȫ	Latin Capital Letter O with Diaeresis and Macron
+U+022B	ȫ	Latin Small Letter O with Diaeresis and Macron
+U+022C	Ȭ	Latin Capital Letter O with Tilde and Macron
+U+022D	ȭ	Latin Small Letter O with Tilde and Macron
+U+022E	Ȯ	Latin Capital Letter O with Dot Above
+U+022F	ȯ	Latin Small Letter O with Dot Above
+U+0230	Ȱ	Latin Capital Letter O with Dot Above and Macron
+U+0231	ȱ	Latin Small Letter O with Dot Above and Macron
+U+0232	Ȳ	Latin Capital Letter Y with Macron
+U+0233	ȳ	Latin Small Letter Y with Macron
+U+0234	ȴ	Latin Small Letter L with Curl
+U+0235	ȵ	Latin Small Letter N with Curl
+U+0236	ȶ	Latin Small Letter T with Curl
+U+0237	ȷ	Latin Small Letter Dotless J
+U+0238	ȸ	Latin Small Letter DB Digraph
+U+0239	ȹ	Latin Small Letter QP Digraph
+U+023A	Ⱥ	Latin Capital Letter A with Stroke
+U+023B	Ȼ	Latin Capital Letter C with Stroke
+U+023C	ȼ	Latin Small Letter C with Stroke
+U+023D	Ƚ	Latin Capital Letter L with Bar
+U+023E	Ⱦ	Latin Capital Letter T with Diagonal Stroke
+U+023F	ȿ	Latin Small Letter S with Swash Tail
+U+0240	ɀ	Latin Small Letter Z with Swash Tail
+U+0241	Ɂ	Latin Capital Letter Glottal Stop
+U+0242	ɂ	Latin Small Letter Glottal Stop
+U+0243	Ƀ	Latin Capital Letter B with Stroke
+U+0244	Ʉ	Latin Capital Letter U Bar
+U+0245	Ʌ	Latin Capital Letter Turned V
+U+0246	Ɇ	Latin Capital Letter E with Stroke
+U+0247	ɇ	Latin Small Letter E with Stroke
+U+0248	Ɉ	Latin Capital Letter J with Stroke
+U+0249	ɉ	Latin Small Letter J with Stroke
+U+024A	Ɋ	Latin Capital Letter Q with Hook Tail
+U+024B	ɋ	Latin Small Letter Q with Hook Tail
+U+024C	Ɍ	Latin Capital Letter R with Stroke
+U+024D	ɍ	Latin Small Letter R with Stroke
+U+024E	Ɏ	Latin Capital Letter Y with Stroke
+U+024F	ɏ	Latin Small Letter Y with Stroke
+U+0250	ɐ	Latin Small Letter Turned A
+U+0251	ɑ	Latin Small Letter Alpha
+U+0252	ɒ	Latin Small Letter Turned Alpha
+U+0253	ɓ	Latin Small Letter B with Hook
+U+0254	ɔ	Latin Small Letter Open O
+U+0255	ɕ	Latin Small Letter C with Curl
+U+0256	ɖ	Latin Small Letter D with Tail
+U+0257	ɗ	Latin Small Letter D with Hook
+U+0258	ɘ	Latin Small Letter Reversed E
+U+0259	ə	Latin Small Letter Schwa
+U+025A	ɚ	Latin Small Letter Schwa with Hook
+U+025B	ɛ	Latin Small Letter Open E
+U+025C	ɜ	Latin Small Letter Reversed Open E
+U+025D	ɝ	Latin Small Letter Reversed Open E with Hook
+U+025E	ɞ	Latin Small Letter Closed Reversed Open E
+U+025F	ɟ	Latin Small Letter Dotless J with Stroke
+U+0260	ɠ	Latin Small Letter G with Hook
+U+0261	ɡ	Latin Small Letter Script G
+U+0262	ɢ	Latin Letter Small Capital G
+U+0263	ɣ	Latin Small Letter Gamma
+U+0264	ɤ	Latin Small Letter Rams Horn
+U+0265	ɥ	Latin Small Letter Turned H
+U+0266	ɦ	Latin Small Letter H with Hook
+U+0267	ɧ	Latin Small Letter Heng with Hook
+U+0268	ɨ	Latin Small Letter I with Stroke
+U+0269	ɩ	Latin Small Letter Iota
+U+026A	ɪ	Latin Letter Small Capital I
+U+026B	ɫ	Latin Small Letter L with Middle Tilde
+U+026C	ɬ	Latin Small Letter L with Belt
+U+026D	ɭ	Latin Small Letter L with Retroflex Hook
+U+026E	ɮ	Latin Small Letter Lezh
+U+026F	ɯ	Latin Small Letter Turned M
+U+0270	ɰ	Latin Small Letter Turned M with Long Leg
+U+0271	ɱ	Latin Small Letter M with Hook
+U+0272	ɲ	Latin Small Letter N with Left Hook
+U+0273	ɳ	Latin Small Letter N with Retroflex Hook
+U+0274	ɴ	Latin Letter Small Capital N
+U+0275	ɵ	Latin Small Letter Barred O
+U+0276	ɶ	Latin Letter Small Capital OE
+U+0277	ɷ	Latin Small Letter Closed Omega
+U+0278	ɸ	Latin Small Letter Phi
+U+0279	ɹ	Latin Small Letter Turned R
+U+027A	ɺ	Latin Small Letter Turned R with Long Leg
+U+027B	ɻ	Latin Small Letter Turned R with Hook
+U+027C	ɼ	Latin Small Letter R with Long Leg
+U+027D	ɽ	Latin Small Letter R with Tail
+U+027E	ɾ	Latin Small Letter R with Fishhook
+U+027F	ɿ	Latin Small Letter Reversed R with Fishhook
+U+0280	ʀ	Latin Letter Small Capital R
+U+0281	ʁ	Latin Letter Small Capital Inverted R
+U+0282	ʂ	Latin Small Letter S with Hook
+U+0283	ʃ	Latin Small Letter Esh
+U+0284	ʄ	Latin Small Letter Dotless J with Stroke and Hook
+U+0285	ʅ	Latin Small Letter Squat Reversed Esh
+U+0286	ʆ	Latin Small Letter Esh with Curl
+U+0287	ʇ	Latin Small Letter Turned T
+U+0288	ʈ	Latin Small Letter T with Retroflex Hook
+U+0289	ʉ	Latin Small Letter U Bar
+U+028A	ʊ	Latin Small Letter Upsilon
+U+028B	ʋ	Latin Small Letter V with Hook
+U+028C	ʌ	Latin Small Letter Turned V
+U+028D	ʍ	Latin Small Letter Turned W
+U+028E	ʎ	Latin Small Letter Turned Y
+U+028F	ʏ	Latin Letter Small Capital Y
+U+0290	ʐ	Latin Small Letter Z with Retroflex Hook
+U+0291	ʑ	Latin Small Letter Z with Curl
+U+0292	ʒ	Latin Small Letter Ezh
+U+0293	ʓ	Latin Small Letter Ezh with Curl
+U+0294	ʔ	Latin Letter Glottal Stop
+U+0295	ʕ	Latin Letter Pharyngeal Voiced Fricative
+U+0296	ʖ	Latin Letter Inverted Glottal Stop
+U+0297	ʗ	Latin Letter Stretched C
+U+0298	ʘ	Latin Letter Bilabial Click
+U+0299	ʙ	Latin Letter Small Capital B
+U+029A	ʚ	Latin Small Letter Closed Open E
+U+029B	ʛ	Latin Letter Small Capital G with Hook
+U+029C	ʜ	Latin Letter Small Capital H
+U+029D	ʝ	Latin Small Letter J with Crossed Tail
+U+029E	ʞ	Latin Small Letter Turned K
+U+029F	ʟ	Latin Letter Small Capital L
+U+02A0	ʠ	Latin Small Letter Q with Hook
+U+02A1	ʡ	Latin Letter Glottal Stop with Stroke
+U+02A2	ʢ	Latin Letter Reversed Glottal Stop with Stroke
+U+02A3	ʣ	Latin Small Letter DZ Digraph
+U+02A4	ʤ	Latin Small Letter Dezh Digraph
+U+02A5	ʥ	Latin Small Letter DZ Digraph with Curl
+U+02A6	ʦ	Latin Small Letter TS Digraph
+U+02A7	ʧ	Latin Small Letter Tesh Digraph
+U+02A8	ʨ	Latin Small Letter TC Digraph with Curl
+U+02A9	ʩ	Latin Small Letter Feng Digraph
+U+02AA	ʪ	Latin Small Letter LS Digraph
+U+02AB	ʫ	Latin Small Letter LZ Digraph
+U+02AC	ʬ	Latin Letter Bilabial Percussive
+U+02AD	ʭ	Latin Letter Bidental Percussive
+U+02AE	ʮ	Latin Small Letter Turned H with Fishhook
+U+02AF	ʯ	Latin Small Letter Turned H with Fishhook and Tail
+U+1E00	Ḁ	Latin Capital Letter A with ring below
+U+1E01	ḁ	Latin Small Letter A with ring below
+U+1E02	Ḃ	Latin Capital Letter B with dot above
+U+1E03	ḃ	Latin Small Letter B with dot above
+U+1E04	Ḅ	Latin Capital Letter B with dot below
+U+1E05	ḅ	Latin Small Letter B with dot below
+U+1E06	Ḇ	Latin Capital Letter B with line below
+U+1E07	ḇ	Latin Small Letter B with line below
+U+1E08	Ḉ	Latin Capital Letter C with cedilla and acute
+U+1E09	ḉ	Latin Small Letter C with cedilla and acute
+U+1E0A	Ḋ	Latin Capital Letter D with dot above
+U+1E0B	ḋ	Latin Small Letter D with dot above
+U+1E0C	Ḍ	Latin Capital Letter D with dot below
+U+1E0D	ḍ	Latin Small Letter D with dot below
+U+1E0E	Ḏ	Latin Capital Letter D with line below
+U+1E0F	ḏ	Latin Small Letter D with line below
+U+1E10	Ḑ	Latin Capital Letter D with cedilla
+U+1E11	ḑ	Latin Small Letter D with cedilla
+U+1E12	Ḓ	Latin Capital Letter D with circumflex below
+U+1E13	ḓ	Latin Small Letter D with circumflex below
+U+1E14	Ḕ	Latin Capital Letter E with macron and grave
+U+1E15	ḕ	Latin Small Letter E with macron and grave
+U+1E16	Ḗ	Latin Capital Letter E with macron and acute
+U+1E17	ḗ	Latin Small Letter E with macron and acute
+U+1E18	Ḙ	Latin Capital Letter E with circumflex below
+U+1E19	ḙ	Latin Small Letter E with circumflex below
+U+1E1A	Ḛ	Latin Capital Letter E with tilde below
+U+1E1B	ḛ	Latin Small Letter E with tilde below
+U+1E1C	Ḝ	Latin Capital Letter E with cedilla and breve
+U+1E1D	ḝ	Latin Small Letter E with cedilla and breve
+U+1E1E	Ḟ	Latin Capital Letter F with dot above
+U+1E1F	ḟ	Latin Small Letter F with dot above
+U+1E20	Ḡ	Latin Capital Letter G with macron
+U+1E21	ḡ	Latin Small Letter G with macron
+U+1E22	Ḣ	Latin Capital Letter H with dot above
+U+1E23	ḣ	Latin Small Letter H with dot above
+U+1E24	Ḥ	Latin Capital Letter H with dot below
+U+1E25	ḥ	Latin Small Letter H with dot below
+U+1E26	Ḧ	Latin Capital Letter H with diaeresis
+U+1E27	ḧ	Latin Small Letter H with diaeresis
+U+1E28	Ḩ	Latin Capital Letter H with cedilla
+U+1E29	ḩ	Latin Small Letter H with cedilla
+U+1E2A	Ḫ	Latin Capital Letter H with breve below
+U+1E2B	ḫ	Latin Small Letter H with breve below
+U+1E2C	Ḭ	Latin Capital Letter I with tilde below
+U+1E2D	ḭ	Latin Small Letter I with tilde below
+U+1E2E	Ḯ	Latin Capital Letter I with diaeresis and acute
+U+1E2F	ḯ	Latin Small Letter I with diaeresis and acute
+U+1E30	Ḱ	Latin Capital Letter K with acute
+U+1E31	ḱ	Latin Small Letter K with acute
+U+1E32	Ḳ	Latin Capital Letter K with dot below
+U+1E33	ḳ	Latin Small Letter K with dot below
+U+1E34	Ḵ	Latin Capital Letter K with line below
+U+1E35	ḵ	Latin Small Letter K with line below
+U+1E36	Ḷ	Latin Capital Letter L with dot below
+U+1E37	ḷ	Latin Small Letter L with dot below
+U+1E38	Ḹ	Latin Capital Letter L with dot below and macron
+U+1E39	ḹ	Latin Small Letter L with dot below and macron
+U+1E3A	Ḻ	Latin Capital Letter L with line below
+U+1E3B	ḻ	Latin Small Letter L with line below
+U+1E3C	Ḽ	Latin Capital Letter L with circumflex below
+U+1E3D	ḽ	Latin Small Letter L with circumflex below
+U+1E3E	Ḿ	Latin Capital Letter M with acute
+U+1E3F	ḿ	Latin Small Letter M with acute
+U+1E40	Ṁ	Latin Capital Letter M with dot above
+U+1E41	ṁ	Latin Small Letter M with dot above
+U+1E42	Ṃ	Latin Capital Letter M with dot below
+U+1E43	ṃ	Latin Small Letter M with dot below
+U+1E44	Ṅ	Latin Capital Letter N with dot above
+U+1E45	ṅ	Latin Small Letter N with dot above
+U+1E46	Ṇ	Latin Capital Letter N with dot below
+U+1E47	ṇ	Latin Small Letter N with dot below
+U+1E48	Ṉ	Latin Capital Letter N with line below
+U+1E49	ṉ	Latin Small Letter N with line below
+U+1E4A	Ṋ	Latin Capital Letter N with circumflex below
+U+1E4B	ṋ	Latin Small Letter N with circumflex below
+U+1E4C	Ṍ	Latin Capital Letter O with tilde and acute
+U+1E4D	ṍ	Latin Small Letter O with tilde and acute
+U+1E4E	Ṏ	Latin Capital Letter O with tilde and diaeresis
+U+1E4F	ṏ	Latin Small Letter O with tilde and diaeresis
+U+1E50	Ṑ	Latin Capital Letter O with macron and grave
+U+1E51	ṑ	Latin Small Letter O with macron and grave
+U+1E52	Ṓ	Latin Capital Letter O with macron and acute
+U+1E53	ṓ	Latin Small Letter O with macron and acute
+U+1E54	Ṕ	Latin Capital Letter P with acute
+U+1E55	ṕ	Latin Small Letter P with acute
+U+1E56	Ṗ	Latin Capital Letter P with dot above
+U+1E57	ṗ	Latin Small Letter P with dot above
+U+1E58	Ṙ	Latin Capital Letter R with dot above
+U+1E59	ṙ	Latin Small Letter R with dot above
+U+1E5A	Ṛ	Latin Capital Letter R with dot below
+U+1E5B	ṛ	Latin Small Letter R with dot below
+U+1E5C	Ṝ	Latin Capital Letter R with dot below and macron
+U+1E5D	ṝ	Latin Small Letter R with dot below and macron
+U+1E5E	Ṟ	Latin Capital Letter R with line below
+U+1E5F	ṟ	Latin Small Letter R with line below
+U+1E60	Ṡ	Latin Capital Letter S with dot above
+U+1E61	ṡ	Latin Small Letter S with dot above
+U+1E62	Ṣ	Latin Capital Letter S with dot below
+U+1E63	ṣ	Latin Small Letter S with dot below
+U+1E64	Ṥ	Latin Capital Letter S with acute and dot above
+U+1E65	ṥ	Latin Small Letter S with acute and dot above
+U+1E66	Ṧ	Latin Capital Letter S with caron and dot above
+U+1E67	ṧ	Latin Small Letter S with caron and dot above
+U+1E68	Ṩ	Latin Capital Letter S with dot below and dot above
+U+1E69	ṩ	Latin Small Letter S with dot below and dot above
+U+1E6A	Ṫ	Latin Capital Letter T with dot above
+U+1E6B	ṫ	Latin Small Letter T with dot above
+U+1E6C	Ṭ	Latin Capital Letter T with dot below
+U+1E6D	ṭ	Latin Small Letter T with dot below
+U+1E6E	Ṯ	Latin Capital Letter T with line below
+U+1E6F	ṯ	Latin Small Letter T with line below
+U+1E70	Ṱ	Latin Capital Letter T with circumflex below
+U+1E71	ṱ	Latin Small Letter T with circumflex below
+U+1E72	Ṳ	Latin Capital Letter U with diaeresis below
+U+1E73	ṳ	Latin Small Letter U with diaeresis below
+U+1E74	Ṵ	Latin Capital Letter U with tilde below
+U+1E75	ṵ	Latin Small Letter U with tilde below
+U+1E76	Ṷ	Latin Capital Letter U with circumflex below
+U+1E77	ṷ	Latin Small Letter U with circumflex below
+U+1E78	Ṹ	Latin Capital Letter U with tilde and acute
+U+1E79	ṹ	Latin Small Letter U with tilde and acute
+U+1E7A	Ṻ	Latin Capital Letter U with macron and diaeresis
+U+1E7B	ṻ	Latin Small Letter U with macron and diaeresis
+U+1E7C	Ṽ	Latin Capital Letter V with tilde
+U+1E7D	ṽ	Latin Small Letter V with tilde
+U+1E7E	Ṿ	Latin Capital Letter V with dot below
+U+1E7F	ṿ	Latin Small Letter V with dot below
+U+1E80	Ẁ	Latin Capital Letter W with grave
+U+1E81	ẁ	Latin Small Letter W with grave
+U+1E82	Ẃ	Latin Capital Letter W with acute
+U+1E83	ẃ	Latin Small Letter W with acute
+U+1E84	Ẅ	Latin Capital Letter W with diaeresis
+U+1E85	ẅ	Latin Small Letter W with diaeresis
+U+1E86	Ẇ	Latin Capital Letter W with dot above
+U+1E87	ẇ	Latin Small Letter W with dot above
+U+1E88	Ẉ	Latin Capital Letter W with dot below
+U+1E89	ẉ	Latin Small Letter W with dot below
+U+1E8A	Ẋ	Latin Capital Letter X with dot above
+U+1E8B	ẋ	Latin Small Letter X with dot above
+U+1E8C	Ẍ	Latin Capital Letter X with diaeresis
+U+1E8D	ẍ	Latin Small Letter X with diaeresis
+U+1E8E	Ẏ	Latin Capital Letter Y with dot above
+U+1E8F	ẏ	Latin Small Letter Y with dot above
+U+1E90	Ẑ	Latin Capital Letter Z with circumflex
+U+1E91	ẑ	Latin Small Letter Z with circumflex
+U+1E92	Ẓ	Latin Capital Letter Z with dot below
+U+1E93	ẓ	Latin Small Letter Z with dot below
+U+1E94	Ẕ	Latin Capital Letter Z with line below
+U+1E95	ẕ	Latin Small Letter Z with line below
+U+1E96	ẖ	Latin Small Letter H with line below
+U+1E97	ẗ	Latin Small Letter T with diaeresis
+U+1E98	ẘ	Latin Small Letter W with ring above
+U+1E99	ẙ	Latin Small Letter Y with ring above
+U+1E9A	ẚ	Latin Small Letter A with right half ring
+U+1E9B	ẛ	Latin Small Letter LONG s with dot above
+U+1E9C	ẜ	Latin Small Letter LONG s with diagonal stroke
+U+1E9D	ẝ	Latin Small Letter LONG s with high stroke
+U+1E9E	ẞ	Latin Capital Letter SHARP s
+U+1E9F	ẟ	Latin Small Letter DELTA
+u+1ea0	ạ	latin capital letter a with dot below
+U+1EA1	ạ	Latin Small Letter A with dot below
+U+1EA2	Ả	Latin Capital Letter A with hook above
+U+1EA3	ả	Latin Small Letter A with hook above
+U+1EA4	Ấ	Latin Capital Letter A with circumflex and acute
+U+1EA5	ấ	Latin Small Letter A with circumflex and acute
+U+1EA6	Ầ	Latin Capital Letter A with circumflex and grave
+U+1EA7	ầ	Latin Small Letter A with circumflex and grave
+U+1EA8	Ẩ	Latin Capital Letter A with circumflex and hook above
+U+1EA9	ẩ	Latin Small Letter A with circumflex and hook above
+U+1EAA	Ẫ	Latin Capital Letter A with circumflex and tilde
+U+1EAB	ẫ	Latin Small Letter A with circumflex and tilde
+U+1EAC	Ậ	Latin Capital Letter A with circumflex and dot below
+U+1EAD	ậ	Latin Small Letter A with circumflex and dot below
+U+1EAE	Ắ	Latin Capital Letter A with breve and acute
+U+1EAF	ắ	Latin Small Letter A with breve and acute
+U+1EB0	Ằ	Latin Capital Letter A with breve and grave
+U+1EB1	ằ	Latin Small Letter A with breve and grave
+U+1EB2	Ẳ	Latin Capital Letter A with breve and hook above
+U+1EB3	ẳ	Latin Small Letter A with breve and hook above
+U+1EB4	Ẵ	Latin Capital Letter A with breve and tilde
+U+1EB5	ẵ	Latin Small Letter A with breve and tilde
+U+1EB6	Ặ	Latin Capital Letter A with breve and dot below
+U+1EB7	ặ	Latin Small Letter A with breve and dot below
+U+1EB8	Ẹ	Latin Capital Letter E with dot below
+U+1EB9	ẹ	Latin Small Letter E with dot below
+U+1EBA	Ẻ	Latin Capital Letter E with hook above
+U+1EBB	ẻ	Latin Small Letter E with hook above
+U+1EBC	Ẽ	Latin Capital Letter E with tilde
+U+1EBD	ẽ	Latin Small Letter E with tilde
+U+1EBE	Ế	Latin Capital Letter E with circumflex and acute
+U+1EBF	ế	Latin Small Letter E with circumflex and acute
+U+1EC0	Ề	Latin Capital Letter E with circumflex and grave
+U+1EC1	ề	Latin Small Letter E with circumflex and grave
+U+1EC2	Ể	Latin Capital Letter E with circumflex and hook above
+U+1EC3	ể	Latin Small Letter E with circumflex and hook above
+U+1EC4	Ễ	Latin Capital Letter E with circumflex and tilde
+U+1EC5	ễ	Latin Small Letter E with circumflex and tilde
+U+1EC6	Ệ	Latin Capital Letter E with circumflex and dot below
+U+1EC7	ệ	Latin Small Letter E with circumflex and dot below
+U+1EC8	Ỉ	Latin Capital Letter I with hook above
+U+1EC9	ỉ	Latin Small Letter I with hook above
+U+1ECA	Ị	Latin Capital Letter I with dot below
+U+1ECB	ị	Latin Small Letter I with dot below
+U+1ECC	Ọ	Latin Capital Letter O with dot below
+U+1ECD	ọ	Latin Small Letter O with dot below
+U+1ECE	Ỏ	Latin Capital Letter O with hook above
+U+1ECF	ỏ	Latin Small Letter O with hook above
+U+1ED0	Ố	Latin Capital Letter O with circumflex and acute
+U+1ED1	ố	Latin Small Letter O with circumflex and acute
+U+1ED2	Ồ	Latin Capital Letter O with circumflex and grave
+U+1ED3	ồ	Latin Small Letter O with circumflex and grave
+U+1ED4	Ổ	Latin Capital Letter O with circumflex and hook above
+U+1ED5	ổ	Latin Small Letter O with circumflex and hook above
+U+1ED6	Ỗ	Latin Capital Letter O with circumflex and tilde
+U+1ED7	ỗ	Latin Small Letter O with circumflex and tilde
+U+1ED8	Ộ	Latin Capital Letter O with circumflex and dot below
+U+1ED9	ộ	Latin Small Letter O with circumflex and dot below
+U+1EDA	Ớ	Latin Capital Letter O with horn and acute
+U+1EDB	ớ	Latin Small Letter O with horn and acute
+U+1EDC	Ờ	Latin Capital Letter O with horn and grave
+U+1EDD	ờ	Latin Small Letter O with horn and grave
+U+1EDE	Ở	Latin Capital Letter O with horn and hook above
+U+1EDF	ở	Latin Small Letter O with horn and hook above
+U+1EE0	Ỡ	Latin Capital Letter O with horn and tilde
+U+1EE1	ỡ	Latin Small Letter O with horn and tilde
+U+1EE2	Ợ	Latin Capital Letter O with horn and dot below
+U+1EE3	ợ	Latin Small Letter O with horn and dot below
+U+1EE4	Ụ	Latin Capital Letter U with dot below
+U+1EE5	ụ	Latin Small Letter U with dot below
+U+1EE6	Ủ	Latin Capital Letter U with hook above
+U+1EE7	ủ	Latin Small Letter U with hook above
+U+1EE8	Ứ	Latin Capital Letter U with horn and acute
+U+1EE9	ứ	Latin Small Letter U with horn and acute
+U+1EEA	Ừ	Latin Capital Letter U with horn and grave
+U+1EEB	ừ	Latin Small Letter U with horn and grave
+U+1EEC	Ử	Latin Capital Letter U with horn and hook above
+U+1EED	ử	Latin Small Letter U with horn and hook above
+U+1EEE	Ữ	Latin Capital Letter U with horn and tilde
+U+1EEF	ữ	Latin Small Letter U with horn and tilde
+U+1EF0	Ự	Latin Capital Letter U with horn and dot below
+U+1EF1	ự	Latin Small Letter U with horn and dot below
+U+1EF2	Ỳ	Latin Capital Letter Y with grave
+U+1EF3	ỳ	Latin Small Letter Y with grave
+U+1EF4	Ỵ	Latin Capital Letter Y with dot below
+U+1EF5	ỵ	Latin Small Letter Y with dot below
+U+1EF6	Ỷ	Latin Capital Letter Y with hook above
+U+1EF7	ỷ	Latin Small Letter Y with hook above
+U+1EF8	Ỹ	Latin Capital Letter Y with tilde
+U+1EF9	ỹ	Latin Small Letter Y with tilde
+U+1EFA	Ỻ	Latin Capital Letter MIDDLE-welsh ll
+U+1EFB	ỻ	Latin Small Letter MIDDLE-welsh ll
+U+1EFC	Ỽ	Latin Capital Letter MIDDLE-welsh v
+U+1EFD	ỽ	Latin Small Letter MIDDLE-welsh v
+U+1EFE	Ỿ	Latin Capital Letter Y with loop
+U+1EFF	ỿ	Latin Small Letter Y with loop
+U+02B0	ʰ	Modifier Letter Small H
+U+02B1	ʱ	Modifier Letter Small H with hook
+U+02B2	ʲ	Modifier Letter Small J
+U+02B3	ʳ	Modifier Letter Small R
+U+02B4	ʴ	Modifier Letter Small Turned R
+U+02B5	ʵ	Modifier Letter Small Turned R with hook
+U+02B6	ʶ	Modifier Letter Small Capital Inverted R
+U+02B7	ʷ	Modifier Letter Small W
+U+02B8	ʸ	Modifier Letter Small Y
+U+02B9	ʹ	Modifier Letter Prime
+U+02BA	ʺ	Modifier Letter Double Prime
+U+02BB	ʻ	Modifier Letter Turned Comma
+U+02BC	ʼ	Modifier Letter Apostrophe
+U+02BD	ʽ	Modifier Letter Reversed Comma
+U+02BE	ʾ	Modifier Letter Right Half Ring
+U+02BF	ʿ	Modifier Letter Left Half Ring
+U+02C0	ˀ	Modifier Letter Glottal Stop
+U+02C1	ˁ	Modifier Letter Reversed Glottal Stop
+U+02C2	˂	Modifier Letter Left Arrowhead
+U+02C3	˃	Modifier Letter Right Arrowhead
+U+02C4	˄	Modifier Letter Up Arrowhead
+U+02C5	˅	Modifier Letter Down Arrowhead
+U+02C6	ˆ	Modifier Letter Circumflex
+U+02C7	ˇ	Modifier Letter Caron
+U+02C8	ˈ	Modifier Letter Vertical Line
+U+02C9	ˉ	Modifier Letter Macron
+U+02CA	ˊ	Modifier Letter Acute
+U+02CB	ˋ	Modifier Letter Grave
+U+02CC	ˌ	Modifier Letter Vertical Line Below
+U+02CD	ˍ	Modifier Letter Macron Below
+U+02CE	ˎ	Modifier Letter Grave Below
+U+02CF	ˏ	Modifier Letter Acute Below
+U+02D0	ː	Modifier Letter Triangular Colon
+U+02D1	ˑ	Modifier Letter Half Triangular Colon
+U+02D2	˒	Modifier Letter Centered Right Half Ring
+U+02D3	˓	Modifier Letter Centered Left Half Ring
+U+02D4	˔	Modifier Letter Up Tack
+U+02D5	˕	Modifier Letter Down Tack
+U+02D6	˖	Modifier Letter Plus Sign
+U+02D7	˗	Modifier Letter Minus Sign
+U+02D8	˘	Modifier Letter Breve
+U+02D9	˙	Modifier Letter Dot Above
+U+02DA	˚	Modifier Letter Ring Above
+U+02DB	˛	Modifier Letter Ogonek
+U+02DC	˜	Modifier Letter Small Tilde
+U+02DD	˝	Modifier Letter Double Acute
+U+02DE	˞	Modifier Letter Rhotic Hook
+U+02DF	˟	Modifier Letter Cross
+U+02E0	ˠ	Modifier Letter Small Gamma
+U+02E1	ˡ	Modifier Letter Small L
+U+02E2	ˢ	Modifier Letter Small S
+U+02E3	ˣ	Modifier Letter Small X
+U+02E4	ˤ	Modifier Letter Small Reversed Glottal Stop
+U+02E5	˥	Modifier Letter Extra-High Tone Bar
+U+02E6	˦	Modifier Letter High Tone Bar
+U+02E7	˧	Modifier Letter Mid Tone Bar
+U+02E8	˨	Modifier Letter Low Tone Bar
+U+02E9	˩	Modifier Letter Extra-Low Tone Bar
+U+02EA	˪	Extended Bopomofo Yin Departing (for Minnan and Hakka languages)
+U+02EB	˫	Extended Bopomofo Yang Departing (for Minnan and Hakka languages)
+U+02EC	ˬ	Modifier Letter Voicing
+U+02ED	˭	Modifier Letter Unaspirated
+U+02EE	ˮ	Modifier Letter Double Apostrophe
+U+02EF	˯	Modifier Letter Low Down Arrowhead
+U+02F0	˰	Modifier Letter Low Up Arrowhead
+U+02F1	˱	Modifier Letter Low Left Arrowhead
+U+02F2	˲	Modifier Letter Low Right Arrowhead
+U+02F3	˳	Modifier Letter Low Ring
+U+02F4	˴	Modifier Letter Middle Grave
+U+02F5	˵	Modifier Letter Middle Double Grave
+U+02F6	˶	Modifier Letter Middle Double Acute
+U+02F7	˷	Modifier Letter Low Tilde
+U+02F8	˸	Modifier Letter Raised Colon
+U+02F9	˹	Modifier Letter Begin High Tone
+U+02FA	˺	Modifier Letter End High Tone
+U+02FB	˻	Modifier Letter Begin Low Tone
+U+02FC	˼	Modifier Letter End Low Tone
+U+02FD	˽	Modifier Letter Shelf
+U+02FE	˾	Modifier Letter Open Shelf
+U+02FF	˿	Modifier Letter Low Left Arrow
+U+0300	̀	Combining Grave
+U+0301	́	Combining Acute
+U+0302	̂	Combining Circumflex
+U+0303	̃	Combining Tilde
+U+0304	̄	Combining Macron
+U+0305	̅	Combining Overline
+U+0306	̆	Combining Breve
+U+0307	̇	Combining Dot Above
+U+0308	̈	Combining Diaeresis
+U+0309	̉	Combining Hook Above
+U+030A	̊	Combining Ring Above
+U+030B	̋	Combining Double Acute
+U+030C	̌	Combining Caron
+U+030D	̍	Combining Vertical Line Above
+U+030E	̎	Combining Double Vertical Line Above
+U+030F	̏	Combining Double Grave
+U+0310	̐	Combining Candrabindu
+U+0311	̑	Combining Inverted Breve
+U+0312	̒	Combining Turned Comma Above
+U+0313	̓	Combining Comma Above
+U+0314	̔	Combining Reversed Comma Above
+U+0315	̕	Combining Comma Above Right
+U+0316	̖	Combining Grave Below
+U+0317	̗	Combining Acute Below
+U+0318	̘	Combining Left Tack Below
+U+0319	̙	Combining Right Tack Below
+U+031A	̚	Combining Left Angle Above
+U+031B	̛	Combining Horn
+U+031C	̜	Combining Left Half Ring Below
+U+031D	̝	Combining Up Tack Below
+U+031E	̞	Combining Down Tack Below
+U+031F	̟	Combining Plus Sign Below
+U+0320	̠	Combining Minus Sign Below
+U+0321	̡	Combining Palatalized Hook Below
+U+0322	̢	Combining Retroflex Hook Below
+U+0323	̣	Combining Dot Below
+U+0324	̤	Combining Diaeresis Below
+U+0325	̥	Combining Ring Below
+U+0326	̦	Combining Comma Below
+U+0327	̧	Combining Cedilla
+U+0328	̨	Combining Ogonek
+U+0329	̩	Combining Vertical Line Below
+U+032A	̪	Combining Bridge Below
+U+032B	̫	Combining Inverted Double Arch Below
+U+032C	̬	Combining Caron Below
+U+032D	̭	Combining Circumflex Below
+U+032E	̮	Combining Breve Below
+U+032F	̯	Combining Inverted Breve Below
+U+0330	̰	Combining Tilde Below
+U+0331	̱	Combining Macron Below
+U+0332	̲	Combining Low Line
+U+0333	̳	Combining Double Low Line
+U+0334	̴	Combining Tilde Overlay
+U+0335	̵	Combining Short Stroke Overlay
+U+0336	̶	Combining Long Stroke Overlay
+U+0337	̷	Combining Short Solidus Overlay
+U+0338	̸	Combining Long Solidus Overlay
+U+0339	̹	Combining Right Half Ring Below
+U+033A	̺	Combining Inverted Bridge Below
+U+033B	̻	Combining Square Below
+U+033C	̼	Combining Seagull Below
+U+033D	̽	Combining X Above
+U+033E	̾	Combining Vertical Tilde
+U+033F	̿	Combining Double Overline
+U+0340	̀	Combining Grave Tone Mark
+U+0341	́	Combining Acute Tone Mark
+U+0342	͂	Combining Greek Perispomeni
+U+0343	̓	Combining Greek Koronis
+U+0344	̈́	Combining Greek Dialytika Tonos
+U+0345	ͅ	Combining Greek Ypogegrammeni
+U+0346	͆	Combining Bridge Above
+U+0347	͇	Combining Equals Sign Below
+U+0348	͈	Combining Double Vertical Line Below
+U+0349	͉	Combining Left Angle Below
+U+034A	͊	Combining Not Tilde Above
+U+034B	͋	Combining Homothetic Above
+U+034C	͌	Combining Almost Equal To Above
+U+034D	͍	Combining Left Right Arrow Below
+U+034E	͎	Combining Upwards Arrow Below
+U+034F	͏	Combining Grapheme Joiner
+U+0350	͐	Combining Right Arrowhead Above
+U+0351	͑	Combining Left Half Ring Above
+U+0352	͒	Combining Fermata
+U+0353	͓	Combining X Below
+U+0354	͔	Combining Left Arrowhead Below
+U+0355	͕	Combining Right Arrowhead Below
+U+0356	͖	Combining Right Arrowhead and Up Arrowhead Below
+U+0357	͗	Combining Right Half Ring Above
+U+0358	͘	Combining Dot Above Right
+U+0359	͙	Combining Asterisk Below
+U+035A	͚	Combining Double Ring Below
+U+035B	͛	Combining Zigzag Above
+U+035C	͜	Combining Double Breve Below
+U+035D	͝	Combining Double Breve
+U+035E	͞	Combining Double Macron
+U+035F	͟	Combining Double Macron Below
+U+0360	͠	Combining Double Tilde
+U+0361	͡	Combining Double Inverted Breve
+U+0362	͢	Combining Double Rightwards Arrow Below
+U+0363	ͣ	Combining Latin Small Letter A
+U+0364	ͤ	Combining Latin Small Letter E
+U+0365	ͥ	Combining Latin Small Letter I
+U+0366	ͦ	Combining Latin Small Letter O
+U+0367	ͧ	Combining Latin Small Letter U
+U+0368	ͨ	Combining Latin Small Letter C
+U+0369	ͩ	Combining Latin Small Letter D
+U+036A	ͪ	Combining Latin Small Letter H
+U+036B	ͫ	Combining Latin Small Letter M
+U+036C	ͬ	Combining Latin Small Letter R
+U+036D	ͭ	Combining Latin Small Letter T
+U+036E	ͮ	Combining Latin Small Letter V
+U+036F	ͯ	Combining Latin Small Letter X

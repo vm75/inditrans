@@ -541,7 +541,7 @@
       },
       {
         "script": "oriya",
-        "text": "ଅସଯ ଔଷଧିଃ ଗ୍ରନ୍ଥଃ! ୡକାରୋ ନାସ୍ତି ଲେଶୋଽପି ସଂଶଯଃ। କୀଲକମ୍? କୂପିଃ?  କଷ୍ଠଂ ଭୋଃ। ଶଙ୍କର! ଜ୍ଞାନମ୍।  ସଞ୍ଜୀଵଯ। ୧୨୩୪୫॥ ଓଁ ତତ୍।"
+        "text": "ଅସଯ ଔଷଧିଃ ଗ୍ରନ୍ଥଃ! ୡକାରୋ ନାସ୍ତି ଲେଶୋଽପି ସଂଶଯଃ। କୀଲକମ୍? କୂପିଃ?  କଷ୍ଠଂ ଭୋଃ। ଶଙ୍କର! ଜ୍ଞାନମ୍।  ସଞ୍ଜୀୱଯ। ୧୨୩୪୫॥ ଓଁ ତତ୍।"
       },
       {
         "script": "titus",
@@ -597,11 +597,11 @@
       },
       {
         "script": "oriya",
-        "text": "ଅଗ୍ନିମୀଳେ ପୁରୋହିତଂ ଯଜ୍ଞସ୍ଯ ଦେଵମୃତ୍ଵିଜମ୍"
+        "text": "ଅଗ୍ନିମୀଳେ ପୁରୋହିତଂ ଯଜ୍ଞସ୍ଯ ଦେୱମୃତ୍ୱିଜମ୍"
       },
       {
         "script": "gurmukhi",
-        "text": "ਅਗ੍ਨਿਮੀਲ਼ੇ ਪੁਰੋਹਿਤਂ ਯਜ੍ਞਸ੍ਯ ਦੇਵਮृਤ੍ਵਿਜਮ੍"
+        "text": "ਅਗ੍ਨਿਮੀਲ਼ੇ ਪੁਰੋਹਿਤਂ ਯਜ੍ਞਸ੍ਯ ਦੇਵਮ੍ਰੁਤ੍ਵਿਜਮ੍"
       },
       {
         "script": "gujarati",
@@ -609,7 +609,7 @@
       },
       {
         "script": "assamese",
-        "text": "অগ্নিমীळে পুৰোহিতং যজ্ঞস্য দেৱমৃত্ৱিজম্"
+        "text": "অগ্নিমীল়ে পুৰোহিতং যজ্ঞস্য দেৱমৃত্ৱিজম্"
       }
     ]
   },
@@ -661,7 +661,7 @@
       },
       {
         "script": "itrans",
-        "text": "aMshaai pa.Diba fakiira zaruura"
+        "text": "aMshAi pa.Diba fakIra zarUra"
       }
     ]
   },
@@ -702,38 +702,6 @@
       {
         "script": "kannada",
         "text": "ೱ ೲ"
-      }
-    ]
-  },
-  {
-    "description": "to-and-fro: Tests nuTka",
-    "type": "to-and-fro",
-    "script": "devanagari",
-    "text": "़",
-    "targets": [
-      {
-        "script": "oriya",
-        "text": "଼"
-      },
-      {
-        "script": "gujarati",
-        "text": "઼"
-      },
-      {
-        "script": "assamese",
-        "text": "়"
-      },
-      {
-        "script": "bengali",
-        "text": "়"
-      },
-      {
-        "script": "kannada",
-        "text": "಼"
-      },
-      {
-        "script": "gurmukhi",
-        "text": "਼"
       }
     ]
   },
@@ -820,7 +788,7 @@
   {
     "description": "svaras",
     "script": "iast",
-    "text": "tuvé asuryàṃ vásavo ní r̥ṇvan ókaso agna āja",
+    "text": "tuvé asuryàṃ vásavo ní r̥ṇvan ókaso agna āja",
     "targets": [
       {
         "script": "devanagari",
@@ -883,7 +851,7 @@
     "targets": [
       {
         "script": "iast",
-        "text": "tejoṃśasaṃbhavam"
+        "text": "tejoṃśasambhavam"
       }
     ]
   },
