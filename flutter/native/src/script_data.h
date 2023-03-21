@@ -47,6 +47,18 @@ const char scriptData[] =
       "র়" Z "ৰ়" Z E
     E
   E
+  "burmese" Z INDIC
+    VOWELS "အ" Z "အာ" Z "ဣ" Z "ဤ" Z "ဥ" Z "ဦ" Z "ၒ" Z "ၓ" Z "ၔ" Z "ၕ" Z "ဧʽ" Z "ဧ" Z "အဲ" Z "ဩʽ" Z "ဩ" Z "ဪ" Z "ဧʽ" Z "ဧʽ" Z "အာʽ" Z E
+    VOWELDIACRITICS "်" Z "ာ" Z "ိ" Z "ီ" Z "ု" Z "ူ" Z "ၖ" Z "ၗ" Z "ၘ" Z "ၙ" Z "ေʽ" Z "ေ" Z "ဲ" Z "ောʽ" Z "ော" Z "ော်" Z "ေʽ" Z "ေʽ" Z "ာʽ" Z E
+    CONSONANTS "က" Z "ခ" Z "ဂ" Z "ဃ" Z "င" Z "စ" Z "ဆ" Z "ဇ" Z "ဈ" Z "ဉ" Z "ဋ" Z "ဌ" Z "ဍ" Z "ဎ" Z "ဏ" Z "တ" Z "ထ" Z "ဒ" Z "ဓ" Z "န" Z "ပ" Z "ဖ" Z "ဗ" Z "ဘ" Z "မ" Z "ယ" Z "ရ" Z "လ" Z "ဝ" Z "ၐ" Z "ၑ" Z "သ" Z "ဟ" Z "ဠ" Z "ဠʽ" Z "ရʽ" Z "နʽ" Z "ကʽ" Z "ခʽ" Z "ဂʽ" Z "ဇʽ" Z "ဍʽ" Z "ဎʽ" Z "ဖʽ" Z "ယʽ" Z "ံဂʽ" Z "ံဇʽ" Z "ံဍʽ" Z "ံဒʽ" Z "ံဗʽ" Z E
+    COMMONDIACRITICS "ံʽ" Z "ံ" Z "း" Z "းʽ" Z E
+    SYMBOLS "၀" Z "၁" Z "၂" Z "၃" Z "၄" Z "၅" Z "၆" Z "၇" Z "၈" Z "၉" Z "ဥုံ" Z "၊" Z "။" Z E
+    VEDICSYMBOLS "'" Z "ꣳ" Z "ꣴ" Z E
+    ALTERNATES
+      "z:0" Z "{}" Z "^^" Z E
+      "z:1" Z "()" Z "^" Z E
+    E
+  E
   "devanagari" Z INDIC
     ALIASES "samskrit" Z "sanskrit" Z E
     VOWELS "अ" Z "आ" Z "इ" Z "ई" Z "उ" Z "ऊ" Z "ऋ" Z "ॠ" Z "ऌ" Z "ॡ" Z "ऎ" Z "ए" Z "ऐ" Z "ऒ" Z "ओ" Z "औ" Z "ऍ" Z "एॕ" Z "ऑ" Z E
@@ -378,6 +390,14 @@ const char scriptData[] =
       "ಽ" Z "ೱ" Z "ೲ" Z E
     E
   E
+  "khmer" Z INDIC
+    VOWELS "អ" Z "អា" Z "ឥ" Z "ឦ" Z "ឧ" Z "ឩ" Z "ឫ" Z "ឬ" Z "ឭ" Z "ឮ" Z "ឯʽ" Z "ឯ" Z "ឰ" Z "ឱʽ" Z "ឱ" Z "ឳ" Z "ឯʽ" Z "ឯʽ" Z "អាʽ" Z E
+    VOWELDIACRITICS "៑" Z "ា" Z "ិ" Z "ី" Z "ុ" Z "ូ" Z "្ឫ" Z "្ឬ" Z "្ឭ" Z "្ឮ" Z "េʽ" Z "េ" Z "ៃ" Z "ោʽ" Z "ោ" Z "ៅ" Z "េʽ" Z "េʽ" Z "ាʽ" Z E
+    CONSONANTS "ក" Z "ខ" Z "គ" Z "ឃ" Z "ង" Z "ច" Z "ឆ" Z "ជ" Z "ឈ" Z "ញ" Z "ដ" Z "ឋ" Z "ឌ" Z "ឍ" Z "ណ" Z "ត" Z "ថ" Z "ទ" Z "ធ" Z "ន" Z "ប" Z "ផ" Z "ព" Z "ភ" Z "ម" Z "យ" Z "រ" Z "ល" Z "វ" Z "ឝ" Z "ឞ" Z "ស" Z "ហ" Z "ឡ" Z "ឡʽ" Z "រʽ" Z "នʽ" Z "កʽ" Z "ខʽ" Z "គʽ" Z "ជʽ" Z "ឌʽ" Z "ឍʽ" Z "ផʽ" Z "យʽ" Z "ំគʽ" Z "ំជʽ" Z "ំឌʽ" Z "ំទʽ" Z "ំពʽ" Z E
+    COMMONDIACRITICS "ំʽ" Z "ំ" Z "ះ" Z "ះʽ" Z E
+    SYMBOLS "០" Z "១" Z "២" Z "៣" Z "៤" Z "៥" Z "៦" Z "៧" Z "៨" Z "៩" Z "ឱំ" Z "។" Z "៕" Z E
+    VEDICSYMBOLS "ៜ" Z "ꣳ" Z "ꣴ" Z E
+  E
   "malayalam" Z INDIC
     VOWELS "അ" Z "ആ" Z "ഇ" Z "ഈ" Z "ഉ" Z "ഊ" Z "ഋ" Z "ൠ" Z "ഌ" Z "ൡ" Z "എ" Z "ഏ" Z "ഐ" Z "ഒ" Z "ഓ" Z "ഔ" Z "എ᳴" Z "ഏˇ" Z "ആ᳴" Z E
     VOWELDIACRITICS "്" Z "ാ" Z "ി" Z "ീ" Z "ു" Z "ൂ" Z "ൃ" Z "ൄ" Z "ൢ" Z "ൣ" Z "െ" Z "േ" Z "ൈ" Z "ൊ" Z "ോ" Z "ൗ" Z "െ᳴" Z "േˇ" Z "ാ᳴" Z E
@@ -454,6 +474,22 @@ const char scriptData[] =
     ALTERNATES
       "్" Z "్‍" Z "‍్" Z E
     E
+  E
+  "thai" Z INDIC
+    VOWELS "อ" Z "อา" Z "อิ" Z "อี" Z "อุ" Z "อู" Z "ฤ" Z "ฤๅ" Z "ฦ" Z "ฦๅ" Z "อเะ" Z "อเ" Z "อไ" Z "อโะ" Z "อโ" Z "อเา" Z "อแะ" Z "อแ" Z "อเาะ" Z E
+    VOWELDIACRITICS "ฺ" Z "า" Z "ิ" Z "ี" Z "ุ" Z "ู" Z "ฺฤ" Z "ฺฤๅ" Z "ฺฦ" Z "ฺฦๅ" Z "เะ" Z "เ" Z "ไ" Z "โะ" Z "โ" Z "เา" Z "แะ" Z "แ" Z "เาะ" Z E
+    CONSONANTS "ก" Z "ข" Z "ค" Z "ฆ" Z "ง" Z "จ" Z "ฉ" Z "ช" Z "ฌ" Z "ญ" Z "ฏ" Z "ฐ" Z "ฑ" Z "ฒ" Z "ณ" Z "ต" Z "ถ" Z "ท" Z "ธ" Z "น" Z "ป" Z "ผ" Z "พ" Z "ภ" Z "ม" Z "ย" Z "ร" Z "ล" Z "ว" Z "ศ" Z "ษ" Z "ส" Z "ห" Z "ฬ" Z "ฬʽ" Z "รʽ" Z "นʽ" Z "กʽ" Z "ฃ" Z "ฅ" Z "ซ" Z "รʽ" Z "รฺหʽ" Z "ฟ" Z "ยʽ" Z "ํคʽ" Z "ํชʽ" Z "ํฑʽ" Z "ํทʽ" Z "ํพʽ" Z E
+    COMMONDIACRITICS "ํʽ" Z "ํ" Z "ห์" Z "ห์ʽ" Z E
+    SYMBOLS "๐" Z "๑" Z "๒" Z "๓" Z "๔" Z "๕" Z "๖" Z "๗" Z "๘" Z "๙" Z "โอํ" Z "ฯ" Z "๚" Z E
+    VEDICSYMBOLS "'" Z "ꣳ" Z "ꣴ" Z E
+  E
+  "tibetan" Z INDIC
+    VOWELS "ཨ" Z "ཨཱ" Z "ཨི" Z "ཨཱི" Z "ཨུ" Z "ཨཱུ" Z "རྀ" Z "རཱྀ" Z "ལྀ" Z "ལཱྀ" Z "ཨེʽ" Z "ཨེ" Z "ཨཻ" Z "ཨོʽ" Z "ཨོ" Z "ཨཽ" Z "ཨེʽ" Z "ཨེʽ" Z "ཨཱʽ" Z E
+    VOWELDIACRITICS "྄" Z "ཱ" Z "ི" Z "ཱི" Z "ུ" Z "ཱུ" Z "ྲྀ" Z "ྲཱྀ" Z "ླྀ" Z "ླཱྀ" Z "ེʽ" Z "ེ" Z "ཻ" Z "ོʽ" Z "ོ" Z "ཽ" Z "ེʽ" Z "ེʽ" Z "ཱʽ" Z E
+    CONSONANTS "ཀ" Z "ཁ" Z "ག" Z "གྷ" Z "ང" Z "ཙ" Z "ཚ" Z "ཛ" Z "ཛྷ" Z "ཉ" Z "ཊ" Z "ཋ" Z "ཌ" Z "ཌྷ" Z "ཎ" Z "ཏ" Z "ཐ" Z "ད" Z "དྷ" Z "ན" Z "པ" Z "ཕ" Z "བ" Z "བྷ" Z "མ" Z "ཡ" Z "ར" Z "ལ" Z "ཝ" Z "ཤ" Z "ཥ" Z "ས" Z "ཧ" Z "ལ༹" Z "ཥ༹" Z "ར༹" Z "ན༹" Z "ཀ༹" Z "ཁ༹" Z "ག༹" Z "ཟ" Z "ཌ༹" Z "ཌྷ༹" Z "ཕ༹" Z "ཡ༹" Z "ྃཀʽ" Z "ྃཛʽ" Z "ྃཌʽ" Z "ྃདʽ" Z "ྃབʽ" Z E
+    COMMONDIACRITICS "ྃ" Z "ཾ" Z "ཿ" Z "ཿʽ" Z E
+    SYMBOLS "༠" Z "༡" Z "༢" Z "༣" Z "༤" Z "༥" Z "༦" Z "༧" Z "༨" Z "༩" Z "ༀ" Z "།" Z "༎" Z E
+    VEDICSYMBOLS "྅" Z "ꣳ" Z "ꣴ" Z E
   E
   "titus" Z LATIN
     VOWELS "a" Z "ā" Z "i" Z "ī" Z "u" Z "ū" Z "r̥" Z "r̥̄" Z "l̥" Z "l̥̄" Z "ĕ" Z "e" Z "ai" Z "ŏ" Z "o" Z "au" Z "æ" Z "ǣ" Z "ô" Z E

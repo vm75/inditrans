@@ -652,6 +652,9 @@ private:
           if (superscriptPos != TamilSuperscripts.npos) {
             tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + superscriptPos / "²"_len));
             iter++;
+          } else if((superscriptPos = TamilSubscripts.find(GetString(*iter))) != TamilSubscripts.npos) {
+            tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + superscriptPos / "²"_len));
+            iter++;
           } else {
             break;
           }
@@ -814,7 +817,7 @@ private:
     }
     const auto& next = *iter;
     if (HoldsString(next)) {
-      return TamilSuperscripts.find(GetString(next)) == TamilSuperscripts.npos;
+      return true;
     }
     const auto token = GetScriptToken(next);
     return token.tokenType == TokenType::Symbol;
@@ -902,8 +905,8 @@ public:
 
 protected:
   inline void push(const std::string_view& text) {
-    if (options / TranslitOptions::ShowQuotedMarkers) {
-      stripChars(text, QuotedMarkers, buffer);
+    if (options / TranslitOptions::RetainSpecialMarkers) {
+      stripChars(text, SpecialMarkers, buffer);
     } else {
       buffer += text;
     }
@@ -1066,9 +1069,9 @@ protected:
 
   void setNasalConsonantSize() noexcept {
     const auto& anuswara = map.lookupChar(TokenType::CommonDiacritic, SpecialIndices::Anuswara);
-    if (options / TranslitOptions::ShowQuotedMarkers) {
+    if (options / TranslitOptions::RetainSpecialMarkers) {
       std::string out {};
-      stripChars(anuswara, QuotedMarkers, out);
+      stripChars(anuswara, SpecialMarkers, out);
       anuswaraSize = out.size();
     } else {
       anuswaraSize = anuswara.size();

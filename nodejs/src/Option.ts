@@ -4,5 +4,5 @@ export enum Option {
   TamilSuperscripted = 2,
   ASCIINumerals = 4,
   IgnoreVedicAccents = 8,
-  ShowQuotedMarkers = 16,
+  RetainSpecialMarkers = 16,
 }

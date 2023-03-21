@@ -57,7 +57,7 @@ constexpr std::string_view TamilSuperscripts { "¹²³⁴" };
 constexpr std::string_view TamilSubscripts { "₁₂₃₄" };
 
 constexpr std::string_view TamilSpecialChars { "ʼˮˇ꞉ஃ·" };
-constexpr std::string_view QuotedMarkers { "ʼˮˇ" };
+constexpr std::string_view SpecialMarkers { "ʽʼˮˇ" };
 
 // clang-format on
 

@@ -6,7 +6,7 @@ Module['onRuntimeInitialized'] = function () {
             'TamilSuperscripted': 2,
             'ASCIINumerals': 4,
             'IgnoreVedicAccents': 8,
-            'ShowQuotedMarkers': 16,
+            'RetainSpecialMarkers': 16,
         },
         'optionsToInt': (optionsString) => {
             const options = optionsString.split(' ');

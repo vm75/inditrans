@@ -15,7 +15,7 @@ TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
     "TamilSuperscripted",
     "ASCIINumerals",
     "IgnoreVedicAccents",
-    "ShowQuotedMarkers",
+    "RetainSpecialMarkers",
   };
 
   TranslitOptions mask { TranslitOptions::None };

@@ -66,8 +66,8 @@ class Option {
   /// Ignore Vedic accents in transliterated text
   static const IgnoreVedicAccents = Option._(8);
 
-  /// Ignore quoted markers in transliterated text
-  static const ShowQuotedMarkers = Option._(16);
+  /// Retain special markers which are used to identify non-standard chars
+  static const RetainSpecialMarkers = Option._(16);
 
   /// Joins two options
   Option operator +(Option other) {
@@ -80,7 +80,7 @@ class Option {
     'TamilSuperscripted': TamilSuperscripted,
     'ASCIINumerals': ASCIINumerals,
     'IgnoreVedicAccents': IgnoreVedicAccents,
-    'ShowQuotedMarkers': ShowQuotedMarkers,
+    'RetainSpecialMarkers': RetainSpecialMarkers,
   };
   static Option fromString(String name) {
     return _values[name] ?? None;
