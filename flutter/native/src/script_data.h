@@ -70,6 +70,7 @@ const char scriptData[] =
       "य़" Z "य़" Z E
       "्" Z "᳭" Z "्‍" Z "‍्" Z E
       "ऽ" Z "ᳵ" Z "ᳶ" Z E
+      "ऍ" Z "ॲ" Z "अॅ" Z E
     E
   E
   "gujarati" Z INDIC
