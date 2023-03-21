@@ -17,6 +17,7 @@ init_emcc() {
       ./emsdk install latest
       ./emsdk activate latest
       export EMSDK=${emsdk}
+      cd ${currDir}
     else
       # set EMSDK environment variable and persist it
       export EMSDK=${emsdk}

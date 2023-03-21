@@ -455,6 +455,44 @@ const char scriptData[] =
       "్" Z "్‍" Z "‍్" Z E
     E
   E
+  "titus" Z LATIN
+    VOWELS "a" Z "ā" Z "i" Z "ī" Z "u" Z "ū" Z "r̥" Z "r̥̄" Z "l̥" Z "l̥̄" Z "ĕ" Z "e" Z "ai" Z "ŏ" Z "o" Z "au" Z "æ" Z "ǣ" Z "ô" Z E
+    VOWELDIACRITICS "" Z "ā" Z "i" Z "ī" Z "u" Z "ū" Z "r̥" Z "r̥̄" Z "l̥" Z "l̥̄" Z "ĕ" Z "e" Z "ai" Z "ŏ" Z "o" Z "au" Z "æ" Z "ǣ" Z "ô" Z E
+    CONSONANTS "k" Z "kʰ" Z "g" Z "gʰ" Z "ṅ" Z "c" Z "cʰ" Z "j" Z "jʰ" Z "ñ" Z "ṭ" Z "ṭʰ" Z "ḍ" Z "ḍʰ" Z "ṇ" Z "t" Z "tʰ" Z "d" Z "dʰ" Z "n" Z "p" Z "pʰ" Z "b" Z "bʰ" Z "m" Z "y" Z "r" Z "l" Z "v" Z "ś" Z "ṣ" Z "s" Z "h" Z "ḷ" Z "ḻ" Z "ṟ" Z "ṉ" Z "q" Z "k͟ʰ" Z "ġ" Z "z" Z "ṛ" Z "ṛʰ" Z "f" Z "ẏ" Z "n̆g" Z "n̆j" Z "n̆ḍ" Z "n̆d" Z "m̆b" Z E
+    COMMONDIACRITICS "m̐" Z "ṃ" Z "ḥ" Z "ḵ" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oṃ" Z "." Z ".." Z E
+    VEDICSYMBOLS "'" Z "gͫ" Z "gͫ̄" Z E
+    ALTERNATES
+      ".." Z "//" Z E
+      "." Z "/" Z E
+      "z:0" Z "{}" Z "^^" Z E
+      "z:1" Z "()" Z "^" Z E
+      "ā" Z "ā" Z E
+      "ī" Z "ī" Z E
+      "ū" Z "ū" Z E
+      "ĕ" Z "ĕ" Z E
+      "ŏ" Z "ŏ" Z E
+      "ô" Z "ô" Z E
+      "ṅ" Z "ṅ" Z E
+      "ñ" Z "ñ" Z E
+      "ṭ" Z "ṭ" Z E
+      "ṭʰ" Z "ṭʰ" Z E
+      "ḍ" Z "ḍ" Z E
+      "ḍʰ" Z "ḍʰ" Z E
+      "ṇ" Z "ṇ" Z E
+      "ś" Z "ś" Z E
+      "ṣ" Z "ṣ" Z E
+      "ḷ" Z "ḷ" Z E
+      "ġ" Z "ġ" Z E
+      "ṛ" Z "ṛ" Z E
+      "ṛʰ" Z "ṛʰ" Z E
+      "ẏ" Z "ẏ" Z E
+      "n̆ḍ" Z "n̆ḍ" Z E
+      "ṃ" Z "ṃ" Z E
+      "ḥ" Z "ḥ" Z E
+      "oṃ" Z "oṃ" Z E
+    E
+  E
 ;
 
 // clang-format on

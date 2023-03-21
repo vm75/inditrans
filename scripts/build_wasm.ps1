@@ -3,17 +3,18 @@ function init_emcc {
     if ($null -eq $env:EMSDK -or !(Test-Path $env:EMSDK)) {
         # look for emsdk in the default location - AppData\Local\Programs\emsdk
         $emsdk = Join-Path $env:LOCALAPPDATA "Programs\emsdk"
-    
+
         # if not installed clone https://github.com/emscripten-core/emsdk.git and install
         if (!(Test-Path $emsdk)) {
             git clone https://github.com/emscripten-core/emsdk.git $emsdk
-  
+
             $currDir = Get-Location
-  
+
             Set-Location $emsdk
             .\emsdk install latest
             .\emsdk activate latest
             [Environment]::SetEnvironmentVariable("EMSDK", $emsdk, "User")
+            Set-Location $currDir
         }
         else {
             # set EMSDK environment variable and persist it
@@ -21,7 +22,7 @@ function init_emcc {
             [Environment]::SetEnvironmentVariable("EMSDK", $emsdk, "User")
         }
     }
-  
+
     # set emsdk environment variables
     . $env:EMSDK\emsdk_env.ps1
 }
@@ -111,7 +112,7 @@ init_emcc
 
 cd $PSScriptRoot\..
 
-# build 
+# build
 if ($args[0] -eq "standalone") {
     build_wasm_standalone $args[1]
 }

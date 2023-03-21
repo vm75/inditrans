@@ -2,6 +2,7 @@
 
 #include <chrono>
 #include <fstream>
+#include <functional>
 #include <inditrans.h>
 #include <iomanip>
 #include <iostream>
