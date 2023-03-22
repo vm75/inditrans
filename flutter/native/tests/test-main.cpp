@@ -6,7 +6,7 @@ void testInitransMain() noexcept;
 
 int main() {
 
-  suite<"inditrans tests"> inditransTests = [] { testInitransMain(); };
+  testInitransMain();
 
   return 0;
 }

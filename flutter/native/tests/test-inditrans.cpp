@@ -67,11 +67,36 @@ void testAllTranslit(std::string_view file) noexcept {
       auto description = inputObj.get<std::string>("description");
       auto text = inputObj.get<std::string>("text");
       auto source = inputObj.get<std::string>("script");
-      if (source == std::nullopt) {
+      auto type = inputObj.get<std::string>("type");
+      if (source == std::nullopt && type == std::nullopt) {
         continue;
       }
 
       auto targets = inputObj.get<JsonArray>("targets");
+
+      if (*type == "any-to-any") {
+        for (auto& first : *targets) {
+          for (auto& second : *targets) {
+            auto sourceObj = std::get<JsonOject>(first);
+            auto targetObj = std::get<JsonOject>(second);
+            auto source = sourceObj.get<std::string>("script");
+            auto target = targetObj.get<std::string>("script");
+            if (source == target || !isScriptSupported(source->c_str()) || !isScriptSupported(target->c_str())) {
+              continue;
+            }
+            auto text = sourceObj.get<std::string>("text");
+            auto expected = targetObj.get<std::string>("text");
+
+            std::string str = *description + " ( " + *source + " -> " + *target + " )";
+            test(str.c_str()) = [&] {
+              auto res = transliterate(*text, *source, *target, TranslitOptions::None);
+              expect(res == *expected);
+            };
+          }
+        }
+        continue;
+      }
+
       for (auto& entry : *targets) {
         auto targetObj = std::get<JsonOject>(entry);
         auto target = targetObj.get<std::string>("script");
@@ -89,6 +114,12 @@ void testAllTranslit(std::string_view file) noexcept {
         test(str.c_str()) = [&] {
           auto res = transliterate(*text, *source, *target, getTranslitOptions(options));
           expect(res == *expected);
+
+          if (type != std::nullopt && *type == "to-and-fro") {
+            res = transliterate(*text, *source, *target, getTranslitOptions(options + " RetainSpecialMarkers"));
+            auto res2 = transliterate(res, *target, *source, getTranslitOptions(options));
+            expect(res2 == *text);
+          }
         };
       }
     }
@@ -140,6 +171,6 @@ void testPerf(bool prof) noexcept {
 }
 
 void testInitransMain() noexcept {
-  testAllTranslit("test-files/test-cases.json");
-  testAllTranslit("test-files/sanscript-tests.json");
+  suite<"test-cases.json tests"> inditransTests = [] { testAllTranslit("test-files/test-cases.json"); };
+  suite<"sanscript-tests.json tests"> sanscriptTests = [] { testAllTranslit("test-files/sanscript-tests.json"); };
 }
