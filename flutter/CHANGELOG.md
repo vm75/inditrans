@@ -1,3 +1,7 @@
+## 0.4.4
+
+- Fixed ITRANS and unit tests
+
 ## 0.4.3
 
 - added support for xml tag skip

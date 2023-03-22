@@ -99,3 +99,8 @@ To type a Zero Width Joiner, + can be typed between the letters, for example: k 
 * { TokenType::Symbol,          ScriptType::Latin,  14 /* ꣳ */,       "\\м+" },
 * { TokenType::Symbol,          ScriptType::Latin,  15 /* ꣴ */,       "\\m++" },
 * { TokenType::Symbol,          ScriptType::Latin,  15 /* ꣴ */,       "\\м++" },
+
+## Composite alternates (itrans)
+* x | kSh
+* GY | j~n | dny
+* SRI

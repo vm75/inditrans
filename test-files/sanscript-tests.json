@@ -25,7 +25,7 @@
       },
       {
         "script": "itrans",
-        "text": "a A i I u U RRi RRI LLi LLI e ai o au"
+        "text": "a aa i ee u uu R^i R^I L^i L^I e ai o au"
       },
       {
         "script": "optitrans",
@@ -87,7 +87,7 @@
       },
       {
         "script": "itrans",
-        "text": "ka khA gi ghI ~Nu chU ChRRi jRRI jhLLi ~nLLI Te Thai Do Dhau NaM taH th"
+        "text": "ka khaa gi ghee ~Nu chuu chhR^i jR^I jhL^i ~nL^I Te Thai Do Dhau NaM taH th"
       },
       {
         "script": "optitrans",
@@ -111,7 +111,7 @@
       },
       {
         "script": "malayalam",
-        "text": "ക ഖാ ഗി ഘീ ങു ചൂ ഛൃ ജൄ ഝൢ ഞൣ ടേ ഠൈ ഡോ ഢൌ ണം തഃ ഥ്"
+        "text": "ക ഖാ ഗി ഘീ ങു ചൂ ഛൃ ജൄ ഝൢ ഞൣ ടേ ഠൈ ഡോ ഢൗ ണം തഃ ഥ്"
       },
       {
         "script": "telugu",
@@ -129,7 +129,7 @@
     "targets": [
       {
         "script": "bengali",
-        "text": "ক খ গ ঘ ঙ চ ছ জ ঝ ঞ ট ঠ ড ঢ ণ ত থ দ ধ ন প ফ ব ভ ম য র ল ব শ ষ স হ ল়"
+        "text": "ক খ গ ঘ ঙ চ ছ জ ঝ ঞ ট ঠ ড ঢ ণ ত থ দ ধ ন প ফ ব ভ ম য র ল ভ় শ ষ স হ ল়"
       },
       {
         "script": "devanagari",
@@ -149,7 +149,7 @@
       },
       {
         "script": "itrans",
-        "text": "ka kha ga gha ~Na cha Cha ja jha ~na Ta Tha Da Dha Na ta tha da dha na pa pha ba bha ma ya ra la va sha Sha sa ha La"
+        "text": "ka kha ga gha ~Na cha chha ja jha ~na Ta Tha Da Dha Na ta tha da dha na pa pha ba bha ma ya ra la va sha Sha sa ha La"
       },
       {
         "script": "optitrans",
@@ -203,7 +203,7 @@
       },
       {
         "script": "titus",
-        "text": "oṃ . .. 0 1 2 3 4 5 6 7 8 9"
+        "text": "oṃ / // 0 1 2 3 4 5 6 7 8 9"
       },
       {
         "script": "hk",
@@ -377,7 +377,7 @@
     "targets": [
       {
         "script": "bengali",
-        "text": "ধর্মক্ষেত্রে কুরুক্ষেত্রে সমবেতা যুযুত্সবঃ ।"
+        "text": "ধর্মক্ষেত্রে কুরুক্ষেত্রে সমভ়েতা যুযুত্সভ়ঃ ।"
       },
       {
         "script": "devanagari",
@@ -389,7 +389,7 @@
       },
       {
         "script": "titus",
-        "text": "dʰarmakṣetre kurukṣetre samavetā yuyutsavaḥ ."
+        "text": "dʰarmakṣetre kurukṣetre samavetā yuyutsavaḥ /"
       },
       {
         "script": "hk",
@@ -397,7 +397,7 @@
       },
       {
         "script": "itrans",
-        "text": "dharmakShetre kurukShetre samavetA yuyutsavaH |"
+        "text": "dharmakShetre kurukShetre samavetaa yuyutsavaH |"
       },
       {
         "script": "optitrans",
@@ -441,7 +441,7 @@
     "targets": [
       {
         "script": "iast",
-        "text": "asaya auṣadhiḥ granthaḥ! ḹkāro nāsti leśo'pi saṃśayaḥ. kīlakam? kūpiḥ?  kaṣṭhaṃ bhoḥ. śaṅkara! jñānam.  sañjīvaya. 12345.. oṃ tat."
+        "text": "asaya auṣadhiḥ granthaḥ! ḹkāro nāsti leśo'pi saṃśayaḥ| kīlakam? kūpiḥ?  kaṣṭhaṃ bhoḥ| śaṅkara! jñānam|  sañjīvaya| 12345|| oṃ tat|"
       },
       {
         "script": "iastDcs",
@@ -481,7 +481,7 @@
       },
       {
         "script": "titus",
-        "text": "asaya auṣadʰiḥ grantʰaḥ! l̥̄kāro nāsti leśo'pi saṃśayaḥ. kīlakam? kūpiḥ?  kaṣṭʰaṃ bʰoḥ. śaṅkara! jñānam.  sañjīvaya. 12345.. oṃ tat."
+        "text": "asaya auṣadʰiḥ grantʰaḥ! l̥̄kāro nāsti leśo'pi saṃśayaḥ/ kīlakam? kūpiḥ?  kaṣṭʰaṃ bʰoḥ/ śaṅkara! jñānam/  sañjīvaya/ 12345// oṃ tat/"
       }
     ]
   },
@@ -565,7 +565,7 @@
       },
       {
         "script": "itrans",
-        "text": "aMshAi pa.Diba fakIra zarUra"
+        "text": "aMshaai pa.Diba fakeera zaruura"
       }
     ]
   },
@@ -577,7 +577,7 @@
     "targets": [
       {
         "script": "titus",
-        "text": "vr̥kṣyaṃ havīṃṣi gr̥hyanta r̥̄ṇamu pitr̥̄n.."
+        "text": "vr̥kṣyaṃ havīṃṣi gr̥hyanta r̥̄ṇamu pitr̥̄n//"
       }
     ]
   },
@@ -644,17 +644,17 @@
       }
     ]
   },
-  // {
-  //   "description": "Check aDDak and tippee",
-  //   "script": "gurmukhi",
-  //   "text": "ਅੱਭਰ ਅੱਕ ਮੂੰਡਾ ਭੁੱਲਾ",
-  //   "targets": [
-  //     {
-  //       "script": "devanagari",
-  //       "text": "अब्भर अक्क मूंडा भुल्ला"
-  //     }
-  //   ]
-  // },
+  {
+    "description": "Check aDDak and tippee",
+    "script": "gurmukhi",
+    "text": "ਅੱਭਰ ਅੱਕ ਮੂੰਡਾ ਭੁੱਲਾ",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "अब्भर अक्क मूंडा भुल्ला"
+      }
+    ]
+  },
   {
     "description": "Tests Capitalized IAST",
     "script": "iast",

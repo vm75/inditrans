@@ -115,6 +115,7 @@
       "symbols": [ "൦", "൧", "൨", "൩", "൪", "൫", "൬", "൭", "൮", "൯", "ഓം", "।", "॥" ],
       "vedicSymbols": [ "ഽ", "ꣳ", "ꣴ" ],
       "alternates": {
+        "ൌ": [ "ൗ" ],
         "്": [ "്‍", "‍്" ]
       }
     },
@@ -228,21 +229,32 @@
       }
     },
     "itrans": {
-      "vowels": [ "a", "A", "i", "I", "u", "U", "R^i", "R^I", "L^i", "L^I", "^e", "e", "ai", "^o", "o", "au", "e.c", "a.C", "A.c" ],
-      "vowelDiacritics": [ "", "A", "i", "I", "u", "U", "R^i", "R^I", "L^i", "L^I", "^e", "e", "ai", "^o", "o", "au", "e.c", "a.C", "A.c" ],
+      "vowels": [ "a", "aa", "i", "ee", "u", "uu", "R^i", "R^I", "L^i", "L^I", "^e", "e", "ai", "^o", "o", "au", "e.c", "a.C", "A.c" ],
+      "vowelDiacritics": [ "", "aa", "i", "ee", "u", "uu", "R^i", "R^I", "L^i", "L^I", "^e", "e", "ai", "^o", "o", "au", "e.c", "a.C", "A.c" ],
       "consonants": [ "k", "kh", "g", "gh", "~N", "ch", "chh", "j", "jh", "~n", "T", "Th", "D", "Dh", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "sh", "Sh", "s", "h", "L", "zh", "R", "^n", "q", "K", "G", "z", ".D", ".Dh", "f", "Y", "n*g", "n*j", "n*D", "n*d", "m*b" ],
       "commonDiacritics": [ ".N", "M", "H", "K^" ],
       "symbols": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "OM", "|", "||" ],
       "vedicSymbols": [ ".a", "gͫ", "gͫ̄" ],
       "alternates": {
+        "aa": [ "A" ],
+        "ee": [ "I", "ii" ],
+        "uu": [ "U", "oo" ],
+        "R^i": [ "RRi" ],
+        "R^I": [ "RRI" ],
+        "L^i": [ "LLi" ],
+        "L^I": [ "LLI" ],
+        "e": [ "E" ],
+        "o": [ "O" ],
+        "e.c": [ "c.e" ],
+        "A.c": [ "c.o" ],
+        "chh": [ "Ch" ],
+        "L": [ "ld" ],
+        "z": [ "J" ],
+        ".n": [ "M", ".m" ],
         "||": [ "//", ".." ],
         "|": [ "/", "." ],
         "z:0": [ "{}", "^^" ],
         "z:1": [ "()", "^" ],
-        "chh": [ "Ch" ],
-        "A": [ "aa" ],
-        "I": [ "ee", "ii" ],
-        "U": [ "oo" ],
         "OM": [ "aum", "AUM", "oM" ]
       }
     },
@@ -264,6 +276,18 @@
       "alternates": {
         "//": [ "||", ".." ],
         "/": [ "|", "." ],
+        "z:0": [ "{}", "^^" ],
+        "z:1": [ "()", "^" ]
+      }
+    },
+    "wx": {
+      "vowels": [ "a", "A", "i", "I", "u", "U", "q", "qV", "L", "LV", "eV", "e", "E", "oV", "o", "O", "aEV", "AEV", "aOV" ],
+      "vowelDiacritics": [ "", "A", "i", "I", "u", "U", "q", "qV", "L", "LV", "eV", "e", "E", "oV", "o", "O", "aEV", "AEV", "aOV" ],
+      "consonants": [ "k", "K", "g", "G", "f", "c", "C", "j", "J", "F", "t", "T", "d", "D", "N", "w", "W", "x", "X", "n", "p", "P", "b", "B", "m", "y", "r", "l", "v", "S", "R", "s", "h", "lY", "lYY", "rY", "nY", "kY", "KY", "GY", "zY", "dY", "DY", "PY", "yY", "nYYg", "nYYj", "nYYd", "nYYx", "mYYb" ],
+      "commonDiacritics": [ "z", "M", "H", "kYY" ],
+      "symbols": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "oM", ".", ".." ],
+      "vedicSymbols": [ "Z", "gͫ", "gͫ̄" ],
+      "alternates": {
         "z:0": [ "{}", "^^" ],
         "z:1": [ "()", "^" ]
       }
