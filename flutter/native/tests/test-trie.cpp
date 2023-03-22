@@ -1,23 +1,27 @@
-#include "doctest.h"
+#include "ut.hpp"
 
 #include "trie.h"
 
-TEST_CASE("Testing StatefulTrie") {
-  StatefulTrie<char32_t, std::string> trie;
+using namespace boost::ut;
 
-  auto result = trie.addLookup({ U'न', U'म', U'स', U'्', U'त', U'े' }, "नमस्ते");
-  CHECK(result == std::nullopt);
+suite<"Trie Tests"> trieTests = [] {
+  "Testing StatefulTrie"_test = [] {
+    StatefulTrie<char32_t, std::string> trie;
 
-  result = trie.addLookup({ U'न', U'म', U'स', U'्', U'त', U'े' }, "नमस्ते");
-  CHECK(result == std::nullopt);
+    auto result = trie.addLookup({ U'न', U'म', U'स', U'्', U'त', U'े' }, "नमस्ते");
+    expect(result == std::nullopt);
 
-  StatefulTrie<char32_t, std::string>::LookupState state {};
-  CHECK(trie.lookup(U'न', state));
-  CHECK(trie.lookup(U'म', state));
-  CHECK(trie.lookup(U'स', state));
-  CHECK(trie.lookup(U'्', state));
-  CHECK(trie.lookup(U'त', state));
-  CHECK(!trie.lookup(U'े', state));
-  CHECK(state.value == "नमस्ते");
-  CHECK(state.matchLen == 6);
-}
+    result = trie.addLookup({ U'न', U'म', U'स', U'्', U'त', U'े' }, "नमस्ते");
+    expect(result == std::nullopt);
+
+    StatefulTrie<char32_t, std::string>::LookupState state {};
+    expect(trie.lookup(U'न', state));
+    expect(trie.lookup(U'म', state));
+    expect(trie.lookup(U'स', state));
+    expect(trie.lookup(U'्', state));
+    expect(trie.lookup(U'त', state));
+    expect(!trie.lookup(U'े', state));
+    expect(state.value == "नमस्ते");
+    expect(state.matchLen == 6);
+  };
+};

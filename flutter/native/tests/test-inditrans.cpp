@@ -1,4 +1,4 @@
-#include "doctest.h"
+#include "ut.hpp"
 
 #include <chrono>
 #include <fstream>
@@ -9,6 +9,8 @@
 #include <json.h>
 #include <utilities.h>
 #include <vector>
+
+using namespace boost::ut;
 
 using InditransLogger = void(const std::string&);
 extern InditransLogger* inditransLogger;
@@ -84,10 +86,10 @@ void testAllTranslit(std::string_view file) noexcept {
         }
 
         std::string str = *description + " ( " + *source + " -> " + *target + ", " + options + " )";
-        SUBCASE(str.c_str()) {
+        test(str.c_str()) = [&] {
           auto res = transliterate(*text, *source, *target, getTranslitOptions(options));
-          CHECK(res == *expected);
-        }
+          expect(res == *expected);
+        };
       }
     }
   }
@@ -137,6 +139,7 @@ void testPerf(bool prof) noexcept {
   }
 }
 
-TEST_CASE("inditrans.transliterate: test-cases") { testAllTranslit("test-files/test-cases.json"); }
-
-TEST_CASE("inditrans.transliterate: sanscript-tests") { testAllTranslit("test-files/sanscript-tests.json"); }
+void testInitransMain() noexcept {
+  testAllTranslit("test-files/test-cases.json");
+  testAllTranslit("test-files/sanscript-tests.json");
+}
