@@ -1,3 +1,7 @@
+## 0.4.5
+
+- Support compound alternates and Malayalam Chillus
+
 ## 0.4.4
 
 - Fixed ITRANS and unit tests

@@ -341,5 +341,27 @@
         "text": "श्री॒ <gu̱ru̱bhyo> nama̱ḥ . ha̱ri̱ḥ ॐ"
       }
     ]
+  },
+  {
+    "description": "Compound alternatives",
+    "text": "SRI x GY dny",
+    "script": "itrans",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "श्री क्ष् ज्ञ् ज्ञ्"
+      }
+    ]
+  },
+  {
+    "description": "Malayalam Chillus",
+    "text": "ൺ ൻ ർ ൽ ൾ ൿ ൔ ൕ ൖ",
+    "script": "malayalam",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "ण् न् र् ल् ळ् क् म् य् ऴ्"
+      }
+    ]
   }
 ]

@@ -53,6 +53,7 @@ struct Token {
 
 struct ScriptToken : public Token {
   ScriptType scriptType;
+  uint8_t extra { 0xFF };
 
   constexpr ScriptToken(TokenType tokenType, uint8_t idx, ScriptType scriptType) noexcept
       : Token(tokenType, idx)
@@ -67,6 +68,11 @@ struct ScriptToken : public Token {
 
   ScriptToken clone(uint8_t newIdx) const noexcept { return { tokenType, newIdx, scriptType }; }
   ScriptToken clone(ScriptType newScriptType) const noexcept { return { tokenType, idx, newScriptType }; }
+};
+
+struct ScriptTokenExt : public ScriptToken {
+  ScriptType scriptType;
+  std::vector<ScriptToken> more {};
 };
 
 constexpr const ScriptToken invalidScriptToken(TokenType::Ignore, InvalidToken, ScriptType::Others);

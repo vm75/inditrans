@@ -62,8 +62,7 @@ To type a Zero Width Joiner, + can be typed between the letters, for example: k 
 * https://www.fonts4free.net/samarkan-font.html
 
 # Special handling
-## Malayalam chillu
-* https://en.wiktionary.org/wiki/chillu
+
 ## Gurmukhi adhak
 * https://www.discoversikhism.com/punjabi/punjabi_gurmukhi_alphabet.html
 
@@ -87,20 +86,8 @@ To type a Zero Width Joiner, + can be typed between the letters, for example: k 
 * { TokenType::Accent,          ScriptType::Latin,   2 /*꠰  ᳚ */,       "\\''" },
 * { TokenType::Accent,          ScriptType::Latin,   2 /*꠰  ᳚ */,       "\\’’" },
 * { TokenType::CommonDiacritic, ScriptType::Latin,   0 /* ँ */,       "~" },
-* { TokenType::Symbol,          ScriptType::Latin,  10 /* ॐ */,      "o3m" },
-* { TokenType::Symbol,          ScriptType::Latin,  10 /* ॐ */,      "OM" },
-* { TokenType::Symbol,          ScriptType::Latin,  10 /* ॐ */,      "AUM" },
-* { TokenType::Symbol,          ScriptType::Latin,  10 /* ॐ */,      "oṃ" },
-* { TokenType::Symbol,          ScriptType::Latin,  10 /* ॐ */,      "ŏṃ" },
-* { TokenType::Symbol,          ScriptType::Latin,  13 /* ॥ */,       "꠰꠰" },
-* { TokenType::Symbol,          ScriptType::Latin,  13 /* ॥ */,       ".." },
 * { TokenType::Symbol,          ScriptType::Latin,  14 /* ꣳ */,       "\\m+" },
 * { TokenType::Symbol,          ScriptType::Latin,  14 /* ꣳ */,       "{\\m+}" },
 * { TokenType::Symbol,          ScriptType::Latin,  14 /* ꣳ */,       "\\м+" },
 * { TokenType::Symbol,          ScriptType::Latin,  15 /* ꣴ */,       "\\m++" },
 * { TokenType::Symbol,          ScriptType::Latin,  15 /* ꣴ */,       "\\м++" },
-
-## Composite alternates (itrans)
-* x | kSh
-* GY | j~n | dny
-* SRI

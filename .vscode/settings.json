@@ -136,7 +136,10 @@
     "condition_variable": "cpp",
     "csignal": "cpp",
     "unordered_set": "cpp",
-    "semaphore": "cpp"
+    "semaphore": "cpp",
+    "regex": "cpp",
+    "bitset": "cpp",
+    "source_location": "cpp"
   },
   "eslint.workingDirectories": [
     "./nodejs"

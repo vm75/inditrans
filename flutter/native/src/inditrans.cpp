@@ -180,9 +180,21 @@ public:
         uint8_t idx = std::atoi(tokenStr.data() + 2);
         token = ScriptToken { type, idx, scriptData.type };
       } else {
-        auto result = tokenMap.lookup(tokenStr.data());
-        if (result.value) {
+        auto ptr = tokenStr.data();
+        LookupResult result = lookupToken(ptr);
+        if (result.value != std::nullopt) {
+          std::vector<ScriptToken> extra {};
           token = *result.value;
+          ptr += result.matchLen;
+
+          while ((result = lookupToken(ptr)).value) {
+            extra.push_back(*result.value);
+            ptr += result.matchLen;
+          }
+          if (!extra.empty()) {
+            token.extra = extraTokens.size();
+            extraTokens.emplace_back(std::move(extra));
+          }
         }
       }
       if (token == invalidScriptToken) {
@@ -220,6 +232,8 @@ public:
   template <typename CharType> inline LookupResult lookupToken(const CharType* text) const noexcept {
     return tokenMap.lookup(text, caseInsensitive);
   }
+
+  const std::vector<ScriptToken>& getExtraTokens(uint8_t index) const noexcept { return extraTokens[index]; };
 
   ScriptType getType() const noexcept { return scriptData.type; }
   std::string_view getName() const noexcept { return name; }
@@ -268,7 +282,8 @@ private:
   const std::string_view name;
   const ScriptInfo& scriptData;
   const bool caseInsensitive;
-  LookupTable tokenMap;
+  LookupTable tokenMap {};
+  std::vector<std::vector<ScriptToken>> extraTokens {};
 };
 
 class ScriptWriterMap {
@@ -493,7 +508,13 @@ public:
       auto match = map.lookupToken(ptr);
       if (match.value != std::nullopt) {
         if (match.value->tokenType != TokenType::Accent || options / TranslitOptions::IgnoreVedicAccents) {
-          tokenUnits.emplace_back(*match.value);
+          auto token = *match.value;
+          tokenUnits.emplace_back(token);
+          if (token.extra != 0xFF) {
+            for (const auto& extraToken : map.getExtraTokens(token.extra)) {
+              tokenUnits.emplace_back(extraToken);
+            }
+          }
         }
         ptr += match.matchLen;
       } else {
@@ -652,7 +673,7 @@ private:
           if (superscriptPos != TamilSuperscripts.npos) {
             tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + superscriptPos / "²"_len));
             iter++;
-          } else if((superscriptPos = TamilSubscripts.find(GetString(*iter))) != TamilSubscripts.npos) {
+          } else if ((superscriptPos = TamilSubscripts.find(GetString(*iter))) != TamilSubscripts.npos) {
             tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + superscriptPos / "²"_len));
             iter++;
           } else {

@@ -394,6 +394,9 @@ const char scriptData[] =
       "z:0" Z "{}" Z "^^" Z E
       "z:1" Z "()" Z "^" Z E
       "OM" Z "aum" Z "AUM" Z "oM" Z E
+      "shree" Z "SRI" Z E
+      "kSh" Z "x" Z E
+      "j~n" Z "GY" Z "dny" Z E
     E
   E
   "kannada" Z INDIC
@@ -426,6 +429,15 @@ const char scriptData[] =
     ALTERNATES
       "ൌ" Z "ൗ" Z E
       "്" Z "്‍" Z "‍്" Z E
+      "ണ്" Z "ൺ" Z E
+      "ന്" Z "ൻ" Z E
+      "ര്" Z "ർ" Z E
+      "ല്" Z "ൽ" Z E
+      "ള്" Z "ൾ" Z E
+      "ക്" Z "ൿ" Z E
+      "മ്" Z "ൔ" Z E
+      "യ്" Z "ൕ" Z E
+      "ഴ്" Z "ൖ" Z E
     E
   E
   "oriya" Z INDIC

@@ -7,6 +7,7 @@ An experimental transliterator library for some [Indic/Brahmic](https://en.wikip
 - No dependencies (for transliteration) and no server needed.
 - Supports [vedic accents](https://en.wikipedia.org/wiki/Vedic_accent). Useful for vedic scriptures.
 - Smart transliteration to and from Tamil. Supports tamil superscript.
+- Supports ITRANS toggle transliteration with ## and skipping HTML tags
 
 References:
 
