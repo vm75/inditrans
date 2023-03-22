@@ -24,11 +24,11 @@
       },
       {
         "script": "iast",
-        "text": "śrī̱ gu̱ru̱bhyo nama̱ḥ . ha̱ri̱ḥ oṃ .. oṃ ga̱ṇānā̎ṃ tvā ga̱ṇapa̍tigͫ havāmahe ka̱viṃ ka̍vī̱nāmu̍pa̱maśra̍vastamaṃ"
+        "text": "śrī̱ gu̱ru̱bhyo nama̱ḥ | ha̱ri̱ḥ oṃ || oṃ ga̱ṇānā̎ṃ tvā ga̱ṇapa̍tigͫ havāmahe ka̱viṃ ka̍vī̱nāmu̍pa̱maśra̍vastamaṃ"
       },
       {
         "script": "ipa",
-        "text": "ʃɾiː guɾubʰjoː n̪əməh . ɦəɾɪh oːm .. oːm gəɳɑːn̪ɑː̃ t̪ʋɑː gəɳəpət̪ɪgͫ ɦəʋɑːməɦeː kəʋɪ̃ kəʋiːn̪ɑːmupəməʃɾəʋəs̪t̪əmə̃",
+        "text": "ʃɾiː guɾubʰjoː n̪əməh | ɦəɾɪh oːm || oːm gəɳɑːn̪ɑː̃ t̪ʋɑː gəɳəpət̪ɪgͫ ɦəʋɑːməɦeː kəʋɪ̃ kəʋiːn̪ɑːmupəməʃɾəʋəs̪t̪əmə̃",
         "options": "IgnoreVedicAccents"
       }
     ]

@@ -8,6 +8,7 @@
 * https://help.keyman.com/keyboard/itrans_devanagari_hindi/1.2.0/itrans_devanagari_hindi
 * https://en.wikipedia.org/wiki/ITRANS
 * https://sanskritdocuments.org/learning_tools/sanskritvedic.html
+* https://docs.google.com/spreadsheets/d/14wZl8zCa4khZV3El2VGoqurKBLGx21mbS-yORi4w7Qo/edit#gid=0
 ## ISO 15919
 * https://en.wikipedia.org/wiki/ISO_15919
 ## ISO/IEC 8859
