@@ -6,7 +6,7 @@ setup_emsdk() {
     return
   fi
 
-  # look for emsdk in the default location - AppData\Local\Programs\emsdk
+  # look for emsdk in the default location - ~/.local/share/emsdk
   emsdk_root=~/.local/share/emsdk
 
   # if not installed clone https://github.com/emscripten-core/emsdk.git and install
@@ -25,8 +25,8 @@ setup_emsdk() {
 }
 
 setup_flutter() {
-  # look for emsdk in the default location - AppData\Local\Programs\emsdk
-  flutter_root=~/.local/share/emsdk
+  # look for flutter in the default location - ~/.local/share/flutter
+  flutter_root=~/.local/share/flutter
 
   if [[ -d "${flutter_root}" ]]; then
     return
