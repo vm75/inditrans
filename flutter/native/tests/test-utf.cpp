@@ -6,7 +6,7 @@
 
 using namespace boost::ut;
 
-suite<"UTF-8 Tests"> utf8Tests = [] {
+suite<"UTF-8 tests"> utf8Tests = [] {
   "Testing UTF-8"_test = [] {
     constexpr Utf8Char utf8Char = "न"_uc8;
     constexpr Utf32Char utf32Char = U'न'_uc32;

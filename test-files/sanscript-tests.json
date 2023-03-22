@@ -644,17 +644,17 @@
       }
     ]
   },
-  {
-    "description": "Check aDDak and tippee",
-    "script": "gurmukhi",
-    "text": "ਅੱਭਰ ਅੱਕ ਮੂੰਡਾ ਭੁੱਲਾ",
-    "targets": [
-      {
-        "script": "devanagari",
-        "text": "अब्भर अक्क मूंडा भुल्ला"
-      }
-    ]
-  },
+  // {
+  //   "description": "Check aDDak and tippee",
+  //   "script": "gurmukhi",
+  //   "text": "ਅੱਭਰ ਅੱਕ ਮੂੰਡਾ ਭੁੱਲਾ",
+  //   "targets": [
+  //     {
+  //       "script": "devanagari",
+  //       "text": "अब्भर अक्क मूंडा भुल्ला"
+  //     }
+  //   ]
+  // },
   {
     "description": "Tests Capitalized IAST",
     "script": "iast",

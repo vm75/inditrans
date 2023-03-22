@@ -4,7 +4,7 @@
 
 using namespace boost::ut;
 
-suite<"Trie Tests"> trieTests = [] {
+suite<"Trie tests"> trieTests = [] {
   "Testing StatefulTrie"_test = [] {
     StatefulTrie<char32_t, std::string> trie;
 

@@ -1,6 +1,12 @@
+#include "ut.hpp"
+
+using namespace boost::ut;
+
 void testInitransMain() noexcept;
 
 int main() {
-  testInitransMain();
+
+  suite<"inditrans tests"> inditransTests = [] { testInitransMain(); };
+
   return 0;
 }
