@@ -1,3 +1,7 @@
+## 0.4.6
+
+- Fixed Zero Width Joiner and Non-Joiner
+
 ## 0.4.5
 
 - Support compound alternates and Malayalam Chillus

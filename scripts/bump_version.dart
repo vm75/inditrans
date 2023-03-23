@@ -17,7 +17,9 @@ const filesToUpdate = [
 ];
 
 class Version {
-  final int _major, _minor, _patch;
+  final int _major;
+  final int _minor;
+  final int _patch;
 
   Version(this._major, this._minor, this._patch);
 
@@ -38,6 +40,7 @@ class Version {
     return '$_major.$_minor.$_patch';
   }
 
+  // ignore: prefer_constructors_over_static_methods
   static Version fromString(String versionStr) {
     final versionParts =
         versionStr.split('.').map((str) => int.parse(str)).toList();
@@ -66,11 +69,11 @@ void changeLog(Version to, String log) {
 List<String> getopt(String parseOptions, List<String> args) {
   final optString = ",$parseOptions,";
   var stopParsing = false;
-  List<String> options = [];
-  List<String> result = [];
+  final List<String> options = [];
+  final List<String> result = [];
   outer:
   while (args.isNotEmpty) {
-    var nextArg = args.removeAt(0);
+    final nextArg = args.removeAt(0);
     if (nextArg == "--") {
       stopParsing = true;
       continue;
@@ -152,5 +155,6 @@ void main(List<String> args) {
   changeLog(nextVersion, log);
 
   print(
-      "Updated version from '$currentVersion' to $nextVersion with log: $log");
+    "Updated version from '$currentVersion' to $nextVersion with log: $log",
+  );
 }

@@ -115,8 +115,8 @@ const char scriptData[] =
     ALTERNATES
       "||" Z "//" Z ".." Z E
       "|" Z "/" Z "." Z E
-      "z:0" Z "{}" Z "^^" Z E
-      "z:1" Z "()" Z "^" Z E
+      "z:0" Z "()" Z "^" Z E
+      "z:1" Z "{}" Z "^^" Z E
       "ṛ" Z "r̥" Z "Ṛ" Z "ṛ" Z "Ṛ" Z E
       "a" Z "A" Z E
       "ā" Z "Ā" Z "ā" Z "Ā" Z E
@@ -205,8 +205,8 @@ const char scriptData[] =
     ALTERNATES
       "||" Z "//" Z ".." Z E
       "|" Z "/" Z "." Z E
-      "z:0" Z "{}" Z "^^" Z E
-      "z:1" Z "()" Z "^" Z E
+      "z:0" Z "()" Z "^" Z E
+      "z:1" Z "{}" Z "^^" Z E
       "ɑː" Z "aː" Z "Ɑː" Z E
       "ə" Z "Ə" Z E
       "iː" Z "Iː" Z E
@@ -286,8 +286,8 @@ const char scriptData[] =
     ALTERNATES
       "||" Z "//" Z ".." Z E
       "|" Z "/" Z "." Z E
-      "z:0" Z "{}" Z "^^" Z E
-      "z:1" Z "()" Z "^" Z E
+      "z:0" Z "()" Z "^" Z E
+      "z:1" Z "{}" Z "^^" Z E
       "a" Z "A" Z E
       "ā" Z "Ā" Z "ā" Z "Ā" Z E
       "i" Z "I" Z E
@@ -391,8 +391,8 @@ const char scriptData[] =
       ".n" Z "M" Z ".m" Z E
       "||" Z "//" Z ".." Z E
       "|" Z "/" Z "." Z E
-      "z:0" Z "{}" Z "^^" Z E
-      "z:1" Z "()" Z "^" Z E
+      "z:0" Z "()" Z "^" Z E
+      "z:1" Z "{}" Z "^^" Z "+" Z E
       "OM" Z "aum" Z "AUM" Z "oM" Z E
       "shree" Z "SRI" Z E
       "kSh" Z "x" Z E
@@ -532,8 +532,8 @@ const char scriptData[] =
     ALTERNATES
       "//" Z "||" Z ".." Z E
       "/" Z "|" Z "." Z E
-      "z:0" Z "{}" Z "^^" Z E
-      "z:1" Z "()" Z "^" Z E
+      "z:0" Z "()" Z "^" Z E
+      "z:1" Z "{}" Z "^^" Z E
       "ā" Z "ā" Z E
       "ī" Z "ī" Z E
       "ū" Z "ū" Z E
@@ -568,8 +568,8 @@ const char scriptData[] =
     SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oM" Z "." Z ".." Z E
     VEDICSYMBOLS "Z" Z "gͫ" Z "gͫ̄" Z E
     ALTERNATES
-      "z:0" Z "{}" Z "^^" Z E
-      "z:1" Z "()" Z "^" Z E
+      "z:0" Z "()" Z "^" Z E
+      "z:1" Z "{}" Z "^^" Z E
     E
   E
 ;

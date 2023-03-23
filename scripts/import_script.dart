@@ -1,6 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'dart:io';
+
+import 'package:http/http.dart' as http;
 
 class Script {
   final String name;
@@ -19,15 +22,21 @@ class Script {
     populateVedicSymbols(json);
   }
 
-  void copy(List<String> dest, Map<String, dynamic> json, String path, int idxStart, [int count = 1]) {
+  void copy(
+    List<String> dest,
+    Map<String, dynamic> json,
+    String path,
+    int idxStart, [
+    int count = 1,
+  ]) {
     final parts = path.split(".");
-    late dynamic next = json;
+    late Map<String, dynamic> next = json;
     for (final part in parts) {
-      next = next[part];
+      next = next[part] as Map<String, dynamic>;
     }
 
     final src = next as List<dynamic>;
-    for(int idx = idxStart; idx<idxStart+count; idx++) {
+    for (int idx = idxStart; idx < idxStart + count; idx++) {
       dest.add(src[idx] as String);
     }
   }
@@ -77,26 +86,25 @@ class Script {
   }
 
   void populateVedicSymbols(Map<String, dynamic> json) {
-    copy(vedicSymbols, json, "others.symbols", 0, 1);
+    copy(vedicSymbols, json, "others.symbols", 0);
     if (vowelDiacritics[0] == "") {
-      vedicSymbols.addAll([ "gͫ", "gͫ̄" ]);
+      vedicSymbols.addAll(["gͫ", "gͫ̄"]);
     } else {
-      vedicSymbols.addAll([ "ꣳ", "ꣴ" ]);
+      vedicSymbols.addAll(["ꣳ", "ꣴ"]);
     }
   }
 
   void show() {
-    const JsonEncoder encoder = JsonEncoder();
     print('    "$name": {');
-    print('      "vowels": [ "' + vowels.join('", "') + '" ],');
-    print('      "vowelDiacritics": [ "' + vowelDiacritics.join('", "') + '" ],');
-    print('      "consonants": [ "' + consonants.join('", "') + '" ],');
-    print('      "commonDiacritics": [ "' + commonDiacritics.join('", "') + '" ],');
-    print('      "symbols": [ "' + symbols.join('", "') + '" ],');
-    print('      "vedicSymbols": [ "' + vedicSymbols.join('", "') + '" ],');
+    print('      "vowels": [ "${vowels.join('", "')}" ],');
+    print('      "vowelDiacritics": [ "${vowelDiacritics.join('", "')}" ],');
+    print('      "consonants": [ "${consonants.join('", "')}" ],');
+    print('      "commonDiacritics": [ "${commonDiacritics.join('", "')}" ],');
+    print('      "symbols": [ "${symbols.join('", "')}" ],');
+    print('      "vedicSymbols": [ "${vedicSymbols.join('", "')}" ],');
     print('      "alternates": {');
-    print('        "z:0": [ "{}", "^^" ],');
-    print('        "z:1": [ "()", "^" ]');
+    print('        "z:0": [ "()", "^" ],');
+    print('        "z:1": [ "{}", "^^" ]');
     print('      }');
     print('    },');
   }
@@ -112,19 +120,21 @@ void main(List<String> args) async {
     return;
   }
 
-  if(args.length == 0) {
+  if (args.isEmpty) {
     print("Usage: dart import_script.dart <script>");
     return;
   }
 
-  var url = Uri.parse('https://raw.githubusercontent.com/virtualvinodh/aksharamukha/master/aksharamukha-back/resources/script_mapping/script_mapping.json');
-  var response = await http.get(url);
-  var jsonResponse = json.decode(response.body);
+  final url = Uri.parse(
+    'https://raw.githubusercontent.com/virtualvinodh/aksharamukha/master/aksharamukha-back/resources/script_mapping/script_mapping.json',
+  );
+  final response = await http.get(url);
+  final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
   if (jsonResponse[args[0]] == null) {
     print("Script not found");
     return;
   }
   final scriptJson = jsonResponse[args[0]];
-  var script = Script(args[0], scriptJson);
+  final script = Script(args[0], scriptJson as Map<String, dynamic>);
   script.show();
 }

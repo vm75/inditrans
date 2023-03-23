@@ -25,7 +25,7 @@ void main(List<String> args) async {
     final script = entry.key;
     final testCases = entry.value as Map<String, dynamic>;
     for (final test in testCases.entries) {
-      final type = "any-to-any: " + test.key;
+      final type = "any-to-any: ${test.key}";
       final str = test.value as String;
       if (types[type] == null) {
         types[type] = {
@@ -34,7 +34,7 @@ void main(List<String> args) async {
           "targets": []
         };
       }
-      (types[type]["targets"] as List<dynamic>).add({
+      ((types[type] as Map<String, dynamic>)["targets"] as List<dynamic>).add({
         "script": script,
         "text": str,
       });
@@ -49,8 +49,8 @@ void main(List<String> args) async {
       jsonData["devanaagarii_round_trip"] as List<dynamic>;
 
   for (final entry in devanaagariiRoundTrip) {
-    final description = "to-and-fro: " + entry["description"];
     final testCases = entry as Map<String, dynamic>;
+    final description = "to-and-fro: ${testCases["description"]}";
 
     final testCase = {
       "description": description,
@@ -59,7 +59,7 @@ void main(List<String> args) async {
       "text": entry["dev"]
     };
 
-    List<dynamic> targets = [];
+    final List<dynamic> targets = [];
 
     for (final test in testCases.entries) {
       final script = test.key;
@@ -81,9 +81,8 @@ void main(List<String> args) async {
   // to_devanaagarii
   final toDevanaagarii = jsonData["to_devanaagarii"] as List<dynamic>;
   for (final entry in toDevanaagarii) {
-    final description = entry["description"];
-
     final testCases = entry as Map<String, dynamic>;
+    final description = entry["description"];
 
     for (final test in testCases.entries) {
       final script = test.key;
@@ -106,11 +105,10 @@ void main(List<String> args) async {
   // from_devanaagarii
   final fromDevanaagarii = jsonData["from_devanaagarii"] as List<dynamic>;
   for (final entry in fromDevanaagarii) {
+    final testCases = entry as Map<String, dynamic>;
     final description = entry["description"];
 
-    final testCases = entry as Map<String, dynamic>;
-
-    List<dynamic> targets = [];
+    final List<dynamic> targets = [];
 
     for (final test in testCases.entries) {
       final script = test.key;
@@ -132,8 +130,8 @@ void main(List<String> args) async {
     });
   }
 
-  var encoder = new JsonEncoder.withIndent("  ");
+  const encoder = JsonEncoder.withIndent("  ");
 
-  File genFile = File('test-files/sanscript-tests.json');
+  final File genFile = File('test-files/sanscript-tests.json');
   genFile.writeAsStringSync(encoder.convert(tests));
 }

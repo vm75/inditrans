@@ -39,10 +39,10 @@ constexpr std::array<std::string_view, 3> LatinAccents = {
   /*꠰*/ "̱", "̍", "̎",
 };
 
-constexpr std::array<std::string_view, 3> IndicZeroWidthChars = {
-  "‌", "‍"
+constexpr std::array<std::string_view, 2> IndicZeroWidthChars = {
+  "\u200C" /* ZeroWidthNonJoiner */, "\u200D" /* ZeroWidthJoiner */
 };
-constexpr std::array<std::string_view, 3> DefaultZeroWidthChars = {
+constexpr std::array<std::string_view, 2> DefaultZeroWidthChars = {
   "", ""
 };
 

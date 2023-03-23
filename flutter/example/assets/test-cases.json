@@ -74,27 +74,27 @@
   },
   {
     "description": "ZWNJ - From Devanagari",
-    "text": "चठ (with virama)च्ठ (with virama and zwnj)च्‌ठ (with udaat)च᳭ठ",
+    "text": "With virama: क्ष, With ZWNJ: क्‌ष, With ZWJ: क्‍ष, With udaat: क्᳭ष",
     "script": "devanagari",
     "targets": [
       {
         "script": "itrans",
-        "text": "chaTha (with virama)chTha (with virama and zwnj)chTha (with udaat)chTha"
+        "text": "With virama: kSha, With ZWNJ: kSha, With ZWJ: kSha, With udaat: kSha"
       },
       {
         "script": "readablelatin",
-        "text": "chaTha (with virama)chTha (with virama and zwnj)chTha (with udaat)chTha"
+        "text": "With virama: ksha, With ZWNJ: ksha, With ZWJ: ksha, With udaat: ksha"
       }
     ]
   },
   {
-    "description": "ZWNJ - From itrans",
-    "text": "chaTha ##(with virama)## - chTha ##(with virama and zwnj)## - ch{}Tha",
+    "description": "ZWNJ/ZWJ - From itrans",
+    "text": "##With virama: ##kSha, ##With ZWNJ: ##k^Sha, ##With ZWJ: ##k+Sha",
     "script": "itrans",
     "targets": [
       {
         "script": "devanagari",
-        "text": "चठ (with virama) - च्ठ (with virama and zwnj) - च्‌ठ"
+        "text": "With virama: क्ष, With ZWNJ: क्‌ष, With ZWJ: क्‍ष"
       }
     ]
   },

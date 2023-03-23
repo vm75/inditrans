@@ -19,17 +19,6 @@
 ## IAST
 * https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration
 * https://en.wikipedia.org/wiki/Template:IAST
-## optitrans
-* https://github.com/indic-transliteration/common_maps/blob/master/roman/optitrans.toml
-    "shankara", sanscript.OPTITRANS == >"sha~Nkara", sanscript.ITRANS
-    "manjIra", sanscript.OPTITRANS == >"ma~njIra", sanscript.ITRANS
-    "praBA", sanscript.OPTITRANS ==> "prabhA", sanscript.ITRANS
-    "pRRS", sanscript.OPTITRANS ==> "pRRISh", sanscript.ITRANS
-    "pRcCa", sanscript.OPTITRANS ==> "pRRichCha", sanscript.ITRANS
-    "R", sanscript.OPTITRANS ==> "RRi", sanscript.ITRANS
-    "Rc", sanscript.OPTITRANS ==> "RRich", sanscript.ITRANS
-    "sha~Nkara", sanscript.ITRANS ==> "shankara", sanscript.OPTITRANS
-    "ma~njIra", sanscript.ITRANS ==> "manjIra", sanscript.OPTITRANS
 
 # Code reference for alternatives
 * https://raw.githubusercontent.com/virtualvinodh/aksharamukha-python/main/aksharamukha/ConvertFix.py
@@ -38,15 +27,6 @@
 * https://raw.githubusercontent.com/virtualvinodh/aksharamukha/master/aksharamukha-back/resources/script_mapping/script_mapping.json
 * https://github.com/indic-transliteration/common_maps/blob/master/roman/iso.toml
 * https://github.com/indic-transliteration/common_maps/blob/master/roman/iast.toml
-
-# Conjuncts in ITRANS
-A full (live) consonant with visible virama in middle of words can be typed using ^, e.g. k ^ S produces क्‌ष.
-
-## Zero Width Non Joiner
-To type a Zero Width Non Joiner, _ can be typed between the letters, for example: a _ i will generate अ‌इ , k _ S will generate क्‌ष .
-
-## Zero Width Joiner (ZWJ)
-To type a Zero Width Joiner, + can be typed between the letters, for example: k + S will generate क्‍ष , while kS generates क्ष.
 
 ## References
 * https://en.wikipedia.org/wiki/Zero-width_joiner
@@ -67,7 +47,6 @@ To type a Zero Width Joiner, + can be typed between the letters, for example: k 
 * https://www.discoversikhism.com/punjabi/punjabi_gurmukhi_alphabet.html
 
 ## Alternate encodings
-* 'ŭ' => 'u\u00D7' # special explicit Virama
 * { TokenType::Accent,          ScriptType::Indic,   1 /*꠰  ॑ */,       "◌॑" },
 * { TokenType::Accent,          ScriptType::Latin,   0 /*꠰  ॒ */,       "̱" },
 * { TokenType::Accent,          ScriptType::Latin,   0 /*꠰  ॒ */,       "↓" },

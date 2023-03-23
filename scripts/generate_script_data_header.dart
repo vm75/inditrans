@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+// ignore: leading_newlines_in_multiline_strings
 const headerPrefix = '''#pragma once
 
 #define Z "\\u0000"
@@ -30,7 +31,7 @@ const headerSuffix = '''
 // clang-format on
 ''';
 
-enum Case { Capital, Small }
+enum Case { capital, small }
 
 class LatinLetter {
   final Case letterCase;
@@ -42,17 +43,18 @@ class LatinLetter {
   LatinLetter(this.letterCase, this.letter);
 }
 
-Map<int, List<String>> loadLatinAlternates([bool includeModifiers = false]) {
+Map<int, List<String>> loadLatinAlternates({bool includeModifiers = false}) {
   final lines = File('docs/extended-latin.txt').readAsLinesSync();
 
-  Map<String, String> diacritics = {};
-  Map<String, String> modifiers = {};
-  Map<String, LatinLetter> latinExt = {};
+  final Map<String, String> diacritics = {};
+  final Map<String, String> modifiers = {};
+  final Map<String, LatinLetter> latinExt = {};
 
   final diacriticRE = RegExp(r"^.*?\t(.*?)\tCombining (.*)");
   final modifierRE = RegExp(r"^.*?\t(.*?)\tModifier Letter (.*)");
   final latinExtRE = RegExp(
-      r"^.*?\t(.*?)\tLatin (Small|Capital) Letter ([A-Za-z])(?: with (.*?))?(?: and (.*?))?(?: \(=(.*)\))?$");
+    r"^.*?\t(.*?)\tLatin (Small|Capital) Letter ([A-Za-z])(?: with (.*?))?(?: and (.*?))?(?: \(=(.*)\))?$",
+  );
 
   for (final line in lines) {
     RegExpMatch? match;
@@ -63,8 +65,9 @@ Map<int, List<String>> loadLatinAlternates([bool includeModifiers = false]) {
       modifiers[match!.group(2)!.toLowerCase()] = match.group(1)!;
     } else if ((match = latinExtRE.firstMatch(line)) != null) {
       final letter = LatinLetter(
-          match!.group(2)!.toLowerCase() == "small" ? Case.Small : Case.Capital,
-          match.group(3)!.toLowerCase());
+        match!.group(2)!.toLowerCase() == "small" ? Case.small : Case.capital,
+        match.group(3)!.toLowerCase(),
+      );
       if (match.group(4) != null) {
         letter.diacriticNames.add(match.group(4)!.toLowerCase());
       }
@@ -72,13 +75,13 @@ Map<int, List<String>> loadLatinAlternates([bool includeModifiers = false]) {
         letter.diacriticNames.add(match.group(5)!.toLowerCase());
       }
       if (match.group(6) != null) {
-        letter.equivalent = match.group(6)!;
+        letter.equivalent = match.group(6);
       }
       latinExt[match.group(1)!] = letter;
     }
   }
 
-  Map<int, List<String>> alts = {};
+  final Map<int, List<String>> alts = {};
   for (final entry in latinExt.entries) {
     if (entry.value.diacriticNames.isEmpty) {
       continue;
@@ -134,11 +137,15 @@ class ScriptInfo {
   ScriptInfo(this.type, this.name, this.info);
 
   void writeString(StringBuffer buffer, String str) {
-    buffer.write('"${str}" Z ');
+    buffer.write('"$str" Z ');
   }
 
-  void addAlternates(String str, Map<String, dynamic> alternates,
-      Map<int, List<String>> altMap, bool upperAlt) {
+  void addAlternates(
+    String str,
+    Map<dynamic, dynamic> alternates,
+    Map<int, List<String>> altMap, {
+    required bool upperAlt,
+  }) {
     final altList = (alternates[str] ?? []) as List<dynamic>;
     bool needsAlt = false;
 
@@ -151,7 +158,7 @@ class ScriptInfo {
     }
 
     final codeUnits = str.codeUnits;
-    List<String> parts = [];
+    final List<String> parts = [];
     for (final unit in codeUnits) {
       if (altMap.containsKey(unit)) {
         parts.add(altMap[unit]![0]);
@@ -182,29 +189,33 @@ class ScriptInfo {
   }
 
   void writeArray(
-      StringBuffer buffer,
-      String type,
-      List<dynamic> arr,
-      int? len,
-      Map<String, dynamic> alternates,
-      Map<int, List<String>> altMap,
-      bool needsAlt,
-      bool upperAlt) {
+    StringBuffer buffer,
+    String type,
+    List<dynamic> arr,
+    int? len,
+    Map<dynamic, dynamic> alternates,
+    Map<int, List<String>> altMap, {
+    required bool needsAlt,
+    required bool upperAlt,
+  }) {
     if (len != null && arr.length != len) {
       assert(arr.length == len);
     }
     buffer.write('    ${type.toUpperCase()} ');
     for (final entry in arr) {
-      writeString(buffer, entry);
+      writeString(buffer, entry as String);
       if (needsAlt) {
-        addAlternates(entry, alternates, altMap, upperAlt);
+        addAlternates(entry, alternates, altMap, upperAlt: upperAlt);
       }
     }
     buffer.write('E\n');
   }
 
   void writeArrayGroup(
-      StringBuffer buffer, String type, Map<String, dynamic> alts) {
+    StringBuffer buffer,
+    String type,
+    Map<dynamic, dynamic> alts,
+  ) {
     if (alts.isEmpty) {
       return;
     }
@@ -213,7 +224,7 @@ class ScriptInfo {
     for (final entry in alts.entries) {
       buffer.write('      "${entry.key}" Z ');
       for (final alt in entry.value) {
-        writeString(buffer, alt);
+        writeString(buffer, alt as String);
       }
       buffer.write('E\n');
     }
@@ -222,18 +233,27 @@ class ScriptInfo {
 
   void write(StringBuffer buffer, Map<int, List<String>> altMap) {
     buffer.write('  "$name" Z ${type.toUpperCase()}\n');
-    final Map<String, dynamic> alternates = info['alternates'] ?? {};
+    final Map<dynamic, dynamic> alternates =
+        (info['alternates'] ?? {}) as Map<dynamic, dynamic>;
     for (final entry in arrayTypes.entries) {
       if (info[entry.key] != null) {
-        bool needsAlt = type == 'latin';
-        bool upperAlts = name == 'iast' || name == 'ipa' || name == 'iso';
-        writeArray(buffer, entry.key, info[entry.key] as List<dynamic>,
-            entry.value, alternates, altMap, needsAlt, upperAlts);
+        final needsAlt = type == 'latin';
+        final upperAlts = name == 'iast' || name == 'ipa' || name == 'iso';
+        writeArray(
+          buffer,
+          entry.key,
+          info[entry.key] as List<dynamic>,
+          entry.value,
+          alternates,
+          altMap,
+          needsAlt: needsAlt,
+          upperAlt: upperAlts,
+        );
       }
     }
     for (final entry in arrayGroupTypes) {
       if (info[entry] != null) {
-        writeArrayGroup(buffer, entry, info[entry]);
+        writeArrayGroup(buffer, entry, info[entry] as Map<String, dynamic>);
       }
     }
     if (alternates.isNotEmpty) {
@@ -251,7 +271,8 @@ List<ScriptInfo> parseScriptInfo(Map<String, dynamic> map) {
     final scripts = entries.value as Map<String, dynamic>;
     for (final entries in scripts.entries) {
       list.add(
-          ScriptInfo(type, entries.key, entries.value as Map<String, dynamic>));
+        ScriptInfo(type, entries.key, entries.value as Map<String, dynamic>),
+      );
     }
   }
   list.sort((a, b) => a.name.compareTo(b.name));
@@ -292,14 +313,14 @@ void main(List<String> args) async {
 
   buffer.write(headerSuffix);
 
-  File genFile = File('native/src/script_data.h');
+  final File genFile = File('native/src/script_data.h');
   genFile.writeAsStringSync(buffer.toString());
 }
 
 void writeAlternate(MapEntry<int, List<String>> entry, StringBuffer buffer) {
   buffer.write('  "${String.fromCharCode(entry.key)}" Z ');
   for (final alt in entry.value) {
-    buffer.write('"${alt}" Z ');
+    buffer.write('"$alt" Z ');
   }
   buffer.write('E\n');
 }
