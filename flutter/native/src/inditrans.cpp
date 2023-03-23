@@ -572,18 +572,12 @@ public:
     }
 
     const auto& token = GetScriptToken(next);
+    // Some special handlings
     if (token == GurmukhiAdhak) {
-      const auto peek = *iter;
-      if (hasMore() && HoldsScriptToken(peek) && GetScriptToken(peek).tokenType == TokenType::Consonant) {
-        TokenUnit tokenUnit = { GetScriptToken(peek) };
-        if (tokenUnit.leadToken.idx < 24) {
-          tokenUnit.leadToken.idx -= tokenUnit.leadToken.idx % 5 % 2;
-        }
-        tokenUnit.vowelDiacritic = Virama;
-        return tokenUnit;
-      } else {
-        return invalidTokenUnit;
-      }
+      return inferGurmukhiAdhak();
+    }
+    if (token == Skip) {
+      return invalidTokenUnit;
     }
     TokenUnit tokenUnit = { token };
     switch (token.scriptType) {
@@ -825,6 +819,20 @@ private:
       }
     }
     return tokenUnit;
+  }
+
+  TokenUnit inferGurmukhiAdhak() {
+    const auto peek = *iter;
+    if (hasMore() && HoldsScriptToken(peek) && GetScriptToken(peek).tokenType == TokenType::Consonant) {
+      TokenUnit tokenUnit = { GetScriptToken(peek) };
+      if (tokenUnit.leadToken.idx < 24) {
+        tokenUnit.leadToken.idx -= tokenUnit.leadToken.idx % 5 % 2;
+      }
+      tokenUnit.vowelDiacritic = Virama;
+      return tokenUnit;
+    } else {
+      return invalidTokenUnit;
+    }
   }
 
   inline bool isHardConsonant(const TokenUnit& token) {

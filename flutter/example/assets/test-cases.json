@@ -88,13 +88,13 @@
     ]
   },
   {
-    "description": "ZWNJ/ZWJ - From itrans",
-    "text": "##With virama: ##kSha, ##With ZWNJ: ##k^Sha, ##With ZWJ: ##k+Sha",
+    "description": "ZWNJ/ZWJ/Skip - From itrans",
+    "text": "##With virama: ##kSha, ##With ZWNJ: ##k^Sha, ##With ZWJ: ##k+Sha, ##With Skip: ##a_i",
     "script": "itrans",
     "targets": [
       {
         "script": "devanagari",
-        "text": "With virama: क्ष, With ZWNJ: क्‌ष, With ZWJ: क्‍ष"
+        "text": "With virama: क्ष, With ZWNJ: क्‌ष, With ZWJ: क्‍ष, With Skip: अइ"
       }
     ]
   },

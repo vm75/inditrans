@@ -36,6 +36,7 @@ constexpr uint8_t Vowel_Adhak = 19;
 constexpr ScriptToken Virama { TokenType::VowelDiacritic, Diacritic_Virama, ScriptType::Indic };
 constexpr ScriptToken Anuswara { TokenType::VowelDiacritic, Diacritic_Anuswara, ScriptType::Indic };
 constexpr ScriptToken GurmukhiAdhak { TokenType::Vowel, Vowel_Adhak, ScriptType::Indic };
+constexpr Token Skip { TokenType::ZeroWidthChar, 2 };
 
 constexpr std::array<std::string_view, 41> VedicAccents = {
   /*꠰*/ "॒", "॑", "᳚",
@@ -54,7 +55,13 @@ constexpr std::array<std::string_view, 2> DefaultZeroWidthChars = {
   "", ""
 };
 
-constexpr std::array<std::string_view, 28> DevanagariExtSymbols = {
+// These are special chars which are included in some scripts and do not delimit words.
+constexpr std::array<std::string_view, 33> ExclusiveSymbols = {
+  "\u200C" /* ZeroWidthNonJoiner */,
+  "\u200D" /* ZeroWidthJoiner */,
+  "\u200B" /* ZeroWidthSpace */,
+  "",      /* Skip */
+  "ੱ",     /* Gurmukhi Adhak */
   /*꠰*/ "᳡",
   /*꠰*/ "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩",
   /*꠰*/ "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱",

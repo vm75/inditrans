@@ -394,6 +394,7 @@ const char scriptData[] =
       "|" Z "/" Z "." Z E
       "z:0" Z "()" Z "^" Z E
       "z:1" Z "{}" Z "^^" Z "+" Z E
+      "z:2" Z "_" Z E
       "OM" Z "aum" Z "AUM" Z "oM" Z E
       "shree" Z "SRI" Z E
       "kSh" Z "x" Z E
