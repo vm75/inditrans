@@ -1,6 +1,6 @@
 # inditrans
 
-A functional transliterator library for most common [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
+A functional transliterator library for the most common [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
 
 - Available on all platforms.
 - No dependencies (for transliteration) and no server needed. Uses ffi (non-Web)/wasm (Web) for near native performance.
