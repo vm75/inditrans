@@ -363,5 +363,16 @@
         "text": "ण् न् र् ल् ळ् क् म् य् ऴ्"
       }
     ]
+  },
+  {
+    "description": "Gurmukhi adhak",
+    "text": "ਹੱਦ ਬੱਚਿਓ ਕੱਦ",
+    "script": "gurmukhi",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "हद्द बच्चिओ कद्द"
+      }
+    ]
   }
 ]

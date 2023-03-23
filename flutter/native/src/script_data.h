@@ -103,6 +103,7 @@ const char scriptData[] =
     VEDICSYMBOLS "(ਅ)" Z "ꣳ" Z "ꣴ" Z E
     ALTERNATES
       "ਂ" Z "ੰ" Z E
+      "v:19" Z "ੱ" Z E
     E
   E
   "iast" Z LATIN

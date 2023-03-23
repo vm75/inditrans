@@ -1,3 +1,7 @@
+## 0.5.0
+
+- Added support for Gurmukhi adhak
+
 ## 0.4.6
 
 - Fixed Zero Width Joiner and Non-Joiner

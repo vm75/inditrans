@@ -43,9 +43,6 @@
 
 # Special handling
 
-## Gurmukhi adhak
-* https://www.discoversikhism.com/punjabi/punjabi_gurmukhi_alphabet.html
-
 ## Alternate encodings
 * { TokenType::Accent,          ScriptType::Indic,   1 /*꠰  ॑ */,       "◌॑" },
 * { TokenType::Accent,          ScriptType::Latin,   0 /*꠰  ॒ */,       "̱" },

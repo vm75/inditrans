@@ -29,6 +29,14 @@ auto isCaseInsensitiveScripts = [](std::string_view script) noexcept {
 // ඟ = 45, ඦ = 46, ඬ = 47, ඳ = 48, ඹ = 49,
 // க = 0, ச = 5, ஜ = 7, ட = 10, த = 15, ந = 19, ப = 20, ஸ = 31,
 
+constexpr uint8_t Diacritic_Virama = 0;
+constexpr uint8_t Diacritic_Anuswara = 1;
+constexpr uint8_t Vowel_Adhak = 19;
+
+constexpr ScriptToken Virama { TokenType::VowelDiacritic, Diacritic_Virama, ScriptType::Indic };
+constexpr ScriptToken Anuswara { TokenType::VowelDiacritic, Diacritic_Anuswara, ScriptType::Indic };
+constexpr ScriptToken GurmukhiAdhak { TokenType::Vowel, Vowel_Adhak, ScriptType::Indic };
+
 constexpr std::array<std::string_view, 41> VedicAccents = {
   /*꠰*/ "॒", "॑", "᳚",
   /*꠰*/ "᳐", "᳑", "᳒", "᳓", "᳔", "᳕", "᳖", "᳗", "᳘", "᳙", "᳛", "᳜", "᳝", "᳞", "᳟",

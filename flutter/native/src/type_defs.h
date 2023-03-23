@@ -15,15 +15,6 @@ bool inline isIndicScript(ScriptType script) noexcept {
   return script == ScriptType::Indic || script == ScriptType::Tamil;
 }
 
-enum SpecialIndices : uint8_t {
-  Virama = 0,
-  Anunasika = 0,
-  Anuswara = 1,
-  Visarga = 2,
-  ZeroWidthJoiner = 0,
-  ZeroWidthNonJoiner = 1,
-};
-
 enum class TokenType : uint8_t {
   Vowel,
   VowelDiacritic,

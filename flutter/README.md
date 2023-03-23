@@ -1,13 +1,12 @@
 # inditrans
 
-An experimental transliterator library for some [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
+A functional transliterator library for most common [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) scripts.
 
-- Available on all platforms. Uses ffi for non-Web platforms and wasm for Web.
-- Uses ffi (non-Web)/wasm (Web) for near native performance.
-- No dependencies (for transliteration) and no server needed.
-- Supports [vedic accents](https://en.wikipedia.org/wiki/Vedic_accent). Useful for vedic scriptures.
-- Smart transliteration to and from Tamil. Supports tamil superscript.
-- Supports ITRANS toggle transliteration with ## and skipping HTML tags
+- Available on all platforms.
+- No dependencies (for transliteration) and no server needed. Uses ffi (non-Web)/wasm (Web) for near native performance.
+- Supports ITRANS toggle transliteration with ## and skipping XML tags
+- Special handling for scripts like Tamil, Malayalam, Gurmukhi, etc. Tuned for reability.
+- Supports [vedic accents](https://en.wikipedia.org/wiki/Vedic_accent) for vedic scriptures.
 
 References:
 
