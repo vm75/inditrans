@@ -66,6 +66,7 @@ struct ScriptToken : public Token {
 constexpr const ScriptToken invalidScriptToken(TokenType::Ignore, InvalidToken, ScriptType::Others);
 
 struct ScriptInfo {
+  bool isVedic { false };
   ScriptType type {};
   std::vector<std::string_view> vowels {};
   std::vector<std::string_view> vowelMarks {};

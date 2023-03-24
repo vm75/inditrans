@@ -1,3 +1,7 @@
+## 0.6.0
+
+- Refactoring and constants generation
+
 ## 0.5.0
 
 - Added support for Gurmukhi adhak

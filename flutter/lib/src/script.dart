@@ -1,0 +1,33 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+/// Supported scripts
+enum Script {
+  assamese,
+  bangla,
+  bengali,
+  burmese,
+  devanagari,
+  gujarati,
+  gurmukhi,
+  hindi,
+  iast,
+  ipa,
+  iso,
+  itrans,
+  kannada,
+  khmer,
+  malayalam,
+  odia,
+  oriya,
+  punjabi,
+  readableLatin,
+  sanskrit,
+  sinhala,
+  tamil,
+  tamilExtended,
+  telugu,
+  thai,
+  tibetan,
+  titus,
+  wx,
+}

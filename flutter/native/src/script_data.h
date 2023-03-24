@@ -3,6 +3,7 @@
 #define Z "\u0000"
 #define E "\u0001"
 
+#define VEDIC "v\u0000"
 #define INDIC "i\u0000"
 #define TAMIL "t\u0000"
 #define LATIN "l\u0000"
@@ -20,7 +21,7 @@
 // clang-format off
 
 const char scriptData[] =
-  "assamese" Z INDIC
+  "assamese" Z VEDIC
     VOWELS "অ" Z "আ" Z "ই" Z "ঈ" Z "উ" Z "ঊ" Z "ঋ" Z "ৠ" Z "ঌ" Z "ৡ" Z "এ᳴" Z "এ" Z "ঐ" Z "ও᳴" Z "ও" Z "ঔ" Z "এ᳴" Z "এˇ" Z "আ᳴" Z E
     VOWELMARKS "্" Z "া" Z "ি" Z "ী" Z "ু" Z "ূ" Z "ৃ" Z "ৄ" Z "ৢ" Z "ৣ" Z "ে᳴" Z "ে" Z "ৈ" Z "ো᳴" Z "ো" Z "ৌ" Z "ে᳴" Z "েˇ" Z "া᳴" Z E
     CONSONANTS "ক" Z "খ" Z "গ" Z "ঘ" Z "ঙ" Z "চ" Z "ছ" Z "জ" Z "ঝ" Z "ঞ" Z "ট" Z "ঠ" Z "ড" Z "ঢ" Z "ণ" Z "ত" Z "থ" Z "দ" Z "ধ" Z "ন" Z "প" Z "ফ" Z "ব" Z "ভ" Z "ম" Z "য" Z "ৰ" Z "ল" Z "ৱ" Z "শ" Z "ষ" Z "স" Z "হ" Z "ল়" Z "ষ়" Z "ৰ়" Z "ন়" Z "ক়" Z "খ়" Z "গ়" Z "জ়" Z "ড়" Z "ঢ়" Z "ফ়" Z "য়" Z "ঁˆগ" Z "ঁˆজ" Z "ঁˆড" Z "ঁˆদ" Z "ঁˆব" Z E
@@ -33,7 +34,7 @@ const char scriptData[] =
       "ৰ়" Z "র়" Z E
     E
   E
-  "bengali" Z INDIC
+  "bengali" Z VEDIC
     ALIASES "bangla" Z E
     VOWELS "অ" Z "আ" Z "ই" Z "ঈ" Z "উ" Z "ঊ" Z "ঋ" Z "ৠ" Z "ঌ" Z "ৡ" Z "এ᳴" Z "এ" Z "ঐ" Z "ও᳴" Z "ও" Z "ঔ" Z "এ᳴" Z "এˇ" Z "আ᳴" Z E
     VOWELMARKS "্" Z "া" Z "ি" Z "ী" Z "ু" Z "ূ" Z "ৃ" Z "ৄ" Z "ৢ" Z "ৣ" Z "ে᳴" Z "ে" Z "ৈ" Z "ো᳴" Z "ো" Z "ৌ" Z "ে᳴" Z "েˇ" Z "া᳴" Z E
@@ -59,8 +60,8 @@ const char scriptData[] =
       "x:1" Z "()" Z "^" Z E
     E
   E
-  "devanagari" Z INDIC
-    ALIASES "samskrit" Z "sanskrit" Z E
+  "devanagari" Z VEDIC
+    ALIASES "hindi" Z "sanskrit" Z E
     VOWELS "अ" Z "आ" Z "इ" Z "ई" Z "उ" Z "ऊ" Z "ऋ" Z "ॠ" Z "ऌ" Z "ॡ" Z "ऎ" Z "ए" Z "ऐ" Z "ऒ" Z "ओ" Z "औ" Z "ऍ" Z "एॕ" Z "ऑ" Z E
     VOWELMARKS "्" Z "ा" Z "ि" Z "ी" Z "ु" Z "ू" Z "ृ" Z "ॄ" Z "ॢ" Z "ॣ" Z "ॆ" Z "े" Z "ै" Z "ॊ" Z "ो" Z "ौ" Z "ॅ" Z "ॕ" Z "ॉ" Z E
     CONSONANTS "क" Z "ख" Z "ग" Z "घ" Z "ङ" Z "च" Z "छ" Z "ज" Z "झ" Z "ञ" Z "ट" Z "ठ" Z "ड" Z "ढ" Z "ण" Z "त" Z "थ" Z "द" Z "ध" Z "न" Z "प" Z "फ" Z "ब" Z "भ" Z "म" Z "य" Z "र" Z "ल" Z "व" Z "श" Z "ष" Z "स" Z "ह" Z "ळ" Z "ऴ" Z "ऱ" Z "ऩ" Z "क़" Z "ख़" Z "ग़" Z "ज़" Z "ड़" Z "ढ़" Z "फ़" Z "य़" Z "ँˆग" Z "ँˆज" Z "ँˆड" Z "ँˆद" Z "ँˆब" Z E
@@ -85,7 +86,7 @@ const char scriptData[] =
       "ऍ" Z "ॲ" Z "अॅ" Z E
     E
   E
-  "gujarati" Z INDIC
+  "gujarati" Z VEDIC
     VOWELS "અ" Z "આ" Z "ઇ" Z "ઈ" Z "ઉ" Z "ઊ" Z "ઋ" Z "ૠ" Z "ઌ" Z "ૡ" Z "એ᳴" Z "એ" Z "ઐ" Z "ઓ᳴" Z "ઓ" Z "ઔ" Z "ઍ" Z "ઍˇ" Z "ઑ" Z E
     VOWELMARKS "્" Z "ા" Z "િ" Z "ી" Z "ુ" Z "ૂ" Z "ૃ" Z "ૄ" Z "ૢ" Z "ૣ" Z "ે᳴" Z "ે" Z "ૈ" Z "ો᳴" Z "ો" Z "ૌ" Z "ૅ" Z "ૅˇ" Z "ૉ" Z E
     CONSONANTS "ક" Z "ખ" Z "ગ" Z "ઘ" Z "ઙ" Z "ચ" Z "છ" Z "જ" Z "ઝ" Z "ઞ" Z "ટ" Z "ઠ" Z "ડ" Z "ઢ" Z "ણ" Z "ત" Z "થ" Z "દ" Z "ધ" Z "ન" Z "પ" Z "ફ" Z "બ" Z "ભ" Z "મ" Z "ય" Z "ર" Z "લ" Z "વ" Z "શ" Z "ષ" Z "સ" Z "હ" Z "ળ" Z "ળ઼" Z "ર઼" Z "ન઼" Z "ક઼" Z "ખ઼" Z "ગ઼" Z "જ઼" Z "ડ઼" Z "ઢ઼" Z "ફ઼" Z "ય઼" Z "ઁˆગ" Z "ઁˆજ" Z "ઁˆડ" Z "ઁˆદ" Z "ઁˆબ" Z E
@@ -93,7 +94,7 @@ const char scriptData[] =
     SYMBOLS "૦" Z "૧" Z "૨" Z "૩" Z "૪" Z "૫" Z "૬" Z "૭" Z "૮" Z "૯" Z "ૐ" Z "।" Z "॥" Z E
     VEDICSYMBOLS "ઽ" Z "ꣳ" Z "ꣴ" Z E
   E
-  "gurmukhi" Z INDIC
+  "gurmukhi" Z VEDIC
     ALIASES "punjabi" Z E
     VOWELS "ਅ" Z "ਆ" Z "ਇ" Z "ਈ" Z "ਉ" Z "ਊ" Z "ਰੁʼ" Z "ਰੂʼ" Z "ਲੁʼ" Z "ਲੂʼ" Z "ਏ᳴" Z "ਏ" Z "ਐ" Z "ਓ᳴" Z "ਓ" Z "ਔ" Z "ਏ᳴" Z "ਏˇ" Z "ਆ᳴" Z E
     VOWELMARKS "੍" Z "ਾ" Z "ਿ" Z "ੀ" Z "ੁ" Z "ੂ" Z "੍ਰੁʼ" Z "੍ਰੂʼ" Z "੍ਲੁʼ" Z "੍ਲੂʼ" Z "ੇ᳴" Z "ੇ" Z "ੈ" Z "ੋ᳴" Z "ੋ" Z "ੌ" Z "ੇ᳴" Z "ੇˇ" Z "ਾ᳴" Z E
@@ -400,7 +401,7 @@ const char scriptData[] =
       "j~n" Z "GY" Z "dny" Z E
     E
   E
-  "kannada" Z INDIC
+  "kannada" Z VEDIC
     VOWELS "ಅ" Z "ಆ" Z "ಇ" Z "ಈ" Z "ಉ" Z "ಊ" Z "ಋ" Z "ೠ" Z "ಌ" Z "ೡ" Z "ಎ" Z "ಏ" Z "ಐ" Z "ಒ" Z "ಓ" Z "ಔ" Z "ಎ᳴" Z "ಏˇ" Z "ಆ᳴" Z E
     VOWELMARKS "್" Z "ಾ" Z "ಿ" Z "ೀ" Z "ು" Z "ೂ" Z "ೃ" Z "ೄ" Z "ೢ" Z "ೣ" Z "ೆ" Z "ೇ" Z "ೈ" Z "ೊ" Z "ೋ" Z "ೌ" Z "ೆ᳴" Z "ೇˇ" Z "ಾ᳴" Z E
     CONSONANTS "ಕ" Z "ಖ" Z "ಗ" Z "ಘ" Z "ಙ" Z "ಚ" Z "ಛ" Z "ಜ" Z "ಝ" Z "ಞ" Z "ಟ" Z "ಠ" Z "ಡ" Z "ಢ" Z "ಣ" Z "ತ" Z "ಥ" Z "ದ" Z "ಧ" Z "ನ" Z "ಪ" Z "ಫ" Z "ಬ" Z "ಭ" Z "ಮ" Z "ಯ" Z "ರ" Z "ಲ" Z "ವ" Z "ಶ" Z "ಷ" Z "ಸ" Z "ಹ" Z "ಳ" Z "ೞ" Z "ಱ" Z "ನ಼" Z "ಕ಼" Z "ಖ಼" Z "ಗ಼" Z "ಜ಼" Z "ಡ಼" Z "ಢ಼" Z "ಫ಼" Z "ಯ಼" Z "ಂˆಗ" Z "ಂˆಜ" Z "ಂˆಡ" Z "ಂˆದ" Z "ಂˆಬ" Z E
@@ -420,7 +421,7 @@ const char scriptData[] =
     SYMBOLS "០" Z "១" Z "២" Z "៣" Z "៤" Z "៥" Z "៦" Z "៧" Z "៨" Z "៩" Z "ឱំ" Z "។" Z "៕" Z E
     VEDICSYMBOLS "ៜ" Z "ꣳ" Z "ꣴ" Z E
   E
-  "malayalam" Z INDIC
+  "malayalam" Z VEDIC
     VOWELS "അ" Z "ആ" Z "ഇ" Z "ഈ" Z "ഉ" Z "ഊ" Z "ഋ" Z "ൠ" Z "ഌ" Z "ൡ" Z "എ" Z "ഏ" Z "ഐ" Z "ഒ" Z "ഓ" Z "ഔ" Z "എ᳴" Z "ഏˇ" Z "ആ᳴" Z E
     VOWELMARKS "്" Z "ാ" Z "ി" Z "ീ" Z "ു" Z "ൂ" Z "ൃ" Z "ൄ" Z "ൢ" Z "ൣ" Z "െ" Z "േ" Z "ൈ" Z "ൊ" Z "ോ" Z "ൗ" Z "െ᳴" Z "േˇ" Z "ാ᳴" Z E
     CONSONANTS "ക" Z "ഖ" Z "ഗ" Z "ഘ" Z "ങ" Z "ച" Z "ഛ" Z "ജ" Z "ഝ" Z "ഞ" Z "ട" Z "ഠ" Z "ഡ" Z "ഢ" Z "ണ" Z "ത" Z "ഥ" Z "ദ" Z "ധ" Z "ന" Z "പ" Z "ഫ" Z "ബ" Z "ഭ" Z "മ" Z "യ" Z "ര" Z "ല" Z "വ" Z "ശ" Z "ഷ" Z "സ" Z "ഹ" Z "ള" Z "ഴ" Z "റ" Z "ഩ" Z "ക·" Z "ഖ·" Z "ഗ·" Z "ജ·" Z "ഡ·" Z "ഢ·" Z "ഫ·" Z "യ·" Z "ംˆഗ" Z "ംˆജ" Z "ംˆഡ" Z "ംˆദ" Z "ംˆബ" Z E
@@ -441,7 +442,7 @@ const char scriptData[] =
       "ഴ്" Z "ൖ" Z E
     E
   E
-  "oriya" Z INDIC
+  "oriya" Z VEDIC
     ALIASES "odia" Z E
     VOWELS "ଅ" Z "ଆ" Z "ଇ" Z "ଈ" Z "ଉ" Z "ଊ" Z "ଋ" Z "ୠ" Z "ଌ" Z "ୡ" Z "ଏ᳴" Z "ଏ" Z "ଐ" Z "ଓ᳴" Z "ଓ" Z "ଔ" Z "ଏ᳴" Z "ଏˇ" Z "ଆ᳴" Z E
     VOWELMARKS "୍" Z "ା" Z "ି" Z "ୀ" Z "ୁ" Z "ୂ" Z "ୃ" Z "ୄ" Z "ୢ" Z "ୣ" Z "େ᳴" Z "େ" Z "ୈ" Z "ୋ᳴" Z "ୋ" Z "ୌ" Z "େ᳴" Z "େˇ" Z "ା᳴" Z E
@@ -453,7 +454,7 @@ const char scriptData[] =
       "ୱ" Z "ଵ" Z "ଵ" Z "ବ଼" Z E
     E
   E
-  "readablelatin" Z LATIN
+  "readableLatin" Z LATIN
     VOWELS "a" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "r̥" Z "rr̥" Z "l̥" Z "ll̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "a" Z "e" Z "o" Z E
     VOWELMARKS "" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "r̥" Z "rr̥" Z "l̥" Z "ll̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "a" Z "e" Z "o" Z E
     CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "n" Z "ch" Z "chh" Z "j" Z "jh" Z "n" Z "T" Z "Th" Z "D" Z "Dh" Z "N" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "sh" Z "sh" Z "s" Z "h" Z "L" Z "zh" Z "R" Z "n" Z "q" Z "qh" Z "gh" Z "z" Z "D" Z "Dh" Z "f" Z "y" Z "ng" Z "nj" Z "nD" Z "nd" Z "mb" Z E
@@ -488,7 +489,7 @@ const char scriptData[] =
       "்" Z "்‍" Z "‍்" Z E
     E
   E
-  "tamil-extended" Z INDIC
+  "tamilExtended" Z VEDIC
     VOWELS "അ" Z "ആ" Z "ഇ" Z "ഈ" Z "ഉ" Z "ഊ" Z "ഋ" Z "ൠ" Z "ഌ" Z "ൡ" Z "എ" Z "ഏ" Z "ഐ" Z "ഒ" Z "ഓ" Z "ഔ" Z "എ᳴" Z "ഏ᳴" Z "ആ᳴" Z E
     VOWELMARKS "്‌" Z "ാ" Z "ി" Z "ീ" Z "ു" Z "ൂ" Z "ൃ" Z "ൄ" Z "ൢ" Z "ൣ" Z "െ" Z "േ" Z "ൈ" Z "ൊ" Z "ോ" Z "ൗ" Z "െ᳴" Z "േ᳴" Z "ാ᳴" Z E
     CONSONANTS "ക" Z "ഖ" Z "ഗ" Z "ഘ" Z "ങ" Z "ച" Z "ഛ" Z "ജ" Z "ഝ" Z "ഞ" Z "ട" Z "ഠ" Z "ഡ" Z "ഢ" Z "ണ" Z "ത" Z "ഥ" Z "ദ" Z "ധ" Z "ന" Z "പ" Z "ഫ" Z "ബ" Z "ഭ" Z "മ" Z "യ" Z "ര" Z "ല" Z "വ" Z "ശ" Z "ഷ" Z "സ" Z "ഹ" Z "ള" Z "ഴ" Z "റ" Z "ഩ" Z "ക·" Z "ഖ·" Z "ഗ·" Z "ജ·" Z "ഡ·" Z "ഢ·" Z "ഫ·" Z "യ·" Z "ംˆഗ" Z "ംˆജ" Z "ംˆഡ" Z "ംˆദ" Z "ംˆബ" Z E
@@ -496,7 +497,7 @@ const char scriptData[] =
     SYMBOLS "௦" Z "௧" Z "௨" Z "௩" Z "௪" Z "௫" Z "௬" Z "௭" Z "௮" Z "௯" Z "ௐ" Z "।" Z "॥" Z E
     VEDICSYMBOLS "ഽ" Z "ꣳ" Z "ꣴ" Z E
   E
-  "telugu" Z INDIC
+  "telugu" Z VEDIC
     VOWELS "అ" Z "ఆ" Z "ఇ" Z "ఈ" Z "ఉ" Z "ఊ" Z "ఋ" Z "ౠ" Z "ఌ" Z "ౡ" Z "ఎ" Z "ఏ" Z "ఐ" Z "ఒ" Z "ఓ" Z "ఔ" Z "ఎ᳴​" Z "ఏ᳴" Z "ఒ᳴​" Z E
     VOWELMARKS "్" Z "ా" Z "ి" Z "ీ" Z "ు" Z "ూ" Z "ృ" Z "ౄ" Z "ౢ" Z "ౣ" Z "ె" Z "ే" Z "ై" Z "ొ" Z "ో" Z "ౌ" Z "ె॒​" Z "ే॒​" Z "ొ॒​" Z E
     CONSONANTS "క" Z "ఖ" Z "గ" Z "ఘ" Z "ఙ" Z "చ" Z "ఛ" Z "జ" Z "ఝ" Z "ఞ" Z "ట" Z "ఠ" Z "డ" Z "ఢ" Z "ణ" Z "త" Z "థ" Z "ద" Z "ధ" Z "న" Z "ప" Z "ఫ" Z "బ" Z "భ" Z "మ" Z "య" Z "ర" Z "ల" Z "వ" Z "శ" Z "ష" Z "స" Z "హ" Z "ళ" Z "ఴ" Z "ఱ" Z "న·" Z "క·" Z "ఖ·" Z "గ·" Z "జ·" Z "డ·" Z "ఢ·" Z "ఫ·" Z "య·" Z "ఁˆగ" Z "ఁˆజ" Z "ఁˆడ" Z "ఁˆద" Z "ఁˆబ" Z E

@@ -64,6 +64,10 @@ private:
     auto name = readString(ptr, end);
     auto typeStr = readString(ptr, end);
     switch (typeStr[0]) {
+      case 'v':
+        data.type = ScriptType::Indic;
+        data.isVedic = true;
+        break;
       case 'i':
         data.type = ScriptType::Indic;
         break;
@@ -109,10 +113,10 @@ private:
     }
     assert(*ptr == fieldEnd);
     ptr++;
-    scriptMap.insert({ name, std::move(data) });
     for (auto alias : data.aliases) {
       aliasMap.insert({ alias, name });
     }
+    scriptMap.insert({ name, std::move(data) });
   }
 
   std::string_view readString(const char*& ptr, const char* end) noexcept {
@@ -234,8 +238,6 @@ public:
   const std::vector<ScriptToken>& getExtraTokens(uint8_t index) const noexcept { return extraTokens[index]; };
 
   ScriptType getType() const noexcept { return scriptData.type; }
-  std::string_view getName() const noexcept { return name; }
-  const ScriptInfo& getScriptData() const noexcept { return scriptData; }
 
 private:
   void addCharMap(const std::string_view name, TokenType tokenType, ScriptType scriptType, const std::string_view* map,
@@ -288,6 +290,7 @@ class ScriptWriterMap {
 public:
   ScriptWriterMap(const std::string_view name, const ScriptInfo& scriptInfo) noexcept
       : name(name)
+      , scriptInfo(scriptInfo)
       , scriptType(scriptInfo.type) {
     addCharMap(name, TokenType::Vowel, scriptType, scriptInfo.vowels.data(), scriptInfo.vowels.size());
     addCharMap(name, TokenType::VowelMark, scriptType, scriptInfo.vowelMarks.data(), scriptInfo.vowelMarks.size());
@@ -319,7 +322,7 @@ public:
   }
 
   ScriptType getType() const noexcept { return scriptType; }
-  std::string_view getName() const noexcept { return name; }
+  bool isVedic() const noexcept { return scriptInfo.isVedic; }
 
 private:
   void addCharMap(const std::string_view name, TokenType tokenType, ScriptType scriptType, const std::string_view* map,
@@ -333,6 +336,7 @@ private:
 
 private:
   const std::string_view name;
+  const ScriptInfo& scriptInfo;
   ScriptType scriptType;
   std::array<std::vector<std::string_view>, 8> charMaps {};
 };
@@ -1173,7 +1177,7 @@ std::unique_ptr<OutputWriter> getOutputWriter(std::string_view to, TranslitOptio
     return nullptr;
   }
 
-  if (to == "sinhala" || to == "burmese" || to == "thai" || to == "khmer" || to == "tibetan") {
+  if (map->getType() == ScriptType::Indic && !map->isVedic()) {
     options = options | TranslitOptions::IgnoreVedicAccents;
   }
 

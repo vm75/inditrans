@@ -39,23 +39,30 @@
 extern "C" {
 #endif // __cplusplus
 
-/// translitOptionsToInt
+/// Transliteration options
+/// Flags to control transliteration
 enum TranslitOptions {
+  /// No options (default)
   None = 0,
+  /// Use traditional Tamil consonants only
   TamilTraditional = 1,
+  /// Use superscripted Tamil consonants
   TamilSuperscripted = 2,
+  /// Force ASCII numerals in transliterated text
   ASCIINumerals = 4,
+  /// Ignore Vedic accents in transliterated text
   IgnoreVedicAccents = 8,
+  /// Retain special markers which are used to identify non-standard chars
   RetainSpecialMarkers = 16,
 };
 
-/// transliterate
+/// transliterate text from one script to another
 ext_def(char*) transliterate(const char* text, const char* from, const char* to, unsigned long options);
 
-/// returns a comma-separated list of scripts
+/// returns if the given script is supported
 ext_def(int) isScriptSupported(const char* script);
 
-/// releaseBuffer
+/// free up the memory allocated by the library
 ext_def(void) releaseBuffer(char* buffer);
 
 #ifdef __cplusplus

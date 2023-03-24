@@ -18,15 +18,6 @@ class TestSpec {
       this.options, this.expected);
 }
 
-inditrans.Option getOptions(String optionsString) {
-  inditrans.Option options = inditrans.Option.None;
-  final optionString = optionsString.split(' ');
-  for (final entry in optionString) {
-    options = options + inditrans.Option.fromString(entry);
-  }
-  return options;
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -40,13 +31,13 @@ void main() async {
   for (final input in jsonDecode(jsonString)) {
     final description = input['description'];
     final inputText = input['text'];
-    final inputScript = inditrans.Script.fromString(input['script']) ??
-        inditrans.Script.devanagari;
+    final inputScript =
+        input['script'].toScript() ?? inditrans.Script.devanagari;
     for (final target in input['targets']) {
-      final targetScript = inditrans.Script.fromString(target['script']) ??
-          inditrans.Script.devanagari;
+      final targetScript =
+          target['script'].toScript() ?? inditrans.Script.devanagari;
       final expected = target['text'];
-      final options = getOptions(target['options'] ?? '');
+      final options = inditrans.Option.fromString(target['options'] ?? '');
       testCases.add(TestSpec(description, inputText, inputScript, targetScript,
           options, expected));
     }

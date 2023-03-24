@@ -8,6 +8,36 @@ Module['onRuntimeInitialized'] = function () {
             'IgnoreVedicAccents': 8,
             'RetainSpecialMarkers': 16,
         },
+        'Scripts': [
+            'assamese',
+            'bangla',
+            'bengali',
+            'burmese',
+            'devanagari',
+            'gujarati',
+            'gurmukhi',
+            'hindi',
+            'iast',
+            'ipa',
+            'iso',
+            'itrans',
+            'kannada',
+            'khmer',
+            'malayalam',
+            'odia',
+            'oriya',
+            'punjabi',
+            'readableLatin',
+            'sanskrit',
+            'sinhala',
+            'tamil',
+            'tamilExtended',
+            'telugu',
+            'thai',
+            'tibetan',
+            'titus',
+            'wx',
+        ],
         'optionsToInt': (optionsString) => {
             const options = optionsString.split(' ');
             let result = 0;
@@ -30,6 +60,9 @@ Module['onRuntimeInitialized'] = function () {
         'isScriptSupported' : (script) => {
             const isScriptSupported = cwrap('isScriptSupported', 'number', ['string']);
             return isScriptSupported(script) == 1;
+        },
+        'supportedScripts' : () => {
+            return Module['inditrans']['Scripts'];
         }
     }
 }

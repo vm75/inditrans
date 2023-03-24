@@ -2,10 +2,12 @@ library inditrans;
 
 import 'src/bindings.dart';
 import 'src/ffi_proxy.dart';
-import 'src/types.dart';
+import 'src/option.dart';
+import 'src/script.dart';
 import 'src/utils.dart';
 
-export 'src/types.dart' show Option, Script, InditransScriptExtension;
+export 'src/option.dart' show Option;
+export 'src/script.dart' show Script;
 
 late dynamic _platformLib;
 late InditransBindings _bindings;
@@ -40,16 +42,15 @@ init() async {
 /// inditrans.transliterate('text', transliterate.Script.devanagari, transliterate.Script.tamil);
 ///
 /// ```
-String transliterate(String text, Script from, Script to,
-    [Option options = Option.None]) {
+String transliterate(String text, Script from, Script to, [Option? options]) {
   final staging = StagingMemory(_allocator);
 
   final nativeText = staging.toNativeString(text);
   final nativeFrom = staging.toNativeString(from.toString());
   final nativeTo = staging.toNativeString(to.toString());
 
-  final buffer =
-      _bindings.transliterate(nativeText, nativeFrom, nativeTo, options.value);
+  final buffer = _bindings.transliterate(
+      nativeText, nativeFrom, nativeTo, options?.value ?? 0);
   final result = staging.fromNativeString(buffer);
 
   staging.freeAll();
@@ -66,4 +67,16 @@ bool isScriptSupported(String script) {
 
   staging.freeAll();
   return result == 1;
+}
+
+/// Extension methods for [Script]
+/// Converts a [String] to [Script] if valid
+extension InditransScriptExtension on String {
+  Script? toScript() {
+    try {
+      return Script.values.firstWhere((entry) => entry.toString() == this);
+    } catch (_) {
+      return null;
+    }
+  }
 }

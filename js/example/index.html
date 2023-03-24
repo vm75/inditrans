@@ -13,35 +13,56 @@
         <div id="root"></div>
     </main>
     <footer></footer>
-    <script src='../public/inditrans.js' defer></script>
+    <script src='../public/inditrans.js' async>
+      // triggeer event
+      // var event = new Event('inditransLoaded');
+      // window.dispatchEvent(event);
+    </script>
     <script type="module" defer>
       import { h, Component, render } from 'https://unpkg.com/preact@latest?module';
 
       // Define the available scripts
-      const scripts = [
-          { value: 'devanagari', label: 'Devanagari' },
-          { value: 'tamil', label: 'Tamil' },
-          { value: 'tamil-extended', label: 'Tamil Extended' },
-          { value: 'telugu', label: 'Telugu' },
-          { value: 'malayalam', label: 'Malayalam' },
-          { value: 'kannada', label: 'Kannada' },
-          { value: 'bengali', label: 'Bengali' },
-          { value: 'assamese', label: 'Assamese' },
-          { value: 'burmese', label: 'Burmese' },
-          { value: 'gurmukhi', label: 'Gurmukhi' },
-          { value: 'gujarati', label: 'Gujarati' },
-          { value: 'khmer', label: 'Khmer' },
-          { value: 'oriya', label: 'Oriya' },
-          { value: 'sinhala', label: 'Sinhala' },
-          { value: 'thai', label: 'Thai' },
-          { value: 'tibetan', label: 'Tibetan' },
-          { value: 'itrans', label: 'ITRANS' },
-          { value: 'iso', label: 'ISO' },
-          { value: 'iast', label: 'IAST' },
-          { value: 'ipa', label: 'IPA' },
-          { value: 'titus', label: 'TITUS' },
-          { value: 'readablelatin', label: 'Readable Latin' },
-      ];
+      var sourceScripts = getScripts();
+      var targetScripts = getScripts();
+
+      // remove readableLatin from source scripts
+      sourceScripts = sourceScripts.filter(function(script) {
+        return script.value != "readableLatin";
+      });
+
+      function getScripts() {
+        if (!Module.inditrans) {
+          return [];
+        }
+        var scripts = [];
+        //Module.inditrans.Scripts;
+        for (var script in Module.inditrans.Scripts) {
+          var name = Module.inditrans.Scripts[script];
+          var label = "";
+          // If name starts with i, capitalize whole word
+          // Otherwise, capitalize the first letter
+          if (name[0] == 'i' || name == "titus" || name == "wx") {
+            label = "Latin (" + name.toUpperCase() + ")";
+          } else {
+            label = name.replace(/([A-Z])/g, ' $1');
+            label = label[0].toUpperCase() + label.slice(1);
+          }
+
+          scripts.push({ value: name, label: label });
+        }
+        // sort scripts by label
+        scripts.sort(function(a, b) {
+          if (a.label < b.label) {
+            return -1;
+          }
+          if (a.label > b.label) {
+            return 1;
+          }
+          return 0;
+        });
+
+        return scripts;
+      }
 
       class App extends Component {
         state = {
@@ -87,7 +108,7 @@
               h(
                 'select',
                 { id: 'source-script', value: sourceScript, onChange: this.handleSourceScriptChange },
-                scripts.map((script) => h('option', { value: script.value }, script.label))
+                sourceScripts.map((script) => h('option', { value: script.value }, script.label))
               ),
             ]),
             h('label', { htmlFor: 'input-text' }, 'Input text: '),
@@ -97,7 +118,7 @@
               h(
                 'select',
                 { id: 'target-script', value: targetScript, onChange: this.handleTargetScriptChange },
-                scripts.map((script) => h('option', { value: script.value }, script.label))
+                targetScripts.map((script) => h('option', { value: script.value }, script.label))
               ),
             ]),
             h('label', { htmlFor: 'transliterated-text' }, 'Transliterated text: '),

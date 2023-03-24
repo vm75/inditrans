@@ -1,0 +1,38 @@
+[
+    {
+        "name": "None",
+        "comment": "No options (default)",
+        "value": 0
+    },
+    {
+        "name": "TamilTraditional",
+        "comment": "Use traditional Tamil consonants only",
+        "value": 1,
+        "scripts": [
+            "Tamil"
+        ]
+    },
+    {
+        "name": "TamilSuperscripted",
+        "comment": "Use superscripted Tamil consonants",
+        "value": 2,
+        "scripts": [
+            "Tamil"
+        ]
+    },
+    {
+        "name": "ASCIINumerals",
+        "comment": "Force ASCII numerals in transliterated text",
+        "value": 4
+    },
+    {
+        "name": "IgnoreVedicAccents",
+        "comment": "Ignore Vedic accents in transliterated text",
+        "value": 8
+    },
+    {
+        "name": "RetainSpecialMarkers",
+        "comment": "Retain special markers which are used to identify non-standard chars",
+        "value": 16
+    }
+]
