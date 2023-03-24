@@ -372,7 +372,7 @@ const char scriptData[] =
     CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "~N" Z "ch" Z "chh" Z "j" Z "jh" Z "~n" Z "T" Z "Th" Z "D" Z "Dh" Z "N" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "sh" Z "Sh" Z "s" Z "h" Z "L" Z "zh" Z "R" Z "^n" Z "q" Z "K" Z "G" Z "z" Z ".D" Z ".Dh" Z "f" Z "Y" Z "n*g" Z "n*j" Z "n*D" Z "n*d" Z "m*b" Z E
     OTHERDIACRITICS ".N" Z "M" Z "H" Z "K^" Z E
     SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "OM" Z "|" Z "||" Z E
-    VEDICSYMBOLS ".a" Z "gͫ" Z "gͫ̄" Z E
+    VEDICSYMBOLS ".a" Z "gum" Z "ggum" Z E
     EQUIVALENTS
       "aa" Z "A" Z E
       "ee" Z "I" Z "ii" Z E

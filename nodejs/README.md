@@ -7,6 +7,9 @@ A functional transliterator library for the most common [Indic/Brahmic](https://
 - Special handling for scripts like Tamil, Malayalam, Gurmukhi, etc. Tuned for reability.
 - Supports [vedic accents](https://en.wikipedia.org/wiki/Vedic_accent) for vedic scriptures.
 
+<!-- - [Demo](http://vm75.github.io/inditrans/example/) -->
+- [Changelog](CHANGELOG.md)
+
 References:
 
 - [inditrans on Github](https://github.com/vm75/inditrans)

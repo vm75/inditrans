@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>inditrans Example</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+  </head>
+  <body>
+    <header></header>
+    <main class="container">
+        <h1>inditrans Example</h1>
+        <div id="root"></div>
+    </main>
+    <footer></footer>
+    <script src='../public/inditrans.js' defer></script>
+    <script type="module" defer>
+      import { h, Component, render } from 'https://unpkg.com/preact@latest?module';
+
+      // Define the available scripts
+      const scripts = [
+          { value: 'devanagari', label: 'Devanagari' },
+          { value: 'tamil', label: 'Tamil' },
+          { value: 'tamil-extended', label: 'Tamil Extended' },
+          { value: 'telugu', label: 'Telugu' },
+          { value: 'malayalam', label: 'Malayalam' },
+          { value: 'kannada', label: 'Kannada' },
+          { value: 'bengali', label: 'Bengali' },
+          { value: 'assamese', label: 'Assamese' },
+          { value: 'burmese', label: 'Burmese' },
+          { value: 'gurmukhi', label: 'Gurmukhi' },
+          { value: 'gujarati', label: 'Gujarati' },
+          { value: 'khmer', label: 'Khmer' },
+          { value: 'oriya', label: 'Oriya' },
+          { value: 'sinhala', label: 'Sinhala' },
+          { value: 'thai', label: 'Thai' },
+          { value: 'tibetan', label: 'Tibetan' },
+          { value: 'itrans', label: 'ITRANS' },
+          { value: 'iso', label: 'ISO' },
+          { value: 'iast', label: 'IAST' },
+          { value: 'ipa', label: 'IPA' },
+          { value: 'titus', label: 'TITUS' },
+          { value: 'readablelatin', label: 'Readable Latin' },
+      ];
+
+      class App extends Component {
+        state = {
+          inputText: 'श्री॒ गु॒रु॒भ्यो नमः॒ । ह॒रिः॒ ओ३म् ॥',
+          sourceScript: 'devanagari',
+          targetScript: 'itrans',
+        };
+
+        handleInput = (event) => {
+          const inputText = event.target.value;
+          const { sourceScript, targetScript } = this.state;
+          this.setState({ inputText });
+        };
+
+        handleSourceScriptChange = (event) => {
+          const sourceScript = event.target.value;
+          const { inputText, targetScript } = this.state;
+          this.setState({ sourceScript });
+        };
+
+        handleTargetScriptChange = (event) => {
+          const targetScript = event.target.value;
+          const { inputText, sourceScript } = this.state;
+          this.setState({ targetScript });
+        };
+
+        // Define the transliteration functions
+        transliterate = (text, sourceScript, targetScript) => {
+          if (!Module.inditrans) {
+            return text;
+          }
+          var res = Module.inditrans.transliterate(text, sourceScript, targetScript, 0);
+          return res || text;
+        };
+
+        render() {
+          const { inputText, sourceScript, targetScript } = this.state;
+          const transliteratedText =  this.transliterate(inputText, sourceScript, targetScript);
+
+          return h('div', null, [
+            h('div', null, [
+              h('label', { htmlFor: 'source-script' }, 'Source script: '),
+              h(
+                'select',
+                { id: 'source-script', value: sourceScript, onChange: this.handleSourceScriptChange },
+                scripts.map((script) => h('option', { value: script.value }, script.label))
+              ),
+            ]),
+            h('label', { htmlFor: 'input-text' }, 'Input text: '),
+            h('textarea', { id: 'input-text', value: inputText, onInput: this.handleInput }),
+            h('div', null, [
+              h('label', { htmlFor: 'target-script' }, 'Target script: '),
+              h(
+                'select',
+                { id: 'target-script', value: targetScript, onChange: this.handleTargetScriptChange },
+                scripts.map((script) => h('option', { value: script.value }, script.label))
+              ),
+            ]),
+            h('label', { htmlFor: 'transliterated-text' }, 'Transliterated text: '),
+            h('textarea', { style: { id: 'transliterated-text', whiteSpace: 'pre-wrap' }, readonly: true }, transliteratedText),
+          ]);
+        }
+      }
+
+      window.addEventListener("load", (event) => {
+        render(h(App), document.getElementById('root'));
+      });
+    </script>
+  </body>
+</html>

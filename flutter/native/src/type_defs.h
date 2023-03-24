@@ -50,6 +50,8 @@ struct ScriptToken : public Token {
       : Token(tokenType, idx)
       , scriptType(scriptType) { }
 
+  bool operator==(const Token& other) const noexcept { return tokenType == other.tokenType && idx == other.idx; }
+  bool operator!=(const Token& other) const noexcept { return tokenType != other.tokenType || idx != other.idx; }
   bool operator==(const ScriptToken& other) const noexcept {
     return tokenType == other.tokenType && scriptType == other.scriptType && idx == other.idx;
   }

@@ -495,7 +495,7 @@ public:
     }
   }
 
-  bool lookup(const TokenUnit& token, StatefulTrie<TokenUnit, bool>::LookupState& lookupState) {
+  bool lookup(const TokenUnit& token, StatefulTrie<TokenUnit, bool>::LookupState& lookupState) noexcept {
     if (token.leadToken.scriptType == ScriptType::Tamil) {
       return tamilPrefixes.lookup(token, lookupState);
     }
@@ -693,12 +693,12 @@ private:
               goto done;
           }
         } else if ((isPrimary || start.idx == 7 /* ஜ */) && iter < tokenUnits.end()) {
-          auto superscriptPos = TamilSuperscripts.find(GetString(*iter));
-          if (superscriptPos != TamilSuperscripts.npos) {
-            tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + superscriptPos / "²"_len));
+          auto offset = TamilSuperscripts.find(GetString(*iter));
+          if (offset != TamilSuperscripts.npos) {
+            tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + offset / "²"_len));
             iter++;
-          } else if ((superscriptPos = TamilSubscripts.find(GetString(*iter))) != TamilSubscripts.npos) {
-            tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + superscriptPos / "²"_len));
+          } else if ((offset = TamilSubscripts.find(GetString(*iter))) != TamilSubscripts.npos) {
+            tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + offset / "²"_len));
             iter++;
           } else {
             break;
@@ -1171,6 +1171,10 @@ std::unique_ptr<OutputWriter> getOutputWriter(std::string_view to, TranslitOptio
   auto map = getScriptWriterMap(to);
   if (map == nullptr) {
     return nullptr;
+  }
+
+  if (to == "sinhala" || to == "burmese" || to == "thai" || to == "khmer" || to == "tibetan") {
+    options = options | TranslitOptions::IgnoreVedicAccents;
   }
 
   return std::make_unique<OutputWriter>(*map, options, inputSize);

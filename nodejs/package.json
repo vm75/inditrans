@@ -9,10 +9,15 @@
     "type": "git",
     "url": "https://github.com/vm75/inditrans"
   },
+  "bugs": {
+    "url": "https://github.com/vm75/inditrans/issues"
+  },
+  "homepage": "https://github.com/vm75/inditrans",
   "files": [
     "dist/src/*.ts",
     "dist/src/*.js",
-    "dist/src/*.wasm"
+    "dist/src/*.wasm",
+    "test/"
   ],
   "types": "./dist/src/index.d.ts",
   "scripts": {
@@ -68,5 +73,9 @@
     "ITRANS",
     "IPA",
     "TITUS"
+  ],
+  "precommit": [
+    "lint",
+    "test"
   ]
 }
