@@ -433,6 +433,21 @@ const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexcept {
   return &entry->second;
 }
 
+const ScriptWriterMap* getScriptWriterMap(std::string_view script) noexcept {
+  static std::unordered_map<std::string, ScriptWriterMap> writerMapCache {};
+  auto entry = writerMapCache.find(std::string(script));
+  if (entry == writerMapCache.end()) {
+    auto mapEntry = ScriptData::getScript(script);
+    if (mapEntry == nullptr) {
+      return nullptr;
+    }
+
+    entry = writerMapCache.emplace(script, ScriptWriterMap { script, *mapEntry }).first;
+  }
+
+  return &entry->second;
+}
+
 class TamilPrefixLookup {
 public:
   TamilPrefixLookup() noexcept {
@@ -1161,19 +1176,12 @@ std::unique_ptr<InputReader> getInputReader(
 }
 
 std::unique_ptr<OutputWriter> getOutputWriter(std::string_view to, TranslitOptions options, size_t inputSize) noexcept {
-  static std::unordered_map<std::string, ScriptWriterMap> writerMapCache {};
-
-  auto entry = writerMapCache.find(std::string(to));
-  if (entry == writerMapCache.end()) {
-    auto mapEntry = ScriptData::getScript(to);
-    if (mapEntry == nullptr) {
-      return nullptr;
-    }
-
-    entry = writerMapCache.emplace(to, ScriptWriterMap { to, *mapEntry }).first;
+  auto map = getScriptWriterMap(to);
+  if (map == nullptr) {
+    return nullptr;
   }
 
-  return std::make_unique<OutputWriter>(entry->second, options, inputSize);
+  return std::make_unique<OutputWriter>(*map, options, inputSize);
 }
 
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
