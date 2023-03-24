@@ -397,6 +397,13 @@ const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexcept {
     return nullptr;
   }
 
+#ifdef FORCE_INDIC
+  auto mapEntry = ScriptData::getScript(script);
+  if (mapEntry != nullptr && (mapEntry->type == ScriptType::Indic || mapEntry->type == ScriptType::Tamil)) {
+    script = "indic";
+  }
+#endif
+
   auto entry = readerMapCache.find(std::string(script));
   if (entry == readerMapCache.end()) {
     if (script == "indic") {
