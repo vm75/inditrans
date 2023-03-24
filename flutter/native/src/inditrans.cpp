@@ -933,7 +933,7 @@ public:
       if (tokenUnit.leadToken.tokenType == TokenType::Ignore) {
         return;
       }
-      switch (scriptType) {
+      switch (map.getType()) {
         case ScriptType::Indic:
           writeIndicTokenUnit(tokenUnit);
           break;
@@ -954,9 +954,7 @@ public:
 
   OutputWriter(const ScriptWriterMap& map, const TranslitOptions options, size_t inputSize) noexcept
       : map(map)
-      , options(options)
-      , scriptType(map.getType())
-      , anuswaraMissing(map.lookupChar(TokenType::OtherDiacritic, Diacritic_Anuswara).length() == 0) {
+      , options(options) {
     buffer.reserve(inputSize);
     setNasalConsonantSize();
   }
@@ -1107,7 +1105,7 @@ protected:
       }
     }
     push(map.lookupChar(TokenType::Consonant, idx));
-    if (scriptType == ScriptType::Tamil) {
+    if (map.getType() == ScriptType::Tamil) {
       push(map.lookupChar(Virama));
     }
   }
@@ -1130,9 +1128,6 @@ protected:
     if (options / TranslitOptions::RetainSpecialMarkers) {
       std::string out {};
       stripChars(anuswara, SpecialMarkers, out);
-      anuswaraSize = out.size();
-    } else {
-      anuswaraSize = anuswara.size();
     }
   }
 
@@ -1150,10 +1145,7 @@ protected:
 private:
   const ScriptWriterMap& map;
   const TranslitOptions options;
-  const ScriptType scriptType;
   Utf8StringBuilder buffer {};
-  bool anuswaraMissing {};
-  size_t anuswaraSize {};
   std::unordered_map<std::string_view, std::string_view> tamilTraditionalMap {
     { "ஸ", "ச" },
     { "ஜ", "ச³" },
