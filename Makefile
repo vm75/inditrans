@@ -33,8 +33,8 @@ $(NATIVE_TEST): $(SOURCES_CC) $(HEADERS_CC) $(TEST_CC)
 $(NATIVE_CLI): $(SOURCES_CC) $(HEADERS_CC) native/cli/main.cpp
 	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I native/src $(SOURCES_CC) native/cli/main.cpp -o $@
 
-native/src/script_data.h: scripts/script_data.json
-	dart ./scripts/generate_script_data_header.dart
+native/src/script_data.h: scripts/script_data.json scripts/generate_script_data_header.dart
+	dart scripts/generate_script_data_header.dart
 
 wasm: flutter/assets/inditrans.wasm js/public/inditrans.js
 
@@ -45,7 +45,7 @@ js/public/inditrans.js: $(SOURCES_CC) $(HEADERS_CC) js/src/inditrans.post.js
 	./scripts/build_wasm.$(SCRIPT_EXT) js
 
 flutter/lib/src/bindings.dart: native/src/exports.h
-	dart ./scripts/generate_bindings.dart
+	dart scripts/generate_bindings.dart
 
 flutter: flutter/lib/src/bindings.dart flutter/assets/inditrans.wasm
 

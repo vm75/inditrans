@@ -31,12 +31,13 @@ auto isCaseInsensitiveScripts = [](std::string_view script) noexcept {
 
 constexpr uint8_t Diacritic_Virama = 0;
 constexpr uint8_t Diacritic_Anuswara = 1;
-constexpr uint8_t Vowel_Adhak = 19;
+constexpr uint8_t ExclusiveSymbol_Skip = 2;
+constexpr uint8_t ExclusiveSymbol_Adhak = 4;
 
-constexpr ScriptToken Virama { TokenType::VowelDiacritic, Diacritic_Virama, ScriptType::Indic };
-constexpr ScriptToken Anuswara { TokenType::VowelDiacritic, Diacritic_Anuswara, ScriptType::Indic };
-constexpr ScriptToken GurmukhiAdhak { TokenType::Vowel, Vowel_Adhak, ScriptType::Indic };
-constexpr Token Skip { TokenType::ZeroWidthChar, 2 };
+constexpr ScriptToken Virama { TokenType::VowelMark, Diacritic_Virama, ScriptType::Indic };
+constexpr ScriptToken Anuswara { TokenType::VowelMark, Diacritic_Anuswara, ScriptType::Indic };
+constexpr ScriptToken GurmukhiAdhak { TokenType::ExclusiveSymbol, ExclusiveSymbol_Adhak, ScriptType::Indic };
+constexpr Token Skip { TokenType::ExclusiveSymbol, ExclusiveSymbol_Skip };
 
 constexpr std::array<std::string_view, 41> VedicAccents = {
   /*꠰*/ "॒", "॑", "᳚",
@@ -46,13 +47,6 @@ constexpr std::array<std::string_view, 41> VedicAccents = {
 };
 constexpr std::array<std::string_view, 3> LatinAccents = {
   /*꠰*/ "̱", "̍", "̎",
-};
-
-constexpr std::array<std::string_view, 2> IndicZeroWidthChars = {
-  "\u200C" /* ZeroWidthNonJoiner */, "\u200D" /* ZeroWidthJoiner */
-};
-constexpr std::array<std::string_view, 2> DefaultZeroWidthChars = {
-  "", ""
 };
 
 // These are special chars which are included in some scripts and do not delimit words.

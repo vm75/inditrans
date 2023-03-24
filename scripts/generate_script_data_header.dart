@@ -14,12 +14,12 @@ const headerPrefix = '''#pragma once
 #define LATIN "l\\u0000"
 
 #define VOWELS "v\\u0000"
-#define VOWELDIACRITICS "V\\u0000"
+#define VOWELMARKS "m\\u0000"
 #define CONSONANTS "c\\u0000"
-#define COMMONDIACRITICS "C\\u0000"
+#define OTHERDIACRITICS "o\\u0000"
 #define SYMBOLS "s\\u0000"
 #define VEDICSYMBOLS "S\\u0000"
-#define ALTERNATES "a\\u0000"
+#define EQUIVALENTS "E\\u0000"
 #define ALIASES "A\\u0000"
 #define LANGUAGES "l\\u0000"
 
@@ -43,7 +43,7 @@ class LatinLetter {
   LatinLetter(this.letterCase, this.letter);
 }
 
-Map<int, List<String>> loadLatinAlternates({bool includeModifiers = false}) {
+Map<int, List<String>> loadLatinEquivalents({bool includeModifiers = false}) {
   final lines = File('docs/extended-latin.txt').readAsLinesSync();
 
   final Map<String, String> diacritics = {};
@@ -81,7 +81,7 @@ Map<int, List<String>> loadLatinAlternates({bool includeModifiers = false}) {
     }
   }
 
-  final Map<int, List<String>> alts = {};
+  final Map<int, List<String>> equivalents = {};
   for (final entry in latinExt.entries) {
     if (entry.value.diacriticNames.isEmpty) {
       continue;
@@ -111,19 +111,19 @@ Map<int, List<String>> loadLatinAlternates({bool includeModifiers = false}) {
       }
     }
     assert(entry.key.codeUnits.length == 1);
-    alts[entry.key.codeUnits[0]] = entry.value.diacritics;
+    equivalents[entry.key.codeUnits[0]] = entry.value.diacritics;
   }
 
-  return alts;
+  return equivalents;
 }
 
 class ScriptInfo {
   static const Map<String, int?> arrayTypes = {
     'aliases': null,
     'vowels': 19,
-    'vowelDiacritics': 19,
+    'vowelMarks': 19,
     'consonants': 50,
-    'commonDiacritics': 4,
+    'otherDiacritics': 4,
     'symbols': 13,
     'vedicSymbols': 3,
   };
@@ -140,51 +140,52 @@ class ScriptInfo {
     buffer.write('"$str" Z ');
   }
 
-  void addAlternates(
+  void addEquivalents(
     String str,
-    Map<dynamic, dynamic> alternates,
-    Map<int, List<String>> altMap, {
-    required bool upperAlt,
+    Map<dynamic, dynamic> equivalents,
+    Map<int, List<String>> equivalentMap, {
+    required bool upperEquivalent,
   }) {
-    final altList = (alternates[str] ?? []) as List<dynamic>;
-    bool needsAlt = false;
+    final equivalentList = (equivalents[str] ?? []) as List<dynamic>;
+    bool needsEquivalent = false;
 
-    if (upperAlt) {
-      final altUpper = str.toUpperCase();
-      if (altUpper != str && !altList.contains(altUpper)) {
-        altList.add(altUpper);
-        needsAlt = true;
+    if (upperEquivalent) {
+      final equivalentUpper = str.toUpperCase();
+      if (equivalentUpper != str && !equivalentList.contains(equivalentUpper)) {
+        equivalentList.add(equivalentUpper);
+        needsEquivalent = true;
       }
     }
 
     final codeUnits = str.codeUnits;
     final List<String> parts = [];
     for (final unit in codeUnits) {
-      if (altMap.containsKey(unit)) {
-        parts.add(altMap[unit]![0]);
-        needsAlt = true;
+      if (equivalentMap.containsKey(unit)) {
+        parts.add(equivalentMap[unit]![0]);
+        needsEquivalent = true;
       } else {
         parts.add(String.fromCharCode(unit));
       }
     }
-    if (!needsAlt) {
+    if (!needsEquivalent) {
       return;
     }
-    // join parts and add to alternates
-    final altStr = parts.join();
-    if (str != altStr && !altList.contains(altStr)) {
-      altList.add(altStr);
-      needsAlt = true;
-      if (upperAlt) {
-        final altUpper = altStr.toUpperCase();
-        if (altUpper != altStr && !altList.contains(altUpper)) {
-          altList.add(altUpper);
-          needsAlt = true;
+    // join parts and add to equivalents
+    final equivalentStr = parts.join();
+    if (str != equivalentStr && !equivalentList.contains(equivalentStr)) {
+      equivalentList.add(equivalentStr);
+      needsEquivalent = true;
+      if (upperEquivalent) {
+        final equivalentUpper = equivalentStr.toUpperCase();
+        if (equivalentUpper != equivalentStr &&
+            !equivalentList.contains(equivalentUpper)) {
+          equivalentList.add(equivalentUpper);
+          needsEquivalent = true;
         }
       }
     }
-    if (needsAlt) {
-      alternates[str] = altList;
+    if (needsEquivalent) {
+      equivalents[str] = equivalentList;
     }
   }
 
@@ -193,10 +194,10 @@ class ScriptInfo {
     String type,
     List<dynamic> arr,
     int? len,
-    Map<dynamic, dynamic> alternates,
-    Map<int, List<String>> altMap, {
-    required bool needsAlt,
-    required bool upperAlt,
+    Map<dynamic, dynamic> equivalents,
+    Map<int, List<String>> equivalentMap, {
+    required bool needsEquivalent,
+    required bool upperEquivalent,
   }) {
     if (len != null && arr.length != len) {
       assert(arr.length == len);
@@ -204,8 +205,9 @@ class ScriptInfo {
     buffer.write('    ${type.toUpperCase()} ');
     for (final entry in arr) {
       writeString(buffer, entry as String);
-      if (needsAlt) {
-        addAlternates(entry, alternates, altMap, upperAlt: upperAlt);
+      if (needsEquivalent) {
+        addEquivalents(entry, equivalents, equivalentMap,
+            upperEquivalent: upperEquivalent);
       }
     }
     buffer.write('E\n');
@@ -214,40 +216,41 @@ class ScriptInfo {
   void writeArrayGroup(
     StringBuffer buffer,
     String type,
-    Map<dynamic, dynamic> alts,
+    Map<dynamic, dynamic> equivalents,
   ) {
-    if (alts.isEmpty) {
+    if (equivalents.isEmpty) {
       return;
     }
 
     buffer.write('    ${type.toUpperCase()}\n');
-    for (final entry in alts.entries) {
+    for (final entry in equivalents.entries) {
       buffer.write('      "${entry.key}" Z ');
-      for (final alt in entry.value) {
-        writeString(buffer, alt as String);
+      for (final equivalent in entry.value) {
+        writeString(buffer, equivalent as String);
       }
       buffer.write('E\n');
     }
     buffer.write('    E\n');
   }
 
-  void write(StringBuffer buffer, Map<int, List<String>> altMap) {
+  void write(StringBuffer buffer, Map<int, List<String>> equivalentMap) {
     buffer.write('  "$name" Z ${type.toUpperCase()}\n');
-    final Map<dynamic, dynamic> alternates =
-        (info['alternates'] ?? {}) as Map<dynamic, dynamic>;
+    final Map<dynamic, dynamic> equivalents =
+        (info['equivalents'] ?? {}) as Map<dynamic, dynamic>;
     for (final entry in arrayTypes.entries) {
       if (info[entry.key] != null) {
-        final needsAlt = type == 'latin';
-        final upperAlts = name == 'iast' || name == 'ipa' || name == 'iso';
+        final needsEquivalent = type == 'latin';
+        final upperEquivalents =
+            name == 'iast' || name == 'ipa' || name == 'iso';
         writeArray(
           buffer,
           entry.key,
           info[entry.key] as List<dynamic>,
           entry.value,
-          alternates,
-          altMap,
-          needsAlt: needsAlt,
-          upperAlt: upperAlts,
+          equivalents,
+          equivalentMap,
+          needsEquivalent: needsEquivalent,
+          upperEquivalent: upperEquivalents,
         );
       }
     }
@@ -256,8 +259,8 @@ class ScriptInfo {
         writeArrayGroup(buffer, entry, info[entry] as Map<String, dynamic>);
       }
     }
-    if (alternates.isNotEmpty) {
-      writeArrayGroup(buffer, 'alternates', alternates);
+    if (equivalents.isNotEmpty) {
+      writeArrayGroup(buffer, 'equivalents', equivalents);
     }
 
     buffer.write('  E\n');
@@ -295,32 +298,17 @@ void main(List<String> args) async {
   final buffer = StringBuffer();
   buffer.write(headerPrefix);
 
-  final altMap = loadLatinAlternates();
+  final equivalentMap = loadLatinEquivalents();
 
   // scripts
   buffer.write("const char scriptData[] =\n");
   for (final entry in parseScriptInfo(jsonData)) {
-    entry.write(buffer, altMap);
+    entry.write(buffer, equivalentMap);
   }
   buffer.write(";\n\n");
-
-  // // latin alternates
-  // buffer.write("const char latinAlternates[] =\n");
-  // for (final entry in altMap.entries) {
-  //   writeAlternate(entry, buffer);
-  // }
-  // buffer.write(";\n\n");
 
   buffer.write(headerSuffix);
 
   final File genFile = File('native/src/script_data.h');
   genFile.writeAsStringSync(buffer.toString());
-}
-
-void writeAlternate(MapEntry<int, List<String>> entry, StringBuffer buffer) {
-  buffer.write('  "${String.fromCharCode(entry.key)}" Z ');
-  for (final alt in entry.value) {
-    buffer.write('"$alt" Z ');
-  }
-  buffer.write('E\n');
 }

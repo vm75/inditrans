@@ -81,14 +81,14 @@ private:
         case 'v':
           readList(ptr, end, data.vowels);
           break;
-        case 'V':
-          readList(ptr, end, data.vowelDiacritics);
+        case 'm':
+          readList(ptr, end, data.vowelMarks);
           break;
         case 'c':
           readList(ptr, end, data.consonants);
           break;
-        case 'C':
-          readList(ptr, end, data.commonDiacritic);
+        case 'o':
+          readList(ptr, end, data.otherDiacritics);
           break;
         case 's':
           readList(ptr, end, data.symbols);
@@ -99,8 +99,8 @@ private:
         case 'A':
           readList(ptr, end, data.aliases);
           break;
-        case 'a':
-          readMap(ptr, end, data.alternates);
+        case 'E':
+          readMap(ptr, end, data.equivalents);
           break;
         case 'l':
           readMap(ptr, end, data.languages);
@@ -169,8 +169,8 @@ public:
 
     addScript(name, scriptData);
 
-    for (auto aliasEntry : scriptData.alternates) {
-      auto tokenStr = aliasEntry.first;
+    for (auto entry : scriptData.equivalents) {
+      auto tokenStr = entry.first;
       ScriptToken token = invalidScriptToken;
       if (tokenStr.length() >= 3 && tokenStr[1] == ':') {
         auto type = getTokenType(tokenStr[0]);
@@ -200,7 +200,7 @@ public:
       if (token == invalidScriptToken) {
         continue;
       }
-      for (auto alias : aliasEntry.second) {
+      for (auto alias : entry.second) {
         tokenMap.addLookup(alias, token);
       }
     }
@@ -211,19 +211,17 @@ public:
       return;
     }
     addCharMap(name, TokenType::Vowel, scriptData.type, scriptData.vowels.data(), scriptData.vowels.size());
-    addCharMap(name, TokenType::VowelDiacritic, scriptData.type, scriptData.vowelDiacritics.data(),
-        scriptData.vowelDiacritics.size());
+    addCharMap(name, TokenType::VowelMark, scriptData.type, scriptData.vowelMarks.data(), scriptData.vowelMarks.size());
     addCharMap(name, TokenType::Consonant, scriptData.type, scriptData.consonants.data(), scriptData.consonants.size());
-    addCharMap(name, TokenType::CommonDiacritic, scriptData.type, scriptData.commonDiacritic.data(),
-        scriptData.commonDiacritic.size());
+    addCharMap(name, TokenType::OtherDiacritic, scriptData.type, scriptData.otherDiacritics.data(),
+        scriptData.otherDiacritics.size());
     addCharMap(name, TokenType::Symbol, scriptData.type, scriptData.symbols.data(), scriptData.symbols.size());
     addCharMap(
         name, TokenType::VedicSymbol, scriptData.type, scriptData.vedicSymbols.data(), scriptData.vedicSymbols.size());
 
     if (isIndicScript(scriptData.type)) {
       addCharMap(name, TokenType::Accent, scriptData.type, VedicAccents.data(), VedicAccents.size());
-      addCharMap(
-          name, TokenType::ZeroWidthChar, scriptData.type, IndicZeroWidthChars.data(), IndicZeroWidthChars.size());
+      addCharMap(name, TokenType::ExclusiveSymbol, scriptData.type, ExclusiveSymbols.data(), ExclusiveSymbols.size());
     } else {
       addCharMap(name, TokenType::Accent, scriptData.type, LatinAccents.data(), LatinAccents.size());
     }
@@ -243,7 +241,7 @@ private:
   void addCharMap(const std::string_view name, TokenType tokenType, ScriptType scriptType, const std::string_view* map,
       size_t count) noexcept {
     for (size_t idx = 0; idx < count; idx++) {
-      if (scriptType == ScriptType::Latin && tokenType == TokenType::VowelDiacritic && idx != Diacritic_Virama) {
+      if (scriptType == ScriptType::Latin && tokenType == TokenType::VowelMark && idx != Diacritic_Virama) {
         continue;
       }
       auto res = tokenMap.addLookup(map[idx], { tokenType, static_cast<uint8_t>(idx), scriptType });
@@ -260,20 +258,20 @@ private:
     switch (ch) {
       case 'v':
         return TokenType::Vowel;
-      case 'V':
-        return TokenType::VowelDiacritic;
+      case 'm':
+        return TokenType::VowelMark;
       case 'c':
         return TokenType::Consonant;
-      case 'C':
-        return TokenType::CommonDiacritic;
+      case 'o':
+        return TokenType::OtherDiacritic;
       case 's':
         return TokenType::Symbol;
       case 'S':
         return TokenType::VedicSymbol;
       case 'a':
         return TokenType::Accent;
-      case 'z':
-        return TokenType::ZeroWidthChar;
+      case 'x':
+        return TokenType::ExclusiveSymbol;
       default:
         return TokenType::Ignore;
     }
@@ -292,21 +290,18 @@ public:
       : name(name)
       , scriptType(scriptInfo.type) {
     addCharMap(name, TokenType::Vowel, scriptType, scriptInfo.vowels.data(), scriptInfo.vowels.size());
-    addCharMap(name, TokenType::VowelDiacritic, scriptType, scriptInfo.vowelDiacritics.data(),
-        scriptInfo.vowelDiacritics.size());
+    addCharMap(name, TokenType::VowelMark, scriptType, scriptInfo.vowelMarks.data(), scriptInfo.vowelMarks.size());
     addCharMap(name, TokenType::Consonant, scriptType, scriptInfo.consonants.data(), scriptInfo.consonants.size());
-    addCharMap(name, TokenType::CommonDiacritic, scriptType, scriptInfo.commonDiacritic.data(),
-        scriptInfo.commonDiacritic.size());
+    addCharMap(name, TokenType::OtherDiacritic, scriptType, scriptInfo.otherDiacritics.data(),
+        scriptInfo.otherDiacritics.size());
     addCharMap(name, TokenType::Symbol, scriptType, scriptInfo.symbols.data(), scriptInfo.symbols.size());
     addCharMap(
         name, TokenType::VedicSymbol, scriptType, scriptInfo.vedicSymbols.data(), scriptInfo.vedicSymbols.size());
     if (isIndicScript(scriptType)) {
       addCharMap(name, TokenType::Accent, scriptType, VedicAccents.data(), VedicAccents.size());
-      addCharMap(name, TokenType::ZeroWidthChar, scriptType, IndicZeroWidthChars.data(), IndicZeroWidthChars.size());
+      addCharMap(name, TokenType::ExclusiveSymbol, scriptType, ExclusiveSymbols.data(), ExclusiveSymbols.size());
     } else {
       addCharMap(name, TokenType::Accent, scriptType, LatinAccents.data(), LatinAccents.size());
-      addCharMap(
-          name, TokenType::ZeroWidthChar, scriptType, DefaultZeroWidthChars.data(), DefaultZeroWidthChars.size());
     }
   }
 
@@ -351,13 +346,13 @@ struct TokenUnit {
       : leadToken(leadToken) { }
 
   ScriptToken leadToken;
-  Token vowelDiacritic {};
-  Token commonDiacritic {};
+  Token vowelMark {};
+  Token otherDiacritic {};
   Token accent {};
 
   bool operator==(const TokenUnit& other) const noexcept {
-    return leadToken == other.leadToken && vowelDiacritic == other.vowelDiacritic
-        && commonDiacritic == other.commonDiacritic && accent == other.accent;
+    return leadToken == other.leadToken && vowelMark == other.vowelMark && otherDiacritic == other.otherDiacritic
+        && accent == other.accent;
   }
 
   bool operator!=(const TokenUnit& other) const noexcept { return !(*this == other); }
@@ -367,7 +362,7 @@ namespace std {
 
 template <> struct hash<TokenUnit> {
   std::size_t operator()(const TokenUnit& k) const {
-    return (k.leadToken.idx ^ (k.vowelDiacritic.idx << 1) >> 1) ^ (k.commonDiacritic.idx << 1) ^ (k.accent.idx << 1);
+    return (k.leadToken.idx ^ (k.vowelMark.idx << 1) >> 1) ^ (k.otherDiacritic.idx << 1) ^ (k.accent.idx << 1);
   }
 };
 
@@ -455,14 +450,14 @@ public:
           case TokenType::Consonant:
           case TokenType::Vowel:
           case TokenType::Symbol:
-          case TokenType::ZeroWidthChar:
+          case TokenType::ExclusiveSymbol:
             tokens.emplace_back(match.value.value());
             break;
-          case TokenType::CommonDiacritic:
-            tokens.back().commonDiacritic = match.value.value();
+          case TokenType::OtherDiacritic:
+            tokens.back().otherDiacritic = match.value.value();
             break;
-          case TokenType::VowelDiacritic:
-            tokens.back().vowelDiacritic = match.value.value();
+          case TokenType::VowelMark:
+            tokens.back().vowelMark = match.value.value();
             break;
           case TokenType::Accent:
             tokens.back().accent = match.value.value();
@@ -609,11 +604,11 @@ private:
       while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
         const auto nextToken = GetScriptToken(*iter);
         switch (nextToken.tokenType) {
-          case TokenType::CommonDiacritic:
-            tokenUnit.commonDiacritic = nextToken;
+          case TokenType::OtherDiacritic:
+            tokenUnit.otherDiacritic = nextToken;
             break;
-          case TokenType::VowelDiacritic:
-            tokenUnit.vowelDiacritic = nextToken;
+          case TokenType::VowelMark:
+            tokenUnit.vowelMark = nextToken;
             break;
           case TokenType::Accent:
             tokenUnit.accent = nextToken;
@@ -627,8 +622,8 @@ private:
       while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
         const auto nextToken = GetScriptToken(*iter);
         switch (nextToken.tokenType) {
-          case TokenType::CommonDiacritic:
-            tokenUnit.commonDiacritic = nextToken;
+          case TokenType::OtherDiacritic:
+            tokenUnit.otherDiacritic = nextToken;
             break;
           case TokenType::Accent:
             tokenUnit.accent = nextToken;
@@ -659,14 +654,14 @@ private:
         if (HoldsScriptToken(*iter)) {
           auto nextToken = GetScriptToken(*iter);
           switch (nextToken.tokenType) {
-            case TokenType::CommonDiacritic:
+            case TokenType::OtherDiacritic:
               iter++;
-              tokenUnit.commonDiacritic = nextToken;
+              tokenUnit.otherDiacritic = nextToken;
               break;
-            case TokenType::VowelDiacritic:
+            case TokenType::VowelMark:
               iter++;
-              tokenUnit.vowelDiacritic = nextToken;
-              hasVirama = tokenUnit.vowelDiacritic == Virama;
+              tokenUnit.vowelMark = nextToken;
+              hasVirama = tokenUnit.vowelMark == Virama;
               break;
             case TokenType::Accent:
               iter++;
@@ -739,7 +734,7 @@ private:
         if (wordStart || endOfPrefix) {
           const std::array<uint8_t, 6> specialVowelDiactritics = { 2, 4, 10, 13, 16, InvalidToken };
           if (tokenUnit.leadToken.idx == 5 /* ச */ && lastToken.leadToken != tokenUnit.leadToken && !isVirama(lastToken)
-              && std::find(specialVowelDiactritics.begin(), specialVowelDiactritics.end(), lastToken.vowelDiacritic.idx)
+              && std::find(specialVowelDiactritics.begin(), specialVowelDiactritics.end(), lastToken.vowelMark.idx)
                   == specialVowelDiactritics.end()) {
             tokenUnit.leadToken = start.clone(31 /* ஸ */);
           }
@@ -762,8 +757,8 @@ private:
     } else if (start.tokenType == TokenType::Vowel) {
       while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
         const auto nextToken = GetScriptToken(*iter);
-        if (nextToken.tokenType == TokenType::CommonDiacritic) {
-          tokenUnit.commonDiacritic = nextToken;
+        if (nextToken.tokenType == TokenType::OtherDiacritic) {
+          tokenUnit.otherDiacritic = nextToken;
         } else if (nextToken.tokenType == TokenType::Accent) {
           tokenUnit.accent = nextToken;
         } else {
@@ -788,17 +783,17 @@ private:
         bool consume = false;
         switch (nextToken.tokenType) {
           case TokenType::Vowel:
-          case TokenType::VowelDiacritic:
+          case TokenType::VowelMark:
             if (!vowelAdded) {
               vowelAdded = true;
               if (nextToken.idx != Diacritic_Virama) {
-                tokenUnit.vowelDiacritic = { TokenType::VowelDiacritic, nextToken.idx };
+                tokenUnit.vowelMark = { TokenType::VowelMark, nextToken.idx };
               }
               consume = true;
             }
             break;
-          case TokenType::CommonDiacritic:
-            tokenUnit.commonDiacritic = nextToken;
+          case TokenType::OtherDiacritic:
+            tokenUnit.otherDiacritic = nextToken;
             consume = true;
             break;
           case TokenType::Accent:
@@ -815,7 +810,7 @@ private:
       }
 
       if (!vowelAdded) {
-        tokenUnit.vowelDiacritic = { TokenType::VowelDiacritic, 0 };
+        tokenUnit.vowelMark = { TokenType::VowelMark, 0 };
       }
     }
     return tokenUnit;
@@ -828,7 +823,7 @@ private:
       if (tokenUnit.leadToken.idx < 24) {
         tokenUnit.leadToken.idx -= tokenUnit.leadToken.idx % 5 % 2;
       }
-      tokenUnit.vowelDiacritic = Virama;
+      tokenUnit.vowelMark = Virama;
       return tokenUnit;
     } else {
       return invalidTokenUnit;
@@ -849,7 +844,7 @@ private:
   }
 
   inline bool isVirama(const TokenUnit& token) {
-    return token.vowelDiacritic.tokenType == TokenType::VowelDiacritic && token.vowelDiacritic.idx == Diacritic_Virama;
+    return token.vowelMark.tokenType == TokenType::VowelMark && token.vowelMark.idx == Diacritic_Virama;
   }
 
   bool isEndOfWord() const noexcept {
@@ -939,7 +934,7 @@ public:
       : map(map)
       , options(options)
       , scriptType(map.getType())
-      , anuswaraMissing(map.lookupChar(TokenType::CommonDiacritic, Diacritic_Anuswara).length() == 0) {
+      , anuswaraMissing(map.lookupChar(TokenType::OtherDiacritic, Diacritic_Anuswara).length() == 0) {
     buffer.reserve(inputSize);
     setNasalConsonantSize();
   }
@@ -962,11 +957,11 @@ protected:
     } else {
       push(map.lookupChar(tokenUnit.leadToken));
     }
-    if (tokenUnit.vowelDiacritic.idx != InvalidToken) {
-      push(map.lookupChar(tokenUnit.vowelDiacritic));
+    if (tokenUnit.vowelMark.idx != InvalidToken) {
+      push(map.lookupChar(tokenUnit.vowelMark));
     }
-    if (tokenUnit.commonDiacritic.idx != InvalidToken) {
-      push(map.lookupChar(tokenUnit.commonDiacritic));
+    if (tokenUnit.otherDiacritic.idx != InvalidToken) {
+      push(map.lookupChar(tokenUnit.otherDiacritic));
     }
     if (tokenUnit.accent.idx != InvalidToken && options / TranslitOptions::IgnoreVedicAccents) {
       push(map.lookupChar(tokenUnit.accent));
@@ -990,7 +985,7 @@ protected:
       // When the consonant “ந்” becomes a uyir meiy it will only come at the beginning of the word. It will not come at
       // the end of a any word When the consonant “ன்” becomes a uyir meiy it will not come in the beginning of any word
       if (leadIdx == 19 /* ந */ && !(wordStart || endOfPrefix)
-          && (tokenUnit.vowelDiacritic.idx != Diacritic_Virama || isEndOfWord(next))) {
+          && (tokenUnit.vowelMark.idx != Diacritic_Virama || isEndOfWord(next))) {
         leadText = "ன";
       } else if (options * TranslitOptions::TamilTraditional) {
         auto repl = tamilTraditionalMap.find(leadText);
@@ -1008,30 +1003,30 @@ protected:
       push(leadText);
       auto consonantPosition = buffer.size();
 
-      if (tokenUnit.vowelDiacritic.idx != InvalidToken) {
-        push(map.lookupChar(tokenUnit.vowelDiacritic));
+      if (tokenUnit.vowelMark.idx != InvalidToken) {
+        push(map.lookupChar(tokenUnit.vowelMark));
       }
 
       if (options * TranslitOptions::TamilSuperscripted && superscript != "") {
         push(superscript);
       }
 
-      if (tokenUnit.commonDiacritic.idx != InvalidToken) {
-        if (tokenUnit.commonDiacritic.idx == Diacritic_Anuswara) {
+      if (tokenUnit.otherDiacritic.idx != InvalidToken) {
+        if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara) {
           inferAnuswara(next);
         } else {
-          push(map.lookupChar(tokenUnit.commonDiacritic));
+          push(map.lookupChar(tokenUnit.otherDiacritic));
         }
       }
     } else {
       if (tokenUnit.leadToken.tokenType == TokenType::Vowel) {
         push(leadText);
 
-        if (tokenUnit.commonDiacritic.idx != InvalidToken) {
-          if (tokenUnit.commonDiacritic.idx == Diacritic_Anuswara) {
+        if (tokenUnit.otherDiacritic.idx != InvalidToken) {
+          if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara) {
             inferAnuswara(next);
           } else {
-            push(map.lookupChar(tokenUnit.commonDiacritic));
+            push(map.lookupChar(tokenUnit.otherDiacritic));
           }
         }
       } else if (options * TranslitOptions::ASCIINumerals && tokenUnit.leadToken.tokenType == TokenType::Symbol
@@ -1062,18 +1057,18 @@ protected:
     auto& leadToken = tokenUnit.leadToken;
     push(map.lookupChar(leadToken.tokenType, leadToken.idx));
     if (leadToken.tokenType == TokenType::Consonant) {
-      if (tokenUnit.vowelDiacritic.idx == InvalidToken) {
+      if (tokenUnit.vowelMark.idx == InvalidToken) {
         push(map.lookupChar(TokenType::Vowel, Diacritic_Virama));
-      } else if (tokenUnit.vowelDiacritic.idx != Diacritic_Virama) {
-        push(map.lookupChar(tokenUnit.vowelDiacritic));
+      } else if (tokenUnit.vowelMark.idx != Diacritic_Virama) {
+        push(map.lookupChar(tokenUnit.vowelMark));
       }
     }
     if (tokenUnit.accent.idx != InvalidToken && options / TranslitOptions::IgnoreVedicAccents) {
       push(map.lookupChar(tokenUnit.accent));
     }
-    if (tokenUnit.commonDiacritic.idx != InvalidToken) {
-      auto lookup = map.lookupChar(tokenUnit.commonDiacritic);
-      if (tokenUnit.commonDiacritic.idx == Diacritic_Anuswara && lookup.size() == 0) {
+    if (tokenUnit.otherDiacritic.idx != InvalidToken) {
+      auto lookup = map.lookupChar(tokenUnit.otherDiacritic);
+      if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara && lookup.size() == 0) {
         inferAnuswara(next);
       } else {
         push(lookup);
@@ -1109,7 +1104,7 @@ protected:
   }
 
   void setNasalConsonantSize() noexcept {
-    const auto& anuswara = map.lookupChar(TokenType::CommonDiacritic, Diacritic_Anuswara);
+    const auto& anuswara = map.lookupChar(TokenType::OtherDiacritic, Diacritic_Anuswara);
     if (options / TranslitOptions::RetainSpecialMarkers) {
       std::string out {};
       stripChars(anuswara, SpecialMarkers, out);

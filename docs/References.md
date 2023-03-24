@@ -61,7 +61,7 @@
 * { TokenType::Accent,          ScriptType::Latin,   2 /*꠰  ᳚ */,       "\\\"" },
 * { TokenType::Accent,          ScriptType::Latin,   2 /*꠰  ᳚ */,       "\\''" },
 * { TokenType::Accent,          ScriptType::Latin,   2 /*꠰  ᳚ */,       "\\’’" },
-* { TokenType::CommonDiacritic, ScriptType::Latin,   0 /* ँ */,       "~" },
+* { TokenType::OtherDiacritic, ScriptType::Latin,   0 /* ँ */,       "~" },
 * { TokenType::Symbol,          ScriptType::Latin,  14 /* ꣳ */,       "\\m+" },
 * { TokenType::Symbol,          ScriptType::Latin,  14 /* ꣳ */,       "{\\m+}" },
 * { TokenType::Symbol,          ScriptType::Latin,  14 /* ꣳ */,       "\\м+" },

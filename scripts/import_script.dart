@@ -8,16 +8,16 @@ import 'package:http/http.dart' as http;
 class Script {
   final String name;
   List<String> vowels = [];
-  List<String> vowelDiacritics = [];
+  List<String> vowelMarks = [];
   List<String> consonants = [];
-  List<String> commonDiacritics = [];
+  List<String> otherDiacritics = [];
   List<String> symbols = [];
   List<String> vedicSymbols = [];
   Script(this.name, Map<String, dynamic> json) {
     populateVowels(json);
-    populateVowelDiacritics(json);
+    populateVowelMarks(json);
     populateConsonants(json);
-    populateCommonDiacritics(json);
+    populateOtherDiacritics(json);
     populateSymbols(json);
     populateVedicSymbols(json);
   }
@@ -52,19 +52,19 @@ class Script {
     copy(vowels, json, "vowels.modern", 1);
   }
 
-  void populateVowelDiacritics(Map<String, dynamic> json) {
-    copy(vowelDiacritics, json, "vowelsigns.virama", 0);
-    if (vowelDiacritics[0] == "×") {
-      vowelDiacritics[0] = "";
+  void populateVowelMarks(Map<String, dynamic> json) {
+    copy(vowelMarks, json, "vowelsigns.virama", 0);
+    if (vowelMarks[0] == "×") {
+      vowelMarks[0] = "";
     }
-    copy(vowelDiacritics, json, "vowelsigns.main", 0, 9);
-    copy(vowelDiacritics, json, "vowelsigns.south", 0);
-    copy(vowelDiacritics, json, "vowelsigns.main", 9, 2);
-    copy(vowelDiacritics, json, "vowelsigns.south", 1);
-    copy(vowelDiacritics, json, "vowelsigns.main", 11, 2);
-    copy(vowelDiacritics, json, "vowelsigns.modern", 0);
-    copy(vowelDiacritics, json, "vowelsigns.sinhala", 0);
-    copy(vowelDiacritics, json, "vowelsigns.modern", 1);
+    copy(vowelMarks, json, "vowelsigns.main", 0, 9);
+    copy(vowelMarks, json, "vowelsigns.south", 0);
+    copy(vowelMarks, json, "vowelsigns.main", 9, 2);
+    copy(vowelMarks, json, "vowelsigns.south", 1);
+    copy(vowelMarks, json, "vowelsigns.main", 11, 2);
+    copy(vowelMarks, json, "vowelsigns.modern", 0);
+    copy(vowelMarks, json, "vowelsigns.sinhala", 0);
+    copy(vowelMarks, json, "vowelsigns.modern", 1);
   }
 
   void populateConsonants(Map<String, dynamic> json) {
@@ -74,9 +74,9 @@ class Script {
     copy(consonants, json, "consonants.sinhala", 0, 5);
   }
 
-  void populateCommonDiacritics(Map<String, dynamic> json) {
-    copy(commonDiacritics, json, "combiningsigns.ayogavaha", 0, 3);
-    copy(commonDiacritics, json, "others.aytham", 0);
+  void populateOtherDiacritics(Map<String, dynamic> json) {
+    copy(otherDiacritics, json, "combiningsigns.ayogavaha", 0, 3);
+    copy(otherDiacritics, json, "others.aytham", 0);
   }
 
   void populateSymbols(Map<String, dynamic> json) {
@@ -87,7 +87,7 @@ class Script {
 
   void populateVedicSymbols(Map<String, dynamic> json) {
     copy(vedicSymbols, json, "others.symbols", 0);
-    if (vowelDiacritics[0] == "") {
+    if (vowelMarks[0] == "") {
       vedicSymbols.addAll(["gͫ", "gͫ̄"]);
     } else {
       vedicSymbols.addAll(["ꣳ", "ꣴ"]);
@@ -97,14 +97,14 @@ class Script {
   void show() {
     print('    "$name": {');
     print('      "vowels": [ "${vowels.join('", "')}" ],');
-    print('      "vowelDiacritics": [ "${vowelDiacritics.join('", "')}" ],');
+    print('      "vowelMarks": [ "${vowelMarks.join('", "')}" ],');
     print('      "consonants": [ "${consonants.join('", "')}" ],');
-    print('      "commonDiacritics": [ "${commonDiacritics.join('", "')}" ],');
+    print('      "otherDiacritics": [ "${otherDiacritics.join('", "')}" ],');
     print('      "symbols": [ "${symbols.join('", "')}" ],');
     print('      "vedicSymbols": [ "${vedicSymbols.join('", "')}" ],');
-    print('      "alternates": {');
-    print('        "z:0": [ "()", "^" ],');
-    print('        "z:1": [ "{}", "^^" ]');
+    print('      "proxys": {');
+    print('        "x:0": [ "()", "^" ],');
+    print('        "x:1": [ "{}", "^^" ]');
     print('      }');
     print('    },');
   }
