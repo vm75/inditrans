@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:http/http.dart' as http;
+
 void main(List<String> args) async {
   final rootDir = Directory.current;
 
@@ -12,9 +14,11 @@ void main(List<String> args) async {
     return;
   }
 
-  final jsonData =
-      jsonDecode(File('scripts/transliterationTests.json').readAsStringSync())
-          as Map<String, dynamic>;
+  final url = Uri.parse(
+    'https://raw.githubusercontent.com/indic-transliteration/common_tests/master/transliterationTests.json',
+  );
+  final response = await http.get(url);
+  final jsonData = jsonDecode(response.body) as Map<String, dynamic>;
 
   final tests = [];
 

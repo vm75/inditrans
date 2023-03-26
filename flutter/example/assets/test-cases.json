@@ -99,7 +99,7 @@
     ]
   },
   {
-    "description": "iast - vedic",
+    "description": "iast - vedic with accents",
     "text": "śrī̱ gu̱ru̱bhyo nama̱ḥ . ha̱ri̱ḥ oṃ .. oṃ ga̱ṇānā̎ṃ tvā ga̱ṇapa̍tigͫ havāmahe ka̱viṃ ka̍vī̱nāmu̍pa̱maśra̍vastamaṃ",
     "script": "iast",
     "targets": [
@@ -142,7 +142,7 @@
     ]
   },
   {
-    "description": "Anuswara",
+    "description": "Infer anuswara",
     "text": "पंक्ती पंडित् अंज इदं संस्कृतम् संस्कृतं",
     "script": "devanagari",
     "targets": [
@@ -170,7 +170,7 @@
     ]
   },
   {
-    "description": "Devanagari - arabic",
+    "description": "arabic chars",
     "text": "फ़कीर फ़िक्र फ़ेक",
     "script": "devanagari",
     "targets": [
