@@ -62,7 +62,7 @@ void testAllTranslit(std::string_view file) noexcept {
     auto inputs = std::get<JsonArray>(*inputsHolder);
 
     for (const auto& input : inputs) {
-      auto inputObj = std::get<JsonOject>(input);
+      auto inputObj = std::get<JsonObject>(input);
 
       auto description = inputObj.get<std::string>("description");
       auto text = inputObj.get<std::string>("text");
@@ -77,8 +77,8 @@ void testAllTranslit(std::string_view file) noexcept {
       if (*type == "any-to-any") {
         for (auto& first : *targets) {
           for (auto& second : *targets) {
-            auto sourceObj = std::get<JsonOject>(first);
-            auto targetObj = std::get<JsonOject>(second);
+            auto sourceObj = std::get<JsonObject>(first);
+            auto targetObj = std::get<JsonObject>(second);
             auto source = sourceObj.get<std::string>("script");
             auto target = targetObj.get<std::string>("script");
             if (source == target || !isScriptSupported(source->c_str()) || !isScriptSupported(target->c_str())) {
@@ -98,7 +98,7 @@ void testAllTranslit(std::string_view file) noexcept {
       }
 
       for (auto& entry : *targets) {
-        auto targetObj = std::get<JsonOject>(entry);
+        auto targetObj = std::get<JsonObject>(entry);
         auto target = targetObj.get<std::string>("script");
         if (!isScriptSupported(source->c_str()) || !isScriptSupported(target->c_str())) {
           continue;

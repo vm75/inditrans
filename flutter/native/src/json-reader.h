@@ -7,11 +7,11 @@
 #include <variant>
 #include <vector>
 
-struct JsonOject;
+struct JsonObject;
 struct JsonArray;
-using JsonValue = std::variant<void*, std::string, bool, int64_t, long double, JsonOject, JsonArray>;
+using JsonValue = std::variant<void*, std::string, bool, int64_t, long double, JsonObject, JsonArray>;
 struct JsonArray : public std::vector<JsonValue> { };
-struct JsonOject : public std::vector<std::pair<std::string, JsonValue>> {
+struct JsonObject : public std::vector<std::pair<std::string, JsonValue>> {
   template <typename T> std::optional<T> get(const std::string_view& key) const noexcept {
     for (const auto& entry : *this) {
       if (entry.first == key) {
@@ -71,7 +71,7 @@ private:
       } break;
       case '{': {
         curr++;
-        JsonOject obj;
+        JsonObject obj;
         skipSpaces(curr, end);
         while (curr < end && *curr != '}') {
           if (*curr != '"') {

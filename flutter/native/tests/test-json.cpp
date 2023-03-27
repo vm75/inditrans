@@ -21,7 +21,7 @@ suite<"JSON tests"> jsonTests = [] {
       }
     )"));
     expect(val != std::nullopt);
-    auto obj = std::get<JsonOject>(*val);
+    auto obj = std::get<JsonObject>(*val);
     auto types = obj.get<JsonArray>("types");
     expect(types != std::nullopt);
     expect(types->size() == 7);
@@ -38,7 +38,7 @@ suite<"JSON tests"> jsonTests = [] {
     expect(nested->size() == 3);
     expect(std::get<std::string>((*nested)[0]) == "val1");
     expect(std::get<std::string>((*nested)[1]) == "val2");
-    auto nestedObj = std::get<JsonOject>((*nested)[2]);
+    auto nestedObj = std::get<JsonObject>((*nested)[2]);
     expect(nestedObj.get<std::string>("x") == "y");
   };
 };
