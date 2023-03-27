@@ -11,43 +11,43 @@ ifeq ($(OS), Windows_NT)
 else
     SCRIPT_EXT = sh
 endif
+NATIVE_DIR = flutter/native
+NATIVE_SRC = $(NATIVE_DIR)/src
 NATIVE_CLI = out/inditrans$(EXEC_EXT)
 NATIVE_TEST = out/inditrans_test$(EXEC_EXT)
-HEADERS_CC = $(wildcard native/src/*.h)
-SOURCES_CC = $(wildcard native/src/*.cpp)
-SOURCES_NODEJS = $(wildcard nodejs/src/*.ts)
-SOURCES_FLUTTER = $(wildcard flutter/lib/src/*.dart)
-TEST_CC = $(wildcard native/tests/*.cpp)
+NATIVE_CPP = $(wildcard $(NATIVE_SRC)/*.cpp)
+NATIVE_H = $(wildcard $(NATIVE_SRC)/*.h)
+NATIVETEST_DIR = flutter/native/tests
+NATIVETEST_CC = $(wildcard $(NATIVE_DIR)/tests/*.cpp)
+NATIVETEST_H = $(wildcard $(NATIVE_DIR)/tests/*.h)
 GENERATOR_UTILS = $(wildcard scripts/utils/*.dart)
 
 # build
 native: $(NATIVE_TEST) $(NATIVE_CLI)
 
 profile:
-	g++ -std=c++20 -O1 -fno-exceptions -pg -Wno-normalized -I native/src $(SOURCES_CC) native/tests/test.cpp -o out/prof_$(NATIVE_TEST)
+	g++ -std=c++20 -O1 -fno-exceptions -pg -Wno-normalized -I $(NATIVE_SRC) -I $(NATIVETEST_DIR) $(NATIVE_CPP) $(NATIVETEST_DIR)/test.cpp -o out/prof_$(NATIVE_TEST)
 	out/prof_$(NATIVE_TEST) -p
 	gprof out/prof_$(NATIVE_TEST) gmon.out > out/native-prof.log
 
-$(NATIVE_TEST): $(SOURCES_CC) $(HEADERS_CC) $(TEST_CC)
-	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I native/src $(SOURCES_CC) $(TEST_CC) -o $@
+$(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
+	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVETEST_CC) -o $@
 
-$(NATIVE_CLI): $(SOURCES_CC) $(HEADERS_CC) native/cli/main.cpp
-	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I native/src $(SOURCES_CC) native/cli/main.cpp -o $@
+$(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
+	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
-native/src/script_data.h: headers
-
-headers: scripts/script_data.json scripts/generate_headers.dart $(GENERATOR_UTILS)
+$(NATIVE_SRC)/script_data.h: scripts/script_data.json scripts/generate_headers.dart $(GENERATOR_UTILS)
 	dart scripts/generate_headers.dart
 
 wasm: flutter/assets/inditrans.wasm js/public/inditrans.js
 
-flutter/assets/inditrans.wasm: $(SOURCES_CC) $(HEADERS_CC)
+flutter/assets/inditrans.wasm: $(NATIVE_CPP) $(NATIVE_H)
 	./scripts/build_wasm.$(SCRIPT_EXT) standalone
 
-js/public/inditrans.js: $(SOURCES_CC) $(HEADERS_CC) js/src/inditrans.post.js
+js/public/inditrans.js: $(NATIVE_CPP) $(NATIVE_H) js/src/inditrans.post.js
 	./scripts/build_wasm.$(SCRIPT_EXT) js
 
-flutter/lib/src/bindings.dart: native/src/exports.h
+flutter/lib/src/bindings.dart: $(NATIVE_SRC)/exports.h
 	dart scripts/generate_bindings.dart
 
 flutter: flutter/lib/src/bindings.dart flutter/assets/inditrans.wasm
