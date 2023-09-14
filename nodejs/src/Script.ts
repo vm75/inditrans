@@ -11,6 +11,7 @@ export enum Script {
   gurmukhi = 'gurmukhi',
   hindi = 'hindi',
   iast = 'iast',
+  indic = 'indic',
   ipa = 'ipa',
   iso = 'iso',
   itrans = 'itrans',

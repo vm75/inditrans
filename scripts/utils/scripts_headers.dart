@@ -9,17 +9,15 @@ class ScriptsHeaders {
 
   void updateDart(String path) {
     final StringBuffer buffer = StringBuffer();
-    buffer.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
-    buffer.writeln();
-    buffer.writeln('/// Supported scripts');
-    buffer.writeln('enum Script {');
     for (final String script in scripts) {
       buffer.writeln('  $script,');
     }
-    buffer.writeln('}');
-
-    final File genFile = File(path);
-    genFile.writeAsStringSync(buffer.toString());
+    replaceByDelimiters(
+      path,
+      "enum Script {",
+      "}",
+      buffer,
+    );
   }
 
   void updateTypescript(String path) {

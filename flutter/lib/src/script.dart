@@ -1,5 +1,3 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
 /// Supported scripts
 enum Script {
   assamese,
@@ -11,6 +9,7 @@ enum Script {
   gurmukhi,
   hindi,
   iast,
+  indic,
   ipa,
   iso,
   itrans,
@@ -30,4 +29,17 @@ enum Script {
   tibetan,
   titus,
   wx,
+}
+
+/// Gets the name of the script
+extension ScriptNameExtension on Script {
+  String get name => toString().split('.').last;
+}
+
+/// Gets the script from a string
+extension ToScriptExtension on String {
+  Script toScript() {
+    return Script.values
+        .firstWhere((e) => e.name.toLowerCase() == toLowerCase());
+  }
 }

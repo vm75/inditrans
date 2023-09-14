@@ -62,7 +62,7 @@ test_flutter: wasm flutter/lib/src/bindings.dart
 	cd flutter/example && flutter run -d chrome
 
 test_nodejs:
-	cd nodejs && yarn test
+	cd nodejs && yarn && yarn test
 
 cli: $(NATIVE_CLI)
 	$(NATIVE_CLI)

@@ -18,6 +18,7 @@ Module['onRuntimeInitialized'] = function () {
             'gurmukhi',
             'hindi',
             'iast',
+            'indic',
             'ipa',
             'iso',
             'itrans',

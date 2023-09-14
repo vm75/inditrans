@@ -1,6 +1,6 @@
 name: inditrans
 description: A functional transliterator library for the most common Indic/Brahmic scripts.
-version: 0.6.0
+version: 0.7.0
 repository: https://github.com/vm75/inditrans/
 
 environment:

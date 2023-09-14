@@ -135,6 +135,7 @@ class ScriptData {
         }
       }
     }
+    scriptList.add('indic');
   }
 
   void addEquivalents(

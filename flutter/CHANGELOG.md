@@ -1,3 +1,7 @@
+## 0.7.0
+
+- Fixing many issues in flutter. Adding indic to scripts.
+
 ## 0.6.0
 
 - Refactoring and constants generation

@@ -7,7 +7,7 @@ import 'src/script.dart';
 import 'src/utils.dart';
 
 export 'src/option.dart' show Option;
-export 'src/script.dart' show Script;
+export 'src/script.dart' show Script, ScriptNameExtension, ToScriptExtension;
 
 late dynamic _platformLib;
 late InditransBindings _bindings;
@@ -46,8 +46,8 @@ String transliterate(String text, Script from, Script to, [Option? options]) {
   final staging = StagingMemory(_allocator);
 
   final nativeText = staging.toNativeString(text);
-  final nativeFrom = staging.toNativeString(from.toString());
-  final nativeTo = staging.toNativeString(to.toString());
+  final nativeFrom = staging.toNativeString(from.name);
+  final nativeTo = staging.toNativeString(to.name);
 
   final buffer = _bindings.transliterate(
       nativeText, nativeFrom, nativeTo, options?.value ?? 0);
@@ -67,16 +67,4 @@ bool isScriptSupported(String script) {
 
   staging.freeAll();
   return result == 1;
-}
-
-/// Extension methods for [Script]
-/// Converts a [String] to [Script] if valid
-extension InditransScriptExtension on String {
-  Script? toScript() {
-    try {
-      return Script.values.firstWhere((entry) => entry.toString() == this);
-    } catch (_) {
-      return null;
-    }
-  }
 }

@@ -32,12 +32,12 @@ void main() async {
     final description = input['description'];
     final inputText = input['text'];
     final inputScript =
-        input['script'].toScript() ?? inditrans.Script.devanagari;
+        (input['script'] as String?)?.toScript() ?? inditrans.Script.devanagari;
     for (final target in input['targets']) {
-      final targetScript =
-          target['script'].toScript() ?? inditrans.Script.devanagari;
+      final targetScript = (target['script'] as String?)?.toScript() ??
+          inditrans.Script.devanagari;
       final expected = target['text'];
-      final options = inditrans.Option.fromString(target['options'] ?? '');
+      final options = inditrans.Option(target['options'] ?? '');
       testCases.add(TestSpec(description, inputText, inputScript, targetScript,
           options, expected));
     }

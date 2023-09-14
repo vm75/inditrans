@@ -28,7 +28,7 @@ class OptionHeaders {
     for (final option in options) {
       buffer.writeln('  /// ${option.comment}');
       buffer.writeln(
-        "  static final ${option.name} = Option._(${option.value}, '${option.name}');",
+        "  static final ${option.name} = Option('${option.name}');",
       );
       buffer.writeln();
     }
