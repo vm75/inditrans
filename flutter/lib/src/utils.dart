@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'ffi_proxy.dart';
+import 'package:wasm_ffi/ffi_proxy.dart';
 
 class StagingMemory {
   final Allocator _allocator;

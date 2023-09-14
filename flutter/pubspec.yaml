@@ -4,7 +4,7 @@ version: 0.7.0
 repository: https://github.com/vm75/inditrans/
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: ">=2.19.0 <4.0.0"
   flutter: ">=2.11.0"
 
 dependencies:
@@ -16,8 +16,8 @@ dependencies:
   inject_js: ^2.0.0
   js: ^0.6.5
   plugin_platform_interface: ^2.0.2
-  wasm_interop: ^2.0.1
-  wasm_ffi: ^0.9.3
+  wasm_ffi:
+    path: ./wasm_ffi
 
 dev_dependencies:
   ffigen: ^7.2.7

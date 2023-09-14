@@ -35,7 +35,7 @@ void main(List<String> args) async {
         types[type] = {
           "description": type,
           "type": "any-to-any",
-          "targets": []
+          "targets": [],
         };
       }
       ((types[type] as Map<String, dynamic>)["targets"] as List<dynamic>).add({
@@ -60,7 +60,7 @@ void main(List<String> args) async {
       "description": description,
       "type": "to-and-fro",
       "script": "devanagari",
-      "text": entry["dev"]
+      "text": entry["dev"],
     };
 
     final List<dynamic> targets = [];
@@ -98,7 +98,10 @@ void main(List<String> args) async {
           "script": script,
           "text": text,
           "targets": [
-            {"script": "devanagari", "text": entry["dev"]}
+            {
+              "script": "devanagari",
+              "text": entry["dev"],
+            },
           ],
         });
         break;
@@ -130,7 +133,7 @@ void main(List<String> args) async {
       "description": description,
       "script": "devanagari",
       "text": entry["dev"],
-      "targets": targets
+      "targets": targets,
     });
   }
 

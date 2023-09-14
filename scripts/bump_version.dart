@@ -66,49 +66,49 @@ void changeLog(Version to, String log) {
   }
 }
 
-List<String> getopt(String parseOptions, List<String> args) {
-  final optString = ",$parseOptions,";
-  var stopParsing = false;
-  final List<String> options = [];
-  final List<String> result = [];
-  outer:
-  while (args.isNotEmpty) {
-    final nextArg = args.removeAt(0);
-    if (nextArg == "--") {
-      stopParsing = true;
-      continue;
-    }
+// List<String> getopt(String parseOptions, List<String> args) {
+//   final optString = ",$parseOptions,";
+//   var stopParsing = false;
+//   final List<String> options = [];
+//   final List<String> result = [];
+//   outer:
+//   while (args.isNotEmpty) {
+//     final nextArg = args.removeAt(0);
+//     if (nextArg == "--") {
+//       stopParsing = true;
+//       continue;
+//     }
 
-    if (!stopParsing && nextArg.isNotEmpty) {
-      switch (nextArg) {
-        case '--d':
-          continue outer;
-        case '--t':
-          continue outer;
-        case '--h':
-          continue outer;
-      }
-      if (optString.contains(RegExp('.*,$nextArg:,.*'))) {
-        options.add(nextArg);
-        if (args.isNotEmpty) {
-          options.add(args.removeAt(0));
-        }
-        continue outer;
-      } else if (optString.contains(RegExp('.*,$nextArg,.*'))) {
-        options.add(nextArg);
-        continue outer;
-      }
-    }
-    result.add(nextArg);
-  }
-  if (parseOptions.isEmpty) {
-    return result;
-  } else {
-    options.add('--');
-    options.addAll(result);
-    return options;
-  }
-}
+//     if (!stopParsing && nextArg.isNotEmpty) {
+//       switch (nextArg) {
+//         case '--d':
+//           continue outer;
+//         case '--t':
+//           continue outer;
+//         case '--h':
+//           continue outer;
+//       }
+//       if (optString.contains(RegExp('.*,$nextArg:,.*'))) {
+//         options.add(nextArg);
+//         if (args.isNotEmpty) {
+//           options.add(args.removeAt(0));
+//         }
+//         continue outer;
+//       } else if (optString.contains(RegExp('.*,$nextArg,.*'))) {
+//         options.add(nextArg);
+//         continue outer;
+//       }
+//     }
+//     result.add(nextArg);
+//   }
+//   if (parseOptions.isEmpty) {
+//     return result;
+//   } else {
+//     options.add('--');
+//     options.addAll(result);
+//     return options;
+//   }
+// }
 
 void main(List<String> args) {
   final rootDir = Directory.current;

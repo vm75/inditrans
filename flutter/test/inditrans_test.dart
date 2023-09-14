@@ -3,8 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:test/test.dart';
 import 'package:inditrans/inditrans.dart' as inditrans;
+import 'package:test/test.dart';
 
 // accept args
 void main() async {

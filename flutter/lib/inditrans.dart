@@ -1,10 +1,12 @@
 library inditrans;
 
+import 'package:wasm_ffi/ffi_proxy.dart';
+
 import 'src/bindings.dart';
-import 'src/ffi_proxy.dart';
 import 'src/option.dart';
 import 'src/script.dart';
 import 'src/utils.dart';
+import 'src/wasm_lib.dart' if (dart.library.ffi) 'src/ffi_lib.dart';
 
 export 'src/option.dart' show Option;
 export 'src/script.dart' show Script, ScriptNameExtension, ToScriptExtension;

@@ -1,10 +1,5 @@
+import 'package:flutter/services.dart';
 import 'package:wasm_ffi/wasm_ffi.dart';
-import 'package:wasm_ffi/wasm_ffi_modules.dart';
-
-import 'wasm_module.dart';
-
-typedef UnsignedLong = Uint64;
-typedef Int = Int32;
 
 class InditransDynamicLib {
   static late DynamicLibrary _lib;
@@ -14,10 +9,12 @@ class InditransDynamicLib {
   static get allocator => _allocator;
 
   static init() async {
-    Memory.init();
-    final module = await WasmModule.initFromAsset(
-        'packages/inditrans/assets/inditrans.wasm');
-    _lib = DynamicLibrary.fromModule(module);
-    _allocator = _lib.boundMemory;
+    final bytes =
+        await rootBundle.load('packages/inditrans/assets/inditrans.wasm');
+
+    _lib = await DynamicLibrary.open(WasmType.standalone,
+        wasmBinary: bytes.buffer.asUint8List());
+
+    _allocator = _lib.memory;
   }
 }
