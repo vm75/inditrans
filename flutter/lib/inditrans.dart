@@ -5,7 +5,6 @@ import 'package:wasm_ffi/ffi_proxy.dart';
 import 'src/bindings.dart';
 import 'src/option.dart';
 import 'src/script.dart';
-import 'src/utils.dart';
 import 'src/wasm_lib.dart' if (dart.library.ffi) 'src/ffi_lib.dart';
 
 export 'src/option.dart' show Option;
@@ -45,28 +44,23 @@ init() async {
 ///
 /// ```
 String transliterate(String text, Script from, Script to, [Option? options]) {
-  final staging = StagingMemory(_allocator);
+  final result = using((Arena arena) {
+    Pointer<Uint8> nativeText = text.toNativeUtf8(arena);
+    Pointer<Uint8> nativeFrom = from.name.toNativeUtf8(arena);
+    Pointer<Uint8> nativeTo = to.name.toNativeUtf8(arena);
+    final buffer = _bindings.transliterate(
+        nativeText, nativeFrom, nativeTo, options?.value ?? 0);
 
-  final nativeText = staging.toNativeString(text);
-  final nativeFrom = staging.toNativeString(from.name);
-  final nativeTo = staging.toNativeString(to.name);
-
-  final buffer = _bindings.transliterate(
-      nativeText, nativeFrom, nativeTo, options?.value ?? 0);
-  final result = staging.fromNativeString(buffer);
-
-  staging.freeAll();
+    return buffer.toDartString();
+  }, _allocator);
   return result;
 }
 
 /// Checks if [script] is supported by the library.
 bool isScriptSupported(String script) {
-  final staging = StagingMemory(_allocator);
-
-  final nativeScript = staging.toNativeString(script);
-
-  final result = _bindings.isScriptSupported(nativeScript);
-
-  staging.freeAll();
-  return result == 1;
+  return using((Arena arena) {
+    Pointer<Uint8> nativeScript = script.toNativeUtf8(arena);
+    final result = _bindings.isScriptSupported(nativeScript);
+    return result == 1;
+  }, _allocator);
 }
