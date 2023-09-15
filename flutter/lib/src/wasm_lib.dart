@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:wasm_ffi/wasm_ffi.dart';
+import 'package:wasm_ffi/wasm_ffi_core.dart';
 
 class InditransDynamicLib {
   static late DynamicLibrary _lib;
