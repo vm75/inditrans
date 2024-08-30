@@ -196,7 +196,7 @@ public:
             ptr += result.matchLen;
           }
           if (!extra.empty()) {
-            token.extra = extraTokens.size();
+            token.extra = static_cast<uint8_t>(extraTokens.size());
             extraTokens.emplace_back(std::move(extra));
           }
         }

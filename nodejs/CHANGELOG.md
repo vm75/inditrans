@@ -1,3 +1,7 @@
+## 0.7.1
+
+- Fixed Windows compile issues
+
 ## 0.7.0
 
 - Fixing many issues in flutter. Adding indic to scripts.

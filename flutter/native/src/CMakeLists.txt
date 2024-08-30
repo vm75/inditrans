@@ -24,6 +24,7 @@ add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 # add_definitions(-D__DART__)
 # add_definitions(-DCMAKE_CXX_COMPILER=clang-cl)
 IF (WIN32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8")
   add_definitions(-DMAKE_DLL)
 ENDIF()
 
