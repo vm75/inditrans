@@ -29,7 +29,7 @@ class Script {
     int idxStart, [
     int count = 1,
   ]) {
-    final parts = path.split(".");
+    final parts = path.split('.');
     late Map<String, dynamic> next = json;
     for (final part in parts) {
       next = next[part] as Map<String, dynamic>;
@@ -42,55 +42,55 @@ class Script {
   }
 
   void populateVowels(Map<String, dynamic> json) {
-    copy(vowels, json, "vowels.main", 0, 10);
-    copy(vowels, json, "vowels.south", 0);
-    copy(vowels, json, "vowels.main", 10, 2);
-    copy(vowels, json, "vowels.south", 1);
-    copy(vowels, json, "vowels.main", 12, 2);
-    copy(vowels, json, "vowels.modern", 0);
-    copy(vowels, json, "vowels.sinhala", 0);
-    copy(vowels, json, "vowels.modern", 1);
+    copy(vowels, json, 'vowels.main', 0, 10);
+    copy(vowels, json, 'vowels.south', 0);
+    copy(vowels, json, 'vowels.main', 10, 2);
+    copy(vowels, json, 'vowels.south', 1);
+    copy(vowels, json, 'vowels.main', 12, 2);
+    copy(vowels, json, 'vowels.modern', 0);
+    copy(vowels, json, 'vowels.sinhala', 0);
+    copy(vowels, json, 'vowels.modern', 1);
   }
 
   void populateVowelMarks(Map<String, dynamic> json) {
-    copy(vowelMarks, json, "vowelsigns.virama", 0);
-    if (vowelMarks[0] == "×") {
-      vowelMarks[0] = "";
+    copy(vowelMarks, json, 'vowelsigns.virama', 0);
+    if (vowelMarks[0] == '×') {
+      vowelMarks[0] = '';
     }
-    copy(vowelMarks, json, "vowelsigns.main", 0, 9);
-    copy(vowelMarks, json, "vowelsigns.south", 0);
-    copy(vowelMarks, json, "vowelsigns.main", 9, 2);
-    copy(vowelMarks, json, "vowelsigns.south", 1);
-    copy(vowelMarks, json, "vowelsigns.main", 11, 2);
-    copy(vowelMarks, json, "vowelsigns.modern", 0);
-    copy(vowelMarks, json, "vowelsigns.sinhala", 0);
-    copy(vowelMarks, json, "vowelsigns.modern", 1);
+    copy(vowelMarks, json, 'vowelsigns.main', 0, 9);
+    copy(vowelMarks, json, 'vowelsigns.south', 0);
+    copy(vowelMarks, json, 'vowelsigns.main', 9, 2);
+    copy(vowelMarks, json, 'vowelsigns.south', 1);
+    copy(vowelMarks, json, 'vowelsigns.main', 11, 2);
+    copy(vowelMarks, json, 'vowelsigns.modern', 0);
+    copy(vowelMarks, json, 'vowelsigns.sinhala', 0);
+    copy(vowelMarks, json, 'vowelsigns.modern', 1);
   }
 
   void populateConsonants(Map<String, dynamic> json) {
-    copy(consonants, json, "consonants.main", 0, 33);
-    copy(consonants, json, "consonants.south", 0, 4);
-    copy(consonants, json, "consonants.persoarabic", 0, 8);
-    copy(consonants, json, "consonants.sinhala", 0, 5);
+    copy(consonants, json, 'consonants.main', 0, 33);
+    copy(consonants, json, 'consonants.south', 0, 4);
+    copy(consonants, json, 'consonants.persoarabic', 0, 8);
+    copy(consonants, json, 'consonants.sinhala', 0, 5);
   }
 
   void populateOtherDiacritics(Map<String, dynamic> json) {
-    copy(otherDiacritics, json, "combiningsigns.ayogavaha", 0, 3);
-    copy(otherDiacritics, json, "others.aytham", 0);
+    copy(otherDiacritics, json, 'combiningsigns.ayogavaha', 0, 3);
+    copy(otherDiacritics, json, 'others.aytham', 0);
   }
 
   void populateSymbols(Map<String, dynamic> json) {
-    copy(symbols, json, "numerals", 0, 10);
-    copy(symbols, json, "others.om", 0);
-    copy(symbols, json, "others.symbols", 1, 2);
+    copy(symbols, json, 'numerals', 0, 10);
+    copy(symbols, json, 'others.om', 0);
+    copy(symbols, json, 'others.symbols', 1, 2);
   }
 
   void populateVedicSymbols(Map<String, dynamic> json) {
-    copy(vedicSymbols, json, "others.symbols", 0);
-    if (vowelMarks[0] == "") {
-      vedicSymbols.addAll(["gͫ", "gͫ̄"]);
+    copy(vedicSymbols, json, 'others.symbols', 0);
+    if (vowelMarks[0] == '') {
+      vedicSymbols.addAll(['gͫ', 'gͫ̄']);
     } else {
-      vedicSymbols.addAll(["ꣳ", "ꣴ"]);
+      vedicSymbols.addAll(['ꣳ', 'ꣴ']);
     }
   }
 
@@ -114,14 +114,14 @@ class Script {
 void main(List<String> args) async {
   final rootDir = Directory.current;
 
-  final versionFile = File("${rootDir.path}/.version");
+  final versionFile = File('${rootDir.path}/.version');
   if (!versionFile.existsSync()) {
-    print("Run from root folder");
+    print('Run from root folder');
     return;
   }
 
   if (args.isEmpty) {
-    print("Usage: dart import_script.dart <script>");
+    print('Usage: dart import_script.dart <script>');
     return;
   }
 
@@ -131,7 +131,7 @@ void main(List<String> args) async {
   final response = await http.get(url);
   final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
   if (jsonResponse[args[0]] == null) {
-    print("Script not found");
+    print('Script not found');
     return;
   }
   final scriptJson = jsonResponse[args[0]];

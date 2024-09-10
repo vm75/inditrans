@@ -231,11 +231,11 @@ class ScriptData {
     buffer.write(headerPrefix);
 
     // scripts
-    buffer.write("const char scriptData[] =\n");
+    buffer.write('const char scriptData[] =\n');
     for (final entry in scriptInfoList) {
       writeScriptInfo(entry, buffer);
     }
-    buffer.write(";\n\n");
+    buffer.write(';\n\n');
 
     buffer.write(headerSuffix);
 

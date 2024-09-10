@@ -10,9 +10,9 @@ import 'utils/scripts_headers.dart';
 void main(List<String> args) async {
   final rootDir = Directory.current;
 
-  final versionFile = File("${rootDir.path}/.version");
+  final versionFile = File('${rootDir.path}/.version');
   if (!versionFile.existsSync()) {
-    print("Run from root folder");
+    print('Run from root folder');
     return;
   }
 

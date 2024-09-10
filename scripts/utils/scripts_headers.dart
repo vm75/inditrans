@@ -14,8 +14,8 @@ class ScriptsHeaders {
     }
     replaceByDelimiters(
       path,
-      "enum Script {",
-      "}",
+      'enum Script {',
+      '}',
       buffer,
     );
   }
@@ -46,7 +46,7 @@ class ScriptsHeaders {
     replaceByDelimiters(
       path,
       "'Scripts': [\n",
-      "        ],",
+      '        ],',
       buffer,
     );
   }

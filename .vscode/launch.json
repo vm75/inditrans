@@ -62,5 +62,12 @@
       "script": "${workspaceFolder}/scripts/build_wasm.ps1 wasm",
       "cwd": "${cwd}"
     },
+    {
+      "name": "Bump Version",
+      "type": "dart",
+      "request": "launch",
+      "program": "scripts/bump_version.dart",
+      "cwd": "${workspaceFolder}",
+    },
   ]
 }

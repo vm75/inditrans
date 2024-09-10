@@ -20,10 +20,10 @@ class LatinEquivalents {
     final Map<String, String> modifiers = {};
     final Map<String, LatinLetter> latinExt = {};
 
-    final diacriticRE = RegExp(r"^.*?\t(.*?)\tCombining (.*)");
-    final modifierRE = RegExp(r"^.*?\t(.*?)\tModifier Letter (.*)");
+    final diacriticRE = RegExp(r'^.*?\t(.*?)\tCombining (.*)');
+    final modifierRE = RegExp(r'^.*?\t(.*?)\tModifier Letter (.*)');
     final latinExtRE = RegExp(
-      r"^.*?\t(.*?)\tLatin (Small|Capital) Letter ([A-Za-z])(?: with (.*?))?(?: and (.*?))?(?: \(=(.*)\))?$",
+      r'^.*?\t(.*?)\tLatin (Small|Capital) Letter ([A-Za-z])(?: with (.*?))?(?: and (.*?))?(?: \(=(.*)\))?$',
     );
 
     for (final line in lines) {
@@ -35,7 +35,7 @@ class LatinEquivalents {
         modifiers[match!.group(2)!.toLowerCase()] = match.group(1)!;
       } else if ((match = latinExtRE.firstMatch(line)) != null) {
         final letter = LatinLetter(
-          match!.group(2)!.toLowerCase() == "small" ? Case.small : Case.capital,
+          match!.group(2)!.toLowerCase() == 'small' ? Case.small : Case.capital,
           match.group(3)!.toLowerCase(),
         );
         if (match.group(4) != null) {

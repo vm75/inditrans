@@ -34,8 +34,8 @@ class OptionHeaders {
     }
     replaceByDelimiters(
       path,
-      "class Option {",
-      "  /// Returns the int value of the option flag",
+      'class Option {',
+      '  /// Returns the int value of the option flag',
       buffer,
     );
   }
@@ -94,7 +94,7 @@ class OptionHeaders {
     replaceByDelimiters(
       path,
       "'Options': {\n",
-      "        },",
+      '        },',
       buffer,
     );
   }

@@ -6,7 +6,6 @@
                 "${default}",
                 "${workspaceFolder}/flutter/native/src"
             ],
-            "compilerPath": "/usr/bin/clang++",
             "configurationProvider": "ms-vscode.makefile-tools",
             "intelliSenseMode": "linux-clang-x64",
             "cppStandard": "c++23",
