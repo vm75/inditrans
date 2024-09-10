@@ -1,17 +1,20 @@
 library inditrans;
 
+import 'package:wasm_ffi/ffi_bridge.dart';
+import 'package:wasm_ffi/ffi_utils_bridge.dart';
+import 'package:wasm_ffi/ffi_wrapper.dart';
+
 import 'src/bindings.dart';
-import 'src/ffi_proxy.dart';
 import 'src/option.dart';
 import 'src/script.dart';
-import 'src/utils.dart';
 
 export 'src/option.dart' show Option;
 export 'src/script.dart' show Script, ScriptNameExtension, ToScriptExtension;
 
-late dynamic _platformLib;
+const bool kIsWeb = bool.fromEnvironment('dart.library.js_interop');
+
+late FfiWrapper _ffiWrapper;
 late InditransBindings _bindings;
-late Allocator _allocator;
 
 /// Inditrans init. Init should be completed before any use is attempted.
 ///
@@ -23,11 +26,12 @@ late Allocator _allocator;
 ///   ...
 /// }
 /// ```
-init() async {
-  await InditransDynamicLib.init();
-  _platformLib = InditransDynamicLib.lib;
-  _bindings = InditransBindings(_platformLib);
-  _allocator = InditransDynamicLib.allocator;
+init([String? modulePath]) async {
+  modulePath ??=
+      kIsWeb ? 'assets/packages/inditrans/assets/inditrans.wasm' : 'inditrans';
+  _ffiWrapper = await FfiWrapper.load(modulePath);
+
+  _bindings = InditransBindings(_ffiWrapper.library);
 }
 
 /// Transliterates [text] from [from] script to [to] script.
@@ -43,28 +47,22 @@ init() async {
 ///
 /// ```
 String transliterate(String text, Script from, Script to, [Option? options]) {
-  final staging = StagingMemory(_allocator);
-
-  final nativeText = staging.toNativeString(text);
-  final nativeFrom = staging.toNativeString(from.name);
-  final nativeTo = staging.toNativeString(to.name);
-
-  final buffer = _bindings.transliterate(
-      nativeText, nativeFrom, nativeTo, options?.value ?? 0);
-  final result = staging.fromNativeString(buffer);
-
-  staging.freeAll();
-  return result;
+  return _ffiWrapper.safeUsing((Arena arena) {
+    final nativeText = text.toNativeUtf8(allocator: arena);
+    final nativeFrom = from.name.toNativeUtf8(allocator: arena);
+    final nativeTo = to.name.toNativeUtf8(allocator: arena);
+    final buffer = _bindings.transliterate(nativeText.cast<Uint8>(),
+        nativeFrom.cast<Uint8>(), nativeTo.cast<Uint8>(), options?.value ?? 0);
+    final result = buffer.cast<Utf8>().toDartString();
+    return result;
+  });
 }
 
 /// Checks if [script] is supported by the library.
 bool isScriptSupported(String script) {
-  final staging = StagingMemory(_allocator);
-
-  final nativeScript = staging.toNativeString(script);
-
-  final result = _bindings.isScriptSupported(nativeScript);
-
-  staging.freeAll();
-  return result == 1;
+  return _ffiWrapper.safeUsing((Arena arena) {
+    final nativeScript = script.toNativeUtf8(allocator: arena);
+    final result = _bindings.isScriptSupported(nativeScript.cast<Uint8>());
+    return result == 1;
+  });
 }

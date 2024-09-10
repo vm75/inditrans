@@ -15,6 +15,20 @@
       "program": "lib/main.dart"
     },
     {
+      "name": "dart-example (ffi)",
+      "program": "bin/example_dart.dart",
+      "cwd": "flutter/example.dart",
+      "request": "launch",
+      "type": "dart",
+    },
+    {
+      "name": "dart-example (web)",
+      "program": "web",
+      "cwd": "flutter/example.dart",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
       "name": "Debug nodejs",
       "type": "node-terminal",
       "request": "launch",

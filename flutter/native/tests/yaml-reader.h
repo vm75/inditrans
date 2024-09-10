@@ -69,6 +69,9 @@ void YamlObject::add(const std::string_view& key, YamlValue&& val) noexcept {
   emplace_back(key, resolveValue(std::move(val)));
 }
 
+const char* beginOf(const std::string_view& str) noexcept { return str.data(); }
+const char* endOf(const std::string_view& str) noexcept { return str.data() + str.length(); }
+
 class YamlReader {
 public:
   template <typename T> static std::vector<YamlValue> parse(const T& str) noexcept {
@@ -291,11 +294,11 @@ private:
         }
       }
       if (type == AppendType::Trimmed) {
-        str += trimEnd(addnLine->contents.begin(), addnLine->contents.end());
+        str += trimEnd(beginOf(addnLine->contents), endOf(addnLine->contents));
       } else {
-        str += trimEnd(curr + 1 + prevIndent, addnLine->contents.end());
+        str += trimEnd(curr + 1 + prevIndent, endOf(addnLine->contents));
       }
-      curr = addnLine->contents.end();
+      curr = endOf(addnLine->contents);
     }
     if (type != AppendType::Trimmed) {
       str += "\n";
@@ -407,7 +410,7 @@ private:
 
     do {
       if (lineInfo->indent == 0 && lineInfo->contents == "---") {
-        curr = lineInfo->contents.end();
+        curr = endOf(lineInfo->contents);
         break;
       }
       auto line = parseNextLine(curr, end);
@@ -420,15 +423,19 @@ private:
           if (next->isListItem) {
             list.add(parseArray(curr, end, *next));
           } else {
-            curr = lineInfo->contents.begin() - lineInfo->indent;
+            curr = beginOf(lineInfo->contents) - lineInfo->indent;
             lineInfo->indent = line->indent2;
             list.add(parseObject(curr, end, lineInfo));
           }
         } else {
-          list.add(line->key.empty() ? nullptr : line->key);
+          if (line->key.empty()) {
+            list.add(nullptr);
+          } else {
+            list.add(line->key);
+          }
         }
       } else {
-        curr = lineInfo->contents.begin() - lineInfo->indent;
+        curr = beginOf(lineInfo->contents) - lineInfo->indent;
         lineInfo->indent = line->indent2;
         list.add(parseObject(curr, end, lineInfo));
       }
@@ -444,7 +451,7 @@ private:
 
     do {
       if (lineInfo->indent == 0 && lineInfo->contents == "---") {
-        curr = lineInfo->contents.end();
+        curr = endOf(lineInfo->contents);
         break;
       }
       auto line = parseNextLine(curr, end);

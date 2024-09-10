@@ -3,8 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:test/test.dart';
 import 'package:inditrans/inditrans.dart' as inditrans;
+import 'package:test/test.dart';
 
 // accept args
 void main() async {
@@ -12,7 +12,7 @@ void main() async {
 
   // read json file
   var json =
-      jsonDecode(File("../test-files/test-cases.json").readAsStringSync());
+      jsonDecode(File('../test-files/test-cases.json').readAsStringSync());
 
   // iterate over json which is in the form as in the file test-cases.json
   for (final input in json) {

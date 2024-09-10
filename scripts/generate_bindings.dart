@@ -26,7 +26,7 @@ void main(List<String> args) async {
   file.writeAsStringSync(
     contents.replaceAll(
       "import 'dart:ffi' as ffi",
-      "import 'ffi_proxy.dart' as ffi",
+      "import 'package:wasm_ffi/ffi_bridge.dart' as ffi",
     ),
   );
 }

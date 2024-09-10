@@ -13,7 +13,7 @@
     "editor.suggest.snippetsPreventQuickSuggestions": false,
     "editor.suggestSelection": "first",
     "editor.tabCompletion": "onlySnippets",
-    "editor.wordBasedSuggestions": false,
+    "editor.wordBasedSuggestions": "off",
     "editor.defaultFormatter": "Dart-Code.dart-code"
   },
   "dart.lineLength": 80,
@@ -50,6 +50,7 @@
   "C_Cpp.clang_format_fallbackStyle": "WebKit",
   "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
   "files.associations": {
+    "*.embeddedhtml": "html",
     "*.json": "jsonc",
     "chrono": "cpp",
     "limits": "cpp",
@@ -139,7 +140,10 @@
     "semaphore": "cpp",
     "regex": "cpp",
     "bitset": "cpp",
-    "source_location": "cpp"
+    "source_location": "cpp",
+    "ranges": "cpp",
+    "span": "cpp",
+    "stack": "cpp"
   },
   "eslint.workingDirectories": [
     "./nodejs"
