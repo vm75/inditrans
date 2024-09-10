@@ -60,7 +60,7 @@ class Version {
   Version(this._major, this._minor, this._patch, [this._buildNumber]);
 
   static Version? fromString(String? versionStr, [String? buildNumber]) {
-    final RegExp pattern = RegExp(r'^(?:(\d+)\.(\d+)\.(\d+)(?:\+(.+))?)$');
+    final RegExp pattern = RegExp('^$versionRegex\$');
 
     if (versionStr == null || !pattern.hasMatch(versionStr)) {
       return null;
@@ -313,16 +313,13 @@ void main(List<String> args) {
     }
   }
 
-  final rootDir = Directory.current;
-
   try {
-    final helper =
-        VersionUpdateHelper(VersionFileSpec('${rootDir.path}/.version'));
+    final helper = VersionUpdateHelper(VersionFileSpec('.version'));
 
     // Add files to update version
     helper.addFilesWithVersion(
       '',
-      ['${rootDir.path}/.version'],
+      ['.version'],
     );
     helper.addFilesWithVersion(
       '\nversion: ',
