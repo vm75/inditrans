@@ -96,8 +96,8 @@ class BinaryBuffer {
     buffer.write('    ${type.toUpperCase()}\n');
     for (final entry in equivalents.entries) {
       buffer.write('      "${entry.key}" Z ');
-      for (final equivalent in entry.value) {
-        writeString(equivalent as String);
+      for (final equivalent in equivalents as List<String>) {
+        writeString(equivalent);
       }
       buffer.write('E\n');
     }

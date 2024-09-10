@@ -3,7 +3,7 @@ default: all
 all: native wasm flutter
 
 version:
-	dart ./scripts/bump_version.dart
+	dart ./tool/bump_version.dart
 
 ifeq ($(OS), Windows_NT)
     EXEC_EXT = .exe
@@ -20,7 +20,7 @@ NATIVE_H = $(wildcard $(NATIVE_SRC)/*.h)
 NATIVETEST_DIR = flutter/native/tests
 NATIVETEST_CC = $(wildcard $(NATIVE_DIR)/tests/*.cpp)
 NATIVETEST_H = $(wildcard $(NATIVE_DIR)/tests/*.h)
-GENERATOR_UTILS = $(wildcard scripts/utils/*.dart)
+GENERATOR_UTILS = $(wildcard tool/utils/*.dart)
 
 # build
 native: $(NATIVE_TEST) $(NATIVE_CLI)
@@ -36,19 +36,19 @@ $(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
 $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
-$(NATIVE_SRC)/script_data.h: scripts/script_data.json scripts/generate_headers.dart $(GENERATOR_UTILS)
-	dart scripts/generate_headers.dart
+$(NATIVE_SRC)/script_data.h: tool/script_data.json tool/generate_headers.dart $(GENERATOR_UTILS)
+	dart tool/generate_headers.dart
 
 wasm: flutter/assets/inditrans.wasm js/public/inditrans.js
 
 flutter/assets/inditrans.wasm: $(NATIVE_CPP) $(NATIVE_H)
-	./scripts/build_wasm.$(SCRIPT_EXT) standalone
+	./tool/build_wasm.$(SCRIPT_EXT) standalone
 
 js/public/inditrans.js: $(NATIVE_CPP) $(NATIVE_H) js/src/inditrans.post.js
-	./scripts/build_wasm.$(SCRIPT_EXT) js
+	./tool/build_wasm.$(SCRIPT_EXT) js
 
 flutter/lib/src/bindings.dart: $(NATIVE_SRC)/exports.h
-	dart scripts/generate_bindings.dart
+	dart tool/generate_bindings.dart
 
 flutter: flutter/lib/src/bindings.dart flutter/assets/inditrans.wasm
 

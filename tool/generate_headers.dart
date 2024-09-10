@@ -17,7 +17,7 @@ void main(List<String> args) async {
   }
 
   final latinEquivalents = LatinEquivalents('docs/extended-latin.txt');
-  final scriptData = ScriptData('scripts/script_data.json', latinEquivalents);
+  final scriptData = ScriptData('tool/script_data.json', latinEquivalents);
 
   scriptData.writeScriptDataHeader('native/src/script_data.h');
 
@@ -26,7 +26,7 @@ void main(List<String> args) async {
   scriptsHeaders.updateTypescript('nodejs/src/Script.ts');
   scriptsHeaders.updateJavascript('js/src/inditrans.post.js');
 
-  final optionHeaders = OptionHeaders('scripts/options.json');
+  final optionHeaders = OptionHeaders('tool/options.json');
   optionHeaders.updateNative('flutter/native/src/exports.h');
   optionHeaders.updateDart('flutter/lib/src/option.dart');
   optionHeaders.updateTypescript('nodejs/src/Option.ts');

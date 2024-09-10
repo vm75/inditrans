@@ -11,16 +11,16 @@ void main() async {
   await inditrans.init();
 
   // read json file
-  var json =
+  final json =
       jsonDecode(File('../test-files/test-cases.json').readAsStringSync());
 
   // iterate over json which is in the form as in the file test-cases.json
-  for (final input in json) {
-    final description = input['description'];
-    final inputText = input['text'];
-    final inputScript = input['script'];
-    for (final target in input['targets']) {
-      final targetScript = target['script'];
+  for (final input in json as List<Map<String, dynamic>>) {
+    final description = input['description'] as String;
+    final inputText = input['text'] as String;
+    final inputScript = (input['script'] as String).toScript();
+    for (final target in input['targets'] as List<Map<String, dynamic>>) {
+      final targetScript = (target['script'] as String).toScript();
       final expected = target['text'];
       test(description, () {
         final actual =
