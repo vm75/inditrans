@@ -49,6 +49,8 @@ List<String> getopt(String parseOptions, List<String> args) {
 
 const versionRegex = r'(?:(\d+)\.(\d+)\.(\d+)(?:\+(.+))?)';
 
+enum BumpType { major, minor, patch }
+
 class Version {
   final int _major;
   final int _minor;
@@ -111,75 +113,178 @@ class Version {
     }
   }
 
-  Version bumpPatch([String? buildNumber]) =>
-      Version(_major, _minor, _patch + 1, buildNumber ?? _buildNumber);
-
-  Version bumpMinor([String? buildNumber]) =>
-      Version(_major, _minor + 1, 0, buildNumber ?? _buildNumber);
-
-  Version bumpMajor([String? buildNumber]) =>
-      Version(_major + 1, 0, 0, buildNumber ?? _buildNumber);
+  Version bump(BumpType bumpType, [String? buildNumber]) {
+    switch (bumpType) {
+      case BumpType.major:
+        return Version(_major + 1, 0, 0, buildNumber ?? _buildNumber);
+      case BumpType.minor:
+        return Version(_major, _minor + 1, 0, buildNumber ?? _buildNumber);
+      case BumpType.patch:
+        return Version(_major, _minor, _patch + 1, buildNumber ?? _buildNumber);
+    }
+  }
 }
 
-void prependToFiles(List<String> files, String prefix) {
-  for (final filePath in files) {
-    final file = File(filePath);
-    try {
+class VersionFileSpec {
+  final String filePath;
+  final String? prefix;
+  final String? suffix;
+
+  VersionFileSpec(this.filePath, [this.prefix, this.suffix]);
+
+  Version? getVersion() => Version.fromFile(filePath, prefix, suffix);
+}
+
+class VersionUpdateHelper {
+  final String? _buildCode;
+  final Version _currentVersion;
+  final List<String> _changelogs = [];
+  bool _versionInBraces = true;
+  String _tab = '*';
+  final Map<String, List<String>> _filesWithVersion = {};
+  final List<String> _filesWithChangelogs = [];
+
+  VersionUpdateHelper._(this._currentVersion, this._buildCode);
+
+  static VersionUpdateHelper create(VersionFileSpec versionFile,
+      [VersionFileSpec? buildFile]) {
+    final version = versionFile.getVersion();
+    if (version == null) {
+      throw Exception('Version not found in ${versionFile.filePath}');
+    }
+    final build = buildFile?.getVersion();
+    if (buildFile != null && build == null) {
+      throw Exception('Build version not found in ${buildFile.filePath}');
+    }
+
+    return VersionUpdateHelper._(version, build?.toString());
+  }
+
+  String currentVersion() => _currentVersion.toString();
+
+  void addFilesWithVersion(String prefix, List<String> files) {
+    _filesWithVersion[prefix] = files;
+  }
+
+  void addFilesWithChangelog(List<String> files) {
+    _filesWithChangelogs.addAll(files);
+  }
+
+  void setChangelog(List<String> changelogs,
+      [bool? versionInBraces, String? tab]) {
+    if (changelogs.isEmpty) {
+      changelogs = _getChangelogs();
+      if (changelogs.isEmpty) {
+        throw Exception('No changelog provided');
+      }
+    }
+    _changelogs.addAll(changelogs);
+    _versionInBraces = versionInBraces ?? _versionInBraces;
+    _tab = tab ?? _tab;
+  }
+
+  static String _changelogToString(
+    Version version,
+    List<String> changelogs, {
+    bool versionInBraces = true,
+    String tab = '*',
+  }) {
+    final log = StringBuffer();
+
+    log.write(versionInBraces ? '## [$version]\n' : '## $version\n');
+    for (final changelog in changelogs) {
+      log.write('$tab $changelog\n');
+    }
+    log.write('\n');
+    return log.toString();
+  }
+
+  static List<String> _getChangelogs() {
+    final changelogs = <String>[];
+    print('Enter changelogs (empty line to stop):');
+    while (true) {
+      final line = stdin.readLineSync();
+      if (line == null || line.trim().isEmpty || line.trim() == '.') {
+        break;
+      }
+      changelogs.add(line.trim());
+    }
+    return changelogs;
+  }
+
+  static void _replaceInFiles(
+    List<String> files,
+    String from,
+    String to, [
+    String? prefix,
+  ]) {
+    final String prefixedFrom = prefix != null ? prefix + from : from;
+    final String prefixedTo = prefix != null ? prefix + to : to;
+
+    for (final filePath in files) {
+      final file = File(filePath);
       final contents = file.readAsStringSync();
-      file.writeAsStringSync(prefix + contents);
-    } catch (e) {
-      print('Failed to update $filePath: $e');
+      final updatedContents = contents.replaceAll(prefixedFrom, prefixedTo);
+      file.writeAsStringSync(updatedContents);
     }
   }
-}
 
-void replaceInFiles(
-  List<String> files,
-  String from,
-  String to, [
-  String? prefix,
-]) {
-  final String prefixedFrom = prefix != null ? prefix + from : from;
-  final String prefixedTo = prefix != null ? prefix + to : to;
-
-  for (final filePath in files) {
-    final file = File(filePath);
-    final contents = file.readAsStringSync();
-    final updatedContents = contents.replaceAll(prefixedFrom, prefixedTo);
-    file.writeAsStringSync(updatedContents);
-  }
-}
-
-List<String> getChangelogs() {
-  final changelogs = <String>[];
-  print('Enter changelogs (empty line to stop):');
-  while (true) {
-    final line = stdin.readLineSync();
-    if (line == null || line.trim().isEmpty || line.trim() == '.') {
-      break;
+  static void _prependToFiles(List<String> files, String prefix) {
+    for (final filePath in files) {
+      final file = File(filePath);
+      try {
+        final contents = file.readAsStringSync();
+        file.writeAsStringSync(prefix + contents);
+      } catch (e) {
+        print('Failed to update $filePath: $e');
+      }
     }
-    changelogs.add(line.trim());
   }
-  return changelogs;
-}
 
-String changelogToString(
-  Version version,
-  List<String> changelogs, {
-  bool versionInBraces = true,
-  String tab = '*',
-}) {
-  final log = StringBuffer();
+  void _bump(Version nextVersion) {
+    final from = _currentVersion.toString();
+    final to = nextVersion.toString();
 
-  log.write(versionInBraces ? '## [$version]\n' : '## $version\n');
-  for (final changelog in changelogs) {
-    log.write('$tab $changelog\n');
+    // Update version in files
+    for (final entry in _filesWithVersion.entries) {
+      _replaceInFiles(entry.value, from, to, entry.key);
+    }
+
+    // Update changelogs
+    if (_changelogs.isEmpty) {
+      return;
+    }
+    if (_changelogs.isEmpty) {
+      throw Exception('No changelogs specified');
+    }
+    _prependToFiles(
+        _filesWithChangelogs,
+        _changelogToString(
+          nextVersion,
+          _changelogs,
+          versionInBraces: _versionInBraces,
+          tab: _tab,
+        ));
+
+    print("Updated version from '$from' to $to");
+    print("Commit log: ${_changelogs.join('. ')}");
   }
-  log.write('\n');
-  return log.toString();
-}
 
-enum BumpType { major, minor, patch }
+  void bump(BumpType bumpType) {
+    Version? nextVersion = _currentVersion.bump(bumpType, _buildCode);
+    return _bump(nextVersion);
+  }
+
+  void setNextVersion(String nextVersionStr) {
+    final nextVersion = Version.fromString(nextVersionStr);
+
+    if (nextVersion == null) {
+      throw Exception('Invalid version: $nextVersionStr');
+    }
+
+    return _bump(nextVersion);
+  }
+}
 
 void main(List<String> args) {
   final opts = getopt('patch,major,minor,log:,help', args.toList());
@@ -212,93 +317,56 @@ void main(List<String> args) {
 
   final rootDir = Directory.current;
 
-  final versionFile = '${rootDir.path}/.version';
-  if (!File(versionFile).existsSync()) {
-    print('Run from root folder');
+  try {
+    final helper =
+        VersionUpdateHelper.create(VersionFileSpec('${rootDir.path}/.version'));
+
+    // Add files to update version
+    helper.addFilesWithVersion(
+      '',
+      ['${rootDir.path}/.version'],
+    );
+    helper.addFilesWithVersion(
+      '\nversion: ',
+      ['flutter/pubspec.yaml'],
+    );
+    helper.addFilesWithVersion(
+      '\n  "version": "',
+      ['nodejs/package.json'],
+    );
+    helper.addFilesWithVersion(
+      "\n  s.version          = '",
+      ['flutter/ios/inditrans.podspec', 'flutter/macos/inditrans.podspec'],
+    );
+    helper.addFilesWithVersion(
+      "\nversion '",
+      ['flutter/android/build.gradle'],
+    );
+    helper.addFilesWithVersion(
+      '} VERSION ',
+      ['flutter/linux/CMakeLists.txt', 'flutter/windows/CMakeLists.txt'],
+    );
+
+    // Get changelogs
+    helper.setChangelog(changeLogs);
+
+    // Add files to update changelog
+    helper
+        .addFilesWithChangelog(['flutter/CHANGELOG.md', 'nodejs/CHANGELOG.md']);
+
+    // Get next version
+    if (bumpType == null) {
+      stdout.write('Enter version next to "${helper.currentVersion()})": ');
+      final versionStr = stdin.readLineSync(encoding: utf8);
+      if (versionStr == null || versionStr.isEmpty) {
+        throw Exception('No version provided');
+      }
+      helper.setNextVersion(versionStr);
+    } else {
+      helper.bump(bumpType);
+    }
+  } on Exception catch (e) {
+    print(e);
     exit(1);
   }
-
-  // Get current version
-  final Version? currentVersion = Version.fromFile(versionFile);
-  if (currentVersion == null) {
-    print('Failed to parse version from $versionFile');
-    exit(2);
-  }
-
-  // Get next version
-  Version? nextVersion;
-  if (bumpType == BumpType.major) {
-    nextVersion = currentVersion.bumpMajor();
-  } else if (bumpType == BumpType.minor) {
-    nextVersion = currentVersion.bumpMinor();
-  } else if (bumpType == BumpType.patch) {
-    nextVersion = currentVersion.bumpPatch();
-  } else {
-    stdout.write('Enter new version (current version is $currentVersion): ');
-    final versionStr = stdin.readLineSync(encoding: utf8);
-    nextVersion = Version.fromString(versionStr);
-    if (nextVersion == null) {
-      print('Invalid version: $versionStr');
-      exit(3);
-    }
-  }
-
-  // Get changelogs
-  if (changeLogs.isEmpty) {
-    changeLogs = getChangelogs();
-    if (changeLogs.isEmpty) {
-      print('No changelog provided');
-      return;
-    }
-  }
-
-  // Update changelogs in files
-  final log = changelogToString(nextVersion, changeLogs);
-  prependToFiles(
-    [
-      'flutter/CHANGELOG.md',
-      'nodejs/CHANGELOG.md',
-    ],
-    log,
-  );
-
-  // Update version in files
-  replaceInFiles(
-    [versionFile],
-    currentVersion.toString(),
-    nextVersion.toString(),
-  );
-  replaceInFiles(
-    ['flutter/pubspec.yaml'],
-    currentVersion.toString(),
-    nextVersion.toString(),
-    '\nversion: ',
-  );
-  replaceInFiles(
-    ['nodejs/package.json'],
-    currentVersion.toString(),
-    nextVersion.toString(),
-    '\n  "version": "',
-  );
-  replaceInFiles(
-    ['flutter/ios/inditrans.podspec', 'flutter/macos/inditrans.podspec'],
-    currentVersion.toString(),
-    nextVersion.toString(),
-    "\n  s.version          = '",
-  );
-  replaceInFiles(
-    ['flutter/android/build.gradle'],
-    currentVersion.toString(),
-    nextVersion.toString(),
-    "\nversion '",
-  );
-  replaceInFiles(
-    ['flutter/linux/CMakeLists.txt', 'flutter/windows/CMakeLists.txt'],
-    currentVersion.toString(),
-    nextVersion.toString(),
-    '} VERSION ',
-  );
-
-  print("Updated version from '$currentVersion' to $nextVersion");
-  print("Commit log: ${changeLogs.join('. ')}");
 }
