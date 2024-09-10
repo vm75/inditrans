@@ -1,3 +1,7 @@
+## 0.8.0
+
+- upgraded wasm_ffi for flutter and added vanilla dart example
+
 ## 0.7.1
 
 - Fixed Windows compile issues
