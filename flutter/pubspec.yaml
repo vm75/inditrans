@@ -1,6 +1,6 @@
 name: inditrans
 description: A functional transliterator library for the most common Indic/Brahmic scripts.
-version: 0.8.0
+version: 0.9.0
 repository: https://github.com/vm75/inditrans/
 
 environment:
@@ -8,8 +8,7 @@ environment:
   flutter: ">=2.11.0"
 
 dependencies:
-  ffi: ^2.0.1
-  wasm_ffi: ^1.0.0
+  universal_ffi: ^1.0.6
 
 dev_dependencies:
   ffigen: 13.0.0

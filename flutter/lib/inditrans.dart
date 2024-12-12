@@ -1,8 +1,8 @@
 library inditrans;
 
-import 'package:wasm_ffi/ffi_bridge.dart';
-import 'package:wasm_ffi/ffi_utils_bridge.dart';
-import 'package:wasm_ffi/ffi_wrapper.dart';
+import 'package:universal_ffi/ffi.dart';
+import 'package:universal_ffi/ffi_helper.dart';
+import 'package:universal_ffi/ffi_utils.dart';
 
 import 'src/bindings.dart';
 import 'src/option.dart';
@@ -13,7 +13,7 @@ export 'src/script.dart' show Script, ScriptNameExtension, ToScriptExtension;
 
 const bool kIsWeb = bool.fromEnvironment('dart.library.js_interop');
 
-late FfiWrapper _ffiWrapper;
+late FfiHelper _ffiHelper;
 late InditransBindings _bindings;
 
 /// Inditrans init. Init should be completed before any use is attempted.
@@ -27,11 +27,15 @@ late InditransBindings _bindings;
 /// }
 /// ```
 init([String? modulePath]) async {
-  modulePath ??=
-      kIsWeb ? 'assets/packages/inditrans/assets/inditrans.wasm' : 'inditrans';
-  _ffiWrapper = await FfiWrapper.load(modulePath);
+  _ffiHelper = await FfiHelper.load(
+    modulePath ?? 'inditrans',
+    options: {
+      modulePath == null ? 'is-ffi-plugin' : '',
+      'is-standalone-wasm',
+    },
+  );
 
-  _bindings = InditransBindings(_ffiWrapper.library);
+  _bindings = InditransBindings(_ffiHelper.library);
 }
 
 /// Transliterates [text] from [from] script to [to] script.
@@ -47,7 +51,7 @@ init([String? modulePath]) async {
 ///
 /// ```
 String transliterate(String text, Script from, Script to, [Option? options]) {
-  return _ffiWrapper.safeUsing((Arena arena) {
+  return _ffiHelper.safeUsing((Arena arena) {
     final nativeText = text.toNativeUtf8(allocator: arena);
     final nativeFrom = from.name.toNativeUtf8(allocator: arena);
     final nativeTo = to.name.toNativeUtf8(allocator: arena);
@@ -60,7 +64,7 @@ String transliterate(String text, Script from, Script to, [Option? options]) {
 
 /// Checks if [script] is supported by the library.
 bool isScriptSupported(String script) {
-  return _ffiWrapper.safeUsing((Arena arena) {
+  return _ffiHelper.safeUsing((Arena arena) {
     final nativeScript = script.toNativeUtf8(allocator: arena);
     final result = _bindings.isScriptSupported(nativeScript.cast<Uint8>());
     return result == 1;

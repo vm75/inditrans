@@ -1,3 +1,6 @@
+## [0.9.0]
+* flutter: use universal_ffi
+
 ## [0.8.0]
 * upgraded wasm_ffi for flutter and added vanilla dart example
 
