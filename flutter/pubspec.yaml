@@ -1,6 +1,6 @@
 name: inditrans
 description: A functional transliterator library for the most common Indic/Brahmic scripts.
-version: 0.10.0
+version: 0.10.1
 repository: https://github.com/vm75/inditrans/
 
 environment:
@@ -16,10 +16,11 @@ dev_dependencies:
   test: ^1.24.0
 
 topics:
+  - transliterate
   - transliteration
-  - indian-language
+  - indic
   - brahmic
-  - devanagari
+  - indian-script
 
 flutter:
   plugin:

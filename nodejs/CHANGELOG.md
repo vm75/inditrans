@@ -1,3 +1,6 @@
+## [0.10.1]
+* Update topics
+
 ## [0.10.0]
 * Updated universal_ffi to version 1.1.0
 
