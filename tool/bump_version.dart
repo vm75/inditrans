@@ -351,7 +351,7 @@ void main(List<String> args) {
 
     // Get next version
     if (bumpType == null) {
-      stdout.write('Enter version next to "${helper.currentVersion()})": ');
+      stdout.write('Enter version next to "${helper.currentVersion()}": ');
       final versionStr = stdin.readLineSync(encoding: utf8);
       if (versionStr == null || versionStr.isEmpty) {
         throw Exception('No version provided');

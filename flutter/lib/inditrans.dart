@@ -30,8 +30,8 @@ init([String? modulePath]) async {
   _ffiHelper = await FfiHelper.load(
     modulePath ?? 'inditrans',
     options: {
-      modulePath == null ? 'is-ffi-plugin' : '',
-      'is-standalone-wasm',
+      if (modulePath == null) LoadOption.isFfiPlugin,
+      LoadOption.isStandaloneWasm,
     },
   );
 

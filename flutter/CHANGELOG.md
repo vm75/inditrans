@@ -1,3 +1,6 @@
+## [0.10.0]
+* Updated universal_ffi to version 1.1.0
+
 ## [0.9.0]
 * flutter: use universal_ffi
 
