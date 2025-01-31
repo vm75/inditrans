@@ -1,3 +1,6 @@
+## [0.11.0]
+* Fixed error conditions during transliterate. Filxed android build.
+
 ## [0.10.1]
 * Update topics
 

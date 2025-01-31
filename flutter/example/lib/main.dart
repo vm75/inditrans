@@ -61,6 +61,25 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   List<Widget> _runTests() {
     final List<Widget> widgets = [];
+    try {
+      inditrans.transliterate(
+          "Dummy", inditrans.Script.devanagari, inditrans.Script.indic);
+
+      widgets.add(const Text(
+        'to-indic PASSED',
+        style: TextStyle(
+            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green),
+        textAlign: TextAlign.left,
+      ));
+    } catch (e) {
+      widgets.add(const Text(
+        'to-indic FAILED',
+        style: TextStyle(
+            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.red),
+        textAlign: TextAlign.left,
+      ));
+      // ignore
+    }
     for (int testId = 0; testId < widget.testCases.length; testId++) {
       final testCase = widget.testCases[testId];
       final actual = inditrans.transliterate(testCase.text, testCase.fromScript,

@@ -38,8 +38,12 @@ extension ScriptNameExtension on Script {
 
 /// Gets the script from a string
 extension ToScriptExtension on String {
-  Script toScript() {
-    return Script.values
-        .firstWhere((e) => e.name.toLowerCase() == toLowerCase());
+  Script? toScript() {
+    try {
+      return Script.values
+          .firstWhere((e) => e.name.toLowerCase() == toLowerCase());
+    } catch (e) {
+      return null;
+    }
   }
 }

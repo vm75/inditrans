@@ -1,3 +1,6 @@
+## [0.11.0]
+* Fixed error conditions during transliterate
+
 ## [0.10.1]
 * Update topics
 

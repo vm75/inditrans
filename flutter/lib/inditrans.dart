@@ -38,6 +38,15 @@ init([String? modulePath]) async {
   _bindings = InditransBindings(_ffiHelper.library);
 }
 
+const _readNotSupported = [
+  Script.readableLatin,
+  Script.wx,
+];
+
+const _writeNotSupported = [
+  Script.indic,
+];
+
 /// Transliterates [text] from [from] script to [to] script.
 /// [Option] can be used for some specific config.
 /// Should be called only after [init] is completed.
@@ -51,14 +60,20 @@ init([String? modulePath]) async {
 ///
 /// ```
 String transliterate(String text, Script from, Script to, [Option? options]) {
+  if (from == to ||
+      text.isEmpty ||
+      _readNotSupported.contains(from) ||
+      _writeNotSupported.contains(to)) {
+    return text;
+  }
   return _ffiHelper.safeUsing((Arena arena) {
     final nativeText = text.toNativeUtf8(allocator: arena);
     final nativeFrom = from.name.toNativeUtf8(allocator: arena);
     final nativeTo = to.name.toNativeUtf8(allocator: arena);
     final buffer = _bindings.transliterate(nativeText.cast<Uint8>(),
         nativeFrom.cast<Uint8>(), nativeTo.cast<Uint8>(), options?.value ?? 0);
-    final result = buffer.cast<Utf8>().toDartString();
-    return result;
+    final result = buffer.cast<Utf8>();
+    return result == nullptr ? '' : result.toDartString();
   });
 }
 

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:inditrans/inditrans.dart' as inditrans;
+import 'package:inditrans/src/script.dart';
 import 'package:test/test.dart';
 
 // accept args
@@ -22,11 +23,21 @@ void main() async {
     for (final target in input['targets'] as List<Map<String, dynamic>>) {
       final targetScript = (target['script'] as String).toScript();
       final expected = target['text'];
+
+      if (inputScript == null || targetScript == null) {
+        continue;
+      }
       test(description, () {
         final actual =
             inditrans.transliterate(inputText, inputScript, targetScript);
         expect(actual, expected);
       });
     }
+  }
+
+  try {
+    inditrans.transliterate('Dummy', Script.readableLatin, Script.indic);
+  } catch (e) {
+    print(e);
   }
 }
