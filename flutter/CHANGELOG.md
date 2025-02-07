@@ -1,3 +1,6 @@
+## [0.11.1]
+* Update dart Option
+
 ## [0.11.0]
 * Fixed error conditions during transliterate
 

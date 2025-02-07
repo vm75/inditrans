@@ -4,6 +4,9 @@
   "editor.hideCursorInOverviewRuler": false,
   "editor.overviewRulerBorder": true,
   "editor.formatOnSave": true,
+  "[jsonc]": {
+    "editor.formatOnSave": false,
+  },
   "[dart]": {
     "editor.formatOnType": false,
     "editor.rulers": [

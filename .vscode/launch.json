@@ -1,13 +1,6 @@
 {
   "configurations": [
     {
-      "name": "Dart current file",
-      "type": "dart",
-      "request": "launch",
-      "program": "${file}",
-      "cwd": "${workspaceFolder}",
-    },
-    {
       "name": "Debug flutter example",
       "type": "dart",
       "request": "launch",
