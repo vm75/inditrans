@@ -40,8 +40,9 @@ extension ScriptNameExtension on Script {
 extension ToScriptExtension on String {
   Script? toScript() {
     try {
-      return Script.values
-          .firstWhere((e) => e.name.toLowerCase() == toLowerCase());
+      final name = toLowerCase().split('.').last;
+      return Script.values.firstWhere(
+          (e) => e.name.toLowerCase() == name || e.toString() == this);
     } catch (e) {
       return null;
     }

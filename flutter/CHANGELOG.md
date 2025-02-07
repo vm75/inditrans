@@ -1,3 +1,6 @@
+## [0.12.0]
+* Fix toScript
+
 ## [0.11.1]
 * Update dart Option
 
