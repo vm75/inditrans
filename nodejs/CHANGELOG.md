@@ -1,3 +1,6 @@
+## [0.12.1]
+* Fixed tamil supersctipt encoding
+
 ## [0.12.0]
 * Fix toScript
 

@@ -1027,12 +1027,22 @@ protected:
       push(leadText);
       auto consonantPosition = buffer.size();
 
+      std::string_view vowelMarkReminder {};
       if (tokenUnit.vowelMark.idx != InvalidToken) {
-        push(map.lookupChar(tokenUnit.vowelMark));
+        auto vowelMark = map.lookupChar(tokenUnit.vowelMark);
+        if (vowelMark.size() > UtfUtils::nextCharLen(vowelMark.data())) {
+          push(UtfUtils::nextUtf8Char(vowelMark.data()));
+          vowelMarkReminder = vowelMark.substr(UtfUtils::nextCharLen(vowelMark.data()));
+        } else {
+          push(vowelMark);
+        }
       }
 
       if (options * TranslitOptions::TamilSuperscripted && superscript != "") {
         push(superscript);
+      }
+      if (vowelMarkReminder.length() > 0) {
+        push(vowelMarkReminder);
       }
 
       if (tokenUnit.otherDiacritic.idx != InvalidToken) {

@@ -164,7 +164,7 @@ private:
   const char* const bytes;
 };
 constexpr Utf8Char Utf8ChZero { "" };
-constexpr Utf8Char operator"" _uc8(const char* str, size_t) noexcept { return str; }
+constexpr Utf8Char operator""_uc8(const char* str, size_t) noexcept { return str; }
 
 class Utf32Char {
 public:
@@ -183,7 +183,7 @@ public:
 private:
   char32_t ch;
 };
-constexpr Utf32Char operator"" _uc32(char32_t ch) noexcept { return ch; };
+constexpr Utf32Char operator""_uc32(char32_t ch) noexcept { return ch; };
 
 class Utf8String {
 public:
@@ -288,10 +288,10 @@ private:
   const char* end;
 };
 
-constexpr Utf8String operator"" _us8(const char* str, size_t len) { return Utf8String(str, len); };
+constexpr Utf8String operator""_us8(const char* str, size_t len) { return Utf8String(str, len); };
 
-constexpr size_t operator"" _len(const char* str, size_t len) { return std::string_view(str, len).length(); };
-constexpr size_t operator"" _len(const char32_t* str, size_t len) { return std::u32string_view(str, len).length(); };
+constexpr size_t operator""_len(const char* str, size_t len) { return std::string_view(str, len).length(); };
+constexpr size_t operator""_len(const char32_t* str, size_t len) { return std::u32string_view(str, len).length(); };
 
 class Utf8StringBuilder {
 public:
