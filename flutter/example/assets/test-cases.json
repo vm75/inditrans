@@ -1,5 +1,17 @@
 [
   {
+    "description": "devanagari",
+    "text": "धृत्वा",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "த்⁴ருʼத்வா",
+        "options": "TamilSuperscripted RetainSpecialMarkers"
+      }
+    ]
+  },
+  {
     "description": "vedic with accents",
     "text": "श्री॒ गु॒रु॒भ्यो नमः॒ । ह॒रिः॒ ओ३म् ॥ ॐ ग॒णानां᳚ त्वा ग॒णप॑तिꣳ हवामहे क॒विं क॑वी॒नामु॑प॒मश्र॑वस्तमं",
     "script": "devanagari",
@@ -24,11 +36,11 @@
       },
       {
         "script": "iast",
-        "text": "śrī̱ gu̱ru̱bhyo nama̱ḥ | ha̱ri̱ḥ oṃ || oṃ ga̱ṇānā̎ṃ tvā ga̱ṇapa̍tigͫ havāmahe ka̱viṃ ka̍vī̱nāmu̍pa̱maśra̍vastamaṃ"
+        "text": "śrī̱ gu̱ru̱bhyo nama̱ḥ . ha̱ri̱ḥ oṃ .. oṃ ga̱ṇānā̎ṃ tvā ga̱ṇapa̍tigͫ havāmahe ka̱viṃ ka̍vī̱nāmu̍pa̱maśra̍vastamaṃ"
       },
       {
         "script": "ipa",
-        "text": "ʃɾiː guɾubʰjoː n̪əməh | ɦəɾɪh oːm || oːm gəɳɑːn̪ɑː̃ t̪ʋɑː gəɳəpət̪ɪgͫ ɦəʋɑːməɦeː kəʋɪ̃ kəʋiːn̪ɑːmupəməʃɾəʋəs̪t̪əmə̃",
+        "text": "ʃɾiː guɾubʰjoː n̪əməh . ɦəɾɪh oːm .. oːm gəɳɑːn̪ɑː̃ t̪ʋɑː gəɳəpət̪ɪgͫ ɦəʋɑːməɦeː kəʋɪ̃ kəʋiːn̪ɑːmupəməʃɾəʋəs̪t̪əmə̃",
         "options": "IgnoreVedicAccents"
       }
     ]
@@ -116,16 +128,16 @@
     "targets": [
       {
         "script": "tamil",
-        "text": "நாம்᳚ ஏ᳴᳚ ஜி᳚"
+        "text": "நாம்᳚ ஏ᳚ ஜி᳚"
       },
       {
         "script": "tamil",
-        "text": "நாம்᳚ ஏ᳴᳚ ஜி²᳚",
+        "text": "நாம்᳚ ஏ᳚ ஜி²᳚",
         "options": "TamilSuperscripted"
       },
       {
         "script": "tamil",
-        "text": "நாம் ஏ᳴ ஜி²",
+        "text": "நாம் ஏ ஜி²",
         "options": "TamilSuperscripted IgnoreVedicAccents"
       }
     ]
@@ -310,7 +322,7 @@
     "targets": [
       {
         "script": "tamil",
-        "text": "தே³வாஸுரக³ணானஂல்லோகான் பாதி",
+        "text": "தே³வாஸுரக³ணாம்ல்லோகான் பாதி",
         "options": "TamilSuperscripted"
       }
     ]

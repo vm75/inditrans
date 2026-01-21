@@ -106,16 +106,26 @@ const char scriptData[] =
       "ਂ" Z "ੰ" Z E
     E
   E
+  "hk" Z LATIN
+    VOWELS "a" Z "A" Z "i" Z "I" Z "u" Z "U" Z "R" Z "RR" Z "lR" Z "lRR" Z "E" Z "e" Z "ai" Z "O" Z "o" Z "au" Z "aE" Z "AE" Z "aO" Z E
+    VOWELMARKS "" Z "A" Z "i" Z "I" Z "u" Z "U" Z "R" Z "RR" Z "lR" Z "lRR" Z "E" Z "e" Z "ai" Z "O" Z "o" Z "au" Z "aE" Z "AE" Z "aO" Z E
+    CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "G" Z "c" Z "ch" Z "j" Z "jh" Z "J" Z "T" Z "Th" Z "D" Z "Dh" Z "N" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "z" Z "S" Z "s" Z "h" Z "L" Z "Z" Z "r2" Z "n2" Z "q" Z "qh" Z "g2" Z "z2" Z "r3" Z "r3h" Z "f" Z "Y" Z "n*g" Z "n*j" Z "n*D" Z "n*d" Z "m*b" Z E
+    OTHERDIACRITICS "~" Z "M" Z "H" Z "K" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oM" Z "." Z ".." Z E
+    VEDICSYMBOLS "'" Z "gͫ" Z "gͫ̄" Z E
+    EQUIVALENTS
+      "x:0" Z "()" Z "^" Z E
+      "x:1" Z "{}" Z "^^" Z E
+    E
+  E
   "iast" Z LATIN
     VOWELS "a" Z "ā" Z "i" Z "ī" Z "u" Z "ū" Z "ṛ" Z "ṝ" Z "ḷ" Z "ḹ" Z "ĕ" Z "e" Z "ai" Z "ŏ" Z "o" Z "au" Z "æ" Z "ǣ" Z "ô" Z E
     VOWELMARKS "" Z "ā" Z "i" Z "ī" Z "u" Z "ū" Z "ṛ" Z "ṝ" Z "ḷ" Z "ḹ" Z "ĕ" Z "e" Z "ai" Z "ŏ" Z "o" Z "au" Z "æ" Z "ǣ" Z "ô" Z E
     CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "ṅ" Z "c" Z "ch" Z "j" Z "jh" Z "ñ" Z "ṭ" Z "ṭh" Z "ḍ" Z "ḍh" Z "ṇ" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "ś" Z "ṣ" Z "s" Z "h" Z "l̤" Z "ḻ" Z "ṟ" Z "ṉ" Z "q" Z "k͟h" Z "ġ" Z "z" Z "r̤" Z "r̤h" Z "f" Z "ẏ" Z "n̆g" Z "n̆j" Z "n̆ḍ" Z "n̆d" Z "m̆b" Z E
     OTHERDIACRITICS "m̐" Z "ṃ" Z "ḥ" Z "ḵ" Z E
-    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oṃ" Z "|" Z "||" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oṃ" Z "." Z ".." Z E
     VEDICSYMBOLS "'" Z "gͫ" Z "gͫ̄" Z E
     EQUIVALENTS
-      "||" Z "//" Z ".." Z E
-      "|" Z "/" Z "." Z E
       "x:0" Z "()" Z "^" Z E
       "x:1" Z "{}" Z "^^" Z E
       "ṛ" Z "r̥" Z "Ṛ" Z "ṛ" Z "Ṛ" Z E
@@ -201,11 +211,9 @@ const char scriptData[] =
     VOWELMARKS "" Z "ɑː" Z "ɪ" Z "iː" Z "u" Z "uː" Z "ɾɨ" Z "ɾɨː" Z "lɨ" Z "lɨː" Z "e" Z "eː" Z "əɪ" Z "o" Z "oː" Z "əu" Z "æ" Z "æː" Z "ɔ" Z E
     CONSONANTS "k" Z "kʰ" Z "g" Z "gʰ" Z "ŋ" Z "t͡ʃ" Z "t͡ʃʰ" Z "d͡ʒ" Z "d͡ʒʰ" Z "ɲ" Z "ʈ" Z "ʈʰ" Z "ɖ" Z "ɖʰ" Z "ɳ" Z "t̪" Z "t̪ʰ" Z "d̪" Z "d̪ʰ" Z "n̪" Z "p" Z "pʰ" Z "b" Z "bʰ" Z "m" Z "j" Z "ɾ" Z "l" Z "ʋ" Z "ʃ" Z "ʂ" Z "s̪" Z "ɦ" Z "ɭ" Z "ɻ" Z "r" Z "n" Z "q" Z "x" Z "ɣ" Z "z" Z "ɽ" Z "ɽʰ" Z "f" Z "ẏ" Z "ᵑɡ" Z "ᶮd͡ʒ" Z "ᶯɖ" Z "ⁿd" Z "ᵐb" Z E
     OTHERDIACRITICS "̃ʽ" Z "̃" Z "h" Z "xʽ" Z E
-    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oːm" Z "|" Z "||" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oːm" Z "." Z ".." Z E
     VEDICSYMBOLS "ə̸" Z "gͫ" Z "gͫ̄" Z E
     EQUIVALENTS
-      "||" Z "//" Z ".." Z E
-      "|" Z "/" Z "." Z E
       "x:0" Z "()" Z "^" Z E
       "x:1" Z "{}" Z "^^" Z E
       "ɑː" Z "aː" Z "Ɑː" Z E
@@ -282,11 +290,9 @@ const char scriptData[] =
     VOWELMARKS "" Z "ā" Z "i" Z "ī" Z "u" Z "ū" Z "r̥" Z "r̥̄" Z "l̥" Z "l̥̄" Z "e" Z "ē" Z "ai" Z "o" Z "ō" Z "au" Z "æ" Z "ǣ" Z "ô" Z E
     CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "ṅ" Z "c" Z "ch" Z "j" Z "jh" Z "ñ" Z "ṭ" Z "ṭh" Z "ḍ" Z "ḍh" Z "ṇ" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "ś" Z "ṣ" Z "s" Z "h" Z "ḷ" Z "ḻ" Z "ṟ" Z "ṉ" Z "q" Z "k͟h" Z "ġ" Z "z" Z "ṛ" Z "ṛh" Z "f" Z "ẏ" Z "n̆g" Z "n̆j" Z "n̆ḍ" Z "n̆d" Z "m̆b" Z E
     OTHERDIACRITICS "m̐" Z "ṁ" Z "ḥ" Z "ḵ" Z E
-    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "ōṁ" Z "|" Z "||" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "ōṁ" Z "." Z ".." Z E
     VEDICSYMBOLS "’" Z "gͫ" Z "gͫ̄" Z E
     EQUIVALENTS
-      "||" Z "//" Z ".." Z E
-      "|" Z "/" Z "." Z E
       "x:0" Z "()" Z "^" Z E
       "x:1" Z "{}" Z "^^" Z E
       "a" Z "A" Z E
@@ -372,7 +378,7 @@ const char scriptData[] =
     VOWELMARKS "" Z "aa" Z "i" Z "ee" Z "u" Z "uu" Z "R^i" Z "R^I" Z "L^i" Z "L^I" Z "^e" Z "e" Z "ai" Z "^o" Z "o" Z "au" Z "e.c" Z "a.C" Z "A.c" Z E
     CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "~N" Z "ch" Z "chh" Z "j" Z "jh" Z "~n" Z "T" Z "Th" Z "D" Z "Dh" Z "N" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "sh" Z "Sh" Z "s" Z "h" Z "L" Z "zh" Z "R" Z "^n" Z "q" Z "K" Z "G" Z "z" Z ".D" Z ".Dh" Z "f" Z "Y" Z "n*g" Z "n*j" Z "n*D" Z "n*d" Z "m*b" Z E
     OTHERDIACRITICS ".N" Z "M" Z "H" Z "K^" Z E
-    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "OM" Z "|" Z "||" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "OM" Z "." Z ".." Z E
     VEDICSYMBOLS ".a" Z "gum" Z "ggum" Z E
     EQUIVALENTS
       "aa" Z "A" Z E
@@ -390,8 +396,6 @@ const char scriptData[] =
       "L" Z "ld" Z E
       "z" Z "J" Z E
       ".n" Z "M" Z ".m" Z E
-      "||" Z "//" Z ".." Z E
-      "|" Z "/" Z "." Z E
       "x:0" Z "()" Z "^" Z E
       "x:1" Z "{}" Z "^^" Z "+" Z E
       "x:2" Z "_" Z E
@@ -455,12 +459,16 @@ const char scriptData[] =
     E
   E
   "readableLatin" Z LATIN
-    VOWELS "a" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "r̥" Z "rr̥" Z "l̥" Z "ll̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "a" Z "e" Z "o" Z E
-    VOWELMARKS "" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "r̥" Z "rr̥" Z "l̥" Z "ll̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "a" Z "e" Z "o" Z E
+    VOWELS "a" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "r̥" Z "r̥" Z "l̥" Z "l̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "ă" Z "̆e" Z "̆o" Z E
+    VOWELMARKS "" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "r̥" Z "r̥" Z "l̥" Z "l̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "ă" Z "̆e" Z "̆o" Z E
     CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "n" Z "ch" Z "chh" Z "j" Z "jh" Z "n" Z "T" Z "Th" Z "D" Z "Dh" Z "N" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "sh" Z "sh" Z "s" Z "h" Z "L" Z "zh" Z "R" Z "n" Z "q" Z "qh" Z "gh" Z "z" Z "D" Z "Dh" Z "f" Z "y" Z "ng" Z "nj" Z "nD" Z "nd" Z "mb" Z E
-    OTHERDIACRITICS "n̐" Z "" Z "h" Z "q" Z E
+    OTHERDIACRITICS "m̐" Z "" Z "h" Z "q" Z E
     SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "om" Z "!" Z "!!" Z E
-    VEDICSYMBOLS "~" Z "gum" Z "ggum" Z E
+    VEDICSYMBOLS "~" Z "gum" Z "gum" Z E
+    EQUIVALENTS
+      "x:0" Z "()" Z "^" Z E
+      "x:1" Z "{}" Z "^^" Z E
+    E
   E
   "sinhala" Z INDIC
     VOWELS "අ" Z "ආ" Z "ඉ" Z "ඊ" Z "උ" Z "ඌ" Z "ඍ" Z "ඎ" Z "ඏ" Z "ඐ" Z "එ" Z "ඒ" Z "ඓ" Z "ඔ" Z "ඕ" Z "ඖ" Z "ඇ" Z "ඈ" Z "ආ᳴" Z E
@@ -473,19 +481,29 @@ const char scriptData[] =
       "්" Z "්‍" Z "‍්" Z E
     E
   E
+  "slp1" Z LATIN
+    VOWELS "a" Z "A" Z "i" Z "I" Z "u" Z "U" Z "f" Z "F" Z "x" Z "X" Z "e1" Z "e" Z "E" Z "o1" Z "o" Z "O" Z "e2" Z "e4" Z "o2" Z E
+    VOWELMARKS "" Z "A" Z "i" Z "I" Z "u" Z "U" Z "f" Z "F" Z "x" Z "X" Z "e1" Z "e" Z "E" Z "o1" Z "o" Z "O" Z "e2" Z "e4" Z "o2" Z E
+    CONSONANTS "k" Z "K" Z "g" Z "G" Z "N" Z "c" Z "C" Z "j" Z "J" Z "Y" Z "w" Z "W" Z "q" Z "Q" Z "R" Z "t" Z "T" Z "d" Z "D" Z "n" Z "p" Z "P" Z "b" Z "B" Z "m" Z "y" Z "r" Z "l" Z "v" Z "S" Z "z" Z "s" Z "h" Z "L" Z "L0" Z "r2" Z "n2" Z "k0" Z "K0" Z "g0" Z "j0" Z "q0" Z "Q0" Z "P0" Z "Y0" Z "n*g" Z "n*j" Z "n*q" Z "n*d" Z "m*b" Z E
+    OTHERDIACRITICS "~" Z "M" Z "H" Z "K" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oM" Z "." Z ".." Z E
+    VEDICSYMBOLS "'" Z "gͫ" Z "gͫ̄" Z E
+    EQUIVALENTS
+      "x:0" Z "()" Z "^" Z E
+      "x:1" Z "{}" Z "^^" Z E
+    E
+  E
   "tamil" Z TAMIL
-    VOWELS "அ" Z "ஆ" Z "இ" Z "ஈ" Z "உ" Z "ஊ" Z "ருʼ" Z "ரூʼ" Z "லுʼ" Z "லூʼ" Z "எ" Z "ஏ" Z "ஐ" Z "ஒ" Z "ஓ" Z "ஔ" Z "எ᳴" Z "ஏ᳴" Z "ஆ᳴" Z E
+    VOWELS "அ" Z "ஆ" Z "இ" Z "ஈ" Z "உ" Z "ஊ" Z "ருʼ" Z "ரூʼ" Z "லுʼ" Z "லூʼ" Z "எ" Z "ஏ" Z "ஐ" Z "ஒ" Z "ஓ" Z "ஔ" Z "எʼ" Z "ஏʼ" Z "ஆʼ" Z E
     VOWELMARKS "்" Z "ா" Z "ி" Z "ீ" Z "ு" Z "ூ" Z "்ருʼ" Z "்ரூʼ" Z "்லுʼ" Z "்லூʼ" Z "ெ" Z "ே" Z "ை" Z "ொ" Z "ோ" Z "ௌ" Z "ெ᳴" Z "ே᳴" Z "ா᳴" Z E
     CONSONANTS "க" Z "க²" Z "க³" Z "க⁴" Z "ங" Z "ச" Z "ச²" Z "ஜ" Z "ஜ²" Z "ஞ" Z "ட" Z "ட²" Z "ட³" Z "ட⁴" Z "ண" Z "த" Z "த²" Z "த³" Z "த⁴" Z "ந" Z "ப" Z "ப²" Z "ப³" Z "ப⁴" Z "ம" Z "ய" Z "ர" Z "ல" Z "வ" Z "ஶ" Z "ஷ" Z "ஸ" Z "ஹ" Z "ள" Z "ழ" Z "ற" Z "ன" Z "ஃக" Z "ஃக²" Z "ஃக³" Z "ஃஜ" Z "ஃட²" Z "ஃட³" Z "ஃப" Z "ஃய" Z "ங்ˆக³" Z "ஞ்ˆஜ³" Z "ண்ˆட³" Z "ந்ˆத³" Z "ம்ˆப³" Z E
-    OTHERDIACRITICS "னஂ" Z "மஂ" Z "꞉" Z "ஃ" Z E
+    OTHERDIACRITICS "ம்ˮ" Z "ம்ʼ" Z "꞉" Z "ஃ" Z E
     SYMBOLS "௦" Z "௧" Z "௨" Z "௩" Z "௪" Z "௫" Z "௬" Z "௭" Z "௮" Z "௯" Z "ௐ" Z "।" Z "॥" Z E
     VEDICSYMBOLS "(அ)" Z "ꣳ" Z "ꣴ" Z E
     EQUIVALENTS
       "ொ" Z "ொ" Z E
       "ோ" Z "ோ" Z E
       "ௌ" Z "ௌ" Z E
-      "னஂ" Z "ம்ˮ" Z E
-      "மஂ" Z "ம்ʼ" Z E
       "்" Z "்‍" Z "‍்" Z E
     E
   E
@@ -529,11 +547,9 @@ const char scriptData[] =
     VOWELMARKS "" Z "ā" Z "i" Z "ī" Z "u" Z "ū" Z "r̥" Z "r̥̄" Z "l̥" Z "l̥̄" Z "ĕ" Z "e" Z "ai" Z "ŏ" Z "o" Z "au" Z "æ" Z "ǣ" Z "ô" Z E
     CONSONANTS "k" Z "kʰ" Z "g" Z "gʰ" Z "ṅ" Z "c" Z "cʰ" Z "j" Z "jʰ" Z "ñ" Z "ṭ" Z "ṭʰ" Z "ḍ" Z "ḍʰ" Z "ṇ" Z "t" Z "tʰ" Z "d" Z "dʰ" Z "n" Z "p" Z "pʰ" Z "b" Z "bʰ" Z "m" Z "y" Z "r" Z "l" Z "v" Z "ś" Z "ṣ" Z "s" Z "h" Z "ḷ" Z "ḻ" Z "ṟ" Z "ṉ" Z "q" Z "k͟ʰ" Z "ġ" Z "z" Z "ṛ" Z "ṛʰ" Z "f" Z "ẏ" Z "n̆g" Z "n̆j" Z "n̆ḍ" Z "n̆d" Z "m̆b" Z E
     OTHERDIACRITICS "m̐" Z "ṃ" Z "ḥ" Z "ḵ" Z E
-    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oṃ" Z "/" Z "//" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "oṃ" Z "." Z ".." Z E
     VEDICSYMBOLS "'" Z "gͫ" Z "gͫ̄" Z E
     EQUIVALENTS
-      "//" Z "||" Z ".." Z E
-      "/" Z "|" Z "." Z E
       "x:0" Z "()" Z "^" Z E
       "x:1" Z "{}" Z "^^" Z E
       "ā" Z "ā" Z E
@@ -560,6 +576,35 @@ const char scriptData[] =
       "ṃ" Z "ṃ" Z E
       "ḥ" Z "ḥ" Z E
       "oṃ" Z "oṃ" Z E
+    E
+  E
+  "velthuis" Z LATIN
+    VOWELS "a" Z "aa" Z "i" Z "ii" Z "u" Z "uu" Z ".r" Z ".rr" Z ".l" Z ".ll" Z "E" Z "e" Z "ai" Z ".O" Z "o" Z "au" Z "aE" Z "AE" Z "aO" Z E
+    VOWELMARKS "" Z "aa" Z "i" Z "ii" Z "u" Z "uu" Z ".r" Z ".rr" Z ".l" Z ".ll" Z "E" Z "e" Z "ai" Z ".O" Z "o" Z "au" Z "aE" Z "AE" Z "aO" Z E
+    CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "\"n" Z "c" Z "ch" Z "j" Z "jh" Z "~n" Z ".t" Z ".th" Z ".d" Z ".dh" Z ".n" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "\"s" Z ".s" Z "s" Z "h" Z "L" Z "_l" Z "_r" Z "_n" Z "q" Z "_kh" Z ".g" Z "z" Z "..r" Z "..rh" Z "f" Z ".y" Z "n*g" Z "n*j" Z "n*.d" Z "n*d" Z "m*b" Z E
+    OTHERDIACRITICS "~m" Z ".m" Z ".h" Z "_k" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "O" Z "." Z ".." Z E
+    VEDICSYMBOLS ".a" Z "gͫ" Z "gͫ̄" Z E
+    EQUIVALENTS
+      "aa" Z "A" Z E
+      "ii" Z "I" Z E
+      "uu" Z "U" Z E
+      "~m" Z "/" Z E
+      ".ll" Z ".L" Z E
+      ".rr" Z ".R" Z E
+      "kh" Z "K" Z E
+      "gh" Z "G" Z E
+      "ch" Z "C" Z E
+      "jh" Z "J" Z E
+      ".th" Z ".T" Z E
+      ".dh" Z ".D" Z E
+      "th" Z "T" Z E
+      "dh" Z "D" Z E
+      "ph" Z "P" Z E
+      "bh" Z "B" Z E
+      "O" Z "o.m" Z E
+      "x:0" Z "()" Z "^" Z E
+      "x:1" Z "{}" Z "^^" Z E
     E
   E
   "wx" Z LATIN

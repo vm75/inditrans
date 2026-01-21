@@ -61,7 +61,8 @@ class BinaryBuffer {
   }
 
   void writeString(String str) {
-    buffer.write('"$str" Z ');
+    final escapedStr = str.replaceAll('"', '\\"');
+    buffer.write('"$escapedStr" Z ');
   }
 
   List<String> writeArray(

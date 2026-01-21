@@ -8,6 +8,7 @@ enum Script {
   gujarati,
   gurmukhi,
   hindi,
+  hk,
   iast,
   indic,
   ipa,
@@ -22,12 +23,14 @@ enum Script {
   readableLatin,
   sanskrit,
   sinhala,
+  slp1,
   tamil,
   tamilExtended,
   telugu,
   thai,
   tibetan,
   titus,
+  velthuis,
   wx,
 }
 

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unreachable_from_main
 
 import 'dart:convert';
 import 'dart:io';
@@ -30,12 +30,14 @@ class Script {
     int count = 1,
   ]) {
     final parts = path.split('.');
-    late Map<String, dynamic> next = json;
+    dynamic current = json;
     for (final part in parts) {
-      next = next[part] as Map<String, dynamic>;
+      if (current is Map<String, dynamic>) {
+        current = current[part];
+      }
     }
 
-    final src = next as List<dynamic>;
+    final src = current as List<dynamic>;
     for (int idx = idxStart; idx < idxStart + count; idx++) {
       dest.add(src[idx] as String);
     }
@@ -94,47 +96,131 @@ class Script {
     }
   }
 
-  void show() {
-    print('    "$name": {');
-    print('      "vowels": [ "${vowels.join('", "')}" ],');
-    print('      "vowelMarks": [ "${vowelMarks.join('", "')}" ],');
-    print('      "consonants": [ "${consonants.join('", "')}" ],');
-    print('      "otherDiacritics": [ "${otherDiacritics.join('", "')}" ],');
-    print('      "symbols": [ "${symbols.join('", "')}" ],');
-    print('      "vedicSymbols": [ "${vedicSymbols.join('", "')}" ],');
-    print('      "proxys": {');
-    print('        "x:0": [ "()", "^" ],');
-    print('        "x:1": [ "{}", "^^" ]');
-    print('      }');
-    print('    },');
+  Map<String, dynamic> toJson() {
+    return {
+      'vowels': vowels,
+      'vowelMarks': vowelMarks,
+      'consonants': consonants,
+      'otherDiacritics': otherDiacritics,
+      'symbols': symbols,
+      'vedicSymbols': vedicSymbols,
+      'equivalents': {
+        'x:0': ['()', '^'],
+        'x:1': ['{}', '^^'],
+      },
+    };
   }
 }
 
-// accept args
+// Custom JSON formatter to keep arrays on a single line
+String formatJson(dynamic object, [String indent = '']) {
+  if (object is Map) {
+    if (object.isEmpty) return '{}';
+    final buffer = StringBuffer('{\n');
+    final keys = object.keys.toList();
+    for (int i = 0; i < keys.length; i++) {
+      final key = keys[i];
+      final value = object[key];
+      buffer.write('$indent  "$key": ${formatJson(value, '$indent  ')}');
+      if (i < keys.length - 1) buffer.write(',');
+      buffer.write('\n');
+    }
+    buffer.write('$indent}');
+    return buffer.toString();
+  } else if (object is List) {
+    if (object.isEmpty) return '[]';
+    final content = object.map((e) => json.encode(e)).join(', ');
+    return '[ $content ]';
+  } else {
+    return json.encode(object);
+  }
+}
+
 void main(List<String> args) async {
   final rootDir = Directory.current;
+  final validCategories = ['vedic', 'indic', 'latin', 'tamil'];
 
-  final versionFile = File('${rootDir.path}/.version');
-  if (!versionFile.existsSync()) {
-    print('Run from root folder');
+  if (args.length < 2) {
+    print('Usage: dart import_script.dart <category> <script1> [script2] ...');
+    print('Categories: ${validCategories.join(', ')}');
     return;
   }
 
-  if (args.isEmpty) {
-    print('Usage: dart import_script.dart <script>');
+  final category = args[0].toLowerCase();
+  if (!validCategories.contains(category)) {
+    print('❌ Invalid category: $category');
+    print('Valid categories: ${validCategories.join(', ')}');
     return;
   }
 
+  final scriptsToImport = args.sublist(1);
+
+  // Load existing script_data.json
+  final scriptDataFile = File('${rootDir.path}/tool/script_data.json');
+  Map<String, dynamic> scriptData = {};
+
+  if (scriptDataFile.existsSync()) {
+    final content = await scriptDataFile.readAsString();
+    scriptData = json.decode(content) as Map<String, dynamic>;
+    print('Loaded existing script_data.json');
+  } else {
+    scriptData = {for (var c in validCategories) c: {}};
+    print('Creating new script_data.json');
+  }
+
+  // Fetch remote script mapping
   final url = Uri.parse(
     'https://raw.githubusercontent.com/virtualvinodh/aksharamukha/master/aksharamukha-back/resources/script_mapping/script_mapping.json',
   );
+  print('Fetching script mapping from remote...');
   final response = await http.get(url);
   final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
-  if (jsonResponse[args[0]] == null) {
-    print('Script not found');
-    return;
+
+  int addedCount = 0;
+  int skippedCount = 0;
+
+  for (final scriptName in scriptsToImport) {
+    if (jsonResponse[scriptName] == null) {
+      print('❌ Script "$scriptName" not found in remote mapping');
+      continue;
+    }
+
+    // Check if script already exists in any category
+    bool exists = false;
+    for (final cat in scriptData.values) {
+      if (cat is Map<String, dynamic> && cat.containsKey(scriptName)) {
+        exists = true;
+        break;
+      }
+    }
+
+    if (exists) {
+      print('⏭️  Script "$scriptName" already exists, skipping');
+      skippedCount++;
+      continue;
+    }
+
+    try {
+      final scriptJson = jsonResponse[scriptName] as Map<String, dynamic>;
+      final script = Script(scriptName, scriptJson);
+
+      // Add script to specified category
+      (scriptData[category] as Map<String, dynamic>)[scriptName] =
+          script.toJson();
+
+      print('✅ Added "$scriptName" to category "$category"');
+      addedCount++;
+    } catch (e) {
+      print('❌ Error importing "$scriptName": $e');
+    }
   }
-  final scriptJson = jsonResponse[args[0]];
-  final script = Script(args[0], scriptJson as Map<String, dynamic>);
-  script.show();
+
+  if (addedCount > 0) {
+    final jsonString = formatJson(scriptData);
+    await scriptDataFile.writeAsString('$jsonString\n');
+    print('\n✨ Successfully saved script_data.json');
+    print('   Added: $addedCount scripts to "$category"');
+  } else {
+    print('\n⚠️  No new scripts were added');
+  }
 }

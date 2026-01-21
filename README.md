@@ -32,10 +32,15 @@ References:
   - Telugu
   - Tibetan
   - Thai
-- Latin/Roman scripts:
+- Standard Latin/Roman notations:
   - IAST (https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration)
   - IPA (https://en.wikipedia.org/wiki/International_Phonetic_Alphabet)
   - ISO 15919 (https://en.wikipedia.org/wiki/ISO_15919)
   - ITRANS (https://en.wikipedia.org/wiki/ITRANS)
-  - ReadableLatin (easy to read in Latin alphabets with some customizations)
   - TITUS (https://titus.uni-frankfurt.de/indexe.htm)
+  - Harvard-Kyoto (https://en.wikipedia.org/wiki/Harvard-Kyoto)
+  - Velthuis (https://en.wikipedia.org/wiki/Velthuis)
+  - SLP1 (https://en.wikipedia.org/wiki/SLP1)
+  - WX (https://en.wikipedia.org/wiki/WX_notation)
+- Custom Latin notations:
+  - ReadableLatin (easy to read in Latin alphabets with some customizations)
