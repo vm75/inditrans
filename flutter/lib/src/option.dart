@@ -3,23 +3,32 @@
 /// Transliteration options
 /// Flags to control transliteration
 class Option {
+  static const _strIntMap = {
+    'none': 0,
+    'tamiltraditional': 1,
+    'tamilsuperscripted': 2,
+    'asciinumerals': 4,
+    'ignorevedicaccents': 8,
+    'retainspecialmarkers': 16,
+  };
+
   /// No options (default)
-  static final None = Option('None');
+  static final None = Option._(0);
 
   /// Use traditional Tamil consonants only
-  static final TamilTraditional = Option('TamilTraditional');
+  static final TamilTraditional = Option._(1);
 
   /// Use superscripted Tamil consonants
-  static final TamilSuperscripted = Option('TamilSuperscripted');
+  static final TamilSuperscripted = Option._(2);
 
   /// Force ASCII numerals in transliterated text
-  static final ASCIINumerals = Option('ASCIINumerals');
+  static final ASCIINumerals = Option._(4);
 
   /// Ignore Vedic accents in transliterated text
-  static final IgnoreVedicAccents = Option('IgnoreVedicAccents');
+  static final IgnoreVedicAccents = Option._(8);
 
   /// Retain special markers which are used to identify non-standard chars
-  static final RetainSpecialMarkers = Option('RetainSpecialMarkers');
+  static final RetainSpecialMarkers = Option._(16);
 
   /// Returns the int value of the option flag
   int get value => _value;

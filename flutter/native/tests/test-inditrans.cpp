@@ -74,7 +74,7 @@ void testAllTranslit(std::string_view file) noexcept {
 
       auto targets = inputObj.get<JsonArray>("targets");
 
-      if (*type == "any-to-any") {
+      if (type != std::nullopt && *type == "any-to-any") {
         for (auto& first : *targets) {
           for (auto& second : *targets) {
             auto sourceObj = std::get<JsonObject>(first);
