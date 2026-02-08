@@ -36,7 +36,7 @@ $(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
 $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
-$(NATIVE_SRC)/script_data.h: tool/script_data.json tool/generate_headers.dart $(GENERATOR_UTILS)
+$(NATIVE_SRC)/script_data.h: tool/script_data.json tool/options.json tool/generate_headers.dart $(GENERATOR_UTILS)
 	dart tool/generate_headers.dart
 
 wasm: flutter/assets/inditrans.wasm js/public/inditrans.js

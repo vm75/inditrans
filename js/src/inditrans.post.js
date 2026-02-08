@@ -7,6 +7,7 @@ Module['onRuntimeInitialized'] = function () {
             'ASCIINumerals': 4,
             'IgnoreVedicAccents': 8,
             'RetainSpecialMarkers': 16,
+            'NoXMLTagHandling': 32,
         },
         'Scripts': [
             'assamese',
@@ -50,10 +51,10 @@ Module['onRuntimeInitialized'] = function () {
             }
             return result;
         },
-        'transliterate': (text, from, to, options) => {
-            const transliterate = cwrap('transliterate', 'number', ['string', 'string', 'string', 'number']);
+        'transliterate': (text, from, to, options, skipStart = "##", skipEnd = "##") => {
+            const transliterate = cwrap('transliterate', 'number', ['string', 'string', 'string', 'number', 'string', 'string']);
             const releaseBuffer = cwrap('releaseBuffer', 'void', ['number']);
-            const stringPtr = transliterate(text, from, to, options);
+            const stringPtr = transliterate(text, from, to, options, skipStart, skipEnd);
             if (stringPtr == 0) {
                 return '';
             }
@@ -61,11 +62,11 @@ Module['onRuntimeInitialized'] = function () {
             releaseBuffer(stringPtr);
             return result;
         },
-        'isScriptSupported' : (script) => {
+        'isScriptSupported': (script) => {
             const isScriptSupported = cwrap('isScriptSupported', 'number', ['string']);
             return isScriptSupported(script) == 1;
         },
-        'supportedScripts' : () => {
+        'supportedScripts': () => {
             return Module['inditrans']['Scripts'];
         }
     }

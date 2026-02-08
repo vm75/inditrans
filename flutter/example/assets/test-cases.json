@@ -27,11 +27,11 @@
       },
       {
         "script": "readablelatin",
-        "text": "shree̱ gu̱ru̱bhyO nama̱h ! ha̱ri̱h om !! om ga̱Naanaa̎m tvaa ga̱Napa̍tigum havaamahE ka̱vim ka̍vee̱naamu̍pa̱mashra̍vastamam"
+        "text": "shree̱ gu̱ru̱bhyO nama̱h̥ ! ha̱ri̱h̥ OM !! OM ga̱Naanaa̎nͫ tvaa ga̱Napa̍tigum havaamahE ka̱vinͫ ka̍vee̱naamu̍pa̱mashra̍vastamanͫ"
       },
       {
         "script": "readablelatin",
-        "text": "shree gurubhyO namah ! harih om !! om gaNaanaam tvaa gaNapatigum havaamahE kavim kaveenaamupamashravastamam",
+        "text": "shree gurubhyO namah̥ ! harih̥ OM !! OM gaNaanaanͫ tvaa gaNapatigum havaamahE kavinͫ kaveenaamupamashravastamanͫ",
         "options": "IgnoreVedicAccents"
       },
       {
@@ -169,7 +169,7 @@
       },
       {
         "script": "readablelatin",
-        "text": "panktee paNDit anja idam samskr̥tam samskr̥tam"
+        "text": "panͫktee panͫDit anͫja idanͫ sanͫskr̥tam sanͫskr̥tanͫ"
       },
       {
         "script": "iso",
@@ -289,7 +289,7 @@
     "targets": [
       {
         "script": "readablelatin",
-        "text": "dhanya anjaneechyaa sutaa"
+        "text": "dhanya anͫjaneechyaa sutaa"
       }
     ]
   },

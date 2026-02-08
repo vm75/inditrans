@@ -20,4 +20,7 @@ export enum Option {
 
   /// Retain special markers which are used to identify non-standard chars
   RetainSpecialMarkers = 16,
+
+  /// Do not check for xml/html tags, and treat them as normal text
+  NoXMLTagHandling = 32,
 }

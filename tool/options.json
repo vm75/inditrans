@@ -34,5 +34,10 @@
         "name": "RetainSpecialMarkers",
         "comment": "Retain special markers which are used to identify non-standard chars",
         "value": 16
+    },
+    {
+        "name": "NoXMLTagHandling",
+        "comment": "Do not check for xml/html tags, and treat them as normal text",
+        "value": 32
     }
 ]

@@ -59,7 +59,8 @@ const _writeNotSupported = [
 /// inditrans.transliterate('text', transliterate.Script.devanagari, transliterate.Script.tamil);
 ///
 /// ```
-String transliterate(String text, Script from, Script to, [Option? options]) {
+String transliterate(String text, Script from, Script to,
+    [Option? options, String skipStart = '##', String skipEnd = '##']) {
   if (from == to ||
       text.isEmpty ||
       _readNotSupported.contains(from) ||
@@ -70,8 +71,16 @@ String transliterate(String text, Script from, Script to, [Option? options]) {
     final nativeText = text.toNativeUtf8(allocator: arena);
     final nativeFrom = from.name.toNativeUtf8(allocator: arena);
     final nativeTo = to.name.toNativeUtf8(allocator: arena);
-    final buffer = _bindings.transliterate(nativeText.cast<Uint8>(),
-        nativeFrom.cast<Uint8>(), nativeTo.cast<Uint8>(), options?.value ?? 0);
+    final nativeSkipStart = skipStart.toNativeUtf8(allocator: arena);
+    final nativeSkipEnd = skipEnd.toNativeUtf8(allocator: arena);
+    final buffer = _bindings.transliterate(
+      nativeText.cast<Uint8>(),
+      nativeFrom.cast<Uint8>(),
+      nativeTo.cast<Uint8>(),
+      options?.value ?? 0,
+      nativeSkipStart.cast<Uint8>(),
+      nativeSkipEnd.cast<Uint8>(),
+    );
     final result = buffer.cast<Utf8>();
     return result == nullptr ? '' : result.toDartString();
   });

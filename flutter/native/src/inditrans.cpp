@@ -520,11 +520,15 @@ StatefulTrie<TokenUnit, bool> TamilPrefixLookup::tamilPrefixes {};
 
 class InputReader {
 public:
-  InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options) noexcept
+  InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options,
+      const std::string_view& skipStart = "##", const std::string_view& skipEnd = "##") noexcept
       : options(options) {
     auto ptr = input.data();
     auto end = ptr + input.length();
     tokenUnits.reserve(input.size());
+
+    bool skipXml = !(options * TranslitOptions::NoXMLTagHandling);
+
     while (ptr < end) {
       auto match = map.lookupToken(ptr);
       if (match.value != std::nullopt) {
@@ -541,37 +545,33 @@ public:
       } else {
         while (ptr < end) {
           const auto* start = ptr;
-          const char* lookFor = nullptr;
-          if (*ptr == '<') {
-            lookFor = ">";
-            ptr++;
-          } else if (*ptr == '#' && ptr + 1 < end && ptr[1] == '#') {
-            lookFor = "##";
-            ptr += 2;
+          if (skipXml && *ptr == '<') {
+            while (ptr < end && *ptr != '>') {
+              ptr++;
+            }
+            if (*ptr == '>') {
+              ptr++;
+            }
+            tokenUnits.emplace_back(std::string_view(start, ptr - start));
+          } else if (*ptr == skipStart[0] && ptr + skipStart.length() - 1 < end
+              && std::string_view(ptr, skipStart.length()) == skipStart) {
+            ptr += skipStart.length();
             start = ptr;
-          }
-          if (lookFor != nullptr) {
             while (ptr < end) {
-              if (*ptr == *lookFor) {
-                ptr++;
-                if (lookFor[1] == 0) {
-                  tokenUnits.emplace_back(std::string_view(start, ptr - start));
-                  break;
-                } else if (ptr < end && *ptr == lookFor[1]) {
-                  tokenUnits.emplace_back(std::string_view(start, ptr - start - 1));
-                  ptr++;
-                  break;
-                }
+              if (*ptr == skipEnd[0] && ptr + skipEnd.length() - 1 < end
+                  && std::string_view(ptr, skipEnd.length()) == skipEnd) {
+                tokenUnits.emplace_back(std::string_view(start, ptr - start));
+                ptr += skipEnd.length();
+                break;
               } else {
                 ptr++;
               }
             }
-            continue;
           } else if (map.lookupToken(ptr).value != std::nullopt) {
             break;
           } else {
             ptr++;
-            while (ptr < end && *ptr != '#' && *ptr != '<' && map.lookupToken(ptr).value == std::nullopt) {
+            while (ptr < end && *ptr != skipStart[0] && *ptr != '<' && map.lookupToken(ptr).value == std::nullopt) {
               ptr++;
             }
             tokenUnits.emplace_back(std::string_view(start, ptr - start));
@@ -1170,15 +1170,15 @@ private:
   StatefulTrie<TokenUnit, bool>::LookupState prefixLookupState {};
 };
 
-std::unique_ptr<InputReader> getInputReader(
-    const std::string_view& text, std::string_view from, TranslitOptions options) noexcept {
+std::unique_ptr<InputReader> getInputReader(const std::string_view& text, std::string_view from,
+    TranslitOptions options, const std::string_view& skipStart, const std::string_view& skipEnd) noexcept {
 
   auto map = getScriptReaderMap(from);
   if (map == nullptr) {
     return nullptr;
   }
 
-  return std::make_unique<InputReader>(text, *map, options);
+  return std::make_unique<InputReader>(text, *map, options, skipStart, skipEnd);
 }
 
 std::unique_ptr<OutputWriter> getOutputWriter(std::string_view to, TranslitOptions options, size_t inputSize) noexcept {
@@ -1195,11 +1195,12 @@ std::unique_ptr<OutputWriter> getOutputWriter(std::string_view to, TranslitOptio
 }
 
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
-    TranslitOptions options, std::unique_ptr<char>& output) noexcept {
+    TranslitOptions options, std::unique_ptr<char>& output, const std::string_view& skipStart,
+    const std::string_view& skipEnd) noexcept {
   if (from == to) {
     return false;
   }
-  auto reader = getInputReader(input, from, options);
+  auto reader = getInputReader(input, from, options, skipStart, skipEnd);
   if (reader == nullptr) {
     return false;
   }
@@ -1221,9 +1222,9 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
 }
 
 std::string transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
-    TranslitOptions options) noexcept {
+    TranslitOptions options, const std::string_view& skipStart, const std::string_view& skipEnd) noexcept {
   std::unique_ptr<char> output;
-  if (!transliterate(input, from, to, options, output)) {
+  if (!transliterate(input, from, to, options, output, skipStart, skipEnd)) {
     return std::string();
   }
 
@@ -1233,10 +1234,13 @@ std::string transliterate(const std::string_view& input, const std::string_view&
 extern "C" {
 
 /// transliterate
-char* CALL_CONV transliterate(const char* input, const char* from, const char* to, unsigned long options) {
+char* CALL_CONV transliterate(const char* input, const char* from, const char* to, unsigned long options,
+    const char* skipStart, const char* skipEnd) {
   std::unique_ptr<char> output;
   std::string_view inputView(input);
-  if (!transliterate(inputView, from, to, static_cast<TranslitOptions>(options), output)) {
+  std::string_view skipStartView(skipStart);
+  std::string_view skipEndView(skipEnd);
+  if (!transliterate(inputView, from, to, static_cast<TranslitOptions>(options), output, skipStartView, skipEndView)) {
     return nullptr;
   } else {
     auto retval = output.release();

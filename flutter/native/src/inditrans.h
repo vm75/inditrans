@@ -20,7 +20,8 @@ inline constexpr TranslitOptions operator|(TranslitOptions x, TranslitOptions y)
 TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept;
 
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
-    TranslitOptions options, std::unique_ptr<char>& out) noexcept;
+    TranslitOptions options, std::unique_ptr<char>& out, const std::string_view& skipStart = "##",
+    const std::string_view& skipEnd = "##") noexcept;
 
 std::string transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
-    TranslitOptions options) noexcept;
+    TranslitOptions options, const std::string_view& skipStart = "##", const std::string_view& skipEnd = "##") noexcept;

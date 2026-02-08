@@ -54,10 +54,13 @@ enum TranslitOptions {
   IgnoreVedicAccents = 8,
   /// Retain special markers which are used to identify non-standard chars
   RetainSpecialMarkers = 16,
+  /// Do not check for xml/html tags, and treat them as normal text
+  NoXMLTagHandling = 32,
 };
 
 /// transliterate text from one script to another
-ext_def(char*) transliterate(const char* text, const char* from, const char* to, unsigned long options);
+ext_def(char*) transliterate(const char* text, const char* from, const char* to, unsigned long options,
+    const char* skipStart, const char* skipEnd);
 
 /// returns if the given script is supported
 ext_def(int) isScriptSupported(const char* script);

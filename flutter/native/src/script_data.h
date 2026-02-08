@@ -461,9 +461,9 @@ const char scriptData[] =
   "readableLatin" Z LATIN
     VOWELS "a" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "r̥" Z "r̥" Z "l̥" Z "l̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "ă" Z "̆e" Z "̆o" Z E
     VOWELMARKS "" Z "aa" Z "i" Z "ee" Z "u" Z "oo" Z "r̥" Z "r̥" Z "l̥" Z "l̥" Z "e" Z "E" Z "ai" Z "o" Z "O" Z "au" Z "ă" Z "̆e" Z "̆o" Z E
-    CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "n" Z "ch" Z "chh" Z "j" Z "jh" Z "n" Z "T" Z "Th" Z "D" Z "Dh" Z "N" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "sh" Z "sh" Z "s" Z "h" Z "L" Z "zh" Z "R" Z "n" Z "q" Z "qh" Z "gh" Z "z" Z "D" Z "Dh" Z "f" Z "y" Z "ng" Z "nj" Z "nD" Z "nd" Z "mb" Z E
-    OTHERDIACRITICS "m̐" Z "" Z "h" Z "q" Z E
-    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "om" Z "!" Z "!!" Z E
+    CONSONANTS "k" Z "kh" Z "g" Z "gh" Z "n" Z "ch" Z "CH" Z "j" Z "jh" Z "n" Z "T" Z "TH" Z "D" Z "DH" Z "N" Z "t" Z "th" Z "d" Z "dh" Z "n" Z "p" Z "ph" Z "b" Z "bh" Z "m" Z "y" Z "r" Z "l" Z "v" Z "sh" Z "sh" Z "s" Z "h" Z "L" Z "zh" Z "R" Z "n" Z "q" Z "qh" Z "gh" Z "z" Z "D" Z "Dh" Z "f" Z "y" Z "ng" Z "nj" Z "nD" Z "nd" Z "mb" Z E
+    OTHERDIACRITICS "nͫ" Z "nͫ" Z "h̥" Z "h̥" Z E
+    SYMBOLS "0" Z "1" Z "2" Z "3" Z "4" Z "5" Z "6" Z "7" Z "8" Z "9" Z "OM" Z "!" Z "!!" Z E
     VEDICSYMBOLS "~" Z "gum" Z "gum" Z E
     EQUIVALENTS
       "x:0" Z "()" Z "^" Z E

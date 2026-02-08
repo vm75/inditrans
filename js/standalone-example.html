@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inditrans Standalone Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #333;
+    }
+    .example {
+      background: #f4f4f4;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 5px;
+    }
+    textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    textarea {
+      min-height: 100px;
+      font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+    .result {
+      background: #e8f5e9;
+      padding: 15px;
+      margin: 15px 0;
+      border-left: 4px solid #4caf50;
+      border-radius: 4px;
+    }
+    .info {
+      background: #e3f2fd;
+      padding: 15px;
+      margin: 15px 0;
+      border-left: 4px solid #2196f3;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Inditrans Standalone Example</h1>
+  
+  <div class="info">
+    <strong>ℹ️ Info:</strong> This example demonstrates how to use inditrans.js without adding it as a dependency.
+    Simply copy <code>inditrans.js</code> and <code>inditrans-standalone.js</code> to your project!
+  </div>
+
+  <div class="example">
+    <h2>Interactive Transliteration</h2>
+    
+    <label for="sourceScript">Source Script:</label>
+    <select id="sourceScript">
+      <option value="devanagari">Devanagari</option>
+      <option value="bengali">Bengali</option>
+      <option value="gujarati">Gujarati</option>
+      <option value="tamil">Tamil</option>
+      <option value="telugu">Telugu</option>
+      <option value="kannada">Kannada</option>
+      <option value="malayalam">Malayalam</option>
+      <option value="itrans" selected>ITRANS</option>
+      <option value="iast">IAST</option>
+    </select>
+
+    <label for="inputText">Input Text:</label>
+    <textarea id="inputText" placeholder="Enter text to transliterate...">namaste</textarea>
+
+    <label for="targetScript">Target Script:</label>
+    <select id="targetScript">
+      <option value="devanagari" selected>Devanagari</option>
+      <option value="bengali">Bengali</option>
+      <option value="gujarati">Gujarati</option>
+      <option value="tamil">Tamil</option>
+      <option value="telugu">Telugu</option>
+      <option value="kannada">Kannada</option>
+      <option value="malayalam">Malayalam</option>
+      <option value="itrans">ITRANS</option>
+      <option value="iast">IAST</option>
+    </select>
+
+    <label for="options">Options:</label>
+    <select id="options">
+      <option value="0">None</option>
+      <option value="1">Tamil Traditional</option>
+      <option value="2">Tamil Superscripted</option>
+      <option value="4">ASCII Numerals</option>
+      <option value="8">Ignore Vedic Accents</option>
+    </select>
+
+    <button onclick="performTransliteration()">Transliterate</button>
+
+    <div id="output" class="result" style="display:none;">
+      <label>Result:</label>
+      <div id="resultText" style="font-size: 18px; margin-top: 10px;"></div>
+    </div>
+  </div>
+
+  <div class="example">
+    <h2>Quick Examples</h2>
+    <button onclick="runExample1()">Example 1: Sanskrit to IAST</button>
+    <button onclick="runExample2()">Example 2: ITRANS to Tamil</button>
+    <button onclick="runExample3()">Example 3: Multiple Scripts</button>
+    
+    <div id="exampleOutput"></div>
+  </div>
+
+  <!-- Load inditrans.js first -->
+  <script src="public/inditrans.js"></script>
+  
+  <!-- Then load the standalone wrapper -->
+  <script src="inditrans-standalone.js"></script>
+
+  <script>
+    // Wait for the module to be ready
+    Inditrans.ready().then(() => {
+      console.log('✅ Inditrans ready!');
+      console.log('Supported scripts:', Inditrans.getSupportedScripts());
+    }).catch(error => {
+      console.error('❌ Failed to initialize Inditrans:', error);
+      alert('Failed to load Inditrans: ' + error.message);
+    });
+
+    function performTransliteration() {
+      try {
+        const inputText = document.getElementById('inputText').value;
+        const sourceScript = document.getElementById('sourceScript').value;
+        const targetScript = document.getElementById('targetScript').value;
+        const options = parseInt(document.getElementById('options').value);
+
+        const result = Inditrans.transliterate(
+          inputText,
+          sourceScript,
+          targetScript,
+          options
+        );
+
+        const output = document.getElementById('output');
+        const resultText = document.getElementById('resultText');
+        
+        resultText.textContent = result;
+        output.style.display = 'block';
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    }
+
+    function runExample1() {
+      try {
+        const text = 'श्री गुरुभ्यो नमः';
+        const result = Inditrans.transliterate(
+          text,
+          Inditrans.Script.devanagari,
+          Inditrans.Script.iast,
+          Inditrans.Option.None
+        );
+        
+        showExampleResult(`
+          <strong>Sanskrit to IAST:</strong><br>
+          Input: ${text}<br>
+          Output: ${result}
+        `);
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    }
+
+    function runExample2() {
+      try {
+        const text = 'vanakkam';
+        const result = Inditrans.transliterate(
+          text,
+          Inditrans.Script.itrans,
+          Inditrans.Script.tamil,
+          Inditrans.Option.None
+        );
+        
+        showExampleResult(`
+          <strong>ITRANS to Tamil:</strong><br>
+          Input: ${text}<br>
+          Output: ${result}
+        `);
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    }
+
+    function runExample3() {
+      try {
+        const text = 'namaste duniya';
+        const scripts = ['devanagari', 'bengali', 'telugu', 'tamil', 'kannada'];
+        let results = '<strong>Multiple Scripts Translation:</strong><br>';
+        results += `Input: ${text} (ITRANS)<br><br>`;
+        
+        scripts.forEach(script => {
+          const result = Inditrans.transliterate(
+            text,
+            Inditrans.Script.itrans,
+            script,
+            Inditrans.Option.None
+          );
+          results += `${script}: ${result}<br>`;
+        });
+        
+        showExampleResult(results);
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    }
+
+    function showExampleResult(html) {
+      const output = document.getElementById('exampleOutput');
+      output.innerHTML = '<div class="result">' + html + '</div>';
+    }
+
+    // Auto-transliterate on input change
+    document.getElementById('inputText').addEventListener('input', performTransliteration);
+    document.getElementById('sourceScript').addEventListener('change', performTransliteration);
+    document.getElementById('targetScript').addEventListener('change', performTransliteration);
+    document.getElementById('options').addEventListener('change', performTransliteration);
+  </script>
+</body>
+</html>

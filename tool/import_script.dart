@@ -177,7 +177,6 @@ void main(List<String> args) async {
   final jsonResponse = json.decode(response.body) as Map<String, dynamic>;
 
   int addedCount = 0;
-  int skippedCount = 0;
 
   for (final scriptName in scriptsToImport) {
     if (jsonResponse[scriptName] == null) {

@@ -35,12 +35,16 @@ class InditransBindings {
     ffi.Pointer<ffi.Uint8> from,
     ffi.Pointer<ffi.Uint8> to,
     int options,
+    ffi.Pointer<ffi.Uint8> skipStart,
+    ffi.Pointer<ffi.Uint8> skipEnd,
   ) {
     return _transliterate(
       text,
       from,
       to,
       options,
+      skipStart,
+      skipEnd,
     );
   }
 
@@ -50,10 +54,17 @@ class InditransBindings {
               ffi.Pointer<ffi.Uint8>,
               ffi.Pointer<ffi.Uint8>,
               ffi.Pointer<ffi.Uint8>,
-              ffi.UnsignedLong)>>('transliterate');
+              ffi.UnsignedLong,
+              ffi.Pointer<ffi.Uint8>,
+              ffi.Pointer<ffi.Uint8>)>>('transliterate');
   late final _transliterate = _transliteratePtr.asFunction<
-      ffi.Pointer<ffi.Uint8> Function(ffi.Pointer<ffi.Uint8>,
-          ffi.Pointer<ffi.Uint8>, ffi.Pointer<ffi.Uint8>, int)>();
+      ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<ffi.Uint8>,
+          ffi.Pointer<ffi.Uint8>,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          ffi.Pointer<ffi.Uint8>)>();
 
   /// returns if the given script is supported
   int isScriptSupported(
