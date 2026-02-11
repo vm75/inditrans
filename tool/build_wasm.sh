@@ -45,17 +45,19 @@ build_wasm_standalone() {
   if [[ $2 == "debug" ]]; then
     emcc ./native/src/inditrans.cpp -I ./native/src \
       -std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address \
-      "-Wl,--no-entry" \
+      "-Wl,--no-entry,--export=__wasm_call_ctors" \
       -DDEBUG \
       -s EXPORTED_FUNCTIONS="${exportedFunctions}" \
+      -s ENVIRONMENT='web,worker' \
       -s FILESYSTEM=0 \
       -o "${outDir}/inditrans.wasm"
   else
     emcc ./native/src/inditrans.cpp -I ./native/src \
-      -std=c++20 -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno \
-      "-Wl,--gc-sections,--no-entry" \
-      -DNDEBUG \
-      -s EXPORTED_FUNCTIONS="${exportedFunctions}" \
+      -fPIC -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG \
+      "-Wl,--gc-sections,--no-entry,--export=__wasm_call_ctors" \
+      -s EXPORTED_FUNCTIONS='["_malloc", "_free"]' \
+      -s STANDALONE_WASM=1 \
+      -s ENVIRONMENT='web,worker' \
       -s FILESYSTEM=0 \
       -o "${outDir}/inditrans.wasm"
   fi

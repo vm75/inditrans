@@ -15,3 +15,6 @@ ref/
 __pycache__/
 *.pyc
 *.out
+build_win/
+build_linux/
+build/

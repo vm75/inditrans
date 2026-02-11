@@ -25,10 +25,18 @@ class OptionHeaders {
 
   void updateDart(String path) {
     final StringBuffer buffer = StringBuffer();
+    buffer.writeln('  /// A map of option names to their integer values');
+    buffer.writeln('  static final _valueMap = <String, int>{');
+    for (final option in options) {
+      buffer.writeln(
+        "    '${option.name.toLowerCase()}': ${option.value},",
+      );
+    }
+    buffer.writeln('  };\n');
     for (final option in options) {
       buffer.writeln('  /// ${option.comment}');
       buffer.writeln(
-        "  static final ${option.name} = Option._strVal('${option.name}', ${option.value});",
+        '  static final ${option.name} = Option._(${option.value});',
       );
       buffer.writeln();
     }
@@ -66,8 +74,7 @@ class OptionHeaders {
     final enumStart = contents.indexOf('enum TranslitOptions {');
     final enumEnd = contents.indexOf('};', enumStart);
 
-    final prefix =
-        contents.substring(0, enumStart + 'enum TranslitOptions {'.length);
+    final prefix = contents.substring(0, enumStart + 'enum TranslitOptions {'.length);
     final suffix = contents.substring(enumEnd);
 
     final StringBuffer buffer = StringBuffer();

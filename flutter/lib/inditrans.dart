@@ -1,4 +1,4 @@
-library inditrans;
+library;
 
 import 'package:universal_ffi/ffi.dart';
 import 'package:universal_ffi/ffi_helper.dart';
@@ -10,8 +10,6 @@ import 'src/script.dart';
 
 export 'src/option.dart' show Option;
 export 'src/script.dart' show Script, ScriptNameExtension, ToScriptExtension;
-
-const bool kIsWeb = bool.fromEnvironment('dart.library.js_interop');
 
 late FfiHelper _ffiHelper;
 late InditransBindings _bindings;
@@ -26,26 +24,18 @@ late InditransBindings _bindings;
 ///   ...
 /// }
 /// ```
-init([String? modulePath]) async {
+Future<void> init([String? modulePath]) async {
   _ffiHelper = await FfiHelper.load(
     modulePath ?? 'inditrans',
-    options: {
-      if (modulePath == null) LoadOption.isFfiPlugin,
-      LoadOption.isStandaloneWasm,
-    },
+    options: {if (modulePath == null) LoadOption.isFfiPlugin, LoadOption.isStandaloneWasm},
   );
 
   _bindings = InditransBindings(_ffiHelper.library);
 }
 
-const _readNotSupported = [
-  Script.readableLatin,
-  Script.wx,
-];
+const _readNotSupported = [Script.readableLatin, Script.wx];
 
-const _writeNotSupported = [
-  Script.indic,
-];
+const _writeNotSupported = [Script.indic];
 
 /// Transliterates [text] from [from] script to [to] script.
 /// [Option] can be used for some specific config.
@@ -59,8 +49,14 @@ const _writeNotSupported = [
 /// inditrans.transliterate('text', transliterate.Script.devanagari, transliterate.Script.tamil);
 ///
 /// ```
-String transliterate(String text, Script from, Script to,
-    [Option? options, String skipStart = '##', String skipEnd = '##']) {
+String transliterate(
+  String text,
+  Script from,
+  Script to, [
+  Option? options,
+  String skipStart = '##',
+  String skipEnd = '##',
+]) {
   if (from == to ||
       text.isEmpty ||
       _readNotSupported.contains(from) ||
