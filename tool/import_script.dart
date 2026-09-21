@@ -195,7 +195,6 @@ void main(List<String> args) async {
 
     if (exists) {
       print('⏭️  Script "$scriptName" already exists, skipping');
-      skippedCount++;
       continue;
     }
 
@@ -204,8 +203,7 @@ void main(List<String> args) async {
       final script = Script(scriptName, scriptJson);
 
       // Add script to specified category
-      (scriptData[category] as Map<String, dynamic>)[scriptName] =
-          script.toJson();
+      (scriptData[category] as Map<String, dynamic>)[scriptName] = script.toJson();
 
       print('✅ Added "$scriptName" to category "$category"');
       addedCount++;

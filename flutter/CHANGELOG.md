@@ -1,3 +1,6 @@
+## [0.13.0]
+* Add skipStart and skipEnd options
+
 ## [0.12.1]
 * Fixed tamil supersctipt encoding
 
