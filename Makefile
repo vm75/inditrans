@@ -85,12 +85,3 @@ test_nodejs:
 
 cli: $(NATIVE_CLI)
 	$(NATIVE_CLI)
-
-# publish (manual fallback; canonical releases are tag-triggered in GitHub Actions)
-publish: publish_flutter publish_nodejs
-
-publish_flutter:
-	cd flutter && flutter pub publish
-
-publish_nodejs:
-	cd nodejs && npm publish --access=public
