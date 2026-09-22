@@ -3,7 +3,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-const semverRegex = r'^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)
+const semverRegex = r'^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$';
+
+void main(List<String> args) async {
   String? tagArg;
   String? extractChangelogPath;
   var checkPackages = false;
