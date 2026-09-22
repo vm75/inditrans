@@ -5,6 +5,9 @@ all: native wasm flutter
 version:
 	dart ./tool/bump_version.dart
 
+validate:
+	dart ./tool/verify_release.dart
+
 ifeq ($(OS), Windows_NT)
     EXEC_EXT = .exe
     SCRIPT_EXT = ps1
@@ -83,7 +86,7 @@ test_nodejs:
 cli: $(NATIVE_CLI)
 	$(NATIVE_CLI)
 
-# publish
+# publish (manual fallback; canonical releases are tag-triggered in GitHub Actions)
 publish: publish_flutter publish_nodejs
 
 publish_flutter:

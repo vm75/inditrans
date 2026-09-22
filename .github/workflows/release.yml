@@ -1,0 +1,224 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Validate versions and changelog
+        run: |
+          dart tool/verify_release.dart \
+            --tag=${{ github.ref_name }} \
+            --extract-changelog=release_notes.md
+
+      - name: Upload release notes
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-notes
+          path: release_notes.md
+          retention-days: 1
+
+  test-and-build:
+    name: Build & Test
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install native build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential clang
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Set up Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'yarn'
+          cache-dependency-path: 'nodejs/yarn.lock'
+
+      - name: Rebuild WASM artifacts
+        run: make wasm
+
+      - name: Run C++ test suite
+        run: make test
+
+      - name: Build Linux shared library for FFI tests
+        run: |
+          cmake -S native/src -B native/build_linux
+          cmake --build native/build_linux
+
+      - name: Run Flutter analysis and tests
+        run: |
+          cd flutter
+          flutter pub get
+          dart analyze
+          LD_LIBRARY_PATH=../native/build_linux flutter test
+
+      - name: Build and test Node.js
+        run: |
+          cd nodejs
+          yarn install --frozen-lockfile
+          yarn test
+
+      - name: Verify compiled artifacts and packaging dry-runs
+        run: |
+          dart tool/verify_release.dart \
+            --tag=${{ github.ref_name }} \
+            --check-artifacts \
+            --check-packages
+
+      - name: Upload built WASM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: inditrans-wasm
+          path: flutter/assets/inditrans.wasm
+          retention-days: 1
+
+      - name: Upload built JS wrapper
+        uses: actions/upload-artifact@v4
+        with:
+          name: inditrans-js
+          path: js/public/inditrans.js
+          retention-days: 1
+
+      - name: Upload Node.js build dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: nodejs-dist
+          path: nodejs/dist/
+          retention-days: 1
+
+  publish-pub:
+    name: Publish to pub.dev
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    environment: pub.dev
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download rebuilt WASM artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: inditrans-wasm
+          path: flutter/assets
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: cd flutter && flutter pub get
+
+      - name: Prepare changelog for pub packaging
+        run: cp CHANGELOG.md flutter/CHANGELOG.md
+
+      - name: Verify pub dry-run
+        run: cd flutter && flutter pub publish --dry-run
+
+      - name: Publish to pub.dev (OIDC)
+        run: cd flutter && flutter pub publish --force
+
+  publish-npm:
+    name: Publish to npm
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download rebuilt JS wrapper
+        uses: actions/download-artifact@v4
+        with:
+          name: inditrans-js
+          path: js/public
+
+      - name: Download Node.js build dist
+        uses: actions/download-artifact@v4
+        with:
+          name: nodejs-dist
+          path: nodejs/dist
+
+      - name: Set up Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: cd nodejs && yarn install --frozen-lockfile
+
+      - name: Verify npm dry-run
+        run: cd nodejs && npm pack --dry-run
+
+      - name: Publish to npm with provenance
+        run: cd nodejs && npm publish --provenance --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  github-release:
+    name: Create GitHub Release
+    needs: [validate, test-and-build, publish-pub, publish-npm]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download release notes
+        uses: actions/download-artifact@v4
+        with:
+          name: release-notes
+
+      - name: Create GitHub Release
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "Release ${{ github.ref_name }}" \
+            --notes-file release_notes.md \
+            --verify-tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
