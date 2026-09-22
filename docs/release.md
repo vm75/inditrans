@@ -48,7 +48,7 @@ The single consolidated changelog is maintained in `CHANGELOG.md` at repository 
 
 ## Publishing a release
 
-Production releases are triggered exclusively by pushing an annotated or signed SemVer tag matching `v*.*.*`:
+Production releases are triggered exclusively by pushing an annotated or signed SemVer tag matching `vMAJOR.MINOR.PATCH`:
 
 ```bash
 git tag -a vX.Y.Z -m "Release vX.Y.Z"
@@ -60,7 +60,7 @@ git push origin vX.Y.Z
 The tag-triggered release workflow strictly enforces the canonical path:
 **tag → validate → test/build → publish → GitHub Release**
 
-1. **`tag`**: Pushing `vX.Y.Z` triggers `.github/workflows/release.yml`. Manual production publishing via `workflow_dispatch` is prohibited.
+1. **`tag`**: Pushing `vX.Y.Z` triggers `.github/workflows/release.yml`. There is no manual production publishing workflow.
 2. **`validate`**:
    - Treats the git tag (`vMAJOR.MINOR.PATCH`) as the authoritative release version.
    - Validates that all distribution manifests match the tag version.
@@ -97,7 +97,7 @@ To verify the release pipeline safely without creating a real release or publish
   dart tool/verify_release.dart --tag=v0.13.0 --check-packages --check-artifacts
   ```
 - **Continuous Integration**:
-  The normal CI workflow (`.github/workflows/ci.yml`) runs on all pushes and PRs to `main` and `dev`, running release validation, native engine tests, Flutter tests/dry-run, and Node.js tests/dry-run.
+  The normal CI workflow (`.github/workflows/ci.yml`) runs on pushes to `main` and PRs targeting `main`, running release validation, native engine tests, Flutter tests/dry-run, and Node.js tests/dry-run.
 
 ## Security and registry configuration
 
@@ -106,7 +106,7 @@ To verify the release pipeline safely without creating a real release or publish
   - Repository is configured with GitHub workflow `.github/workflows/release.yml` and environment `pub.dev`.
   - Pub requires `id-token: write` permission to exchange an OpenID Connect token with pub.dev, eliminating the need for long-lived credentials.
 - **npm (Provenance & Token)**:
-  - Repository secret `NPM_TOKEN` contains an npm automation or granular access token with publish permissions for scope `@vm75`.
-  - Step specifies `npm publish --provenance --access=public` along with `id-token: write` permission to generate cryptographically signed Sigstore attestations linking the package artifact to the exact commit and workflow run.
+  - npm Trusted Publishing is configured for repository `vm75/inditrans` and workflow `.github/workflows/release.yml`.
+  - The release job uses GitHub Actions OIDC (`id-token: write`) and `npm publish --access=public`; no long-lived `NPM_TOKEN` is required.
 - **GitHub Environments**:
   - GitHub Environments `pub.dev` and `npm` can be configured with deployment protection rules and required reviewers if manual gates are desired prior to registry publication.
