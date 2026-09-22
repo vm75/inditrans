@@ -4,6 +4,14 @@
 #include <utilities.h>
 #include <vector>
 
+#if defined(_WIN32)
+#include <io.h>
+#define isatty _isatty
+#define fileno _fileno
+#else
+#include <unistd.h>
+#endif
+
 using InditransLogger = void(const std::string&);
 extern InditransLogger* inditransLogger;
 
@@ -66,6 +74,17 @@ std::vector<std::string> processArgs(std::string parseOptions, int argc, char** 
   return options;
 }
 
+static void printUsage(const char* prog) {
+  std::cout << "Usage: " << prog << " [options] [text]\n"
+            << "Options:\n"
+            << "  -f <script>   Source script (default: itrans)\n"
+            << "  -t <script>   Target script (default: devanagari)\n"
+            << "  -o <options>  Transliteration options\n"
+            << "  -h, --help    Show this help message\n\n"
+            << "If text is provided, transliterates and exits.\n"
+            << "Otherwise, enters interactive shell (type 'exit' or 'quit' to exit).\n";
+}
+
 int main(int argc, char** argv) {
   // parse args
   //   -f from-script, default: "itrans"
@@ -75,18 +94,21 @@ int main(int argc, char** argv) {
   std::string fromScript { "itrans" };
   std::string toScript { "devanagari" };
   TranslitOptions options { TranslitOptions::None };
-  auto args = processArgs("-f:,-t:,-o:", argc, argv);
+  auto args = processArgs("-f:,-t:,-o:,-h,--help", argc, argv);
   int i = 0;
   for (; i < args.size(); i++) {
     if (args[i] == "--") {
       i++;
       break;
     }
-    if (args[i] == "-f") {
+    if (args[i] == "-h" || args[i] == "--help") {
+      printUsage(argv[0]);
+      return 0;
+    } else if (args[i] == "-f" && i + 1 < args.size()) {
       fromScript = args[++i];
-    } else if (args[i] == "-t") {
+    } else if (args[i] == "-t" && i + 1 < args.size()) {
       toScript = args[++i];
-    } else if (args[i] == "-o") {
+    } else if (args[i] == "-o" && i + 1 < args.size()) {
       options = getTranslitOptions(args[++i]);
     }
   }
@@ -94,28 +116,40 @@ int main(int argc, char** argv) {
   std::string input;
   if (i < args.size()) {
     while (i < args.size()) {
-      input += args[i++] + " ";
+      if (!input.empty()) {
+        input += " ";
+      }
+      input += args[i++];
     }
+    std::string output = transliterate(input, fromScript, toScript, options);
+    std::cout << output << std::endl;
+    return 0;
   }
 
-  while (input != "exit" && input != "quit") {
-    if (!input.empty()) {
-      std::string output = transliterate(input, fromScript, toScript, options);
-      std::cout << output << std::endl;
+  const bool isInteractive = isatty(fileno(stdin));
+  while (true) {
+    if (isInteractive) {
+      std::cout << "$ ";
     }
-
-    std::cout << "$ ";
-    std::getline(std::cin, input); // read a line from cin into input
+    if (!std::getline(std::cin, input)) {
+      break;
+    }
+    if (input == "exit" || input == "quit") {
+      break;
+    }
+    if (input.empty()) {
+      continue;
+    }
 
     if (input.starts_with("-f ")) {
       fromScript = input.substr(3);
-      input = "";
     } else if (input.starts_with("-t ")) {
       toScript = input.substr(3);
-      input = "";
     } else if (input.starts_with("-o ")) {
       options = getTranslitOptions(input.substr(3));
-      input = "";
+    } else {
+      std::string output = transliterate(input, fromScript, toScript, options);
+      std::cout << output << std::endl;
     }
   }
 

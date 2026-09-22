@@ -11,13 +11,13 @@ ifeq ($(OS), Windows_NT)
 else
     SCRIPT_EXT = sh
 endif
-NATIVE_DIR = flutter/native
+NATIVE_DIR = native
 NATIVE_SRC = $(NATIVE_DIR)/src
 NATIVE_CLI = out/inditrans$(EXEC_EXT)
 NATIVE_TEST = out/inditrans_test$(EXEC_EXT)
 NATIVE_CPP = $(wildcard $(NATIVE_SRC)/*.cpp)
 NATIVE_H = $(wildcard $(NATIVE_SRC)/*.h)
-NATIVETEST_DIR = flutter/native/tests
+NATIVETEST_DIR = $(NATIVE_DIR)/tests
 NATIVETEST_CC = $(wildcard $(NATIVE_DIR)/tests/*.cpp)
 NATIVETEST_H = $(wildcard $(NATIVE_DIR)/tests/*.h)
 GENERATOR_UTILS = $(wildcard tool/utils/*.dart)

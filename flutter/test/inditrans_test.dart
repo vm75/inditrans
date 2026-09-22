@@ -16,20 +16,21 @@ void main() async {
       jsonDecode(File('../test-files/test-cases.json').readAsStringSync());
 
   // iterate over json which is in the form as in the file test-cases.json
-  for (final input in json as List<Map<String, dynamic>>) {
+  for (final input in (json as List).cast<Map<String, dynamic>>()) {
     final description = input['description'] as String;
     final inputText = input['text'] as String;
     final inputScript = (input['script'] as String).toScript();
-    for (final target in input['targets'] as List<Map<String, dynamic>>) {
+    for (final target in (input['targets'] as List).cast<Map<String, dynamic>>()) {
       final targetScript = (target['script'] as String).toScript();
       final expected = target['text'];
+      final options = inditrans.Option((target['options'] as String?) ?? '');
 
       if (inputScript == null || targetScript == null) {
         continue;
       }
       test(description, () {
         final actual =
-            inditrans.transliterate(inputText, inputScript, targetScript);
+            inditrans.transliterate(inputText, inputScript, targetScript, options);
         expect(actual, expected);
       });
     }

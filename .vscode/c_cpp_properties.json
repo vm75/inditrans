@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/flutter/native/src"
+                "${workspaceFolder}/native/src"
             ],
             "configurationProvider": "ms-vscode.makefile-tools",
             "intelliSenseMode": "linux-clang-x64",

@@ -26,7 +26,6 @@
     "out/**": true,
     "build/**": true,
     "dist/**": true,
-    "${workspaceFolder}/native/**": true,
     "**.so": true,
     "**.db": true,
     "yarn.lock": true
