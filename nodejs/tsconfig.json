@@ -3,9 +3,9 @@
     "strict": true,
     "rootDir": ".",
     "outDir": "dist",
-    "module": "commonjs",
+    "module": "node16",
     "target": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "sourceMap": true,
     "declaration": true,
     "esModuleInterop": true,
@@ -16,6 +16,7 @@
       "esnext",
       "dom"
     ],
+    "types": ["node", "jest"],
   },
   "include": [
     "src/**/*.ts",
