@@ -36,6 +36,7 @@ Makefile                Top-level build, test, and publish targets
 - **Run C++ tests**: `make test`
 - **Run native performance benchmark**: `make bench`
 - **Run per-call latency benchmark**: `make bench-short` (includes returned-string destruction)
+- **Measure first-call latency in fresh processes**: `make bench-cold` (501 samples by default; override with `COLD_BENCH_SAMPLES`)
 - **Run output-size/expansion benchmark**: `make output-size-bench` (`make mem-bench` is a compatibility alias)
 - **Run Linux/glibc allocation probe**: `make bench-alloc-linux`
 - **Run all available benchmarks with a formatted summary**: `make bench-all`

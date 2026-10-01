@@ -35,6 +35,7 @@ Capture a snapshot:
 
 ```bash
 make perf-snapshot PERF_NAME=00-baseline
+make bench-cold
 ```
 
 After each accepted step:
@@ -44,7 +45,7 @@ make perf-snapshot PERF_NAME=03-tamil-map
 make perf-report
 ```
 
-`make perf-snapshot` reuses the existing `bench-save` format, force-rebuilds the standalone Wasm artifact, and records its raw byte size. `make perf-report` discovers the numbered snapshots and prints a Markdown progression report.
+`make perf-snapshot` reuses the existing `bench-save` format, captures cold p50/p95 across fresh processes, force-rebuilds the standalone Wasm artifact, and records its raw byte size. `make perf-report` discovers the numbered snapshots and prints a Markdown progression report.
 
 The default summary uses:
 
@@ -53,6 +54,7 @@ The default summary uses:
 - allocation count: `malloc + calloc + realloc`
 - peak heap: allocator-probe peak requested live bytes
 - raw standalone Wasm size: `flutter/assets/inditrans.wasm`
+- cold-start p50/p95: first Devanagari-to-Telugu transliteration in a fresh native process
 
 All percentage/count deltas in the progression table are relative to `00-baseline`, not the immediately preceding step. The report also prints absolute values for auditability.
 
@@ -83,7 +85,7 @@ For structural changes, also run the Flutter/Node/Wasm tests affected by the cha
 | 0A | Add cumulative performance reporting | `tool/perf_report.py`, Make targets, plan | reproducible tracking | ✅ done | this setup change |
 | 0B | Capture clean tuning baseline | snapshot current merged implementation before optimization | baseline only | ✅ done | `00-baseline` at `717b766`; p50 1.473 µs, 2,762 allocs, 25.14 MiB peak requested heap, 58,479 B Wasm |
 | 1 | Fix output-buffer ownership mismatch | make `realloc`/`free` ownership explicit; remove mismatched default deleter; re-enable sanitizer mismatch detection | correctness; sanitizer clean | 🟨 validation pending | `01-buffer-ownership` snapshot: p50 1.372 µs, 2,762 allocs, 25.14 MiB peak requested heap, 58,469 B Wasm; ASan/UBSan pass locally; LeakSanitizer cannot run in this sandbox (`ptrace` restriction), so CI validation is pending |
-| 2 | Add cold-start benchmark | process-isolated first transliteration measurement | cold p50/p95 | ⬜ pending | |
+| 2 | Add cold-start benchmark | process-isolated first transliteration measurement | cold p50/p95 | ✅ done | 501 fresh-process samples; exact `717b766` baseline p50/p95 215.980/453.430 µs; `02-cold-start-benchmark` 241.869/458.841 µs; output hash stable |
 | 3 | Remove `OutputWriter` Tamil traditional hash map | replace three-entry `unordered_map` with constexpr lookup/comparisons | warm p50; allocations | ⬜ pending | |
 | 4 | Stack-allocate input reader/output writer | remove per-call `make_unique` reader/writer allocations | allocations; short-call p50 | ⬜ pending | |
 | 5 | Make `ScriptWriterMap` non-owning | replace copied `vector<string_view>` maps with spans/ranges/views | initialization allocations; cold latency | ⬜ pending | |
