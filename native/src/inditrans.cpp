@@ -6,6 +6,7 @@
 #include <limits>
 #include <memory>
 #include <optional>
+#include <span>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -333,18 +334,14 @@ public:
 private:
   void addCharMap(const std::string_view name, TokenType tokenType, ScriptType scriptType, const std::string_view* map,
       size_t count) noexcept {
-    auto& charMap = charMaps[static_cast<size_t>(tokenType)];
-    charMap.reserve(count);
-    for (size_t idx = 0; idx < count; idx++) {
-      charMap.emplace_back(map[idx]);
-    }
+    charMaps[static_cast<size_t>(tokenType)] = std::span<const std::string_view>(map, count);
   }
 
 private:
   const std::string_view name;
   const ScriptInfo& scriptInfo;
   ScriptType scriptType;
-  std::array<std::vector<std::string_view>, 8> charMaps {};
+  std::array<std::span<const std::string_view>, 8> charMaps {};
 };
 
 using TokenOrString = std::variant<ScriptToken, std::string_view>;
