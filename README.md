@@ -44,7 +44,7 @@ Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
 flutter/    Flutter FFI plugin (Dart + C++ shared library + WASM)
 nodejs/     TypeScript/JavaScript package (WASM via Emscripten)
 js/         WASM build output consumed by nodejs/
-native/     Canonical C++23 engine (source, tests, and CLI)
+native/     Canonical C++23 engine (source, tests, CLI, and benchmarks)
 tool/       Code-generation utilities (script data, bindings, version bump)
 test-files/ Shared test-case JSON used by all distributions
 ```
@@ -55,11 +55,38 @@ test-files/ Shared test-case JSON used by all distributions
 make all          # build native CLI, WASM, and Flutter plugin
 make test         # run C++ native tests
 make testall      # run native, Flutter, and Node.js tests
+make bench-all    # run the native benchmark summary
 make dll          # cross-compile Windows x86-64 DLL using MinGW-w64
 make validate     # validate version consistency and changelog
 ```
 
 Requires: CMake ≥ 3.20, Clang/LLVM ≥ 17 (or C++23-capable compiler), Emscripten 6.0.10, Flutter ≥ 2.11, Node.js ≥ 18.3 / Yarn.
+
+### Performance benchmarking
+
+The native benchmark suite measures throughput (MB/s and ns/call), per-call latency, output-size expansion, and—on Linux with glibc—heap allocation events, requested allocation bytes, peak requested live bytes, and bytes still live after the measured call.
+
+```sh
+make bench-all          # run all available benchmarks and print a formatted summary
+make bench              # throughput benchmark (10 cases × 3 approximate target sizes)
+make bench-short        # per-call latency benchmark, including result destruction
+make output-size-bench  # report input/output bytes and expansion ratio
+make mem-bench          # backward-compatible alias for output-size-bench
+make bench-alloc-linux  # Linux/glibc allocation probe
+```
+
+The allocator probe is optional. `bench-all`, `bench-save`, and `bench-compare` still run on other platforms and skip allocation metrics instead of failing during setup.
+
+To compare an optimization against a saved baseline:
+
+```sh
+make bench-save                         # capture baseline metrics before making changes
+# ... make changes ...
+make bench-compare                      # report changes; always fails on output-hash mismatch
+BENCH_STRICT=1 make bench-compare       # also fail on regressions at or above the threshold
+```
+
+`bench-compare` validates the FNV-1a output hash for every throughput and short-call case before treating timing changes as meaningful. Performance regressions are flagged at 5% by default; override the threshold with `BENCH_REGRESSION_THRESHOLD=<percent>`.
 
 ### Windows DLL cross-compilation (Linux → Windows)
 

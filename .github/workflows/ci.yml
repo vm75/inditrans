@@ -45,6 +45,140 @@ jobs:
       - name: Run C++ test suite
         run: make test
 
+  sanitizers:
+    name: Native Sanitizers & Leak Check
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install Clang
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang build-essential
+
+      - name: Build sanitizer test binary
+        run: |
+          mkdir -p out
+          clang++ \
+            -std=c++23 \
+            -DBOOST_UT_DISABLE_MODULE \
+            -O1 -g \
+            -fno-omit-frame-pointer \
+            -fno-sanitize-recover=all \
+            -fsanitize=address,undefined \
+            -I native/src \
+            native/src/*.cpp native/tests/*.cpp \
+            -o out/inditrans_sanitize_test
+
+      - name: Run AddressSanitizer, LeakSanitizer, and UBSan
+        env:
+          # The malloc/realloc vs delete ownership mismatch predates this benchmark PR
+          # and is tracked by the C++23 performance plan's P1 ownership correction.
+          # Keep leak, bounds, use-after-free, and UB checks enabled in the meantime.
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1:alloc_dealloc_mismatch=0
+          LSAN_OPTIONS: exitcode=23
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: ./out/inditrans_sanitize_test
+
+  performance:
+    name: Performance Regression Gate
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository with base history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install benchmark dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang build-essential util-linux
+
+      - name: Select one runner CPU
+        run: |
+          CPU=$(python3 - <<'PY'
+          import os
+          print(min(os.sched_getaffinity(0)))
+          PY
+          )
+          echo "BENCH_CPU=$CPU" >> "$GITHUB_ENV"
+          echo "Benchmark CPU: $CPU"
+
+      - name: Prepare base engine with current benchmark harness
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          BASELINE_DIR="$RUNNER_TEMP/inditrans-baseline"
+          git worktree add --detach "$BASELINE_DIR" "$BASE_SHA"
+          rm -rf "$BASELINE_DIR/native/bench"
+          cp -a native/bench "$BASELINE_DIR/native/bench"
+          mkdir -p "$GITHUB_WORKSPACE/out"
+          echo "BASELINE_DIR=$BASELINE_DIR" >> "$GITHUB_ENV"
+
+      - name: Measure base revision
+        run: |
+          cd "$BASELINE_DIR"
+          taskset -c "$BENCH_CPU" make -f "$GITHUB_WORKSPACE/Makefile" bench-save \
+            BENCH_BASELINE="$GITHUB_WORKSPACE/out/bench-baseline"
+
+      - name: Compare PR timing against base
+        run: |
+          taskset -c "$BENCH_CPU" make bench-compare \
+            BENCH_BASELINE=out/bench-baseline \
+            BENCH_REGRESSION_THRESHOLD=10 \
+            BENCH_STRICT=1
+
+      - name: Gate allocation and live-byte regressions
+        run: |
+          awk -F, -v threshold=1 '
+            NR==FNR {
+              alloc[$1]=$2; bytes[$1]=$3; peak[$1]=$4; live[$1]=$5; count++;
+              next
+            }
+            {
+              seen++;
+              if (!($1 in alloc)) {
+                printf "%s: missing allocation baseline\n", $1;
+                bad=1;
+                next
+              }
+              ap=(alloc[$1]==0) ? (($2==0)?0:100) : ($2-alloc[$1])/alloc[$1]*100;
+              bp=(bytes[$1]==0) ? (($3==0)?0:100) : ($3-bytes[$1])/bytes[$1]*100;
+              pp=(peak[$1]==0) ? (($4==0)?0:100) : ($4-peak[$1])/peak[$1]*100;
+              lp=(live[$1]==0) ? (($5==0)?0:100) : ($5-live[$1])/live[$1]*100;
+              printf "%-22s alloc=%+.1f%% bytes=%+.1f%% peak=%+.1f%% live=%+.1f%%\n", $1,ap,bp,pp,lp;
+              if (ap >= threshold || bp >= threshold || pp >= threshold || lp >= threshold) bad=1;
+            }
+            END {
+              if (seen != count) bad=1;
+              exit bad ? 1 : 0
+            }
+          ' out/bench-baseline-allocs.csv out/bench-current-allocs.csv
+
+      - name: Require complete allocator-probe tracking
+        run: |
+          check_probe() {
+            label="$1"
+            dir="$2"
+            for mode in devanagari latin virtual-indic expansion protected mixed-protected; do
+              raw=$(LD_PRELOAD="$dir/out/libinditrans_alloc_probe.so" \
+                "$dir/out/inditrans_alloc_bench" "$mode" 1048576 1 0 2>&1 1>/dev/null)
+              echo "$label $mode: $raw"
+              untracked=$(printf '%s\n' "$raw" | sed -n 's/.*untracked=\([0-9][0-9]*\).*/\1/p')
+              if [ -z "$untracked" ] || [ "$untracked" -ne 0 ]; then
+                echo "$label $mode has incomplete allocator tracking (untracked=${untracked:-unknown})"
+                return 1
+              fi
+            done
+          }
+          check_probe base "$BASELINE_DIR"
+          check_probe pr "$GITHUB_WORKSPACE"
+
   flutter:
     name: Flutter Package
     runs-on: ubuntu-24.04
