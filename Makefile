@@ -27,6 +27,15 @@ ALLOC_BENCH_MODE ?= devanagari
 ALLOC_BENCH_BYTES ?= 1048576
 ALLOC_BENCH_REPETITIONS ?= 1
 ALLOC_BENCH_WARMUPS ?= 0
+BENCH_BASELINE ?= out/bench-baseline
+BENCH_REGRESSION_THRESHOLD ?= 5
+BENCH_STRICT ?= 0
+ALLOC_PROBE_SUPPORTED := $(shell test "$$(uname -s 2>/dev/null)" = "Linux" && getconf GNU_LIBC_VERSION >/dev/null 2>&1 && echo 1 || echo 0)
+ifeq ($(ALLOC_PROBE_SUPPORTED),1)
+    ALLOC_BENCH_DEPS = $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
+else
+    ALLOC_BENCH_DEPS =
+endif
 NATIVE_CPP = $(wildcard $(NATIVE_SRC)/*.cpp)
 NATIVE_H = $(wildcard $(NATIVE_SRC)/*.h)
 NATIVETEST_DIR = $(NATIVE_DIR)/tests
@@ -98,115 +107,168 @@ bench: $(NATIVE_BENCH)
 bench-short: $(NATIVE_SHORT_BENCH)
 	$(NATIVE_SHORT_BENCH)
 
-mem-bench: $(NATIVE_MEM_BENCH)
+.PHONY: output-size-bench mem-bench
+output-size-bench: $(NATIVE_MEM_BENCH)
 	$(NATIVE_MEM_BENCH)
+
+# Backward-compatible alias. This reports output expansion, not heap usage.
+mem-bench: output-size-bench
 
 # Run all benchmarks and print a human-readable summary.
 .PHONY: bench-all
-bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_MEM_BENCH) $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
+bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_MEM_BENCH) $(ALLOC_BENCH_DEPS)
 	@echo ""
-	@echo "━━━  Throughput — median ns/call and MB/s  (32 B / 4 KiB / 1 MiB inputs)  ━━━"
+	@echo "━━━  Throughput — median ns/call and MB/s  (~32 B / ~4 KiB / ~1 MiB targets; actual bytes shown)  ━━━"
 	@$(NATIVE_BENCH) | awk -F, '\
 	  NR==1 { printf "%-28s  %8s  %10s  %8s  %10s\n","case","bytes","median_ns","MB/s","p95_ns" } \
 	  NR >1 { mbs=$$2/$$3*1000; printf "%-28s  %8s  %10.0f  %8.1f  %10.0f\n",$$1,$$2,$$3,mbs,$$4 }'
 	@echo ""
-	@echo "━━━  Short-call latency  (single fixed input, 10 000 samples)  ━━━"
+	@echo "━━━  Short-call latency  (single fixed input, 10 000 samples; includes result destruction)  ━━━"
 	@$(NATIVE_SHORT_BENCH) | awk -F, '\
 	  NR==1 { printf "%-28s  %8s  %9s  %9s\n","case","bytes","p50_µs","p95_µs" } \
 	  NR >1 { printf "%-28s  %8s  %9.3f  %9.3f\n",$$1,$$2,$$3/1000,$$4/1000 }'
 	@echo ""
-	@echo "━━━  Memory footprint  (1 MiB single call, devanagari→telugu)  ━━━"
-	@$(NATIVE_MEM_BENCH) | awk -F, '{ printf "  input: %s B   output: %s B\n",$$2,$$3 }'
+	@echo "━━━  Output size / expansion  (~1 MiB target, devanagari→telugu)  ━━━"
+	@$(NATIVE_MEM_BENCH) | awk -F, '{ printf "  input: %s B   output: %s B   expansion: %.3fx\n",$$2,$$3,$$3/$$2 }'
 	@echo ""
-	@echo "━━━  Allocations per call  (1 MiB, Linux/glibc only)  ━━━"
-	@if [ -f $(LINUX_ALLOC_PROBE) ]; then \
-	  printf "%-22s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n" "mode" "malloc" "realloc" "free" "total" "alloc_B" "peak_B" "live_B"; \
+	@echo "━━━  Allocations per call  (~1 MiB target, Linux/glibc only)  ━━━"
+	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
+	  printf "%-22s  %8s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n" "mode" "malloc" "calloc" "realloc" "free" "total" "alloc_B" "peak_B" "live_B"; \
 	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
 	    raw=$$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $$mode 1048576 1 0 2>&1 1>/dev/null); \
 	    echo "$$raw" | awk -v m=$$mode '\
 	      { \
 	        split($$1,a,"="); split(a[2],mc,","); \
-	        split($$3,b,"="); split(b[2],rc,","); \
-	        split($$4,c,"="); fc=c[2]; \
-	        split($$6,d,"="); pk=d[2]; \
+	        split($$2,b,"="); split(b[2],cc,","); \
+	        split($$3,c,"="); split(c[2],rc,","); \
+	        split($$4,d,"="); fc=d[2]; \
 	        split($$5,e,"="); lv=e[2]; \
-	        allb=mc[2]+0+rc[2]+0; total=mc[1]+rc[1]; \
-	        printf "%-22s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n",m,mc[1],rc[1],fc,total,allb,pk,lv \
+	        split($$6,f,"="); pk=f[2]; \
+	        allb=mc[2]+0+cc[2]+0+rc[2]+0; total=mc[1]+cc[1]+rc[1]; \
+	        printf "%-22s  %8s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n",m,mc[1],cc[1],rc[1],fc,total,allb,pk,lv \
 	      }'; \
 	  done; \
 	else \
-	  echo "  (skipped: $(LINUX_ALLOC_PROBE) not built — Linux/glibc only)"; \
+	  echo "  (skipped: allocator probe requires Linux with glibc)"; \
 	fi
 	@echo ""
 
 # Save benchmark results as a baseline for later comparison with bench-compare.
-BENCH_BASELINE ?= out/bench-baseline
 .PHONY: bench-save
-bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE) | out
+bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@$(NATIVE_BENCH) > $(BENCH_BASELINE)-throughput.csv
 	@$(NATIVE_SHORT_BENCH) > $(BENCH_BASELINE)-latency.csv
 	@printf "" > $(BENCH_BASELINE)-allocs.csv
-	@if [ -f $(LINUX_ALLOC_PROBE) ]; then \
+	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
 	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
 	    raw=$$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $$mode 1048576 1 0 2>&1 1>/dev/null); \
-	    echo "$$raw" | awk -v m=$$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$$2+$$8,$$3+$$9,$$15,$$13 }'; \
+	    echo "$$raw" | awk -v m=$$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$$2+$$5+$$8,$$3+$$6+$$9,$$15,$$13 }'; \
 	  done >> $(BENCH_BASELINE)-allocs.csv; \
 	fi
 	@printf "commit=%s  date=%s\n" "$$(git rev-parse --short HEAD 2>/dev/null||echo unknown)" "$$(date '+%Y-%m-%d %H:%M')" > $(BENCH_BASELINE)-info.txt
 	@echo "Baseline saved → $(BENCH_BASELINE)-{throughput,latency,allocs}.csv"
 	@cat $(BENCH_BASELINE)-info.txt
 
-# Compare current results against the saved baseline. Flags regressions >= 5%.
+# Compare current results against the saved baseline. Output mismatches always fail.
+# Performance regressions are reported by default and fail when BENCH_STRICT=1.
 .PHONY: bench-compare
-bench-compare: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE) | out
+bench-compare: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@if [ ! -f $(BENCH_BASELINE)-throughput.csv ]; then echo "No baseline. Run: make bench-save first."; exit 1; fi
+	@if [ ! -f $(BENCH_BASELINE)-latency.csv ]; then echo "No latency baseline. Run: make bench-save first."; exit 1; fi
+	@rm -f out/bench-compare-failed
 	@$(NATIVE_BENCH) > out/bench-current-throughput.csv
 	@$(NATIVE_SHORT_BENCH) > out/bench-current-latency.csv
 	@echo ""
-	@echo "Baseline : $$(cat $(BENCH_BASELINE)-info.txt)"
+	@if [ -f $(BENCH_BASELINE)-info.txt ]; then echo "Baseline : $$(cat $(BENCH_BASELINE)-info.txt)"; else echo "Baseline : metadata unavailable"; fi
 	@echo "Current  : commit=$$(git rev-parse --short HEAD 2>/dev/null||echo unknown)  date=$$(date '+%Y-%m-%d %H:%M')"
 	@echo ""
 	@echo "━━━  Throughput regression check  (median_ns per case×size; positive = slower)  ━━━"
-	@awk -F, '\
-	  NR==FNR && FNR>1 { base[$$1,$$2]=$$3; next } \
-	  FNR>1 { k=$$1 SUBSEP $$2; pct=($$3-base[k])/base[k]*100; \
-	    tag=(pct>=5)?"  REGRESSION ↑":(pct<=-5)?"  improved ↓":""; \
-	    printf "%-28s %8s B  base=%10.0f  now=%10.0f  %+6.1f%%%s\n",$$1,$$2,base[k],$$3,pct,tag }' \
-	  $(BENCH_BASELINE)-throughput.csv out/bench-current-throughput.csv
+	@awk -F, -v threshold=$(BENCH_REGRESSION_THRESHOLD) -v strict=$(BENCH_STRICT) '\
+	  NR==FNR && FNR>1 { k=$$1 SUBSEP $$2; base[k]=$$3; hash[k]=$$6; baseCount++; next } \
+	  FNR>1 { \
+	    k=$$1 SUBSEP $$2; currentCount++; \
+	    if (!(k in base)) { printf "%-28s %8s B  MISSING BASELINE\n",$$1,$$2; bad=1; next } \
+	    pct=($$3-base[k])/base[k]*100; \
+	    reg=(pct>=threshold); improved=(pct<=-threshold); \
+	    if (reg) regression=1; \
+	    tag=reg?"  REGRESSION ↑":improved?"  improved ↓":""; \
+	    if ("x" $$6 != "x" hash[k]) { tag=tag "  OUTPUT MISMATCH"; bad=1 } \
+	    printf "%-28s %8s B  base=%10.0f  now=%10.0f  %+6.1f%%%s\n",$$1,$$2,base[k],$$3,pct,tag \
+	  } \
+	  END { \
+	    if (currentCount != baseCount) { printf "case-count mismatch: baseline=%d current=%d\n",baseCount,currentCount; bad=1 } \
+	    if (bad || (strict && regression)) exit 1 \
+	  }' \
+	  $(BENCH_BASELINE)-throughput.csv out/bench-current-throughput.csv || touch out/bench-compare-failed
 	@echo ""
 	@echo "━━━  Short-call latency regression check  (p50 ns; positive = slower)  ━━━"
-	@awk -F, '\
-	  NR==FNR && FNR>1 { base[$$1]=$$3; next } \
-	  FNR>1 { pct=($$3-base[$$1])/base[$$1]*100; \
-	    tag=(pct>=5)?"  REGRESSION ↑":(pct<=-5)?"  improved ↓":""; \
-	    printf "%-28s  base=%7.0f ns  now=%7.0f ns  %+6.1f%%%s\n",$$1,base[$$1],$$3,pct,tag }' \
-	  $(BENCH_BASELINE)-latency.csv out/bench-current-latency.csv
+	@awk -F, -v threshold=$(BENCH_REGRESSION_THRESHOLD) -v strict=$(BENCH_STRICT) '\
+	  NR==FNR && FNR>1 { k=$$1 SUBSEP $$2; base[k]=$$3; hash[k]=$$6; baseCount++; next } \
+	  FNR>1 { \
+	    k=$$1 SUBSEP $$2; currentCount++; \
+	    if (!(k in base)) { printf "%-28s %8s B  MISSING BASELINE\n",$$1,$$2; bad=1; next } \
+	    pct=($$3-base[k])/base[k]*100; \
+	    reg=(pct>=threshold); improved=(pct<=-threshold); \
+	    if (reg) regression=1; \
+	    tag=reg?"  REGRESSION ↑":improved?"  improved ↓":""; \
+	    if ("x" $$6 != "x" hash[k]) { tag=tag "  OUTPUT MISMATCH"; bad=1 } \
+	    printf "%-28s %8s B  base=%7.0f ns  now=%7.0f ns  %+6.1f%%%s\n",$$1,$$2,base[k],$$3,pct,tag \
+	  } \
+	  END { \
+	    if (currentCount != baseCount) { printf "case-count mismatch: baseline=%d current=%d\n",baseCount,currentCount; bad=1 } \
+	    if (bad || (strict && regression)) exit 1 \
+	  }' \
+	  $(BENCH_BASELINE)-latency.csv out/bench-current-latency.csv || touch out/bench-compare-failed
 	@echo ""
-	@if [ -f $(BENCH_BASELINE)-allocs.csv ] && [ -s $(BENCH_BASELINE)-allocs.csv ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
-	  echo "━━━  Allocation regression check  (total alloc events + peak bytes; positive = worse)  ━━━"; \
+	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(BENCH_BASELINE)-allocs.csv ] && [ -s $(BENCH_BASELINE)-allocs.csv ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
+	  echo "━━━  Allocation regression check  (malloc+calloc+realloc events, requested bytes, peak live bytes)  ━━━"; \
 	  printf "" > out/bench-current-allocs.csv; \
 	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
 	    raw=$$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $$mode 1048576 1 0 2>&1 1>/dev/null); \
-	    echo "$$raw" | awk -v m=$$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$$2+$$8,$$3+$$9,$$15,$$13 }'; \
+	    echo "$$raw" | awk -v m=$$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$$2+$$5+$$8,$$3+$$6+$$9,$$15,$$13 }'; \
 	  done > out/bench-current-allocs.csv; \
-	  awk -F, '\
-	    NR==FNR { bt[$$1]=$$2; bb[$$1]=$$3; bp[$$1]=$$4; bl[$$1]=$$5; next } \
-	    { tp=($$2-bt[$$1])/bt[$$1]*100; pp=($$4-bp[$$1])/bp[$$1]*100; \
-	      tt=(tp>=5)?"  REGRESSION ↑":(tp<=-5)?"  improved ↓":""; \
-	      pt=(pp>=5)?"  REGRESSION ↑":(pp<=-5)?"  improved ↓":""; \
-	      printf "%-22s  allocs: %6d→%6d (%+.1f%%)%s   peak: %10d→%10d (%+.1f%%)%s\n", \
-	        $$1,bt[$$1],$$2,tp,tt,bp[$$1],$$4,pp,pt }' \
-	  $(BENCH_BASELINE)-allocs.csv out/bench-current-allocs.csv; \
+	  awk -F, -v threshold=$(BENCH_REGRESSION_THRESHOLD) -v strict=$(BENCH_STRICT) '\
+	    NR==FNR { bt[$$1]=$$2; bb[$$1]=$$3; bp[$$1]=$$4; baseCount++; next } \
+	    { \
+	      currentCount++; \
+	      if (!($$1 in bt)) { printf "%-22s  MISSING BASELINE\n",$$1; bad=1; next } \
+	      tp=(bt[$$1]==0)?(($$2==0)?0:100):($$2-bt[$$1])/bt[$$1]*100; \
+	      bpct=(bb[$$1]==0)?(($$3==0)?0:100):($$3-bb[$$1])/bb[$$1]*100; \
+	      pp=(bp[$$1]==0)?(($$4==0)?0:100):($$4-bp[$$1])/bp[$$1]*100; \
+	      tr=(tp>=threshold); br=(bpct>=threshold); pr=(pp>=threshold); \
+	      if (tr || br || pr) regression=1; \
+	      tt=tr?"  REGRESSION ↑":(tp<=-threshold)?"  improved ↓":""; \
+	      btg=br?"  REGRESSION ↑":(bpct<=-threshold)?"  improved ↓":""; \
+	      pt=pr?"  REGRESSION ↑":(pp<=-threshold)?"  improved ↓":""; \
+	      printf "%-22s  allocs: %6d→%6d (%+.1f%%)%s   bytes: %10d→%10d (%+.1f%%)%s   peak: %10d→%10d (%+.1f%%)%s\n", \
+	        $$1,bt[$$1],$$2,tp,tt,bb[$$1],$$3,bpct,btg,bp[$$1],$$4,pp,pt \
+	    } \
+	    END { \
+	      if (currentCount != baseCount) { printf "case-count mismatch: baseline=%d current=%d\n",baseCount,currentCount; bad=1 } \
+	      if (bad || (strict && regression)) exit 1 \
+	    }' \
+	    $(BENCH_BASELINE)-allocs.csv out/bench-current-allocs.csv || touch out/bench-compare-failed; \
+	elif [ "$(ALLOC_PROBE_SUPPORTED)" != "1" ]; then \
+	  echo "━━━  Allocation regression check skipped: requires Linux with glibc  ━━━"; \
+	elif [ ! -s $(BENCH_BASELINE)-allocs.csv ]; then \
+	  echo "━━━  Allocation regression check skipped: baseline has no allocation data  ━━━"; \
 	fi
 	@echo ""
-
+	@if [ -f out/bench-compare-failed ]; then \
+	  echo "Benchmark comparison failed (output mismatch, missing case, or strict regression)."; \
+	  exit 1; \
+	fi
 
 # Linux/glibc-only allocator event profile; does not affect production builds.
 .PHONY: bench-alloc-linux
+ifeq ($(ALLOC_PROBE_SUPPORTED),1)
 bench-alloc-linux: $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
 	LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $(ALLOC_BENCH_MODE) $(ALLOC_BENCH_BYTES) $(ALLOC_BENCH_REPETITIONS) $(ALLOC_BENCH_WARMUPS)
-
-$(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE): | out
+else
+bench-alloc-linux:
+	@echo "bench-alloc-linux requires Linux with glibc."
+	@exit 2
+endif
 
 out:
 	mkdir -p out
@@ -220,11 +282,13 @@ $(NATIVE_SHORT_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/short_call.
 $(NATIVE_MEM_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/memory.cpp
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/memory.cpp -o $@
 
+ifeq ($(ALLOC_PROBE_SUPPORTED),1)
 $(NATIVE_ALLOC_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/memory.cpp
 	clang++ -std=c++23 -O3 -DNDEBUG -DINDTRANSLIT_ALLOC_PROBE -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/memory.cpp -ldl -o $@
 
 $(LINUX_ALLOC_PROBE): $(NATIVE_DIR)/bench/allocation_probe_linux.c
 	clang -std=c11 -O2 -fPIC -shared $(NATIVE_DIR)/bench/allocation_probe_linux.c -o $@
+endif
 
 test_flutter: wasm flutter/lib/src/bindings.dart
 	cd flutter/example && flutter run -d chrome
