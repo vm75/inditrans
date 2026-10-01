@@ -18,7 +18,7 @@ Dart caller
 flutter/lib/inditrans.dart      ← public Dart API (universal_ffi)
     │  FFI call (native) / JS interop (Web)
     ▼
-native/src/inditrans.cpp        ← single-source C++20 engine
+native/src/inditrans.cpp        ← single-source C++23 engine
     │  compiled to
     ├─ libinditrans.so / inditrans.dll  (Android, iOS, Linux, macOS, Windows)
     └─ flutter/assets/inditrans.wasm   (Web via Emscripten)
@@ -60,7 +60,6 @@ inditrans.cpp ← script_data.h
               ← utilities.h (→ trie.h, utf.h)
               ← char_trie.h (→ type_defs.h)
               ← utf.h
-              ← wasi_fix.h
 ```
 
 `inditrans.cpp` is the only translation unit. All other `.h` files are either
@@ -192,6 +191,23 @@ without knowing the source script in advance.
   boundaries.
 - Vedic accents are silently dropped when the target script is a non-Vedic Indic
   script (`IgnoreVedicAccents` is OR-ed in automatically by `getOutputWriter`).
+
+### Native ABI and Windows cross-compilation
+
+- **Plain C ABI**: The exported boundary (`native/src/exports.h`) exposes only `extern "C"`
+  functions (`transliterate`, `isScriptSupported`, `releaseBuffer`). No C++ classes,
+  STL types (`std::string`, `std::vector`), templates, or exceptions cross the DLL boundary.
+- **Windows cross-compilation**: The Windows x86-64 DLL (`inditrans.dll`) is cross-compiled
+  from Linux using MinGW-w64 (`x86_64-w64-mingw32-g++`) and configured via
+  `tool/cmake/mingw64.cmake`.
+- **Compiler standard**: The internal implementation requires C++23
+  (`set(CMAKE_CXX_STANDARD 23)`). MinGW GCC ≥ 13 is enforced by CMake.
+- **ABI independence**: Because the public interface is pure C, MinGW C++ ABI differences
+  from MSVC (e.g. name mangling, libstdc++ vs MSVC STL) do not affect external callers.
+  Applications and language bindings compiled with MSVC, Clang, or Dart FFI can load and use
+  `inditrans.dll` without compatibility issues.
+- **Self-contained runtime**: The Windows DLL target specifies `-static-libgcc -static-libstdc++`
+  to eliminate runtime dependencies on `libstdc++-6.dll` and `libgcc_s_seh-1.dll`.
 
 ---
 

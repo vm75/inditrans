@@ -2,7 +2,7 @@
 
 ## Project overview
 
-`inditrans` is a monorepo containing a C++20 transliteration engine and two distribution
+`inditrans` is a monorepo containing a C++23 transliteration engine and two distribution
 packages: a Flutter FFI plugin (`flutter/`) and a TypeScript/JavaScript package (`nodejs/`).
 The engine (`native/src/`) is compiled to a shared library for native platforms and
 to WASM for Web and Node.js. All distributions share the same test-case suite and script data.
@@ -10,7 +10,7 @@ to WASM for Web and Node.js. All distributions share the same test-case suite an
 ## Repository map
 
 ```
-native/src/         C++20 engine: inditrans.cpp, exports.h, script_data.h, …
+native/src/         C++23 engine: inditrans.cpp, exports.h, script_data.h, …
 native/cli/         Standalone CLI tool (same C++ source)
 native/tests/       C++ engine test suite
 flutter/assets/     inditrans.wasm — WASM binary for Flutter Web
@@ -32,6 +32,7 @@ Makefile                Top-level build, test, and publish targets
 
 ### Whole-repo
 - **Build everything**: `make all`
+- **Build Windows DLL**: `make dll` (or `make windows`; cross-compiles Windows x86-64 DLL using MinGW-w64)
 - **Run C++ tests**: `make test`
 - **Run all tests**: `make testall`
 - **Validate release/version**: `make validate`
@@ -43,6 +44,7 @@ Makefile                Top-level build, test, and publish targets
 - **Test**: `flutter test` (native library must be built first)
 - **Regenerate FFI bindings**: `dart run ffigen --config ffigen.yaml`
 - **Build native (Linux)**: `cmake -B native/build_linux native/src && cmake --build native/build_linux`
+- **Cross-compile native (Windows)**: `cmake -S native/src -B native/build_win -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tool/cmake/mingw64.cmake && cmake --build native/build_win`
 - **Publish**: `flutter pub publish`
 
 ### Node.js (`nodejs/` directory)
@@ -52,6 +54,15 @@ Makefile                Top-level build, test, and publish targets
 
 ## Engineering constraints
 
+- C++23 is the required project language standard. Toolchains must meet minimums:
+  CMake ≥ 3.20, Clang/LLVM ≥ 17 (or C++23-capable compiler), Emscripten 6.0.10, Node.js ≥ 18.3.
+- Windows `inditrans.dll` (x86-64) is cross-compiled from Linux using MinGW-w64 (`x86_64-w64-mingw32-g++`)
+  via `tool/cmake/mingw64.cmake` (`make dll`). Requires C++23 (MinGW GCC ≥ 13).
+- The public DLL ABI is strictly a C interface (`extern "C"`) exporting `transliterate`,
+  `isScriptSupported`, and `releaseBuffer`. No C++ ABI types (`std::string`, STL containers, exceptions)
+  cross the boundary, guaranteeing compatibility across compilers (MinGW, MSVC) and Dart FFI.
+- The Windows DLL is linked with `-static-libgcc -static-libstdc++` to eliminate MinGW C++ runtime
+  DLL dependencies (`libstdc++-6.dll`, `libgcc_s_seh-1.dll`).
 - `flutter/lib/src/bindings.dart` is auto-generated from `native/src/exports.h` via
   ffigen — edit the header, then regenerate; never hand-edit the bindings file.
 - `flutter/assets/inditrans.wasm` and `js/public/inditrans.js` must be rebuilt from C++

@@ -1,32 +1,47 @@
 #!/bin/bash
+REQUIRED_EMSDK_VERSION="6.0.10"
 
 init_emcc() {
   # check if EMSDK is not defined or if the path does not exist
   if [[ -z "${EMSDK}" || ! -d "${EMSDK}" ]]; then
-    # look for emsdk in the default location - AppData\Local\Programs\emsdk
+    # look for emsdk in the default location - ~/.local/share/emsdk
     emsdk=~/.local/share/emsdk
 
     # if not installed clone https://github.com/emscripten-core/emsdk.git and install
     if [[ ! -d "${emsdk}" ]]; then
       mkdir -p ~/.local/share
-      git clone https://github.com/emscripten-core/emsdk.git ${emsdk}
+      git clone https://github.com/emscripten-core/emsdk.git "${emsdk}"
 
       currDir=$(pwd)
 
-      cd ${emsdk} || exit
-      ./emsdk install latest
-      ./emsdk activate latest
-      export EMSDK=${emsdk}
-      cd ${currDir}
+      cd "${emsdk}" || exit 1
+      ./emsdk install "${REQUIRED_EMSDK_VERSION}"
+      ./emsdk activate "${REQUIRED_EMSDK_VERSION}"
+      export EMSDK="${emsdk}"
+      cd "${currDir}"
     else
       # set EMSDK environment variable and persist it
-      export EMSDK=${emsdk}
+      export EMSDK="${emsdk}"
     fi
   fi
 
   # set emsdk environment variables
-  export EMSDK_QUIET=1
-  source ${EMSDK}/emsdk_env.sh
+  if [[ -f "${EMSDK}/emsdk_env.sh" ]]; then
+    export EMSDK_QUIET=1
+    source "${EMSDK}/emsdk_env.sh"
+  fi
+
+  # Verify active compiler
+  if ! command -v em++ >/dev/null 2>&1; then
+    echo "inditrans requires Emscripten ${REQUIRED_EMSDK_VERSION} (em++ not found in PATH or EMSDK)" >&2
+    exit 1
+  fi
+
+  active_version=$(em++ --version 2>/dev/null | head -n 1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)
+  if [[ "${active_version}" != "${REQUIRED_EMSDK_VERSION}" ]]; then
+    echo "inditrans requires Emscripten ${REQUIRED_EMSDK_VERSION} (found ${active_version:-unknown})" >&2
+    exit 1
+  fi
 }
 
 # create a function
@@ -43,8 +58,8 @@ build_wasm_standalone() {
 
   # build the function
   if [[ $2 == "debug" ]]; then
-    emcc ./native/src/inditrans.cpp -I ./native/src \
-      -std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address \
+    em++ ./native/src/inditrans.cpp -I ./native/src \
+      -std=c++23 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address \
       "-Wl,--no-entry,--export=__wasm_call_ctors" \
       -DDEBUG \
       -s EXPORTED_FUNCTIONS="${exportedFunctions}" \
@@ -52,8 +67,8 @@ build_wasm_standalone() {
       -s FILESYSTEM=0 \
       -o "${outDir}/inditrans.wasm"
   else
-    emcc ./native/src/inditrans.cpp -I ./native/src \
-      -std=c++20 -fPIC -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG \
+    em++ ./native/src/inditrans.cpp -I ./native/src \
+      -std=c++23 -fPIC -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG \
       "-Wl,--gc-sections,--no-entry,--export=__wasm_call_ctors" \
       -s EXPORTED_FUNCTIONS='["_malloc", "_free"]' \
       -s STANDALONE_WASM=1 \
@@ -64,7 +79,7 @@ build_wasm_standalone() {
 }
 
 build_wasm_js() {
-  exportedRuntimeMethods='["ccall", "cwrap"]'
+  exportedRuntimeMethods='["cwrap", "UTF8ToString"]'
   exportedFunctions='["_malloc", "_free", "_transliterate", "_isScriptSupported", "_releaseBuffer"]'
 
   # get the path to the output directory
@@ -77,8 +92,8 @@ build_wasm_js() {
 
   # build the function
   if [ "$1" == "debug" ]; then
-    emcc ./native/src/inditrans.cpp -I ./native/src \
-      -std=c++20 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address \
+    em++ ./native/src/inditrans.cpp -I ./native/src \
+      -std=c++23 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address \
       "-Wl,--no-entry" \
       -DDEBUG \
       -s EXPORTED_FUNCTIONS="$exportedFunctions" \
@@ -87,13 +102,13 @@ build_wasm_js() {
       -s ENVIRONMENT='web,node' \
       -s SINGLE_FILE=1 \
       -s ALLOW_MEMORY_GROWTH=1 \
-      -s NO_EXIT_RUNTIME=1 \
+      -s EXIT_RUNTIME=0 \
       -s FILESYSTEM=0 \
       --post-js ./js/src/inditrans.post.js \
       -o "$outDir/inditrans.js"
   else
-    emcc ./native/src/inditrans.cpp -I ./native/src \
-      -std=c++20 -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno \
+    em++ ./native/src/inditrans.cpp -I ./native/src \
+      -std=c++23 -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno \
       "-Wl,--gc-sections,--no-entry" \
       -DNDEBUG \
       -s EXPORTED_FUNCTIONS="$exportedFunctions" \
@@ -102,7 +117,7 @@ build_wasm_js() {
       -s ENVIRONMENT='web,node' \
       -s SINGLE_FILE=1 \
       -s ALLOW_MEMORY_GROWTH=1 \
-      -s NO_EXIT_RUNTIME=1 \
+      -s EXIT_RUNTIME=0 \
       -s FILESYSTEM=0 \
       --post-js ./js/src/inditrans.post.js \
       -o "$outDir/inditrans.js"

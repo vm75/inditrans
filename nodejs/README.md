@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/vm75/inditrans/blob/master/LICENSE)
 
 A transliteration library for [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts)
-and Latin scripts for Node.js and the browser. Powered by a C++20 engine compiled to WASM
+and Latin scripts for Node.js and the browser. Powered by a C++23 engine compiled to WASM
 for near-native performance, with no server dependency.
 
 - ITRANS toggle transliteration — wrap any region in `##…##` to pass it through unchanged.
@@ -25,6 +25,10 @@ Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
 [ITRANS](https://en.wikipedia.org/wiki/ITRANS) ·
 [TITUS](https://titus.uni-frankfurt.de/indexe.htm) ·
 ReadableLatin
+
+## Requirements
+
+- Node.js ≥ 18.3 (or modern browser with WebAssembly support)
 
 ## Installation
 

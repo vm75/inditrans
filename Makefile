@@ -36,24 +36,26 @@ so: $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_SRC)/CMakeLists.txt
 	cmake --build $(NATIVE_DIR)/build_linux
 	cp $(NATIVE_DIR)/build_linux/libinditrans.so $(EXAMPLE_DART)/libinditrans.so
 
-dll: $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_SRC)/CMakeLists.txt
-	cmake -S $(NATIVE_SRC) -B $(NATIVE_DIR)/build_win -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++
+dll: $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_SRC)/CMakeLists.txt tool/cmake/mingw64.cmake
+	cmake -S $(NATIVE_SRC) -B $(NATIVE_DIR)/build_win -DCMAKE_TOOLCHAIN_FILE=$(abspath tool/cmake/mingw64.cmake)
 	cmake --build $(NATIVE_DIR)/build_win
-	cp $(NATIVE_DIR)/build_win/*inditrans.dll $(EXAMPLE_DART)/inditrans.dll
+	cp $(NATIVE_DIR)/build_win/inditrans.dll $(EXAMPLE_DART)/inditrans.dll
+
+windows: dll
 
 dylib:
 	echo "macOS cross-compilation requires macOS SDK and osxcross which are not available."
 
 profile:
-	g++ -std=c++20 -O1 -fno-exceptions -pg -Wno-normalized -I $(NATIVE_SRC) -I $(NATIVETEST_DIR) $(NATIVE_CPP) $(NATIVETEST_DIR)/test.cpp -o out/prof_$(NATIVE_TEST)
+	g++ -std=c++23 -O1 -fno-exceptions -pg -Wno-normalized -I $(NATIVE_SRC) -I $(NATIVETEST_DIR) $(NATIVE_CPP) $(NATIVETEST_DIR)/test.cpp -o out/prof_$(NATIVE_TEST)
 	out/prof_$(NATIVE_TEST) -p
 	gprof out/prof_$(NATIVE_TEST) gmon.out > out/native-prof.log
 
 $(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
-	clang++ -std=c++20 -DBOOST_UT_DISABLE_MODULE -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVETEST_CC) -o $@
+	clang++ -std=c++23 -DBOOST_UT_DISABLE_MODULE -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVETEST_CC) -o $@
 
 $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
-	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
+	clang++ -std=c++23 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
 $(NATIVE_SRC)/script_data.h: tool/script_data.json tool/options.json tool/generate_headers.dart $(GENERATOR_UTILS)
 	dart tool/generate_headers.dart
@@ -72,10 +74,13 @@ flutter/lib/src/bindings.dart: $(NATIVE_SRC)/exports.h
 flutter: flutter/lib/src/bindings.dart flutter/assets/inditrans.wasm
 
 # test
-testall: test test_flutter test_nodejs
+testall: test test_wasm test_flutter test_nodejs
 
 test: $(NATIVE_TEST) test-files/test-cases.json
 	$(NATIVE_TEST)
+
+test_wasm: flutter/assets/inditrans.wasm
+	node tool/smoke_test_wasm.js
 
 test_flutter: wasm flutter/lib/src/bindings.dart
 	cd flutter/example && flutter run -d chrome

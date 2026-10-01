@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/npm/v/@vm75/inditrans?label=npm)](https://www.npmjs.com/package/@vm75/inditrans)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-A transliteration library for [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) and Latin scripts, implemented as a C++20 engine compiled to a shared library (native) and WASM (Web/Node.js). The same phoneme-level pipeline is exposed to Flutter/Dart and JavaScript/TypeScript.
+A transliteration library for [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) and Latin scripts, implemented as a C++23 engine compiled to a shared library (native) and WASM (Web/Node.js). The same phoneme-level pipeline is exposed to Flutter/Dart and JavaScript/TypeScript.
 
 - No server required. FFI (native) or WASM (Web/Node.js) for near-native performance.
 - ITRANS toggle transliteration — wrap any region in `##…##` to pass it through unchanged.
@@ -44,7 +44,7 @@ Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
 flutter/    Flutter FFI plugin (Dart + C++ shared library + WASM)
 nodejs/     TypeScript/JavaScript package (WASM via Emscripten)
 js/         WASM build output consumed by nodejs/
-native/     Canonical C++20 engine (source, tests, and CLI)
+native/     Canonical C++23 engine (source, tests, and CLI)
 tool/       Code-generation utilities (script data, bindings, version bump)
 test-files/ Shared test-case JSON used by all distributions
 ```
@@ -55,10 +55,26 @@ test-files/ Shared test-case JSON used by all distributions
 make all          # build native CLI, WASM, and Flutter plugin
 make test         # run C++ native tests
 make testall      # run native, Flutter, and Node.js tests
+make dll          # cross-compile Windows x86-64 DLL using MinGW-w64
 make validate     # validate version consistency and changelog
 ```
 
-Requires: CMake ≥ 3.10, Clang/LLVM ≥ 14, Emscripten 2.0.31, Flutter ≥ 2.11, Node.js / Yarn.
+Requires: CMake ≥ 3.20, Clang/LLVM ≥ 17 (or C++23-capable compiler), Emscripten 6.0.10, Flutter ≥ 2.11, Node.js ≥ 18.3 / Yarn.
+
+### Windows DLL cross-compilation (Linux → Windows)
+
+To cross-compile the 64-bit Windows shared library (`inditrans.dll`) from Linux:
+
+```sh
+sudo apt-get install mingw-w64 cmake
+make dll
+```
+
+- **Target**: Windows x86-64 (`inditrans.dll`), copied to `flutter/example.dart/inditrans.dll`.
+- **Toolchain**: Cross-compiled using MinGW-w64 (`x86_64-w64-mingw32-g++`) with CMake toolchain `tool/cmake/mingw64.cmake`.
+- **Language standard**: Enforces C++23 internally (GCC ≥ 13).
+- **Public ABI**: Plain C interface (`extern "C"`) exposing `transliterate`, `isScriptSupported`, and `releaseBuffer`. No C++ types (`std::string`, STL containers, exceptions) cross the boundary, ensuring full compatibility with MSVC callers, Dart FFI, and other runtimes.
+- **Runtime dependencies**: Linked with `-static-libgcc -static-libstdc++` to eliminate MinGW C++ runtime DLL dependencies (`libstdc++-6.dll`, `libgcc_s_seh-1.dll`).
 
 ## Documentation
 
