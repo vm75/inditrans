@@ -35,11 +35,13 @@ Makefile                Top-level build, test, and publish targets
 - **Build Windows DLL**: `make dll` (or `make windows`; cross-compiles Windows x86-64 DLL using MinGW-w64)
 - **Run C++ tests**: `make test`
 - **Run native performance benchmark**: `make bench`
-- **Run per-call latency benchmark**: `make bench-short`
-- **Run one-shot heap benchmark**: `make mem-bench` (use Valgrind Massif for peak-heap comparisons)
-- **Run all benchmarks with a formatted summary**: `make bench-all`
+- **Run per-call latency benchmark**: `make bench-short` (includes returned-string destruction)
+- **Run output-size/expansion benchmark**: `make output-size-bench` (`make mem-bench` is a compatibility alias)
+- **Run Linux/glibc allocation probe**: `make bench-alloc-linux`
+- **Run all available benchmarks with a formatted summary**: `make bench-all`
 - **Save a performance baseline**: `make bench-save` (writes `out/bench-baseline-*.csv`)
-- **Compare current results against saved baseline**: `make bench-compare` (flags regressions ≥ 5%)
+- **Compare current results against saved baseline**: `make bench-compare` (flags regressions ≥ 5%; output mismatches fail)
+- **Make performance regressions fail**: `BENCH_STRICT=1 make bench-compare`
 - **Run all tests**: `make testall`
 - **Validate release/version**: `make validate`
 - **Publish all**: `make publish` (local manual fallback; prefer tag-based CI release)
@@ -48,12 +50,16 @@ Makefile                Top-level build, test, and publish targets
 
 Before making a change that might affect performance:
 ```bash
-make bench-save            # capture baseline at current commit
+make bench-save                    # capture baseline at current commit
 # … make changes …
-make bench-compare         # re-runs benchmarks and diffs all metrics
+make bench-compare                 # report metric changes and verify output hashes
+BENCH_STRICT=1 make bench-compare  # use for a CI-style performance gate
 ```
-`bench-compare` flags any case where median throughput, per-call latency, allocation count,
-or peak heap regresses by ≥ 5%. The baseline path can be overridden:
+`bench-compare` validates the FNV-1a output hash for every throughput and short-call case. A hash mismatch or missing case always fails. By default, performance regressions are reported but do not make the command fail; `BENCH_STRICT=1` makes regressions at or above the threshold fail. Override the default 5% threshold with `BENCH_REGRESSION_THRESHOLD=<percent>`.
+
+On Linux with glibc, the allocation baseline includes `malloc + calloc + realloc` event counts, total requested allocation bytes, peak requested live bytes, and live bytes after the measured call. On other platforms, allocation instrumentation is skipped while throughput and latency comparisons still run.
+
+The baseline path can be overridden:
 ```bash
 make bench-save    BENCH_BASELINE=out/bench-before-pr42
 make bench-compare BENCH_BASELINE=out/bench-before-pr42
