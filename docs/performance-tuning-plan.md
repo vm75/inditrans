@@ -81,7 +81,7 @@ For structural changes, also run the Flutter/Node/Wasm tests affected by the cha
 | ID | Step | Scope | Primary expected signal | Status | Result / PR |
 |---|---|---|---|---|---|
 | 0A | Add cumulative performance reporting | `tool/perf_report.py`, Make targets, plan | reproducible tracking | ✅ done | this setup change |
-| 0B | Capture clean tuning baseline | snapshot current merged implementation before optimization | baseline only | ⬜ next | |
+| 0B | Capture clean tuning baseline | snapshot current merged implementation before optimization | baseline only | ✅ done | `00-baseline` at `717b766`; p50 1.473 µs, 2,762 allocs, 25.14 MiB peak requested heap, 58,479 B Wasm |
 | 1 | Fix output-buffer ownership mismatch | make `realloc`/`free` ownership explicit; remove mismatched default deleter; re-enable sanitizer mismatch detection | correctness; sanitizer clean | ⬜ pending | |
 | 2 | Add cold-start benchmark | process-isolated first transliteration measurement | cold p50/p95 | ⬜ pending | |
 | 3 | Remove `OutputWriter` Tamil traditional hash map | replace three-entry `unordered_map` with constexpr lookup/comparisons | warm p50; allocations | ⬜ pending | |
