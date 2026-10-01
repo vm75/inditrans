@@ -58,7 +58,7 @@ make testall      # run native, Flutter, and Node.js tests
 make validate     # validate version consistency and changelog
 ```
 
-Requires: CMake ≥ 3.10, Clang/LLVM ≥ 14, Emscripten 6.0.10, Flutter ≥ 2.11, Node.js / Yarn.
+Requires: CMake ≥ 3.20, Clang/LLVM ≥ 17 (or C++23-capable compiler), Emscripten 6.0.10, Flutter ≥ 2.11, Node.js ≥ 18.3 / Yarn.
 
 ## Documentation
 

@@ -26,6 +26,10 @@ Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
 [TITUS](https://titus.uni-frankfurt.de/indexe.htm) ·
 ReadableLatin
 
+## Requirements
+
+- Node.js ≥ 18.3 (or modern browser with WebAssembly support)
+
 ## Installation
 
 ```sh

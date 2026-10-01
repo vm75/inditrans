@@ -1,15 +1,10 @@
-# The Flutter tooling requires that developers have CMake 3.10 or later
-# installed. You should not increase this version, as doing so will cause
-# the plugin to fail to compile for some customers of the plugin.
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.20)
 
 project(inditrans_library VERSION 0.0.6 LANGUAGES CXX)
 
-# set(CMAKE_CXX_STANDARD 17)
-# set_property(TARGET inditrans PROPERTY CXX_STANDARD 20)
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++23 -fPIC")
-set(CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(inditrans SHARED
   "inditrans.cpp"

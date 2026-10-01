@@ -52,6 +52,8 @@ Makefile                Top-level build, test, and publish targets
 
 ## Engineering constraints
 
+- C++23 is the required project language standard. Toolchains must meet minimums:
+  CMake ≥ 3.20, Clang/LLVM ≥ 17 (or C++23-capable compiler), Emscripten 6.0.10, Node.js ≥ 18.3.
 - `flutter/lib/src/bindings.dart` is auto-generated from `native/src/exports.h` via
   ffigen — edit the header, then regenerate; never hand-edit the bindings file.
 - `flutter/assets/inditrans.wasm` and `js/public/inditrans.js` must be rebuilt from C++

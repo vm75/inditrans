@@ -15,7 +15,7 @@ concurrency:
 jobs:
   validate:
     name: Validate Release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -39,7 +39,7 @@ jobs:
   test-and-build:
     name: Build & Test
     needs: validate
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -72,6 +72,9 @@ jobs:
 
       - name: Rebuild WASM artifacts
         run: make wasm
+
+      - name: Smoke test standalone Flutter WASM
+        run: make test_wasm
 
       - name: Run C++ test suite
         run: make test
@@ -125,7 +128,7 @@ jobs:
   publish-pub:
     name: Publish to pub.dev
     needs: test-and-build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: pub.dev
     permissions:
       id-token: write
@@ -139,7 +142,7 @@ jobs:
         with:
           name: inditrans-wasm
           path: flutter/assets
-
+          
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -160,7 +163,7 @@ jobs:
   publish-npm:
     name: Publish to npm
     needs: test-and-build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: npm
     permissions:
       id-token: write
@@ -205,7 +208,7 @@ jobs:
   github-release:
     name: Create GitHub Release
     needs: [validate, test-and-build, publish-pub, publish-npm]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
     steps:

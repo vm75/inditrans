@@ -15,8 +15,8 @@ function setup_emsdk {
     $currDir = Get-Location
 
     Set-Location $emsdk_root
-    .\emsdk install latest
-    .\emsdk activate latest
+    .\emsdk install 6.0.10
+    .\emsdk activate 6.0.10
     [Environment]::SetEnvironmentVariable("EMSDK", $emsdk_root, "User")
 }
 

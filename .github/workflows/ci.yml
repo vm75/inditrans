@@ -16,7 +16,7 @@ concurrency:
 jobs:
   validate:
     name: Release & Version Validation
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
 
   native:
     name: Native C++ Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
 
   flutter:
     name: Flutter Package
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -87,8 +87,8 @@ jobs:
         run: cd flutter && flutter pub publish --dry-run
 
   nodejs:
-    name: Node.js Package
-    runs-on: ubuntu-latest
+    name: Node.js Package & WASM
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -107,6 +107,12 @@ jobs:
           node-version: '20'
           cache: 'yarn'
           cache-dependency-path: 'nodejs/yarn.lock'
+
+      - name: Build WASM artifacts
+        run: make wasm
+
+      - name: Smoke test standalone Flutter WASM
+        run: make test_wasm
 
       - name: Install dependencies
         run: cd nodejs && yarn install --frozen-lockfile

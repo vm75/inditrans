@@ -1,3 +1,5 @@
+$REQUIRED_EMSDK_VERSION = "6.0.10"
+
 function init_emcc {
     # check if $env:EMSDK is not defined or if the path does not exist
     if ($null -eq $env:EMSDK -or !(Test-Path $env:EMSDK)) {
@@ -11,8 +13,8 @@ function init_emcc {
             $currDir = Get-Location
 
             Set-Location $emsdk
-            .\emsdk install latest
-            .\emsdk activate latest
+            .\emsdk install $REQUIRED_EMSDK_VERSION
+            .\emsdk activate $REQUIRED_EMSDK_VERSION
             [Environment]::SetEnvironmentVariable("EMSDK", $emsdk, "User")
             Set-Location $currDir
         }
@@ -24,7 +26,29 @@ function init_emcc {
     }
 
     # set emsdk environment variables
-    . $env:EMSDK\emsdk_env.ps1
+    if (Test-Path "$env:EMSDK\emsdk_env.ps1") {
+        $env:EMSDK_QUIET = "1"
+        . "$env:EMSDK\emsdk_env.ps1"
+    }
+
+    # Verify active compiler
+    $empp = Get-Command em++ -ErrorAction SilentlyContinue
+    if ($null -eq $empp) {
+        Write-Error "inditrans requires Emscripten $REQUIRED_EMSDK_VERSION (em++ not found in PATH or EMSDK)"
+        exit 1
+    }
+
+    $versionOutput = & em++ --version 2>$null | Select-Object -First 1
+    if ($versionOutput -match '(\d+\.\d+\.\d+)') {
+        $activeVersion = $Matches[1]
+    } else {
+        $activeVersion = "unknown"
+    }
+
+    if ($activeVersion -ne $REQUIRED_EMSDK_VERSION) {
+        Write-Error "inditrans requires Emscripten $REQUIRED_EMSDK_VERSION (found $activeVersion)"
+        exit 1
+    }
 }
 
 # create a function

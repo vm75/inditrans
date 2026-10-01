@@ -72,10 +72,13 @@ flutter/lib/src/bindings.dart: $(NATIVE_SRC)/exports.h
 flutter: flutter/lib/src/bindings.dart flutter/assets/inditrans.wasm
 
 # test
-testall: test test_flutter test_nodejs
+testall: test test_wasm test_flutter test_nodejs
 
 test: $(NATIVE_TEST) test-files/test-cases.json
 	$(NATIVE_TEST)
+
+test_wasm: flutter/assets/inditrans.wasm
+	node tool/smoke_test_wasm.js
 
 test_flutter: wasm flutter/lib/src/bindings.dart
 	cd flutter/example && flutter run -d chrome

@@ -1,32 +1,47 @@
 #!/bin/bash
+REQUIRED_EMSDK_VERSION="6.0.10"
 
 init_emcc() {
   # check if EMSDK is not defined or if the path does not exist
   if [[ -z "${EMSDK}" || ! -d "${EMSDK}" ]]; then
-    # look for emsdk in the default location - AppData\Local\Programs\emsdk
+    # look for emsdk in the default location - ~/.local/share/emsdk
     emsdk=~/.local/share/emsdk
 
     # if not installed clone https://github.com/emscripten-core/emsdk.git and install
     if [[ ! -d "${emsdk}" ]]; then
       mkdir -p ~/.local/share
-      git clone https://github.com/emscripten-core/emsdk.git ${emsdk}
+      git clone https://github.com/emscripten-core/emsdk.git "${emsdk}"
 
       currDir=$(pwd)
 
-      cd ${emsdk} || exit
-      ./emsdk install latest
-      ./emsdk activate latest
-      export EMSDK=${emsdk}
-      cd ${currDir}
+      cd "${emsdk}" || exit 1
+      ./emsdk install "${REQUIRED_EMSDK_VERSION}"
+      ./emsdk activate "${REQUIRED_EMSDK_VERSION}"
+      export EMSDK="${emsdk}"
+      cd "${currDir}"
     else
       # set EMSDK environment variable and persist it
-      export EMSDK=${emsdk}
+      export EMSDK="${emsdk}"
     fi
   fi
 
   # set emsdk environment variables
-  export EMSDK_QUIET=1
-  source ${EMSDK}/emsdk_env.sh
+  if [[ -f "${EMSDK}/emsdk_env.sh" ]]; then
+    export EMSDK_QUIET=1
+    source "${EMSDK}/emsdk_env.sh"
+  fi
+
+  # Verify active compiler
+  if ! command -v em++ >/dev/null 2>&1; then
+    echo "inditrans requires Emscripten ${REQUIRED_EMSDK_VERSION} (em++ not found in PATH or EMSDK)" >&2
+    exit 1
+  fi
+
+  active_version=$(em++ --version 2>/dev/null | head -n 1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)
+  if [[ "${active_version}" != "${REQUIRED_EMSDK_VERSION}" ]]; then
+    echo "inditrans requires Emscripten ${REQUIRED_EMSDK_VERSION} (found ${active_version:-unknown})" >&2
+    exit 1
+  fi
 }
 
 # create a function

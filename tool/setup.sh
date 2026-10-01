@@ -20,8 +20,8 @@ setup_emsdk() {
   currDir=$(pwd)
 
   cd ${emsdk_root} || exit
-  ./emsdk install latest
-  ./emsdk activate latest
+  ./emsdk install 6.0.10
+  ./emsdk activate 6.0.10
 }
 
 setup_flutter() {
