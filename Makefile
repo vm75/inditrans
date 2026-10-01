@@ -30,6 +30,11 @@ ALLOC_BENCH_WARMUPS ?= 0
 BENCH_BASELINE ?= out/bench-baseline
 BENCH_REGRESSION_THRESHOLD ?= 5
 BENCH_STRICT ?= 0
+PERF_DIR ?= out/perf
+PERF_NAME ?=
+PERF_BASELINE ?= 00-baseline
+PERF_LATENCY_CASE ?= indic-to-indic
+PERF_ALLOC_CASE ?= devanagari
 ALLOC_PROBE_SUPPORTED := $(shell test "$$(uname -s 2>/dev/null)" = "Linux" && getconf GNU_LIBC_VERSION >/dev/null 2>&1 && echo 1 || echo 0)
 ifeq ($(ALLOC_PROBE_SUPPORTED),1)
     ALLOC_BENCH_DEPS = $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
@@ -168,6 +173,19 @@ bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@printf "commit=%s  date=%s\n" "$$(git rev-parse --short HEAD 2>/dev/null||echo unknown)" "$$(date '+%Y-%m-%d %H:%M')" > $(BENCH_BASELINE)-info.txt
 	@echo "Baseline saved → $(BENCH_BASELINE)-{throughput,latency,allocs}.csv"
 	@cat $(BENCH_BASELINE)-info.txt
+
+# Save one cumulative tuning snapshot using the existing benchmark format plus raw standalone Wasm size.
+.PHONY: perf-snapshot perf-report
+perf-snapshot: | out
+	@if [ -z "$(PERF_NAME)" ]; then echo "Set PERF_NAME, for example: make perf-snapshot PERF_NAME=00-baseline"; exit 2; fi
+	@mkdir -p "$(PERF_DIR)"
+	@$(MAKE) bench-save BENCH_BASELINE="$(PERF_DIR)/$(PERF_NAME)"
+	@$(MAKE) -B flutter/assets/inditrans.wasm
+	@python3 -c "from pathlib import Path; print(Path('flutter/assets/inditrans.wasm').stat().st_size)" > "$(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
+	@echo "Wasm size saved → $(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
+
+perf-report:
+	@python3 tool/perf_report.py --dir "$(PERF_DIR)" --baseline "$(PERF_BASELINE)" --latency-case "$(PERF_LATENCY_CASE)" --alloc-case "$(PERF_ALLOC_CASE)"
 
 # Compare current results against the saved baseline. Output mismatches always fail.
 # Performance regressions are reported by default and fail when BENCH_STRICT=1.
