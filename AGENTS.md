@@ -41,6 +41,8 @@ Makefile                Top-level build, test, and publish targets
 - **Run all available benchmarks with a formatted summary**: `make bench-all`
 - **Save a performance baseline**: `make bench-save` (writes `out/bench-baseline-*.csv`)
 - **Compare current results against saved baseline**: `make bench-compare` (flags regressions ≥ 5%; output mismatches fail)
+- **Capture a cumulative tuning snapshot**: `make perf-snapshot PERF_NAME=00-baseline`
+- **Generate the cumulative tuning report**: `make perf-report`
 - **Make performance regressions fail**: `BENCH_STRICT=1 make bench-compare`
 - **Run all tests**: `make testall`
 - **Validate release/version**: `make validate`
@@ -65,6 +67,14 @@ make bench-save    BENCH_BASELINE=out/bench-before-pr42
 make bench-compare BENCH_BASELINE=out/bench-before-pr42
 ```
 The `out/bench-baseline-*.csv` files should not be committed; they are local measurement artefacts.
+
+For cumulative tuning progress, use numbered snapshots under `out/perf/`:
+```bash
+make perf-snapshot PERF_NAME=00-baseline
+make perf-snapshot PERF_NAME=01-buffer-ownership
+make perf-report
+```
+`perf-snapshot` reuses `bench-save`, force-rebuilds the standalone Wasm artifact, and records its raw byte size. `perf-report` compares every discovered numbered snapshot with `00-baseline`; its `peak heap` metric is allocator-probe peak requested live bytes, not process RSS. See `docs/performance-tuning-plan.md` for the active step-by-step tuning plan.
 
 ### Flutter (`flutter/` directory)
 - **Get dependencies**: `flutter pub get`
@@ -122,6 +132,7 @@ The `out/bench-baseline-*.csv` files should not be committed; they are local mea
 - Flutter package usage: [`flutter/README.md`](flutter/README.md)
 - Node.js package usage: [`nodejs/README.md`](nodejs/README.md)
 - Engine internals, pipeline, data structures: [`ARCHITECTURE.md`](ARCHITECTURE.md)
+- Performance tuning plan and progress: [`docs/performance-tuning-plan.md`](docs/performance-tuning-plan.md)
 - Consolidated changelog: [`CHANGELOG.md`](CHANGELOG.md)
 - Release process: [`docs/release.md`](docs/release.md)
 
