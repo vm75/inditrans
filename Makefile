@@ -18,6 +18,15 @@ NATIVE_DIR = native
 NATIVE_SRC = $(NATIVE_DIR)/src
 NATIVE_CLI = out/inditrans$(EXEC_EXT)
 NATIVE_TEST = out/inditrans_test$(EXEC_EXT)
+NATIVE_BENCH = out/inditrans_bench$(EXEC_EXT)
+NATIVE_SHORT_BENCH = out/inditrans_short_bench$(EXEC_EXT)
+NATIVE_MEM_BENCH = out/inditrans_mem_bench$(EXEC_EXT)
+NATIVE_ALLOC_BENCH = out/inditrans_alloc_bench$(EXEC_EXT)
+LINUX_ALLOC_PROBE = out/libinditrans_alloc_probe.so
+ALLOC_BENCH_MODE ?= devanagari
+ALLOC_BENCH_BYTES ?= 1048576
+ALLOC_BENCH_REPETITIONS ?= 1
+ALLOC_BENCH_WARMUPS ?= 0
 NATIVE_CPP = $(wildcard $(NATIVE_SRC)/*.cpp)
 NATIVE_H = $(wildcard $(NATIVE_SRC)/*.h)
 NATIVETEST_DIR = $(NATIVE_DIR)/tests
@@ -81,6 +90,41 @@ test: $(NATIVE_TEST) test-files/test-cases.json
 
 test_wasm: flutter/assets/inditrans.wasm
 	node tool/smoke_test_wasm.js
+
+bench: $(NATIVE_BENCH)
+	$(NATIVE_BENCH)
+
+.PHONY: bench-short
+bench-short: $(NATIVE_SHORT_BENCH)
+	$(NATIVE_SHORT_BENCH)
+
+mem-bench: $(NATIVE_MEM_BENCH)
+	$(NATIVE_MEM_BENCH)
+
+# Linux/glibc-only allocator event profile; does not affect production builds.
+.PHONY: bench-alloc-linux
+bench-alloc-linux: $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
+	LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $(ALLOC_BENCH_MODE) $(ALLOC_BENCH_BYTES) $(ALLOC_BENCH_REPETITIONS) $(ALLOC_BENCH_WARMUPS)
+
+$(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE): | out
+
+out:
+	mkdir -p out
+
+$(NATIVE_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/benchmark.cpp
+	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/benchmark.cpp -o $@
+
+$(NATIVE_SHORT_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/short_call.cpp
+	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/short_call.cpp -o $@
+
+$(NATIVE_MEM_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/memory.cpp
+	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/memory.cpp -o $@
+
+$(NATIVE_ALLOC_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/memory.cpp
+	clang++ -std=c++23 -O3 -DNDEBUG -DINDTRANSLIT_ALLOC_PROBE -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/memory.cpp -ldl -o $@
+
+$(LINUX_ALLOC_PROBE): $(NATIVE_DIR)/bench/allocation_probe_linux.c
+	clang -std=c11 -O2 -fPIC -shared $(NATIVE_DIR)/bench/allocation_probe_linux.c -o $@
 
 test_flutter: wasm flutter/lib/src/bindings.dart
 	cd flutter/example && flutter run -d chrome

@@ -34,6 +34,8 @@ Makefile                Top-level build, test, and publish targets
 - **Build everything**: `make all`
 - **Build Windows DLL**: `make dll` (or `make windows`; cross-compiles Windows x86-64 DLL using MinGW-w64)
 - **Run C++ tests**: `make test`
+- **Run native performance benchmark**: `make bench`
+- **Run one-shot heap benchmark**: `make mem-bench` (use Valgrind Massif for peak-heap comparisons)
 - **Run all tests**: `make testall`
 - **Validate release/version**: `make validate`
 - **Publish all**: `make publish` (local manual fallback; prefer tag-based CI release)
