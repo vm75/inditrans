@@ -36,10 +36,12 @@ so: $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_SRC)/CMakeLists.txt
 	cmake --build $(NATIVE_DIR)/build_linux
 	cp $(NATIVE_DIR)/build_linux/libinditrans.so $(EXAMPLE_DART)/libinditrans.so
 
-dll: $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_SRC)/CMakeLists.txt
-	cmake -S $(NATIVE_SRC) -B $(NATIVE_DIR)/build_win -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++
+dll: $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_SRC)/CMakeLists.txt tool/cmake/mingw64.cmake
+	cmake -S $(NATIVE_SRC) -B $(NATIVE_DIR)/build_win -DCMAKE_TOOLCHAIN_FILE=tool/cmake/mingw64.cmake
 	cmake --build $(NATIVE_DIR)/build_win
-	cp $(NATIVE_DIR)/build_win/*inditrans.dll $(EXAMPLE_DART)/inditrans.dll
+	cp $(NATIVE_DIR)/build_win/inditrans.dll $(EXAMPLE_DART)/inditrans.dll
+
+windows: dll
 
 dylib:
 	echo "macOS cross-compilation requires macOS SDK and osxcross which are not available."
