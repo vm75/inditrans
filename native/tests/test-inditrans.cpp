@@ -139,7 +139,7 @@ void testCopy(const std::vector<char>& buffer) noexcept {
 }
 
 void translitProxy(const std::string_view& input, const std::string_view& from, const std::string_view& to,
-    TranslitOptions options, std::unique_ptr<char>& out) noexcept {
+    TranslitOptions options, TranslitBuffer& out) noexcept {
   transliterate(input, from, to, options, out);
 }
 
@@ -148,7 +148,7 @@ void testPerf(bool prof) noexcept {
   if (input.is_open()) {
     std::cout << std::endl << "Perf test" << std::endl;
     std::vector<char> inBuffer(std::istreambuf_iterator<char>(input), {});
-    std::unique_ptr<char> out;
+    TranslitBuffer out;
     std::cout << "  Transliterate to telugu: "
               << measure<>::duration(translitProxy, inBuffer.data(), "devanagari", "telugu", TranslitOptions::None, out)
                      .count()
