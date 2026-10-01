@@ -8,7 +8,7 @@
 
 #include "exports.h"
 
-constexpr size_t MaxTranslitOptions = 8;
+constexpr size_t MaxTranslitOptions = 7;
 
 inline constexpr TranslitOptions operator&(TranslitOptions x, TranslitOptions y) noexcept {
   return static_cast<TranslitOptions>(static_cast<uint64_t>(x) & static_cast<uint64_t>(y));
