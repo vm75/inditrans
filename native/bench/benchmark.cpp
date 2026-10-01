@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <string_view>
-#include <vector>
 
 #include "inditrans.h"
 
@@ -49,15 +48,17 @@ void measure(size_t inputBytes, const Case& testCase) {
   constexpr size_t samples = 31;
   const size_t repetitions = inputBytes < 128 ? 2000 : inputBytes < 8192 ? 200 : 8;
   std::array<double, samples> nsPerCall {};
-  uint64_t checksum = 0;
+  uint64_t outputSizeSink = 0;
 
   for (size_t sample = 0; sample < samples; ++sample) {
+    size_t lastOutputSize = 0;
     const auto start = Clock::now();
     for (size_t i = 0; i < repetitions; ++i) {
       const auto output = transliterate(input, testCase.from, testCase.to, TranslitOptions::None);
-      checksum += output.empty() ? 0 : static_cast<uint8_t>(output[i % output.size()]);
+      lastOutputSize = output.size();
     }
     const auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now() - start).count();
+    outputSizeSink += lastOutputSize;
     nsPerCall[sample] = static_cast<double>(elapsed) / repetitions;
   }
 
@@ -70,11 +71,11 @@ void measure(size_t inputBytes, const Case& testCase) {
   std::ranges::sort(nsPerCall);
   constexpr size_t p95Index = (samples * 95 + 99) / 100 - 1;
   std::cout << testCase.label << ',' << input.size() << ',' << nsPerCall[samples / 2] << ','
-            << nsPerCall[p95Index] << ',' << checksum << ',' << outputHash << '\n';
+            << nsPerCall[p95Index] << ',' << outputSizeSink << ',' << outputHash << '\n';
 }
 
 int main() {
-  std::cout << "case,input_bytes,median_ns,sample_p95_ns,sample_checksum,output_fnv1a64\n";
+  std::cout << "case,input_bytes,median_ns,sample_p95_ns,output_size_sink,output_fnv1a64\n";
   for (const auto& testCase : cases) {
     for (const auto inputBytes : { size_t { 32 }, size_t { 4096 }, size_t { 1 << 20 } }) {
       measure(inputBytes, testCase);
