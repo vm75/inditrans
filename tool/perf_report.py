@@ -12,6 +12,9 @@ from pathlib import Path
 from typing import Iterable
 
 
+Allocation = tuple[int, int, int, int]
+
+
 @dataclass(frozen=True)
 class Snapshot:
     name: str
@@ -19,10 +22,8 @@ class Snapshot:
     p50_ns: int
     cold_p50_ns: int | None
     cold_p95_ns: int | None
-    allocations: int | None
-    allocated_bytes: int | None
-    peak_heap_bytes: int | None
-    live_heap_bytes: int | None
+    cold_alloc: Allocation | None
+    warm_alloc: Allocation | None
     wasm_bytes: int | None
     info: str
 
@@ -36,15 +37,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--dir", type=Path, default=Path("out/perf"), help="snapshot directory")
     parser.add_argument("--baseline", default="00-baseline", help="baseline snapshot prefix")
+    parser.add_argument("--latency-case", default="indic-to-indic", help="short-call case for the summary")
+    parser.add_argument("--alloc-case", default="devanagari", help="allocation-probe mode for the summary")
     parser.add_argument(
-        "--latency-case",
-        default="indic-to-indic",
-        help="short-call benchmark case used by the summary table",
-    )
-    parser.add_argument(
-        "--alloc-case",
-        default="devanagari",
-        help="allocation-probe mode used by the summary table",
+        "--cold-case",
+        default="cold-devanagari-to-telugu",
+        help="cold-start case for the cold-latency table",
     )
     parser.add_argument(
         "--step",
@@ -80,7 +78,7 @@ def read_latency(prefix: Path, case_name: str) -> int:
     raise ValueError(f"latency case {case_name!r} not found in {path}")
 
 
-def read_cold_latency(prefix: Path) -> tuple[int, int] | None:
+def read_cold_latency(prefix: Path, case_name: str) -> tuple[int, int] | None:
     path = prefix.with_name(prefix.name + "-cold.csv")
     if not path.is_file():
         return None
@@ -89,18 +87,19 @@ def read_cold_latency(prefix: Path) -> tuple[int, int] | None:
         raise ValueError(f"empty cold-start snapshot: {path}")
     header = rows[0]
     try:
+        case_col = header.index("case")
         p50_col = header.index("p50_ns")
         p95_col = header.index("p95_ns")
     except ValueError as exc:
         raise ValueError(f"unexpected cold-start CSV header in {path}") from exc
-    row = rows[1]
-    if len(row) <= max(p50_col, p95_col):
-        raise ValueError(f"incomplete cold-start row in {path}")
-    return int(row[p50_col]), int(row[p95_col])
+    for row in rows[1:]:
+        if len(row) > max(case_col, p50_col, p95_col) and row[case_col] == case_name:
+            return int(row[p50_col]), int(row[p95_col])
+    return None
 
 
-def read_allocations(prefix: Path, mode: str) -> tuple[int, int, int, int] | None:
-    path = prefix.with_name(prefix.name + "-allocs.csv")
+def read_allocations(prefix: Path, mode: str, suffix: str) -> Allocation | None:
+    path = prefix.with_name(prefix.name + suffix)
     if not path.is_file() or path.stat().st_size == 0:
         return None
     for row in read_csv_rows(path):
@@ -128,20 +127,17 @@ def display_name(prefix_name: str) -> str:
     return (name or prefix_name).replace("_", " ").replace("-", " ")
 
 
-def load_snapshot(directory: Path, name: str, latency_case: str, alloc_case: str) -> Snapshot:
+def load_snapshot(directory: Path, name: str, latency_case: str, alloc_case: str, cold_case: str) -> Snapshot:
     prefix = directory / name
-    alloc = read_allocations(prefix, alloc_case)
-    cold = read_cold_latency(prefix)
+    cold_latency = read_cold_latency(prefix, cold_case)
     return Snapshot(
         name=name,
         display_name=display_name(name),
         p50_ns=read_latency(prefix, latency_case),
-        cold_p50_ns=cold[0] if cold else None,
-        cold_p95_ns=cold[1] if cold else None,
-        allocations=alloc[0] if alloc else None,
-        allocated_bytes=alloc[1] if alloc else None,
-        peak_heap_bytes=alloc[2] if alloc else None,
-        live_heap_bytes=alloc[3] if alloc else None,
+        cold_p50_ns=cold_latency[0] if cold_latency else None,
+        cold_p95_ns=cold_latency[1] if cold_latency else None,
+        cold_alloc=read_allocations(prefix, alloc_case, "-allocs.csv"),
+        warm_alloc=read_allocations(prefix, alloc_case, "-allocs-warm.csv"),
         wasm_bytes=read_optional_int(prefix.with_name(prefix.name + "-wasm-size.txt")),
         info=read_info(prefix),
     )
@@ -169,6 +165,10 @@ def count_delta(value: int | None, baseline: int | None) -> str:
     if value is None or baseline is None:
         return "—"
     return f"{value - baseline:+d}"
+
+
+def alloc_value(allocation: Allocation | None, index: int) -> int | None:
+    return allocation[index] if allocation is not None else None
 
 
 def format_duration(ns: int) -> str:
@@ -202,7 +202,11 @@ def markdown_table(headers: list[str], rows: Iterable[list[str]]) -> list[str]:
 
 
 def render_report(
-    snapshots: list[Snapshot], baseline: Snapshot, latency_case: str, alloc_case: str
+    snapshots: list[Snapshot],
+    baseline: Snapshot,
+    latency_case: str,
+    alloc_case: str,
+    cold_case: str,
 ) -> str:
     lines = [
         "# Performance progression",
@@ -211,21 +215,28 @@ def render_report(
         "",
         (
             f"Summary uses short-call p50 case `{latency_case}` and allocation mode `{alloc_case}`. "
-            "All change rows are relative to the original baseline. Peak heap is allocator-probe "
-            "peak requested live bytes, not process RSS."
+            "Cold allocations use no warmup and therefore include lazy initialization; warm allocations "
+            "use one unmeasured warmup. Peak heap is allocator-probe peak requested live bytes, not process RSS. "
+            "All change rows are relative to the original baseline."
         ),
         "",
     ]
 
     summary_rows: list[list[str]] = []
     for index, snapshot in enumerate(snapshots):
+        cold_allocs = alloc_value(snapshot.cold_alloc, 0)
+        warm_allocs = alloc_value(snapshot.warm_alloc, 0)
+        cold_peak = alloc_value(snapshot.cold_alloc, 2)
+        warm_peak = alloc_value(snapshot.warm_alloc, 2)
         if index == 0:
             summary_rows.append(
                 [
                     "baseline",
                     format_duration(snapshot.p50_ns),
-                    str(snapshot.allocations) if snapshot.allocations is not None else "—",
-                    format_bytes(snapshot.peak_heap_bytes),
+                    str(cold_allocs) if cold_allocs is not None else "—",
+                    str(warm_allocs) if warm_allocs is not None else "—",
+                    format_bytes(cold_peak),
+                    format_bytes(warm_peak),
                     format_bytes(snapshot.wasm_bytes),
                 ]
             )
@@ -234,15 +245,22 @@ def render_report(
                 [
                     snapshot.display_name,
                     pct_delta(snapshot.p50_ns, baseline.p50_ns),
-                    count_delta(snapshot.allocations, baseline.allocations),
-                    pct_delta(snapshot.peak_heap_bytes, baseline.peak_heap_bytes),
+                    count_delta(cold_allocs, alloc_value(baseline.cold_alloc, 0)),
+                    count_delta(warm_allocs, alloc_value(baseline.warm_alloc, 0)),
+                    pct_delta(cold_peak, alloc_value(baseline.cold_alloc, 2)),
+                    pct_delta(warm_peak, alloc_value(baseline.warm_alloc, 2)),
                     pct_delta(snapshot.wasm_bytes, baseline.wasm_bytes),
                 ]
             )
-    lines.extend(markdown_table(["Step", "p50 latency", "allocs", "peak heap", "Wasm size"], summary_rows))
+    lines.extend(
+        markdown_table(
+            ["Step", "p50 latency", "cold allocs", "warm allocs", "cold peak", "warm peak", "Wasm size"],
+            summary_rows,
+        )
+    )
 
     if any(snapshot.cold_p50_ns is not None for snapshot in snapshots):
-        lines.extend(["", "## Cold-start latency (fresh process)", ""])
+        lines.extend(["", f"## Cold-start latency — `{cold_case}`", ""])
         cold_rows = []
         for index, snapshot in enumerate(snapshots):
             cold_rows.append(
@@ -259,24 +277,52 @@ def render_report(
             )
         lines.extend(markdown_table(["Step", "p50", "p95", "p50 vs baseline"], cold_rows))
 
-    lines.extend(["", "## Absolute values", ""])
-    absolute_rows = [
-        [
-            snapshot.display_name if index else "baseline",
-            format_duration(snapshot.p50_ns),
-            str(snapshot.allocations) if snapshot.allocations is not None else "—",
-            format_bytes(snapshot.allocated_bytes),
-            format_bytes(snapshot.peak_heap_bytes),
-            format_bytes(snapshot.live_heap_bytes),
-            format_bytes(snapshot.wasm_bytes),
-            snapshot.info or "—",
-        ]
-        for index, snapshot in enumerate(snapshots)
-    ]
+    lines.extend(["", "## Absolute allocation values", ""])
+    allocation_rows = []
+    for index, snapshot in enumerate(snapshots):
+        allocation_rows.append(
+            [
+                snapshot.display_name if index else "baseline",
+                str(alloc_value(snapshot.cold_alloc, 0)) if snapshot.cold_alloc else "—",
+                str(alloc_value(snapshot.warm_alloc, 0)) if snapshot.warm_alloc else "—",
+                format_bytes(alloc_value(snapshot.cold_alloc, 1)),
+                format_bytes(alloc_value(snapshot.warm_alloc, 1)),
+                format_bytes(alloc_value(snapshot.cold_alloc, 2)),
+                format_bytes(alloc_value(snapshot.warm_alloc, 2)),
+                format_bytes(alloc_value(snapshot.cold_alloc, 3)),
+                format_bytes(alloc_value(snapshot.warm_alloc, 3)),
+            ]
+        )
     lines.extend(
         markdown_table(
-            ["Step", "p50", "allocs", "allocated", "peak heap", "live heap", "Wasm", "snapshot"],
-            absolute_rows,
+            [
+                "Step",
+                "cold allocs",
+                "warm allocs",
+                "cold allocated",
+                "warm allocated",
+                "cold peak",
+                "warm peak",
+                "cold live",
+                "warm live",
+            ],
+            allocation_rows,
+        )
+    )
+
+    lines.extend(["", "## Snapshot metadata", ""])
+    lines.extend(
+        markdown_table(
+            ["Step", "p50", "Wasm", "snapshot"],
+            [
+                [
+                    snapshot.display_name if index else "baseline",
+                    format_duration(snapshot.p50_ns),
+                    format_bytes(snapshot.wasm_bytes),
+                    snapshot.info or "—",
+                ]
+                for index, snapshot in enumerate(snapshots)
+            ],
         )
     )
     return "\n".join(lines) + "\n"
@@ -290,12 +336,13 @@ def main() -> int:
 
     step_names = args.step or discover_steps(args.dir, args.baseline)
     try:
-        baseline = load_snapshot(args.dir, args.baseline, args.latency_case, args.alloc_case)
+        baseline = load_snapshot(args.dir, args.baseline, args.latency_case, args.alloc_case, args.cold_case)
         snapshots = [baseline]
         snapshots.extend(
-            load_snapshot(args.dir, name, args.latency_case, args.alloc_case) for name in step_names
+            load_snapshot(args.dir, name, args.latency_case, args.alloc_case, args.cold_case)
+            for name in step_names
         )
-        report = render_report(snapshots, baseline, args.latency_case, args.alloc_case)
+        report = render_report(snapshots, baseline, args.latency_case, args.alloc_case, args.cold_case)
     except (OSError, ValueError) as exc:
         print(f"perf-report: {exc}", file=sys.stderr)
         return 2

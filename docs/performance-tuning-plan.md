@@ -6,8 +6,8 @@ This plan replaces the abandoned broad C++23 performance plans with a sequence o
 
 ## Working rules
 
-1. One performance hypothesis per implementation PR.
-2. Start each performance branch from the latest merged `main`.
+1. One performance hypothesis per step commit on `dev`; do not combine unrelated optimizations.
+2. Keep the active `dev` → `main` PR open while iterating so every pushed step receives full CI validation before the next step starts.
 3. Preserve transliteration output. Existing benchmark output hashes and the full test suite must remain unchanged unless a change is explicitly intended to alter behavior.
 4. Measure before and after every step. Do not combine several structural optimizations into one benchmark result.
 5. Prefer deleting runtime work over replacing one runtime container with another.
@@ -38,6 +38,16 @@ make perf-snapshot PERF_NAME=00-baseline
 make bench-cold
 ```
 
+For latency claims, use repeated full short-call runs rather than relying on one snapshot timing:
+
+```bash
+make bench-short-repeat
+# Optional Linux CPU pinning:
+make bench-short-repeat PERF_CPU=2
+```
+
+`PERF_REPEATS` defaults to 5 and must be an odd number of at least 3.
+
 After each accepted step:
 
 ```bash
@@ -51,10 +61,11 @@ The default summary uses:
 
 - warm short-call p50: `indic-to-indic`
 - allocation mode: `devanagari`
-- allocation count: `malloc + calloc + realloc`
-- peak heap: allocator-probe peak requested live bytes
+- cold allocation count: `malloc + calloc + realloc` with no warmup; includes lazy initialization
+- warm allocation count: the same probe after one unmeasured warmup; isolates recurring work
+- cold/warm peak heap: allocator-probe peak requested live bytes
 - raw standalone Wasm size: `flutter/assets/inditrans.wasm`
-- cold-start p50/p95: first Devanagari-to-Telugu transliteration in a fresh native process
+- cold-start p50/p95 in fresh native processes for Devanagari→Telugu, ISO→Devanagari, Devanagari→Tamil, and Indic→ISO
 
 All percentage/count deltas in the progression table are relative to `00-baseline`, not the immediately preceding step. The report also prints absolute values for auditability.
 
@@ -62,7 +73,10 @@ Override the representative cases when needed:
 
 ```bash
 make perf-report PERF_LATENCY_CASE=latin-input PERF_ALLOC_CASE=latin
+make perf-report PERF_COLD_CASE=cold-iso-to-devanagari
 ```
+
+Existing snapshots that predate warm-allocation capture remain readable; warm fields display as `—`. Snapshot metadata records the commit, platform, CPU, Clang version, Emscripten state/required version, and whether the working tree was clean.
 
 The existing `bench-compare` remains the PR regression gate across all benchmark cases and output hashes. The progression report is complementary: it shows cumulative movement from the original tuning baseline.
 
@@ -70,6 +84,7 @@ The existing `bench-compare` remains the PR regression gate across all benchmark
 
 - `make test`
 - output hashes unchanged in the benchmark harness
+- use `make bench-short-repeat` for any claimed short-call latency improvement
 - `make bench-compare` against the PR base
 - `BENCH_STRICT=1 make bench-compare` before merge when the change is expected to affect performance
 - sanitizers/CI green
