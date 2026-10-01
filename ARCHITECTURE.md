@@ -18,7 +18,7 @@ Dart caller
 flutter/lib/inditrans.dart      ← public Dart API (universal_ffi)
     │  FFI call (native) / JS interop (Web)
     ▼
-native/src/inditrans.cpp        ← single-source C++20 engine
+native/src/inditrans.cpp        ← single-source C++23 engine
     │  compiled to
     ├─ libinditrans.so / inditrans.dll  (Android, iOS, Linux, macOS, Windows)
     └─ flutter/assets/inditrans.wasm   (Web via Emscripten)
@@ -60,7 +60,6 @@ inditrans.cpp ← script_data.h
               ← utilities.h (→ trie.h, utf.h)
               ← char_trie.h (→ type_defs.h)
               ← utf.h
-              ← wasi_fix.h
 ```
 
 `inditrans.cpp` is the only translation unit. All other `.h` files are either

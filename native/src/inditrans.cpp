@@ -3,7 +3,6 @@
 #include "script_data.h"
 #include "type_defs.h"
 #include "utilities.h"
-#include "wasi_fix.h"
 #include <limits>
 #include <memory>
 #include <optional>

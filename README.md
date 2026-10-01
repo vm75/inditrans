@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/npm/v/@vm75/inditrans?label=npm)](https://www.npmjs.com/package/@vm75/inditrans)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-A transliteration library for [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) and Latin scripts, implemented as a C++20 engine compiled to a shared library (native) and WASM (Web/Node.js). The same phoneme-level pipeline is exposed to Flutter/Dart and JavaScript/TypeScript.
+A transliteration library for [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) and Latin scripts, implemented as a C++23 engine compiled to a shared library (native) and WASM (Web/Node.js). The same phoneme-level pipeline is exposed to Flutter/Dart and JavaScript/TypeScript.
 
 - No server required. FFI (native) or WASM (Web/Node.js) for near-native performance.
 - ITRANS toggle transliteration — wrap any region in `##…##` to pass it through unchanged.
@@ -44,7 +44,7 @@ Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
 flutter/    Flutter FFI plugin (Dart + C++ shared library + WASM)
 nodejs/     TypeScript/JavaScript package (WASM via Emscripten)
 js/         WASM build output consumed by nodejs/
-native/     Canonical C++20 engine (source, tests, and CLI)
+native/     Canonical C++23 engine (source, tests, and CLI)
 tool/       Code-generation utilities (script data, bindings, version bump)
 test-files/ Shared test-case JSON used by all distributions
 ```
@@ -58,7 +58,7 @@ make testall      # run native, Flutter, and Node.js tests
 make validate     # validate version consistency and changelog
 ```
 
-Requires: CMake ≥ 3.10, Clang/LLVM ≥ 14, Emscripten 2.0.31, Flutter ≥ 2.11, Node.js / Yarn.
+Requires: CMake ≥ 3.10, Clang/LLVM ≥ 14, Emscripten 6.0.10, Flutter ≥ 2.11, Node.js / Yarn.
 
 ## Documentation
 

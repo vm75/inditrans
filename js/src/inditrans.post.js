@@ -52,17 +52,20 @@ Module['onRuntimeInitialized'] = function () {
             return result;
         },
         'transliterate': (text, from, to, options, skipStart = "##", skipEnd = "##") => {
+            const cwrap = Module['cwrap'] || (typeof cwrap !== 'undefined' ? cwrap : null);
+            const utf8ToString = Module['UTF8ToString'] || (typeof UTF8ToString !== 'undefined' ? UTF8ToString : null);
             const transliterate = cwrap('transliterate', 'number', ['string', 'string', 'string', 'number', 'string', 'string']);
             const releaseBuffer = cwrap('releaseBuffer', 'void', ['number']);
             const stringPtr = transliterate(text, from, to, options, skipStart, skipEnd);
             if (stringPtr == 0) {
                 return '';
             }
-            const result = UTF8ToString(stringPtr);
+            const result = utf8ToString(stringPtr);
             releaseBuffer(stringPtr);
             return result;
         },
         'isScriptSupported': (script) => {
+            const cwrap = Module['cwrap'] || (typeof cwrap !== 'undefined' ? cwrap : null);
             const isScriptSupported = cwrap('isScriptSupported', 'number', ['string']);
             return isScriptSupported(script) == 1;
         },

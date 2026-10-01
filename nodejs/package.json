@@ -20,6 +20,9 @@
     "test/"
   ],
   "types": "./dist/src/index.d.ts",
+  "engines": {
+    "node": ">=18.3"
+  },
   "scripts": {
     "clean": "shx rm -rf dist/*",
     "build": "yarn build-wasm && yarn copy-files && tsc",

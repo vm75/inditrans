@@ -2,7 +2,7 @@
 
 ## Project overview
 
-`inditrans` is a monorepo containing a C++20 transliteration engine and two distribution
+`inditrans` is a monorepo containing a C++23 transliteration engine and two distribution
 packages: a Flutter FFI plugin (`flutter/`) and a TypeScript/JavaScript package (`nodejs/`).
 The engine (`native/src/`) is compiled to a shared library for native platforms and
 to WASM for Web and Node.js. All distributions share the same test-case suite and script data.
@@ -10,7 +10,7 @@ to WASM for Web and Node.js. All distributions share the same test-case suite an
 ## Repository map
 
 ```
-native/src/         C++20 engine: inditrans.cpp, exports.h, script_data.h, …
+native/src/         C++23 engine: inditrans.cpp, exports.h, script_data.h, …
 native/cli/         Standalone CLI tool (same C++ source)
 native/tests/       C++ engine test suite
 flutter/assets/     inditrans.wasm — WASM binary for Flutter Web

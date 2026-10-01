@@ -45,15 +45,15 @@ dylib:
 	echo "macOS cross-compilation requires macOS SDK and osxcross which are not available."
 
 profile:
-	g++ -std=c++20 -O1 -fno-exceptions -pg -Wno-normalized -I $(NATIVE_SRC) -I $(NATIVETEST_DIR) $(NATIVE_CPP) $(NATIVETEST_DIR)/test.cpp -o out/prof_$(NATIVE_TEST)
+	g++ -std=c++23 -O1 -fno-exceptions -pg -Wno-normalized -I $(NATIVE_SRC) -I $(NATIVETEST_DIR) $(NATIVE_CPP) $(NATIVETEST_DIR)/test.cpp -o out/prof_$(NATIVE_TEST)
 	out/prof_$(NATIVE_TEST) -p
 	gprof out/prof_$(NATIVE_TEST) gmon.out > out/native-prof.log
 
 $(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
-	clang++ -std=c++20 -DBOOST_UT_DISABLE_MODULE -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVETEST_CC) -o $@
+	clang++ -std=c++23 -DBOOST_UT_DISABLE_MODULE -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVETEST_CC) -o $@
 
 $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
-	clang++ -std=c++20 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
+	clang++ -std=c++23 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
 $(NATIVE_SRC)/script_data.h: tool/script_data.json tool/options.json tool/generate_headers.dart $(GENERATOR_UTILS)
 	dart tool/generate_headers.dart
