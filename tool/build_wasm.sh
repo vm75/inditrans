@@ -53,7 +53,7 @@ build_wasm_standalone() {
       -o "${outDir}/inditrans.wasm"
   else
     emcc ./native/src/inditrans.cpp -I ./native/src \
-      -fPIC -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG \
+      -std=c++20 -fPIC -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG \
       "-Wl,--gc-sections,--no-entry,--export=__wasm_call_ctors" \
       -s EXPORTED_FUNCTIONS='["_malloc", "_free"]' \
       -s STANDALONE_WASM=1 \
