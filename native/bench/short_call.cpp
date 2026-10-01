@@ -3,7 +3,6 @@
 #include <chrono>
 #include <cstdint>
 #include <iostream>
-#include <string>
 #include <string_view>
 #include <vector>
 
@@ -35,19 +34,23 @@ void measure(const Case& testCase) {
   constexpr size_t warmups = 16;
   constexpr size_t samples = 10000;
   std::vector<uint64_t> latencyNs(samples);
-  uint64_t checksum = 0;
+  uint64_t outputSizeSink = 0;
 
   for (size_t i = 0; i < warmups; ++i) {
     const auto output = transliterate(testCase.input, testCase.from, testCase.to, TranslitOptions::None);
-    checksum += output.empty() ? 0 : static_cast<uint8_t>(output[i % output.size()]);
+    outputSizeSink += output.size();
   }
 
   for (size_t i = 0; i < samples; ++i) {
+    size_t outputSize = 0;
     const auto start = Clock::now();
-    const auto output = transliterate(testCase.input, testCase.from, testCase.to, TranslitOptions::None);
+    {
+      const auto output = transliterate(testCase.input, testCase.from, testCase.to, TranslitOptions::None);
+      outputSize = output.size();
+    }
     const auto end = Clock::now();
     latencyNs[i] = static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-    checksum += output.empty() ? 0 : static_cast<uint8_t>(output[i % output.size()]);
+    outputSizeSink += outputSize;
   }
 
   const auto checkOutput = transliterate(testCase.input, testCase.from, testCase.to, TranslitOptions::None);
@@ -59,10 +62,10 @@ void measure(const Case& testCase) {
   std::ranges::sort(latencyNs);
   constexpr size_t p95Index = (samples * 95 + 99) / 100 - 1;
   std::cout << testCase.label << ',' << testCase.input.size() << ',' << latencyNs[samples / 2] << ','
-            << latencyNs[p95Index] << ',' << checksum << ',' << outputHash << '\n';
+            << latencyNs[p95Index] << ',' << outputSizeSink << ',' << outputHash << '\n';
 }
 
 int main() {
-  std::cout << "case,input_bytes,p50_ns,p95_ns,sample_checksum,output_fnv1a64\n";
+  std::cout << "case,input_bytes,p50_ns,p95_ns,output_size_sink,output_fnv1a64\n";
   for (const auto& testCase : cases) measure(testCase);
 }
