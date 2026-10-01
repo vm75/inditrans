@@ -36,6 +36,7 @@ Makefile                Top-level build, test, and publish targets
 - **Run C++ tests**: `make test`
 - **Run native performance benchmark**: `make bench`
 - **Run one-shot heap benchmark**: `make mem-bench` (use Valgrind Massif for peak-heap comparisons)
+- **Run all benchmarks with a formatted summary**: `make bench-all`
 - **Run all tests**: `make testall`
 - **Validate release/version**: `make validate`
 - **Publish all**: `make publish` (local manual fallback; prefer tag-based CI release)

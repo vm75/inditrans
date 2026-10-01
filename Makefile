@@ -101,6 +101,44 @@ bench-short: $(NATIVE_SHORT_BENCH)
 mem-bench: $(NATIVE_MEM_BENCH)
 	$(NATIVE_MEM_BENCH)
 
+# Run all benchmarks and print a human-readable summary.
+.PHONY: bench-all
+bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_MEM_BENCH) $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
+	@echo ""
+	@echo "━━━  Throughput — median ns/call and MB/s  (32 B / 4 KiB / 1 MiB inputs)  ━━━"
+	@$(NATIVE_BENCH) | awk -F, '\
+	  NR==1 { printf "%-28s  %8s  %10s  %8s  %10s\n","case","bytes","median_ns","MB/s","p95_ns" } \
+	  NR >1 { mbs=$$2/$$3*1000; printf "%-28s  %8s  %10.0f  %8.1f  %10.0f\n",$$1,$$2,$$3,mbs,$$4 }'
+	@echo ""
+	@echo "━━━  Short-call latency  (single fixed input, 10 000 samples)  ━━━"
+	@$(NATIVE_SHORT_BENCH) | awk -F, '\
+	  NR==1 { printf "%-28s  %8s  %9s  %9s\n","case","bytes","p50_µs","p95_µs" } \
+	  NR >1 { printf "%-28s  %8s  %9.3f  %9.3f\n",$$1,$$2,$$3/1000,$$4/1000 }'
+	@echo ""
+	@echo "━━━  Memory footprint  (1 MiB single call, devanagari→telugu)  ━━━"
+	@$(NATIVE_MEM_BENCH) | awk -F, '{ printf "  input: %s B   output: %s B\n",$$2,$$3 }'
+	@echo ""
+	@echo "━━━  Allocations per call  (1 MiB, Linux/glibc only)  ━━━"
+	@if [ -f $(LINUX_ALLOC_PROBE) ]; then \
+	  printf "%-22s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n" "mode" "malloc" "realloc" "free" "total" "alloc_B" "peak_B" "live_B"; \
+	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
+	    raw=$$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $$mode 1048576 1 0 2>&1 1>/dev/null); \
+	    echo "$$raw" | awk -v m=$$mode '\
+	      { \
+	        split($$1,a,"="); split(a[2],mc,","); \
+	        split($$3,b,"="); split(b[2],rc,","); \
+	        split($$4,c,"="); fc=c[2]; \
+	        split($$6,d,"="); pk=d[2]; \
+	        split($$5,e,"="); lv=e[2]; \
+	        allb=mc[2]+0+rc[2]+0; total=mc[1]+rc[1]; \
+	        printf "%-22s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n",m,mc[1],rc[1],fc,total,allb,pk,lv \
+	      }'; \
+	  done; \
+	else \
+	  echo "  (skipped: $(LINUX_ALLOC_PROBE) not built — Linux/glibc only)"; \
+	fi
+	@echo ""
+
 # Linux/glibc-only allocator event profile; does not affect production builds.
 .PHONY: bench-alloc-linux
 bench-alloc-linux: $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
