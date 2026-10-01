@@ -41,6 +41,7 @@ android {
     externalNativeBuild {
         cmake {
             path = "../../native/src/CMakeLists.txt"
+            version = "3.22.1"
 
             // The Android build invokes the shared CMake build in native/src/CMakeLists.txt,
             // which requires CMake >= 3.20 for C++23 standard support.

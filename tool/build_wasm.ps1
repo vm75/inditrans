@@ -15,11 +15,12 @@ function init_emcc {
             Set-Location $emsdk
             .\emsdk install $REQUIRED_EMSDK_VERSION
             .\emsdk activate $REQUIRED_EMSDK_VERSION
+            $env:EMSDK = $emsdk
             [Environment]::SetEnvironmentVariable("EMSDK", $emsdk, "User")
             Set-Location $currDir
         }
         else {
-            # set EMSDK environment variable and persist it
+            # set EMSDK environment variable for current process and persist it
             $env:EMSDK = $emsdk
             [Environment]::SetEnvironmentVariable("EMSDK", $emsdk, "User")
         }
@@ -52,52 +53,54 @@ function init_emcc {
 }
 
 # create a function
-function build_wasm_standalone {
-    $exportedFunctions = "[""_malloc"", ""_free"", ""_transliterate"", ""_releaseBuffer""]"
+function build_wasm_standalone([string]$mode) {
+    $exportedFunctions = '["_malloc", "_free", "_transliterate", "_isScriptSupported", "_releaseBuffer"]'
 
     # get the path to the output directory
     $outDir = ".\flutter\assets"
 
     # create the output directory if it does not exist
     if (!(Test-Path $outDir)) {
-        New-Item -ItemType Directory -Path $outDir
+        New-Item -ItemType Directory -Path $outDir | Out-Null
     }
 
     # build the function
-    if ($args[1] -eq "debug") {
+    if ($mode -eq "debug") {
         em++ .\native\src\inditrans.cpp -I .\native\src `
             -std=c++23 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address `
-            "-Wl,--no-entry" `
+            "-Wl,--no-entry,--export=__wasm_call_ctors" `
             -DDEBUG `
             -s EXPORTED_FUNCTIONS=$exportedFunctions `
+            -s ENVIRONMENT='web,worker' `
             -s FILESYSTEM=0 `
-            -o $outDir\inditrans.wasm
+            -o "$outDir\inditrans.wasm"
     }
     else {
         em++ .\native\src\inditrans.cpp -I .\native\src `
-            -std=c++23 -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno `
-            "-Wl,--gc-sections,--no-entry" `
-            -DNDEBUG `
-            -s EXPORTED_FUNCTIONS=$exportedFunctions `
+            -std=c++23 -fPIC -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG `
+            "-Wl,--gc-sections,--no-entry,--export=__wasm_call_ctors" `
+            -s EXPORTED_FUNCTIONS='["_malloc", "_free"]' `
+            -s STANDALONE_WASM=1 `
+            -s ENVIRONMENT='web,worker' `
             -s FILESYSTEM=0 `
-            -o $outDir\inditrans.wasm
+            -o "$outDir\inditrans.wasm"
     }
 }
 
-function build_wasm_js {
-    $exportedRuntimeMethods = "[""cwrap"", ""UTF8ToString""]"
-    $exportedFunctions = "[""_malloc"", ""_free"", ""_transliterate"", ""_releaseBuffer""]"
+function build_wasm_js([string]$mode) {
+    $exportedRuntimeMethods = '["cwrap", "UTF8ToString"]'
+    $exportedFunctions = '["_malloc", "_free", "_transliterate", "_isScriptSupported", "_releaseBuffer"]'
 
     # get the path to the output directory
-    $outDir = ".\js\dist"
+    $outDir = ".\js\public"
 
     # create the output directory if it does not exist
     if (!(Test-Path $outDir)) {
-        New-Item -ItemType Directory -Path $outDir
+        New-Item -ItemType Directory -Path $outDir | Out-Null
     }
 
     # build the function
-    if ($args[1] -eq "debug") {
+    if ($mode -eq "debug") {
         em++ .\native\src\inditrans.cpp -I .\native\src `
             -std=c++23 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address `
             "-Wl,--no-entry" `
@@ -111,7 +114,7 @@ function build_wasm_js {
             -s EXIT_RUNTIME=0 `
             -s FILESYSTEM=0 `
             --post-js .\js\src\inditrans.post.js `
-            -o $outDir\inditrans.js
+            -o "$outDir\inditrans.js"
     }
     else {
         em++ .\native\src\inditrans.cpp -I .\native\src `
@@ -127,22 +130,26 @@ function build_wasm_js {
             -s EXIT_RUNTIME=0 `
             -s FILESYSTEM=0 `
             --post-js .\js\src\inditrans.post.js `
-            -o $outDir\inditrans.js
+            -o "$outDir\inditrans.js"
     }
 }
 
 # initialize emcc
 init_emcc
 
-cd $PSScriptRoot\..
+Set-Location "$PSScriptRoot\.."
 
 # build
-if ($args[0] -eq "standalone") {
-    build_wasm_standalone $args[1]
+$target = if ($args.Count -gt 0) { $args[0] } else { "" }
+$mode = if ($args.Count -gt 1) { $args[1] } else { "" }
+
+if ($target -eq "standalone") {
+    build_wasm_standalone $mode
 }
-elseif ($args[0] -eq "js") {
-    build_wasm_js $args[1]
+elseif ($target -eq "js") {
+    build_wasm_js $mode
 }
 else {
-    Write-Host "Invalid build type"
+    Write-Error "Invalid build target '$target'"
+    exit 1
 }

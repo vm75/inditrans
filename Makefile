@@ -37,7 +37,7 @@ so: $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_SRC)/CMakeLists.txt
 	cp $(NATIVE_DIR)/build_linux/libinditrans.so $(EXAMPLE_DART)/libinditrans.so
 
 dll: $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_SRC)/CMakeLists.txt tool/cmake/mingw64.cmake
-	cmake -S $(NATIVE_SRC) -B $(NATIVE_DIR)/build_win -DCMAKE_TOOLCHAIN_FILE=tool/cmake/mingw64.cmake
+	cmake -S $(NATIVE_SRC) -B $(NATIVE_DIR)/build_win -DCMAKE_TOOLCHAIN_FILE=$(abspath tool/cmake/mingw64.cmake)
 	cmake --build $(NATIVE_DIR)/build_win
 	cp $(NATIVE_DIR)/build_win/inditrans.dll $(EXAMPLE_DART)/inditrans.dll
 

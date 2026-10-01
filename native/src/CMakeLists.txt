@@ -6,8 +6,15 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13.0")
-  message(FATAL_ERROR "MinGW GCC version ${CMAKE_CXX_COMPILER_VERSION} does not meet the minimum C++23 requirement (GCC 13+).")
+if (
+    MINGW
+    AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
+    AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13.0"
+)
+  message(
+      FATAL_ERROR
+      "MinGW GCC ${CMAKE_CXX_COMPILER_VERSION} does not meet the minimum C++23 requirement (GCC 13+)."
+  )
 endif()
 
 add_library(inditrans SHARED

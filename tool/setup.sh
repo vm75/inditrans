@@ -1,44 +1,56 @@
 #!/bin/bash
+set -euo pipefail
+
+REQUIRED_EMSDK_VERSION="6.0.10"
 
 setup_emsdk() {
-  # check if EMSDK is not defined or if the path does not exist
-  if [[ ! -z "${EMSDK}" || -d "${EMSDK}" ]]; then
-    return
+  # Determine emsdk location: use existing EMSDK if valid, else default to ~/.local/share/emsdk
+  local emsdk_root=""
+  if [[ -n "${EMSDK:-}" && -d "${EMSDK}" ]]; then
+    emsdk_root="${EMSDK}"
+  else
+    emsdk_root="${HOME}/.local/share/emsdk"
   fi
 
-  # look for emsdk in the default location - ~/.local/share/emsdk
-  emsdk_root=~/.local/share/emsdk
-
-  # if not installed clone https://github.com/emscripten-core/emsdk.git and install
-  if [[ -d "${emsdk_root}" ]]; then
-    return
+  # If not cloned yet, clone it
+  if [[ ! -d "${emsdk_root}" ]]; then
+    mkdir -p "$(dirname "${emsdk_root}")"
+    git clone https://github.com/emscripten-core/emsdk.git "${emsdk_root}"
   fi
 
-  mkdir -p ~/.local/share
-  git clone https://github.com/emscripten-core/emsdk.git ${emsdk_root}
-
+  # Explicitly install and activate required Emscripten version
+  local currDir
   currDir=$(pwd)
+  cd "${emsdk_root}"
+  ./emsdk install "${REQUIRED_EMSDK_VERSION}"
+  ./emsdk activate "${REQUIRED_EMSDK_VERSION}"
+  export EMSDK="${emsdk_root}"
 
-  cd ${emsdk_root} || exit
-  ./emsdk install 6.0.10
-  ./emsdk activate 6.0.10
+  if [[ -f "${emsdk_root}/emsdk_env.sh" ]]; then
+    export EMSDK_QUIET=1
+    # shellcheck source=/dev/null
+    source "${emsdk_root}/emsdk_env.sh"
+  fi
+  cd "${currDir}"
 }
 
 setup_flutter() {
   # look for flutter in the default location - ~/.local/share/flutter
-  flutter_root=~/.local/share/flutter
+  local flutter_root="${HOME}/.local/share/flutter"
 
   if [[ -d "${flutter_root}" ]]; then
     return
   fi
 
-  mkdir -p ~/.local/share
+  mkdir -p "${HOME}/.local/share"
+  local currDir
+  currDir=$(pwd)
 
-  cd ~/.local/share || exit
-
+  cd "${HOME}/.local/share"
   wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.7.7-stable.tar.xz
   tar xf flutter_linux_3.7.7-stable.tar.xz
   rm flutter_linux_3.7.7-stable.tar.xz
+  cd "${currDir}"
 }
 
 setup_emsdk

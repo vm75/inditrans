@@ -44,7 +44,7 @@ Makefile                Top-level build, test, and publish targets
 - **Test**: `flutter test` (native library must be built first)
 - **Regenerate FFI bindings**: `dart run ffigen --config ffigen.yaml`
 - **Build native (Linux)**: `cmake -B native/build_linux native/src && cmake --build native/build_linux`
-- **Cross-compile native (Windows)**: `cmake -S native/src -B native/build_win -DCMAKE_TOOLCHAIN_FILE=tool/cmake/mingw64.cmake && cmake --build native/build_win`
+- **Cross-compile native (Windows)**: `cmake -S native/src -B native/build_win -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tool/cmake/mingw64.cmake && cmake --build native/build_win`
 - **Publish**: `flutter pub publish`
 
 ### Node.js (`nodejs/` directory)
