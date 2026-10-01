@@ -5,8 +5,8 @@ import 'dart:io';
 void main(List<String> args) async {
   final rootDir = Directory.current;
 
-  final versionFile = File('${rootDir.path}/.version');
-  if (!versionFile.existsSync()) {
+  final rootCheck = File('${rootDir.path}/flutter/pubspec.yaml');
+  if (!rootCheck.existsSync()) {
     print('Run from root folder');
     return;
   }

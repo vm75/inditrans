@@ -314,13 +314,11 @@ void main(List<String> args) {
   }
 
   try {
-    final helper = VersionUpdateHelper(VersionFileSpec('.version'));
+    final helper = VersionUpdateHelper(
+      VersionFileSpec('flutter/pubspec.yaml', 'version: '),
+    );
 
     // Add files to update version
-    helper.addFilesWithVersion(
-      '',
-      ['.version'],
-    );
     helper.addFilesWithVersion(
       '\nversion: ',
       ['flutter/pubspec.yaml'],
@@ -334,7 +332,7 @@ void main(List<String> args) {
       ['flutter/ios/inditrans.podspec', 'flutter/macos/inditrans.podspec'],
     );
     helper.addFilesWithVersion(
-      "\nversion '",
+      '\nversion = "',
       ['flutter/android/build.gradle'],
     );
     helper.addFilesWithVersion(
@@ -346,8 +344,7 @@ void main(List<String> args) {
     helper.setChangelog(changeLogs);
 
     // Add files to update changelog
-    helper
-        .addFilesWithChangelog(['flutter/CHANGELOG.md', 'nodejs/CHANGELOG.md']);
+    helper.addFilesWithChangelog(['CHANGELOG.md']);
 
     // Get next version
     if (bumpType == null) {

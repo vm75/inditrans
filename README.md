@@ -1,5 +1,6 @@
 # inditrans
 
+[![CI](https://github.com/vm75/inditrans/actions/workflows/ci.yml/badge.svg)](https://github.com/vm75/inditrans/actions/workflows/ci.yml)
 [![pub.dev](https://img.shields.io/pub/v/inditrans?label=pub.dev)](https://pub.dev/packages/inditrans)
 [![npm](https://img.shields.io/npm/v/@vm75/inditrans?label=npm)](https://www.npmjs.com/package/@vm75/inditrans)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -48,13 +49,13 @@ tool/       Code-generation utilities (script data, bindings, version bump)
 test-files/ Shared test-case JSON used by all distributions
 ```
 
-## Building from source
-
+## Building and testing
+ 
 ```sh
 make all          # build native CLI, WASM, and Flutter plugin
 make test         # run C++ native tests
-make test_nodejs  # run Node.js tests
-make publish      # publish flutter + nodejs packages
+make testall      # run native, Flutter, and Node.js tests
+make validate     # validate version consistency and changelog
 ```
 
 Requires: CMake ≥ 3.10, Clang/LLVM ≥ 14, Emscripten 2.0.31, Flutter ≥ 2.11, Node.js / Yarn.
@@ -64,8 +65,9 @@ Requires: CMake ≥ 3.10, Clang/LLVM ≥ 14, Emscripten 2.0.31, Flutter ≥ 2.11
 - [Flutter package README](flutter/README.md)
 - [Node.js package README](nodejs/README.md)
 - [Engine architecture](ARCHITECTURE.md)
-- [Flutter changelog](flutter/CHANGELOG.md)
-- [Node.js changelog](nodejs/CHANGELOG.md)
+- [Consolidated changelog](CHANGELOG.md)
+- [Release process](docs/release.md)
+- [Agent guide](AGENTS.md)
 
 ## License
 

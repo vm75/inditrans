@@ -105,4 +105,4 @@ yarn test       # build WASM and run tests
 
 ## License
 
-[MIT](https://github.com/vm75/inditrans/blob/master/LICENSE)
+[MIT](../LICENSE)

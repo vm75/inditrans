@@ -25,7 +25,6 @@ nodejs/test/            Node.js/Jest test suite
 js/                     WASM JS build consumed by nodejs/
 tool/                   Code-generation utilities (script data, bindings, version bump)
 test-files/             Shared test-case JSON used by all distributions
-.version                Single authoritative version shared across all packages
 Makefile                Top-level build, test, and publish targets
 ```
 
@@ -35,7 +34,8 @@ Makefile                Top-level build, test, and publish targets
 - **Build everything**: `make all`
 - **Run C++ tests**: `make test`
 - **Run all tests**: `make testall`
-- **Publish all**: `make publish`
+- **Validate release/version**: `make validate`
+- **Publish all**: `make publish` (local manual fallback; prefer tag-based CI release)
 
 ### Flutter (`flutter/` directory)
 - **Get dependencies**: `flutter pub get`
@@ -60,8 +60,11 @@ Makefile                Top-level build, test, and publish targets
   hand-edit them.
 - `Script.readableLatin` and `Script.wx` are read-only (cannot be used as `from`).
   `Script.indic` is write-only (cannot be used as `to`). Enforced in both Dart and TypeScript.
-- Version is authoritative in `.version`; `pubspec.yaml` and `package.json` are kept in sync
-  via `dart ./tool/bump_version.dart`.
+- The Git tag (`vMAJOR.MINOR.PATCH`) is the sole release authority; package
+  manifests and build configs are kept in sync via `dart ./tool/bump_version.dart`.
+- The single consolidated changelog is authoritative in root `CHANGELOG.md`.
+- Releases are tag-based (`vX.Y.Z`), validated by `tool/verify_release.dart`, and
+  published via `.github/workflows/release.yml` with pub.dev OIDC and npm provenance.
 - The shared test-case suite is at `test-files/test-cases.json`; changes to the engine that
   affect expected output must be reflected there.
 - Follow KISS and YAGNI: prefer the smallest change that satisfies the request.
@@ -80,13 +83,14 @@ Makefile                Top-level build, test, and publish targets
 - Flutter package usage: [`flutter/README.md`](flutter/README.md)
 - Node.js package usage: [`nodejs/README.md`](nodejs/README.md)
 - Engine internals, pipeline, data structures: [`ARCHITECTURE.md`](ARCHITECTURE.md)
-- Flutter changelog: [`flutter/CHANGELOG.md`](flutter/CHANGELOG.md)
-- Node.js changelog: [`nodejs/CHANGELOG.md`](nodejs/CHANGELOG.md)
+- Consolidated changelog: [`CHANGELOG.md`](CHANGELOG.md)
+- Release process: [`docs/release.md`](docs/release.md)
 
 ## Definition of done
 
 - `dart analyze` passes with no new errors or warnings (for Flutter changes).
 - Relevant tests pass: `make test` (C++), `flutter test` (Dart), `yarn test` (Node.js).
+- `dart tool/verify_release.dart` (`make validate`) passes.
 - If the native API changed: `bindings.dart` regenerated, WASM rebuilt, `Script.ts`/`Option.ts`
   regenerated.
 - No unrelated files or dependencies were changed.
@@ -102,4 +106,5 @@ Makefile                Top-level build, test, and publish targets
 | Agent commands, constraints, routing | `AGENTS.md` |
 | Native API (`exports.h`) | regenerate `bindings.dart`, WASM, `Script.ts`/`Option.ts` |
 | Engine pipeline, data structures, invariants | `ARCHITECTURE.md` |
-| New user-visible release | `flutter/CHANGELOG.md`, `nodejs/CHANGELOG.md`, bump `.version` |
+| Release process or CI/CD workflow | `docs/release.md`, `AGENTS.md` |
+| New user-visible release | `CHANGELOG.md`, bump versions via `tool/bump_version.dart` |
