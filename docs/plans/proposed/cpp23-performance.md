@@ -93,7 +93,14 @@ Each package should be reviewable on its own. Keep baseline results, output comp
 
 ### Files
 
-Existing native tests and Makefile; proposed `native/bench/` with one focused benchmark source and a short results protocol. Add a small wrapper benchmark for Node/browser only as needed to measure the actual Wasm path. Avoid a benchmarking framework dependency.
+`native/bench/benchmark.cpp` — throughput benchmark (median/p95 ns/call, MB/s) across 10 cases × 3 input sizes (32 B, 4 KiB, 1 MiB).
+`native/bench/short_call.cpp` — per-call latency distribution (p50/p95 over 10 000 samples) for the same cases at a fixed small input.
+`native/bench/memory.cpp` — one-shot memory footprint runner (input/output sizes); doubles as the allocator-event probe binary when built with `DINDTRANSLIT_ALLOC_PROBE`.
+`native/bench/allocation_probe_linux.c` — Linux/glibc `LD_PRELOAD` shared library that intercepts `malloc`/`realloc`/`free` and reports counts, total bytes, peak live bytes, and bytes still live after the measured call via `alloc_probe_reset()`/`alloc_probe_report()` symbols.
+
+Makefile targets: `bench` (throughput), `bench-short` (latency), `mem-bench` (footprint), `bench-alloc-linux` (allocator probe), `bench-all` (formatted summary of all four), `bench-save` (save baseline CSVs to `out/`), `bench-compare` (diff current run against saved baseline, flagging regressions ≥ 5%).
+
+All benchmark binaries are built at `-O3 -DNDEBUG`, separate from the existing `-O0 -g` test and CLI builds. Avoid a benchmarking framework dependency.
 
 ### Actions
 
@@ -107,9 +114,9 @@ Existing native tests and Makefile; proposed `native/bench/` with one focused be
 
 ### Corpus and measurements
 
-Use checked-in shared examples and deterministic repeated inputs: a short word, short line, 4 KiB text, and 1 MiB text. Include Indic-to-Indic, Latin input/output, Tamil custom handling, mixed `indic`, and markup/protected spans. Include expansion-heavy input; bytes, code points, and token count are different quantities.
+Benchmark cases cover: `devanagari→telugu` (Indic-to-Indic), `devanagari→tamil` (Tamil output), `iso→devanagari` (Latin input), `indic→iso` / `indic→devanagari` / `indic→tamil` (virtual-Indic union reader), `devanagari→iso` (Latin output), expansion-heavy input (`अॅॐऍ`), protected spans, and mixed protected spans. Three input sizes (32 B, 4 KiB, 1 MiB) exercise short-call overhead, intermediate, and sustained throughput separately.
 
-Record median and p95 short-call latency, bytes/second for longer inputs, allocation counts/bytes, peak live heap, Wasm memory growth, raw/gzip artifact size, and clean compile time/peak compiler memory. Use fresh processes/instances for cold results. Allocation instrumentation must cover malloc/realloc/free as well as new/delete; keep it out of production builds.
+Record for each benchmark run: compiler version, build flags, revision (`git rev-parse --short HEAD`), and output FNV-1a hash (to catch silent correctness regressions). Primary metrics: median and p95 ns/call, MB/s, p50/p95 per-call latency (µs), allocation event counts (malloc/realloc/free), total allocated bytes, peak live heap bytes, and bytes still live after the call returns (non-zero indicates retained caches). Use `bench-save` to freeze a baseline and `bench-compare` to diff; the 5% threshold accounts for run-to-run noise. Wasm memory growth and artifact sizes are measured separately via Emscripten build output and `ls -l`. Keep allocation instrumentation out of production builds.
 
 Existing ownership undefined behavior may make sanitizer runs fail. Record the initial finding, then use the corrected P1 revision as the trustworthy resource baseline. Keep the original baseline for historical comparison, with that limitation clearly stated.
 

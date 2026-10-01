@@ -139,6 +139,68 @@ bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_MEM_BENCH) $(NATIVE_AL
 	fi
 	@echo ""
 
+# Save benchmark results as a baseline for later comparison with bench-compare.
+BENCH_BASELINE ?= out/bench-baseline
+.PHONY: bench-save
+bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE) | out
+	@$(NATIVE_BENCH) > $(BENCH_BASELINE)-throughput.csv
+	@$(NATIVE_SHORT_BENCH) > $(BENCH_BASELINE)-latency.csv
+	@printf "" > $(BENCH_BASELINE)-allocs.csv
+	@if [ -f $(LINUX_ALLOC_PROBE) ]; then \
+	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
+	    raw=$$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $$mode 1048576 1 0 2>&1 1>/dev/null); \
+	    echo "$$raw" | awk -v m=$$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$$2+$$8,$$3+$$9,$$15,$$13 }'; \
+	  done >> $(BENCH_BASELINE)-allocs.csv; \
+	fi
+	@printf "commit=%s  date=%s\n" "$$(git rev-parse --short HEAD 2>/dev/null||echo unknown)" "$$(date '+%Y-%m-%d %H:%M')" > $(BENCH_BASELINE)-info.txt
+	@echo "Baseline saved → $(BENCH_BASELINE)-{throughput,latency,allocs}.csv"
+	@cat $(BENCH_BASELINE)-info.txt
+
+# Compare current results against the saved baseline. Flags regressions >= 5%.
+.PHONY: bench-compare
+bench-compare: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE) | out
+	@if [ ! -f $(BENCH_BASELINE)-throughput.csv ]; then echo "No baseline. Run: make bench-save first."; exit 1; fi
+	@$(NATIVE_BENCH) > out/bench-current-throughput.csv
+	@$(NATIVE_SHORT_BENCH) > out/bench-current-latency.csv
+	@echo ""
+	@echo "Baseline : $$(cat $(BENCH_BASELINE)-info.txt)"
+	@echo "Current  : commit=$$(git rev-parse --short HEAD 2>/dev/null||echo unknown)  date=$$(date '+%Y-%m-%d %H:%M')"
+	@echo ""
+	@echo "━━━  Throughput regression check  (median_ns per case×size; positive = slower)  ━━━"
+	@awk -F, '\
+	  NR==FNR && FNR>1 { base[$$1,$$2]=$$3; next } \
+	  FNR>1 { k=$$1 SUBSEP $$2; pct=($$3-base[k])/base[k]*100; \
+	    tag=(pct>=5)?"  REGRESSION ↑":(pct<=-5)?"  improved ↓":""; \
+	    printf "%-28s %8s B  base=%10.0f  now=%10.0f  %+6.1f%%%s\n",$$1,$$2,base[k],$$3,pct,tag }' \
+	  $(BENCH_BASELINE)-throughput.csv out/bench-current-throughput.csv
+	@echo ""
+	@echo "━━━  Short-call latency regression check  (p50 ns; positive = slower)  ━━━"
+	@awk -F, '\
+	  NR==FNR && FNR>1 { base[$$1]=$$3; next } \
+	  FNR>1 { pct=($$3-base[$$1])/base[$$1]*100; \
+	    tag=(pct>=5)?"  REGRESSION ↑":(pct<=-5)?"  improved ↓":""; \
+	    printf "%-28s  base=%7.0f ns  now=%7.0f ns  %+6.1f%%%s\n",$$1,base[$$1],$$3,pct,tag }' \
+	  $(BENCH_BASELINE)-latency.csv out/bench-current-latency.csv
+	@echo ""
+	@if [ -f $(BENCH_BASELINE)-allocs.csv ] && [ -s $(BENCH_BASELINE)-allocs.csv ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
+	  echo "━━━  Allocation regression check  (total alloc events + peak bytes; positive = worse)  ━━━"; \
+	  printf "" > out/bench-current-allocs.csv; \
+	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
+	    raw=$$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $$mode 1048576 1 0 2>&1 1>/dev/null); \
+	    echo "$$raw" | awk -v m=$$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$$2+$$8,$$3+$$9,$$15,$$13 }'; \
+	  done > out/bench-current-allocs.csv; \
+	  awk -F, '\
+	    NR==FNR { bt[$$1]=$$2; bb[$$1]=$$3; bp[$$1]=$$4; bl[$$1]=$$5; next } \
+	    { tp=($$2-bt[$$1])/bt[$$1]*100; pp=($$4-bp[$$1])/bp[$$1]*100; \
+	      tt=(tp>=5)?"  REGRESSION ↑":(tp<=-5)?"  improved ↓":""; \
+	      pt=(pp>=5)?"  REGRESSION ↑":(pp<=-5)?"  improved ↓":""; \
+	      printf "%-22s  allocs: %6d→%6d (%+.1f%%)%s   peak: %10d→%10d (%+.1f%%)%s\n", \
+	        $$1,bt[$$1],$$2,tp,tt,bp[$$1],$$4,pp,pt }' \
+	  $(BENCH_BASELINE)-allocs.csv out/bench-current-allocs.csv; \
+	fi
+	@echo ""
+
+
 # Linux/glibc-only allocator event profile; does not affect production builds.
 .PHONY: bench-alloc-linux
 bench-alloc-linux: $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)

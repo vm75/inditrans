@@ -35,11 +35,30 @@ Makefile                Top-level build, test, and publish targets
 - **Build Windows DLL**: `make dll` (or `make windows`; cross-compiles Windows x86-64 DLL using MinGW-w64)
 - **Run C++ tests**: `make test`
 - **Run native performance benchmark**: `make bench`
+- **Run per-call latency benchmark**: `make bench-short`
 - **Run one-shot heap benchmark**: `make mem-bench` (use Valgrind Massif for peak-heap comparisons)
 - **Run all benchmarks with a formatted summary**: `make bench-all`
+- **Save a performance baseline**: `make bench-save` (writes `out/bench-baseline-*.csv`)
+- **Compare current results against saved baseline**: `make bench-compare` (flags regressions ≥ 5%)
 - **Run all tests**: `make testall`
 - **Validate release/version**: `make validate`
 - **Publish all**: `make publish` (local manual fallback; prefer tag-based CI release)
+
+#### Performance regression testing
+
+Before making a change that might affect performance:
+```bash
+make bench-save            # capture baseline at current commit
+# … make changes …
+make bench-compare         # re-runs benchmarks and diffs all metrics
+```
+`bench-compare` flags any case where median throughput, per-call latency, allocation count,
+or peak heap regresses by ≥ 5%. The baseline path can be overridden:
+```bash
+make bench-save    BENCH_BASELINE=out/bench-before-pr42
+make bench-compare BENCH_BASELINE=out/bench-before-pr42
+```
+The `out/bench-baseline-*.csv` files should not be committed; they are local measurement artefacts.
 
 ### Flutter (`flutter/` directory)
 - **Get dependencies**: `flutter pub get`
