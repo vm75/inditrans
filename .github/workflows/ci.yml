@@ -34,6 +34,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -68,6 +71,9 @@ jobs:
       - name: Install Flutter dependencies
         run: cd flutter && flutter pub get
 
+      - name: Install standalone Dart example dependencies
+        run: cd flutter/example.dart && dart pub get
+
       - name: Analyze Flutter package
         run: cd flutter && dart analyze
 
@@ -86,6 +92,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
 
       - name: Set up Emscripten
         uses: mymindstorm/setup-emsdk@v14
