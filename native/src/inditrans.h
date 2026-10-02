@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <cstdlib>
 #include <memory>
 #include <string>
 #include <unordered_set>
@@ -20,8 +21,14 @@ inline constexpr TranslitOptions operator|(TranslitOptions x, TranslitOptions y)
 
 TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept;
 
+struct TranslitBufferDeleter {
+  void operator()(char* buffer) const noexcept { std::free(buffer); }
+};
+
+using TranslitBuffer = std::unique_ptr<char, TranslitBufferDeleter>;
+
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
-    TranslitOptions options, std::unique_ptr<char>& out, const std::string_view& skipStart = "##",
+    TranslitOptions options, TranslitBuffer& out, const std::string_view& skipStart = "##",
     const std::string_view& skipEnd = "##") noexcept;
 
 std::string transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
