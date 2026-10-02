@@ -91,6 +91,9 @@ $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 $(NATIVE_SRC)/script_data.h: tool/script_data.json tool/options.json tool/generate_headers.dart $(GENERATOR_UTILS)
 	dart tool/generate_headers.dart
 
+$(NATIVE_SRC)/script_metadata.h: $(NATIVE_SRC)/script_data.h
+	dart tool/generate_headers.dart
+
 wasm: flutter/assets/inditrans.wasm js/public/inditrans.js
 
 flutter/assets/inditrans.wasm: $(NATIVE_CPP) $(NATIVE_H)
