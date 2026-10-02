@@ -217,7 +217,7 @@ bench-compare: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output out/bench-current-latency-runs.csv > out/bench-current-latency.csv
 	@echo ""
 	@if [ -f $(BENCH_BASELINE)-info.txt ]; then echo "Baseline : $$(cat $(BENCH_BASELINE)-info.txt)"; else echo "Baseline : metadata unavailable"; fi
-	@echo "Current  : commit=$(git rev-parse --short HEAD 2>/dev/null||echo unknown)  date=$(date '+%Y-%m-%d %H:%M')  runs=$(BENCH_RUNS)  cpu=$(BENCH_CPU)"
+	@echo "Current  : commit=$$(git rev-parse --short HEAD 2>/dev/null||echo unknown)  date=$$(date '+%Y-%m-%d %H:%M')  runs=$(BENCH_RUNS)  cpu=$(BENCH_CPU)"
 	@echo ""
 	@echo "━━━  Throughput regression check  (median_ns per case×size; positive = slower)  ━━━"
 	@awk -F, -v threshold=$(BENCH_REGRESSION_THRESHOLD) -v strict=$(BENCH_STRICT) '\
