@@ -29,7 +29,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def measure(binary: Path, probe: Path, mode: str, target_bytes: int, warmups: int) -> tuple[int, int, int, int]:
+def measure(binary: Path, probe: Path, mode: str, target_bytes: int, warmups: int) -> tuple[int, ...]:
     env = os.environ.copy()
     env["LD_PRELOAD"] = str(probe.resolve())
     sample = subprocess.run(
@@ -47,11 +47,15 @@ def measure(binary: Path, probe: Path, mode: str, target_bytes: int, warmups: in
     malloc_calls, malloc_bytes = values[0], values[1]
     calloc_calls, calloc_bytes = values[2], values[3]
     realloc_calls, realloc_bytes = values[4], values[5]
-    live_bytes, peak_bytes, untracked = values[7], values[8], values[9]
+    free_calls, live_bytes, peak_bytes, untracked = values[6], values[7], values[8], values[9]
     if untracked != 0:
         raise ValueError(f"allocator probe tracking overflow for {mode}: untracked={untracked}")
 
     return (
+        malloc_calls,
+        calloc_calls,
+        realloc_calls,
+        free_calls,
         malloc_calls + calloc_calls + realloc_calls,
         malloc_bytes + calloc_bytes + realloc_bytes,
         peak_bytes,
@@ -76,11 +80,18 @@ def main() -> int:
 
     if args.format == "csv":
         writer = csv.writer(sys.stdout, lineterminator="\n")
-        writer.writerows(rows)
+        for mode, _malloc, _calloc, _realloc, _free, allocs, allocated, peak, live in rows:
+            writer.writerow([mode, allocs, allocated, peak, live])
     else:
-        print(f"{'mode':<22}  {'allocs':>8}  {'alloc_B':>12}  {'peak_B':>12}  {'live_B':>12}")
-        for mode, allocs, allocated, peak, live in rows:
-            print(f"{mode:<22}  {allocs:>8}  {allocated:>12}  {peak:>12}  {live:>12}")
+        print(
+            f"{'mode':<22}  {'malloc':>8}  {'calloc':>8}  {'realloc':>8}  {'free':>8}  "
+            f"{'total':>8}  {'alloc_B':>12}  {'peak_B':>12}  {'live_B':>12}"
+        )
+        for mode, malloc, calloc, realloc, free, total, allocated, peak, live in rows:
+            print(
+                f"{mode:<22}  {malloc:>8}  {calloc:>8}  {realloc:>8}  {free:>8}  "
+                f"{total:>8}  {allocated:>12}  {peak:>12}  {live:>12}"
+            )
     return 0
 
 
