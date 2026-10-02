@@ -178,7 +178,7 @@ bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_COLD_BENCH) $(NATIVE_M
 # Save benchmark results as a baseline for later comparison with bench-compare.
 .PHONY: bench-save
 bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
-	@mkdir -p "$(dirname "$(BENCH_BASELINE)")"
+	@mkdir -p "$(dir $(BENCH_BASELINE))"
 	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output "$(BENCH_BASELINE)-throughput-runs.csv" > $(BENCH_BASELINE)-throughput.csv
 	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output "$(BENCH_BASELINE)-latency-runs.csv" > $(BENCH_BASELINE)-latency.csv
 	@printf "" > $(BENCH_BASELINE)-allocs.csv
