@@ -31,6 +31,8 @@ ALLOC_BENCH_WARMUPS ?= 0
 BENCH_BASELINE ?= out/bench-baseline
 BENCH_REGRESSION_THRESHOLD ?= 5
 BENCH_STRICT ?= 0
+BENCH_RUNS ?= 5
+BENCH_CPU ?= $(PERF_CPU)
 PERF_DIR ?= out/perf
 PERF_NAME ?=
 PERF_BASELINE ?= 00-baseline
@@ -176,8 +178,9 @@ bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_COLD_BENCH) $(NATIVE_M
 # Save benchmark results as a baseline for later comparison with bench-compare.
 .PHONY: bench-save
 bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
-	@$(NATIVE_BENCH) > $(BENCH_BASELINE)-throughput.csv
-	@$(NATIVE_SHORT_BENCH) > $(BENCH_BASELINE)-latency.csv
+	@mkdir -p "$(dirname "$(BENCH_BASELINE)")"
+	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output "$(BENCH_BASELINE)-throughput-runs.csv" > $(BENCH_BASELINE)-throughput.csv
+	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output "$(BENCH_BASELINE)-latency-runs.csv" > $(BENCH_BASELINE)-latency.csv
 	@printf "" > $(BENCH_BASELINE)-allocs.csv
 	@printf "" > $(BENCH_BASELINE)-allocs-warm.csv
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
@@ -185,7 +188,8 @@ bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 1 --format csv > $(BENCH_BASELINE)-allocs-warm.csv; \
 	fi
 	@python3 "$(PERF_TOOL_DIR)/perf_metadata.py" > $(BENCH_BASELINE)-info.txt
-	@echo "Baseline saved → $(BENCH_BASELINE)-{throughput,latency,allocs,allocs-warm}.csv"
+	@printf "bench_runs=%s\nbench_cpu=%s\n" "$(BENCH_RUNS)" "$(BENCH_CPU)" >> $(BENCH_BASELINE)-info.txt
+	@echo "Baseline saved → averaged CSVs plus raw *-runs.csv ($(BENCH_RUNS) runs)"
 	@cat $(BENCH_BASELINE)-info.txt
 
 # Save one cumulative tuning snapshot using the benchmark formats plus raw standalone Wasm size.
@@ -209,11 +213,11 @@ bench-compare: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@if [ ! -f $(BENCH_BASELINE)-throughput.csv ]; then echo "No baseline. Run: make bench-save first."; exit 1; fi
 	@if [ ! -f $(BENCH_BASELINE)-latency.csv ]; then echo "No latency baseline. Run: make bench-save first."; exit 1; fi
 	@rm -f out/bench-compare-failed
-	@$(NATIVE_BENCH) > out/bench-current-throughput.csv
-	@$(NATIVE_SHORT_BENCH) > out/bench-current-latency.csv
+	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output out/bench-current-throughput-runs.csv > out/bench-current-throughput.csv
+	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output out/bench-current-latency-runs.csv > out/bench-current-latency.csv
 	@echo ""
 	@if [ -f $(BENCH_BASELINE)-info.txt ]; then echo "Baseline : $$(cat $(BENCH_BASELINE)-info.txt)"; else echo "Baseline : metadata unavailable"; fi
-	@echo "Current  : commit=$$(git rev-parse --short HEAD 2>/dev/null||echo unknown)  date=$$(date '+%Y-%m-%d %H:%M')"
+	@echo "Current  : commit=$(git rev-parse --short HEAD 2>/dev/null||echo unknown)  date=$(date '+%Y-%m-%d %H:%M')  runs=$(BENCH_RUNS)  cpu=$(BENCH_CPU)"
 	@echo ""
 	@echo "━━━  Throughput regression check  (median_ns per case×size; positive = slower)  ━━━"
 	@awk -F, -v threshold=$(BENCH_REGRESSION_THRESHOLD) -v strict=$(BENCH_STRICT) '\
