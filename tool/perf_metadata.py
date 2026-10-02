@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import platform
 import re
+from datetime import datetime
 import shutil
 import subprocess
 from pathlib import Path
@@ -22,6 +23,15 @@ def git(*args: str) -> str:
     return command_line(["git", *args])
 
 
+def cpu_name() -> str:
+    cpuinfo = Path("/proc/cpuinfo")
+    if cpuinfo.is_file():
+        for line in cpuinfo.read_text(encoding="utf-8", errors="ignore").splitlines():
+            if line.lower().startswith("model name") and ":" in line:
+                return line.split(":", 1)[1].strip()
+    return platform.processor() or "unknown"
+
+
 def required_emscripten() -> str:
     path = Path("tool/build_wasm.sh")
     if not path.is_file():
@@ -35,8 +45,9 @@ def main() -> int:
     git_state = "clean" if status.returncode == 0 and not status.stdout.strip() else "dirty"
 
     print(f"commit={git('rev-parse', '--short', 'HEAD')}")
+    print(f"date={datetime.now().astimezone().isoformat(timespec='seconds')}")
     print(f"platform={platform.system()} {platform.release()} {platform.machine()}")
-    print(f"cpu={platform.processor() or 'unknown'}")
+    print(f"cpu={cpu_name()}")
     print(f"clang={command_line(['clang++', '--version'])}")
     print(f"emscripten_active={command_line(['em++', '--version']) if shutil.which('em++') else 'unavailable'}")
     print(f"emscripten_required={required_emscripten()}")
