@@ -34,7 +34,6 @@ inline constexpr bool operator/(const TranslitOptions& mask, const TranslitOptio
 }
 
 namespace generated = inditrans::generated;
-using ScriptInfo = ScriptMetadataRecord;
 
 namespace {
 
