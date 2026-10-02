@@ -1,6 +1,8 @@
 #pragma once
 
+#include <array>
 #include <cassert>
+#include <cstddef>
 #include <cstdint>
 #include <limits>
 #include <map>
@@ -10,11 +12,57 @@
 
 using namespace std::literals::string_view_literals;
 
-enum class ScriptType : uint8_t { Indic, Tamil, Latin, Others };
+enum class ScriptType : char { Indic = 'i', Tamil = 't', Latin = 'l', Others = 'o' };
+static_assert(sizeof(ScriptType) == sizeof(char));
 
 bool inline isIndicScript(ScriptType script) noexcept {
   return script == ScriptType::Indic || script == ScriptType::Tamil;
 }
+
+using ScriptStringRef = uint16_t;
+
+struct ScriptMetadataRange {
+  uint16_t offset;
+  uint16_t count;
+};
+
+struct ScriptMetadataGroup {
+  ScriptStringRef key;
+  ScriptMetadataRange values;
+};
+
+inline constexpr uint8_t ScriptMetadataFlagVedic = 1;
+
+using ScriptVowels = std::array<ScriptStringRef, 19>;
+using ScriptVowelMarks = std::array<ScriptStringRef, 19>;
+using ScriptConsonants = std::array<ScriptStringRef, 50>;
+using ScriptOtherDiacritics = std::array<ScriptStringRef, 4>;
+using ScriptSymbols = std::array<ScriptStringRef, 13>;
+using ScriptVedicSymbols = std::array<ScriptStringRef, 3>;
+
+struct ScriptCharacterData {
+  ScriptVowels vowels;
+  ScriptVowelMarks vowelMarks;
+  ScriptConsonants consonants;
+  ScriptOtherDiacritics otherDiacritics;
+  ScriptSymbols symbols;
+  ScriptVedicSymbols vedicSymbols;
+};
+
+struct ScriptMetadataRecord {
+  ScriptStringRef name;
+  ScriptType type;
+  uint8_t flags;
+  ScriptCharacterData characters;
+  ScriptMetadataRange aliases;
+  ScriptMetadataRange equivalents;
+  ScriptMetadataRange languages;
+};
+
+static_assert(sizeof(ScriptMetadataRange) == 4);
+static_assert(sizeof(ScriptMetadataGroup) == 6);
+static_assert(sizeof(ScriptCharacterData) == 216);
+static_assert(sizeof(ScriptMetadataRecord) == 232);
 
 enum class TokenType : uint8_t {
   Vowel,
