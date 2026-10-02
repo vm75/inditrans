@@ -40,6 +40,7 @@ PERF_COLD_CASE ?= cold-devanagari-to-telugu
 PERF_REPEATS ?= 5
 PERF_CPU ?=
 COLD_BENCH_SAMPLES ?= 501
+PERF_TOOL_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))tool
 ALLOC_PROBE_SUPPORTED := $(shell test "$$(uname -s 2>/dev/null)" = "Linux" && getconf GNU_LIBC_VERSION >/dev/null 2>&1 && echo 1 || echo 0)
 ifeq ($(ALLOC_PROBE_SUPPORTED),1)
     ALLOC_BENCH_DEPS = $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
@@ -119,11 +120,11 @@ bench-short: $(NATIVE_SHORT_BENCH)
 
 .PHONY: bench-short-repeat
 bench-short-repeat: $(NATIVE_SHORT_BENCH)
-	@python3 tool/repeat_short_bench.py --binary $(NATIVE_SHORT_BENCH) --runs $(PERF_REPEATS) --cpu "$(PERF_CPU)"
+	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(PERF_REPEATS) --cpu "$(PERF_CPU)"
 
 .PHONY: bench-cold
 bench-cold: $(NATIVE_COLD_BENCH)
-	@python3 tool/cold_start_bench.py --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)"
+	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)"
 
 .PHONY: output-size-bench mem-bench
 output-size-bench: $(NATIVE_MEM_BENCH)
@@ -147,7 +148,7 @@ bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_COLD_BENCH) $(NATIVE_M
 	  NR >1 { printf "%-28s  %8s  %9.3f  %9.3f\n",$$1,$$2,$$3/1000,$$4/1000 }'
 	@echo ""
 	@echo "━━━  Cold-start latency  (first transliteration in fresh processes; $(COLD_BENCH_SAMPLES) samples)  ━━━"
-	@python3 tool/cold_start_bench.py --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" | awk -F, '\
+	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" | awk -F, '\
 	  NR==1 { printf "%-30s %8s %8s %9s %9s %s\n","case","bytes","samples","p50_µs","p95_µs","output_fnv1a64" } \
 	  NR>1 { printf "%-30s %8s %8s %9.3f %9.3f %s\n",$$1,$$2,$$5,$$3/1000,$$4/1000,$$7 }'
 	@echo ""
@@ -156,42 +157,14 @@ bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_COLD_BENCH) $(NATIVE_M
 	@echo ""
 	@echo "━━━  Cold allocations  (~1 MiB target; first measured transliteration; Linux/glibc only)  ━━━"
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
-	  printf "%-22s  %8s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n" "mode" "malloc" "calloc" "realloc" "free" "total" "alloc_B" "peak_B" "live_B"; \
-	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
-	    raw=$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $mode 1048576 1 0 2>&1 1>/dev/null); \
-	    echo "$raw" | awk -v m=$mode '\
-	      { \
-	        split($1,a,"="); split(a[2],mc,","); \
-	        split($2,b,"="); split(b[2],cc,","); \
-	        split($3,c,"="); split(c[2],rc,","); \
-	        split($4,d,"="); fc=d[2]; \
-	        split($5,e,"="); lv=e[2]; \
-	        split($6,f,"="); pk=f[2]; \
-	        allb=mc[2]+0+cc[2]+0+rc[2]+0; total=mc[1]+cc[1]+rc[1]; \
-	        printf "%-22s  %8s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n",m,mc[1],cc[1],rc[1],fc,total,allb,pk,lv \
-	      }'; \
-	  done; \
+	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 0 --format table; \
 	else \
 	  echo "  (skipped: allocator probe requires Linux with glibc)"; \
 	fi
 	@echo ""
 	@echo "━━━  Warm allocations  (~1 MiB target; one unmeasured warmup; Linux/glibc only)  ━━━"
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
-	  printf "%-22s  %8s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n" "mode" "malloc" "calloc" "realloc" "free" "total" "alloc_B" "peak_B" "live_B"; \
-	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
-	    raw=$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $mode 1048576 1 1 2>&1 1>/dev/null); \
-	    echo "$raw" | awk -v m=$mode '\
-	      { \
-	        split($1,a,"="); split(a[2],mc,","); \
-	        split($2,b,"="); split(b[2],cc,","); \
-	        split($3,c,"="); split(c[2],rc,","); \
-	        split($4,d,"="); fc=d[2]; \
-	        split($5,e,"="); lv=e[2]; \
-	        split($6,f,"="); pk=f[2]; \
-	        allb=mc[2]+0+cc[2]+0+rc[2]+0; total=mc[1]+cc[1]+rc[1]; \
-	        printf "%-22s  %8s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n",m,mc[1],cc[1],rc[1],fc,total,allb,pk,lv \
-	      }'; \
-	  done; \
+	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 1 --format table; \
 	else \
 	  echo "  (skipped: allocator probe requires Linux with glibc)"; \
 	fi
@@ -205,32 +178,10 @@ bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@printf "" > $(BENCH_BASELINE)-allocs.csv
 	@printf "" > $(BENCH_BASELINE)-allocs-warm.csv
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
-	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
-	    raw=$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $mode 1048576 1 0 2>&1 1>/dev/null); \
-	    echo "$raw" | awk -v m=$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$2+$5+$8,$3+$6+$9,$15,$13 }'; \
-	  done >> $(BENCH_BASELINE)-allocs.csv; \
-	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
-	    raw=$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $mode 1048576 1 1 2>&1 1>/dev/null); \
-	    echo "$raw" | awk -v m=$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$2+$5+$8,$3+$6+$9,$15,$13 }'; \
-	  done >> $(BENCH_BASELINE)-allocs-warm.csv; \
+	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 0 --format csv > $(BENCH_BASELINE)-allocs.csv; \
+	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 1 --format csv > $(BENCH_BASELINE)-allocs-warm.csv; \
 	fi
-	@{ \
-	  cpu=$(lscpu 2>/dev/null | sed -n 's/^Model name:[[:space:]]*//p' | head -n 1); \
-	  if [ -z "$cpu" ] && command -v sysctl >/dev/null 2>&1; then cpu=$(sysctl -n machdep.cpu.brand_string 2>/dev/null || true); fi; \
-	  [ -n "$cpu" ] || cpu=unknown; \
-	  clang=$(clang++ --version 2>/dev/null | head -n 1); [ -n "$clang" ] || clang=unavailable; \
-	  emcc=$(em++ --version 2>/dev/null | head -n 1); [ -n "$emcc" ] || emcc=unavailable; \
-	  emsdk_required=$(sed -n 's/^REQUIRED_EMSDK_VERSION="\([^"]*\)"/\1/p' tool/build_wasm.sh | head -n 1); \
-	  git_state=$(if [ -z "$(git status --porcelain 2>/dev/null)" ]; then echo clean; else echo dirty; fi); \
-	  printf "commit=%s\n" "$(git rev-parse --short HEAD 2>/dev/null || echo unknown)"; \
-	  printf "date=%s\n" "$(date '+%Y-%m-%d %H:%M')"; \
-	  printf "platform=%s\n" "$(uname -srm 2>/dev/null || echo unknown)"; \
-	  printf "cpu=%s\n" "$cpu"; \
-	  printf "clang=%s\n" "$clang"; \
-	  printf "emscripten_active=%s\n" "$emcc"; \
-	  printf "emscripten_required=%s\n" "${emsdk_required:-unknown}"; \
-	  printf "git_state=%s\n" "$git_state"; \
-	} > $(BENCH_BASELINE)-info.txt
+	@python3 "$(PERF_TOOL_DIR)/perf_metadata.py" > $(BENCH_BASELINE)-info.txt
 	@echo "Baseline saved → $(BENCH_BASELINE)-{throughput,latency,allocs,allocs-warm}.csv"
 	@cat $(BENCH_BASELINE)-info.txt
 
@@ -240,13 +191,13 @@ perf-snapshot: $(NATIVE_COLD_BENCH) | out
 	@if [ -z "$(PERF_NAME)" ]; then echo "Set PERF_NAME, for example: make perf-snapshot PERF_NAME=00-baseline"; exit 2; fi
 	@mkdir -p "$(PERF_DIR)"
 	@$(MAKE) bench-save BENCH_BASELINE="$(PERF_DIR)/$(PERF_NAME)"
-	@python3 tool/cold_start_bench.py --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" > "$(PERF_DIR)/$(PERF_NAME)-cold.csv"
+	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" > "$(PERF_DIR)/$(PERF_NAME)-cold.csv"
 	@$(MAKE) -B flutter/assets/inditrans.wasm
 	@python3 -c "from pathlib import Path; print(Path('flutter/assets/inditrans.wasm').stat().st_size)" > "$(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
 	@echo "Wasm size saved → $(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
 
 perf-report:
-	@python3 tool/perf_report.py --dir "$(PERF_DIR)" --baseline "$(PERF_BASELINE)" --latency-case "$(PERF_LATENCY_CASE)" --alloc-case "$(PERF_ALLOC_CASE)" --cold-case "$(PERF_COLD_CASE)"
+	@python3 "$(PERF_TOOL_DIR)/perf_report.py" --dir "$(PERF_DIR)" --baseline "$(PERF_BASELINE)" --latency-case "$(PERF_LATENCY_CASE)" --alloc-case "$(PERF_ALLOC_CASE)" --cold-case "$(PERF_COLD_CASE)"
 
 # Compare current results against the saved baseline. Output mismatches always fail.
 # Performance regressions are reported by default and fail when BENCH_STRICT=1.
