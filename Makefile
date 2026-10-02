@@ -20,6 +20,7 @@ NATIVE_CLI = out/inditrans$(EXEC_EXT)
 NATIVE_TEST = out/inditrans_test$(EXEC_EXT)
 NATIVE_BENCH = out/inditrans_bench$(EXEC_EXT)
 NATIVE_SHORT_BENCH = out/inditrans_short_bench$(EXEC_EXT)
+NATIVE_COLD_BENCH = out/inditrans_cold_bench$(EXEC_EXT)
 NATIVE_MEM_BENCH = out/inditrans_mem_bench$(EXEC_EXT)
 NATIVE_ALLOC_BENCH = out/inditrans_alloc_bench$(EXEC_EXT)
 LINUX_ALLOC_PROBE = out/libinditrans_alloc_probe.so
@@ -123,6 +124,10 @@ bench-short: $(NATIVE_SHORT_BENCH)
 bench-short-repeat: $(NATIVE_SHORT_BENCH)
 	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(PERF_REPEATS) --cpu "$(PERF_CPU)"
 
+.PHONY: bench-cold
+bench-cold: $(NATIVE_COLD_BENCH)
+	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)"
+
 .PHONY: output-size-bench mem-bench
 output-size-bench: $(NATIVE_MEM_BENCH)
 	$(NATIVE_MEM_BENCH)
@@ -132,7 +137,7 @@ mem-bench: output-size-bench
 
 # Run all benchmarks and print a human-readable summary.
 .PHONY: bench-all
-bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_MEM_BENCH) $(ALLOC_BENCH_DEPS)
+bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_COLD_BENCH) $(NATIVE_MEM_BENCH) $(ALLOC_BENCH_DEPS)
 	@echo ""
 	@echo "━━━  Throughput — median ns/call and MB/s  (~32 B / ~4 KiB / ~1 MiB targets; actual bytes shown)  ━━━"
 	@$(NATIVE_BENCH) | awk -F, '\
@@ -143,6 +148,11 @@ bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_MEM_BENCH) $(ALLOC_BEN
 	@$(NATIVE_SHORT_BENCH) | awk -F, '\
 	  NR==1 { printf "%-28s  %8s  %9s  %9s\n","case","bytes","p50_µs","p95_µs" } \
 	  NR >1 { printf "%-28s  %8s  %9.3f  %9.3f\n",$$1,$$2,$$3/1000,$$4/1000 }'
+	@echo ""
+	@echo "━━━  Cold-start latency  (first transliteration in fresh processes; $(COLD_BENCH_SAMPLES) samples)  ━━━"
+	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" | awk -F, '\
+	  NR==1 { printf "%-30s %8s %8s %9s %9s %s\n","case","bytes","samples","p50_µs","p95_µs","output_fnv1a64" } \
+	  NR>1 { printf "%-30s %8s %8s %9.3f %9.3f %s\n",$$1,$$2,$$5,$$3/1000,$$4/1000,$$7 }'
 	@echo ""
 	@echo "━━━  Output size / expansion  (~1 MiB target, devanagari→telugu)  ━━━"
 	@$(NATIVE_MEM_BENCH) | awk -F, '{ printf "  input: %s B   output: %s B   expansion: %.3fx\n",$$2,$$3,$$3/$$2 }'
@@ -181,10 +191,11 @@ bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 
 # Save one cumulative tuning snapshot using the benchmark formats plus raw standalone Wasm size.
 .PHONY: perf-snapshot perf-report
-perf-snapshot: | out
+perf-snapshot: $(NATIVE_COLD_BENCH) | out
 	@if [ -z "$(PERF_NAME)" ]; then echo "Set PERF_NAME, for example: make perf-snapshot PERF_NAME=00-baseline"; exit 2; fi
 	@mkdir -p "$(PERF_DIR)"
 	@$(MAKE) bench-save BENCH_BASELINE="$(PERF_DIR)/$(PERF_NAME)"
+	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" > "$(PERF_DIR)/$(PERF_NAME)-cold.csv"
 	@$(MAKE) -B flutter/assets/inditrans.wasm
 	@python3 -c "from pathlib import Path; print(Path('flutter/assets/inditrans.wasm').stat().st_size)" > "$(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
 	@echo "Wasm size saved → $(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
@@ -301,6 +312,9 @@ $(NATIVE_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/benchmark.cpp
 
 $(NATIVE_SHORT_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/short_call.cpp
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/short_call.cpp -o $@
+
+$(NATIVE_COLD_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/cold_start.cpp | out
+	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_DIR)/bench/cold_start.cpp $(NATIVE_CPP) -o $@
 
 $(NATIVE_MEM_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/memory.cpp
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/memory.cpp -o $@

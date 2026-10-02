@@ -37,6 +37,7 @@ Makefile                Top-level build, test, and publish targets
 - **Run native performance benchmark**: `make bench`
 - **Run per-call latency benchmark**: `make bench-short` (includes returned-string destruction)
 - **Repeat short-call benchmark for stable latency claims**: `make bench-short-repeat` (5 full runs by default; override with `PERF_REPEATS`; optional Linux pinning with `PERF_CPU`)
+- **Measure first-call latency in fresh processes**: `make bench-cold` (four representative paths, 501 samples each by default; override with `COLD_BENCH_SAMPLES`; optional Linux pinning with `PERF_CPU`)
 - **Run output-size/expansion benchmark**: `make output-size-bench` (`make mem-bench` is a compatibility alias)
 - **Run Linux/glibc allocation probe**: `make bench-alloc-linux`
 - **Run all available benchmarks with a formatted summary**: `make bench-all`
@@ -75,7 +76,7 @@ make perf-snapshot PERF_NAME=00-baseline
 make perf-snapshot PERF_NAME=01-buffer-ownership
 make perf-report
 ```
-`perf-snapshot` reuses `bench-save`, force-rebuilds the standalone Wasm artifact, and records its raw byte size. `perf-report` compares every discovered numbered snapshot with `00-baseline`, distinguishes cold from warm allocation metrics, and treats `peak heap` as allocator-probe peak requested live bytes rather than process RSS. Use `bench-short-repeat` when making latency claims; a single snapshot timing is indicative only. See `docs/performance-tuning-plan.md` for the active step-by-step tuning plan.
+`perf-snapshot` reuses `bench-save`, captures the four cold-start paths, force-rebuilds the standalone Wasm artifact, and records its raw byte size. `perf-report` compares every discovered numbered snapshot with `00-baseline`, distinguishes cold from warm allocation metrics, and treats `peak heap` as allocator-probe peak requested live bytes rather than process RSS. Use `bench-short-repeat` when making latency claims; a single snapshot timing is indicative only. See `docs/performance-tuning-plan.md` for the active step-by-step tuning plan.
 
 ### Flutter (`flutter/` directory)
 - **Get dependencies**: `flutter pub get`
