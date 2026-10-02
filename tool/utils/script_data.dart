@@ -53,6 +53,50 @@ class ScriptInfo {
   ScriptInfo(this.type, this.name, this.info);
 }
 
+class MetadataRange {
+  final int offset;
+  final int count;
+
+  MetadataRange(this.offset, this.count);
+}
+
+class MetadataGroup {
+  final String key;
+  final MetadataRange values;
+
+  MetadataGroup(this.key, this.values);
+}
+
+class GeneratedScriptMetadata {
+  final String name;
+  final String type;
+  final bool isVedic;
+  final MetadataRange vowels;
+  final MetadataRange vowelMarks;
+  final MetadataRange consonants;
+  final MetadataRange otherDiacritics;
+  final MetadataRange symbols;
+  final MetadataRange vedicSymbols;
+  final MetadataRange aliases;
+  final MetadataRange equivalents;
+  final MetadataRange languages;
+
+  GeneratedScriptMetadata({
+    required this.name,
+    required this.type,
+    required this.isVedic,
+    required this.vowels,
+    required this.vowelMarks,
+    required this.consonants,
+    required this.otherDiacritics,
+    required this.symbols,
+    required this.vedicSymbols,
+    required this.aliases,
+    required this.equivalents,
+    required this.languages,
+  });
+}
+
 class BinaryBuffer {
   BinaryBuffer() : buffer = StringBuffer();
 
@@ -242,6 +286,192 @@ class ScriptData {
 
     final File genFile = File(path);
     genFile.writeAsStringSync(buffer.buffer.toString());
+
+    writeScriptMetadataHeader('native/src/script_metadata.h');
+  }
+
+  void writeScriptMetadataHeader(String path) {
+    final vowels = <String>[];
+    final vowelMarks = <String>[];
+    final consonants = <String>[];
+    final otherDiacritics = <String>[];
+    final symbols = <String>[];
+    final vedicSymbols = <String>[];
+    final aliases = <String>[];
+    final equivalentGroups = <MetadataGroup>[];
+    final equivalentValues = <String>[];
+    final languageGroups = <MetadataGroup>[];
+    final languageValues = <String>[];
+    final scripts = <GeneratedScriptMetadata>[];
+
+    MetadataRange appendValues(List<String> target, Iterable<dynamic>? source) {
+      final offset = target.length;
+      if (source != null) {
+        target.addAll(source.cast<String>());
+      }
+      return MetadataRange(offset, target.length - offset);
+    }
+
+    MetadataRange appendGroups(
+      List<MetadataGroup> groups,
+      List<String> values,
+      Map<dynamic, dynamic>? source,
+    ) {
+      final offset = groups.length;
+      if (source != null) {
+        final entries = source.entries.toList()
+          ..sort((a, b) => (a.key as String).compareTo(b.key as String));
+        for (final entry in entries) {
+          final range = appendValues(values, (entry.value as List<dynamic>));
+          groups.add(MetadataGroup(entry.key as String, range));
+        }
+      }
+      return MetadataRange(offset, groups.length - offset);
+    }
+
+    for (final entry in scriptInfoList) {
+      final info = entry.info;
+      final String typeCode;
+      if (entry.type == 'vedic') {
+        typeCode = 'v';
+      } else if (entry.type == 'indic') {
+        typeCode = 'i';
+      } else if (entry.type == 'tamil') {
+        typeCode = 't';
+      } else if (entry.type == 'latin') {
+        typeCode = 'l';
+      } else {
+        throw StateError('Unknown script type: ${entry.type}');
+      }
+      scripts.add(GeneratedScriptMetadata(
+        name: entry.name,
+        type: typeCode,
+        isVedic: entry.type == 'vedic',
+        vowels: appendValues(vowels, info['vowels'] as List<dynamic>?),
+        vowelMarks:
+            appendValues(vowelMarks, info['vowelMarks'] as List<dynamic>?),
+        consonants:
+            appendValues(consonants, info['consonants'] as List<dynamic>?),
+        otherDiacritics: appendValues(
+          otherDiacritics,
+          info['otherDiacritics'] as List<dynamic>?,
+        ),
+        symbols: appendValues(symbols, info['symbols'] as List<dynamic>?),
+        vedicSymbols:
+            appendValues(vedicSymbols, info['vedicSymbols'] as List<dynamic>?),
+        aliases: appendValues(aliases, info['aliases'] as List<dynamic>?),
+        equivalents: appendGroups(
+          equivalentGroups,
+          equivalentValues,
+          info['equivalents'] as Map<dynamic, dynamic>?,
+        ),
+        languages: appendGroups(
+          languageGroups,
+          languageValues,
+          info['languages'] as Map<dynamic, dynamic>?,
+        ),
+      ));
+    }
+
+    final buffer = StringBuffer('''#pragma once
+
+#include <array>
+#include <cstdint>
+#include <string_view>
+
+namespace inditrans::generated {
+
+struct ScriptMetadataRange {
+  uint32_t offset;
+  uint32_t count;
+};
+
+struct ScriptMetadataGroup {
+  std::string_view key;
+  ScriptMetadataRange values;
+};
+
+struct ScriptMetadataRecord {
+  std::string_view name;
+  char type;
+  bool isVedic;
+  ScriptMetadataRange vowels;
+  ScriptMetadataRange vowelMarks;
+  ScriptMetadataRange consonants;
+  ScriptMetadataRange otherDiacritics;
+  ScriptMetadataRange symbols;
+  ScriptMetadataRange vedicSymbols;
+  ScriptMetadataRange aliases;
+  ScriptMetadataRange equivalents;
+  ScriptMetadataRange languages;
+};
+
+''');
+
+    void writeStringArray(String name, List<String> values) {
+      buffer.writeln(
+        'inline constexpr std::array<std::string_view, ${values.length}> $name = {',
+      );
+      for (final value in values) {
+        final escaped = value
+            .replaceAll(r'\', r'\\')
+            .replaceAll('"', r'\"')
+            .replaceAll('\n', r'\n')
+            .replaceAll('\r', r'\r')
+            .replaceAll('\t', r'\t');
+        buffer.writeln('  "$escaped",');
+      }
+      buffer.writeln('};\n');
+    }
+
+    void writeGroupArray(String name, List<MetadataGroup> groups) {
+      buffer.writeln(
+        'inline constexpr std::array<ScriptMetadataGroup, ${groups.length}> $name = {',
+      );
+      for (final group in groups) {
+        final escaped = group.key
+            .replaceAll(r'\', r'\\')
+            .replaceAll('"', r'\"')
+            .replaceAll('\n', r'\n')
+            .replaceAll('\r', r'\r')
+            .replaceAll('\t', r'\t');
+        buffer.writeln(
+          '  ScriptMetadataGroup{"$escaped", '
+          '{${group.values.offset}, ${group.values.count}}},',
+        );
+      }
+      buffer.writeln('};\n');
+    }
+
+    writeStringArray('scriptVowels', vowels);
+    writeStringArray('scriptVowelMarks', vowelMarks);
+    writeStringArray('scriptConsonants', consonants);
+    writeStringArray('scriptOtherDiacritics', otherDiacritics);
+    writeStringArray('scriptSymbols', symbols);
+    writeStringArray('scriptVedicSymbols', vedicSymbols);
+    writeStringArray('scriptAliases', aliases);
+    writeStringArray('scriptEquivalentValues', equivalentValues);
+    writeStringArray('scriptLanguageValues', languageValues);
+    writeGroupArray('scriptEquivalentGroups', equivalentGroups);
+    writeGroupArray('scriptLanguageGroups', languageGroups);
+
+    buffer.writeln(
+      'inline constexpr std::array<ScriptMetadataRecord, ${scripts.length}> scriptMetadataScripts = {',
+    );
+    for (final script in scripts) {
+      String range(MetadataRange value) => '{${value.offset}, ${value.count}}';
+      buffer.writeln(
+        '  ScriptMetadataRecord{"${script.name}", \'${script.type}\', '
+        '${script.isVedic ? 'true' : 'false'}, ${range(script.vowels)}, '
+        '${range(script.vowelMarks)}, ${range(script.consonants)}, '
+        '${range(script.otherDiacritics)}, ${range(script.symbols)}, '
+        '${range(script.vedicSymbols)}, ${range(script.aliases)}, '
+        '${range(script.equivalents)}, ${range(script.languages)}},',
+      );
+    }
+    buffer.writeln('};\n\n} // namespace inditrans::generated\n');
+
+    File(path).writeAsStringSync(buffer.toString());
   }
 
   List<ScriptInfo> scriptInfoList = [];
