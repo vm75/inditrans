@@ -171,6 +171,16 @@ def alloc_value(allocation: Allocation | None, index: int) -> int | None:
     return allocation[index] if allocation is not None else None
 
 
+def first_metric(
+    snapshots: list[Snapshot], getter
+) -> tuple[Snapshot | None, int | None]:
+    for snapshot in snapshots:
+        value = getter(snapshot)
+        if value is not None:
+            return snapshot, value
+    return None, None
+
+
 def format_duration(ns: int) -> str:
     if ns < 1_000:
         return f"{ns} ns"
@@ -222,6 +232,24 @@ def render_report(
         "",
     ]
 
+    warm_alloc_ref_snapshot, warm_alloc_ref = first_metric(
+        snapshots, lambda snapshot: alloc_value(snapshot.warm_alloc, 0)
+    )
+    warm_peak_ref_snapshot, warm_peak_ref = first_metric(
+        snapshots, lambda snapshot: alloc_value(snapshot.warm_alloc, 2)
+    )
+
+    if warm_alloc_ref_snapshot is not None and warm_alloc_ref_snapshot is not baseline:
+        lines.extend(
+            [
+                (
+                    f"Warm-allocation deltas use `{warm_alloc_ref_snapshot.name}` as their reference "
+                    "because earlier snapshots do not contain warm-allocation data."
+                ),
+                "",
+            ]
+        )
+
     summary_rows: list[list[str]] = []
     for index, snapshot in enumerate(snapshots):
         cold_allocs = alloc_value(snapshot.cold_alloc, 0)
@@ -246,9 +274,9 @@ def render_report(
                     snapshot.display_name,
                     pct_delta(snapshot.p50_ns, baseline.p50_ns),
                     count_delta(cold_allocs, alloc_value(baseline.cold_alloc, 0)),
-                    count_delta(warm_allocs, alloc_value(baseline.warm_alloc, 0)),
+                    count_delta(warm_allocs, warm_alloc_ref),
                     pct_delta(cold_peak, alloc_value(baseline.cold_alloc, 2)),
-                    pct_delta(warm_peak, alloc_value(baseline.warm_alloc, 2)),
+                    pct_delta(warm_peak, warm_peak_ref),
                     pct_delta(snapshot.wasm_bytes, baseline.wasm_bytes),
                 ]
             )
@@ -259,23 +287,38 @@ def render_report(
         )
     )
 
-    if any(snapshot.cold_p50_ns is not None for snapshot in snapshots):
+    cold_ref_snapshot, cold_ref_p50 = first_metric(snapshots, lambda snapshot: snapshot.cold_p50_ns)
+    if cold_ref_snapshot is not None:
         lines.extend(["", f"## Cold-start latency — `{cold_case}`", ""])
+        if cold_ref_snapshot is not baseline:
+            lines.extend(
+                [
+                    (
+                        f"Reference: `{cold_ref_snapshot.name}` (the earliest snapshot containing this cold case)."
+                    ),
+                    "",
+                ]
+            )
         cold_rows = []
         for index, snapshot in enumerate(snapshots):
+            reference_label = "—"
+            if snapshot.cold_p50_ns is not None:
+                reference_label = (
+                    "baseline"
+                    if cold_ref_snapshot is baseline and snapshot is baseline
+                    else "reference"
+                    if snapshot is cold_ref_snapshot
+                    else pct_delta(snapshot.cold_p50_ns, cold_ref_p50)
+                )
             cold_rows.append(
                 [
                     snapshot.display_name if index else "baseline",
                     format_duration(snapshot.cold_p50_ns) if snapshot.cold_p50_ns is not None else "—",
                     format_duration(snapshot.cold_p95_ns) if snapshot.cold_p95_ns is not None else "—",
-                    (
-                        "baseline"
-                        if index == 0 and snapshot.cold_p50_ns is not None
-                        else pct_delta(snapshot.cold_p50_ns, baseline.cold_p50_ns)
-                    ),
+                    reference_label,
                 ]
             )
-        lines.extend(markdown_table(["Step", "p50", "p95", "p50 vs baseline"], cold_rows))
+        lines.extend(markdown_table(["Step", "p50", "p95", "p50 vs reference"], cold_rows))
 
     lines.extend(["", "## Absolute allocation values", ""])
     allocation_rows = []
