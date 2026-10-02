@@ -67,7 +67,7 @@ The default summary uses:
 - raw standalone Wasm size: `flutter/assets/inditrans.wasm`
 - cold-start p50/p95 in fresh native processes for Devanagari→Telugu, ISO→Devanagari, Devanagari→Tamil, and Indic→ISO
 
-All percentage/count deltas in the progression table are relative to `00-baseline`, not the immediately preceding step. The report also prints absolute values for auditability.
+Percentage/count deltas use `00-baseline` when that metric exists there. Metrics introduced after the original baseline (currently warm allocations and the three additional cold-start cases) use the earliest snapshot containing that metric as their reference. The report identifies that reference and also prints absolute values for auditability.
 
 Override the representative cases when needed:
 
@@ -76,7 +76,7 @@ make perf-report PERF_LATENCY_CASE=latin-input PERF_ALLOC_CASE=latin
 make perf-report PERF_COLD_CASE=cold-iso-to-devanagari
 ```
 
-Existing snapshots that predate warm-allocation capture remain readable; warm fields display as `—`. Snapshot metadata records the commit, platform, CPU, Clang version, Emscripten state/required version, and whether the working tree was clean.
+Existing snapshots that predate warm-allocation capture remain readable; warm fields display as `—` until the first snapshot containing warm data establishes the warm reference. The same rule applies to newly added cold-start cases. Snapshot metadata records the commit, date, platform, CPU, Clang version, Emscripten state/required version, and whether the working tree was clean.
 
 The existing `bench-compare` remains the PR regression gate across all benchmark cases and output hashes. The progression report is complementary: it shows cumulative movement from the original tuning baseline.
 
