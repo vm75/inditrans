@@ -3,35 +3,6 @@ import 'dart:io';
 
 import 'latin_equivalents.dart';
 
-// ignore: leading_newlines_in_multiline_strings
-const headerPrefix = '''#pragma once
-
-#define Z "\\u0000"
-#define E "\\u0001"
-
-#define VEDIC "v\\u0000"
-#define INDIC "i\\u0000"
-#define TAMIL "t\\u0000"
-#define LATIN "l\\u0000"
-
-#define VOWELS "v\\u0000"
-#define VOWELMARKS "m\\u0000"
-#define CONSONANTS "c\\u0000"
-#define OTHERDIACRITICS "o\\u0000"
-#define SYMBOLS "s\\u0000"
-#define VEDICSYMBOLS "S\\u0000"
-#define EQUIVALENTS "E\\u0000"
-#define ALIASES "A\\u0000"
-#define LANGUAGES "l\\u0000"
-
-// clang-format off
-
-''';
-
-const headerSuffix = '''
-// clang-format on
-''';
-
 const Map<String, int?> arrayTypes = {
   'aliases': null,
   'vowels': 19,
@@ -41,9 +12,6 @@ const Map<String, int?> arrayTypes = {
   'symbols': 13,
   'vedicSymbols': 3,
 };
-const List<String> arrayGroupTypes = [
-  'languages',
-];
 
 class ScriptInfo {
   final String type;
@@ -51,61 +19,6 @@ class ScriptInfo {
   final Map<String, dynamic> info;
 
   ScriptInfo(this.type, this.name, this.info);
-}
-
-class BinaryBuffer {
-  BinaryBuffer() : buffer = StringBuffer();
-
-  void write(String str) {
-    buffer.write(str);
-  }
-
-  void writeString(String str) {
-    final escapedStr = str.replaceAll('"', '\\"');
-    buffer.write('"$escapedStr" Z ');
-  }
-
-  List<String> writeArray(
-    String type,
-    List<dynamic> arr,
-    int? len, {
-    required bool needsEquivalent,
-  }) {
-    if (len != null && arr.length != len) {
-      assert(arr.length == len);
-    }
-    final List<String> equivalentList = [];
-    buffer.write('    ${type.toUpperCase()} ');
-    for (final entry in arr) {
-      writeString(entry as String);
-      if (needsEquivalent) {
-        equivalentList.add(entry);
-      }
-    }
-    buffer.write('E\n');
-    return equivalentList;
-  }
-
-  void writeArrayGroup(
-    String type,
-    Map<dynamic, dynamic> equivalents,
-  ) {
-    if (equivalents.isEmpty) {
-      return;
-    }
-
-    buffer.write('    ${type.toUpperCase()}\n');
-    for (final entry in equivalents.entries) {
-      buffer.write('      "${entry.key}" Z ');
-      for (final equivalent in entry.value as List<dynamic>) {
-        writeString(equivalent as String);
-      }
-      buffer.write('E\n');
-    }
-    buffer.write('    E\n');
-  }
-
-  StringBuffer buffer;
 }
 
 class ScriptData {
@@ -187,61 +100,20 @@ class ScriptData {
     }
   }
 
-  void writeScriptInfo(ScriptInfo scriptInfo, BinaryBuffer buffer) {
-    buffer.write('  "${scriptInfo.name}" Z ${scriptInfo.type.toUpperCase()}\n');
-    final Map<dynamic, dynamic> equivalents =
-        (scriptInfo.info['equivalents'] ?? {}) as Map<dynamic, dynamic>;
-    for (final entry in arrayTypes.entries) {
-      if (scriptInfo.info[entry.key] != null) {
-        final needsEquivalent = scriptInfo.type == 'latin';
-        final upperEquivalents = scriptInfo.name == 'iast' ||
-            scriptInfo.name == 'ipa' ||
-            scriptInfo.name == 'iso';
-        final equivalentList = buffer.writeArray(
-          entry.key,
-          scriptInfo.info[entry.key] as List<dynamic>,
-          entry.value,
-          needsEquivalent: needsEquivalent,
-        );
-        for (final equivalent in equivalentList) {
-          addEquivalents(
-            equivalent,
-            equivalents,
-            upperEquivalent: upperEquivalents,
-          );
+  void prepareEquivalents() {
+    for (final script in scriptInfoList) {
+      if (script.type != 'latin') continue;
+      final equivalents =
+          (script.info['equivalents'] ??= {}) as Map<dynamic, dynamic>;
+      final upper =
+          script.name == 'iast' || script.name == 'ipa' || script.name == 'iso';
+      for (final category in arrayTypes.keys) {
+        for (final value
+            in ((script.info[category] as List?) ?? []).cast<String>()) {
+          addEquivalents(value, equivalents, upperEquivalent: upper);
         }
       }
     }
-    for (final entry in arrayGroupTypes) {
-      if (scriptInfo.info[entry] != null) {
-        buffer.writeArrayGroup(
-          entry,
-          scriptInfo.info[entry] as Map<String, dynamic>,
-        );
-      }
-    }
-    if (equivalents.isNotEmpty) {
-      buffer.writeArrayGroup('equivalents', equivalents);
-    }
-
-    buffer.write('  E\n');
-  }
-
-  void writeScriptDataHeader(String path) {
-    final buffer = BinaryBuffer();
-    buffer.write(headerPrefix);
-
-    // scripts
-    buffer.write('const char scriptData[] =\n');
-    for (final entry in scriptInfoList) {
-      writeScriptInfo(entry, buffer);
-    }
-    buffer.write(';\n\n');
-
-    buffer.write(headerSuffix);
-
-    final File genFile = File(path);
-    genFile.writeAsStringSync(buffer.buffer.toString());
   }
 
   List<ScriptInfo> scriptInfoList = [];

@@ -21,6 +21,8 @@ NATIVE_TEST = out/inditrans_test$(EXEC_EXT)
 NATIVE_BENCH = out/inditrans_bench$(EXEC_EXT)
 NATIVE_SHORT_BENCH = out/inditrans_short_bench$(EXEC_EXT)
 NATIVE_COLD_BENCH = out/inditrans_cold_bench$(EXEC_EXT)
+NATIVE_LOOKUP_BENCH = out/inditrans_lookup_bench$(EXEC_EXT)
+NATIVE_LOOKUP_ALLOC_BENCH = out/inditrans_lookup_alloc_bench$(EXEC_EXT)
 NATIVE_MEM_BENCH = out/inditrans_mem_bench$(EXEC_EXT)
 NATIVE_ALLOC_BENCH = out/inditrans_alloc_bench$(EXEC_EXT)
 LINUX_ALLOC_PROBE = out/libinditrans_alloc_probe.so
@@ -88,7 +90,7 @@ $(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
 $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 	clang++ -std=c++23 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
-$(NATIVE_SRC)/script_data.h: tool/script_data.json tool/options.json tool/generate_headers.dart $(GENERATOR_UTILS)
+$(NATIVE_SRC)/script_data.h: tool/script_data.json tool/reader_data.json tool/options.json tool/generate_headers.dart $(GENERATOR_UTILS)
 	dart tool/generate_headers.dart
 
 wasm: flutter/assets/inditrans.wasm js/public/inditrans.js
@@ -115,6 +117,19 @@ test_wasm: flutter/assets/inditrans.wasm
 
 bench: $(NATIVE_BENCH)
 	$(NATIVE_BENCH)
+
+.PHONY: bench-lookup bench-lookup-alloc-linux
+bench-lookup: $(NATIVE_LOOKUP_BENCH)
+	$(NATIVE_LOOKUP_BENCH)
+
+ifeq ($(ALLOC_PROBE_SUPPORTED),1)
+bench-lookup-alloc-linux: $(NATIVE_LOOKUP_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
+	LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_LOOKUP_ALLOC_BENCH) --alloc
+else
+bench-lookup-alloc-linux:
+	@echo "bench-lookup-alloc-linux requires Linux with glibc."
+	@exit 2
+endif
 
 .PHONY: bench-short
 bench-short: $(NATIVE_SHORT_BENCH)
@@ -312,6 +327,12 @@ $(NATIVE_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/benchmark.cpp
 
 $(NATIVE_SHORT_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/short_call.cpp
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/short_call.cpp -o $@
+
+$(NATIVE_LOOKUP_BENCH): $(NATIVE_H) $(NATIVE_DIR)/bench/lookup.cpp | out
+	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_DIR)/bench/lookup.cpp -o $@
+
+$(NATIVE_LOOKUP_ALLOC_BENCH): $(NATIVE_H) $(NATIVE_DIR)/bench/lookup.cpp | out
+	clang++ -std=c++23 -O3 -DNDEBUG -DINDTRANSLIT_ALLOC_PROBE -I $(NATIVE_SRC) $(NATIVE_DIR)/bench/lookup.cpp -ldl -o $@
 
 $(NATIVE_COLD_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/cold_start.cpp | out
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_DIR)/bench/cold_start.cpp $(NATIVE_CPP) -o $@
