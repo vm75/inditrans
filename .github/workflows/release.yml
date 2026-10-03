@@ -20,12 +20,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
-
       - name: Validate versions and changelog
         run: |
-          dart tool/verify_release.dart \
+          python3 tool/verify_release.py \
             --tag=${{ github.ref_name }} \
             --extract-changelog=release_notes.md
 
@@ -55,9 +52,6 @@ jobs:
             binutils-mingw-w64-x86-64 \
             mingw-w64-x86-64-dev \
             wine64
-
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -111,7 +105,7 @@ jobs:
 
       - name: Verify compiled artifacts and packaging dry-runs
         run: |
-          dart tool/verify_release.dart \
+          python3 tool/verify_release.py \
             --tag=${{ github.ref_name }} \
             --check-artifacts \
             --check-packages

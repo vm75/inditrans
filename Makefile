@@ -3,10 +3,10 @@ default: all
 all: native wasm flutter
 
 version:
-	dart ./tool/bump_version.dart
+	python3 ./tool/bump_version.py
 
 validate:
-	dart ./tool/verify_release.dart
+	python3 ./tool/verify_release.py
 
 ifeq ($(OS), Windows_NT)
     EXEC_EXT = .exe
@@ -56,7 +56,7 @@ NATIVE_H = $(wildcard $(NATIVE_SRC)/*.h)
 NATIVETEST_DIR = $(NATIVE_DIR)/tests
 NATIVETEST_CC = $(wildcard $(NATIVE_DIR)/tests/*.cpp)
 NATIVETEST_H = $(wildcard $(NATIVE_DIR)/tests/*.h)
-GENERATOR_UTILS = $(wildcard tool/utils/*.dart)
+GENERATOR_UTILS = $(wildcard tool/python/*.py)
 EXAMPLE_DART = flutter/example.dart
 
 # build
@@ -90,8 +90,8 @@ $(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
 $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 	clang++ -std=c++23 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
-$(NATIVE_SRC)/script_data.h: tool/script_data.json tool/reader_data.json tool/options.json tool/generate_headers.dart $(GENERATOR_UTILS)
-	dart tool/generate_headers.dart
+$(NATIVE_SRC)/script_data.h: tool/script_data.json tool/reader_data.json tool/options.json docs/extended-latin.txt tool/generate_headers.py $(GENERATOR_UTILS)
+	python3 tool/generate_headers.py
 
 wasm: flutter/assets/inditrans.wasm js/public/inditrans.js
 
@@ -101,8 +101,8 @@ flutter/assets/inditrans.wasm: $(NATIVE_CPP) $(NATIVE_H)
 js/public/inditrans.js: $(NATIVE_CPP) $(NATIVE_H) js/src/inditrans.post.js
 	./tool/build_wasm.$(SCRIPT_EXT) js
 
-flutter/lib/src/bindings.dart: $(NATIVE_SRC)/exports.h
-	dart tool/generate_bindings.dart
+flutter/lib/src/bindings.dart: $(NATIVE_SRC)/exports.h tool/generate_bindings.py
+	python3 tool/generate_bindings.py
 
 flutter: flutter/lib/src/bindings.dart flutter/assets/inditrans.wasm
 
