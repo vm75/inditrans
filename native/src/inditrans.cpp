@@ -6,6 +6,7 @@
 #include <limits>
 #include <memory>
 #include <optional>
+#include <span>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -298,19 +299,17 @@ public:
       : name(name)
       , scriptInfo(scriptInfo)
       , scriptType(scriptInfo.type) {
-    addCharMap(name, TokenType::Vowel, scriptType, scriptInfo.vowels.data(), scriptInfo.vowels.size());
-    addCharMap(name, TokenType::VowelMark, scriptType, scriptInfo.vowelMarks.data(), scriptInfo.vowelMarks.size());
-    addCharMap(name, TokenType::Consonant, scriptType, scriptInfo.consonants.data(), scriptInfo.consonants.size());
-    addCharMap(name, TokenType::OtherDiacritic, scriptType, scriptInfo.otherDiacritics.data(),
-        scriptInfo.otherDiacritics.size());
-    addCharMap(name, TokenType::Symbol, scriptType, scriptInfo.symbols.data(), scriptInfo.symbols.size());
-    addCharMap(
-        name, TokenType::VedicSymbol, scriptType, scriptInfo.vedicSymbols.data(), scriptInfo.vedicSymbols.size());
+    addCharMap(TokenType::Vowel, scriptInfo.vowels);
+    addCharMap(TokenType::VowelMark, scriptInfo.vowelMarks);
+    addCharMap(TokenType::Consonant, scriptInfo.consonants);
+    addCharMap(TokenType::OtherDiacritic, scriptInfo.otherDiacritics);
+    addCharMap(TokenType::Symbol, scriptInfo.symbols);
+    addCharMap(TokenType::VedicSymbol, scriptInfo.vedicSymbols);
     if (isIndicScript(scriptType)) {
-      addCharMap(name, TokenType::Accent, scriptType, VedicAccents.data(), VedicAccents.size());
-      addCharMap(name, TokenType::ExclusiveSymbol, scriptType, ExclusiveSymbols.data(), ExclusiveSymbols.size());
+      addCharMap(TokenType::Accent, VedicAccents);
+      addCharMap(TokenType::ExclusiveSymbol, ExclusiveSymbols);
     } else {
-      addCharMap(name, TokenType::Accent, scriptType, LatinAccents.data(), LatinAccents.size());
+      addCharMap(TokenType::Accent, LatinAccents);
     }
   }
 
@@ -331,20 +330,15 @@ public:
   bool isVedic() const noexcept { return scriptInfo.isVedic; }
 
 private:
-  void addCharMap(const std::string_view name, TokenType tokenType, ScriptType scriptType, const std::string_view* map,
-      size_t count) noexcept {
-    auto& charMap = charMaps[static_cast<size_t>(tokenType)];
-    charMap.reserve(count);
-    for (size_t idx = 0; idx < count; idx++) {
-      charMap.emplace_back(map[idx]);
-    }
+  void addCharMap(TokenType tokenType, std::span<const std::string_view> map) noexcept {
+    charMaps[static_cast<size_t>(tokenType)] = map;
   }
 
 private:
   const std::string_view name;
   const ScriptInfo& scriptInfo;
   ScriptType scriptType;
-  std::array<std::vector<std::string_view>, 8> charMaps {};
+  std::array<std::span<const std::string_view>, 8> charMaps {};
 };
 
 using TokenOrString = std::variant<ScriptToken, std::string_view>;
