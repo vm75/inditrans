@@ -1194,7 +1194,7 @@ std::unique_ptr<OutputWriter> getOutputWriter(std::string_view to, TranslitOptio
 }
 
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
-    TranslitOptions options, std::unique_ptr<char>& output, const std::string_view& skipStart,
+    TranslitOptions options, TranslitBuffer& output, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
   if (from == to) {
     return false;
@@ -1222,7 +1222,7 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
 
 std::string transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, const std::string_view& skipStart, const std::string_view& skipEnd) noexcept {
-  std::unique_ptr<char> output;
+  TranslitBuffer output;
   if (!transliterate(input, from, to, options, output, skipStart, skipEnd)) {
     return std::string();
   }
@@ -1235,7 +1235,7 @@ extern "C" {
 /// transliterate
 char* CALL_CONV transliterate(const char* input, const char* from, const char* to, unsigned long options,
     const char* skipStart, const char* skipEnd) {
-  std::unique_ptr<char> output;
+  TranslitBuffer output;
   std::string_view inputView(input);
   std::string_view skipStartView(skipStart);
   std::string_view skipEndView(skipEnd);
@@ -1252,9 +1252,7 @@ int CALL_CONV isScriptSupported(const char* script) { return ScriptData::getScri
 
 /// releaseBuffer
 void CALL_CONV releaseBuffer(char* buffer) {
-  if (buffer) {
-    delete[] buffer;
-  }
+  std::free(buffer);
 }
 
 } // extern "C"

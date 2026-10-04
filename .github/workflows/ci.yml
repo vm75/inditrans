@@ -73,10 +73,7 @@ jobs:
 
       - name: Run AddressSanitizer, LeakSanitizer, and UBSan
         env:
-          # The malloc/realloc vs delete ownership mismatch predates this benchmark PR
-          # and is tracked by the C++23 performance plan's P1 ownership correction.
-          # Keep leak, bounds, use-after-free, and UB checks enabled in the meantime.
-          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1:alloc_dealloc_mismatch=0
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
           LSAN_OPTIONS: exitcode=23
           UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
         run: ./out/inditrans_sanitize_test
