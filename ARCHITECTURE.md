@@ -31,7 +31,7 @@ still allocates its input token vector and output buffer.
 | InputReader | `native/src/inditrans.cpp` | Scan into `vector<TokenOrString>`, then group tokens into `TokenUnit` objects |
 | OutputWriter | `native/src/inditrans.cpp` | Apply output rules and append graphemes to `Utf8StringBuilder` |
 | UTF-8 helpers | `native/src/utf.h` | UTF-8 encoding/decoding and output-buffer ownership |
-| Generator | `tool/generate_headers.dart`, `tool/utils/static_scripts.dart` | Resolve script semantics before C++ compilation |
+| Generator | `tool/generate_headers.py`, `tool/python/static_scripts.py` | Resolve script semantics before C++ compilation |
 | Canonical input | `tool/script_data.json`, `tool/reader_data.json` | Script spellings/aliases/equivalents; accents, exclusive symbols, Tamil prefixes |
 | Wrappers | `flutter/lib/inditrans.dart`, `nodejs/src/index.ts` | Public APIs, role checks, native/Wasm calls and result release |
 
@@ -53,7 +53,7 @@ are absent from the production transliteration dependency path.
 
 ### Script table (`script_data.h`)
 
-Run `dart tool/generate_headers.dart` from the repository root after changing
+Run `python3 tool/generate_headers.py` from the repository root after changing
 canonical data. Never edit the generated header or Dart/TypeScript script and
 option enums by hand.
 
@@ -70,7 +70,7 @@ production runtime data. Checked capacities select 16- or 32-bit trie indices;
 other compact fields fail generation/compilation on overflow.
 
 Writer strings share a UTF-8 pool. Each target's descriptor holds eight
-compile-time spans of `string_view` entries, an empty `Ignore` slot, its script
+compile-time spans of compact offset/length entries, an empty `Ignore` slot, its script
 type, and Vedic flag. Accent/exclusive-symbol tables and identical class arrays
 are shared.
 

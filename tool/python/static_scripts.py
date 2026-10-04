@@ -1,0 +1,356 @@
+"""Resolve transliteration reader data and emit the generated C++ tables.
+
+This module intentionally performs the old reader/equivalent expansion while
+generating the header. Runtime reader construction and Unicode parsing stay
+out of the engine. Keep all ordering explicit: it determines terminal IDs,
+sequence offsets, source masks, and therefore the compiled lookup tables.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+import json
+from pathlib import Path
+
+from .codegen_data import ScriptInfo
+
+
+CLASSES = ["vowels", "vowelMarks", "consonants", "otherDiacritics", "accents",
+           "symbols", "vedicSymbols", "exclusiveSymbols"]
+TOKEN_TYPES = ["Vowel", "VowelMark", "Consonant", "OtherDiacritic", "Accent",
+               "Symbol", "VedicSymbol", "ExclusiveSymbol"]
+TYPE_CHARS = "vmcoasSx"
+SEQUENCE_OFFSET_BITS = 12
+
+
+@dataclass(frozen=True)
+class Token:
+    type: int
+    index: int
+    script: str
+
+    @property
+    def key(self) -> str:
+        return f"{self.type}:{self.index}:{self.script}"
+
+    @property
+    def cpp(self) -> str:
+        return f"{{TokenType::{TOKEN_TYPES[self.type]}, {self.index}, ScriptType::{self.script}}}"
+
+
+@dataclass(frozen=True)
+class ReaderToken:
+    lead: Token
+    extra: tuple[Token, ...] = ()
+
+    @property
+    def emitted_key(self) -> str:
+        return "|".join(token.key for token in (self.lead, *self.extra))
+
+
+@dataclass(frozen=True)
+class Match:
+    token: ReaderToken | None
+    length: int
+
+
+@dataclass(frozen=True)
+class Range:
+    begin: int
+    count: int
+
+
+def utf8_key(text: str) -> bytes:
+    return text.encode("utf-8")
+
+
+def cpp_string(text: str) -> str:
+    """Escape each UTF-8 byte separately to avoid C++ hex-escape ambiguity."""
+    return '"' + "".join(f"\\x{byte:02x}" for byte in utf8_key(text)) + '"'
+
+
+class StaticScripts:
+    """Build deduplicated reader tries, writer maps, and Tamil-prefix keys."""
+
+    def __init__(self, scripts: list[ScriptInfo], constants_path: str | Path):
+        self.scripts = scripts
+        self.constants = json.loads(Path(constants_path).read_text(encoding="utf-8"))
+        self.audit: list[dict] = []
+        self.sequences: list[list[Token]] = [[]]  # Sequence zero is the no-match value.
+        self.sequence_offset = 1  # Low bits hold token offsets; zero stays reserved.
+        self.sequence_ids: dict[str, int] = {}
+
+    def script_type(self, script: ScriptInfo) -> str:
+        if script.category == "latin":
+            return "Latin"
+        return "Tamil" if script.category == "tamil" else "Indic"
+
+    def chars(self, script: ScriptInfo, kind: str) -> list[str]:
+        if kind == "accents":
+            return self.constants["LatinAccents" if script.category == "latin" else "VedicAccents"]
+        if kind == "exclusiveSymbols":
+            return [] if script.category == "latin" else self.constants["ExclusiveSymbols"]
+        return script.info.get(kind, [])
+
+    def _add(self, table: dict[str, ReaderToken], spelling: str, token: ReaderToken, mode: str) -> None:
+        if not spelling:
+            return
+        old = table.get(spelling)
+        if old is None:
+            table[spelling] = token
+        elif old.emitted_key != token.emitted_key:
+            self.audit.append({"mode": mode, "spelling": spelling,
+                               "winner": old.emitted_key, "ignored": token.emitted_key})
+
+    def _add_base(self, table: dict[str, ReaderToken], script: ScriptInfo, mode: str) -> None:
+        for kind, category in enumerate(CLASSES):
+            for index, spelling in enumerate(self.chars(script, category)):
+                if script.category == "latin" and kind == 1 and index != 0:
+                    continue
+                token = Token(kind, index, self.script_type(script))
+                self._add(table, spelling, ReaderToken(token), mode)
+
+    @staticmethod
+    def _fold_ascii(text: str) -> str:
+        return "".join(chr(ord(char) + 32) if "A" <= char <= "Z" else char for char in text)
+
+    def _match(self, table: dict[str, ReaderToken], text: str, fold: bool) -> Match:
+        # Generator keys are valid Unicode. Longest-prefix selection matches the
+        # former reader's byte-based lookup, including ASCII-only case folding.
+        for length in range(len(text), 0, -1):
+            candidate = text[:length]
+            token = table.get(self._fold_ascii(candidate) if fold else candidate)
+            if token is not None:
+                return Match(token, length)
+        return Match(None, 0)
+
+    def _reader(self, script: ScriptInfo, fold: bool = False) -> dict[str, ReaderToken]:
+        table: dict[str, ReaderToken] = {}
+        mode = script.name + (":folded" if fold else "")
+        self._add_base(table, script, mode)
+        equivalents = script.info.get("equivalents", {})
+        for target in sorted(equivalents, key=utf8_key):
+            token: ReaderToken | None = None
+            if len(target) >= 3 and target[1] == ":":
+                kind = TYPE_CHARS.find(target[0])
+                if kind < 0:
+                    continue
+                token = ReaderToken(Token(kind, int(target[2:]) & 255, self.script_type(script)))
+            else:
+                rest = target
+                lead = self._match(table, rest, fold)
+                if lead.token is not None:
+                    extra = []
+                    rest = rest[lead.length:]
+                    while rest:
+                        next_match = self._match(table, rest, fold)
+                        if next_match.token is None:
+                            break
+                        # Legacy expansion emits the lead token of each following match.
+                        extra.append(next_match.token.lead)
+                        rest = rest[next_match.length:]
+                    token = ReaderToken(lead.token.lead, tuple(extra)) if extra else lead.token
+                    if rest:
+                        self.audit.append({"mode": mode, "partialTarget": target, "remainder": rest})
+            if token is None:
+                self.audit.append({"mode": mode, "unresolvedTarget": target})
+                continue
+            for alias in equivalents[target]:
+                self._add(table, alias, token, mode)
+        return table
+
+    def _sequence(self, token: ReaderToken) -> int:
+        if token.emitted_key in self.sequence_ids:
+            return self.sequence_ids[token.emitted_key]
+        tokens = [token.lead, *token.extra]
+        if (self.sequence_offset + len(tokens) > 1 << SEQUENCE_OFFSET_BITS
+                or len(tokens) >= 1 << (16 - SEQUENCE_OFFSET_BITS)):
+            raise ValueError("Token sequence exceeds the 16-bit span capacity")
+        result = self.sequence_offset | (len(tokens) << SEQUENCE_OFFSET_BITS)
+        self.sequence_offset += len(tokens)
+        self.sequences.append(tokens)
+        self.sequence_ids[token.emitted_key] = result
+        return result
+
+    @staticmethod
+    def _check16(value: int, what: str) -> None:
+        if value > 65535:
+            raise ValueError(f"{what} exceeds 16-bit capacity")
+
+    @staticmethod
+    def _array(output: list[str], cpp_type: str, name: str, values: list[str]) -> None:
+        output.append(f"inline constexpr std::array<{cpp_type}, {len(values)}> {name} {{{{")
+        output.extend(f"    {value}," for value in values)
+        output.append("}};\n")
+
+    def _prefix_key(self, unit: list[Token]) -> int:
+        lead = unit[0]
+        value = lead.type | (lead.index << 4) | (["Indic", "Tamil", "Latin", "Others"].index(lead.script) << 12)
+        for slot, token in enumerate(unit[1:]):
+            value |= (token.type | (token.index << 4)) << (14 + slot * 12)
+        return value
+
+    def write_header(self, path: str | Path) -> None:
+        if len(self.scripts) > 32:
+            raise ValueError("source mask capacity exceeded")
+        explicit = [self._reader(script) for script in self.scripts]
+        folded = [self._reader(script, True) if script.name in {"iast", "iso"} else explicit[i]
+                  for i, script in enumerate(self.scripts)]
+        devanagari = next(i for i, script in enumerate(self.scripts) if script.name == "devanagari")
+
+        indic = dict(explicit[devanagari])
+        ordered = sorted(self.scripts, key=lambda script: script.name.lower())
+        for script in ordered:
+            if script.name != "devanagari" and script.category != "latin":
+                self._add_base(indic, script, "indic")
+
+        # Merge equal token sequences into source masks, retaining alternatives
+        # only when a spelling maps to different tokens across source scripts.
+        non_roman: dict[str, dict[int, int]] = {}
+        for source, script in enumerate(self.scripts):
+            if script.category == "latin":
+                continue
+            for spelling, token in explicit[source].items():
+                sequence = self._sequence(token)
+                variants = non_roman.setdefault(spelling, {})
+                variants[sequence] = variants.get(sequence, 0) | (1 << source)
+        for spelling in indic:
+            non_roman.setdefault(spelling, {})
+
+        keys = sorted(non_roman, key=utf8_key)
+        terminals: list[str] = []
+        alternatives: list[str] = []
+        union: dict[str, int] = {}
+        for spelling in keys:
+            variants = list(non_roman[spelling].items())
+            primary = variants[0] if variants else (0, 0)
+            begin = len(alternatives)
+            alternatives.extend(f"{{{mask}u, {sequence}}}" for sequence, mask in variants[1:])
+            unrestricted = self._sequence(indic[spelling]) if spelling in indic else 0
+            terminals.append(f"{{{primary[1]}u, {primary[0]}, {unrestricted}, "
+                             f"{{{begin}, {max(len(variants) - 1, 0)}}}}}")
+            union[spelling] = len(terminals)
+        self._check16(len(terminals), "terminal IDs")
+        self._check16(len(alternatives), "source variants")
+
+        graphs = [union]
+        readers = []
+        for index, script in enumerate(self.scripts):
+            if script.category != "latin":
+                readers.append(f"{{0, 0, {1 << index}u}}")
+                continue
+            normal = {key: self._sequence(token) for key, token in explicit[index].items()}
+            fold = {key: self._sequence(token) for key, token in folded[index].items()}
+            normal_id = len(graphs)
+            graphs.append(normal)
+            folded_id = normal_id
+            if normal != fold:
+                folded_id = len(graphs)
+                graphs.append(fold)
+            readers.append(f"{{{normal_id}, {folded_id}, 0}}")
+
+        # Pool identical output strings. WriterChar stores UTF-8 byte offsets,
+        # so the generated C++ table is independent of source-file encoding.
+        text_pool: list[str] = []
+        text_refs: dict[str, Range] = {}
+        pool_bytes = 0
+
+        def text_ref(value: str) -> Range:
+            nonlocal pool_bytes
+            if value not in text_refs:
+                encoded = utf8_key(value)
+                text_refs[value] = Range(pool_bytes, len(encoded))
+                text_pool.append(f"    {cpp_string(value)}")
+                pool_bytes += len(encoded)
+                self._check16(pool_bytes, "writer string pool")
+            return text_refs[value]
+
+        char_entries: list[str] = []
+        ranges: dict[str, Range] = {}
+        writers: list[str] = []
+        for script in self.scripts:
+            script_ranges = []
+            for kind in CLASSES:
+                array = self.chars(script, kind)
+                array_key = json.dumps(array, ensure_ascii=False, separators=(",", ":"))
+                if array_key not in ranges:
+                    begin = len(char_entries)
+                    for value in array:
+                        ref = text_ref(value)
+                        if ref.count > 255:
+                            raise ValueError("writer char length exceeds uint8_t")
+                        char_entries.append(f"{{{ref.begin}, {ref.count}}}")
+                    self._check16(len(char_entries), "writer entries")
+                    ranges[array_key] = Range(begin, len(array))
+                item = ranges[array_key]
+                script_ranges.append(f"std::span{{writerChars}}.subspan({item.begin}, {item.count})")
+            writers.append(f"{{ScriptType::{self.script_type(script)}, {str(script.category == 'vedic').lower()}, "
+                            f"{{{{{', '.join(script_ranges)}}}}}}}")
+
+        names = {script.name.lower(): i for i, script in enumerate(self.scripts)}
+        for i, script in enumerate(self.scripts):
+            for alias in script.info.get("aliases", []):
+                names.setdefault(alias.lower(), i)
+        sorted_names = sorted(names)
+
+        output = ["// GENERATED by tool/generate_headers.py. Do not edit.", "#pragma once", "",
+                  '#include "static_script_types.h"', "", "namespace inditrans::static_data {"]
+        output += ["inline constexpr char writerText[] =", *text_pool, ";\n"]
+        self._array(output, "WriterChar", "writerChars", char_entries)
+        self._array(output, "ScriptWriterMap", "writers", writers)
+        self._array(output, "ScriptName", "names",
+                    [f'{{"{name}", {names[name]}}}' for name in sorted_names])
+        self._array(output, "ReaderInfo", "readerInfo", readers)
+        output += [f"inline constexpr size_t devanagariId = {devanagari};",
+                   f"inline constexpr size_t tamilId = {next(i for i, s in enumerate(self.scripts) if s.name == 'tamil')};",
+                   "",
+                   f"inline constexpr unsigned sequenceOffsetBits = {SEQUENCE_OFFSET_BITS};\n"]
+        flat_tokens = ["{TokenType::Ignore, 255, ScriptType::Others}"]
+        flat_tokens.extend(token.cpp for sequence in self.sequences for token in sequence)
+        self._check16(len(flat_tokens), "sequence token offsets")
+        self._array(output, "ScriptToken", "sequenceTokens", flat_tokens)
+        self._array(output, "SourceTerminal", "sourceTerminals", terminals)
+        self._array(output, "SourceVariant", "sourceAlternatives", alternatives)
+
+        capacity = max(1, *(1 + sum(len(utf8_key(key)) for key in graph) for graph in graphs))
+        output.append(f"using ReaderIndex = SmallestIndex<{capacity * 2}>;\n")
+        for index, graph in enumerate(graphs):
+            graph_keys = sorted(graph, key=utf8_key)
+            entries = [f"{{{cpp_string(key)}, {graph[key]}}}" for key in graph_keys]
+            self._array(output, "TrieEntry<uint8_t>", f"readerEntries{index}", entries)
+            output.append(f"inline constexpr auto readerTrie{index} = makeStaticTrie<readerEntries{index}, ReaderIndex>();\n")
+        self._array(output, "TrieView<uint8_t, ReaderIndex>", "readerTries",
+                    [f"readerTrie{i}.view()" for i in range(len(graphs))])
+
+        tamil_index = next(i for i, script in enumerate(self.scripts) if script.name == "tamil")
+        tamil_reader = explicit[tamil_index]
+        prefix_keys = []
+        for prefix in self.constants["TamilPrefixes"]:
+            rest = prefix
+            units: list[list[Token]] = []
+            while rest:
+                match = self._match(tamil_reader, rest, False)
+                if match.token is None:
+                    raise ValueError(f"Unrecognized Tamil prefix {prefix}")
+                token = match.token.lead
+                if token.type in (0, 2, 5, 7):
+                    units.append([token, Token(8, 255, "Others"), Token(8, 255, "Others"), Token(8, 255, "Others")])
+                else:
+                    slot = {1: 1, 3: 2, 4: 3}.get(token.type, -1)
+                    if slot > 0:
+                        units[-1][slot] = token
+                rest = rest[match.length:]
+            prefix_keys.append([self._prefix_key(unit) for unit in units])
+        prefix_keys.sort()
+        for i, keys_for_prefix in enumerate(prefix_keys):
+            self._array(output, "uint64_t", f"tamilPrefix{i}", [f"{key}ull" for key in keys_for_prefix])
+        tamil_entries = [f"{{tamilPrefix{i}, 1}}" for i in range(len(prefix_keys))]
+        self._array(output, "TrieEntry<uint64_t>", "tamilEntries", tamil_entries)
+        output += ["inline constexpr auto tamilTrie = makeStaticTrie<tamilEntries>();",
+                   "",
+                   "} // namespace inditrans::static_data", ""]
+
+        Path(path).write_text("\n".join(output), encoding="utf-8")
+        audit_path = Path("out/static-lookup-collisions.json")
+        audit_path.parent.mkdir(parents=True, exist_ok=True)
+        audit_path.write_text(json.dumps(self.audit, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

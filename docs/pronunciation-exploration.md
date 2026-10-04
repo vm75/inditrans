@@ -91,7 +91,7 @@ The live tokenizer uses `Char32Trie<ScriptToken>` in `utilities.h`: Unicode scal
 
 [char_trie.h](../native/src/char_trie.h) contains an unused packed structure with 16-bit keys/offsets. It is not evidence of a working generated static-trie pipeline. Its token reconstruction argument order is suspicious, and packed layout, offset limits, endianness, and alignment would need validation before reuse. A lexicon with tens of thousands of entries should not inherit these limits accidentally.
 
-[generate_headers.dart](../tool/generate_headers.dart) and [script_data.dart](../tool/utils/script_data.dart) are the actual data-generation path. They serialize the editable JSON tables, generate script/option declarations, and add selected Latin equivalents. They provide a useful authoring/build pattern for optional linguistic data. They do not implement universal Unicode normalization or generate a pronunciation model.
+[generate_headers.py](../tool/generate_headers.py) and [codegen_data.py](../tool/python/codegen_data.py) are the actual data-generation path. They serialize the editable JSON tables, generate script/option declarations, and add selected Latin equivalents. They provide a useful authoring/build pattern for optional linguistic data. They do not implement universal Unicode normalization or generate a pronunciation model.
 
 The virtual `indic` reader combines non-Latin script maps. That supports mixed **scripts**, not mixed-language interpretation. It retains only the broad script family on tokens. Source-script identity must be retained separately if a later resolver needs to distinguish Bengali and Devanagari inside that input.
 
@@ -715,7 +715,7 @@ Generated implementation files were not hand-edited or used as substitutes for t
 The repository documentation audit was run before and after writing, as an index. Local Markdown links and section anchors were checked, and the new file was checked for whitespace errors. The release validator was executed using the installed SDK directly:
 
 ```text
-/home/shasak/.local/share/flutter/bin/cache/dart-sdk/bin/dart tool/verify_release.dart
+python3 tool/verify_release.py
 ```
 
 It passed for version `0.13.0`, checking manifest agreement, changelog presence, and artifact existence. That validation does not prove artifact/source parity or pronunciation correctness. Runtime tests and performance benchmarks were not run because this deliverable changes research documentation only. Language coverage, model quality, runtime costs, and the performance of extracted policies remain explicitly unmeasured design questions.
