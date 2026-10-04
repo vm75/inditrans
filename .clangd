@@ -1,0 +1,23 @@
+CompileFlags:
+  Add:
+    - -std=c++23
+
+Diagnostics:
+  UnusedIncludes: None
+
+---
+If:
+  PathMatch: native/tests/.*
+CompileFlags:
+  Add:
+    - -I../src
+    - -I.
+    - -DBOOST_UT_DISABLE_MODULE
+
+---
+If:
+  PathMatch: native/bench/.*
+CompileFlags:
+  Add:
+    - -I../src
+    - -I.
