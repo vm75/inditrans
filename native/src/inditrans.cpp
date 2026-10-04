@@ -469,6 +469,7 @@ private:
   TamilPrefixLookup::LookupState prefixLookupState { };
 };
 
+template <typename Sink>
 class OutputWriter {
 public:
   virtual ~OutputWriter() = default;
@@ -499,12 +500,11 @@ public:
     }
   }
 
-  Utf8StringBuilder& text() noexcept { return buffer; }
 
-  OutputWriter(const ScriptWriterMap& map, const TranslitOptions options, size_t inputSize) noexcept
+  OutputWriter(const ScriptWriterMap& map, const TranslitOptions options, Sink& sink) noexcept
       : map(map)
-      , options(options) {
-    buffer.reserve(inputSize);
+      , options(options)
+      , buffer(sink) {
     setNasalConsonantSize();
   }
 
@@ -701,14 +701,15 @@ protected:
 private:
   const ScriptWriterMap& map;
   const TranslitOptions options;
-  Utf8StringBuilder buffer { };
+  Sink& buffer;
   bool wordStart { true };
   TamilPrefixLookup prefixLookup;
   TamilPrefixLookup::LookupState prefixLookupState { };
 };
 
-bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
-    TranslitOptions options, TranslitBuffer& output, const std::string_view& skipStart,
+template <typename Sink>
+bool transliterate_core(const std::string_view& input, const std::string_view& from, const std::string_view& to,
+    TranslitOptions options, Sink& sink, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
   if (from == to) {
     return false;
@@ -726,7 +727,7 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
   if (writerMap->getType() == ScriptType::Indic && !writerMap->isVedic()) {
     options = options | TranslitOptions::IgnoreVedicAccents;
   }
-  OutputWriter writer(*writerMap, options, input.length() + 1);
+  OutputWriter<Sink> writer(*writerMap, options, sink);
 
   TokenUnitOrString curr = (reader.hasMore() ? reader.getNext() : endOfText);
   while (curr != endOfText) {
@@ -735,19 +736,53 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
     curr = next;
   }
 
-  output.reset(writer.text().release());
-
   return true;
+}
+
+bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
+    TranslitOptions options, TranslitBuffer& output, const std::string_view& skipStart,
+    const std::string_view& skipEnd) noexcept {
+  Utf8StringBuilder sink;
+  sink.reserve(input.length() + 1);
+  if (!transliterate_core(input, from, to, options, sink, skipStart, skipEnd)) {
+    return false;
+  }
+  output.reset(sink.release());
+  return true;
+}
+
+struct StdStringSink {
+  std::string& str;
+  StdStringSink(std::string& s) : str(s) {}
+  void operator+=(char ch) { str += ch; }
+  void operator+=(std::string_view view) { str += view; }
+  size_t size() const { return str.size(); }
+  Utf8Char back() const {
+    auto len = UtfUtils::prevCharLen(str.data() + str.size());
+    return Utf8Char(str.data() + str.size() - len);
+  }
+  void pop_back() {
+    auto len = UtfUtils::prevCharLen(str.data() + str.size());
+    str.resize(str.size() - len);
+  }
+};
+
+bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
+    TranslitOptions options, std::string& output, const std::string_view& skipStart,
+    const std::string_view& skipEnd) noexcept {
+  output.reserve(input.length() + 1);
+  StdStringSink sink(output);
+  return transliterate_core(input, from, to, options, sink, skipStart, skipEnd);
 }
 
 std::string transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, const std::string_view& skipStart, const std::string_view& skipEnd) noexcept {
-  TranslitBuffer output;
+  std::string output;
   if (!transliterate(input, from, to, options, output, skipStart, skipEnd)) {
     return std::string();
   }
 
-  return output.get();
+  return output;
 }
 
 extern "C" {

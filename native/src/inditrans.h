@@ -31,5 +31,9 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
     TranslitOptions options, TranslitBuffer& out, const std::string_view& skipStart = "##",
     const std::string_view& skipEnd = "##") noexcept;
 
+bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
+    TranslitOptions options, std::string& out, const std::string_view& skipStart = "##",
+    const std::string_view& skipEnd = "##") noexcept;
+
 std::string transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, const std::string_view& skipStart = "##", const std::string_view& skipEnd = "##") noexcept;
