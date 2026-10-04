@@ -26,6 +26,9 @@ class Snapshot:
     warm_alloc: Allocation | None
     wasm_bytes: int | None
     info: str
+    throughput: dict[tuple[str, int], int]
+    latency: dict[tuple[str, int], int]
+    cold_cases: dict[str, tuple[int, int]]
 
 
 def parse_args() -> argparse.Namespace:
@@ -76,6 +79,40 @@ def read_latency(prefix: Path, case_name: str) -> int:
         if len(row) > max(case_col, p50_col) and row[case_col] == case_name:
             return int(row[p50_col])
     raise ValueError(f"latency case {case_name!r} not found in {path}")
+
+
+def read_metric_matrix(prefix: Path, suffix: str, metric: str) -> dict[tuple[str, int], int]:
+    path = prefix.with_name(prefix.name + suffix)
+    if not path.is_file():
+        raise ValueError(f"missing benchmark snapshot: {path}")
+    rows = read_csv_rows(path)
+    if not rows:
+        raise ValueError(f"empty benchmark snapshot: {path}")
+    header = rows[0]
+    try:
+        case_col, bytes_col, metric_col = (header.index(name) for name in ("case", "input_bytes", metric))
+    except ValueError as exc:
+        raise ValueError(f"unexpected benchmark CSV header in {path}") from exc
+    return {
+        (row[case_col], int(row[bytes_col])): int(row[metric_col])
+        for row in rows[1:]
+        if len(row) > max(case_col, bytes_col, metric_col)
+    }
+
+
+def read_all_cold(prefix: Path) -> dict[str, tuple[int, int]]:
+    path = prefix.with_name(prefix.name + "-cold.csv")
+    if not path.is_file():
+        return {}
+    rows = read_csv_rows(path)
+    if not rows:
+        return {}
+    header = rows[0]
+    try:
+        case_col, p50_col, p95_col = (header.index(name) for name in ("case", "p50_ns", "p95_ns"))
+    except ValueError as exc:
+        raise ValueError(f"unexpected cold-start CSV header in {path}") from exc
+    return {row[case_col]: (int(row[p50_col]), int(row[p95_col])) for row in rows[1:]}
 
 
 def read_cold_latency(prefix: Path, case_name: str) -> tuple[int, int] | None:
@@ -140,6 +177,9 @@ def load_snapshot(directory: Path, name: str, latency_case: str, alloc_case: str
         warm_alloc=read_allocations(prefix, alloc_case, "-allocs-warm.csv"),
         wasm_bytes=read_optional_int(prefix.with_name(prefix.name + "-wasm-size.txt")),
         info=read_info(prefix),
+        throughput=read_metric_matrix(prefix, "-throughput.csv", "median_ns"),
+        latency=read_metric_matrix(prefix, "-latency.csv", "p50_ns"),
+        cold_cases=read_all_cold(prefix),
     )
 
 
@@ -287,38 +327,48 @@ def render_report(
         )
     )
 
-    cold_ref_snapshot, cold_ref_p50 = first_metric(snapshots, lambda snapshot: snapshot.cold_p50_ns)
-    if cold_ref_snapshot is not None:
-        lines.extend(["", f"## Cold-start latency — `{cold_case}`", ""])
-        if cold_ref_snapshot is not baseline:
-            lines.extend(
-                [
-                    (
-                        f"Reference: `{cold_ref_snapshot.name}` (the earliest snapshot containing this cold case)."
-                    ),
-                    "",
-                ]
-            )
+    lines.extend(["", "## Throughput by transliteration and input size", ""])
+    lines.append("Each cell gives median time and change from the baseline for that same case and size.")
+    lines.append("")
+    throughput_keys = sorted(set().union(*(snapshot.throughput for snapshot in snapshots)))
+    throughput_rows = []
+    for key in throughput_keys:
+        base_value = baseline.throughput.get(key)
+        row = [key[0], format_bytes(key[1])]
+        for snapshot in snapshots:
+            value = snapshot.throughput.get(key)
+            row.append("—" if value is None else f"{format_duration(value)} ({pct_delta(value, base_value)})")
+        throughput_rows.append(row)
+    lines.extend(markdown_table(["Case", "Input", *[s.display_name if s is not baseline else "Baseline" for s in snapshots]], throughput_rows))
+
+    lines.extend(["", "## Short-call latency by transliteration", ""])
+    lines.append("Each cell gives p50 time and change from the baseline. Inputs are the fixed short strings listed in the benchmark.")
+    lines.append("")
+    latency_keys = sorted(set().union(*(snapshot.latency for snapshot in snapshots)))
+    latency_rows = []
+    for key in latency_keys:
+        base_value = baseline.latency.get(key)
+        row = [key[0]]
+        for snapshot in snapshots:
+            value = snapshot.latency.get(key)
+            row.append("—" if value is None else f"{format_duration(value)} ({pct_delta(value, base_value)})")
+        latency_rows.append(row)
+    lines.extend(markdown_table(["Case", *[s.display_name if s is not baseline else "Baseline" for s in snapshots]], latency_rows))
+
+    cold_keys = sorted(set().union(*(snapshot.cold_cases for snapshot in snapshots)))
+    if cold_keys:
+        lines.extend(["", "## Cold-start latency by transliteration", ""])
+        lines.append("Each cell gives p50/p95 time and p50 change from the baseline.")
+        lines.append("")
         cold_rows = []
-        for index, snapshot in enumerate(snapshots):
-            reference_label = "—"
-            if snapshot.cold_p50_ns is not None:
-                reference_label = (
-                    "baseline"
-                    if cold_ref_snapshot is baseline and snapshot is baseline
-                    else "reference"
-                    if snapshot is cold_ref_snapshot
-                    else pct_delta(snapshot.cold_p50_ns, cold_ref_p50)
-                )
-            cold_rows.append(
-                [
-                    snapshot.display_name if index else "baseline",
-                    format_duration(snapshot.cold_p50_ns) if snapshot.cold_p50_ns is not None else "—",
-                    format_duration(snapshot.cold_p95_ns) if snapshot.cold_p95_ns is not None else "—",
-                    reference_label,
-                ]
-            )
-        lines.extend(markdown_table(["Step", "p50", "p95", "p50 vs reference"], cold_rows))
+        for case in cold_keys:
+            base_value = baseline.cold_cases.get(case, (None, None))[0]
+            row = [case]
+            for snapshot in snapshots:
+                value = snapshot.cold_cases.get(case)
+                row.append("—" if value is None else f"{format_duration(value[0])} / {format_duration(value[1])} ({pct_delta(value[0], base_value)})")
+            cold_rows.append(row)
+        lines.extend(markdown_table(["Case", *[s.display_name if s is not baseline else "Baseline" for s in snapshots]], cold_rows))
 
     lines.extend(["", "## Absolute allocation values", ""])
     allocation_rows = []

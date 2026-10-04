@@ -1,6 +1,6 @@
 # inditrans Benchmark & Performance Reference
 
-This guide explains how to use the benchmark (`bench-*`) commands, snapshot (`perf-*`) tooling, and the automated runner (`tool/run-perf.sh`) for:
+This guide explains how to use the benchmark (`bench-*`) commands, snapshot (`perf-*`) tooling, and the automated runner (`python3 tool/run-perf.py`) for:
 
 - quick performance checks during development;
 - direct A/B regression testing against a baseline;
@@ -15,7 +15,7 @@ Use this distinction:
 
 > **`bench-*` = measure and regression-test code**  
 > **`perf-*` = capture and report performance history**  
-> **`tool/run-perf.sh` = automate multi-tag snapshot capture and report generation**
+> **`python3 tool/run-perf.py` = automate snapshot capture and report generation**
 
 The main workflows are:
 
@@ -34,7 +34,7 @@ perf-snapshot → perf-snapshot → ... → perf-report
 
 automated milestone benchmark across Git tags
     ↓
-git tag perf-* → tool/run-perf.sh [--current] → out/report.md
+git tag perf-* → python3 tool/run-perf.py [--run-tags] → out/report.md
 ```
 
 ---
@@ -56,8 +56,8 @@ git tag perf-* → tool/run-perf.sh [--current] → out/report.md
 | `make bench-compare` | Compare current checkout against a saved baseline |
 | `make perf-snapshot` | Save a comprehensive performance snapshot under `out/perf/` |
 | `make perf-report` | Compare a sequence of saved snapshots against a baseline |
-| `tool/run-perf.sh` | Automate snapshots for all `perf-*` tags and generate `out/report.md` |
-| `tool/run-perf.sh --current` | Run all `perf-*` tags plus current commit as `99-current` |
+| `python3 tool/run-perf.py` | Run snapshot for current workspace (`99-current`) without stashing and generate `out/report.md` |
+| `python3 tool/run-perf.py --run-tags` | Stash changes, run snapshots for all `perf-*` tags, restore stash, and generate `out/report.md` |
 
 ---
 
@@ -712,37 +712,34 @@ Any valid Git ref works with `git switch --detach <ref>` (tag, commit SHA, or re
 
 ---
 
-# 17. Automated multi-snapshot runner: `tool/run-perf.sh`
+# 17. Automated multi-snapshot runner: `python3 tool/run-perf.py`
 
-When tracking long-term optimization milestones, manually checking out tags, capturing snapshots, and generating reports is repetitive. The repository provides an automated runner: [`tool/run-perf.sh`](file:///home/shasak/ws/inditrans/tool/run-perf.sh).
+When tracking long-term optimization milestones, manually checking out tags, capturing snapshots, and generating reports is repetitive. The repository provides an automated runner: [`tool/run-perf.py`](../tool/run-perf.py).
 
 ## Overview & capabilities
 
-[`tool/run-perf.sh`](file:///home/shasak/ws/inditrans/tool/run-perf.sh) automates running snapshots across all tagged performance milestones and generating a Markdown report:
+[`tool/run-perf.py`](../tool/run-perf.py) automates running snapshots across tagged performance milestones or the current workspace and generating a Markdown report:
 
 ```text
-git tag perf-*
+python3 tool/run-perf.py [--run-tags] [--current]
       │
-      ▼
-tool/run-perf.sh [--current]
-      │
-      ├── Workspace hygiene: stashes dirty/untracked files
-      ├── Signal trap: restores branch and stash on EXIT / INT / TERM
-      ├── Iterates all Git tags matching 'perf-*'
-      │     └── Incremental caching: skips tags already having wasm-size.txt
-      ├── Optional '--current': benchmarks current HEAD as '99-current'
+      ├── Default: captures current workspace as '99-current' without stashing
+      ├── '--run-tags': stashes changes, runs all 'perf-*' tags, and restores stash
       └── Automated report: make perf-report > out/report.md
 ```
 
 ### Key features
 
-1. **Workspace safety & automatic restoration**:
+1. **Fast default current run**:
+   - By default, running `python3 tool/run-perf.py` benchmarks the current workspace as snapshot `99-current` and compiles `out/report.md` without stashing or switching branches.
+
+2. **Workspace safety & automatic restoration (`--run-tags`)**:
    - Detects dirty or untracked files (`git status --porcelain --untracked-files=all`).
    - Stashes them including untracked files (`git stash push --include-untracked -m "Before performance benchmarks"`).
    - Installs traps on `EXIT`, `INT` (Ctrl+C), and `TERM` (`restore_workspace`).
    - On completion or early interruption, it restores `flutter/assets/inditrans.wasm`, switches back to your original branch or commit, and cleanly reapplies and drops the stash.
 
-2. **Incremental snapshot discovery & caching**:
+3. **Incremental snapshot discovery & caching**:
    - Discovers all Git tags matching `perf-*` in sorted order:
      ```bash
      git tag --list 'perf-*' | LC_ALL=C sort
@@ -750,35 +747,48 @@ tool/run-perf.sh [--current]
    - Strips the `perf-` prefix to determine the snapshot name (e.g., `perf-00-baseline` → `00-baseline`).
    - Checks if `out/perf/$name-wasm-size.txt` already exists. If present, it prints `Skipping $name` and skips the snapshot. This makes re-running the script incremental and very fast.
 
-3. **Deterministic defaults**:
+4. **Deterministic defaults**:
    - Pins both `BENCH_CPU` and `PERF_CPU` to core `0` (`CPU=0`).
    - Sets `BENCH_RUNS` to `5` (`RUNS=5`).
 
-4. **`--current` flag**:
-   When passed `--current`, after evaluating all tagged milestones, it also captures the current checkout commit as snapshot `99-current`.
+5. **`--current` flag**:
+   - Explicitly runs the snapshot for the current workspace. This is active by default; when combined with `--run-tags` (`python3 tool/run-perf.py --run-tags --current`), it runs all tags, restores the workspace, and then captures `99-current`.
 
-5. **Automatic report generation**:
+6. **Automatic report generation**:
    At the end of the run, it automatically executes:
    ```bash
    make perf-report PERF_BASELINE=00-baseline > out/report.md
    ```
    writing the full Markdown comparison table directly to `out/report.md`.
 
+The report includes per-case throughput at 32 B, 4 KiB, and 1 MiB, short-call p50 latency
+for every benchmark transliteration case, and p50/p95 cold-start latency for every cold-start
+case. Cells show the measured time and the percentage change from the same baseline case.
+This includes Tamil output and Roman/ISO input and output paths. The compact summary at the
+top still uses `indic-to-indic` as its representative short-call metric; the detailed tables
+below it contain the full scenario matrix.
+
 ## Usage
 
-### Run all tagged milestones
+### Run current workspace and generate report (default)
 
 ```bash
-tool/run-perf.sh
+python3 tool/run-perf.py
 ```
 
-### Run tagged milestones plus current working tree
+### Run all tagged milestones (stashes changes and restores on completion)
 
 ```bash
-tool/run-perf.sh --current
+python3 tool/run-perf.py --run-tags
 ```
 
-### Tagging workflow for `run-perf.sh`
+### Run all tagged milestones plus current workspace
+
+```bash
+python3 tool/run-perf.py --run-tags --current
+```
+
+### Tagging workflow for `run-perf.py`
 
 To add a milestone to the automated suite, tag any commit with the `perf-<name>` naming scheme:
 
@@ -789,7 +799,7 @@ git tag perf-02-tamil-lookup <commit>
 git tag perf-03-stack-reader-writer <commit>
 ```
 
-When `tool/run-perf.sh` runs, it will automatically detect these tags, create snapshots named `00-baseline`, `01-buffer-ownership`, etc., skip any previously cached snapshots, and compile `out/report.md`.
+When `python3 tool/run-perf.py` runs, it will automatically detect these tags, create snapshots named `00-baseline`, `01-buffer-ownership`, etc., skip any previously cached snapshots, and compile `out/report.md`.
 
 ---
 
@@ -894,7 +904,7 @@ make perf-report
 ### Recipe 5: Automated suite across Git tags
 
 ```bash
-tool/run-perf.sh --current
+python3 tool/run-perf.py --run-tags
 cat out/report.md
 ```
 
@@ -1057,7 +1067,7 @@ Run these commands separately when modifying those specific subsystems.
 | *“I want a broad health check across all benchmarks right now.”* | `make bench-all` |
 | *“I want to compare this edit directly against where I started.”* | `make bench-save` then `make bench-compare` |
 | *“I am doing a multi-step optimization milestone.”* | `make perf-snapshot PERF_NAME=<nn>-<name>` then `make perf-report` |
-| *“I want to run and compare all historical git tags + my current commit.”* | `tool/run-perf.sh --current` |
+| *“I want to run and compare all historical git tags + my current commit.”* | `python3 tool/run-perf.py --run-tags --current` |
 | *“I want to compare main with dev.”* | `git switch main; make perf-snapshot ...; git switch dev; make perf-snapshot ...; make perf-report` |
 
 ---
@@ -1069,7 +1079,7 @@ Keep baselines and tuning histories organized:
 ```text
 out/baselines/    # Direct A/B regression baselines (bench-save / bench-compare)
 out/perf/         # Cumulative tuning snapshots (perf-snapshot)
-out/report.md     # Automated report from tool/run-perf.sh
+out/report.md     # Automated report from python3 tool/run-perf.py
 ```
 
 ---
@@ -1098,8 +1108,8 @@ For major performance PRs, follow this sequence:
 5. **Review cumulative progress**:
    ```bash
    make perf-report
-   # Or run automated suite:
-   tool/run-perf.sh --current
+   # Or run automated suite for current:
+   python3 tool/run-perf.py
    ```
 6. **Run strict regression check**:
    ```bash
@@ -1137,9 +1147,9 @@ make perf-snapshot PERF_NAME=20-step-two BENCH_RUNS=10
 make perf-report
 make perf-report PERF_BASELINE=10-step-one
 
-# Automated tag-based runner
-tool/run-perf.sh
-tool/run-perf.sh --current
+# Automated runner (current workspace or tags)
+python3 tool/run-perf.py
+python3 tool/run-perf.py --run-tags
 ```
 
 ---
@@ -1152,7 +1162,7 @@ bench-save        before an A/B experiment
 bench-compare     after an A/B experiment
 perf-snapshot     at meaningful optimization milestones
 perf-report       to review the full optimization progression
-tool/run-perf.sh  to automate multi-tag snapshot benchmarking and reports
+python3 tool/run-perf.py  to automate snapshot benchmarking and reports
 ```
 
 ### Rule of thumb
