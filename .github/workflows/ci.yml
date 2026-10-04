@@ -24,6 +24,20 @@ jobs:
       - name: Validate versions, manifests, and changelog
         run: python3 tool/verify_release.py
 
+      - name: Verify generated artifacts are up to date
+        run: |
+          python3 tool/generate_headers.py
+          python3 tool/generate_bindings.py
+          git diff --exit-code -- \
+            native/src/script_data.h \
+            native/src/exports.h \
+            flutter/lib/src/script.dart \
+            flutter/lib/src/option.dart \
+            flutter/lib/src/bindings.dart \
+            nodejs/src/Script.ts \
+            nodejs/src/Option.ts \
+            js/src/inditrans.post.js
+
   native:
     name: Native C++ Tests
     runs-on: ubuntu-24.04
