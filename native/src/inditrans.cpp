@@ -469,7 +469,7 @@ private:
   TamilPrefixLookup::LookupState prefixLookupState { };
 };
 
-template <typename Sink>
+template <typename Sink, ScriptType TargetType>
 class OutputWriter {
 public:
   virtual ~OutputWriter() = default;
@@ -483,18 +483,14 @@ public:
       if (tokenUnit.leadToken.tokenType == TokenType::Ignore) {
         return;
       }
-      switch (map.getType()) {
-        case ScriptType::Indic:
-          writeIndicTokenUnit(tokenUnit);
-          break;
-        case ScriptType::Tamil:
-          writeTamilTokenUnit(tokenUnit, next);
-          break;
-        case ScriptType::Latin:
-          writeLatinTokenUnit(tokenUnit, next);
-          break;
-        default:
-          return;
+      if constexpr (TargetType == ScriptType::Indic) {
+        writeIndicTokenUnit(tokenUnit);
+      } else if constexpr (TargetType == ScriptType::Tamil) {
+        writeTamilTokenUnit(tokenUnit, next);
+      } else if constexpr (TargetType == ScriptType::Latin) {
+        writeLatinTokenUnit(tokenUnit, next);
+      } else {
+        return;
       }
       wordStart = (tokenUnit.leadToken.tokenType == TokenType::Symbol);
     }
@@ -661,7 +657,7 @@ protected:
       }
     }
     push(map.lookupChar(TokenType::Consonant, idx));
-    if (map.getType() == ScriptType::Tamil) {
+    if constexpr (TargetType == ScriptType::Tamil) {
       push(map.lookupChar(Virama));
     }
   }
@@ -707,6 +703,16 @@ private:
   TamilPrefixLookup::LookupState prefixLookupState { };
 };
 
+template <typename Sink, ScriptType TargetType>
+void do_transliteration_loop(InputReader& reader, OutputWriter<Sink, TargetType>& writer) noexcept {
+  TokenUnitOrString curr = (reader.hasMore() ? reader.getNext() : endOfText);
+  while (curr != endOfText) {
+    TokenUnitOrString next = (reader.hasMore() ? reader.getNext() : endOfText);
+    writer.writeTokenUnit(curr, next);
+    curr = next;
+  }
+}
+
 template <typename Sink>
 bool transliterate_core(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, Sink& sink, const std::string_view& skipStart,
@@ -727,13 +733,25 @@ bool transliterate_core(const std::string_view& input, const std::string_view& f
   if (writerMap->getType() == ScriptType::Indic && !writerMap->isVedic()) {
     options = options | TranslitOptions::IgnoreVedicAccents;
   }
-  OutputWriter<Sink> writer(*writerMap, options, sink);
-
-  TokenUnitOrString curr = (reader.hasMore() ? reader.getNext() : endOfText);
-  while (curr != endOfText) {
-    TokenUnitOrString next = (reader.hasMore() ? reader.getNext() : endOfText);
-    writer.writeTokenUnit(curr, next);
-    curr = next;
+  
+  switch (writerMap->getType()) {
+    case ScriptType::Indic: {
+      OutputWriter<Sink, ScriptType::Indic> writer(*writerMap, options, sink);
+      do_transliteration_loop(reader, writer);
+      break;
+    }
+    case ScriptType::Tamil: {
+      OutputWriter<Sink, ScriptType::Tamil> writer(*writerMap, options, sink);
+      do_transliteration_loop(reader, writer);
+      break;
+    }
+    case ScriptType::Latin: {
+      OutputWriter<Sink, ScriptType::Latin> writer(*writerMap, options, sink);
+      do_transliteration_loop(reader, writer);
+      break;
+    }
+    default:
+      return false;
   }
 
   return true;

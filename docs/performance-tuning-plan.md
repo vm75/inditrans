@@ -112,7 +112,7 @@ For structural changes, also run the Flutter/Node/Wasm tests affected by the cha
 | 8 | Resolve names once to `ScriptId` and remove reader/writer caches | constexpr name/alias resolution; downstream uses small IDs/references | lookup overhead; startup allocations | ✅ done (via static lookup) | |
 | 9 | Make `InputReader` streaming | remove full-input `tokenUnits` vector; retain only required lookahead | peak heap; large-input allocation bytes | ✅ done | implemented on-demand pull and small lookahead buffer |
 | 10 | Add allocation-free sink/output API | templated sink core plus adapters for `std::string`, caller buffer/FFI as appropriate | output allocation; FFI efficiency | ✅ done | implemented templated OutputWriter and StdStringSink adapter |
-| 11 | Specialize conversion by script type | dispatch once to `Indic`/`Tamil`/`Latin` template specializations; use `if constexpr` internally | hot-path throughput; Wasm code size | ⬜ pending | |
+| 11 | Specialize conversion by script type | dispatch once to `Indic`/`Tamil`/`Latin` template specializations; use `if constexpr` internally | hot-path throughput; Wasm code size | ✅ done | implemented template specialization in OutputWriter and transliterate_core loop |
 | 12 | Evaluate packed `TokenUnit` | experiment with 32/64-bit packed representation for equality/hash/cache locality | Tamil lookup/hashing; size | ⬜ experimental | |
 | 13 | Benchmark Wasm size vs speed profiles | compare current `-Oz` with `-O3` + supported LTO/profile choices without mixing compiler flags into core refactors | Wasm throughput vs bytes | ⬜ pending | |
 
