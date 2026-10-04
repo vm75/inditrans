@@ -1168,53 +1168,35 @@ private:
   StatefulTrie<TokenUnit, bool>::LookupState prefixLookupState {};
 };
 
-std::unique_ptr<InputReader> getInputReader(const std::string_view& text, std::string_view from,
-    TranslitOptions options, const std::string_view& skipStart, const std::string_view& skipEnd) noexcept {
-
-  auto map = getScriptReaderMap(from);
-  if (map == nullptr) {
-    return nullptr;
-  }
-
-  return std::make_unique<InputReader>(text, *map, options, skipStart, skipEnd);
-}
-
-std::unique_ptr<OutputWriter> getOutputWriter(std::string_view to, TranslitOptions options, size_t inputSize) noexcept {
-  auto map = getScriptWriterMap(to);
-  if (map == nullptr) {
-    return nullptr;
-  }
-
-  if (map->getType() == ScriptType::Indic && !map->isVedic()) {
-    options = options | TranslitOptions::IgnoreVedicAccents;
-  }
-
-  return std::make_unique<OutputWriter>(*map, options, inputSize);
-}
-
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, TranslitBuffer& output, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
   if (from == to) {
     return false;
   }
-  auto reader = getInputReader(input, from, options, skipStart, skipEnd);
-  if (reader == nullptr) {
+  const auto readerMap = getScriptReaderMap(from);
+  if (readerMap == nullptr) {
     return false;
   }
-  auto writer = getOutputWriter(to, options, input.length() + 1);
-  if (writer == nullptr) {
-    return false;
-  }
+  InputReader reader(input, *readerMap, options, skipStart, skipEnd);
 
-  TokenUnitOrString curr = (reader->hasMore() ? reader->getNext() : endOfText);
+  const auto writerMap = getScriptWriterMap(to);
+  if (writerMap == nullptr) {
+    return false;
+  }
+  if (writerMap->getType() == ScriptType::Indic && !writerMap->isVedic()) {
+    options = options | TranslitOptions::IgnoreVedicAccents;
+  }
+  OutputWriter writer(*writerMap, options, input.length() + 1);
+
+  TokenUnitOrString curr = (reader.hasMore() ? reader.getNext() : endOfText);
   while (curr != endOfText) {
-    TokenUnitOrString next = (reader->hasMore() ? reader->getNext() : endOfText);
-    writer->writeTokenUnit(curr, next);
+    TokenUnitOrString next = (reader.hasMore() ? reader.getNext() : endOfText);
+    writer.writeTokenUnit(curr, next);
     curr = next;
   }
 
-  output.reset(writer->text().release());
+  output.reset(writer.text().release());
 
   return true;
 }
