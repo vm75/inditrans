@@ -31,6 +31,15 @@ def parse_exports(header: str) -> list[dict]:
         r"(?P<return>[^)]+)\)\s+(?P<name>\w+)\((?P<args>.*?)\);",
         re.MULTILINE | re.DOTALL,
     )
+    declaration_pattern = re.compile(
+        r"^[ \\t]*ext_def\\(\\s*[^)]+\\)\\s+(?P<name>\\w+)\\s*\\(",
+        re.MULTILINE,
+    )
+    export_lines = re.findall(r"^[ \\t]*ext_def\\(", header, re.MULTILINE)
+    declarations = [match.group("name") for match in declaration_pattern.finditer(header)]
+    if len(declarations) != len(export_lines):
+        raise ValueError("Unsupported ext_def declaration syntax in exports header")
+
     functions = []
     for match in pattern.finditer(header):
         returns = " ".join(match.group("return").split())
@@ -53,8 +62,17 @@ def parse_exports(header: str) -> list[dict]:
         functions.append({"comment": "\n".join(line.strip()[4:] for line in match.group("comment").splitlines()),
                           "name": match.group("name"), "c_type": returns,
                           "native": TYPE_MAP[returns][0], "dart": TYPE_MAP[returns][1], "args": args})
-    if not functions:
+    if not declarations:
         raise ValueError(f"No ext_def exports found in {HEADER}")
+
+    parsed = [function["name"] for function in functions]
+    if parsed != declarations:
+        missing = [name for name in declarations if name not in parsed]
+        details = ", ".join(missing) if missing else "declaration order or duplication mismatch"
+        raise ValueError(
+            "Every ext_def export must use supported syntax and have contiguous /// documentation; "
+            f"unparsed exports: {details}"
+        )
     return functions
 
 
