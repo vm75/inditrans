@@ -3,10 +3,10 @@ default: all
 all: native wasm flutter
 
 version:
-	dart ./tool/bump_version.dart
+	python3 ./tool/bump_version.py
 
 validate:
-	dart ./tool/verify_release.dart
+	python3 ./tool/verify_release.py
 
 ifeq ($(OS), Windows_NT)
     EXEC_EXT = .exe
@@ -20,6 +20,9 @@ NATIVE_CLI = out/inditrans$(EXEC_EXT)
 NATIVE_TEST = out/inditrans_test$(EXEC_EXT)
 NATIVE_BENCH = out/inditrans_bench$(EXEC_EXT)
 NATIVE_SHORT_BENCH = out/inditrans_short_bench$(EXEC_EXT)
+NATIVE_COLD_BENCH = out/inditrans_cold_bench$(EXEC_EXT)
+NATIVE_LOOKUP_BENCH = out/inditrans_lookup_bench$(EXEC_EXT)
+NATIVE_LOOKUP_ALLOC_BENCH = out/inditrans_lookup_alloc_bench$(EXEC_EXT)
 NATIVE_MEM_BENCH = out/inditrans_mem_bench$(EXEC_EXT)
 NATIVE_ALLOC_BENCH = out/inditrans_alloc_bench$(EXEC_EXT)
 LINUX_ALLOC_PROBE = out/libinditrans_alloc_probe.so
@@ -30,6 +33,18 @@ ALLOC_BENCH_WARMUPS ?= 0
 BENCH_BASELINE ?= out/bench-baseline
 BENCH_REGRESSION_THRESHOLD ?= 5
 BENCH_STRICT ?= 0
+BENCH_RUNS ?= 5
+BENCH_CPU ?= $(PERF_CPU)
+PERF_DIR ?= out/perf
+PERF_NAME ?=
+PERF_BASELINE ?= 00-baseline
+PERF_LATENCY_CASE ?= indic-to-indic
+PERF_ALLOC_CASE ?= devanagari
+PERF_COLD_CASE ?= cold-devanagari-to-telugu
+PERF_REPEATS ?= 5
+PERF_CPU ?=
+COLD_BENCH_SAMPLES ?= 501
+PERF_TOOL_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))tool
 ALLOC_PROBE_SUPPORTED := $(shell test "$$(uname -s 2>/dev/null)" = "Linux" && getconf GNU_LIBC_VERSION >/dev/null 2>&1 && echo 1 || echo 0)
 ifeq ($(ALLOC_PROBE_SUPPORTED),1)
     ALLOC_BENCH_DEPS = $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
@@ -41,8 +56,9 @@ NATIVE_H = $(wildcard $(NATIVE_SRC)/*.h)
 NATIVETEST_DIR = $(NATIVE_DIR)/tests
 NATIVETEST_CC = $(wildcard $(NATIVE_DIR)/tests/*.cpp)
 NATIVETEST_H = $(wildcard $(NATIVE_DIR)/tests/*.h)
-GENERATOR_UTILS = $(wildcard tool/utils/*.dart)
+GENERATOR_UTILS = $(wildcard tool/python/*.py)
 EXAMPLE_DART = flutter/example.dart
+USE_CHECKED_IN_SCRIPT_DATA ?= 0
 
 # build
 native: $(NATIVE_TEST) $(NATIVE_CLI)
@@ -75,8 +91,14 @@ $(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
 $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 	clang++ -std=c++23 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
-$(NATIVE_SRC)/script_data.h: tool/script_data.json tool/options.json tool/generate_headers.dart $(GENERATOR_UTILS)
-	dart tool/generate_headers.dart
+ifeq ($(USE_CHECKED_IN_SCRIPT_DATA),0)
+$(NATIVE_SRC)/script_data.h: tool/script_data.json tool/reader_data.json tool/options.json docs/extended-latin.txt tool/generate_headers.py $(GENERATOR_UTILS)
+	python3 tool/generate_headers.py
+else
+$(NATIVE_SRC)/script_data.h:
+	@echo "Missing checked-in $(NATIVE_SRC)/script_data.h while USE_CHECKED_IN_SCRIPT_DATA=1"
+	@exit 1
+endif
 
 wasm: flutter/assets/inditrans.wasm js/public/inditrans.js
 
@@ -86,8 +108,8 @@ flutter/assets/inditrans.wasm: $(NATIVE_CPP) $(NATIVE_H)
 js/public/inditrans.js: $(NATIVE_CPP) $(NATIVE_H) js/src/inditrans.post.js
 	./tool/build_wasm.$(SCRIPT_EXT) js
 
-flutter/lib/src/bindings.dart: $(NATIVE_SRC)/exports.h
-	dart tool/generate_bindings.dart
+flutter/lib/src/bindings.dart: $(NATIVE_SRC)/exports.h tool/generate_bindings.py
+	python3 tool/generate_bindings.py
 
 flutter: flutter/lib/src/bindings.dart flutter/assets/inditrans.wasm
 
@@ -103,9 +125,30 @@ test_wasm: flutter/assets/inditrans.wasm
 bench: $(NATIVE_BENCH)
 	$(NATIVE_BENCH)
 
+.PHONY: bench-lookup bench-lookup-alloc-linux
+bench-lookup: $(NATIVE_LOOKUP_BENCH)
+	$(NATIVE_LOOKUP_BENCH)
+
+ifeq ($(ALLOC_PROBE_SUPPORTED),1)
+bench-lookup-alloc-linux: $(NATIVE_LOOKUP_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
+	LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_LOOKUP_ALLOC_BENCH) --alloc
+else
+bench-lookup-alloc-linux:
+	@echo "bench-lookup-alloc-linux requires Linux with glibc."
+	@exit 2
+endif
+
 .PHONY: bench-short
 bench-short: $(NATIVE_SHORT_BENCH)
 	$(NATIVE_SHORT_BENCH)
+
+.PHONY: bench-short-repeat
+bench-short-repeat: $(NATIVE_SHORT_BENCH)
+	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(PERF_REPEATS) --cpu "$(PERF_CPU)"
+
+.PHONY: bench-cold
+bench-cold: $(NATIVE_COLD_BENCH)
+	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)"
 
 .PHONY: output-size-bench mem-bench
 output-size-bench: $(NATIVE_MEM_BENCH)
@@ -116,7 +159,7 @@ mem-bench: output-size-bench
 
 # Run all benchmarks and print a human-readable summary.
 .PHONY: bench-all
-bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_MEM_BENCH) $(ALLOC_BENCH_DEPS)
+bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_COLD_BENCH) $(NATIVE_MEM_BENCH) $(ALLOC_BENCH_DEPS)
 	@echo ""
 	@echo "━━━  Throughput — median ns/call and MB/s  (~32 B / ~4 KiB / ~1 MiB targets; actual bytes shown)  ━━━"
 	@$(NATIVE_BENCH) | awk -F, '\
@@ -128,26 +171,24 @@ bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_MEM_BENCH) $(ALLOC_BEN
 	  NR==1 { printf "%-28s  %8s  %9s  %9s\n","case","bytes","p50_µs","p95_µs" } \
 	  NR >1 { printf "%-28s  %8s  %9.3f  %9.3f\n",$$1,$$2,$$3/1000,$$4/1000 }'
 	@echo ""
+	@echo "━━━  Cold-start latency  (first transliteration in fresh processes; $(COLD_BENCH_SAMPLES) samples)  ━━━"
+	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" | awk -F, '\
+	  NR==1 { printf "%-30s %8s %8s %9s %9s %s\n","case","bytes","samples","p50_µs","p95_µs","output_fnv1a64" } \
+	  NR>1 { printf "%-30s %8s %8s %9.3f %9.3f %s\n",$$1,$$2,$$5,$$3/1000,$$4/1000,$$7 }'
+	@echo ""
 	@echo "━━━  Output size / expansion  (~1 MiB target, devanagari→telugu)  ━━━"
 	@$(NATIVE_MEM_BENCH) | awk -F, '{ printf "  input: %s B   output: %s B   expansion: %.3fx\n",$$2,$$3,$$3/$$2 }'
 	@echo ""
-	@echo "━━━  Allocations per call  (~1 MiB target, Linux/glibc only)  ━━━"
+	@echo "━━━  Cold allocations  (~1 MiB target; first measured transliteration; Linux/glibc only)  ━━━"
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
-	  printf "%-22s  %8s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n" "mode" "malloc" "calloc" "realloc" "free" "total" "alloc_B" "peak_B" "live_B"; \
-	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
-	    raw=$$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $$mode 1048576 1 0 2>&1 1>/dev/null); \
-	    echo "$$raw" | awk -v m=$$mode '\
-	      { \
-	        split($$1,a,"="); split(a[2],mc,","); \
-	        split($$2,b,"="); split(b[2],cc,","); \
-	        split($$3,c,"="); split(c[2],rc,","); \
-	        split($$4,d,"="); fc=d[2]; \
-	        split($$5,e,"="); lv=e[2]; \
-	        split($$6,f,"="); pk=f[2]; \
-	        allb=mc[2]+0+cc[2]+0+rc[2]+0; total=mc[1]+cc[1]+rc[1]; \
-	        printf "%-22s  %8s  %8s  %8s  %8s  %8s  %10s  %10s  %10s\n",m,mc[1],cc[1],rc[1],fc,total,allb,pk,lv \
-	      }'; \
-	  done; \
+	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 0 --format table; \
+	else \
+	  echo "  (skipped: allocator probe requires Linux with glibc)"; \
+	fi
+	@echo ""
+	@echo "━━━  Warm allocations  (~1 MiB target; one unmeasured warmup; Linux/glibc only)  ━━━"
+	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
+	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 1 --format table; \
 	else \
 	  echo "  (skipped: allocator probe requires Linux with glibc)"; \
 	fi
@@ -156,18 +197,33 @@ bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_MEM_BENCH) $(ALLOC_BEN
 # Save benchmark results as a baseline for later comparison with bench-compare.
 .PHONY: bench-save
 bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
-	@$(NATIVE_BENCH) > $(BENCH_BASELINE)-throughput.csv
-	@$(NATIVE_SHORT_BENCH) > $(BENCH_BASELINE)-latency.csv
+	@mkdir -p "$(dir $(BENCH_BASELINE))"
+	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output "$(BENCH_BASELINE)-throughput-runs.csv" > $(BENCH_BASELINE)-throughput.csv
+	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output "$(BENCH_BASELINE)-latency-runs.csv" > $(BENCH_BASELINE)-latency.csv
 	@printf "" > $(BENCH_BASELINE)-allocs.csv
+	@printf "" > $(BENCH_BASELINE)-allocs-warm.csv
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
-	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
-	    raw=$$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $$mode 1048576 1 0 2>&1 1>/dev/null); \
-	    echo "$$raw" | awk -v m=$$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$$2+$$5+$$8,$$3+$$6+$$9,$$15,$$13 }'; \
-	  done >> $(BENCH_BASELINE)-allocs.csv; \
+	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 0 --format csv > $(BENCH_BASELINE)-allocs.csv; \
+	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 1 --format csv > $(BENCH_BASELINE)-allocs-warm.csv; \
 	fi
-	@printf "commit=%s  date=%s\n" "$$(git rev-parse --short HEAD 2>/dev/null||echo unknown)" "$$(date '+%Y-%m-%d %H:%M')" > $(BENCH_BASELINE)-info.txt
-	@echo "Baseline saved → $(BENCH_BASELINE)-{throughput,latency,allocs}.csv"
+	@python3 "$(PERF_TOOL_DIR)/perf_metadata.py" > $(BENCH_BASELINE)-info.txt
+	@printf "bench_runs=%s\nbench_cpu=%s\n" "$(BENCH_RUNS)" "$(BENCH_CPU)" >> $(BENCH_BASELINE)-info.txt
+	@echo "Baseline saved → averaged CSVs plus raw *-runs.csv ($(BENCH_RUNS) runs)"
 	@cat $(BENCH_BASELINE)-info.txt
+
+# Save one cumulative tuning snapshot using the benchmark formats plus raw standalone Wasm size.
+.PHONY: perf-snapshot perf-report
+perf-snapshot: $(NATIVE_COLD_BENCH) | out
+	@if [ -z "$(PERF_NAME)" ]; then echo "Set PERF_NAME, for example: make perf-snapshot PERF_NAME=00-baseline"; exit 2; fi
+	@mkdir -p "$(PERF_DIR)"
+	@$(MAKE) bench-save BENCH_BASELINE="$(PERF_DIR)/$(PERF_NAME)"
+	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" > "$(PERF_DIR)/$(PERF_NAME)-cold.csv"
+	@$(MAKE) -B flutter/assets/inditrans.wasm
+	@python3 -c "from pathlib import Path; print(Path('flutter/assets/inditrans.wasm').stat().st_size)" > "$(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
+	@echo "Wasm size saved → $(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
+
+perf-report:
+	@python3 "$(PERF_TOOL_DIR)/perf_report.py" --dir "$(PERF_DIR)" --baseline "$(PERF_BASELINE)" --latency-case "$(PERF_LATENCY_CASE)" --alloc-case "$(PERF_ALLOC_CASE)" --cold-case "$(PERF_COLD_CASE)"
 
 # Compare current results against the saved baseline. Output mismatches always fail.
 # Performance regressions are reported by default and fail when BENCH_STRICT=1.
@@ -176,11 +232,11 @@ bench-compare: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@if [ ! -f $(BENCH_BASELINE)-throughput.csv ]; then echo "No baseline. Run: make bench-save first."; exit 1; fi
 	@if [ ! -f $(BENCH_BASELINE)-latency.csv ]; then echo "No latency baseline. Run: make bench-save first."; exit 1; fi
 	@rm -f out/bench-compare-failed
-	@$(NATIVE_BENCH) > out/bench-current-throughput.csv
-	@$(NATIVE_SHORT_BENCH) > out/bench-current-latency.csv
+	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output out/bench-current-throughput-runs.csv > out/bench-current-throughput.csv
+	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output out/bench-current-latency-runs.csv > out/bench-current-latency.csv
 	@echo ""
 	@if [ -f $(BENCH_BASELINE)-info.txt ]; then echo "Baseline : $$(cat $(BENCH_BASELINE)-info.txt)"; else echo "Baseline : metadata unavailable"; fi
-	@echo "Current  : commit=$$(git rev-parse --short HEAD 2>/dev/null||echo unknown)  date=$$(date '+%Y-%m-%d %H:%M')"
+	@echo "Current  : commit=$$(git rev-parse --short HEAD 2>/dev/null||echo unknown)  date=$$(date '+%Y-%m-%d %H:%M')  runs=$(BENCH_RUNS)  cpu=$(BENCH_CPU)"
 	@echo ""
 	@echo "━━━  Throughput regression check  (median_ns per case×size; positive = slower)  ━━━"
 	@awk -F, -v threshold=$(BENCH_REGRESSION_THRESHOLD) -v strict=$(BENCH_STRICT) '\
@@ -278,6 +334,15 @@ $(NATIVE_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/benchmark.cpp
 
 $(NATIVE_SHORT_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/short_call.cpp
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/short_call.cpp -o $@
+
+$(NATIVE_LOOKUP_BENCH): $(NATIVE_H) $(NATIVE_DIR)/bench/lookup.cpp | out
+	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_DIR)/bench/lookup.cpp -o $@
+
+$(NATIVE_LOOKUP_ALLOC_BENCH): $(NATIVE_H) $(NATIVE_DIR)/bench/lookup.cpp | out
+	clang++ -std=c++23 -O3 -DNDEBUG -DINDTRANSLIT_ALLOC_PROBE -I $(NATIVE_SRC) $(NATIVE_DIR)/bench/lookup.cpp -ldl -o $@
+
+$(NATIVE_COLD_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/cold_start.cpp | out
+	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_DIR)/bench/cold_start.cpp $(NATIVE_CPP) -o $@
 
 $(NATIVE_MEM_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/memory.cpp
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/memory.cpp -o $@

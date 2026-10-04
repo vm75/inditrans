@@ -21,11 +21,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
-
       - name: Validate versions, manifests, and changelog
-        run: dart tool/verify_release.dart
+        run: python3 tool/verify_release.py
+
+      - name: Verify generated artifacts are up to date
+        run: |
+          python3 tool/generate_headers.py
+          python3 tool/generate_bindings.py
+          git diff --exit-code -- \
+            native/src/script_data.h \
+            native/src/exports.h \
+            flutter/lib/src/script.dart \
+            flutter/lib/src/option.dart \
+            flutter/lib/src/bindings.dart \
+            nodejs/src/Script.ts \
+            nodejs/src/Option.ts \
+            js/src/inditrans.post.js
 
   native:
     name: Native C++ Tests
@@ -33,9 +44,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
 
       - name: Install dependencies
         run: |
@@ -73,10 +81,7 @@ jobs:
 
       - name: Run AddressSanitizer, LeakSanitizer, and UBSan
         env:
-          # The malloc/realloc vs delete ownership mismatch predates this benchmark PR
-          # and is tracked by the C++23 performance plan's P1 ownership correction.
-          # Keep leak, bounds, use-after-free, and UB checks enabled in the meantime.
-          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1:alloc_dealloc_mismatch=0
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
           LSAN_OPTIONS: exitcode=23
           UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
         run: ./out/inditrans_sanitize_test
@@ -90,9 +95,6 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
 
       - name: Install benchmark dependencies
         run: |
@@ -117,6 +119,7 @@ jobs:
           git worktree add --detach "$BASELINE_DIR" "$BASE_SHA"
           rm -rf "$BASELINE_DIR/native/bench"
           cp -a native/bench "$BASELINE_DIR/native/bench"
+          test -f "$BASELINE_DIR/native/src/script_data.h"
           mkdir -p "$GITHUB_WORKSPACE/out"
           echo "BASELINE_DIR=$BASELINE_DIR" >> "$GITHUB_ENV"
 
@@ -124,6 +127,7 @@ jobs:
         run: |
           cd "$BASELINE_DIR"
           taskset -c "$BENCH_CPU" make -f "$GITHUB_WORKSPACE/Makefile" bench-save \
+            USE_CHECKED_IN_SCRIPT_DATA=1 \
             BENCH_BASELINE="$GITHUB_WORKSPACE/out/bench-baseline"
 
       - name: Compare PR timing against base
@@ -227,9 +231,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
-
       - name: Set up Emscripten
         uses: emscripten-core/setup-emsdk@v16
         with:
@@ -263,9 +264,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
-
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1
 
       - name: Install x86-64 MinGW-w64 and build tools
         run: |

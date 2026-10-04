@@ -18,3 +18,4 @@ __pycache__/
 build_win/
 build_linux/
 build/
+compile_commands.json

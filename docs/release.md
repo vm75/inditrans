@@ -30,7 +30,7 @@ The single consolidated changelog is maintained in `CHANGELOG.md` at repository 
 3. Bump the version across package manifests and record release notes:
    ```bash
    # Bump patch, minor, or major version:
-   dart ./tool/bump_version.dart patch --log "Short description of changes"
+   python3 ./tool/bump_version.py patch --log "Short description of changes"
    # Or interactively:
    make version
    ```
@@ -38,7 +38,7 @@ The single consolidated changelog is maintained in `CHANGELOG.md` at repository 
    ```bash
    make validate
    # Or with tag and dry-run package checks:
-   dart ./tool/verify_release.dart --tag=vX.Y.Z --check-packages --check-artifacts
+  python3 tool/verify_release.py --tag=vX.Y.Z --check-packages --check-artifacts
    ```
 5. Commit the version bump:
    ```bash
@@ -90,11 +90,11 @@ To verify the release pipeline safely without creating a real release or publish
 
 - **Local validation**:
   ```bash
-  dart tool/verify_release.dart --check-packages --check-artifacts
+  python3 tool/verify_release.py --check-packages --check-artifacts
   ```
 - **Tag-specific validation**:
   ```bash
-  dart tool/verify_release.dart --tag=v0.13.0 --check-packages --check-artifacts
+  python3 tool/verify_release.py --tag=v0.13.0 --check-packages --check-artifacts
   ```
 - **Continuous Integration**:
   The normal CI workflow (`.github/workflows/ci.yml`) runs on pushes to `main` and PRs targeting `main`, running release validation, native engine tests, Flutter tests/dry-run, and Node.js tests/dry-run.

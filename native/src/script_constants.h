@@ -39,29 +39,6 @@ constexpr ScriptToken Anuswara { TokenType::VowelMark, Diacritic_Anuswara, Scrip
 constexpr ScriptToken GurmukhiAdhak { TokenType::ExclusiveSymbol, ExclusiveSymbol_Adhak, ScriptType::Indic };
 constexpr Token Skip { TokenType::ExclusiveSymbol, ExclusiveSymbol_Skip };
 
-constexpr std::array<std::string_view, 41> VedicAccents = {
-  /*꠰*/ "॒", "॑", "᳚",
-  /*꠰*/ "᳐", "᳑", "᳒", "᳓", "᳔", "᳕", "᳖", "᳗", "᳘", "᳙", "᳛", "᳜", "᳝", "᳞", "᳟",
-  /*꠰*/ "᳠", "᳢", "᳣", "᳤", "᳥", "᳦", "᳧", "᳨", "ᳩ", "ᳪ", "ᳫ", "ᳬ", "ᳮ", "ᳯ",
-  /*꠰*/ "ᳰ", "ᳱ", "ᳲ", "ᳳ", "᳴", "᳷", "᳸", "᳹", "ᳺ"
-};
-constexpr std::array<std::string_view, 3> LatinAccents = {
-  /*꠰*/ "̱", "̍", "̎",
-};
-
-// These are special chars which are included in some scripts and do not delimit words.
-constexpr std::array<std::string_view, 33> ExclusiveSymbols = {
-  "\u200C" /* ZeroWidthNonJoiner */,
-  "\u200D" /* ZeroWidthJoiner */,
-  "\u200B" /* ZeroWidthSpace */,
-  "",      /* Skip */
-  "ੱ",     /* Gurmukhi Adhak */
-  /*꠰*/ "᳡",
-  /*꠰*/ "꣡", "꣢", "꣣", "꣤", "꣥", "꣦", "꣧", "꣨", "꣩",
-  /*꠰*/ "꣪", "꣫", "꣬", "꣭", "꣮", "꣯", "꣰", "꣱",
-  /*꠰*/ "ꣲ", "ꣵ", "ꣶ", "ꣷ", "꣸", "꣹", "꣺", "ꣻ", "꣼", "ꣽ",
-};
-
 constexpr std::string_view TamilSuperscripts { "¹²³⁴" };
 constexpr std::string_view TamilSubscripts { "₁₂₃₄" };
 
@@ -69,12 +46,3 @@ constexpr std::string_view TamilSpecialChars { "ʼˮˇ꞉ஃ·" };
 constexpr std::string_view SpecialMarkers { "ʽʼˮˇ" };
 
 // clang-format on
-
-constexpr std::array<std::string_view, 6> TamilPrefixes {
-  "அது",
-  "இது",
-  "மா",
-  "ஒரு",
-  "அந்த",
-  "இந்த",
-};

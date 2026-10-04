@@ -1,19 +1,25 @@
 #include "inditrans.h"
 #include "script_constants.h"
-#include "script_data.h"
+#include "static_scripts.h"
 #include "type_defs.h"
-#include "utilities.h"
-#include <limits>
-#include <memory>
+#include "utf.h"
 #include <optional>
 #include <string>
-#include <unordered_map>
-#include <unordered_set>
 #include <variant>
 #include <vector>
 
 using InditransLogger = void(const std::string&);
 InditransLogger* inditransLogger = nullptr;
+
+constexpr std::string_view tamilTraditionalReplacement(std::string_view text) noexcept {
+  if (text == "ஸ")
+    return "ச";
+  if (text == "ஜ")
+    return "ச³";
+  if (text == "ஜ²")
+    return "ச⁴";
+  return text;
+}
 
 inline constexpr bool operator*(const TranslitOptions& mask, const TranslitOptions& val) noexcept {
   return (mask & val) == val;
@@ -22,354 +28,9 @@ inline constexpr bool operator/(const TranslitOptions& mask, const TranslitOptio
   return (mask & val) != val;
 }
 
-class ScriptData {
-public:
-  ScriptData(const char* buffer, size_t size) noexcept {
-    auto ptr = buffer;
-    auto end = ptr + size;
-    while (ptr < end && *ptr) {
-      processScript(ptr, end);
-    }
-  }
-
-  const ScriptInfo* get(std::string_view name) const noexcept {
-    auto entry = scriptMap.find(name);
-    if (entry != scriptMap.end()) {
-      return &entry->second;
-    }
-    auto mapName = aliasMap.find(name);
-    if (mapName != aliasMap.end()) {
-      return &scriptMap.find(mapName->second)->second;
-    }
-
-    return nullptr;
-  }
-
-  // begin and end
-  std::map<std::string_view, ScriptInfo>::const_iterator begin() const noexcept { return scriptMap.begin(); }
-
-  std::map<std::string_view, ScriptInfo>::const_iterator end() const noexcept { return scriptMap.end(); }
-
-  static const ScriptData& getScripts() noexcept {
-    static auto scriptDataMap = ScriptData(scriptData, sizeof(scriptData));
-    return scriptDataMap;
-  }
-
-  static const ScriptInfo* getScript(std::string_view name) noexcept { return getScripts().get(name); }
-
-private:
-  void processScript(const char*& ptr, const char* end) noexcept {
-    auto data = ScriptInfo();
-    auto name = readString(ptr, end);
-    auto typeStr = readString(ptr, end);
-    switch (typeStr[0]) {
-      case 'v':
-        data.type = ScriptType::Indic;
-        data.isVedic = true;
-        break;
-      case 'i':
-        data.type = ScriptType::Indic;
-        break;
-      case 't':
-        data.type = ScriptType::Tamil;
-        break;
-      case 'l':
-        data.type = ScriptType::Latin;
-        break;
-    }
-
-    while (*ptr != fieldEnd) {
-      auto typeStr = readString(ptr, end);
-      switch (typeStr[0]) {
-        case 'v':
-          readList(ptr, end, data.vowels);
-          break;
-        case 'm':
-          readList(ptr, end, data.vowelMarks);
-          break;
-        case 'c':
-          readList(ptr, end, data.consonants);
-          break;
-        case 'o':
-          readList(ptr, end, data.otherDiacritics);
-          break;
-        case 's':
-          readList(ptr, end, data.symbols);
-          break;
-        case 'S':
-          readList(ptr, end, data.vedicSymbols);
-          break;
-        case 'A':
-          readList(ptr, end, data.aliases);
-          break;
-        case 'E':
-          readMap(ptr, end, data.equivalents);
-          break;
-        case 'l':
-          readMap(ptr, end, data.languages);
-          break;
-      }
-    }
-    assert(*ptr == fieldEnd);
-    ptr++;
-    for (auto alias : data.aliases) {
-      aliasMap.insert({ alias, name });
-    }
-    scriptMap.insert({ name, std::move(data) });
-  }
-
-  std::string_view readString(const char*& ptr, const char* end) noexcept {
-    auto start = ptr;
-    while (ptr < end && *ptr != 0) {
-      ptr++;
-    }
-    assert(*ptr == 0);
-    ptr++;
-    return std::string_view(start, ptr - start - 1);
-  }
-
-  void readList(const char*& ptr, const char* end, std::vector<std::string_view>& list) noexcept {
-    while (ptr < end && *ptr != fieldEnd) {
-      list.push_back(readString(ptr, end));
-    }
-    assert(*ptr == fieldEnd);
-    ptr++;
-  }
-
-  void readMap(
-      const char*& ptr, const char* end, std::map<std::string_view, std::vector<std::string_view>>& map) noexcept {
-    while (ptr < end && *ptr != fieldEnd) {
-      auto keyStr = readString(ptr, end);
-      std::vector<std::string_view> list;
-      while (ptr < end && *ptr != fieldEnd) {
-        list.push_back(readString(ptr, end));
-      }
-      assert(*ptr == fieldEnd);
-      ptr++;
-      map[keyStr] = std::move(list);
-    }
-    assert(*ptr == fieldEnd);
-    ptr++;
-  }
-
-  static constexpr char fieldEnd = 0x01;
-  std::map<std::string_view, ScriptInfo, detail::CaseInsensitiveComparator> scriptMap;
-  std::map<std::string_view, std::string_view, detail::CaseInsensitiveComparator> aliasMap;
-};
-
-using LookupTable = Char32Trie<ScriptToken>;
-using LookupResult = LookupTable::LookupResult;
-
-class ScriptReaderMap {
-public:
-  ScriptReaderMap(const std::string_view name, const ScriptInfo& scriptData) noexcept
-      : name(name)
-      , scriptData(scriptData)
-      , caseInsensitive(isCaseInsensitiveScripts(name)) {
-    if (isWriteOnlyScript(name)) {
-      return;
-    }
-
-    addScript(name, scriptData);
-
-    for (auto entry : scriptData.equivalents) {
-      auto tokenStr = entry.first;
-      ScriptToken token = invalidScriptToken;
-      if (tokenStr.length() >= 3 && tokenStr[1] == ':') {
-        auto type = getTokenType(tokenStr[0]);
-        if (type == TokenType::Ignore) {
-          continue;
-        }
-        uint8_t idx = std::atoi(tokenStr.data() + 2);
-        token = ScriptToken { type, idx, scriptData.type };
-      } else {
-        auto ptr = tokenStr.data();
-        LookupResult result = lookupToken(ptr);
-        if (result.value != std::nullopt) {
-          std::vector<ScriptToken> extra {};
-          token = *result.value;
-          ptr += result.matchLen;
-
-          while ((result = lookupToken(ptr)).value) {
-            extra.push_back(*result.value);
-            ptr += result.matchLen;
-          }
-          if (!extra.empty()) {
-            token.extra = static_cast<uint8_t>(extraTokens.size());
-            extraTokens.emplace_back(std::move(extra));
-          }
-        }
-      }
-      if (token == invalidScriptToken) {
-        continue;
-      }
-      for (auto alias : entry.second) {
-        tokenMap.addLookup(alias, token);
-      }
-    }
-  }
-
-  void addScript(const std::string_view name, const ScriptInfo& scriptData) noexcept {
-    if (isWriteOnlyScript(name)) {
-      return;
-    }
-    addCharMap(name, TokenType::Vowel, scriptData.type, scriptData.vowels.data(), scriptData.vowels.size());
-    addCharMap(name, TokenType::VowelMark, scriptData.type, scriptData.vowelMarks.data(), scriptData.vowelMarks.size());
-    addCharMap(name, TokenType::Consonant, scriptData.type, scriptData.consonants.data(), scriptData.consonants.size());
-    addCharMap(name, TokenType::OtherDiacritic, scriptData.type, scriptData.otherDiacritics.data(),
-        scriptData.otherDiacritics.size());
-    addCharMap(name, TokenType::Symbol, scriptData.type, scriptData.symbols.data(), scriptData.symbols.size());
-    addCharMap(
-        name, TokenType::VedicSymbol, scriptData.type, scriptData.vedicSymbols.data(), scriptData.vedicSymbols.size());
-
-    if (isIndicScript(scriptData.type)) {
-      addCharMap(name, TokenType::Accent, scriptData.type, VedicAccents.data(), VedicAccents.size());
-      addCharMap(name, TokenType::ExclusiveSymbol, scriptData.type, ExclusiveSymbols.data(), ExclusiveSymbols.size());
-    } else {
-      addCharMap(name, TokenType::Accent, scriptData.type, LatinAccents.data(), LatinAccents.size());
-    }
-  }
-
-  template <typename CharType> inline LookupResult lookupToken(const CharType* text) const noexcept {
-    return tokenMap.lookup(text, caseInsensitive);
-  }
-
-  const std::vector<ScriptToken>& getExtraTokens(uint8_t index) const noexcept { return extraTokens[index]; };
-
-  ScriptType getType() const noexcept { return scriptData.type; }
-
-private:
-  void addCharMap(const std::string_view name, TokenType tokenType, ScriptType scriptType, const std::string_view* map,
-      size_t count) noexcept {
-    for (size_t idx = 0; idx < count; idx++) {
-      if (scriptType == ScriptType::Latin && tokenType == TokenType::VowelMark && idx != Diacritic_Virama) {
-        continue;
-      }
-      auto res = tokenMap.addLookup(map[idx], { tokenType, static_cast<uint8_t>(idx), scriptType });
-      if (res != std::nullopt && inditransLogger != nullptr && (res->tokenType != tokenType || res->idx != idx)) {
-        std::string error = "Error adding for: " + std::string(name)
-            + ", tokenType: " + std::to_string(static_cast<int>(tokenType)) + ", idx: " + std::to_string(idx)
-            + ", new value: " + std::string(map[idx]);
-        (*inditransLogger)(error);
-      }
-    }
-  }
-
-  TokenType getTokenType(char ch) {
-    switch (ch) {
-      case 'v':
-        return TokenType::Vowel;
-      case 'm':
-        return TokenType::VowelMark;
-      case 'c':
-        return TokenType::Consonant;
-      case 'o':
-        return TokenType::OtherDiacritic;
-      case 's':
-        return TokenType::Symbol;
-      case 'S':
-        return TokenType::VedicSymbol;
-      case 'a':
-        return TokenType::Accent;
-      case 'x':
-        return TokenType::ExclusiveSymbol;
-      default:
-        return TokenType::Ignore;
-    }
-  }
-
-  const std::string_view name;
-  const ScriptInfo& scriptData;
-  const bool caseInsensitive;
-  LookupTable tokenMap {};
-  std::vector<std::vector<ScriptToken>> extraTokens {};
-};
-
-class ScriptWriterMap {
-public:
-  ScriptWriterMap(const std::string_view name, const ScriptInfo& scriptInfo) noexcept
-      : name(name)
-      , scriptInfo(scriptInfo)
-      , scriptType(scriptInfo.type) {
-    addCharMap(name, TokenType::Vowel, scriptType, scriptInfo.vowels.data(), scriptInfo.vowels.size());
-    addCharMap(name, TokenType::VowelMark, scriptType, scriptInfo.vowelMarks.data(), scriptInfo.vowelMarks.size());
-    addCharMap(name, TokenType::Consonant, scriptType, scriptInfo.consonants.data(), scriptInfo.consonants.size());
-    addCharMap(name, TokenType::OtherDiacritic, scriptType, scriptInfo.otherDiacritics.data(),
-        scriptInfo.otherDiacritics.size());
-    addCharMap(name, TokenType::Symbol, scriptType, scriptInfo.symbols.data(), scriptInfo.symbols.size());
-    addCharMap(
-        name, TokenType::VedicSymbol, scriptType, scriptInfo.vedicSymbols.data(), scriptInfo.vedicSymbols.size());
-    if (isIndicScript(scriptType)) {
-      addCharMap(name, TokenType::Accent, scriptType, VedicAccents.data(), VedicAccents.size());
-      addCharMap(name, TokenType::ExclusiveSymbol, scriptType, ExclusiveSymbols.data(), ExclusiveSymbols.size());
-    } else {
-      addCharMap(name, TokenType::Accent, scriptType, LatinAccents.data(), LatinAccents.size());
-    }
-  }
-
-  inline std::string_view lookupChar(TokenType type, size_t idx) const noexcept {
-    if (idx >= charMaps[static_cast<size_t>(type)].size()) {
-      return "";
-    }
-    return charMaps[static_cast<size_t>(type)][idx];
-  }
-  inline std::string_view lookupChar(const Token& token) const noexcept {
-    if (token.idx >= charMaps[static_cast<size_t>(token.tokenType)].size()) {
-      return "";
-    }
-    return charMaps[static_cast<size_t>(token.tokenType)][token.idx];
-  }
-
-  ScriptType getType() const noexcept { return scriptType; }
-  bool isVedic() const noexcept { return scriptInfo.isVedic; }
-
-private:
-  void addCharMap(const std::string_view name, TokenType tokenType, ScriptType scriptType, const std::string_view* map,
-      size_t count) noexcept {
-    auto& charMap = charMaps[static_cast<size_t>(tokenType)];
-    charMap.reserve(count);
-    for (size_t idx = 0; idx < count; idx++) {
-      charMap.emplace_back(map[idx]);
-    }
-  }
-
-private:
-  const std::string_view name;
-  const ScriptInfo& scriptInfo;
-  ScriptType scriptType;
-  std::array<std::vector<std::string_view>, 8> charMaps {};
-};
-
 using TokenOrString = std::variant<ScriptToken, std::string_view>;
 template <typename T> inline bool HoldsScriptToken(const T& var) { return std::holds_alternative<ScriptToken>(var); }
 template <typename T> inline ScriptToken GetScriptToken(const T& var) { return std::get<ScriptToken>(var); }
-
-struct TokenUnit {
-  constexpr TokenUnit(ScriptToken leadToken) noexcept
-      : leadToken(leadToken) { }
-
-  ScriptToken leadToken;
-  Token vowelMark {};
-  Token otherDiacritic {};
-  Token accent {};
-
-  bool operator==(const TokenUnit& other) const noexcept {
-    return leadToken == other.leadToken && vowelMark == other.vowelMark && otherDiacritic == other.otherDiacritic
-        && accent == other.accent;
-  }
-
-  bool operator!=(const TokenUnit& other) const noexcept { return !(*this == other); }
-};
-
-namespace std {
-
-template <> struct hash<TokenUnit> {
-  std::size_t operator()(const TokenUnit& k) const {
-    return (k.leadToken.idx ^ (k.vowelMark.idx << 1) >> 1) ^ (k.otherDiacritic.idx << 1) ^ (k.accent.idx << 1);
-  }
-};
-
-}
 
 using TokenUnitOrString = std::variant<TokenUnit, std::string_view>;
 template <typename T> inline bool HoldsTokenUnit(const T& var) { return std::holds_alternative<TokenUnit>(var); }
@@ -393,194 +54,84 @@ inline bool operator==(const TokenUnitOrString& a, const TokenUnitOrString& b) n
 }
 inline bool operator!=(const TokenUnitOrString& a, const TokenUnitOrString& b) noexcept { return !(a == b); }
 
-const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexcept {
-  static std::unordered_map<std::string, ScriptReaderMap> readerMapCache {};
-
-  if (isWriteOnlyScript(script)) {
-    return nullptr;
-  }
-
-#ifdef FORCE_INDIC
-  auto mapEntry = ScriptData::getScript(script);
-  if (mapEntry != nullptr && (mapEntry->type == ScriptType::Indic || mapEntry->type == ScriptType::Tamil)) {
-    script = "indic";
-  }
-#endif
-
-  auto entry = readerMapCache.find(std::string(script));
-  if (entry == readerMapCache.end()) {
-    if (script == "indic") {
-      auto mapEntry = ScriptData::getScript("devanagari");
-      if (mapEntry == nullptr) {
-        return nullptr;
-      }
-      entry = readerMapCache.emplace(script, ScriptReaderMap { script, *mapEntry }).first;
-
-      for (const auto& scriptInfo : ScriptData::getScripts()) {
-        if (scriptInfo.first == "devanagari" || scriptInfo.second.type == ScriptType::Latin) {
-          continue;
-        }
-
-        entry->second.addScript(scriptInfo.first, scriptInfo.second);
-      }
-    } else {
-      auto mapEntry = ScriptData::getScript(script);
-      if (mapEntry == nullptr) {
-        return nullptr;
-      }
-
-      entry = readerMapCache.emplace(script, ScriptReaderMap { script, *mapEntry }).first;
-    }
-  }
-
-  return &entry->second;
-}
-
-const ScriptWriterMap* getScriptWriterMap(std::string_view script) noexcept {
-  static std::unordered_map<std::string, ScriptWriterMap> writerMapCache {};
-  auto entry = writerMapCache.find(std::string(script));
-  if (entry == writerMapCache.end()) {
-    auto mapEntry = ScriptData::getScript(script);
-    if (mapEntry == nullptr) {
-      return nullptr;
-    }
-
-    entry = writerMapCache.emplace(script, ScriptWriterMap { script, *mapEntry }).first;
-  }
-
-  return &entry->second;
-}
-
-class TamilPrefixLookup {
-public:
-  TamilPrefixLookup() noexcept {
-    if (!tamilPrefixes.isEmpty()) {
-      return;
-    }
-    auto map = getScriptReaderMap("tamil");
-    if (map == nullptr) {
-      return;
-    }
-    for (const auto& prefix : TamilPrefixes) {
-      std::vector<TokenUnit> tokens;
-      tokens.reserve(prefix.size());
-      auto ptr = prefix.data();
-      auto end = ptr + prefix.length();
-      while (ptr < end) {
-        auto match = map->lookupToken(ptr);
-        if (match.value == std::nullopt) {
-          break;
-        }
-        switch (match.value->tokenType) {
-          case TokenType::Consonant:
-          case TokenType::Vowel:
-          case TokenType::Symbol:
-          case TokenType::ExclusiveSymbol:
-            tokens.emplace_back(match.value.value());
-            break;
-          case TokenType::OtherDiacritic:
-            tokens.back().otherDiacritic = match.value.value();
-            break;
-          case TokenType::VowelMark:
-            tokens.back().vowelMark = match.value.value();
-            break;
-          case TokenType::Accent:
-            tokens.back().accent = match.value.value();
-            break;
-          default:
-            break;
-        }
-        ptr += match.matchLen;
-      }
-      if (ptr == end) {
-        tamilPrefixes.addLookup(tokens, true);
-      }
-    }
-  }
-
-  bool lookup(const TokenUnit& token, StatefulTrie<TokenUnit, bool>::LookupState& lookupState) noexcept {
-    if (token.leadToken.scriptType == ScriptType::Tamil) {
-      return tamilPrefixes.lookup(token, lookupState);
-    }
-    TokenUnit tokenCopy = token;
-    tokenCopy.leadToken.scriptType = ScriptType::Tamil;
-    if (tokenCopy.leadToken.tokenType == TokenType::Consonant && tokenCopy.leadToken.idx <= 24) {
-      if (tokenCopy.leadToken.idx % 5 != 4) {
-        tokenCopy.leadToken.idx -= tokenCopy.leadToken.idx % 5;
-      }
-    }
-    return tamilPrefixes.lookup(tokenCopy, lookupState);
-  }
-
-private:
-  static StatefulTrie<TokenUnit, bool> tamilPrefixes;
-};
-StatefulTrie<TokenUnit, bool> TamilPrefixLookup::tamilPrefixes {};
-
 class InputReader {
 public:
   InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options,
       const std::string_view& skipStart = "##", const std::string_view& skipEnd = "##") noexcept
       : options(options) {
-    auto ptr = input.data();
-    auto end = ptr + input.length();
     tokenUnits.reserve(input.size());
-
-    bool skipXml = !(options * TranslitOptions::NoXMLTagHandling);
-
-    while (ptr < end) {
-      auto match = map.lookupToken(ptr);
-      if (match.value != std::nullopt) {
-        if (match.value->tokenType != TokenType::Accent || options / TranslitOptions::IgnoreVedicAccents) {
-          auto token = *match.value;
-          tokenUnits.emplace_back(token);
-          if (token.extra != 0xFF) {
-            for (const auto& extraToken : map.getExtraTokens(token.extra)) {
-              tokenUnits.emplace_back(extraToken);
-            }
-          }
-        }
-        ptr += match.matchLen;
-      } else {
-        while (ptr < end) {
-          const auto* start = ptr;
-          if (skipXml && *ptr == '<') {
-            while (ptr < end && *ptr != '>') {
-              ptr++;
-            }
-            if (*ptr == '>') {
-              ptr++;
-            }
-            tokenUnits.emplace_back(std::string_view(start, ptr - start));
-          } else if (*ptr == skipStart[0] && ptr + skipStart.length() - 1 < end
-              && std::string_view(ptr, skipStart.length()) == skipStart) {
-            ptr += skipStart.length();
-            start = ptr;
-            while (ptr < end) {
-              if (*ptr == skipEnd[0] && ptr + skipEnd.length() - 1 < end
-                  && std::string_view(ptr, skipEnd.length()) == skipEnd) {
-                tokenUnits.emplace_back(std::string_view(start, ptr - start));
-                ptr += skipEnd.length();
-                break;
-              } else {
-                ptr++;
-              }
-            }
-          } else if (map.lookupToken(ptr).value != std::nullopt) {
-            break;
-          } else {
-            ptr++;
-            while (ptr < end && *ptr != skipStart[0] && *ptr != '<' && map.lookupToken(ptr).value == std::nullopt) {
-              ptr++;
-            }
-            tokenUnits.emplace_back(std::string_view(start, ptr - start));
-          }
-        }
-      }
+    if (map.nonRoman) {
+      if (map.source)
+        scan<ReaderPolicy::Explicit>(input, map, skipStart, skipEnd);
+      else
+        scan<ReaderPolicy::Indic>(input, map, skipStart, skipEnd);
+    } else {
+      if (map.folded)
+        scan<ReaderPolicy::FoldedRoman>(input, map, skipStart, skipEnd);
+      else
+        scan<ReaderPolicy::Roman>(input, map, skipStart, skipEnd);
     }
     iter = tokenUnits.begin();
   }
 
+private:
+  template <ReaderPolicy Policy>
+  void scan(const std::string_view& input, const ScriptReaderMap& map, const std::string_view& skipStart,
+      const std::string_view& skipEnd) noexcept {
+    auto ptr = input.data();
+    auto end = ptr + input.length();
+
+    while (ptr < end) {
+      auto match = map.lookupToken<Policy>(ptr, end);
+      if (match.sequence) {
+        const auto tokens = match.tokens();
+        if (tokens.front().tokenType != TokenType::Accent || options / TranslitOptions::IgnoreVedicAccents) {
+          tokenUnits.emplace_back(tokens.front());
+          for (size_t i = 1; i < tokens.size(); ++i)
+            tokenUnits.emplace_back(tokens[i]);
+        }
+        ptr += match.matchLen;
+      } else {
+        ptr = scanUnrecognized<Policy>(ptr, end, map, skipStart, skipEnd);
+      }
+    }
+  }
+
+  template <ReaderPolicy Policy>
+  [[gnu::noinline]] const char* scanUnrecognized(const char* ptr, const char* end, const ScriptReaderMap& map,
+      const std::string_view& skipStart, const std::string_view& skipEnd) noexcept {
+    const bool skipXml = !(options * TranslitOptions::NoXMLTagHandling);
+    while (ptr < end) {
+      const auto* start = ptr;
+      if (skipXml && *ptr == '<') {
+        const auto close = std::string_view(ptr, end - ptr).find('>');
+        ptr = close == std::string_view::npos ? end : ptr + close + 1;
+        tokenUnits.emplace_back(std::string_view(start, ptr - start));
+      } else if (*ptr == skipStart[0] && ptr + skipStart.length() - 1 < end
+          && std::string_view(ptr, skipStart.length()) == skipStart) {
+        ptr += skipStart.length();
+        start = ptr;
+        const auto close = skipEnd.empty() ? std::string_view::npos : std::string_view(ptr, end - ptr).find(skipEnd);
+        if (close == std::string_view::npos) {
+          ptr = end;
+        } else {
+          tokenUnits.emplace_back(std::string_view(start, close));
+          ptr += close + skipEnd.length();
+        }
+      } else if (map.lookupToken<Policy>(ptr, end).sequence != 0) {
+        break;
+      } else {
+        ptr++;
+        while (ptr < end && *ptr != skipStart[0] && *ptr != '<' && map.lookupToken<Policy>(ptr, end).sequence == 0) {
+          ptr++;
+        }
+        tokenUnits.emplace_back(std::string_view(start, ptr - start));
+      }
+    }
+    return ptr;
+  }
+
+public:
   inline bool hasMore() noexcept { return iter < tokenUnits.end(); }
 
   TokenUnit lastToken = invalidTokenUnit;
@@ -842,8 +393,10 @@ private:
   }
 
   TokenUnit inferGurmukhiAdhak() {
+    if (!hasMore())
+      return invalidTokenUnit;
     const auto peek = *iter;
-    if (hasMore() && HoldsScriptToken(peek) && GetScriptToken(peek).tokenType == TokenType::Consonant) {
+    if (HoldsScriptToken(peek) && GetScriptToken(peek).tokenType == TokenType::Consonant) {
       TokenUnit tokenUnit = { GetScriptToken(peek) };
       if (tokenUnit.leadToken.idx < 24) {
         tokenUnit.leadToken.idx -= tokenUnit.leadToken.idx % 5 % 2;
@@ -920,7 +473,7 @@ private:
   std::vector<TokenOrString>::iterator iter;
   bool wordStart { true };
   TamilPrefixLookup prefixLookup;
-  StatefulTrie<TokenUnit, bool>::LookupState prefixLookupState {};
+  TamilPrefixLookup::LookupState prefixLookupState { };
 };
 
 class OutputWriter {
@@ -1011,10 +564,7 @@ protected:
           && (tokenUnit.vowelMark.idx != Diacritic_Virama || isEndOfWord(next))) {
         leadText = "ன";
       } else if (options * TranslitOptions::TamilTraditional) {
-        auto repl = tamilTraditionalMap.find(leadText);
-        if (repl != tamilTraditionalMap.end()) {
-          leadText = repl->second;
-        }
+        leadText = tamilTraditionalReplacement(leadText);
       }
 
       auto superscript = Utf8String::trailingChar(leadText).view();
@@ -1026,7 +576,7 @@ protected:
       push(leadText);
       auto consonantPosition = buffer.size();
 
-      std::string_view vowelMarkReminder {};
+      std::string_view vowelMarkReminder { };
       if (tokenUnit.vowelMark.idx != InvalidToken) {
         auto vowelMark = map.lookupChar(tokenUnit.vowelMark);
         if (vowelMark.size() > UtfUtils::nextCharLen(vowelMark.data())) {
@@ -1139,7 +689,7 @@ protected:
   void setNasalConsonantSize() noexcept {
     const auto& anuswara = map.lookupChar(TokenType::OtherDiacritic, Diacritic_Anuswara);
     if (options / TranslitOptions::RetainSpecialMarkers) {
-      std::string out {};
+      std::string out { };
       stripChars(anuswara, SpecialMarkers, out);
     }
   }
@@ -1158,71 +708,48 @@ protected:
 private:
   const ScriptWriterMap& map;
   const TranslitOptions options;
-  Utf8StringBuilder buffer {};
-  std::unordered_map<std::string_view, std::string_view> tamilTraditionalMap {
-    { "ஸ", "ச" },
-    { "ஜ", "ச³" },
-    { "ஜ²", "ச⁴" },
-  };
+  Utf8StringBuilder buffer { };
   bool wordStart { true };
   TamilPrefixLookup prefixLookup;
-  StatefulTrie<TokenUnit, bool>::LookupState prefixLookupState {};
+  TamilPrefixLookup::LookupState prefixLookupState { };
 };
 
-std::unique_ptr<InputReader> getInputReader(const std::string_view& text, std::string_view from,
-    TranslitOptions options, const std::string_view& skipStart, const std::string_view& skipEnd) noexcept {
-
-  auto map = getScriptReaderMap(from);
-  if (map == nullptr) {
-    return nullptr;
-  }
-
-  return std::make_unique<InputReader>(text, *map, options, skipStart, skipEnd);
-}
-
-std::unique_ptr<OutputWriter> getOutputWriter(std::string_view to, TranslitOptions options, size_t inputSize) noexcept {
-  auto map = getScriptWriterMap(to);
-  if (map == nullptr) {
-    return nullptr;
-  }
-
-  if (map->getType() == ScriptType::Indic && !map->isVedic()) {
-    options = options | TranslitOptions::IgnoreVedicAccents;
-  }
-
-  return std::make_unique<OutputWriter>(*map, options, inputSize);
-}
-
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
-    TranslitOptions options, std::unique_ptr<char>& output, const std::string_view& skipStart,
+    TranslitOptions options, TranslitBuffer& output, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
   if (from == to) {
     return false;
   }
-  auto reader = getInputReader(input, from, options, skipStart, skipEnd);
-  if (reader == nullptr) {
+  const auto readerMap = getScriptReaderMap(from);
+  if (readerMap == nullptr) {
     return false;
   }
-  auto writer = getOutputWriter(to, options, input.length() + 1);
-  if (writer == nullptr) {
-    return false;
-  }
+  InputReader reader(input, *readerMap, options, skipStart, skipEnd);
 
-  TokenUnitOrString curr = (reader->hasMore() ? reader->getNext() : endOfText);
+  const auto writerMap = getScriptWriterMap(to);
+  if (writerMap == nullptr) {
+    return false;
+  }
+  if (writerMap->getType() == ScriptType::Indic && !writerMap->isVedic()) {
+    options = options | TranslitOptions::IgnoreVedicAccents;
+  }
+  OutputWriter writer(*writerMap, options, input.length() + 1);
+
+  TokenUnitOrString curr = (reader.hasMore() ? reader.getNext() : endOfText);
   while (curr != endOfText) {
-    TokenUnitOrString next = (reader->hasMore() ? reader->getNext() : endOfText);
-    writer->writeTokenUnit(curr, next);
+    TokenUnitOrString next = (reader.hasMore() ? reader.getNext() : endOfText);
+    writer.writeTokenUnit(curr, next);
     curr = next;
   }
 
-  output.reset(writer->text().release());
+  output.reset(writer.text().release());
 
   return true;
 }
 
 std::string transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, const std::string_view& skipStart, const std::string_view& skipEnd) noexcept {
-  std::unique_ptr<char> output;
+  TranslitBuffer output;
   if (!transliterate(input, from, to, options, output, skipStart, skipEnd)) {
     return std::string();
   }
@@ -1235,7 +762,7 @@ extern "C" {
 /// transliterate
 char* CALL_CONV transliterate(const char* input, const char* from, const char* to, unsigned long options,
     const char* skipStart, const char* skipEnd) {
-  std::unique_ptr<char> output;
+  TranslitBuffer output;
   std::string_view inputView(input);
   std::string_view skipStartView(skipStart);
   std::string_view skipEndView(skipEnd);
@@ -1248,13 +775,9 @@ char* CALL_CONV transliterate(const char* input, const char* from, const char* t
 }
 
 /// returns a comma-separated list of scripts
-int CALL_CONV isScriptSupported(const char* script) { return ScriptData::getScript(script) != nullptr; }
+int CALL_CONV isScriptSupported(const char* script) { return inditrans::static_data::findScript(script) >= 0; }
 
 /// releaseBuffer
-void CALL_CONV releaseBuffer(char* buffer) {
-  if (buffer) {
-    delete[] buffer;
-  }
-}
+void CALL_CONV releaseBuffer(char* buffer) { std::free(buffer); }
 
 } // extern "C"

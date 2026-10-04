@@ -78,7 +78,7 @@ transliterated and are passed through unchanged.
 flutter pub get          # install Dart dependencies
 dart analyze             # lint and static analysis
 flutter test             # run tests (native library must be built)
-dart run ffigen --config ffigen.yaml  # regenerate FFI bindings after native API changes
+python3 ../tool/generate_bindings.py  # regenerate FFI bindings after native API changes
 ```
 
 ## Documentation
