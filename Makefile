@@ -97,6 +97,9 @@ $(NATIVE_SRC)/script_data.h:
 	@test -f "$(NATIVE_SRC)/script_data.h" || { echo "Missing checked-in $(NATIVE_SRC)/script_data.h while USE_CHECKED_IN_SCRIPT_DATA=1"; exit 1; }
 endif
 
+$(NATIVE_SRC)/script_metadata.h: $(NATIVE_SRC)/script_data.h
+	dart tool/generate_headers.dart
+
 wasm: flutter/assets/inditrans.wasm js/public/inditrans.js
 
 flutter/assets/inditrans.wasm: $(NATIVE_CPP) $(NATIVE_H)
