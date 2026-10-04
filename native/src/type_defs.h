@@ -53,7 +53,8 @@ struct ScriptToken : public Token {
   ScriptType scriptType;
   uint8_t reserved { };
 
-  constexpr ScriptToken(TokenType tokenType, uint8_t idx, ScriptType scriptType) noexcept
+  constexpr ScriptToken(
+      TokenType tokenType = TokenType::Ignore, uint8_t idx = InvalidToken, ScriptType scriptType = ScriptType::Others) noexcept
       : Token(tokenType, idx)
       , scriptType(scriptType) { }
 

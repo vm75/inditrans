@@ -37,6 +37,12 @@ class Token:
     def cpp(self) -> str:
         return f"{{TokenType::{TOKEN_TYPES[self.type]}, {self.index}, ScriptType::{self.script}}}"
 
+    @property
+    def cpp_semantic(self) -> str:
+        name = TOKEN_TYPES[self.type]
+        fn = name[0].lower() + name[1:]
+        return f"{fn}({self.index}, ScriptType::{self.script})"
+
 
 @dataclass(frozen=True)
 class ReaderToken:
@@ -67,6 +73,12 @@ def utf8_key(text: str) -> bytes:
 def cpp_string(text: str) -> str:
     """Escape each UTF-8 byte separately to avoid C++ hex-escape ambiguity."""
     return '"' + "".join(f"\\x{byte:02x}" for byte in utf8_key(text)) + '"'
+
+
+def cpp_u8(text: str) -> str:
+    """Emit a C++23 UTF-8 string literal with minimal necessary escaping."""
+    escaped = text.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("\r", "\\r")
+    return f'u8"{escaped}"'
 
 
 class StaticScripts:
@@ -218,6 +230,14 @@ class StaticScripts:
             non_roman.setdefault(spelling, {})
 
         keys = sorted(non_roman, key=utf8_key)
+        script_id_names = [s.name[0].upper() + s.name[1:] for s in self.scripts]
+
+        def format_mask(mask: int) -> str:
+            if mask == 0:
+                return "0u"
+            matched = [f"ScriptId::{script_id_names[i]}" for i in range(len(script_id_names)) if (mask & (1 << i))]
+            return f"scriptMask({', '.join(matched)})"
+
         terminals: list[str] = []
         alternatives: list[str] = []
         union: dict[str, int] = {}
@@ -225,29 +245,33 @@ class StaticScripts:
             variants = list(non_roman[spelling].items())
             primary = variants[0] if variants else (0, 0)
             begin = len(alternatives)
-            alternatives.extend(f"{{{mask}u, {sequence}}}" for sequence, mask in variants[1:])
+            for sequence, mask in variants[1:]:
+                alternatives.append(f"/* {cpp_u8(spelling)} */ {{{format_mask(mask)}, {sequence}}}")
             unrestricted = self._sequence(indic[spelling]) if spelling in indic else 0
-            terminals.append(f"{{{primary[1]}u, {primary[0]}, {unrestricted}, "
-                             f"{{{begin}, {max(len(variants) - 1, 0)}}}}}")
+            alt_range = f"{{{begin}, {max(len(variants) - 1, 0)}}}"
+            terminals.append(f"/* {cpp_u8(spelling)} */ {{{format_mask(primary[1])}, {primary[0]}, {unrestricted}, {alt_range}}}")
             union[spelling] = len(terminals)
         self._check16(len(terminals), "terminal IDs")
         self._check16(len(alternatives), "source variants")
 
         graphs = [union]
+        graph_tokens: list[dict[str, ReaderToken] | None] = [None]
         readers = []
         for index, script in enumerate(self.scripts):
             if script.category != "latin":
-                readers.append(f"{{0, 0, {1 << index}u}}")
+                readers.append(f"/* ScriptId::{script_id_names[index]} */ {{0, 0, {format_mask(1 << index)}}}")
                 continue
             normal = {key: self._sequence(token) for key, token in explicit[index].items()}
             fold = {key: self._sequence(token) for key, token in folded[index].items()}
             normal_id = len(graphs)
             graphs.append(normal)
+            graph_tokens.append(explicit[index])
             folded_id = normal_id
             if normal != fold:
                 folded_id = len(graphs)
                 graphs.append(fold)
-            readers.append(f"{{{normal_id}, {folded_id}, 0}}")
+                graph_tokens.append(folded[index])
+            readers.append(f"/* ScriptId::{script_id_names[index]} */ {{{normal_id}, {folded_id}, 0}}")
 
         # Pool identical output strings. WriterChar stores UTF-8 byte offsets,
         # so the generated C++ table is independent of source-file encoding.
@@ -260,7 +284,7 @@ class StaticScripts:
             if value not in text_refs:
                 encoded = utf8_key(value)
                 text_refs[value] = Range(pool_bytes, len(encoded))
-                text_pool.append(f"    {cpp_string(value)}")
+                text_pool.append(f"    {cpp_u8(value)}")
                 pool_bytes += len(encoded)
                 self._check16(pool_bytes, "writer string pool")
             return text_refs[value]
@@ -268,7 +292,7 @@ class StaticScripts:
         char_entries: list[str] = []
         ranges: dict[str, Range] = {}
         writers: list[str] = []
-        for script in self.scripts:
+        for i, script in enumerate(self.scripts):
             script_ranges = []
             for kind in CLASSES:
                 array = self.chars(script, kind)
@@ -279,12 +303,12 @@ class StaticScripts:
                         ref = text_ref(value)
                         if ref.count > 255:
                             raise ValueError("writer char length exceeds uint8_t")
-                        char_entries.append(f"{{{ref.begin}, {ref.count}}}")
+                        char_entries.append(f"/* {cpp_u8(value)} */ {{{ref.begin}, {ref.count}}}")
                     self._check16(len(char_entries), "writer entries")
                     ranges[array_key] = Range(begin, len(array))
                 item = ranges[array_key]
                 script_ranges.append(f"std::span{{writerChars}}.subspan({item.begin}, {item.count})")
-            writers.append(f"{{ScriptType::{self.script_type(script)}, {str(script.category == 'vedic').lower()}, "
+            writers.append(f"/* ScriptId::{script_id_names[i]} */ {{ScriptType::{self.script_type(script)}, {str(script.category == 'vedic').lower()}, "
                             f"{{{{{', '.join(script_ranges)}}}}}}}")
 
         names = {script.name.lower(): i for i, script in enumerate(self.scripts)}
@@ -294,21 +318,28 @@ class StaticScripts:
         sorted_names = sorted(names)
 
         output = ["// GENERATED by tool/generate_headers.py. Do not edit.", "#pragma once", "",
-                  '#include "static_script_types.h"', "", "namespace inditrans::static_data {"]
-        output += ["inline constexpr char writerText[] =", *text_pool, ";\n"]
+                  '#include "static_script_types.h"', "", "namespace inditrans::static_data {", ""]
+        output += [
+            "enum class ScriptId : uint8_t {",
+            *(f"    {name} = {idx}," for idx, name in enumerate(script_id_names)),
+            "};\n",
+        ]
+        output += ["inline constexpr auto writerText = packUtf8(", *text_pool, ");\n"]
         self._array(output, "WriterChar", "writerChars", char_entries)
         self._array(output, "ScriptWriterMap", "writers", writers)
         self._array(output, "ScriptName", "names",
-                    [f'{{"{name}", {names[name]}}}' for name in sorted_names])
+                    [f'{{"{name}", static_cast<uint16_t>(ScriptId::{script_id_names[names[name]]})}}' for name in sorted_names])
         self._array(output, "ReaderInfo", "readerInfo", readers)
-        output += [f"inline constexpr size_t devanagariId = {devanagari};",
-                   f"inline constexpr size_t tamilId = {next(i for i, s in enumerate(self.scripts) if s.name == 'tamil')};",
+        output += [f"inline constexpr size_t devanagariId = static_cast<size_t>(ScriptId::{script_id_names[devanagari]});",
+                   f"inline constexpr size_t tamilId = static_cast<size_t>(ScriptId::{script_id_names[next(i for i, s in enumerate(self.scripts) if s.name == 'tamil')]});",
                    "",
                    f"inline constexpr unsigned sequenceOffsetBits = {SEQUENCE_OFFSET_BITS};\n"]
-        flat_tokens = ["{TokenType::Ignore, 255, ScriptType::Others}"]
-        flat_tokens.extend(token.cpp for sequence in self.sequences for token in sequence)
-        self._check16(len(flat_tokens), "sequence token offsets")
-        self._array(output, "ScriptToken", "sequenceTokens", flat_tokens)
+        seq_entries = [f"    seq({', '.join(token.cpp_semantic for token in sequence)})"
+                       for sequence in self.sequences[1:]]
+        output += [
+            "inline constexpr auto sequencePool = makeSequencePool(\n" + ",\n".join(seq_entries) + "\n);",
+            "inline constexpr auto sequenceTokens = sequencePool.tokens;\n",
+        ]
         self._array(output, "SourceTerminal", "sourceTerminals", terminals)
         self._array(output, "SourceVariant", "sourceAlternatives", alternatives)
 
@@ -316,39 +347,44 @@ class StaticScripts:
         output.append(f"using ReaderIndex = SmallestIndex<{capacity * 2}>;\n")
         for index, graph in enumerate(graphs):
             graph_keys = sorted(graph, key=utf8_key)
-            entries = [f"{{{cpp_string(key)}, {graph[key]}}}" for key in graph_keys]
-            self._array(output, "TrieEntry<uint8_t>", f"readerEntries{index}", entries)
+            if index == 0:
+                entries = [f"{{{cpp_u8(key)}, {graph[key]}}}" for key in graph_keys]
+                self._array(output, "ReaderEntry", f"readerEntries{index}", entries)
+            else:
+                tokens_map = graph_tokens[index]
+                mapping_entries = []
+                for key in graph_keys:
+                    token = tokens_map[key]
+                    if token.extra:
+                        tok_str = f"seq({token.lead.cpp_semantic}, {', '.join(t.cpp_semantic for t in token.extra)})"
+                    else:
+                        tok_str = token.lead.cpp_semantic
+                    mapping_entries.append(f"{{{cpp_u8(key)}, {tok_str}}}")
+                self._array(output, "SemanticMapping", f"romanMappings{index}", mapping_entries)
+                output.append(f"inline constexpr std::array<ReaderEntry, {len(graph_keys)}> readerEntries{index} = deriveReaderEntries(sequenceTokens, sequenceOffsetBits, romanMappings{index});\n")
             output.append(f"inline constexpr auto readerTrie{index} = makeStaticTrie<readerEntries{index}, ReaderIndex>();\n")
         self._array(output, "TrieView<uint8_t, ReaderIndex>", "readerTries",
                     [f"readerTrie{i}.view()" for i in range(len(graphs))])
 
-        tamil_index = next(i for i, script in enumerate(self.scripts) if script.name == "tamil")
-        tamil_reader = explicit[tamil_index]
-        prefix_keys = []
-        for prefix in self.constants["TamilPrefixes"]:
-            rest = prefix
-            units: list[list[Token]] = []
-            while rest:
-                match = self._match(tamil_reader, rest, False)
-                if match.token is None:
-                    raise ValueError(f"Unrecognized Tamil prefix {prefix}")
-                token = match.token.lead
-                if token.type in (0, 2, 5, 7):
-                    units.append([token, Token(8, 255, "Others"), Token(8, 255, "Others"), Token(8, 255, "Others")])
-                else:
-                    slot = {1: 1, 3: 2, 4: 3}.get(token.type, -1)
-                    if slot > 0:
-                        units[-1][slot] = token
-                rest = rest[match.length:]
-            prefix_keys.append([self._prefix_key(unit) for unit in units])
-        prefix_keys.sort()
-        for i, keys_for_prefix in enumerate(prefix_keys):
-            self._array(output, "uint64_t", f"tamilPrefix{i}", [f"{key}ull" for key in keys_for_prefix])
-        tamil_entries = [f"{{tamilPrefix{i}, 1}}" for i in range(len(prefix_keys))]
-        self._array(output, "TrieEntry<uint64_t>", "tamilEntries", tamil_entries)
-        output += ["inline constexpr auto tamilTrie = makeStaticTrie<tamilEntries>();",
-                   "",
-                   "} // namespace inditrans::static_data", ""]
+        tamil_prefixes = [f"    Utf8Key({cpp_u8(p)})," for p in self.constants["TamilPrefixes"]]
+        output += [
+            "inline constexpr auto tamilPrefixes = std::array {",
+            *tamil_prefixes,
+            "};\n",
+            "inline constexpr auto tamilEntries = deriveTamilEntries(",
+            "    readerTrie0,",
+            "    sourceTerminals,",
+            "    sourceAlternatives,",
+            "    sequenceTokens,",
+            "    sequenceOffsetBits,",
+            "    1u << tamilId,",
+            "    tamilPrefixes",
+            ");\n",
+            "inline constexpr auto tamilTrie = makeStaticTrie<tamilEntries>();",
+            "",
+            "} // namespace inditrans::static_data",
+            "",
+        ]
 
         Path(path).write_text("\n".join(output), encoding="utf-8")
         audit_path = Path("out/static-lookup-collisions.json")

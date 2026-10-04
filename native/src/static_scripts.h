@@ -190,13 +190,6 @@ constexpr int findScript(std::string_view name) noexcept {
   return -1;
 }
 
-constexpr uint64_t prefixKey(const TokenUnit& unit) noexcept {
-  const auto tokenKey
-      = [](const Token& token) constexpr -> uint64_t { return uint64_t(token.tokenType) | (uint64_t(token.idx) << 4); };
-  return tokenKey(unit.leadToken) | (uint64_t(unit.leadToken.scriptType) << 12) | (tokenKey(unit.vowelMark) << 14)
-      | (tokenKey(unit.otherDiacritic) << 26) | (tokenKey(unit.accent) << 38);
-}
-
 } // namespace inditrans::static_data
 
 inline const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexcept {
