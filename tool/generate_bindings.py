@@ -32,10 +32,10 @@ def parse_exports(header: str) -> list[dict]:
         re.MULTILINE | re.DOTALL,
     )
     declaration_pattern = re.compile(
-        r"^[ \\t]*ext_def\\(\\s*[^)]+\\)\\s+(?P<name>\\w+)\\s*\\(",
+        r"^[ \t]*ext_def\(\s*[^)]+\)\s+(?P<name>\w+)\s*\(",
         re.MULTILINE,
     )
-    export_lines = re.findall(r"^[ \\t]*ext_def\\(", header, re.MULTILINE)
+    export_lines = re.findall(r"^[ \t]*ext_def\(", header, re.MULTILINE)
     declarations = [match.group("name") for match in declaration_pattern.finditer(header)]
     if len(declarations) != len(export_lines):
         raise ValueError("Unsupported ext_def declaration syntax in exports header")
