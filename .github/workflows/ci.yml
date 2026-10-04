@@ -105,6 +105,7 @@ jobs:
           git worktree add --detach "$BASELINE_DIR" "$BASE_SHA"
           rm -rf "$BASELINE_DIR/native/bench"
           cp -a native/bench "$BASELINE_DIR/native/bench"
+          test -f "$BASELINE_DIR/native/src/script_data.h"
           mkdir -p "$GITHUB_WORKSPACE/out"
           echo "BASELINE_DIR=$BASELINE_DIR" >> "$GITHUB_ENV"
 
@@ -112,6 +113,7 @@ jobs:
         run: |
           cd "$BASELINE_DIR"
           taskset -c "$BENCH_CPU" make -f "$GITHUB_WORKSPACE/Makefile" bench-save \
+            USE_CHECKED_IN_SCRIPT_DATA=1 \
             BENCH_BASELINE="$GITHUB_WORKSPACE/out/bench-baseline"
 
       - name: Compare PR timing against base

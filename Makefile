@@ -58,6 +58,7 @@ NATIVETEST_CC = $(wildcard $(NATIVE_DIR)/tests/*.cpp)
 NATIVETEST_H = $(wildcard $(NATIVE_DIR)/tests/*.h)
 GENERATOR_UTILS = $(wildcard tool/python/*.py)
 EXAMPLE_DART = flutter/example.dart
+USE_CHECKED_IN_SCRIPT_DATA ?= 0
 
 # build
 native: $(NATIVE_TEST) $(NATIVE_CLI)
@@ -90,8 +91,14 @@ $(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
 $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 	clang++ -std=c++23 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
+ifeq ($(USE_CHECKED_IN_SCRIPT_DATA),0)
 $(NATIVE_SRC)/script_data.h: tool/script_data.json tool/reader_data.json tool/options.json docs/extended-latin.txt tool/generate_headers.py $(GENERATOR_UTILS)
 	python3 tool/generate_headers.py
+else
+$(NATIVE_SRC)/script_data.h:
+	@echo "Missing checked-in $(NATIVE_SRC)/script_data.h while USE_CHECKED_IN_SCRIPT_DATA=1"
+	@exit 1
+endif
 
 wasm: flutter/assets/inditrans.wasm js/public/inditrans.js
 
