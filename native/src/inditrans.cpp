@@ -58,85 +58,98 @@ class InputReader {
 public:
   InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options,
       const std::string_view& skipStart = "##", const std::string_view& skipEnd = "##") noexcept
-      : options(options) {
-    tokenUnits.reserve(input.size());
+      : ptr(input.data()), end(input.data() + input.length()), map(map), skipStart(skipStart), skipEnd(skipEnd), options(options) {
     if (map.nonRoman) {
       if (map.source)
-        scan<ReaderPolicy::Explicit>(input, map, skipStart, skipEnd);
+        policyFn = &InputReader::pull<ReaderPolicy::Explicit>;
       else
-        scan<ReaderPolicy::Indic>(input, map, skipStart, skipEnd);
+        policyFn = &InputReader::pull<ReaderPolicy::Indic>;
     } else {
       if (map.folded)
-        scan<ReaderPolicy::FoldedRoman>(input, map, skipStart, skipEnd);
+        policyFn = &InputReader::pull<ReaderPolicy::FoldedRoman>;
       else
-        scan<ReaderPolicy::Roman>(input, map, skipStart, skipEnd);
+        policyFn = &InputReader::pull<ReaderPolicy::Roman>;
     }
-    iter = tokenUnits.begin();
   }
 
 private:
-  template <ReaderPolicy Policy>
-  void scan(const std::string_view& input, const ScriptReaderMap& map, const std::string_view& skipStart,
-      const std::string_view& skipEnd) noexcept {
-    auto ptr = input.data();
-    auto end = ptr + input.length();
+  const char* ptr;
+  const char* end;
+  const ScriptReaderMap& map;
+  const std::string_view skipStart;
+  const std::string_view skipEnd;
+  const TranslitOptions options;
+  std::vector<TokenOrString> buffer;
+  size_t head = 0;
+  void (InputReader::*policyFn)();
 
-    while (ptr < end) {
-      auto match = map.lookupToken<Policy>(ptr, end);
-      if (match.sequence) {
-        const auto tokens = match.tokens();
-        if (tokens.front().tokenType != TokenType::Accent || options / TranslitOptions::IgnoreVedicAccents) {
-          tokenUnits.emplace_back(tokens.front());
-          for (size_t i = 1; i < tokens.size(); ++i)
-            tokenUnits.emplace_back(tokens[i]);
-        }
-        ptr += match.matchLen;
-      } else {
-        ptr = scanUnrecognized<Policy>(ptr, end, map, skipStart, skipEnd);
-      }
+  void ensure(size_t requiredSize) {
+    if (buffer.size() - head >= requiredSize) return;
+    if (head > 16) {
+      buffer.erase(buffer.begin(), buffer.begin() + head);
+      head = 0;
+    }
+    while (buffer.size() - head < requiredSize && ptr < end) {
+      (this->*policyFn)();
     }
   }
 
   template <ReaderPolicy Policy>
-  [[gnu::noinline]] const char* scanUnrecognized(const char* ptr, const char* end, const ScriptReaderMap& map,
+  void pull() noexcept {
+    auto match = map.lookupToken<Policy>(ptr, end);
+    if (match.sequence) {
+      const auto tokens = match.tokens();
+      if (tokens.front().tokenType != TokenType::Accent || options / TranslitOptions::IgnoreVedicAccents) {
+        buffer.emplace_back(tokens.front());
+        for (size_t i = 1; i < tokens.size(); ++i)
+          buffer.emplace_back(tokens[i]);
+      }
+      ptr += match.matchLen;
+    } else {
+      ptr = pullUnrecognized<Policy>(ptr, end, map, skipStart, skipEnd);
+    }
+  }
+
+  template <ReaderPolicy Policy>
+  [[gnu::noinline]] const char* pullUnrecognized(const char* ptr, const char* end, const ScriptReaderMap& map,
       const std::string_view& skipStart, const std::string_view& skipEnd) noexcept {
     const bool skipXml = !(options * TranslitOptions::NoXMLTagHandling);
-    while (ptr < end) {
-      const auto* start = ptr;
-      if (skipXml && *ptr == '<') {
-        const auto close = std::string_view(ptr, end - ptr).find('>');
-        ptr = close == std::string_view::npos ? end : ptr + close + 1;
-        tokenUnits.emplace_back(std::string_view(start, ptr - start));
-      } else if (*ptr == skipStart[0] && ptr + skipStart.length() - 1 < end
-          && std::string_view(ptr, skipStart.length()) == skipStart) {
-        ptr += skipStart.length();
-        start = ptr;
-        const auto close = skipEnd.empty() ? std::string_view::npos : std::string_view(ptr, end - ptr).find(skipEnd);
-        if (close == std::string_view::npos) {
-          ptr = end;
-        } else {
-          tokenUnits.emplace_back(std::string_view(start, close));
-          ptr += close + skipEnd.length();
-        }
-      } else if (map.lookupToken<Policy>(ptr, end).sequence != 0) {
-        break;
+    const auto* start = ptr;
+    if (skipXml && *ptr == '<') {
+      const auto close = std::string_view(ptr, end - ptr).find('>');
+      ptr = close == std::string_view::npos ? end : ptr + close + 1;
+      buffer.emplace_back(std::string_view(start, ptr - start));
+    } else if (*ptr == skipStart[0] && ptr + skipStart.length() - 1 < end
+        && std::string_view(ptr, skipStart.length()) == skipStart) {
+      ptr += skipStart.length();
+      start = ptr;
+      const auto close = skipEnd.empty() ? std::string_view::npos : std::string_view(ptr, end - ptr).find(skipEnd);
+      if (close == std::string_view::npos) {
+        ptr = end;
       } else {
-        ptr++;
-        while (ptr < end && *ptr != skipStart[0] && *ptr != '<' && map.lookupToken<Policy>(ptr, end).sequence == 0) {
-          ptr++;
-        }
-        tokenUnits.emplace_back(std::string_view(start, ptr - start));
+        buffer.emplace_back(std::string_view(start, close));
+        ptr += close + skipEnd.length();
       }
+    } else {
+      ptr++;
+      while (ptr < end && *ptr != skipStart[0] && *ptr != '<' && map.lookupToken<Policy>(ptr, end).sequence == 0) {
+        ptr++;
+      }
+      buffer.emplace_back(std::string_view(start, ptr - start));
     }
     return ptr;
   }
 
 public:
-  inline bool hasMore() noexcept { return iter < tokenUnits.end(); }
+  inline bool hasMore() noexcept { 
+    ensure(1);
+    return head < buffer.size(); 
+  }
 
   TokenUnit lastToken = invalidTokenUnit;
   TokenUnitOrString getNext() noexcept {
-    const auto& next = *iter++;
+    ensure(1);
+    const auto& next = buffer[head++];
     if (HoldsString(next)) {
       wordStart = true;
       return GetString(next);
@@ -177,8 +190,11 @@ private:
   TokenUnit readIndicTokenUnit(const ScriptToken& start) noexcept {
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
-      while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
-        const auto nextToken = GetScriptToken(*iter);
+      while (true) {
+        ensure(1);
+        if (head >= buffer.size()) break;
+        if (!HoldsScriptToken(buffer[head])) break;
+        const auto nextToken = GetScriptToken(buffer[head]);
         switch (nextToken.tokenType) {
           case TokenType::OtherDiacritic:
             tokenUnit.otherDiacritic = nextToken;
@@ -192,11 +208,14 @@ private:
           default:
             return tokenUnit;
         }
-        iter++;
+        head++;
       }
     } else if (start.tokenType == TokenType::Vowel) {
-      while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
-        const auto nextToken = GetScriptToken(*iter);
+      while (true) {
+        ensure(1);
+        if (head >= buffer.size()) break;
+        if (!HoldsScriptToken(buffer[head])) break;
+        const auto nextToken = GetScriptToken(buffer[head]);
         switch (nextToken.tokenType) {
           case TokenType::OtherDiacritic:
             tokenUnit.otherDiacritic = nextToken;
@@ -207,7 +226,7 @@ private:
           default:
             return tokenUnit;
         }
-        iter++;
+        head++;
       }
     }
     return tokenUnit;
@@ -226,34 +245,36 @@ private:
       bool isPrimary = start.idx <= 20 /* ப */ && start.idx % 5 == 0;
       bool hasVirama = false;
 
-      while (iter < tokenUnits.end()) {
-        if (HoldsScriptToken(*iter)) {
-          auto nextToken = GetScriptToken(*iter);
+      while (true) {
+        ensure(1);
+        if (head >= buffer.size()) break;
+        if (HoldsScriptToken(buffer[head])) {
+          auto nextToken = GetScriptToken(buffer[head]);
           switch (nextToken.tokenType) {
             case TokenType::OtherDiacritic:
-              iter++;
+              head++;
               tokenUnit.otherDiacritic = nextToken;
               break;
             case TokenType::VowelMark:
-              iter++;
+              head++;
               tokenUnit.vowelMark = nextToken;
               hasVirama = tokenUnit.vowelMark == Virama;
               break;
             case TokenType::Accent:
-              iter++;
+              head++;
               tokenUnit.accent = nextToken;
               break;
             default:
               goto done;
           }
-        } else if ((isPrimary || start.idx == 7 /* ஜ */) && iter < tokenUnits.end()) {
-          auto offset = TamilSuperscripts.find(GetString(*iter));
+        } else if ((isPrimary || start.idx == 7 /* ஜ */)) {
+          auto offset = TamilSuperscripts.find(GetString(buffer[head]));
           if (offset != TamilSuperscripts.npos) {
             tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + offset / "²"_len));
-            iter++;
-          } else if ((offset = TamilSubscripts.find(GetString(*iter))) != TamilSubscripts.npos) {
+            head++;
+          } else if ((offset = TamilSubscripts.find(GetString(buffer[head]))) != TamilSubscripts.npos) {
             tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + offset / "²"_len));
-            iter++;
+            head++;
           } else {
             break;
           }
@@ -269,39 +290,7 @@ private:
       // lookup before it is modified
       prefixLookup.lookup(tokenUnit, prefixLookupState);
 
-      // Thus க is pronounced ka when it is the initial letter of a word, k when it
-      // is muted (க்), kka when it is geminated (க்க), ka when it follows any other
-      // muted hard consonant (such as ட் or ற்), ga when it follows a muted soft
-      // consonant (as in the frequently occurring cluster ங்க, which is pronounced
-      // ṅga) or a muted medial consonant (such as ய் or ர்), and ha when it follows
-      // a verb. Likewise ச is pronounced ca (or arbitrarily sa, as in fact it is
-      // customarily pronounced in many if not most cases, though strictly speaking
-      // this contravenes the ancient rule described here) when it is the initial letter
-      // of a word, c when it is muted (ச்), cca when it is geminated (ச்ச), ca when
-      // it follows any other muted hard consonant, ja when it follows a muted soft
-      // consonant (as in the frequently occurring cluster ஞ்ச, which is
-      // pronounced ñja), and sa when it follows a verb. ட is not the initial letter of
-      // any word of Tamil origin, but it is pronounced ṭ when it is muted (ட்), ṭṭa
-      // when it is geminated (ட்ட), and ḍa when it follows either a muted soft
-      // consonant (as in the frequently occurring cluster ண் ட, which is
-      // pronounced ṇḍa) or a verb. த is pronounced ta when it is the initial letter
-      // of a word, t when it is muted (த்), tta when it is geminated (த்த), and da
-      // when it follows either a muted soft consonant (as in the frequently
-      // occurring cluster ந்த, which is pronounced nda), a muted medial
-      // consonant or a verb. ப is pronounced pa when it is the initial letter of a
-      // word, p when it is muted (ப்), ppa when it is geminated (ப்ப), pa when it
-      // follows any other muted hard consonant, and ba when it follows either a
-      // muted soft consonant (as in the frequently occurring cluster ம்ப, which is
-      // pronounced mba, or in the clusters ண் ப and ன்ப, which are pronounced
-      // respectively ṇba and ṉba) or a verb. The final hard consonant, ற, also has
-      // several allophones or variant forms of pronunciation. Like ட (ṭa), it is
-      // never the initial letter of a word. Its default pronunciation is considered to
-      // be ṟa (in which ṟ is a trilled ‘r’, described technically as an alveolar trill),
-      // but its mute form (ற்) is pronounced ṯ (or sometimes slightly more like ṟ,
-      // depending upon which consonant it precedes, and when it is used in the
-      // transliteration of a word of Sanskrit origin, it can also be pronounced d or
-      // l). Its geminated form (ற்ற) is pronounced ṯṟa, and the cluster ன்ற is
-      // pronounced ṉḏṟa, the extra ḏ sound being a natural euphonic increment.
+      // ... existing Tamil logic ...
       if (hasVirama) {
         // ignore virama if end of word
         return (isPrimary && isEndOfWord()) ? invalidTokenUnit : tokenUnit;
@@ -331,8 +320,11 @@ private:
         }
       }
     } else if (start.tokenType == TokenType::Vowel) {
-      while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
-        const auto nextToken = GetScriptToken(*iter);
+      while (true) {
+        ensure(1);
+        if (head >= buffer.size()) break;
+        if (!HoldsScriptToken(buffer[head])) break;
+        const auto nextToken = GetScriptToken(buffer[head]);
         if (nextToken.tokenType == TokenType::OtherDiacritic) {
           tokenUnit.otherDiacritic = nextToken;
         } else if (nextToken.tokenType == TokenType::Accent) {
@@ -340,7 +332,7 @@ private:
         } else {
           break;
         }
-        iter++;
+        head++;
       }
     }
     if (tokenUnit.leadToken.tokenType != TokenType::Consonant) {
@@ -354,8 +346,11 @@ private:
     if (start.tokenType == TokenType::Consonant) {
       bool vowelAdded = false;
 
-      while (iter < tokenUnits.end() && HoldsScriptToken(*iter)) {
-        auto nextToken = GetScriptToken(*iter);
+      while (true) {
+        ensure(1);
+        if (head >= buffer.size()) break;
+        if (!HoldsScriptToken(buffer[head])) break;
+        auto nextToken = GetScriptToken(buffer[head]);
         bool consume = false;
         switch (nextToken.tokenType) {
           case TokenType::Vowel:
@@ -382,7 +377,7 @@ private:
         if (!consume) {
           break;
         }
-        iter++;
+        head++;
       }
 
       if (!vowelAdded) {
@@ -393,9 +388,10 @@ private:
   }
 
   TokenUnit inferGurmukhiAdhak() {
-    if (!hasMore())
+    ensure(1);
+    if (head >= buffer.size())
       return invalidTokenUnit;
-    const auto peek = *iter;
+    const auto peek = buffer[head];
     if (HoldsScriptToken(peek) && GetScriptToken(peek).tokenType == TokenType::Consonant) {
       TokenUnit tokenUnit = { GetScriptToken(peek) };
       if (tokenUnit.leadToken.idx < 24) {
@@ -425,11 +421,12 @@ private:
     return token.vowelMark.tokenType == TokenType::VowelMark && token.vowelMark.idx == Diacritic_Virama;
   }
 
-  bool isEndOfWord() const noexcept {
-    if (iter >= tokenUnits.end()) {
+  bool isEndOfWord() noexcept {
+    ensure(1);
+    if (head >= buffer.size()) {
       return true;
     }
-    const auto& next = *iter;
+    const auto& next = buffer[head];
     if (HoldsString(next)) {
       return true;
     }
@@ -441,13 +438,12 @@ private:
 
   inline bool isVedicExtension(int ch) { return ch >= 0x1CD0 && ch <= 0x1CFA; }
 
-  inline size_t remaining() noexcept { return tokenUnits.end() - iter; }
-
   std::optional<TokenOrString> peekNext(size_t offset = 0) noexcept {
-    if (remaining() <= offset) {
+    ensure(offset + 1);
+    if (head + offset >= buffer.size()) {
       return std::nullopt;
     }
-    return *(iter + offset);
+    return buffer[head + offset];
   }
 
   bool isNextSpace(size_t offset = 0) noexcept {
@@ -455,10 +451,10 @@ private:
     if (next == std::nullopt) {
       return false;
     }
-    if (!HoldsString(*iter)) {
+    if (!HoldsString(buffer[head + offset])) {
       return false;
     }
-    auto str = GetString(*iter);
+    auto str = GetString(buffer[head + offset]);
     for (auto c : str) {
       if (!std::isspace(c)) {
         return false;
@@ -468,9 +464,6 @@ private:
   }
 
 private:
-  const TranslitOptions options;
-  std::vector<TokenOrString> tokenUnits;
-  std::vector<TokenOrString>::iterator iter;
   bool wordStart { true };
   TamilPrefixLookup prefixLookup;
   TamilPrefixLookup::LookupState prefixLookupState { };

@@ -110,7 +110,7 @@ For structural changes, also run the Flutter/Node/Wasm tests affected by the cha
 | 7B | Generate flat tries alongside runtime tries | generator emits trie nodes/edges and tests compare longest-match behavior | parity only; Wasm size | ⬜ pending | |
 | 7C | Replace runtime character tries | remove `unordered_map`/`unique_ptr` trie construction and temporary UTF-32 insertion strings | cold latency; allocations; throughput | ⬜ pending | |
 | 8 | Resolve names once to `ScriptId` and remove reader/writer caches | constexpr name/alias resolution; downstream uses small IDs/references | lookup overhead; startup allocations | ⬜ pending | |
-| 9 | Make `InputReader` streaming | remove full-input `tokenUnits` vector; retain only required lookahead | peak heap; large-input allocation bytes | ⬜ pending | |
+| 9 | Make `InputReader` streaming | remove full-input `tokenUnits` vector; retain only required lookahead | peak heap; large-input allocation bytes | ✅ done | implemented on-demand pull and small lookahead buffer |
 | 10 | Add allocation-free sink/output API | templated sink core plus adapters for `std::string`, caller buffer/FFI as appropriate | output allocation; FFI efficiency | ⬜ pending | |
 | 11 | Specialize conversion by script type | dispatch once to `Indic`/`Tamil`/`Latin` template specializations; use `if constexpr` internally | hot-path throughput; Wasm code size | ⬜ pending | |
 | 12 | Evaluate packed `TokenUnit` | experiment with 32/64-bit packed representation for equality/hash/cache locality | Tamil lookup/hashing; size | ⬜ experimental | |
