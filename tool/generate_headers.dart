@@ -6,6 +6,7 @@ import 'utils/latin_equivalents.dart';
 import 'utils/options_headers.dart';
 import 'utils/script_data.dart';
 import 'utils/scripts_headers.dart';
+import 'utils/static_scripts.dart';
 
 void main(List<String> args) async {
   final rootDir = Directory.current;
@@ -19,7 +20,9 @@ void main(List<String> args) async {
   final latinEquivalents = LatinEquivalents('docs/extended-latin.txt');
   final scriptData = ScriptData('tool/script_data.json', latinEquivalents);
 
-  scriptData.writeScriptDataHeader('native/src/script_data.h');
+  scriptData.prepareEquivalents();
+  StaticScripts(scriptData.scriptInfoList, 'tool/reader_data.json')
+      .writeHeader('native/src/script_data.h');
 
   final scriptsHeaders = ScriptsHeaders(scriptData.scriptList);
   scriptsHeaders.updateDart('flutter/lib/src/script.dart');
