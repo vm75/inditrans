@@ -23,7 +23,7 @@
   "files.exclude": {
     "package-lock.json": true,
     "node_modules/**": true,
-    "out/**": true,
+    "out/**": false,
     "build/**": true,
     "dist/**": true,
     "**.so": true,
