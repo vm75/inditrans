@@ -35,6 +35,11 @@ struct ScriptName {
   uint16_t script;
 };
 
+struct WriterChar {
+  uint16_t offset;
+  uint8_t length;
+};
+
 } // namespace inditrans::static_data
 
 // All character-class views are populated by the generator, not bound on use.
@@ -42,7 +47,7 @@ struct ScriptWriterMap {
   ScriptType scriptType;
   bool vedic;
   // The ninth, empty slot handles Ignore without a branch on every write.
-  std::array<std::span<const std::string_view>, 9> charMaps;
+  std::array<std::span<const inditrans::static_data::WriterChar>, 9> charMaps;
 
   constexpr ScriptType getType() const noexcept { return scriptType; }
   constexpr bool isVedic() const noexcept { return vedic; }

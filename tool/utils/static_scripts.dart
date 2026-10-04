@@ -273,7 +273,8 @@ class StaticScripts {
           final begin = charEntries.length;
           for (final value in array) {
             final ref = text(value);
-            charEntries.add('{writerText + ${ref.begin}, ${ref.count}}');
+            assert(ref.count <= 255, 'writer char length exceeds uint8_t');
+            charEntries.add('{${ref.begin}, ${ref.count}}');
           }
           check16(charEntries.length, 'writer entries');
           return _Range(begin, array.length);
@@ -309,7 +310,7 @@ class StaticScripts {
     }
 
     buffer.writeln('inline constexpr char writerText[] =\n$pool;\n');
-    array('std::string_view', 'writerChars', charEntries);
+    array('WriterChar', 'writerChars', charEntries);
     array('ScriptWriterMap', 'writers', writers);
     array('ScriptName', 'names',
         [for (final name in sortedNames) '{"$name", ${names[name]}}']);
