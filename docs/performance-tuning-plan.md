@@ -1,6 +1,6 @@
 # Native Performance Tuning Plan
 
-Status: active
+Status: active (partially superseded by static-lookup-design)
 
 This plan replaces the abandoned broad C++23 performance plans with a sequence of small, independently measurable changes. The project already requires C++23; the goal here is to reduce runtime allocation, startup work, and hot-path overhead without changing transliteration behavior.
 
@@ -104,12 +104,12 @@ For structural changes, also run the Flutter/Node/Wasm tests affected by the cha
 | 3 | Remove `OutputWriter` Tamil traditional hash map | replace three-entry `unordered_map` with constexpr lookup/comparisons | warm p50; allocations | ✅ done | all output hashes match; four fewer allocations per call and Wasm is 974 B smaller; nine alternating short-call runs showed p50 improvement of 7–30% across cases |
 | 4 | Stack-allocate input reader/output writer | remove per-call `make_unique` reader/writer allocations | allocations; short-call p50 | ✅ done | all output hashes match; two fewer allocations and 168 fewer requested bytes per call; Wasm is 145 B smaller; paired short-call p50 was mixed/near-flat |
 | 5 | Make `ScriptWriterMap` non-owning | replace copied `vector<string_view>` maps with spans/ranges/views | initialization allocations; cold latency | ✅ done | 8 fewer allocation calls during first-call allocation measurement; paired cold p50/p95 were 530.908/689.869 µs at Step 4 and 527.071/687.175 µs here (effectively flat); cold and benchmark output hashes match; Wasm is 465 B smaller |
-| 6A | Generate constexpr script metadata alongside legacy data | generator emits immutable metadata/name/alias/range tables while runtime remains unchanged | parity only | ⬜ pending | |
-| 6B | Replace runtime `ScriptData` parsing | switch lookup to generated constexpr metadata and remove runtime maps/vectors | cold latency; startup allocations | ⬜ pending | |
-| 7A | Implement flat immutable trie type | `char32_t` edges, 32-bit child/index offsets, sorted child ranges; unit-test independently | parity only | ⬜ pending | |
-| 7B | Generate flat tries alongside runtime tries | generator emits trie nodes/edges and tests compare longest-match behavior | parity only; Wasm size | ⬜ pending | |
-| 7C | Replace runtime character tries | remove `unordered_map`/`unique_ptr` trie construction and temporary UTF-32 insertion strings | cold latency; allocations; throughput | ⬜ pending | |
-| 8 | Resolve names once to `ScriptId` and remove reader/writer caches | constexpr name/alias resolution; downstream uses small IDs/references | lookup overhead; startup allocations | ⬜ pending | |
+| 6A | Generate constexpr script metadata alongside legacy data | generator emits immutable metadata/name/alias/range tables while runtime remains unchanged | parity only | ✅ done (via static lookup) | |
+| 6B | Replace runtime `ScriptData` parsing | switch lookup to generated constexpr metadata and remove runtime maps/vectors | cold latency; startup allocations | ✅ done (via static lookup) | |
+| 7A | Implement flat immutable trie type | `char32_t` edges, 32-bit child/index offsets, sorted child ranges; unit-test independently | parity only | ✅ done (via static lookup) | |
+| 7B | Generate flat tries alongside runtime tries | generator emits trie nodes/edges and tests compare longest-match behavior | parity only; Wasm size | ✅ done (via static lookup) | |
+| 7C | Replace runtime character tries | remove `unordered_map`/`unique_ptr` trie construction and temporary UTF-32 insertion strings | cold latency; allocations; throughput | ✅ done (via static lookup) | |
+| 8 | Resolve names once to `ScriptId` and remove reader/writer caches | constexpr name/alias resolution; downstream uses small IDs/references | lookup overhead; startup allocations | ✅ done (via static lookup) | |
 | 9 | Make `InputReader` streaming | remove full-input `tokenUnits` vector; retain only required lookahead | peak heap; large-input allocation bytes | ✅ done | implemented on-demand pull and small lookahead buffer |
 | 10 | Add allocation-free sink/output API | templated sink core plus adapters for `std::string`, caller buffer/FFI as appropriate | output allocation; FFI efficiency | ✅ done | implemented templated OutputWriter and StdStringSink adapter |
 | 11 | Specialize conversion by script type | dispatch once to `Indic`/`Tamil`/`Latin` template specializations; use `if constexpr` internally | hot-path throughput; Wasm code size | ⬜ pending | |
