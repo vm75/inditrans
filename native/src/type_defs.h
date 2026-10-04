@@ -114,16 +114,4 @@ struct ScriptToken : public Token {
 
 constexpr const ScriptToken invalidScriptToken(TokenType::Ignore, InvalidToken, ScriptType::Others);
 
-struct ScriptInfo {
-  bool isVedic { false };
-  ScriptType type {};
-  std::vector<std::string_view> vowels {};
-  std::vector<std::string_view> vowelMarks {};
-  std::vector<std::string_view> consonants {};
-  std::vector<std::string_view> otherDiacritics {};
-  std::vector<std::string_view> symbols {};
-  std::vector<std::string_view> vedicSymbols {};
-  std::vector<std::string_view> aliases {};
-  std::map<std::string_view, std::vector<std::string_view>> equivalents {};
-  std::map<std::string_view, std::vector<std::string_view>> languages {};
-};
+using ScriptInfo = ScriptMetadataRecord;

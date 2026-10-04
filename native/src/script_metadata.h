@@ -5445,3 +5445,4 @@ inline constexpr std::array<ScriptMetadataRecord, 26> scriptMetadataScripts = {{
 }};
 
 } // namespace inditrans::generated
+
