@@ -27,11 +27,11 @@ Wasm instantiation and loader work remain outside this requirement.
 
 ## Data generation and construction
 
-[generate_headers.dart](../tool/generate_headers.dart) reads the existing
+[generate_headers.py](../tool/generate_headers.py) reads the existing
 [script_data.json](../tool/script_data.json) and
 [reader_data.json](../tool/reader_data.json). The latter holds the accent,
 exclusive-symbol, and Tamil-prefix constants formerly declared in C++.
-[static_scripts.dart](../tool/utils/static_scripts.dart) emits typed entries,
+[static_scripts.py](../tool/python/static_scripts.py) emits typed entries,
 complete token sequences, names, source policies, and writer descriptors into
 [script_data.h](../native/src/script_data.h). Generated files must be changed
 through this pipeline.
@@ -223,7 +223,7 @@ The validation covers:
 Useful commands are `make test`, `make bench-lookup`,
 `make bench-lookup-alloc-linux`, `make bench-short-repeat`, `make bench-cold`,
 `make bench-compare`, `make wasm`, `make dll`, and `make validate`.
-Generated data is refreshed with `dart tool/generate_headers.dart`.
+Generated data is refreshed with `python3 tool/generate_headers.py`.
 Raw benchmark CSVs, repetitions, and collision reports belong under ignored
 `out/`; they are local observations, not release artifacts.
 
