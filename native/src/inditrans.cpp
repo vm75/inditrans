@@ -15,6 +15,13 @@
 using InditransLogger = void(const std::string&);
 InditransLogger* inditransLogger = nullptr;
 
+constexpr std::string_view tamilTraditionalReplacement(std::string_view text) noexcept {
+  if (text == "ஸ") return "ச";
+  if (text == "ஜ") return "ச³";
+  if (text == "ஜ²") return "ச⁴";
+  return text;
+}
+
 inline constexpr bool operator*(const TranslitOptions& mask, const TranslitOptions& val) noexcept {
   return (mask & val) == val;
 }
@@ -1011,10 +1018,7 @@ protected:
           && (tokenUnit.vowelMark.idx != Diacritic_Virama || isEndOfWord(next))) {
         leadText = "ன";
       } else if (options * TranslitOptions::TamilTraditional) {
-        auto repl = tamilTraditionalMap.find(leadText);
-        if (repl != tamilTraditionalMap.end()) {
-          leadText = repl->second;
-        }
+        leadText = tamilTraditionalReplacement(leadText);
       }
 
       auto superscript = Utf8String::trailingChar(leadText).view();
@@ -1159,11 +1163,6 @@ private:
   const ScriptWriterMap& map;
   const TranslitOptions options;
   Utf8StringBuilder buffer {};
-  std::unordered_map<std::string_view, std::string_view> tamilTraditionalMap {
-    { "ஸ", "ச" },
-    { "ஜ", "ச³" },
-    { "ஜ²", "ச⁴" },
-  };
   bool wordStart { true };
   TamilPrefixLookup prefixLookup;
   StatefulTrie<TokenUnit, bool>::LookupState prefixLookupState {};
