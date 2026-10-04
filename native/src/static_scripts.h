@@ -9,7 +9,8 @@ constexpr std::string_view ScriptWriterMap::lookupChar(TokenType type, size_t in
   assert(category < charMaps.size());
   if (index >= charMaps[category].size())
     return { };
-  return charMaps[category][index];
+  const auto entry = charMaps[category][index];
+  return { inditrans::static_data::writerText + entry.offset, entry.length };
 }
 
 enum class ReaderPolicy { Roman, FoldedRoman, Indic, Explicit };
