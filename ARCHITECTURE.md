@@ -131,7 +131,11 @@ UTF-8 trie. Script identity is a source-mask bit, distinct from `ScriptType`.
 Terminals have an explicit primary sequence, rare source variants, and a
 precomputed `indic` sequence. Leaves select terminal-indexed fields; branching
 states retain parallel fields indexed by compact state, avoiding a dependent
-node-to-terminal load. The virtual reader touches only its sequence field.
+node-to-terminal load. The virtual reader touches only its sequence field. Empty alternative offsets
+are canonical zero at compile time; begin/count retain their original widths
+and direct runtime access. The [bounded follow-up](docs/compact-static-followup.md)
+records why narrower fields, pooled masks, sequence flags, and writer packing
+were rejected.
 
 Root/high-fanout nodes use direct tables; continuation-only tables use 64
 slots. Single-child nodes use equality, small fanout uses linear search, and

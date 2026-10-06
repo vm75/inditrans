@@ -4,7 +4,10 @@ Idea A uses immutable readers, writer tables, compiled equivalent expansions,
 and a Tamil token prefix trie. The current byte matcher uses packed reachable
 states and pooled UTF-8 dispatch pages. Its compact representation, Step 9
 streaming input, and Step 10 output sinks are measured in the
-[compact static experiment](compact-static-experiment.md).
+[compact static experiment](compact-static-experiment.md). The current
+[bounded follow-up](compact-static-followup.md) retains direct field access and
+only canonicalizes unused empty-range offsets; Wasm is 89.73 KiB with unchanged
+code, native table layout, and allocation behavior.
 
 The original design and the 2026-10-03 results below compare against
 `dev-pre-compact-metadata` (`4c59278`), with compatibility checked against

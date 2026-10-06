@@ -1,6 +1,10 @@
 # Compact static script data experiment
 
-## Decision and checkpoint
+This report records the earlier `b62a487` / `c3d5480` experiment. The
+[bounded follow-up](compact-static-followup.md) contains the current checkpoint,
+89.73 KiB result, and decisions on the smaller rejected representations.
+
+## Historical decision and checkpoint
 
 **Promising but needs more optimization and steadier latency measurement.**
 The recommended experimental checkpoint is `b62a48737516dd53be67bc23f404e9b466f7cc83`
