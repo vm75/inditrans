@@ -50,22 +50,18 @@ suite<"Packed static script data"> packedScriptsTests = [] {
     for (const auto entry : data::writerChars)
       expect(size_t(entry.offset) + entry.length <= data::writerText.size());
   };
-  "sequence flags preserve all explicit and virtual payloads"_test = [] {
-    constexpr auto boundary = data::sequencePayload(data::SourceTerminal { 1, 32767, 0 });
-    static_assert(data::explicitSequence(boundary) == 32767 && data::virtualSequence(boundary) == 0);
+  "parallel sequences preserve every explicit and virtual payload"_test = [] {
     for (size_t i = 0; i < data::sourceTerminals.size(); ++i) {
       const auto& expected = data::sourceTerminals[i];
-      const auto actual = data::primarySequences[i + 1];
-      expect(data::explicitSequence(actual) == expected.sequence);
-      expect(data::virtualSequence(actual) == expected.indicSequence);
+      expect(data::primarySequences[i + 1] == expected.sequence);
+      expect(data::indicSequences[i + 1] == expected.indicSequence);
     }
     for (size_t i = 1; i < data::packedStateIds<data::readerTrie0>.size(); ++i) {
       if (const auto state = data::packedStateIds<data::readerTrie0>[i]) {
         const auto terminal = data::readerTrie0.nodes[i].value;
         const auto expected = terminal ? data::sourceTerminals[terminal - 1] : data::SourceTerminal { };
-        const auto actual = data::branchSequences[state];
-        expect(data::explicitSequence(actual) == expected.sequence);
-        expect(data::virtualSequence(actual) == expected.indicSequence);
+        expect(data::branchSequences[state] == expected.sequence);
+        expect(data::branchIndicSequences[state] == expected.indicSequence);
       }
     }
   };

@@ -54,20 +54,6 @@ struct SourceTerminal {
       : sources(src), sequence(seq), indicSequence(indicSeq), alternatives(alt) {}
 };
 
-inline constexpr uint16_t virtualRejected = 0x8000;
-
-// Current virtual results are either the primary sequence or absent. Encode
-// that distinction beside the sequence, avoiding a second array or lookup.
-consteval uint16_t sequencePayload(const SourceTerminal& terminal) {
-  if (terminal.sequence >= virtualRejected
-      || (terminal.indicSequence && terminal.indicSequence != terminal.sequence))
-    std::abort();
-  return terminal.sequence | (terminal.sequence && !terminal.indicSequence ? virtualRejected : 0);
-}
-
-constexpr uint16_t explicitSequence(uint16_t payload) noexcept { return payload & ~virtualRejected; }
-constexpr uint16_t virtualSequence(uint16_t payload) noexcept { return payload & virtualRejected ? 0 : payload; }
-
 struct ReaderInfo {
   uint16_t graph;
   uint16_t foldedGraph;
