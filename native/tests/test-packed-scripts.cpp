@@ -37,6 +37,25 @@ size_t compareMatches(const Entries& entries, const Original& original, const Pa
 }
 
 suite<"Packed static script data"> packedScriptsTests = [] {
+  "sequence flags preserve all explicit and virtual payloads"_test = [] {
+    constexpr auto boundary = data::sequencePayload(data::SourceTerminal { 1, 32767, 0 });
+    static_assert(data::explicitSequence(boundary) == 32767 && data::virtualSequence(boundary) == 0);
+    for (size_t i = 0; i < data::sourceTerminals.size(); ++i) {
+      const auto& expected = data::sourceTerminals[i];
+      const auto actual = data::primarySequences[i + 1];
+      expect(data::explicitSequence(actual) == expected.sequence);
+      expect(data::virtualSequence(actual) == expected.indicSequence);
+    }
+    for (size_t i = 1; i < data::packedStateIds<data::readerTrie0>.size(); ++i) {
+      if (const auto state = data::packedStateIds<data::readerTrie0>[i]) {
+        const auto terminal = data::readerTrie0.nodes[i].value;
+        const auto expected = terminal ? data::sourceTerminals[terminal - 1] : data::SourceTerminal { };
+        const auto actual = data::branchSequences[state];
+        expect(data::explicitSequence(actual) == expected.sequence);
+        expect(data::virtualSequence(actual) == expected.indicSequence);
+      }
+    }
+  };
   "alternative ranges preserve every generated payload and checked boundaries"_test = [] {
     constexpr data::VariantRange largest { data::Range { 4095, 15 } };
     constexpr data::VariantRange empty { data::Range { 65535, 0 } };
@@ -91,6 +110,14 @@ suite<"Packed static script data"> packedScriptsTests = [] {
         = [](uint16_t id) -> uint16_t { return id ? data::sourceTerminals[id - 1].indicSequence : 0; };
     checked += compareMatches(
         data::readerEntries0, data::readerTrie0.view(), data::packedReaderTrie0.view(), virtualSelect);
+    for (const auto& entry : data::readerEntries0) {
+      const auto input = entry.key.view();
+      for (size_t length = 0; length <= input.size(); ++length) {
+        const auto expected = data::readerTrie0.view().match(input.data(), input.data() + length, virtualSelect);
+        const auto actual = data::readers.back().lookupToken(input.data(), input.data() + length);
+        expect(actual.sequence == expected.value && actual.matchLen == expected.length);
+      }
+    }
     expect(checked > 200000_u);
   };
 

@@ -16,6 +16,17 @@ constexpr std::string_view ScriptWriterMap::lookupChar(TokenType type, size_t in
 enum class ReaderPolicy { Roman, FoldedRoman, Indic, Explicit };
 
 namespace inditrans::static_data {
+static_assert([]() consteval {
+  for (const auto& terminal : sourceTerminals) {
+    if (terminal.alternatives.count > 15
+        || (terminal.alternatives.count && terminal.alternatives.begin > 4095)
+        || terminal.sequence >= virtualRejected
+        || (terminal.indicSequence && terminal.indicSequence != terminal.sequence))
+      return false;
+  }
+  return true;
+}(), "Source payloads exceed packed ranges or virtual-sequence encoding");
+
 // Build scratch payloads solely to derive prefix acceptance at compile time.
 inline constexpr auto sourceNodes = []() consteval {
   std::array<SourceTerminal, readerTrie0.nodes.size()> result { };
@@ -25,42 +36,48 @@ inline constexpr auto sourceNodes = []() consteval {
   return result;
 }();
 
-template <auto Member> consteval auto sourceField() {
+template <auto Member, bool EncodeVirtual = false> consteval auto sourceField() {
   using Original = std::remove_cvref_t<decltype(sourceNodes[0].*Member)>;
   using Value = std::conditional_t<std::is_same_v<Original, Range>, VariantRange, Original>;
   std::array<Value, sourceTerminals.size() + 1> result { };
-  for (size_t i = 1; i < result.size(); ++i)
-    result[i] = sourceTerminals[i - 1].*Member;
+  for (size_t i = 1; i < result.size(); ++i) {
+    if constexpr (EncodeVirtual)
+      result[i] = sequencePayload(sourceTerminals[i - 1]);
+    else
+      result[i] = sourceTerminals[i - 1].*Member;
+  }
   return result;
 }
 
 inline constexpr auto sourceMasks = sourceField<&SourceTerminal::sources>();
-inline constexpr auto primarySequences = sourceField<&SourceTerminal::sequence>();
-inline constexpr auto indicSequences = sourceField<&SourceTerminal::indicSequence>();
+inline constexpr auto primarySequences = sourceField<&SourceTerminal::sequence, true>();
 inline constexpr auto variantRanges = sourceField<&SourceTerminal::alternatives>();
 
 // Branching states retain parallel payload arrays: following node.value to a
 // terminal record would add a dependent load on common Indic characters.
-template <auto Member> consteval auto branchField() {
+template <auto Member, bool EncodeVirtual = false> consteval auto branchField() {
   using Original = std::remove_cvref_t<decltype(sourceTerminals[0].*Member)>;
   using Value = std::conditional_t<std::is_same_v<Original, Range>, VariantRange, Original>;
   std::array<Value, packedReaderTrie0.nodes.size()> result {};
   constexpr auto& ids = packedStateIds<readerTrie0>;
   for (size_t i = 1; i < ids.size(); ++i)
     if (ids[i])
-      if (const auto terminal = readerTrie0.nodes[i].value)
-        result[ids[i]] = sourceTerminals[terminal - 1].*Member;
+      if (const auto terminal = readerTrie0.nodes[i].value) {
+        if constexpr (EncodeVirtual)
+          result[ids[i]] = sequencePayload(sourceTerminals[terminal - 1]);
+        else
+          result[ids[i]] = sourceTerminals[terminal - 1].*Member;
+      }
   return result;
 }
 
 inline constexpr auto branchMasks = branchField<&SourceTerminal::sources>();
-inline constexpr auto branchSequences = branchField<&SourceTerminal::sequence>();
-inline constexpr auto branchIndicSequences = branchField<&SourceTerminal::indicSequence>();
+inline constexpr auto branchSequences = branchField<&SourceTerminal::sequence, true>();
 inline constexpr auto branchVariants = branchField<&SourceTerminal::alternatives>();
 
 struct IndicSelector {
-  constexpr uint16_t operator()(uint16_t terminal) const noexcept { return indicSequences[terminal]; }
-  constexpr uint16_t operator()(uint16_t, ReaderIndex state) const noexcept { return branchIndicSequences[state]; }
+  constexpr uint16_t operator()(uint16_t terminal) const noexcept { return virtualSequence(primarySequences[terminal]); }
+  constexpr uint16_t operator()(uint16_t, ReaderIndex state) const noexcept { return virtualSequence(branchSequences[state]); }
 };
 
 inline constexpr auto sourcePrefixes = []() consteval {
@@ -99,7 +116,7 @@ struct SourceSelector {
     const auto* sequences = Branch ? branchSequences.data() : primarySequences.data();
     const auto* variants = Branch ? branchVariants.data() : variantRanges.data();
     if (singleSource || (masks[state] & mask))
-      return sequences[state];
+      return explicitSequence(sequences[state]);
     const auto range = variants[state];
     for (size_t i = 0; i < range.count(); ++i) {
       const auto& variant = sourceAlternatives[range.begin() + i];
