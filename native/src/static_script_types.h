@@ -13,22 +13,11 @@ struct Range {
   uint16_t count;
 };
 
-// Empty alternative ranges have no meaningful offset. Keep them canonical zero
-// so neither runtime storage nor Wasm segments retain dead cumulative offsets.
-struct VariantRange {
-  uint16_t bits { };
-
-  constexpr VariantRange() = default;
-  consteval VariantRange(Range range) {
-    if (range.count > 15 || (range.count && range.begin > 4095))
-      std::abort();
-    bits = range.count ? uint16_t(range.begin | (range.count << 12)) : 0;
-  }
-
-  constexpr uint16_t begin() const noexcept { return bits & 4095; }
-  constexpr uint16_t count() const noexcept { return bits >> 12; }
-};
-static_assert(sizeof(VariantRange) == 2);
+// Empty alternative ranges never use their offset. Normalize it at compile
+// time while retaining the original direct-access runtime layout.
+consteval Range canonicalRange(Range range) {
+  return {range.count ? range.begin : uint16_t(0), range.count};
+}
 
 template <typename... Args>
 constexpr uint32_t scriptMask(Args... ids) noexcept {

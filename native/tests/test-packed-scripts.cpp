@@ -63,24 +63,25 @@ suite<"Packed static script data"> packedScriptsTests = [] {
       }
     }
   };
-  "alternative ranges preserve every generated payload and checked boundaries"_test = [] {
-    constexpr data::VariantRange largest { data::Range { 4095, 15 } };
-    constexpr data::VariantRange empty { data::Range { 65535, 0 } };
-    static_assert(largest.begin() == 4095 && largest.count() == 15);
-    static_assert(empty.bits == 0);
+  "canonical alternative ranges preserve every generated payload and checked boundaries"_test = [] {
+    static_assert(sizeof(data::Range) == 4);
+    constexpr auto largest = data::canonicalRange(data::Range { 65535, 65535 });
+    constexpr auto empty = data::canonicalRange(data::Range { 65535, 0 });
+    static_assert(largest.begin == 65535 && largest.count == 65535);
+    static_assert(empty.begin == 0 && empty.count == 0);
     for (size_t i = 0; i < data::sourceTerminals.size(); ++i) {
       const auto expected = data::sourceTerminals[i].alternatives;
       const auto actual = data::variantRanges[i + 1];
-      expect(actual.count() == expected.count);
-      expect(expected.count ? actual.begin() == expected.begin : actual.bits == 0);
+      expect(actual.count == expected.count);
+      expect(expected.count ? actual.begin == expected.begin : actual.begin == 0 && actual.count == 0);
     }
     for (size_t i = 1; i < data::packedStateIds<data::readerTrie0>.size(); ++i) {
       if (const auto state = data::packedStateIds<data::readerTrie0>[i]) {
         const auto terminal = data::readerTrie0.nodes[i].value;
         const auto expected = terminal ? data::sourceTerminals[terminal - 1].alternatives : data::Range { };
         const auto actual = data::branchVariants[state];
-        expect(actual.count() == expected.count);
-        expect(expected.count ? actual.begin() == expected.begin : actual.bits == 0);
+        expect(actual.count == expected.count);
+        expect(expected.count ? actual.begin == expected.begin : actual.begin == 0 && actual.count == 0);
       }
     }
   };
