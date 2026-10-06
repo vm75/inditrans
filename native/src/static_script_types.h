@@ -103,6 +103,7 @@ struct Utf8Key {
 
   constexpr bool empty() const noexcept { return len == 0; }
   constexpr size_t size() const noexcept { return len; }
+  constexpr const char* data() const noexcept { return bytes; }
   constexpr char operator[](size_t i) const noexcept { return bytes[i]; }
   constexpr operator std::string_view() const noexcept { return { bytes, len }; }
   constexpr std::string_view view() const noexcept { return { bytes, len }; }
