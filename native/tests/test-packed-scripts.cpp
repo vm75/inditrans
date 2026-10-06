@@ -37,6 +37,27 @@ size_t compareMatches(const Entries& entries, const Original& original, const Pa
 }
 
 suite<"Packed static script data"> packedScriptsTests = [] {
+  "alternative ranges preserve every generated payload and checked boundaries"_test = [] {
+    constexpr data::VariantRange largest { data::Range { 4095, 15 } };
+    constexpr data::VariantRange empty { data::Range { 65535, 0 } };
+    static_assert(largest.begin() == 4095 && largest.count() == 15);
+    static_assert(empty.bits == 0);
+    for (size_t i = 0; i < data::sourceTerminals.size(); ++i) {
+      const auto expected = data::sourceTerminals[i].alternatives;
+      const auto actual = data::variantRanges[i + 1];
+      expect(actual.count() == expected.count);
+      expect(expected.count ? actual.begin() == expected.begin : actual.bits == 0);
+    }
+    for (size_t i = 1; i < data::packedStateIds<data::readerTrie0>.size(); ++i) {
+      if (const auto state = data::packedStateIds<data::readerTrie0>[i]) {
+        const auto terminal = data::readerTrie0.nodes[i].value;
+        const auto expected = terminal ? data::sourceTerminals[terminal - 1].alternatives : data::Range { };
+        const auto actual = data::branchVariants[state];
+        expect(actual.count() == expected.count);
+        expect(expected.count ? actual.begin() == expected.begin : actual.bits == 0);
+      }
+    }
+  };
   "every non-Roman source and bounded prefix retains acceptance"_test = [] {
     size_t checked = 0;
     for (size_t source = 0; source < data::readerInfo.size(); ++source) {

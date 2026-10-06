@@ -26,7 +26,8 @@ inline constexpr auto sourceNodes = []() consteval {
 }();
 
 template <auto Member> consteval auto sourceField() {
-  using Value = std::remove_cvref_t<decltype(sourceNodes[0].*Member)>;
+  using Original = std::remove_cvref_t<decltype(sourceNodes[0].*Member)>;
+  using Value = std::conditional_t<std::is_same_v<Original, Range>, VariantRange, Original>;
   std::array<Value, sourceTerminals.size() + 1> result { };
   for (size_t i = 1; i < result.size(); ++i)
     result[i] = sourceTerminals[i - 1].*Member;
@@ -41,7 +42,8 @@ inline constexpr auto variantRanges = sourceField<&SourceTerminal::alternatives>
 // Branching states retain parallel payload arrays: following node.value to a
 // terminal record would add a dependent load on common Indic characters.
 template <auto Member> consteval auto branchField() {
-  using Value = std::remove_cvref_t<decltype(sourceTerminals[0].*Member)>;
+  using Original = std::remove_cvref_t<decltype(sourceTerminals[0].*Member)>;
+  using Value = std::conditional_t<std::is_same_v<Original, Range>, VariantRange, Original>;
   std::array<Value, packedReaderTrie0.nodes.size()> result {};
   constexpr auto& ids = packedStateIds<readerTrie0>;
   for (size_t i = 1; i < ids.size(); ++i)
@@ -99,8 +101,8 @@ struct SourceSelector {
     if (singleSource || (masks[state] & mask))
       return sequences[state];
     const auto range = variants[state];
-    for (size_t i = 0; i < range.count; ++i) {
-      const auto& variant = sourceAlternatives[range.begin + i];
+    for (size_t i = 0; i < range.count(); ++i) {
+      const auto& variant = sourceAlternatives[range.begin() + i];
       if (variant.sources & mask)
         return variant.sequence;
     }
