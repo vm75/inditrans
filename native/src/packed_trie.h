@@ -17,7 +17,7 @@ template <typename Index> struct PackedTrieView {
   const Index* triples;
   const FlatPath<Index>* paths;
 
-  constexpr Index next(Index state, uint8_t key) const noexcept {
+  [[gnu::noinline]] constexpr Index next(Index state, uint8_t key) const noexcept {
     const auto& node = nodes[state];
     if (node.dense != 65535) {
       if (node.dense & 0x8000)
