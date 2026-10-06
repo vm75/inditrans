@@ -363,8 +363,9 @@ class StaticScripts:
                 self._array(output, "SemanticMapping", f"romanMappings{index}", mapping_entries)
                 output.append(f"inline constexpr std::array<ReaderEntry, {len(graph_keys)}> readerEntries{index} = deriveReaderEntries(sequenceTokens, sequenceOffsetBits, romanMappings{index});\n")
             output.append(f"inline constexpr auto readerTrie{index} = makeStaticTrie<readerEntries{index}, ReaderIndex>();\n")
-        self._array(output, "TrieView<uint8_t, ReaderIndex>", "readerTries",
-                    [f"readerTrie{i}.view()" for i in range(len(graphs))])
+            output.append(f"inline constexpr auto packedReaderTrie{index} = packTrie<readerTrie{index}>();\n")
+        self._array(output, "PackedTrieView<ReaderIndex>", "readerTries",
+                    [f"packedReaderTrie{i}.view()" for i in range(len(graphs))])
 
         tamil_prefixes = [f"    Utf8Key({cpp_u8(p)})," for p in self.constants["TamilPrefixes"]]
         output += [

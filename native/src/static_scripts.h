@@ -28,9 +28,9 @@ inline constexpr auto sourceNodes = []() consteval {
 
 template <auto Member> consteval auto sourceField() {
   using Value = std::remove_cvref_t<decltype(sourceNodes[0].*Member)>;
-  std::array<Value, sourceNodes.size()> result { };
-  for (size_t i = 0; i < result.size(); ++i)
-    result[i] = sourceNodes[i].*Member;
+  std::array<Value, sourceTerminals.size() + 1> result { };
+  for (size_t i = 1; i < result.size(); ++i)
+    result[i] = sourceTerminals[i - 1].*Member;
   return result;
 }
 
@@ -70,7 +70,9 @@ struct SourceSelector {
     return accepted & mask;
   }
 
-  constexpr uint16_t operator()(uint16_t, ReaderIndex state) const noexcept {
+  constexpr uint16_t operator()(uint16_t state) const noexcept {
+    if (state == 0)
+      return 0;
     if (singleSource || (sourceMasks[state] & mask))
       return primarySequences[state];
     const auto range = variantRanges[state];
@@ -85,7 +87,7 @@ struct SourceSelector {
 }
 
 struct ScriptReaderMap {
-  using Trie = inditrans::static_data::TrieView<uint8_t, inditrans::static_data::ReaderIndex>;
+  using Trie = inditrans::static_data::PackedTrieView<inditrans::static_data::ReaderIndex>;
   const Trie* trie { };
   uint32_t source { };
   bool folded { };
@@ -111,7 +113,7 @@ struct ScriptReaderMap {
       return { match.value, match.length };
     } else if constexpr (Policy == ReaderPolicy::Indic) {
       const auto match
-          = trie->match(begin, end, [](uint16_t, auto state) constexpr { return data::indicSequences[state]; });
+          = trie->match(begin, end, [](uint16_t terminal) constexpr { return data::indicSequences[terminal]; });
       return { match.value, match.length };
     } else {
       const auto select = data::SourceSelector { source };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "static_trie.h"
+#include "packed_trie.h"
 #include "type_defs.h"
 #include <algorithm>
 #include <array>

@@ -8415,6 +8415,8 @@ inline constexpr std::array<ReaderEntry, 1574> readerEntries0 {{
 
 inline constexpr auto readerTrie0 = makeStaticTrie<readerEntries0, ReaderIndex>();
 
+inline constexpr auto packedReaderTrie0 = packTrie<readerTrie0>();
+
 inline constexpr std::array<SemanticMapping, 96> romanMappings1 {{
     {u8"'", vedicSymbol(0, ScriptType::Latin)},
     {u8"()", exclusiveSymbol(0, ScriptType::Latin)},
@@ -8517,6 +8519,8 @@ inline constexpr std::array<SemanticMapping, 96> romanMappings1 {{
 inline constexpr std::array<ReaderEntry, 96> readerEntries1 = deriveReaderEntries(sequenceTokens, sequenceOffsetBits, romanMappings1);
 
 inline constexpr auto readerTrie1 = makeStaticTrie<readerEntries1, ReaderIndex>();
+
+inline constexpr auto packedReaderTrie1 = packTrie<readerTrie1>();
 
 inline constexpr std::array<SemanticMapping, 223> romanMappings2 {{
     {u8"'", vedicSymbol(0, ScriptType::Latin)},
@@ -8748,6 +8752,8 @@ inline constexpr std::array<ReaderEntry, 223> readerEntries2 = deriveReaderEntri
 
 inline constexpr auto readerTrie2 = makeStaticTrie<readerEntries2, ReaderIndex>();
 
+inline constexpr auto packedReaderTrie2 = packTrie<readerTrie2>();
+
 inline constexpr std::array<SemanticMapping, 166> romanMappings3 {{
     {u8"()", exclusiveSymbol(0, ScriptType::Latin)},
     {u8".", symbol(11, ScriptType::Latin)},
@@ -8920,6 +8926,8 @@ inline constexpr std::array<SemanticMapping, 166> romanMappings3 {{
 inline constexpr std::array<ReaderEntry, 166> readerEntries3 = deriveReaderEntries(sequenceTokens, sequenceOffsetBits, romanMappings3);
 
 inline constexpr auto readerTrie3 = makeStaticTrie<readerEntries3, ReaderIndex>();
+
+inline constexpr auto packedReaderTrie3 = packTrie<readerTrie3>();
 
 inline constexpr std::array<SemanticMapping, 220> romanMappings4 {{
     {u8"()", exclusiveSymbol(0, ScriptType::Latin)},
@@ -9148,6 +9156,8 @@ inline constexpr std::array<ReaderEntry, 220> readerEntries4 = deriveReaderEntri
 
 inline constexpr auto readerTrie4 = makeStaticTrie<readerEntries4, ReaderIndex>();
 
+inline constexpr auto packedReaderTrie4 = packTrie<readerTrie4>();
+
 inline constexpr std::array<SemanticMapping, 122> romanMappings5 {{
     {u8"()", exclusiveSymbol(0, ScriptType::Latin)},
     {u8"+", exclusiveSymbol(1, ScriptType::Latin)},
@@ -9277,6 +9287,8 @@ inline constexpr std::array<ReaderEntry, 122> readerEntries5 = deriveReaderEntri
 
 inline constexpr auto readerTrie5 = makeStaticTrie<readerEntries5, ReaderIndex>();
 
+inline constexpr auto packedReaderTrie5 = packTrie<readerTrie5>();
+
 inline constexpr std::array<SemanticMapping, 84> romanMappings6 {{
     {u8"!", symbol(11, ScriptType::Latin)},
     {u8"!!", symbol(12, ScriptType::Latin)},
@@ -9367,6 +9379,8 @@ inline constexpr std::array<SemanticMapping, 84> romanMappings6 {{
 inline constexpr std::array<ReaderEntry, 84> readerEntries6 = deriveReaderEntries(sequenceTokens, sequenceOffsetBits, romanMappings6);
 
 inline constexpr auto readerTrie6 = makeStaticTrie<readerEntries6, ReaderIndex>();
+
+inline constexpr auto packedReaderTrie6 = packTrie<readerTrie6>();
 
 inline constexpr std::array<SemanticMapping, 95> romanMappings7 {{
     {u8"'", vedicSymbol(0, ScriptType::Latin)},
@@ -9469,6 +9483,8 @@ inline constexpr std::array<SemanticMapping, 95> romanMappings7 {{
 inline constexpr std::array<ReaderEntry, 95> readerEntries7 = deriveReaderEntries(sequenceTokens, sequenceOffsetBits, romanMappings7);
 
 inline constexpr auto readerTrie7 = makeStaticTrie<readerEntries7, ReaderIndex>();
+
+inline constexpr auto packedReaderTrie7 = packTrie<readerTrie7>();
 
 inline constexpr std::array<SemanticMapping, 120> romanMappings8 {{
     {u8"'", vedicSymbol(0, ScriptType::Latin)},
@@ -9597,6 +9613,8 @@ inline constexpr std::array<ReaderEntry, 120> readerEntries8 = deriveReaderEntri
 
 inline constexpr auto readerTrie8 = makeStaticTrie<readerEntries8, ReaderIndex>();
 
+inline constexpr auto packedReaderTrie8 = packTrie<readerTrie8>();
+
 inline constexpr std::array<SemanticMapping, 113> romanMappings9 {{
     {u8"\"n", consonant(4, ScriptType::Latin)},
     {u8"\"s", consonant(29, ScriptType::Latin)},
@@ -9717,6 +9735,8 @@ inline constexpr std::array<ReaderEntry, 113> readerEntries9 = deriveReaderEntri
 
 inline constexpr auto readerTrie9 = makeStaticTrie<readerEntries9, ReaderIndex>();
 
+inline constexpr auto packedReaderTrie9 = packTrie<readerTrie9>();
+
 inline constexpr std::array<SemanticMapping, 96> romanMappings10 {{
     {u8"()", exclusiveSymbol(0, ScriptType::Latin)},
     {u8".", symbol(11, ScriptType::Latin)},
@@ -9820,18 +9840,20 @@ inline constexpr std::array<ReaderEntry, 96> readerEntries10 = deriveReaderEntri
 
 inline constexpr auto readerTrie10 = makeStaticTrie<readerEntries10, ReaderIndex>();
 
-inline constexpr std::array<TrieView<uint8_t, ReaderIndex>, 11> readerTries {{
-    readerTrie0.view(),
-    readerTrie1.view(),
-    readerTrie2.view(),
-    readerTrie3.view(),
-    readerTrie4.view(),
-    readerTrie5.view(),
-    readerTrie6.view(),
-    readerTrie7.view(),
-    readerTrie8.view(),
-    readerTrie9.view(),
-    readerTrie10.view(),
+inline constexpr auto packedReaderTrie10 = packTrie<readerTrie10>();
+
+inline constexpr std::array<PackedTrieView<ReaderIndex>, 11> readerTries {{
+    packedReaderTrie0.view(),
+    packedReaderTrie1.view(),
+    packedReaderTrie2.view(),
+    packedReaderTrie3.view(),
+    packedReaderTrie4.view(),
+    packedReaderTrie5.view(),
+    packedReaderTrie6.view(),
+    packedReaderTrie7.view(),
+    packedReaderTrie8.view(),
+    packedReaderTrie9.view(),
+    packedReaderTrie10.view(),
 }};
 
 inline constexpr auto tamilPrefixes = std::array {
