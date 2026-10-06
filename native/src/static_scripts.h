@@ -61,7 +61,6 @@ struct IndicSelector {
   constexpr uint16_t operator()(uint16_t, ReaderIndex state) const noexcept { return branchIndicSequences[state]; }
 };
 
-
 inline constexpr auto sourcePrefixes = []() consteval {
   constexpr auto& scratch = trieBuildNodes<readerEntries0>;
   std::array<uint32_t, readerTrie0.nodes.size()> masks { };
@@ -93,10 +92,10 @@ struct SourceSelector {
     return accepted & mask;
   }
 
-  template <bool Branch> constexpr uint16_t select(uint16_t state) const noexcept {
-    const auto& masks = Branch ? branchMasks.data() : sourceMasks.data();
-    const auto& sequences = Branch ? branchSequences.data() : primarySequences.data();
-    const auto& variants = Branch ? branchVariants.data() : variantRanges.data();
+  template <bool Branch> constexpr uint16_t select(ReaderIndex state) const noexcept {
+    const auto* masks = Branch ? branchMasks.data() : sourceMasks.data();
+    const auto* sequences = Branch ? branchSequences.data() : primarySequences.data();
+    const auto* variants = Branch ? branchVariants.data() : variantRanges.data();
     if (singleSource || (masks[state] & mask))
       return sequences[state];
     const auto range = variants[state];

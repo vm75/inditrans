@@ -5,14 +5,23 @@ using namespace boost::ut;
 namespace data = inditrans::static_data;
 
 namespace {
+inline constexpr std::array<data::TrieEntry<uint8_t>, 3> wideEntries { {
+    { "a", 32768 },
+    { "ab", 40000 },
+    { "z", 65535 },
+} };
+inline constexpr auto wideTrie = data::makeStaticTrie<wideEntries, uint32_t>();
+inline constexpr auto packedWideTrie = data::packTrie<wideTrie>();
+static_assert(std::is_same_v<decltype(packedWideTrie.nodes[0].edges), uint32_t>);
 template <bool Fold = false, class Entries, class Original, class Packed, class Select>
 size_t compareMatches(const Entries& entries, const Original& original, const Packed& packed, Select select) {
   size_t checked = 0;
   for (const auto& entry : entries) {
-    std::string input(entry.key.view());
+    std::string input { std::string_view(entry.key) };
     if constexpr (Fold)
       for (auto& byte : input)
-        if (byte >= 'a' && byte <= 'z') byte -= 'a' - 'A';
+        if (byte >= 'a' && byte <= 'z')
+          byte -= 'a' - 'A';
     input += "!";
     // Include incomplete UTF-8 and compressed paths, and a nonmatching suffix.
     for (size_t length = 0; length <= input.size(); ++length) {
@@ -32,12 +41,15 @@ suite<"Packed static script data"> packedScriptsTests = [] {
     size_t checked = 0;
     for (size_t source = 0; source < data::readerInfo.size(); ++source) {
       const auto select = [mask = uint32_t(1) << source](uint16_t id) -> uint16_t {
-        if (!id) return 0;
+        if (!id)
+          return 0;
         const auto& terminal = data::sourceTerminals[id - 1];
-        if (terminal.sources & mask) return terminal.sequence;
+        if (terminal.sources & mask)
+          return terminal.sequence;
         for (size_t i = 0; i < terminal.alternatives.count; ++i) {
           const auto& alternative = data::sourceAlternatives[terminal.alternatives.begin + i];
-          if (alternative.sources & mask) return alternative.sequence;
+          if (alternative.sources & mask)
+            return alternative.sequence;
         }
         return 0;
       };
@@ -53,22 +65,34 @@ suite<"Packed static script data"> packedScriptsTests = [] {
           }
         }
       }
-
     }
-    const auto virtualSelect = [](uint16_t id) -> uint16_t {
-      return id ? data::sourceTerminals[id - 1].indicSequence : 0;
-    };
-    checked += compareMatches(data::readerEntries0, data::readerTrie0.view(), data::packedReaderTrie0.view(), virtualSelect);
+    const auto virtualSelect
+        = [](uint16_t id) -> uint16_t { return id ? data::sourceTerminals[id - 1].indicSequence : 0; };
+    checked += compareMatches(
+        data::readerEntries0, data::readerTrie0.view(), data::packedReaderTrie0.view(), virtualSelect);
     expect(checked > 200000_u);
+  };
+
+  "wide indices keep the leaf marker separate from terminal payloads"_test = [] {
+    const auto identity = [](uint16_t id) { return id; };
+    expect(compareMatches(wideEntries, wideTrie.view(), packedWideTrie.view(), identity) == 10_u);
   };
 
   "every Roman graph retains terminals and ASCII folding"_test = [] {
     const auto identity = [](uint16_t id) { return id; };
-#define CHECK_GRAPH(N) \
-    compareMatches(data::readerEntries##N, data::readerTrie##N.view(), data::packedReaderTrie##N.view(), identity); \
-    compareMatches<true>(data::readerEntries##N, data::readerTrie##N.view(), data::packedReaderTrie##N.view(), identity)
-    CHECK_GRAPH(1); CHECK_GRAPH(2); CHECK_GRAPH(3); CHECK_GRAPH(4); CHECK_GRAPH(5);
-    CHECK_GRAPH(6); CHECK_GRAPH(7); CHECK_GRAPH(8); CHECK_GRAPH(9); CHECK_GRAPH(10);
+#define CHECK_GRAPH(N)                                                                                                 \
+  compareMatches(data::readerEntries##N, data::readerTrie##N.view(), data::packedReaderTrie##N.view(), identity);      \
+  compareMatches<true>(data::readerEntries##N, data::readerTrie##N.view(), data::packedReaderTrie##N.view(), identity)
+    CHECK_GRAPH(1);
+    CHECK_GRAPH(2);
+    CHECK_GRAPH(3);
+    CHECK_GRAPH(4);
+    CHECK_GRAPH(5);
+    CHECK_GRAPH(6);
+    CHECK_GRAPH(7);
+    CHECK_GRAPH(8);
+    CHECK_GRAPH(9);
+    CHECK_GRAPH(10);
 #undef CHECK_GRAPH
   };
 };

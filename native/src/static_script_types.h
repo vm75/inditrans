@@ -135,7 +135,7 @@ constexpr ScriptToken exclusiveSymbol(uint8_t idx, ScriptType script = ScriptTyp
 
 template <size_t N>
 struct TokenSequence {
-  ScriptToken tokens[N] { };
+  std::array<ScriptToken, N> tokens { };
 
   constexpr size_t size() const noexcept { return N; }
   constexpr const ScriptToken& operator[](size_t i) const noexcept { return tokens[i]; }
@@ -153,9 +153,10 @@ constexpr auto seq(Tokens... ts) noexcept {
   return TokenSequence<sizeof...(Tokens)> { { ts... } };
 }
 
-template <size_t TotalTokens>
+template <size_t TotalTokens, size_t TotalSequences>
 struct SequencePool {
   std::array<ScriptToken, TotalTokens> tokens { };
+  std::array<Range, TotalSequences> ranges { };
   constexpr auto data() const noexcept { return tokens.data(); }
   constexpr size_t size() const noexcept { return TotalTokens; }
   constexpr const ScriptToken& operator[](size_t i) const noexcept { return tokens[i]; }
@@ -166,10 +167,12 @@ consteval auto makeSequencePool(const Seqs&... seqs) {
   constexpr size_t total = 1 + (seqs.size() + ... + 0);
   static_assert(total <= (1u << 12), "Total sequence tokens exceeds offset capacity");
   static_assert(((seqs.size() < (1u << (16 - 12))) && ...), "Sequence length exceeds length capacity");
-  SequencePool<total> pool;
+  SequencePool<total, sizeof...(Seqs)> pool;
   pool.tokens[0] = ScriptToken(TokenType::Ignore, 255, ScriptType::Others);
   size_t offset = 1;
+  size_t sequence = 0;
   const auto add = [&]<size_t N>(const TokenSequence<N>& s) {
+    pool.ranges[sequence++] = {static_cast<uint16_t>(offset), static_cast<uint16_t>(N)};
     for (size_t i = 0; i < N; ++i)
       pool.tokens[offset++] = s[i];
   };
@@ -204,6 +207,8 @@ struct ReaderEntry {
 
 struct TokenLookupTable {
   uint16_t single[4][9][64] { };
+
+  consteval TokenLookupTable() = default;
 
   consteval TokenLookupTable(const auto& tokens, unsigned seqBits) {
     for (size_t i = 1; i < tokens.size(); ++i) {
@@ -258,6 +263,48 @@ consteval std::array<ReaderEntry, M> deriveReaderEntries(const auto& seqTokens, 
     entries[m] = { map.key, id };
   }
   return entries;
+}
+
+// These source records and pool checks are evaluated only during compilation.
+struct SourceEntry {
+  Utf8Key key;
+  SourceTerminal terminal;
+};
+
+template <size_t N> consteval auto sourcePayloads(const std::array<SourceEntry, N>& mappings) {
+  std::array<SourceTerminal, N> result {};
+  for (size_t i = 0; i < N; ++i) result[i] = mappings[i].terminal;
+  return result;
+}
+
+template <size_t N> consteval auto sourceEntries(const std::array<SourceEntry, N>& mappings) {
+  static_assert(N < 65536, "Source terminal IDs exceed capacity");
+  std::array<ReaderEntry, N> result {};
+  for (size_t i = 0; i < N; ++i) result[i] = {mappings[i].key, static_cast<uint16_t>(i + 1)};
+  return result;
+}
+
+template <auto const& Text, size_t N>
+consteval WriterChar writerChar(const char8_t (&text)[N], uint16_t offset) {
+  static_assert(N - 1 <= 255, "Writer length exceeds capacity");
+  if (size_t(offset) + N - 1 > Text.size()) std::abort();
+  for (size_t i = 0; i < N - 1; ++i)
+    if (static_cast<uint8_t>(Text[offset + i]) != static_cast<uint8_t>(text[i])) std::abort();
+  return {offset, static_cast<uint8_t>(N - 1)};
+}
+
+consteval auto sequenceLookup(const auto& pool, unsigned bits) {
+  TokenLookupTable result;
+  // Search sequence boundaries, so a token within an expansion cannot change
+  // the canonical ID of a standalone token when source syntax changes.
+  for (const auto range : pool.ranges) {
+    if (range.count != 1) continue;
+    const auto token = pool.tokens[range.begin];
+    const auto script = size_t(token.scriptType), type = size_t(token.tokenType), index = size_t(token.idx);
+    if (script < 4 && type < 9 && index < 64 && result.single[script][type][index] == 0)
+      result.single[script][type][index] = uint16_t(range.begin | (1u << bits));
+  }
+  return result;
 }
 
 constexpr uint64_t prefixKey(const TokenUnit& unit) noexcept {
