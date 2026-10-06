@@ -1,12 +1,15 @@
 # Idea A: static readers and writers
 
-Idea A is implemented as an adaptive flat UTF-8 trie with immutable script
-metadata, compiled equivalent expansions, writer tables, and a Tamil token
-prefix trie. Implementation, compatibility, distribution builds, and paired performance
-validation are complete. The performance reference is `dev-pre-compact-metadata` (`4c59278`),
-as requested; compatibility is checked against the original engine at
-`126d17e`. Size growth is acceptable when it improves performance or removes
-runtime construction.
+Idea A uses immutable readers, writer tables, compiled equivalent expansions,
+and a Tamil token prefix trie. The current byte matcher uses packed reachable
+states and pooled UTF-8 dispatch pages. Its compact representation, Step 9
+streaming input, and Step 10 output sinks are measured in the
+[compact static experiment](compact-static-experiment.md).
+
+The original design and the 2026-10-03 results below compare against
+`dev-pre-compact-metadata` (`4c59278`), with compatibility checked against
+`126d17e`. Those measurements describe the earlier flat representation and
+remain historical evidence; they are not the current size/performance result.
 
 ## Scope and invariants
 
@@ -16,7 +19,7 @@ runtime construction.
 | Zero reader/writer caches | Static name slots and descriptor arrays | Production call-path and symbol inspection |
 | No runtime trie construction | C++23 `consteval` flat-array builder | Compile-time capacity checks and no production mutable trie |
 | No runtime equivalent parsing | Generated immutable token spans | Token-level and C ABI differential comparisons |
-| No runtime writer binding | Generated `string_view` tables and spans | Metadata probe covers every writer |
+| No runtime writer binding | Pooled offset/length tables and spans | Metadata probe covers every writer |
 | One physical non-Roman dictionary | Shared byte trie, source masks, separate virtual results | Pointer identity and explicit/virtual acceptance tests |
 | Better performance than the reference branch | Adaptive dispatch and hoisted source policy | Repeated native and Wasm lookup and whole-call benchmarks |
 | Preserve public behavior and C ABI | Existing exports, roles, aliases, token semantics | Shared suites, differential checks, and export verification |
@@ -36,19 +39,20 @@ complete token sequences, names, source policies, and writer descriptors into
 [script_data.h](../native/src/script_data.h). Generated files must be changed
 through this pipeline.
 
-[static_trie.h](../native/src/static_trie.h) counts the exact topology from
-adjacent common prefixes in sorted unique entries, then constructs flat arrays.
-Named reference non-type template parameters allow dictionary arrays to remain
-ordinary constexpr objects. Separate constant evaluations keep construction
-within normal compiler step limits. Scratch topology and entry objects have
-no runtime pointers and should not appear in the release image.
+[static_trie.h](../native/src/static_trie.h) builds scratch topology from sorted
+unique entries. [packed_trie.h](../native/src/packed_trie.h) retains accelerated
+entry points, branching states, and terminal prefixes; nonterminal states
+bypassed by compressed paths and terminal leaf records are discarded.
+`consteval` packing deduplicates equivalent 64-slot dispatch pages. Source
+records, canonical sequence lookup, scratch graphs, and packing intermediates
+have no production runtime references and disappear from the release image.
 
-The builder uses fixed arrays, loops, and checked integer indices. It contains
-no transient heap tree or runtime fallback. Capacities choose 16- or 32-bit
-indices; byte tries reserve the high index bit for terminal leaves. Nodes with
-16-bit indices occupy eight bytes. Edge ranges, dense-table offsets, page counts,
-terminal IDs, source masks, text ranges, and expansion ranges are checked.
-A future dictionary that exceeds a capacity must fail generation or compilation.
+The builders use fixed arrays, loops, and checked integer indices with no
+runtime fallback. Capacities choose 16- or 32-bit indices; byte tries reserve
+the high bit for a leaf's terminal payload. Nodes with 16-bit indices occupy
+eight bytes. Edge ranges, dense-table offsets, page counts, terminal IDs,
+source masks, text ranges, and expansion ranges are checked. A future dictionary
+that exceeds a capacity must fail generation or compilation.
 
 The implementation uses C++23 with Clang, Emscripten, and MinGW. Testing an
 available compiler does not establish that every minimum supported version
@@ -72,12 +76,15 @@ It does not construct a UTF-32 string. Dispatch combines:
   and sorted search for larger sparse nodes.
 - Ragged two- and three-byte prefix pages that jump to existing trie states.
 - Comparisons of two or three unique edges with no intervening terminal.
-- A high-bit leaf marker in dispatch and compressed paths, allowing terminal leaves
-  to return without loading their node and edge metadata.
+- A high-bit terminal ID in dispatch and compressed paths; leaves have no node
+  or edge records.
 
-The prefix pages store node IDs, rather than decoded Unicode scalar values.
-They are accelerators for Idea A's existing byte graph. Ordinary edges remain
-available for bounded fallbacks and the Tamil token-key matcher.
+The prefix pages store compact states or leaf terminal IDs rather than decoded
+Unicode scalars. Dense, prefix, and triple dispatch share the same pooled page
+storage. Compressed paths omit nonterminal intermediate states and fallback
+edges: a mismatch or truncated path preserves the last accepted prefix.
+Ordinary sparse edges remain for branching states. The Tamil token-key matcher
+uses the original generic flat trie.
 
 The scanner chooses one of four policies once per call: Roman, folded Roman,
 explicit non-Roman, or virtual Indic. This avoids policy dispatch per character
@@ -85,7 +92,11 @@ without generating a transliterator for every script pair. A separate raw-text
 helper keeps XML/protected-span handling outside the hot loop and evaluates its
 XML option there. Source-mask,
 primary-sequence, virtual-sequence, and variant-range fields are separate arrays
-indexed by trie state. The virtual reader loads only its sequence field.
+indexed by terminal for leaves and by compact state for branching nodes.
+Parallel branching fields avoid a dependent node-to-terminal load. Path payloads
+are also indexed by compact state. The virtual reader loads only its sequence
+field. A shared sparse-transition helper prevents inlining four copies of the
+same search code into the policy functions.
 
 Explicit readers also use subtree source masks at three-byte prefix pages.
 A rejected subtree can stop immediately. When a subtree belongs to one source,
@@ -149,16 +160,12 @@ inside every token.
 
 ## Writers, names, and Tamil prefixes
 
-Writers use pooled UTF-8 text and constexpr `string_view` entries. Each target
-has eight actual class spans, an empty `Ignore` slot, its script type, and Vedic
-flag. Lookup borrows the indexed view; empty entries and indices beyond a class
-return an empty view. Accent and exclusive-symbol choices are resolved during
-generation. No constructor binds tables at runtime.
-
-Both pooled offset/length entries and `string_view` tables were tried. The
-current tables avoid reconstructing a view on every write. They consume more
-relocation storage on native platforms, an accepted tradeoff subject to final
-end-to-end measurements. Reusable accent strings share the text pool.
+Writers use pooled UTF-8 text and checked compact offset/length entries. Each
+target has eight class spans, an empty `Ignore` slot, its script type, and Vedic
+flag. `writerChar<writerText>` validates the readable UTF-8 literal against the
+pool during compilation; runtime lookup reconstructs a borrowed view without
+allocation. Empty and out-of-range entries return an empty view. Accent and
+exclusive-symbol choices are resolved during generation.
 
 Script names and aliases resolve through a small constexpr open-addressed
 table. Its slot hash uses length and selected ASCII-folded characters; full
@@ -186,7 +193,8 @@ additional prefix mechanism. Generated branch code per spelling would expand
 instruction footprint and undermine shared lookup code. Name hashing is small
 and independent of glyph matching.
 
-Input staging, output ownership, and grouping retain the existing architecture.
+Input uses Step 9 bounded streaming; output uses Step 10 sinks. Grouping and
+public buffer ownership preserve the existing behavior.
 This work does not resume the separate
 [performance-tuning-plan.md](performance-tuning-plan.md).
 
