@@ -42,6 +42,18 @@ suite<"Packed static script data"> packedScriptsTests = [] {
         return 0;
       };
       checked += compareMatches(data::readerEntries0, data::readerTrie0.view(), data::packedReaderTrie0.view(), select);
+      if (data::readerInfo[source].graph == 0) {
+        const auto& reader = data::readers[source * 2];
+        for (const auto& entry : data::readerEntries0) {
+          const auto input = entry.key.view();
+          for (size_t length = 0; length <= input.size(); ++length) {
+            const auto expected = data::readerTrie0.view().match(input.data(), input.data() + length, select);
+            const auto actual = reader.lookupToken(input.data(), input.data() + length);
+            expect(actual.sequence == expected.value && actual.matchLen == expected.length);
+          }
+        }
+      }
+
     }
     const auto virtualSelect = [](uint16_t id) -> uint16_t {
       return id ? data::sourceTerminals[id - 1].indicSequence : 0;

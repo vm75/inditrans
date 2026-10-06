@@ -16,8 +16,7 @@ constexpr std::string_view ScriptWriterMap::lookupChar(TokenType type, size_t in
 enum class ReaderPolicy { Roman, FoldedRoman, Indic, Explicit };
 
 namespace inditrans::static_data {
-// Index source payloads by trie state so terminal selection can load in
-// parallel with the node, rather than following its terminal ID first.
+// Build scratch payloads solely to derive prefix acceptance at compile time.
 inline constexpr auto sourceNodes = []() consteval {
   std::array<SourceTerminal, readerTrie0.nodes.size()> result { };
   for (size_t i = 0; i < result.size(); ++i)
@@ -38,6 +37,30 @@ inline constexpr auto sourceMasks = sourceField<&SourceTerminal::sources>();
 inline constexpr auto primarySequences = sourceField<&SourceTerminal::sequence>();
 inline constexpr auto indicSequences = sourceField<&SourceTerminal::indicSequence>();
 inline constexpr auto variantRanges = sourceField<&SourceTerminal::alternatives>();
+
+// Branching states retain parallel payload arrays: following node.value to a
+// terminal record would add a dependent load on common Indic characters.
+template <auto Member> consteval auto branchField() {
+  using Value = std::remove_cvref_t<decltype(sourceTerminals[0].*Member)>;
+  std::array<Value, packedReaderTrie0.nodes.size()> result {};
+  constexpr auto& ids = packedStateIds<readerTrie0>;
+  for (size_t i = 1; i < ids.size(); ++i)
+    if (ids[i])
+      if (const auto terminal = readerTrie0.nodes[i].value)
+        result[ids[i]] = sourceTerminals[terminal - 1].*Member;
+  return result;
+}
+
+inline constexpr auto branchMasks = branchField<&SourceTerminal::sources>();
+inline constexpr auto branchSequences = branchField<&SourceTerminal::sequence>();
+inline constexpr auto branchIndicSequences = branchField<&SourceTerminal::indicSequence>();
+inline constexpr auto branchVariants = branchField<&SourceTerminal::alternatives>();
+
+struct IndicSelector {
+  constexpr uint16_t operator()(uint16_t terminal) const noexcept { return indicSequences[terminal]; }
+  constexpr uint16_t operator()(uint16_t, ReaderIndex state) const noexcept { return branchIndicSequences[state]; }
+};
+
 
 inline constexpr auto sourcePrefixes = []() consteval {
   constexpr auto& scratch = trieBuildNodes<readerEntries0>;
@@ -70,12 +93,13 @@ struct SourceSelector {
     return accepted & mask;
   }
 
-  constexpr uint16_t operator()(uint16_t state) const noexcept {
-    if (state == 0)
-      return 0;
-    if (singleSource || (sourceMasks[state] & mask))
-      return primarySequences[state];
-    const auto range = variantRanges[state];
+  template <bool Branch> constexpr uint16_t select(uint16_t state) const noexcept {
+    const auto& masks = Branch ? branchMasks.data() : sourceMasks.data();
+    const auto& sequences = Branch ? branchSequences.data() : primarySequences.data();
+    const auto& variants = Branch ? branchVariants.data() : variantRanges.data();
+    if (singleSource || (masks[state] & mask))
+      return sequences[state];
+    const auto range = variants[state];
     for (size_t i = 0; i < range.count; ++i) {
       const auto& variant = sourceAlternatives[range.begin + i];
       if (variant.sources & mask)
@@ -83,6 +107,9 @@ struct SourceSelector {
     }
     return 0;
   }
+
+  constexpr uint16_t operator()(uint16_t terminal) const noexcept { return select<false>(terminal); }
+  constexpr uint16_t operator()(uint16_t, ReaderIndex state) const noexcept { return select<true>(state); }
 };
 }
 
@@ -113,7 +140,7 @@ struct ScriptReaderMap {
       return { match.value, match.length };
     } else if constexpr (Policy == ReaderPolicy::Indic) {
       const auto match
-          = trie->match(begin, end, [](uint16_t terminal) constexpr { return data::indicSequences[terminal]; });
+          = trie->match(begin, end, data::IndicSelector {});
       return { match.value, match.length };
     } else {
       const auto select = data::SourceSelector { source };

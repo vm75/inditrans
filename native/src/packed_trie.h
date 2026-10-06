@@ -81,7 +81,12 @@ template <typename Index> struct PackedTrieView {
         break;
       }
       const auto& node = nodes[state];
-      if (const auto value = select(node.value))
+      uint16_t value;
+      if constexpr (requires { select(uint16_t {}, state); })
+        value = select(0, state);
+      else
+        value = select(node.value);
+      if (value)
         best = {value, size_t(ptr - begin)};
       if (ptr == end)
         break;
