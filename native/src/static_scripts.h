@@ -35,34 +35,6 @@ template <auto Member> consteval auto sourceField() {
 }
 
 inline constexpr auto sourceMasks = sourceField<&SourceTerminal::sources>();
-
-inline constexpr auto sourceMaskBuild = []() consteval {
-  struct Pool {
-    std::array<uint32_t, sourceMasks.size()> values { };
-    std::array<uint8_t, sourceMasks.size()> indices { };
-    size_t count { };
-  } result;
-  for (size_t i = 0; i < sourceMasks.size(); ++i) {
-    size_t index = 0;
-    while (index < result.count && result.values[index] != sourceMasks[i])
-      ++index;
-    if (index == result.count) {
-      if (result.count == 256)
-        std::abort();
-      result.values[result.count++] = sourceMasks[i];
-    }
-    result.indices[i] = static_cast<uint8_t>(index);
-  }
-  return result;
-}();
-static_assert(sourceMaskBuild.count <= 256);
-inline constexpr auto sourceMaskIndices = sourceMaskBuild.indices;
-inline constexpr auto sourceMaskPool = []() consteval {
-  std::array<uint32_t, sourceMaskBuild.count> result { };
-  for (size_t i = 0; i < result.size(); ++i)
-    result[i] = sourceMaskBuild.values[i];
-  return result;
-}();
 inline constexpr auto primarySequences = sourceField<&SourceTerminal::sequence>();
 inline constexpr auto indicSequences = sourceField<&SourceTerminal::indicSequence>();
 inline constexpr auto variantRanges = sourceField<&SourceTerminal::alternatives>();
@@ -123,15 +95,10 @@ struct SourceSelector {
   }
 
   template <bool Branch> constexpr uint16_t select(ReaderIndex state) const noexcept {
+    const auto* masks = Branch ? branchMasks.data() : sourceMasks.data();
     const auto* sequences = Branch ? branchSequences.data() : primarySequences.data();
     const auto* variants = Branch ? branchVariants.data() : variantRanges.data();
-    const auto accepted = [&]() {
-      if constexpr (Branch)
-        return branchMasks[state] & mask;
-      else
-        return sourceMaskPool[sourceMaskIndices[state]] & mask;
-    };
-    if (singleSource || accepted())
+    if (singleSource || (masks[state] & mask))
       return sequences[state];
     const auto range = variants[state];
     for (size_t i = 0; i < range.count(); ++i) {

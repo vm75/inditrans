@@ -37,12 +37,10 @@ size_t compareMatches(const Entries& entries, const Original& original, const Pa
 }
 
 suite<"Packed static script data"> packedScriptsTests = [] {
-  "pooled leaf masks preserve every generated source mask"_test = [] {
-    expect(data::sourceMaskPool[data::sourceMaskIndices[0]] == 0_u);
-    for (size_t i = 0; i < data::sourceTerminals.size(); ++i) {
-      expect(data::sourceMaskIndices[i + 1] < data::sourceMaskPool.size());
-      expect(data::sourceMaskPool[data::sourceMaskIndices[i + 1]] == data::sourceTerminals[i].sources);
-    }
+  "direct masks preserve every generated source mask"_test = [] {
+    expect(data::sourceMasks[0] == 0_u);
+    for (size_t i = 0; i < data::sourceTerminals.size(); ++i)
+      expect(data::sourceMasks[i + 1] == data::sourceTerminals[i].sources);
   };
   "writer entries preserve every checked offset and length"_test = [] {
     constexpr data::WriterChar boundary { 65535, 255 };
