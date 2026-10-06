@@ -37,6 +37,17 @@ size_t compareMatches(const Entries& entries, const Original& original, const Pa
 }
 
 suite<"Packed static script data"> packedScriptsTests = [] {
+  "three-byte writer entries preserve every offset and length"_test = [] {
+    constexpr data::WriterChar boundary { 65535, 255 };
+    static_assert(boundary.offset() == 65535 && boundary.length == 255);
+    // Every generated literal is also checked by writerChar at compile time.
+    for (const auto entry : data::writerChars) {
+      expect(size_t(entry.offset()) + entry.length <= data::writerText.size());
+      const data::WriterChar roundTrip { entry.offset(), entry.length };
+      expect(roundTrip.offsetLow == entry.offsetLow && roundTrip.offsetHigh == entry.offsetHigh
+          && roundTrip.length == entry.length);
+    }
+  };
   "sequence flags preserve all explicit and virtual payloads"_test = [] {
     constexpr auto boundary = data::sequencePayload(data::SourceTerminal { 1, 32767, 0 });
     static_assert(data::explicitSequence(boundary) == 32767 && data::virtualSequence(boundary) == 0);

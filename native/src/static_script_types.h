@@ -80,12 +80,17 @@ struct ScriptName {
 };
 
 struct WriterChar {
-  uint16_t offset { };
+  uint8_t offsetLow { };
+  uint8_t offsetHigh { };
   uint8_t length { };
 
   constexpr WriterChar() = default;
-  constexpr WriterChar(uint16_t off, uint8_t len) noexcept : offset(off), length(len) {}
+  constexpr WriterChar(uint16_t off, uint8_t len) noexcept
+      : offsetLow(static_cast<uint8_t>(off)), offsetHigh(static_cast<uint8_t>(off >> 8)), length(len) {}
+
+  constexpr uint16_t offset() const noexcept { return uint16_t(offsetLow) | (uint16_t(offsetHigh) << 8); }
 };
+static_assert(sizeof(WriterChar) == 3 && alignof(WriterChar) == 1);
 
 template <size_t N>
 struct PackedUtf8 {
@@ -322,7 +327,10 @@ consteval WriterChar writerChar(const char8_t (&text)[N], uint16_t offset) {
   if (size_t(offset) + N - 1 > Text.size()) std::abort();
   for (size_t i = 0; i < N - 1; ++i)
     if (static_cast<uint8_t>(Text[offset + i]) != static_cast<uint8_t>(text[i])) std::abort();
-  return {offset, static_cast<uint8_t>(N - 1)};
+  const WriterChar result {offset, static_cast<uint8_t>(N - 1)};
+  if (result.offset() != offset || result.length != N - 1)
+    std::abort();
+  return result;
 }
 
 consteval auto sequenceLookup(const auto& pool, unsigned bits) {
