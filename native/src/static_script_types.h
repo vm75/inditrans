@@ -333,6 +333,24 @@ consteval WriterChar writerChar(const char8_t (&text)[N], uint16_t offset) {
   return result;
 }
 
+template <auto const& Entries, unsigned Field>
+consteval auto writerField() {
+  static_assert(Field < 2);
+  using Value = std::conditional_t<Field == 0, uint16_t, uint8_t>;
+  std::array<Value, Entries.size()> result { };
+  for (size_t i = 0; i < result.size(); ++i) {
+    if constexpr (Field == 0) result[i] = Entries[i].offset();
+    else result[i] = Entries[i].length;
+  }
+  return result;
+}
+
+template <auto const& Entries>
+consteval Range writerRange(uint16_t begin, uint16_t count) {
+  if (size_t(begin) + count > Entries.size()) std::abort();
+  return {begin, count};
+}
+
 consteval auto sequenceLookup(const auto& pool, unsigned bits) {
   TokenLookupTable result;
   // Search sequence boundaries, so a token within an expansion cannot change
@@ -449,12 +467,12 @@ consteval auto deriveTamilEntries(
 
 } // namespace inditrans::static_data
 
-// All character-class views are populated by the generator, not bound on use.
+// All character-class ranges are populated by the generator, not bound on use.
 struct ScriptWriterMap {
   ScriptType scriptType;
   bool vedic;
   // The ninth, empty slot handles Ignore without a branch on every write.
-  std::array<std::span<const inditrans::static_data::WriterChar>, 9> charMaps;
+  std::array<inditrans::static_data::Range, 9> charMaps;
 
   constexpr ScriptType getType() const noexcept { return scriptType; }
   constexpr bool isVedic() const noexcept { return vedic; }

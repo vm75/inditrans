@@ -48,7 +48,10 @@ suite<"Packed static script data"> packedScriptsTests = [] {
     constexpr data::WriterChar boundary { 65535, 255 };
     static_assert(boundary.offset() == 65535 && boundary.length == 255);
     // Every generated literal is also checked by writerChar at compile time.
-    for (const auto entry : data::writerChars) {
+    for (size_t i = 0; i < data::writerChars.size(); ++i) {
+      const auto entry = data::writerChars[i];
+      expect(data::writerOffsets[i] == entry.offset());
+      expect(data::writerLengths[i] == entry.length);
       expect(size_t(entry.offset()) + entry.length <= data::writerText.size());
       const data::WriterChar roundTrip { entry.offset(), entry.length };
       expect(roundTrip.offsetLow == entry.offsetLow && roundTrip.offsetHigh == entry.offsetHigh
