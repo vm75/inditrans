@@ -80,17 +80,12 @@ struct ScriptName {
 };
 
 struct WriterChar {
-  uint8_t offsetLow { };
-  uint8_t offsetHigh { };
+  uint16_t offset { };
   uint8_t length { };
 
   constexpr WriterChar() = default;
-  constexpr WriterChar(uint16_t off, uint8_t len) noexcept
-      : offsetLow(static_cast<uint8_t>(off)), offsetHigh(static_cast<uint8_t>(off >> 8)), length(len) {}
-
-  constexpr uint16_t offset() const noexcept { return uint16_t(offsetLow) | (uint16_t(offsetHigh) << 8); }
+  constexpr WriterChar(uint16_t off, uint8_t len) noexcept : offset(off), length(len) {}
 };
-static_assert(sizeof(WriterChar) == 3 && alignof(WriterChar) == 1);
 
 template <size_t N>
 struct PackedUtf8 {
@@ -328,27 +323,9 @@ consteval WriterChar writerChar(const char8_t (&text)[N], uint16_t offset) {
   for (size_t i = 0; i < N - 1; ++i)
     if (static_cast<uint8_t>(Text[offset + i]) != static_cast<uint8_t>(text[i])) std::abort();
   const WriterChar result {offset, static_cast<uint8_t>(N - 1)};
-  if (result.offset() != offset || result.length != N - 1)
+  if (result.offset != offset || result.length != N - 1)
     std::abort();
   return result;
-}
-
-template <auto const& Entries, unsigned Field>
-consteval auto writerField() {
-  static_assert(Field < 2);
-  using Value = std::conditional_t<Field == 0, uint16_t, uint8_t>;
-  std::array<Value, Entries.size()> result { };
-  for (size_t i = 0; i < result.size(); ++i) {
-    if constexpr (Field == 0) result[i] = Entries[i].offset();
-    else result[i] = Entries[i].length;
-  }
-  return result;
-}
-
-template <auto const& Entries>
-consteval Range writerRange(uint16_t begin, uint16_t count) {
-  if (size_t(begin) + count > Entries.size()) std::abort();
-  return {begin, count};
 }
 
 consteval auto sequenceLookup(const auto& pool, unsigned bits) {
@@ -467,12 +444,12 @@ consteval auto deriveTamilEntries(
 
 } // namespace inditrans::static_data
 
-// All character-class ranges are populated by the generator, not bound on use.
+// All character-class views are populated by the generator, not bound on use.
 struct ScriptWriterMap {
   ScriptType scriptType;
   bool vedic;
   // The ninth, empty slot handles Ignore without a branch on every write.
-  std::array<inditrans::static_data::Range, 9> charMaps;
+  std::array<std::span<const inditrans::static_data::WriterChar>, 9> charMaps;
 
   constexpr ScriptType getType() const noexcept { return scriptType; }
   constexpr bool isVedic() const noexcept { return vedic; }

@@ -44,19 +44,11 @@ suite<"Packed static script data"> packedScriptsTests = [] {
       expect(data::sourceMaskPool[data::sourceMaskIndices[i + 1]] == data::sourceTerminals[i].sources);
     }
   };
-  "three-byte writer entries preserve every offset and length"_test = [] {
+  "writer entries preserve every checked offset and length"_test = [] {
     constexpr data::WriterChar boundary { 65535, 255 };
-    static_assert(boundary.offset() == 65535 && boundary.length == 255);
-    // Every generated literal is also checked by writerChar at compile time.
-    for (size_t i = 0; i < data::writerChars.size(); ++i) {
-      const auto entry = data::writerChars[i];
-      expect(data::writerOffsets[i] == entry.offset());
-      expect(data::writerLengths[i] == entry.length);
-      expect(size_t(entry.offset()) + entry.length <= data::writerText.size());
-      const data::WriterChar roundTrip { entry.offset(), entry.length };
-      expect(roundTrip.offsetLow == entry.offsetLow && roundTrip.offsetHigh == entry.offsetHigh
-          && roundTrip.length == entry.length);
-    }
+    static_assert(boundary.offset == 65535 && boundary.length == 255);
+    for (const auto entry : data::writerChars)
+      expect(size_t(entry.offset) + entry.length <= data::writerText.size());
   };
   "sequence flags preserve all explicit and virtual payloads"_test = [] {
     constexpr auto boundary = data::sequencePayload(data::SourceTerminal { 1, 32767, 0 });

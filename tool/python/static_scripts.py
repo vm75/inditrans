@@ -318,7 +318,7 @@ class StaticScripts:
                     self._check16(len(char_entries), "writer entries")
                     ranges[array_key] = Range(begin, len(array))
                 item = ranges[array_key]
-                script_ranges.append(f"writerRange<writerChars>({item.begin}, {item.count})")
+                script_ranges.append(f"std::span{{writerChars}}.subspan({item.begin}, {item.count})")
             writers.append(f"/* ScriptId::{script_id_names[i]} */ {{ScriptType::{self.script_type(script)}, {str(script.category == 'vedic').lower()}, "
                             f"{{{{{', '.join(script_ranges)}}}}}}}")
 
@@ -337,8 +337,6 @@ class StaticScripts:
         ]
         output += ["inline constexpr auto writerText = packUtf8(", *text_pool, ");\n"]
         self._array(output, "WriterChar", "writerChars", char_entries)
-        output += ["inline constexpr auto writerOffsets = writerField<writerChars, 0>();",
-                   "inline constexpr auto writerLengths = writerField<writerChars, 1>();\n"]
         self._array(output, "ScriptWriterMap", "writers", writers)
         self._array(output, "ScriptName", "names",
                     [f'{{"{name}", static_cast<uint16_t>(ScriptId::{script_id_names[names[name]]})}}' for name in sorted_names])
