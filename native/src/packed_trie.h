@@ -104,7 +104,7 @@ template <typename Index> struct PackedTrieView {
           if (second >= 'A' && second <= 'Z') second += 'a' - 'A';
           if (third >= 'A' && third <= 'Z') third += 'a' - 'A';
         }
-        const auto path = paths[node.dense];
+        const auto path = paths[state];
         if ((uint32_t(first) | (uint32_t(second) << 8) | (uint32_t(third) << 16)) != path.bytes)
           break;
         state = path.child;
@@ -242,7 +242,7 @@ template <auto const& Trie> consteval auto packTrie() {
     std::array<Index, dispatchCount> dense {};
     std::array<uint8_t, 64> prefixPages = pooledDispatch<Trie>.prefixPages;
     decltype(Trie.triplePages) triplePages = pooledDispatch<Trie>.triplePages;
-    std::array<FlatPath<Index>, pathCount> paths {};
+    std::array<FlatPath<Index>, nodeCount> paths {};
 
     constexpr PackedTrieView<Index> view() const noexcept {
       return {nodes.data(), edges.data(), dense.data(), prefixPages.data(), dense.data(),
@@ -259,8 +259,9 @@ template <auto const& Trie> consteval auto packTrie() {
     if (old.count >> 14) {
       const auto& oldPath = Trie.paths[old.dense];
       node.edges = 0;
-      node.dense = static_cast<uint16_t>(path);
-      result.paths[path++] = {oldPath.bytes, remap(oldPath.child)};
+      node.dense = 0;
+      result.paths[ids[i]] = {oldPath.bytes, remap(oldPath.child)};
+      ++path;
     } else if (old.dense == 65535) {
       node.edges = static_cast<Index>(edge);
       for (size_t j = 0; j < old.count; ++j) {
