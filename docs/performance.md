@@ -26,9 +26,10 @@ runtime lookup and transliteration path remain unchanged.
 | Repetitions | Five full throughput and short-call sweeps; 501 samples per cold path |
 | Environment | WSL2; Linux/glibc allocator probe; timing results are host-specific |
 
-Raw files are retained in [`performance-baseline/`](performance-baseline/).
-The throughput capture contains all 30 case/size cells and 150 raw rows with
-hashes; all five hashes agree for each cell. The short-call capture has all ten
+Detailed CSV captures are local build artifacts under ignored
+`out/perf/03-final-acceptance-*`; raw performance files are intentionally not
+tracked. The full throughput capture contains all 30 case/size cells and 150
+raw rows with hashes; all five runs agree for each cell. The short-call capture has all ten
 cases across five runs with stable hashes. Cold output hashes also match the
 throughput cases. Cold and warm allocation data cover six workloads. The
 isolated reusable-metadata lookup probe reports zero malloc/calloc/realloc/free,
@@ -46,8 +47,8 @@ CPU=$(python3 -c 'import os; print(min(os.sched_getaffinity(0)))')
 make perf-snapshot PERF_NAME=00-baseline BENCH_RUNS=5 BENCH_CPU="$CPU" PERF_CPU="$CPU"
 ```
 
-Raw CSVs and metadata are written under ignored `out/perf/`. Preserve those
-files with the build artifact or CI run when publishing a new baseline. The
+Raw CSVs and metadata are written under ignored `out/perf/`. They remain local
+artifacts and are not committed. The
 throughput matrix has ten cases at short, approximately 4 KiB, and 1 MiB input
 sizes. Every case/size output hash must match when comparing revisions. Short
 call measurements include returned-string destruction. Cold measurements

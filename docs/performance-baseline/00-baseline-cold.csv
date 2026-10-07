@@ -1,5 +1,0 @@
-case,input_bytes,p50_ns,p95_ns,samples,output_bytes,output_fnv1a64
-cold-devanagari-to-telugu,97,10227,13676,501,97,14017784973806665146
-cold-iso-to-devanagari,43,10112,14142,501,90,7359150328935576328
-cold-devanagari-to-tamil,97,12083,17632,501,97,7388498911983242290
-cold-indic-to-iso,97,9885,12381,501,49,9466446522807845639
