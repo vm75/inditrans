@@ -276,7 +276,7 @@ struct TokenLookupTable {
 template <size_t M>
 consteval std::array<ReaderEntry, M> deriveReaderEntries(const auto& seqTokens, unsigned seqBits, const std::array<SemanticMapping, M>& mappings) {
   TokenLookupTable table(seqTokens, seqBits);
-  std::array<ReaderEntry, M> entries;
+  std::array<ReaderEntry, M> entries { };
   for (size_t m = 0; m < M; ++m) {
     const auto& map = mappings[m];
     const size_t N = map.count;
@@ -396,7 +396,7 @@ consteval auto deriveTamilEntries(
     uint32_t tamilSource,
     const std::array<Utf8Key, N>& prefixes) {
 
-  const auto selector = [&](uint16_t, auto state) consteval -> uint16_t {
+  const auto selector = [&](uint16_t, auto state) -> uint16_t {
     const auto termId = trie.nodes[state].value;
     if (termId == 0)
       return 0;
@@ -411,7 +411,7 @@ consteval auto deriveTamilEntries(
     return 0;
   };
 
-  std::array<TamilEntry, N> entries;
+  std::array<TamilEntry, N> entries { };
 
   for (size_t i = 0; i < N; ++i) {
     const char* ptr = prefixes[i].bytes;
