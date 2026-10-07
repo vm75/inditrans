@@ -76,7 +76,8 @@ private:
   // Encoded token sequences use four length bits, so a single reader match
   // contains at most 15 tokens. A fixed power-of-two queue keeps streaming
   // lookahead allocation-free and avoids periodic vector compaction.
-  static constexpr size_t BufferCapacity = 16;
+  static constexpr size_t MaxSequenceTokens = 15;
+  static constexpr size_t BufferCapacity = 32;
   static_assert((BufferCapacity & (BufferCapacity - 1)) == 0);
   std::array<TokenOrString, BufferCapacity> buffer;
   size_t head = 0;
@@ -106,26 +107,31 @@ private:
     ++count;
   }
 
-  void pullNext() noexcept {
-    switch (policy) {
-      case ReaderPolicy::Explicit:
-        pull<ReaderPolicy::Explicit>();
-        break;
-      case ReaderPolicy::Indic:
-        pull<ReaderPolicy::Indic>();
-        break;
-      case ReaderPolicy::FoldedRoman:
-        pull<ReaderPolicy::FoldedRoman>();
-        break;
-      case ReaderPolicy::Roman:
-        pull<ReaderPolicy::Roman>();
-        break;
-    }
+  template <ReaderPolicy Policy>
+  void refill() noexcept {
+    // Keep enough free slots for the longest possible sequence emitted by one
+    // lookup. This amortizes policy dispatch while preserving bounded memory.
+    while (ptr < end && count <= BufferCapacity - MaxSequenceTokens)
+      pull<Policy>();
   }
 
   inline void ensure(size_t requiredSize) noexcept {
-    while (count < requiredSize && ptr < end)
-      pullNext();
+    if (count >= requiredSize || ptr >= end)
+      return;
+    switch (policy) {
+      case ReaderPolicy::Explicit:
+        refill<ReaderPolicy::Explicit>();
+        break;
+      case ReaderPolicy::Indic:
+        refill<ReaderPolicy::Indic>();
+        break;
+      case ReaderPolicy::FoldedRoman:
+        refill<ReaderPolicy::FoldedRoman>();
+        break;
+      case ReaderPolicy::Roman:
+        refill<ReaderPolicy::Roman>();
+        break;
+    }
   }
 
   template <ReaderPolicy Policy>
