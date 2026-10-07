@@ -7,6 +7,7 @@
 #include <optional>
 #include <string>
 #include <variant>
+#include <vector>
 
 using InditransLogger = void(const std::string&);
 InditransLogger* inditransLogger = nullptr;
@@ -59,6 +60,7 @@ public:
   InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options,
       const std::string_view& skipStart = "##", const std::string_view& skipEnd = "##") noexcept
       : ptr(input.data()), end(input.data() + input.length()), map(map), skipStart(skipStart), skipEnd(skipEnd), options(options) {
+    buffer.reserve(BufferCapacity);
     if (map.nonRoman) {
       policy = map.source ? ReaderPolicy::Explicit : ReaderPolicy::Indic;
     } else {
@@ -73,51 +75,47 @@ private:
   const std::string_view skipStart;
   const std::string_view skipEnd;
   const TranslitOptions options;
-  // Encoded token sequences use four length bits, so a single reader match
-  // contains at most 15 tokens. A fixed power-of-two queue keeps streaming
-  // lookahead allocation-free and avoids periodic vector compaction.
+  // Stream through a reusable token chunk rather than materializing the whole
+  // input. The chunk is large enough to keep lookup/grouping phase switches
+  // infrequent while bounding reader memory to roughly O(100 KiB).
   static constexpr size_t MaxSequenceTokens = 15;
-  static constexpr size_t BufferCapacity = 32;
-  static_assert((BufferCapacity & (BufferCapacity - 1)) == 0);
-  std::array<TokenOrString, BufferCapacity> buffer;
+  static constexpr size_t BufferCapacity = 4096;
+  std::vector<TokenOrString> buffer;
   size_t head = 0;
-  size_t count = 0;
   ReaderPolicy policy { ReaderPolicy::Roman };
 
-  TokenOrString& front(size_t offset = 0) noexcept {
-    return buffer[(head + offset) & (BufferCapacity - 1)];
-  }
+  size_t available() const noexcept { return buffer.size() - head; }
 
-  const TokenOrString& front(size_t offset = 0) const noexcept {
-    return buffer[(head + offset) & (BufferCapacity - 1)];
-  }
+  TokenOrString& front(size_t offset = 0) noexcept { return buffer[head + offset]; }
 
-  void popFront() noexcept {
-    head = (head + 1) & (BufferCapacity - 1);
-    --count;
-  }
+  const TokenOrString& front(size_t offset = 0) const noexcept { return buffer[head + offset]; }
 
-  void pushBack(const ScriptToken& value) noexcept {
-    buffer[(head + count) & (BufferCapacity - 1)] = value;
-    ++count;
-  }
+  void popFront() noexcept { ++head; }
 
-  void pushBack(std::string_view value) noexcept {
-    buffer[(head + count) & (BufferCapacity - 1)] = value;
-    ++count;
-  }
+  void pushBack(const ScriptToken& value) { buffer.emplace_back(value); }
+
+  void pushBack(std::string_view value) { buffer.emplace_back(value); }
 
   template <ReaderPolicy Policy>
   void refill() noexcept {
-    // Keep enough free slots for the longest possible sequence emitted by one
-    // lookup. This amortizes policy dispatch while preserving bounded memory.
-    while (ptr < end && count <= BufferCapacity - MaxSequenceTokens)
+    while (ptr < end && buffer.size() <= BufferCapacity - MaxSequenceTokens)
       pull<Policy>();
   }
 
   inline void ensure(size_t requiredSize) noexcept {
-    if (count >= requiredSize || ptr >= end)
+    if (available() >= requiredSize || ptr >= end)
       return;
+
+    // Active reader paths require one-token lookahead. Keep the generic offset
+    // helpers correct without paying compaction cost on the hot path.
+    if (head != 0) {
+      const auto remaining = available();
+      for (size_t i = 0; i < remaining; ++i)
+        buffer[i] = buffer[head + i];
+      buffer.resize(remaining);
+      head = 0;
+    }
+
     switch (policy) {
       case ReaderPolicy::Explicit:
         refill<ReaderPolicy::Explicit>();
@@ -183,7 +181,7 @@ private:
 public:
   inline bool hasMore() noexcept {
     ensure(1);
-    return count != 0;
+    return head < buffer.size();
   }
 
   TokenUnit lastToken = invalidTokenUnit;
@@ -233,7 +231,7 @@ private:
     if (start.tokenType == TokenType::Consonant) {
       while (true) {
         ensure(1);
-        if (count == 0) break;
+        if (head >= buffer.size()) break;
         if (!HoldsScriptToken(front())) break;
         const auto nextToken = GetScriptToken(front());
         switch (nextToken.tokenType) {
@@ -254,7 +252,7 @@ private:
     } else if (start.tokenType == TokenType::Vowel) {
       while (true) {
         ensure(1);
-        if (count == 0) break;
+        if (head >= buffer.size()) break;
         if (!HoldsScriptToken(front())) break;
         const auto nextToken = GetScriptToken(front());
         switch (nextToken.tokenType) {
@@ -288,7 +286,7 @@ private:
 
       while (true) {
         ensure(1);
-        if (count == 0) break;
+        if (head >= buffer.size()) break;
         if (HoldsScriptToken(front())) {
           auto nextToken = GetScriptToken(front());
           switch (nextToken.tokenType) {
@@ -363,7 +361,7 @@ private:
     } else if (start.tokenType == TokenType::Vowel) {
       while (true) {
         ensure(1);
-        if (count == 0) break;
+        if (head >= buffer.size()) break;
         if (!HoldsScriptToken(front())) break;
         const auto nextToken = GetScriptToken(front());
         if (nextToken.tokenType == TokenType::OtherDiacritic) {
@@ -389,7 +387,7 @@ private:
 
       while (true) {
         ensure(1);
-        if (count == 0) break;
+        if (head >= buffer.size()) break;
         if (!HoldsScriptToken(front())) break;
         auto nextToken = GetScriptToken(front());
         bool consume = false;
@@ -430,7 +428,7 @@ private:
 
   TokenUnit inferGurmukhiAdhak() {
     ensure(1);
-    if (count == 0)
+    if (head >= buffer.size())
       return invalidTokenUnit;
     const auto peek = front();
     if (HoldsScriptToken(peek) && GetScriptToken(peek).tokenType == TokenType::Consonant) {
@@ -464,7 +462,7 @@ private:
 
   bool isEndOfWord() noexcept {
     ensure(1);
-    if (count == 0) {
+    if (head >= buffer.size()) {
       return true;
     }
     const auto& next = front();
@@ -481,7 +479,7 @@ private:
 
   std::optional<TokenOrString> peekNext(size_t offset = 0) noexcept {
     ensure(offset + 1);
-    if (offset >= count) {
+    if (head + offset >= buffer.size()) {
       return std::nullopt;
     }
     return front(offset);
