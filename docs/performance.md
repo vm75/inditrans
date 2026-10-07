@@ -8,11 +8,10 @@ the same toolchain and machine.
 ## Reproduce
 
 The authoritative clean-tree baseline is commit
-`8c5400d6de9b20a2288b44e954d7c4647fae89b6` on
-`experiment/compact-static-script-data`, captured 2026-10-07 UTC. The selected
-engine checkpoint is `f79e14e4d49aa978ba866b9688da3a70e41bc6a2`; the baseline
-commit changes documentation, CI, and build/test tooling after that engine
-checkpoint, with no runtime engine changes.
+`d17280a207e008c5a4f5ace6705424c01f8c20b4` on
+`experiment/compact-static-script-data`, captured 2026-10-07 UTC. The selected engine checkpoint is `f79e14e4d49aa978ba866b9688da3a70e41bc6a2`.
+The baseline includes compile-time portability fixes after that checkpoint; the
+runtime lookup and transliteration path remain unchanged.
 
 | Environment | Recorded value |
 |---|---|
@@ -89,34 +88,34 @@ checksum.
 
 | Input scale | Median ns/call | Median sample p95 ns |
 |---|---:|---:|
-| Short | 1,294 | 1,800 |
-| Approximately 4 KiB | 50,426 | 68,827 |
-| Approximately 1 MiB | 12,980,420 | 14,618,180 |
+| Short | 1,191 | 1,617 |
+| Approximately 4 KiB | 45,872 | 60,046 |
+| Approximately 1 MiB | 11,812,250 | 13,575,010 |
 
 Short-call p50/p95 are nanoseconds and include returned-string destruction.
 
 | Case | p50 ns | p95 ns |
 |---|---:|---:|
-| indic-to-indic | 1,239 | 1,351 |
-| tamil-output | 1,444 | 1,815 |
-| latin-input | 1,165 | 1,296 |
-| virtual-indic-to-latin | 1,114 | 1,536 |
-| virtual-indic-to-indic | 1,295 | 1,530 |
-| virtual-indic-to-tamil | 1,485 | 1,903 |
-| latin-output | 1,230 | 1,495 |
-| expansion-heavy | 271 | 460 |
-| protected-spans | 447 | 520 |
-| mixed-protected-spans | 1,143 | 1,421 |
+| indic-to-indic | 1,239 | 1,648 |
+| tamil-output | 1,430 | 2,109 |
+| latin-input | 1,153 | 1,344 |
+| virtual-indic-to-latin | 1,109 | 1,193 |
+| virtual-indic-to-indic | 1,111 | 1,197 |
+| virtual-indic-to-tamil | 1,379 | 1,709 |
+| latin-output | 1,134 | 1,457 |
+| expansion-heavy | 239 | 284 |
+| protected-spans | 417 | 447 |
+| mixed-protected-spans | 983 | 1,124 |
 
 Cold values are first-call p50/p95 in nanoseconds from 501 fresh processes per
 path; process launch is excluded.
 
 | Path | p50 ns | p95 ns |
 |---|---:|---:|
-| Devanagari → Telugu | 10,331 | 17,222 |
-| ISO → Devanagari | 9,629 | 14,129 |
-| Devanagari → Tamil | 11,348 | 15,948 |
-| Indic → ISO | 9,870 | 13,879 |
+| Devanagari → Telugu | 10,227 | 13,676 |
+| ISO → Devanagari | 10,112 | 14,142 |
+| Devanagari → Tamil | 12,083 | 17,632 |
+| Indic → ISO | 9,885 | 12,381 |
 
 Cold and warm allocation results match for every workload. Values are allocator
 events, requested bytes, peak requested-live bytes, and retained live bytes.

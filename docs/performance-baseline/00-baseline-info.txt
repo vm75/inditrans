@@ -1,7 +1,7 @@
-commit_full=8c5400d6de9b20a2288b44e954d7c4647fae89b6
-commit_short=8c5400d
+commit_full=d17280a207e008c5a4f5ace6705424c01f8c20b4
+commit_short=d17280a
 branch=experiment/compact-static-script-data
-date_utc=2026-10-07T01:37:14+00:00
+date_utc=2026-10-07T01:51:53+00:00
 platform=Linux 6.18.40.1-microsoft-standard-WSL2 x86_64
 cpu=Intel(R) Core(TM) Ultra 9 185H
 clang=clang version 23.1.1

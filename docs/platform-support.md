@@ -17,7 +17,7 @@ hosted jobs added in this change are awaiting execution.
   minimum is Flutter 3.38.10, which supplies the required Dart SDK and includes
   the macOS FFI plugin framework fix. CI pins Flutter 3.47.5 / Dart 3.13.4.
 - Node.js: Node 18.3 or later; the release build uses Emscripten 6.0.10.
-- Android uses Android Gradle Plugin 8.11.1, Gradle 8.14.3, CMake 3.22.1, and the pinned Flutter 3.47.5 NDK default
+- Android uses Android Gradle Plugin 8.11.1, Kotlin Gradle Plugin 2.2.20, Gradle 8.14.3, CMake 3.22.1, and the pinned Flutter 3.47.5 NDK default
   `28.2.13676358`; CI records this value from Flutter's Gradle extension.
 - Apple plugin podspecs select C++23 and retain their current deployment
   targets (iOS 9.0, macOS 10.11).
