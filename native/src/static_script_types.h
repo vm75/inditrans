@@ -170,10 +170,37 @@ struct SequencePool {
 };
 
 template <typename... Seqs>
+consteval size_t sequencePoolTokenCount(const Seqs&... seqs) {
+  const std::array<size_t, sizeof...(Seqs)> sizes { seqs.size()... };
+  size_t total = 1;
+  for (const auto size : sizes)
+    total += size;
+  return total;
+}
+
+template <typename... Seqs>
+consteval bool sequenceLengthsFit(const Seqs&... seqs) {
+  for (const auto size : std::array<size_t, sizeof...(Seqs)> { seqs.size()... })
+    if (size >= (1u << (16 - 12)))
+      return false;
+  return true;
+}
+
+template <typename F>
+consteval void forEachSequence(F&) {}
+
+template <typename F, typename First, typename... Rest>
+consteval void forEachSequence(F& f, const First& first, const Rest&... rest) {
+  f(first);
+  if constexpr (sizeof...(Rest) > 0)
+    forEachSequence(f, rest...);
+}
+
+template <typename... Seqs>
 consteval auto makeSequencePool(const Seqs&... seqs) {
-  constexpr size_t total = 1 + (seqs.size() + ... + 0);
+  constexpr size_t total = sequencePoolTokenCount(seqs...);
   static_assert(total <= (1u << 12), "Total sequence tokens exceeds offset capacity");
-  static_assert(((seqs.size() < (1u << (16 - 12))) && ...), "Sequence length exceeds length capacity");
+  static_assert(sequenceLengthsFit(seqs...), "Sequence length exceeds length capacity");
   SequencePool<total, sizeof...(Seqs)> pool;
   pool.tokens[0] = ScriptToken(TokenType::Ignore, 255, ScriptType::Others);
   size_t offset = 1;
@@ -183,7 +210,7 @@ consteval auto makeSequencePool(const Seqs&... seqs) {
     for (size_t i = 0; i < N; ++i)
       pool.tokens[offset++] = s[i];
   };
-  (add(seqs), ...);
+  forEachSequence(add, seqs...);
   return pool;
 }
 
