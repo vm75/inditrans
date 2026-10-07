@@ -7,12 +7,13 @@ the same toolchain and machine.
 
 ## Reproduce
 
-The authoritative clean-tree baseline is commit
-`e302ae3dd19727870a5b3c99b575dccb890ef80b` on
-`experiment/compact-static-script-data`, captured 2026-10-07 UTC. The selected engine checkpoint is `f79e14e4d49aa978ba866b9688da3a70e41bc6a2`.
-The baseline includes the compile-time portability fixes and explicit writer
-pointer offset introduced during acceptance; all five output hashes agree with
-the prior capture and the 91,883-byte release Wasm is unchanged.
+The historical clean-tree acceptance capture is commit
+`e302ae3dd19727870a5b3c99b575dccb890ef80b`, captured 2026-10-07 UTC.
+The permanent production-history CI reference is
+`d11147582513b10e8c8d45b319a35dc2a3ab5fe8` on `dev`. Its core engine,
+generated script data, static metadata tables, and checked-in 91,883-byte Wasm
+are byte-identical to the accepted `e302ae3` state. The selected engine
+checkpoint remains `f79e14e4d49aa978ba866b9688da3a70e41bc6a2`.
 
 | Environment | Recorded value |
 |---|---|
