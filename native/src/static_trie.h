@@ -248,9 +248,15 @@ template <auto const& Entries> consteval auto trieScratch() {
     }
     for (size_t j = common; j < key.size(); ++j) {
       nodes[used] = { path[j], static_cast<Key>(key[j]), 0, 0, true };
-      ++nodes[path[j]].count;
-      if constexpr (std::is_same_v<Key, uint8_t>)
-        nodes[path[j]].continuationOnly &= (static_cast<uint8_t>(key[j]) & 0xc0) == 0x80;
+      auto& parent = nodes[path[j]];
+      if constexpr (std::is_same_v<Key, uint8_t>) {
+        const bool continuation = (static_cast<uint8_t>(key[j]) & 0xc0) == 0x80;
+        if (parent.count == 0)
+          parent.continuationOnly = continuation;
+        else
+          parent.continuationOnly &= continuation;
+      }
+      ++parent.count;
       path[j + 1] = used++;
     }
     nodes[path[key.size()]].value = Entries[i].value;

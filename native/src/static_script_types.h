@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <array>
 #include <span>
+#include <type_traits>
 
 namespace inditrans::static_data {
 
@@ -169,9 +170,15 @@ struct SequencePool {
   constexpr const ScriptToken& operator[](size_t i) const noexcept { return tokens[i]; }
 };
 
+template <typename T>
+struct SequenceLength;
+
+template <size_t N>
+struct SequenceLength<TokenSequence<N>> : std::integral_constant<size_t, N> { };
+
 template <typename... Seqs>
-consteval size_t sequencePoolTokenCount(const Seqs&... seqs) {
-  const std::array<size_t, sizeof...(Seqs)> sizes { seqs.size()... };
+consteval size_t sequencePoolTokenCount() {
+  const std::array<size_t, sizeof...(Seqs)> sizes { SequenceLength<std::remove_cvref_t<Seqs>>::value... };
   size_t total = 1;
   for (const auto size : sizes)
     total += size;
@@ -179,18 +186,18 @@ consteval size_t sequencePoolTokenCount(const Seqs&... seqs) {
 }
 
 template <typename... Seqs>
-consteval bool sequenceLengthsFit(const Seqs&... seqs) {
-  for (const auto size : std::array<size_t, sizeof...(Seqs)> { seqs.size()... })
+consteval bool sequenceLengthsFit() {
+  for (const auto size : std::array<size_t, sizeof...(Seqs)> { SequenceLength<std::remove_cvref_t<Seqs>>::value... })
     if (size >= (1u << (16 - 12)))
       return false;
   return true;
 }
 
 template <typename F>
-consteval void forEachSequence(F&) {}
+constexpr void forEachSequence(F&) {}
 
 template <typename F, typename First, typename... Rest>
-consteval void forEachSequence(F& f, const First& first, const Rest&... rest) {
+constexpr void forEachSequence(F& f, const First& first, const Rest&... rest) {
   f(first);
   if constexpr (sizeof...(Rest) > 0)
     forEachSequence(f, rest...);
@@ -198,9 +205,9 @@ consteval void forEachSequence(F& f, const First& first, const Rest&... rest) {
 
 template <typename... Seqs>
 consteval auto makeSequencePool(const Seqs&... seqs) {
-  constexpr size_t total = sequencePoolTokenCount(seqs...);
+  constexpr size_t total = sequencePoolTokenCount<Seqs...>();
   static_assert(total <= (1u << 12), "Total sequence tokens exceeds offset capacity");
-  static_assert(sequenceLengthsFit(seqs...), "Sequence length exceeds length capacity");
+  static_assert(sequenceLengthsFit<Seqs...>(), "Sequence length exceeds length capacity");
   SequencePool<total, sizeof...(Seqs)> pool;
   pool.tokens[0] = ScriptToken(TokenType::Ignore, 255, ScriptType::Others);
   size_t offset = 1;
