@@ -111,28 +111,24 @@ jobs:
           echo "BENCH_CPU=$CPU" >> "$GITHUB_ENV"
           echo "Benchmark CPU: $CPU"
 
-      - name: Prepare selected engine baseline with current benchmark harness
+      - name: Prepare base revision with current benchmark harness
         env:
-          BASE_SHA: dfe5488dd1a38d22373d4efb2d1517d5252ebf65
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           BASELINE_DIR="$RUNNER_TEMP/inditrans-baseline"
           git worktree add --detach "$BASELINE_DIR" "$BASE_SHA"
           rm -rf "$BASELINE_DIR/native/bench"
           cp -a native/bench "$BASELINE_DIR/native/bench"
-          cp native/src/static_script_types.h "$BASELINE_DIR/native/src/static_script_types.h"
-          cp native/src/static_trie.h "$BASELINE_DIR/native/src/static_trie.h"
-          test -f "$BASELINE_DIR/native/src/script_data.h"
           mkdir -p "$GITHUB_WORKSPACE/out"
           echo "BASELINE_DIR=$BASELINE_DIR" >> "$GITHUB_ENV"
 
-      - name: Measure selected engine baseline
+      - name: Measure base revision
         run: |
           cd "$BASELINE_DIR"
           taskset -c "$BENCH_CPU" make -f "$GITHUB_WORKSPACE/Makefile" bench-save \
-            USE_CHECKED_IN_SCRIPT_DATA=1 \
             BENCH_BASELINE="$GITHUB_WORKSPACE/out/bench-baseline"
 
-      - name: Compare PR timing against selected engine
+      - name: Compare PR timing against base
         run: |
           taskset -c "$BENCH_CPU" make bench-compare \
             BENCH_BASELINE=out/bench-baseline \
