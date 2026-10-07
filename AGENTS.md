@@ -127,6 +127,8 @@ make perf-report
 - The single consolidated changelog is authoritative in root `CHANGELOG.md`.
 - Releases are tag-based (`vX.Y.Z`), validated by `tool/verify_release.py`, and
   published via `.github/workflows/release.yml` with pub.dev OIDC and npm provenance.
+- The normal `.github/workflows/ci.yml` workflow runs for pull requests targeting
+  `main` and pushes to `main`; release tags are handled by the separate release workflow.
 - The shared test-case suite is at `test-files/test-cases.json`; changes to the engine that
   affect expected output must be reflected there.
 - Follow KISS and YAGNI: prefer the smallest change that satisfies the request.
