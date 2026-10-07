@@ -28,10 +28,14 @@ init_emcc() {
   # set emsdk environment variables
   if [[ -f "${EMSDK}/emsdk_env.sh" ]]; then
     caller_em_config="${EM_CONFIG:-}"
+    caller_em_cache="${EM_CACHE:-}"
     export EMSDK_QUIET=1
     source "${EMSDK}/emsdk_env.sh"
     if [[ -n "${caller_em_config}" ]]; then
       export EM_CONFIG="${caller_em_config}"
+    fi
+    if [[ -n "${caller_em_cache}" ]]; then
+      export EM_CACHE="${caller_em_cache}"
     fi
   fi
 
@@ -72,7 +76,7 @@ build_wasm_standalone() {
       -o "${outDir}/inditrans.wasm"
   else
     em++ ./native/src/inditrans.cpp -I ./native/src \
-      -std=c++23 -fPIC -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG \
+      -std=c++23 -fPIC -Oz -flto -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG \
       "-Wl,--gc-sections,--no-entry,--export=__wasm_call_ctors" \
       -s EXPORTED_FUNCTIONS='["_malloc", "_free"]' \
       -s STANDALONE_WASM=1 \
@@ -112,7 +116,7 @@ build_wasm_js() {
       -o "$outDir/inditrans.js"
   else
     em++ ./native/src/inditrans.cpp -I ./native/src \
-      -std=c++23 -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno \
+      -std=c++23 -Oz -flto -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno \
       "-Wl,--gc-sections,--no-entry" \
       -DNDEBUG \
       -s EXPORTED_FUNCTIONS="$exportedFunctions" \

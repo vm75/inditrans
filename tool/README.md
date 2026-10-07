@@ -28,3 +28,11 @@ The two upstream-data commands fetch their source JSON over HTTPS. The other
 commands run offline. Flutter's own analyzer, package manager, and tests still
 use the Dart SDK because they operate on the Flutter package rather than on
 repository maintenance scripts.
+
+`node tool/wasm_bench.mjs flutter/assets/inditrans.wasm [case]` measures the
+standalone C ABI on the ten native throughput workloads, at short, 4 KiB, and
+64 KiB scales. CSV output includes median/p95 timing, output sizes, and FNV-1a
+hashes. Timed calls include result release; UTF-8 decoding and hashing happen
+outside timing. Use the same Node version and CPU for both revisions; the
+64 KiB ceiling lets the eager reader in `perf-00-baseline` fit its original
+standalone memory limit.

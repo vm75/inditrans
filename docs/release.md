@@ -98,6 +98,8 @@ To verify the release pipeline safely without creating a real release or publish
   ```
 - **Continuous Integration**:
   The normal CI workflow (`.github/workflows/ci.yml`) runs on pushes to `main` and PRs targeting `main`, running release validation, native engine tests, Flutter tests/dry-run, and Node.js tests/dry-run.
+  Its PR performance gate compares timing, output hashes, and allocation metrics
+  against `perf-00-baseline`, using the current harness with unchanged tagged engine sources.
 
 ## Security and registry configuration
 

@@ -7,18 +7,32 @@ the same toolchain and machine.
 
 ## Reproduce
 
-The project performance baseline is the immutable Git tag
-`perf-00-baseline`, which currently resolves to
-`5824b0119ac7b960071f7e00f7c23257ac61dd33`. Use this tag when judging
-whether the completed performance project regressed runtime behavior.
+The comparison reference is the `perf-00-baseline` tag. Build its engine with
+the current benchmark harness, keeping the tagged engine sources unchanged:
 
-The historical clean-tree final acceptance capture is commit
-`e302ae3dd19727870a5b3c99b575dccb890ef80b`, captured 2026-10-07 UTC.
-The production squash commit
-`d11147582513b10e8c8d45b319a35dc2a3ab5fe8` has byte-identical core engine,
-generated script data, static metadata tables, and checked-in 91,883-byte Wasm
-relative to that accepted state. The selected engine checkpoint remains
-`f79e14e4d49aa978ba866b9688da3a70e41bc6a2`.
+```sh
+CPU=$(python3 -c 'import os; print(min(os.sched_getaffinity(0)))')
+tag_tree=$(mktemp -d /tmp/inditrans-baseline.XXXXXX)
+git archive perf-00-baseline native/src | tar -x -C "$tag_tree"
+mkdir -p out/reassessment
+for bench in benchmark short_call; do
+  clang++ -std=c++23 -O3 -DNDEBUG -I "$tag_tree/native/src" \
+    "$tag_tree/native/src/inditrans.cpp" "native/bench/$bench.cpp" -o "$tag_tree/$bench"
+  python3 tool/repeat_short_bench.py --binary "$tag_tree/$bench" --runs 5 --cpu "$CPU" \
+    --raw-output "out/reassessment/tag-$bench-runs.csv" > "out/reassessment/tag-$bench.csv"
+done
+make bench-save BENCH_BASELINE=out/reassessment/current BENCH_RUNS=5 BENCH_CPU="$CPU"
+```
+
+Use the same compiler, standard library, machine, and CPU for both engines.
+The latest local reassessment and its limitations are recorded in
+[the reassessment report](performance-reassessment.md). The following environment
+and result tables describe the earlier compact-static acceptance capture at commit
+`e302ae3dd19727870a5b3c99b575dccb890ef80b` on
+`experiment/compact-static-script-data`, captured 2026-10-07 UTC. The selected engine checkpoint is `f79e14e4d49aa978ba866b9688da3a70e41bc6a2`.
+The baseline includes the compile-time portability fixes and explicit writer
+pointer offset introduced during acceptance; all five output hashes agree with
+the prior capture and the 91,883-byte release Wasm is unchanged.
 
 | Environment | Recorded value |
 |---|---|
@@ -74,21 +88,19 @@ For engineering decisions, investigate repeatable whole-call regressions above
 approximately 3% on representative hot workloads and repeatable short-call p95
 regressions above approximately 5%, after accounting for noise. These are
 investigation thresholds, not absolute cross-host CI timing requirements. The
-pull-request timing job compares against the clean selected-engine baseline
-(`dfe5488`) on a shared hosted runner and uses its existing 10% threshold;
+pull-request timing job compares against `perf-00-baseline` on a shared hosted
+runner and uses its existing 10% threshold;
 hashes, case completeness, and allocation checks are also enforced. It applies
-the current compile-time-only portability helpers to the baseline source so
-older baseline code can build with current runner compilers without changing
-the runtime reference.
+the current benchmark harness to the tag without replacing engine headers.
 Metadata construction must remain allocation-free. Avoid large increases in
 allocation frequency or transient bytes without explicit justification, and
 do not regress streaming output toward the former roughly 25 MiB temporary
-buffer behavior. The selected 89.73 KiB Wasm is the accepted reference; future
-size growth requires justification, not a return to the superseded +5% limit
-against the old runtime-built Wasm. Compile-time transformation cost is an
+buffer behavior. Measure Wasm size and execution time together: direct immutable
+tables require more binary storage than the tag's runtime-built metadata.
+Size reductions must preserve hot-path performance. Compile-time transformation cost is an
 accepted trade-off, though substantial further increases should be justified.
 
-## Final baseline results
+## Historical compact-static acceptance results
 
 Throughput cells below show the median of the ten case medians at each scale;
 see the raw CSV for every case, actual input size, p95, returned size, and
@@ -161,7 +173,7 @@ these artifacts were not rebuilt under the baseline session's toolchain:
 | Compact reference `c3d5480` | 98,399 |
 | Selected engine `f79e14e` | 91,883 |
 
-## Selected architecture and trade-offs
+## Historical architecture and trade-offs
 
 The selected implementation is the direct-access compact static design at
 engine commit `f79e14e4d49aa978ba866b9688da3a70e41bc6a2`.
@@ -193,7 +205,7 @@ Treat these measurements as historical architecture acceptance evidence, not
 as a replacement for a fresh baseline on the machine and toolchain used for a
 change. Do not compare native timing claims with browser/Wasm runtime claims.
 
-## Platform evidence
+## Historical platform evidence
 
 All acceptance jobs passed on final commit `e302ae3` (PR run 37560001579): Linux
 native tests and ASan/LSan/UBSan, Flutter analysis/tests, Emscripten 6.0.10

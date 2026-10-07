@@ -284,20 +284,33 @@ class StaticScripts:
                 graph_tokens.append(folded[index])
             readers.append(f"/* ScriptId::{script_id_names[index]} */ {{{normal_id}, {folded_id}, 0}}")
 
-        # Pool identical output strings. WriterChar stores UTF-8 byte offsets,
-        # so the generated C++ table is independent of source-file encoding.
+        # Reuse substrings and overlapping UTF-8 suffixes before assigning offsets.
+        # This changes immutable bytes only; WriterChar retains direct offsets.
         text_pool: list[str] = []
         text_refs: dict[str, Range] = {}
-        pool_bytes = 0
+        all_text = {
+            value
+            for script in self.scripts
+            for kind in CLASSES
+            for value in self.chars(script, kind)
+        }
+        pool = b""
+        for value in sorted(all_text, key=lambda text: (-len(utf8_key(text)), utf8_key(text))):
+            encoded = utf8_key(value)
+            offset = pool.find(encoded)
+            if offset < 0:
+                overlap = min(len(pool), len(encoded))
+                while overlap and pool[-overlap:] != encoded[:overlap]:
+                    overlap -= 1
+                offset = len(pool) - overlap
+                tail = encoded[overlap:]
+                if tail:
+                    text_pool.append(f"    {cpp_u8(tail.decode('utf-8'))}")
+                    pool += tail
+            text_refs[value] = Range(offset, len(encoded))
+        self._check16(len(pool), "writer string pool")
 
         def text_ref(value: str) -> Range:
-            nonlocal pool_bytes
-            if value not in text_refs:
-                encoded = utf8_key(value)
-                text_refs[value] = Range(pool_bytes, len(encoded))
-                text_pool.append(f"    {cpp_u8(value)}")
-                pool_bytes += len(encoded)
-                self._check16(pool_bytes, "writer string pool")
             return text_refs[value]
 
         char_entries: list[str] = []

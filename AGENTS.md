@@ -74,6 +74,10 @@ make bench-compare BENCH_BASELINE=out/bench-before-pr42
 ```
 The `out/bench-baseline-*.csv` files should not be committed; they are local measurement artefacts.
 
+The PR performance gate compares against `perf-00-baseline` with the current
+benchmark harness and unchanged tagged engine sources. Use that tag for
+architecture comparisons; see `docs/performance-reassessment.md` for local evidence.
+
 For cumulative tuning progress, use numbered snapshots under `out/perf/`:
 ```bash
 make perf-snapshot PERF_NAME=00-baseline

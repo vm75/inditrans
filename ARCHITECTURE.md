@@ -18,7 +18,7 @@ native/src/inditrans.cpp
 
 The engine performs no runtime I/O. Reusable script metadata, readers, writers,
 equivalents, and Tamil prefixes are immutable compiled data. A transliteration
-still allocates a bounded input token window and its result storage. The C API
+uses a fixed input token window on the stack and allocates result storage. The C API
 writes to a growable UTF-8 buffer; the C++ string API writes directly to its
 returned `std::string`.
 
@@ -80,7 +80,10 @@ pooled dispatch pages reference compact states. Checked capacities select 16-
 or 32-bit trie indices; other fields fail generation/compilation on overflow.
 The Tamil token-key trie retains the generic flat representation.
 
-Writer strings share a UTF-8 pool. Each target's descriptor holds eight
+Writer strings share a UTF-8 pool, including identical substrings and overlapping
+suffixes. The generator assigns offsets; `writerChar` checks every complete
+glyph against the resulting bytes at compile time. Lookup still uses one
+direct offset and length. Each target's descriptor holds eight
 compile-time spans of compact offset/length entries, an empty `Ignore` slot, its script
 type, and Vedic flag. Accent/exclusive-symbol tables and identical class arrays
 are shared.
@@ -102,9 +105,12 @@ Indices use the shared phoneme ordering. An expansion is a checked 16-bit span:
 existing `TokenUnit` field layout. Expansion metadata belongs to the static span,
 rather than an extra-token index inside each token.
 
-`TokenOrString` is a `variant<ScriptToken, string_view>`. Its text branch borrows
-untransliterated input runs, XML tags, and protected regions. `TokenUnitOrString`
-adds the attached diacritics and one-token lookahead used by the writer.
+`TokenOrString` stores a pointer and a word. A null pointer identifies a four-byte
+token payload; otherwise the word is a borrowed text length. It occupies 16 bytes
+on native x86-64 and 8 bytes on Wasm32, without a separate variant discriminator.
+Text borrows untransliterated input runs, XML tags, and protected regions.
+`TokenUnitOrString` remains a variant and adds the attached diacritics and
+one-token lookahead used by the writer.
 
 ## Transliteration pipeline
 
@@ -113,14 +119,21 @@ adds the attached diacritics and one-token lookahead used by the writer.
    on collisions. There are no reader/writer caches or first-use constructors.
 2. `InputReader` chooses explicit, virtual Indic, Roman, or folded Roman policy
    once, then scans bounded UTF-8 input on demand. Matches feed precompiled token
-   sequences into a sliding window; `scanUnrecognized` handles raw text, XML,
-   and protected spans as borrowed views. It evaluates XML options outside the hot match loop.
+   sequences into a fixed 16-entry window. Refills reuse the window after the
+   current sequence is consumed, with no allocation, shifting, or ring arithmetic.
+   The checked four-bit sequence count bounds expansions at 15 tokens; live
+   reader calls require one token of lookahead. `pullUnrecognized` handles raw
+   text, XML, and protected spans as borrowed views. XML options are evaluated
+   outside the hot match loop.
 3. `InputReader::getNext()` groups tokens. Indic attaches marks and accents;
    Tamil applies superscript and pronunciation rules; Latin groups consonants
    with following vowels/virama.
-4. `OutputWriter` looks up target graphemes by token class/index and applies
-   target-specific rules. It writes directly to the selected sink, avoiding an
-   intermediate result copy in the C++ string API.
+4. One dispatch selects an Indic, Tamil, or Latin `OutputWriter` specialization.
+   Each looks up target graphemes by token class/index and applies the existing
+   rules. Both sinks write directly to result storage. Marker filtering copies
+   retained text runs together and checks ASCII before searching the non-ASCII
+   marker string. Roman-to-non-Latin output reserves three input bytes per byte
+   as a growth hint; both sinks can still grow for larger expansions.
 5. The C export releases the result buffer to its caller. The wrapper copies
    the string and calls `releaseBuffer()`.
 
@@ -140,7 +153,8 @@ in [the performance guide](docs/performance.md).
 
 Root/high-fanout nodes use direct tables; continuation-only tables use 64
 slots. Single-child nodes use equality, small fanout uses linear search, and
-larger sparse fanout uses binary search through one shared helper. Two/three-byte
+larger sparse fanout uses binary search. The compiler chooses whether to inline
+the transition helper. Two/three-byte
 prefix accelerators jump to compact trie states. Equivalent 64-slot dispatch
 pages share pooled storage. Up to three unique edges without an intervening
 terminal can be compared together; a truncated or mismatched compressed path

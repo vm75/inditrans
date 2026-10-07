@@ -1,9 +1,10 @@
 # C++23 engine performance project
 
-The performance architecture is complete. The final implementation and
+The original performance milestones are complete. The current implementation and
 reproduction procedure are described in [Architecture](../ARCHITECTURE.md) and
 the [performance guide](performance.md). The original experiment chronology is
-preserved in Git history.
+preserved in Git history. The subsequent [local reassessment](performance-reassessment.md)
+compares against `perf-00-baseline`; it has not been submitted to hosted CI.
 
 ## Milestone status
 
@@ -19,19 +20,19 @@ preserved in Git history.
 | P7 — name resolution and streaming/sink pipeline | Complete | Names resolve statically; input streams through bounded lookahead and output uses sinks. |
 | P8 — final platform and release acceptance | Complete | All hosted acceptance jobs passed on `e302ae3`; the clean-tree five-run baseline and host toolchain are recorded in the [performance guide](performance.md), and the [platform matrix](platform-support.md) records platform evidence. |
 
-The former script-type specialization proposal was not adopted. The selected
-shared matcher and sink pipeline provide the final architecture without
-per-script-pair generated code.
+The reassessment selects one of three writer-type specializations per call,
+with a shared matcher and two output sinks. It generates no per-script-pair code.
+Reader expansions use a fixed stack window and a plain policy function pointer.
 
 ## Accepted trade-offs
 
-- Standalone Wasm is approximately 89.73 KiB. The binary stores direct
+- Standalone Wasm is 89,336 bytes (87.24 KiB), using Emscripten 6.0.10 with
+  `-Oz -flto`. The binary stores direct
   immutable lookup data and avoids runtime metadata construction. Smaller
   static encodings were rejected after repeatable hot-path regressions.
 - Compile-time transformation increases clean compile time and compiler
   memory. This is accepted to keep semantic declarations readable while
   emitting only runtime data.
 
-Neither trade-off is an open optimization target. Revisit the runtime layout
-only to fix a demonstrated correctness/portability issue or with complete
-benchmark evidence.
+Keep layout and artifact changes evidence-driven. Compare repeated native and
+Wasm timings, output hashes, and allocation metrics before retaining a change.
