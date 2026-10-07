@@ -28,7 +28,7 @@ def git(root: Path, *args: str, check: bool = True, capture: bool = False) -> st
 
 def snapshot(root: Path, ref: str, name: str, cpu: str, runs: str) -> None:
     print(f"==> Running snapshot for {name} ({ref})...", flush=True)
-    git(root, "restore", "flutter/assets/inditrans.wasm")
+    git(root, "restore", ".")
     git(root, "checkout", "--detach", ref)
     run(
         ["make", "perf-snapshot", f"PERF_NAME={name}", f"BENCH_RUNS={runs}", f"BENCH_CPU={cpu}", f"PERF_CPU={cpu}"],
@@ -40,7 +40,7 @@ def restore_workspace(
     root: Path, current_commit: str, current_branch: str, stash_commit: str, checkout_started: bool
 ) -> None:
     if checkout_started:
-        git(root, "restore", "flutter/assets/inditrans.wasm")
+        git(root, "restore", ".")
         if current_branch:
             git(root, "switch", current_branch)
         else:
