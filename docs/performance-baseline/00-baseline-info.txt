@@ -1,0 +1,20 @@
+commit_full=dfe5488dd1a38d22373d4efb2d1517d5252ebf65
+commit_short=dfe5488
+branch=experiment/compact-static-script-data
+date_utc=2026-10-07T01:00:17+00:00
+platform=Linux 6.18.40.1-microsoft-standard-WSL2 x86_64
+cpu=Intel(R) Core(TM) Ultra 9 185H
+clang=clang version 23.1.1
+gcc=g++ (GCC) 16.2.1 20260810
+cmake=cmake version 4.4.4
+emscripten_active=emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 6.0.10 (d6c521a7f05449857c76bd99e396895583cf2083)
+emscripten_required=6.0.10
+cxx_standard=c++23
+native_benchmark_flags=-std=c++23 -O3 -DNDEBUG
+wasm_release_flags=-std=c++23 -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG
+native_standard_library=/usr/bin/../lib64/gcc/x86_64-pc-linux-gnu/16/libstdc++.so
+libstdcxx_version=20260810
+available_cpu_affinity=0
+git_state=clean
+bench_runs=5
+bench_cpu=0
