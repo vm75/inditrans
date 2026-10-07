@@ -17,7 +17,7 @@ preserved in Git history.
 | P5 — immutable generated metadata | Complete | Readable typed UTF-8 declarations transform at compile time to immutable lookup tables. |
 | P6 — packed static trie | Complete | Reachable states, direct terminal fields, compressed paths, and dispatch pages are immutable. |
 | P7 — name resolution and streaming/sink pipeline | Complete | Names resolve statically; input streams through bounded lookahead and output uses sinks. |
-| P8 — final platform and release acceptance | Pending evidence | Close the platform matrix and record the clean authoritative baseline before merge. |
+| P8 — final platform and release acceptance | Complete | All hosted acceptance jobs passed on `e302ae3`; the clean-tree five-run baseline and host toolchain are recorded in the [performance guide](performance.md), and the [platform matrix](platform-support.md) records platform evidence. |
 
 The former script-type specialization proposal was not adopted. The selected
 shared matcher and sink pipeline provide the final architecture without

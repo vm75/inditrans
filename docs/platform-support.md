@@ -1,41 +1,39 @@
 # Platform and toolchain support
 
-This matrix combines package-declared platforms with the build paths in the
-repository. A configured CI job is not evidence of acceptance until its run is
-green. Local results below are from the final direct-access engine sources;
-hosted jobs added in this change are awaiting execution.
+This matrix records hosted acceptance for the final compact-static engine on
+commit `e302ae3` (PR run 37560001579). All listed jobs passed. A successful
+cross-build confirms compilation and packaging only; it does not imply a
+runtime test on that platform.
 
 ## Declared toolchain requirements
 
 - Native engine: CMake 3.20 or later and a compiler with C++23 support.
   Repository guidance lists Clang 17+ and MinGW-w64 GCC 13+ for the Windows
-  cross-build. Native CMake explicitly requires C++23.
+  cross-build.
 - WebAssembly: Emscripten 6.0.10, selected with `-std=c++23` in both release
   build paths.
 - Flutter: Android, iOS, Linux, macOS, Windows, and Web are declared in
-  `flutter/pubspec.yaml`. The Dart SDK constraint is `^3.10.8`; the effective
-  minimum is Flutter 3.38.10, which supplies the required Dart SDK and includes
-  the macOS FFI plugin framework fix. CI pins Flutter 3.47.5 / Dart 3.13.4.
-- Node.js: Node 18.3 or later; the release build uses Emscripten 6.0.10.
-- Android uses Android Gradle Plugin 8.11.1, Kotlin Gradle Plugin 2.2.20, Gradle 8.14.3, CMake 3.22.1, and the pinned Flutter 3.47.5 NDK default
-  `28.2.13676358`; CI records this value from Flutter's Gradle extension.
+  `flutter/pubspec.yaml`. CI pins Flutter 3.47.5 / Dart 3.13.4.
+- Node.js: Node 18.3 or later; CI uses Node 24 and Emscripten 6.0.10.
+- Android build: Android Gradle Plugin 8.11.1, Kotlin Gradle Plugin 2.2.20,
+  Gradle 8.14.3, and CMake 3.22.1. Flutter reports NDK 28.2.13676358 as its
+  default; the Flutter plugin's native CMake build resolved NDK 27.0.12077973.
 - Apple plugin podspecs select C++23 and retain their current deployment
   targets (iOS 9.0, macOS 10.11).
 
 ## Acceptance evidence
 
-| Platform/path | Toolchain and C++23 selection | Build | Tests/runtime | Status |
-|---|---|---|---|---|
-| Linux native | Local CMake 4.4.4 + GCC 16.2.1; CMake project selects C++23. Native tests compiled with Clang 23.1.1 and `-std=c++23`. | Release shared library and tests pass. | Native suite and ASan/UBSan suite pass. LSan cannot run in this sandbox because ptrace is restricted. | Locally verified; LSan unverified. |
-| Linux Flutter | Flutter 3.47.5 / Dart 3.13.4; CMake engine library. | Release library builds. | `dart analyze` passes. Flutter test runner cannot bind its local test socket in this sandbox. | Analysis verified; Flutter tests unverified locally. |
-| Windows MSVC | New `windows-2025` job; CMake project requests C++23; MSVC test compile uses `/std:c++latest` because the runner's MSVC rejects `/std:c++23`. | DLL, exported C ABI, Flutter Windows example, and PowerShell standalone/JS Wasm release builds configured in CI. | Native test executable configured in CI; hosted result pending. | Pending CI run. |
-| Windows MinGW | MinGW-w64 GCC 13+ through `tool/cmake/mingw64.cmake`. | Existing CI cross-build and export/dependency checks. | Wine smoke runs only on push. | CI configured; current run not available in this report. |
-| macOS and iOS | New `macos-15` job; Apple Clang, CMake C++23, podspec C++23. | Native engine plus Flutter macOS/iOS examples configured in CI. | Native C++ suite configured; hosted result pending. | Pending CI run. |
-| Android arm64 | New Ubuntu job; Flutter 3.47.5, NDK 28.2.13676358, CMake 3.22.1, engine C++23. | Flutter example APK build configured in CI. | No emulator/device test is configured. | Build result pending; runtime not exercised. |
-| Wasm and Node | Emscripten 6.0.10, `-std=c++23`; Node 25.8.1 locally. | Standalone and JS release outputs rebuild byte-identically to checked-in assets. | Standalone smoke and Node/Jest 47 tests pass. | Locally verified. |
-| Browser Wasm | Chromium stable in new CI browser job; JS single-file artifact from Emscripten 6.0.10. | Browser fixture exercises the shared cases. | Each conversion runs twice; browser process cannot start in this sandbox because Crashpad socket operations are denied. CI result pending. | Pending CI run. |
+| Platform/path | Toolchain and C++23 selection | Build and test evidence | Runtime coverage |
+|---|---|---|---|
+| Linux native | Ubuntu 24.04 hosted GNU 13.3.0 for Flutter's CMake library; local baseline used Clang 23.1.1 and CMake 4.4.4. | C++ tests and ASan/LSan/UBSan passed. | Native tests passed. |
+| Linux Flutter | Flutter 3.47.5 / Dart 3.13.4. | Linux shared library build, `dart analyze`, and Flutter tests passed. | Flutter tests passed. |
+| Windows MSVC | `windows-2025`, Visual Studio 18, MSVC 19.51.36260.0; CMake requests C++23; MSVC test compile uses `/std:c++latest`. | DLL C ABI export checks, native tests, Flutter Windows example, and PowerShell standalone/JS Wasm builds passed. | Native tests passed; Flutter example build verified. |
+| Windows MinGW | Ubuntu 24.04, MinGW-w64 GCC 13.0.0, C++23. | DLL cross-build and export/dependency checks passed. | Cross-build only; Wine smoke is not part of the PR acceptance run. |
+| macOS and iOS | `macos-15`, AppleClang 17.0.0.17000013; CMake and podspecs select C++23. | Native tests and Flutter macOS/iOS example builds passed. | Native tests passed; Flutter examples build verified. |
+| Android arm64 | Ubuntu 24.04, Flutter 3.47.5 / Dart 3.13.4, AGP 8.11.1, Kotlin 2.2.20, Gradle 8.14.3, CMake 3.22.1. Flutter reports default NDK 28.2.13676358; plugin CMake used NDK 27.0.12077973. | Flutter example APK build passed. | No emulator/device test is configured. |
+| Wasm and Node | Emscripten 6.0.10; Node 24 in CI. | Standalone Wasm smoke, 47 Jest tests, and npm package dry-run passed; release artifacts rebuilt. | Node smoke and package tests passed. |
+| Browser Wasm | Chrome 155.0.8059.39; JS single-file artifact from Emscripten 6.0.10. | Shared browser fixture passed 47 conversions repeated twice, including output release. | Browser execution passed. |
 
-The CI workflows are the source of the tested hosted versions. Record the
-actual runner image, compiler, CMake, Flutter, and NDK versions from successful
-job logs when closing the acceptance task. Do not infer runtime validation from
-a cross-build.
+The Android build emitted a notice that newer Android Gradle Plugin and Kotlin
+versions will be required by a future Flutter release; the pinned toolchain
+passed this acceptance run. Android app runtime behavior was not exercised.

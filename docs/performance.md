@@ -8,10 +8,11 @@ the same toolchain and machine.
 ## Reproduce
 
 The authoritative clean-tree baseline is commit
-`d17280a207e008c5a4f5ace6705424c01f8c20b4` on
+`e302ae3dd19727870a5b3c99b575dccb890ef80b` on
 `experiment/compact-static-script-data`, captured 2026-10-07 UTC. The selected engine checkpoint is `f79e14e4d49aa978ba866b9688da3a70e41bc6a2`.
-The baseline includes compile-time portability fixes after that checkpoint; the
-runtime lookup and transliteration path remain unchanged.
+The baseline includes the compile-time portability fixes and explicit writer
+pointer offset introduced during acceptance; all five output hashes agree with
+the prior capture and the 91,883-byte release Wasm is unchanged.
 
 | Environment | Recorded value |
 |---|---|
@@ -27,7 +28,7 @@ runtime lookup and transliteration path remain unchanged.
 | Environment | WSL2; Linux/glibc allocator probe; timing results are host-specific |
 
 Detailed CSV captures are local build artifacts under ignored
-`out/perf/03-final-acceptance-*`; raw performance files are intentionally not
+`out/perf/04-final-acceptance-*`; raw performance files are intentionally not
 tracked. The full throughput capture contains all 30 case/size cells and 150
 raw rows with hashes; all five runs agree for each cell. The short-call capture has all ten
 cases across five runs with stable hashes. Cold output hashes also match the
@@ -89,34 +90,34 @@ checksum.
 
 | Input scale | Median ns/call | Median sample p95 ns |
 |---|---:|---:|
-| Short | 1,191 | 1,617 |
-| Approximately 4 KiB | 45,872 | 60,046 |
-| Approximately 1 MiB | 11,812,250 | 13,575,010 |
+| Short | 1,175 | 1,867 |
+| Approximately 4 KiB | 48,276 | 63,773 |
+| Approximately 1 MiB | 12,425,950 | 14,503,860 |
 
 Short-call p50/p95 are nanoseconds and include returned-string destruction.
 
 | Case | p50 ns | p95 ns |
 |---|---:|---:|
-| indic-to-indic | 1,239 | 1,648 |
-| tamil-output | 1,430 | 2,109 |
-| latin-input | 1,153 | 1,344 |
-| virtual-indic-to-latin | 1,109 | 1,193 |
-| virtual-indic-to-indic | 1,111 | 1,197 |
-| virtual-indic-to-tamil | 1,379 | 1,709 |
-| latin-output | 1,134 | 1,457 |
-| expansion-heavy | 239 | 284 |
-| protected-spans | 417 | 447 |
-| mixed-protected-spans | 983 | 1,124 |
+| indic-to-indic | 1,379 | 1,793 |
+| tamil-output | 1,693 | 2,134 |
+| latin-input | 1,431 | 1,940 |
+| virtual-indic-to-latin | 1,182 | 1,469 |
+| virtual-indic-to-indic | 1,242 | 1,605 |
+| virtual-indic-to-tamil | 1,389 | 1,597 |
+| latin-output | 1,226 | 1,629 |
+| expansion-heavy | 271 | 321 |
+| protected-spans | 458 | 503 |
+| mixed-protected-spans | 1,064 | 1,358 |
 
 Cold values are first-call p50/p95 in nanoseconds from 501 fresh processes per
 path; process launch is excluded.
 
 | Path | p50 ns | p95 ns |
 |---|---:|---:|
-| Devanagari → Telugu | 10,227 | 13,676 |
-| ISO → Devanagari | 10,112 | 14,142 |
-| Devanagari → Tamil | 12,083 | 17,632 |
-| Indic → ISO | 9,885 | 12,381 |
+| Devanagari → Telugu | 9,373 | 12,787 |
+| ISO → Devanagari | 8,957 | 11,257 |
+| Devanagari → Tamil | 10,843 | 13,953 |
+| Indic → ISO | 9,325 | 12,475 |
 
 Cold and warm allocation results match for every workload. Values are allocator
 events, requested bytes, peak requested-live bytes, and retained live bytes.
@@ -135,11 +136,11 @@ events, requested bytes, peak requested-live bytes, and retained live bytes.
 | Standalone Wasm | 91,883 (89.73 KiB) |
 | Wasm code section | 27,435 |
 | Wasm data section | 64,057 |
-| Standalone Wasm gzip (`gzip -n`) | 38,516 |
+| Standalone Wasm gzip (`gzip -n`, gzip 1.15) | 38,375 |
 | JavaScript single-file distribution | 123,155 |
-| JavaScript single-file gzip (`gzip -n`) | 45,584 |
+| JavaScript single-file gzip (`gzip -n`, gzip 1.15) | 44,853 |
 | Native Clang release shared library | 198,600 |
-| Clean Clang CMake release build | 8.005 s; peak child RSS 319,572 KiB |
+| Clean Clang CMake release build | 8.318 s; peak child RSS 318,764 KiB |
 
 The compiler measurement is one clean release build on this host, not a
 portable timing target. The Wasm code and data sizes are section payload sizes.
@@ -188,12 +189,12 @@ change. Do not compare native timing claims with browser/Wasm runtime claims.
 
 ## Platform evidence
 
-The acceptance workflow includes Linux native tests and ASan/LSan/UBSan,
-Flutter analysis/tests, Emscripten 6.0.10 standalone and JavaScript Wasm builds,
-Node tests, MinGW cross-build/export checks, MSVC native and C ABI checks,
-Windows PowerShell Wasm builds, Apple Clang native tests plus Flutter macOS/iOS
-builds, an Android arm64 Flutter build, and a Chromium browser fixture. The
-browser fixture exercises shared cases, repeated calls, and output release.
-Configured jobs are not proof of acceptance until their hosted runs pass; see
-the current per-platform results in [`platform-support.md`](platform-support.md).
-Android runtime remains unexercised unless a device/emulator test is added.
+All acceptance jobs passed on final commit `e302ae3` (PR run 37560001579): Linux
+native tests and ASan/LSan/UBSan, Flutter analysis/tests, Emscripten 6.0.10
+standalone and JavaScript Wasm builds, Node tests, MinGW cross-build/export
+checks, MSVC native and C ABI checks, Windows PowerShell Wasm builds, Apple
+Clang native tests plus Flutter macOS/iOS builds, Android arm64 Flutter build,
+and Chromium browser tests. The browser fixture exercises shared cases,
+repeated calls, and output release. See
+[`platform-support.md`](platform-support.md) for toolchain details; Android
+runtime remains unexercised because CI does not run a device/emulator test.
