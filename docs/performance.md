@@ -67,8 +67,12 @@ For engineering decisions, investigate repeatable whole-call regressions above
 approximately 3% on representative hot workloads and repeatable short-call p95
 regressions above approximately 5%, after accounting for noise. These are
 investigation thresholds, not absolute cross-host CI timing requirements. The
-pull-request timing job uses its existing 10% threshold on a shared hosted
-runner; hashes, case completeness, and allocation checks are also enforced.
+pull-request timing job compares against the clean selected-engine baseline
+(`dfe5488`) on a shared hosted runner and uses its existing 10% threshold;
+hashes, case completeness, and allocation checks are also enforced. It applies
+the current compile-time-only portability helpers to the baseline source so
+older baseline code can build with current runner compilers without changing
+the runtime reference.
 Metadata construction must remain allocation-free. Avoid large increases in
 allocation frequency or transient bytes without explicit justification, and
 do not regress streaming output toward the former roughly 25 MiB temporary
