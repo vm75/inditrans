@@ -6,12 +6,12 @@
 #include <string_view>
 
 constexpr std::array<std::string_view, 1> WriteOnlyScripts { "readablelatin" };
-auto isWriteOnlyScript = [](std::string_view script) noexcept {
+inline constexpr auto isWriteOnlyScript = [](std::string_view script) noexcept {
   return std::find(WriteOnlyScripts.begin(), WriteOnlyScripts.end(), script) != WriteOnlyScripts.end();
 };
 
 constexpr std::array<std::string_view, 2> CaseInsensitiveScripts { "iast", "iso" };
-auto isCaseInsensitiveScripts = [](std::string_view script) noexcept {
+inline constexpr auto isCaseInsensitiveScripts = [](std::string_view script) noexcept {
   return std::find(CaseInsensitiveScripts.begin(), CaseInsensitiveScripts.end(), script)
       != CaseInsensitiveScripts.end();
 };

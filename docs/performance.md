@@ -8,7 +8,7 @@ the same toolchain and machine.
 ## Reproduce
 
 The authoritative clean-tree baseline is commit
-`dfe5488dd1a38d22373d4efb2d1517d5252ebf65` on
+`8c5400d6de9b20a2288b44e954d7c4647fae89b6` on
 `experiment/compact-static-script-data`, captured 2026-10-07 UTC. The selected
 engine checkpoint is `f79e14e4d49aa978ba866b9688da3a70e41bc6a2`; the baseline
 commit changes documentation, CI, and build/test tooling after that engine
@@ -89,34 +89,34 @@ checksum.
 
 | Input scale | Median ns/call | Median sample p95 ns |
 |---|---:|---:|
-| Short | 1,192 | 1,681 |
-| Approximately 4 KiB | 47,973 | 69,814 |
-| Approximately 1 MiB | 12,501,250 | 14,578,750 |
+| Short | 1,294 | 1,800 |
+| Approximately 4 KiB | 50,426 | 68,827 |
+| Approximately 1 MiB | 12,980,420 | 14,618,180 |
 
 Short-call p50/p95 are nanoseconds and include returned-string destruction.
 
 | Case | p50 ns | p95 ns |
 |---|---:|---:|
-| indic-to-indic | 1,160 | 1,644 |
-| tamil-output | 1,559 | 2,900 |
-| latin-input | 1,326 | 1,728 |
-| virtual-indic-to-latin | 1,355 | 1,725 |
-| virtual-indic-to-indic | 1,206 | 1,574 |
-| virtual-indic-to-tamil | 1,551 | 1,899 |
-| latin-output | 1,224 | 1,496 |
-| expansion-heavy | 254 | 315 |
-| protected-spans | 429 | 470 |
-| mixed-protected-spans | 1,041 | 1,214 |
+| indic-to-indic | 1,239 | 1,351 |
+| tamil-output | 1,444 | 1,815 |
+| latin-input | 1,165 | 1,296 |
+| virtual-indic-to-latin | 1,114 | 1,536 |
+| virtual-indic-to-indic | 1,295 | 1,530 |
+| virtual-indic-to-tamil | 1,485 | 1,903 |
+| latin-output | 1,230 | 1,495 |
+| expansion-heavy | 271 | 460 |
+| protected-spans | 447 | 520 |
+| mixed-protected-spans | 1,143 | 1,421 |
 
 Cold values are first-call p50/p95 in nanoseconds from 501 fresh processes per
 path; process launch is excluded.
 
 | Path | p50 ns | p95 ns |
 |---|---:|---:|
-| Devanagari → Telugu | 9,011 | 13,135 |
-| ISO → Devanagari | 9,220 | 13,508 |
-| Devanagari → Tamil | 10,740 | 15,874 |
-| Indic → ISO | 8,960 | 12,682 |
+| Devanagari → Telugu | 10,331 | 17,222 |
+| ISO → Devanagari | 9,629 | 14,129 |
+| Devanagari → Tamil | 11,348 | 15,948 |
+| Indic → ISO | 9,870 | 13,879 |
 
 Cold and warm allocation results match for every workload. Values are allocator
 events, requested bytes, peak requested-live bytes, and retained live bytes.
@@ -139,7 +139,7 @@ events, requested bytes, peak requested-live bytes, and retained live bytes.
 | JavaScript single-file distribution | 123,155 |
 | JavaScript single-file gzip (`gzip -n`) | 45,584 |
 | Native Clang release shared library | 198,600 |
-| Clean Clang CMake release build | 7.652 s; peak child RSS 270,484 KiB |
+| Clean Clang CMake release build | 8.005 s; peak child RSS 319,572 KiB |
 
 The compiler measurement is one clean release build on this host, not a
 portable timing target. The Wasm code and data sizes are section payload sizes.
