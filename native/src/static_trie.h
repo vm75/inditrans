@@ -11,6 +11,8 @@
 
 namespace inditrans::static_data {
 
+inline constexpr std::array<uint8_t, 1024> emptyTriplePages {};
+
 template <size_t Capacity> using SmallestIndex = std::conditional_t<(Capacity <= 65535), uint16_t, uint32_t>;
 
 template <typename Key> struct TrieEntry {
@@ -52,7 +54,7 @@ template <typename Key, typename Index> struct TrieView {
   constexpr Index next(Index state, Key key) const noexcept {
     const auto& node = nodes[state];
     if constexpr (std::is_same_v<Key, uint8_t>) {
-      if (node.dense != 65535) {
+      if (node.dense != 65535 && !(node.count >> 14)) {
         if (node.dense & 0x8000)
           return (key & 0xc0) == 0x80 ? Index(dense[(node.dense & 0x7fff) + (key & 0x3f)] & ~leafBit) : 0;
         return Index(dense[node.dense + key] & ~leafBit);
@@ -157,7 +159,7 @@ template <typename Key, typename Index> struct TrieView {
           if (third >= 'A' && third <= 'Z')
             third += 'a' - 'A';
         }
-        const auto path = paths[state];
+        const auto path = paths[node.dense];
         if ((uint32_t(first) | (uint32_t(second) << 8) | (uint32_t(third) << 16)) != path.bytes)
           break;
         state = path.child;
@@ -174,19 +176,19 @@ template <typename Key, typename Index> struct TrieView {
   }
 };
 
-template <typename Key, typename Index, size_t Nodes, size_t DenseSlots, size_t PrefixTables, size_t TripleTables>
+template <typename Key, typename Index, size_t Nodes, size_t DenseSlots, size_t PrefixTables, size_t TripleTables, size_t PathSlots>
 struct FlatTrie {
   std::array<FlatNode<Index>, Nodes> nodes { };
   std::array<FlatEdge<Key, Index>, Nodes - 1> edges { };
   std::array<Index, DenseSlots> dense { };
   std::array<uint8_t, std::is_same_v<Key, uint8_t> ? 64 : 0> prefixPages { };
   std::array<Index, PrefixTables * 64> prefixes { };
-  std::array<uint8_t, std::is_same_v<Key, uint8_t> ? 1024 : 0> triplePages { };
+  std::array<uint8_t, TripleTables ? 1024 : 0> triplePages { };
   std::array<Index, TripleTables * 64> triples { };
-  std::array<FlatPath<Index>, std::is_same_v<Key, uint8_t> ? Nodes : 0> paths { };
+  std::array<FlatPath<Index>, PathSlots> paths { };
 
   constexpr TrieView<Key, Index> view() const noexcept {
-    return { nodes.data(), edges.data(), dense.data(), prefixPages.data(), prefixes.data(), triplePages.data(),
+    return { nodes.data(), edges.data(), dense.data(), prefixPages.data(), prefixes.data(), TripleTables ? triplePages.data() : emptyTriplePages.data(),
       triples.data(), paths.data() };
   }
 };
@@ -245,10 +247,16 @@ template <auto const& Entries> consteval auto trieScratch() {
         ++common;
     }
     for (size_t j = common; j < key.size(); ++j) {
-      nodes[used] = { path[j], static_cast<Key>(key[j]), 0, 0 };
-      ++nodes[path[j]].count;
-      if constexpr (std::is_same_v<Key, uint8_t>)
-        nodes[path[j]].continuationOnly &= (static_cast<uint8_t>(key[j]) & 0xc0) == 0x80;
+      nodes[used] = { path[j], static_cast<Key>(key[j]), 0, 0, true };
+      auto& parent = nodes[path[j]];
+      if constexpr (std::is_same_v<Key, uint8_t>) {
+        const bool continuation = (static_cast<uint8_t>(key[j]) & 0xc0) == 0x80;
+        if (parent.count == 0)
+          parent.continuationOnly = continuation;
+        else
+          parent.continuationOnly &= continuation;
+      }
+      ++parent.count;
       path[j + 1] = used++;
     }
     nodes[path[key.size()]].value = Entries[i].value;
@@ -319,7 +327,20 @@ consteval auto makeStaticTrie() {
   static_assert(denseCount < 32768);
   static_assert(tripleCount < 255);
   const auto& scratch = trieBuildNodes<Entries>;
-  FlatTrie<Key, Index, shape.nodes, denseCount, prefixCount, tripleCount> result { };
+  constexpr auto pathCount = []() consteval {
+    if constexpr (!std::is_same_v<Key, uint8_t>)
+      return size_t(0);
+    else {
+      const auto& scratch = trieBuildNodes<Entries>;
+      size_t count = 0;
+      for (size_t i = 1; i < scratch.size(); ++i)
+        if (scratch[i].value == 0 && scratch[i].count == 1 && scratch[scratch[i].parent].count == 1)
+          ++count;
+      return count;
+    }
+  }();
+  static_assert(pathCount < 65535);
+  FlatTrie<Key, Index, shape.nodes, denseCount, prefixCount, tripleCount, pathCount> result { };
   std::array<size_t, shape.nodes> cursor { };
   size_t offset = 0;
   size_t dense = 0;
@@ -381,6 +402,7 @@ consteval auto makeStaticTrie() {
           result.triples[(page - 1) * 64 + (edge.key & 0x3f)] = dispatch(edge.child);
       }
     }
+    size_t pathIndex = 0;
     for (size_t i = 0; i < shape.nodes; ++i) {
       auto& node = result.nodes[i];
       if (node.count != 1)
@@ -400,9 +422,12 @@ consteval auto makeStaticTrie() {
         target = third.child;
         length = 3;
       }
-      result.paths[i] = { bytes, dispatch(target) };
+      node.dense = static_cast<uint16_t>(pathIndex);
+      result.paths[pathIndex++] = { bytes, dispatch(target) };
       node.count = uint16_t((length << 14) | 1);
     }
+    if (pathIndex != pathCount)
+      std::abort();
   }
   return result;
 }

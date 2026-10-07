@@ -238,6 +238,17 @@ class StaticScripts:
             matched = [f"ScriptId::{script_id_names[i]}" for i in range(len(script_id_names)) if (mask & (1 << i))]
             return f"scriptMask({', '.join(matched)})"
 
+        def semantic_sequence(identifier: int) -> str:
+            if identifier == 0:
+                return "seq()"
+            offset = identifier & ((1 << SEQUENCE_OFFSET_BITS) - 1)
+            cursor = 1
+            for sequence in self.sequences[1:]:
+                if cursor == offset:
+                    return "seq(" + ", ".join(token.cpp_semantic for token in sequence) + ")"
+                cursor += len(sequence)
+            raise ValueError(f"Missing canonical sequence {identifier}")
+
         terminals: list[str] = []
         alternatives: list[str] = []
         union: dict[str, int] = {}
@@ -246,10 +257,10 @@ class StaticScripts:
             primary = variants[0] if variants else (0, 0)
             begin = len(alternatives)
             for sequence, mask in variants[1:]:
-                alternatives.append(f"/* {cpp_u8(spelling)} */ {{{format_mask(mask)}, {sequence}}}")
+                alternatives.append(f"/* {cpp_u8(spelling)} */ {{{format_mask(mask)}, sequenceId({semantic_sequence(sequence)})}}")
             unrestricted = self._sequence(indic[spelling]) if spelling in indic else 0
             alt_range = f"{{{begin}, {max(len(variants) - 1, 0)}}}"
-            terminals.append(f"/* {cpp_u8(spelling)} */ {{{format_mask(primary[1])}, {primary[0]}, {unrestricted}, {alt_range}}}")
+            terminals.append(f"{{{cpp_u8(spelling)}, {{{format_mask(primary[1])}, sequenceId({semantic_sequence(primary[0])}), sequenceId({semantic_sequence(unrestricted)}), {alt_range}}}}}")
             union[spelling] = len(terminals)
         self._check16(len(terminals), "terminal IDs")
         self._check16(len(alternatives), "source variants")
@@ -303,7 +314,7 @@ class StaticScripts:
                         ref = text_ref(value)
                         if ref.count > 255:
                             raise ValueError("writer char length exceeds uint8_t")
-                        char_entries.append(f"/* {cpp_u8(value)} */ {{{ref.begin}, {ref.count}}}")
+                        char_entries.append(f"writerChar<writerText>({cpp_u8(value)}, {ref.begin})")
                     self._check16(len(char_entries), "writer entries")
                     ranges[array_key] = Range(begin, len(array))
                 item = ranges[array_key]
@@ -340,7 +351,25 @@ class StaticScripts:
             "inline constexpr auto sequencePool = makeSequencePool(\n" + ",\n".join(seq_entries) + "\n);",
             "inline constexpr auto sequenceTokens = sequencePool.tokens;\n",
         ]
-        self._array(output, "SourceTerminal", "sourceTerminals", terminals)
+        output += [
+            "inline constexpr auto canonicalSequences = sequenceLookup(sequencePool, sequenceOffsetBits);",
+            "",
+            "template <size_t N> consteval uint16_t sequenceId(const TokenSequence<N>& sequence) {",
+            "    if constexpr (N == 0) return 0;",
+            "    if constexpr (N == 1)",
+            "        if (const auto id = canonicalSequences.lookup(sequence[0])) return id;",
+            "    for (const auto range : sequencePool.ranges) {",
+            "        if (range.count != N) continue;",
+            "        bool same = true;",
+            "        for (size_t i = 0; i < N; ++i)",
+            "            if (sequenceTokens[range.begin + i] != sequence[i]) { same = false; break; }",
+            "        if (same) return uint16_t(range.begin | (N << sequenceOffsetBits));",
+            "    }",
+            "    std::abort();",
+            "}\n",
+        ]
+        self._array(output, "SourceEntry", "sourceMappings", terminals)
+        output.append("inline constexpr auto sourceTerminals = sourcePayloads(sourceMappings);\n")
         self._array(output, "SourceVariant", "sourceAlternatives", alternatives)
 
         capacity = max(1, *(1 + sum(len(utf8_key(key)) for key in graph) for graph in graphs))
@@ -348,8 +377,7 @@ class StaticScripts:
         for index, graph in enumerate(graphs):
             graph_keys = sorted(graph, key=utf8_key)
             if index == 0:
-                entries = [f"{{{cpp_u8(key)}, {graph[key]}}}" for key in graph_keys]
-                self._array(output, "ReaderEntry", f"readerEntries{index}", entries)
+                output.append("inline constexpr auto readerEntries0 = sourceEntries(sourceMappings);\n")
             else:
                 tokens_map = graph_tokens[index]
                 mapping_entries = []
@@ -363,8 +391,9 @@ class StaticScripts:
                 self._array(output, "SemanticMapping", f"romanMappings{index}", mapping_entries)
                 output.append(f"inline constexpr std::array<ReaderEntry, {len(graph_keys)}> readerEntries{index} = deriveReaderEntries(sequenceTokens, sequenceOffsetBits, romanMappings{index});\n")
             output.append(f"inline constexpr auto readerTrie{index} = makeStaticTrie<readerEntries{index}, ReaderIndex>();\n")
-        self._array(output, "TrieView<uint8_t, ReaderIndex>", "readerTries",
-                    [f"readerTrie{i}.view()" for i in range(len(graphs))])
+            output.append(f"inline constexpr auto packedReaderTrie{index} = packTrie<readerTrie{index}>();\n")
+        self._array(output, "PackedTrieView<ReaderIndex>", "readerTries",
+                    [f"packedReaderTrie{i}.view()" for i in range(len(graphs))])
 
         tamil_prefixes = [f"    Utf8Key({cpp_u8(p)})," for p in self.constants["TamilPrefixes"]]
         output += [

@@ -18,7 +18,9 @@ native/src/inditrans.cpp
 
 The engine performs no runtime I/O. Reusable script metadata, readers, writers,
 equivalents, and Tamil prefixes are immutable compiled data. A transliteration
-still allocates its input token vector and output buffer.
+still allocates a bounded input token window and its result storage. The C API
+writes to a growable UTF-8 buffer; the C++ string API writes directly to its
+returned `std::string`.
 
 ## Components
 
@@ -26,10 +28,10 @@ still allocates its input token vector and output buffer.
 |---|---|---|
 | C export layer | `native/src/exports.h`, `inditrans.cpp` | `transliterate`, `isScriptSupported`, `releaseBuffer` |
 | Generated data | `native/src/script_data.h` | Typed dictionaries, pooled text, token expansions, aliases, writer tables |
-| Flat trie | `native/src/static_trie.h` | C++23 `consteval` construction and bounded UTF-8/token-key lookup |
+| Trie builders | `native/src/static_trie.h`, `packed_trie.h` | C++23 `consteval` topology, packing, and bounded byte/token-key lookup |
 | Script descriptors | `native/src/static_script_types.h`, `static_scripts.h` | Static name resolution, source policies, writer views, Tamil prefix state |
-| InputReader | `native/src/inditrans.cpp` | Scan into `vector<TokenOrString>`, then group tokens into `TokenUnit` objects |
-| OutputWriter | `native/src/inditrans.cpp` | Apply output rules and append graphemes to `Utf8StringBuilder` |
+| InputReader | `native/src/inditrans.cpp` | Scan through a bounded `TokenOrString` window and group into `TokenUnit` objects |
+| OutputWriter | `native/src/inditrans.cpp` | Apply output rules and append graphemes to the selected output sink |
 | UTF-8 helpers | `native/src/utf.h` | UTF-8 encoding/decoding and output-buffer ownership |
 | Generator | `tool/generate_headers.py`, `tool/python/static_scripts.py` | Resolve script semantics before C++ compilation |
 | Canonical input | `tool/script_data.json`, `tool/reader_data.json` | Script spellings/aliases/equivalents; accents, exclusive symbols, Tamil prefixes |
@@ -40,7 +42,7 @@ still allocates its input token vector and output buffer.
 ```text
 inditrans.cpp → static_scripts.h → script_data.h → static_script_types.h
                          │                              │
-                         └──────────────────────────────┴→ static_trie.h / type_defs.h
+                         └──────────────────────────────┴→ packed_trie.h → static_trie.h / type_defs.h
 inditrans.cpp → script_constants.h / utf.h / inditrans.h
 ```
 
@@ -64,10 +66,19 @@ including the legacy shallow expansion rules. Collisions, partially matched
 and unresolved targets are recorded in `out/static-lookup-collisions.json`.
 There is no equivalent parser in the runtime engine.
 
-C++ `consteval` builders turn sorted, unique typed entries into exact-sized
-flat arrays. Scratch topology and dictionary entries are not addressed by
-production runtime data. Checked capacities select 16- or 32-bit trie indices;
-other compact fields fail generation/compilation on overflow.
+Readable `SourceEntry` records associate UTF-8 spellings with source masks,
+named token sequences, virtual results, and exceptional variant ranges.
+`sequenceId` resolves canonical sequence boundaries at compile time;
+`writerChar<writerText>` checks literal bytes against pooled offsets. These
+source records, sequence ranges, and canonical lookup tables are compile-time
+inputs and disappear from the production binary.
+
+C++ `consteval` builders form a full scratch byte topology, then retain only
+reachable branching states and accepted prefixes with children. Leaves encode
+terminal IDs directly in dispatch words. Sparse edges, compressed paths, and
+pooled dispatch pages reference compact states. Checked capacities select 16-
+or 32-bit trie indices; other fields fail generation/compilation on overflow.
+The Tamil token-key trie retains the generic flat representation.
 
 Writer strings share a UTF-8 pool. Each target's descriptor holds eight
 compile-time spans of compact offset/length entries, an empty `Ignore` slot, its script
@@ -101,14 +112,15 @@ adds the attached diacritics and one-token lookahead used by the writer.
    aliases use a compile-time hash-slot table with full ASCII-insensitive equality
    on collisions. There are no reader/writer caches or first-use constructors.
 2. `InputReader` chooses explicit, virtual Indic, Roman, or folded Roman policy
-   once, then scans bounded UTF-8 input. Matches append their precompiled token
-   sequences; `scanUnrecognized` handles raw text, XML, and protected spans as
-   borrowed views. It evaluates XML options outside the hot match loop.
+   once, then scans bounded UTF-8 input on demand. Matches feed precompiled token
+   sequences into a sliding window; `scanUnrecognized` handles raw text, XML,
+   and protected spans as borrowed views. It evaluates XML options outside the hot match loop.
 3. `InputReader::getNext()` groups tokens. Indic attaches marks and accents;
    Tamil applies superscript and pronunciation rules; Latin groups consonants
    with following vowels/virama.
 4. `OutputWriter` looks up target graphemes by token class/index and applies
-   target-specific rules. It writes directly to a geometrically growing buffer.
+   target-specific rules. It writes directly to the selected sink, avoiding an
+   intermediate result copy in the C++ string API.
 5. The C export releases the result buffer to its caller. The wrapper copies
    the string and calls `releaseBuffer()`.
 
@@ -117,16 +129,25 @@ adds the attached diacritics and one-token lookahead used by the writer.
 Every explicit non-Roman source and virtual `indic` points to one physical
 UTF-8 trie. Script identity is a source-mask bit, distinct from `ScriptType`.
 Terminals have an explicit primary sequence, rare source variants, and a
-precomputed `indic` sequence. Runtime fields are split into state-indexed arrays
-so the virtual reader need only touch its sequence array.
+precomputed `indic` sequence. Leaves select terminal-indexed fields; branching
+states retain parallel fields indexed by compact state, avoiding a dependent
+node-to-terminal load. The virtual reader touches only its sequence field. Empty alternative offsets
+are canonical zero at compile time; begin/count retain their original widths
+and direct runtime access. Parallel direct fields keep traversal loads
+independent. Keep lookup representation changes evidence-driven and verify
+correctness, runtime performance, memory, and artifact size with the procedures
+in [the performance guide](docs/performance.md).
 
 Root/high-fanout nodes use direct tables; continuation-only tables use 64
 slots. Single-child nodes use equality, small fanout uses linear search, and
-larger sparse fanout uses binary search. Two/three-byte prefix accelerators
-jump to existing trie states. Up to three unique edges without an intervening
-terminal can be compared together, retaining ordinary edges for truncated-input
-fallback. Dispatch and compressed paths mark terminal leaves in the index high
-bit, allowing selection to skip their node/edge metadata.
+larger sparse fanout uses binary search through one shared helper. Two/three-byte
+prefix accelerators jump to compact trie states. Equivalent 64-slot dispatch
+pages share pooled storage. Up to three unique edges without an intervening
+terminal can be compared together; a truncated or mismatched compressed path
+stops while preserving the last accepted match. Bypassed nonterminal states and
+fallback edges are absent. Path payloads are indexed directly by compact state
+so they can load alongside node metadata. The index high bit marks terminal
+leaves, which have no node/edge record.
 
 Explicit-source prefix masks reject entire unavailable subtrees. A subtree
 containing only the requested source can select its primary sequence directly.
@@ -134,7 +155,7 @@ All remaining terminal filtering occurs during longest-prefix traversal: a
 rejected longer spelling cannot erase an accepted shorter match.
 
 Roman scheme meanings overlap, so those schemes retain separate static
-normal/folded dictionaries while using the same flat matcher implementation.
+normal/folded dictionaries while using the same packed matcher implementation.
 ASCII glyph folding follows the original source-name policy independently
 of case-insensitive name/alias resolution (`iso` and `ISO` differ).
 
@@ -148,7 +169,8 @@ is absent from `indic`. Shared spellings retain historical insertion precedence.
 
 ### Tamil prefixes
 
-The six canonical prefix strings are tokenized/grouped by the generator.
+The six canonical prefix strings are emitted by the generator and
+tokenized/grouped by a `consteval` builder using the compiled reader data.
 A static token-key trie replaces the runtime `StatefulTrie` constructor.
 Each reader/writer has only a node ID, optional match flag, and length as state.
 Normalization of Indic consonants to Tamil and legacy miss/terminal-leaf state
@@ -197,13 +219,14 @@ MinGW GCC ≥ 13. Static libgcc/libstdc++ linkage avoids their runtime DLL depen
 - Update accents, exclusive symbols, or Tamil prefixes in `tool/reader_data.json`.
 - Add option metadata to `tool/options.json`, regenerate, and implement its behavior
   in the engine. Regenerate FFI bindings when the export header changes.
-- Change matcher layout in `static_trie.h`; preserve bounded matching and the
-  source policies. Compare native and Wasm performance and size.
+- Change byte matcher layout in `packed_trie.h` and scratch/token-key layout in
+  `static_trie.h`; preserve bounded matching and source policies. Compare native and Wasm performance and size.
 
 ## Related documents
 
 - [Agent guide](AGENTS.md)
-- [Static lookup design and measurements](docs/static-lookup-design.md)
+- [Performance baseline and reproduction](docs/performance.md)
+- [Build and release](docs/release.md)
 - [Flutter usage](flutter/README.md)
 - [Node.js usage](nodejs/README.md)
 - [C exports](native/src/exports.h)

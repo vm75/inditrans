@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev, 'experiment/**']
   pull_request:
-    branches: [main]
+    branches: [main, dev]
 
 permissions:
   contents: read
@@ -111,26 +111,28 @@ jobs:
           echo "BENCH_CPU=$CPU" >> "$GITHUB_ENV"
           echo "Benchmark CPU: $CPU"
 
-      - name: Prepare base engine with current benchmark harness
+      - name: Prepare selected engine baseline with current benchmark harness
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BASE_SHA: dfe5488dd1a38d22373d4efb2d1517d5252ebf65
         run: |
           BASELINE_DIR="$RUNNER_TEMP/inditrans-baseline"
           git worktree add --detach "$BASELINE_DIR" "$BASE_SHA"
           rm -rf "$BASELINE_DIR/native/bench"
           cp -a native/bench "$BASELINE_DIR/native/bench"
+          cp native/src/static_script_types.h "$BASELINE_DIR/native/src/static_script_types.h"
+          cp native/src/static_trie.h "$BASELINE_DIR/native/src/static_trie.h"
           test -f "$BASELINE_DIR/native/src/script_data.h"
           mkdir -p "$GITHUB_WORKSPACE/out"
           echo "BASELINE_DIR=$BASELINE_DIR" >> "$GITHUB_ENV"
 
-      - name: Measure base revision
+      - name: Measure selected engine baseline
         run: |
           cd "$BASELINE_DIR"
           taskset -c "$BENCH_CPU" make -f "$GITHUB_WORKSPACE/Makefile" bench-save \
             USE_CHECKED_IN_SCRIPT_DATA=1 \
             BENCH_BASELINE="$GITHUB_WORKSPACE/out/bench-baseline"
 
-      - name: Compare PR timing against base
+      - name: Compare PR timing against selected engine
         run: |
           taskset -c "$BENCH_CPU" make bench-compare \
             BENCH_BASELINE=out/bench-baseline \
@@ -203,8 +205,11 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          flutter-version: '3.47.5'
           cache: true
+
+      - name: Record Flutter and Dart versions
+        run: flutter --version
 
       - name: Install Flutter dependencies
         run: cd flutter && flutter pub get
@@ -255,8 +260,144 @@ jobs:
       - name: Build and test
         run: cd nodejs && yarn test
 
+      - name: Set up Chrome for browser acceptance
+        uses: browser-actions/setup-chrome@v1
+        id: chrome
+        with:
+          chrome-version: stable
+
+      - name: Run shared browser fixture twice per conversion
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: python3 tool/browser_smoke_test.py --browser "$CHROME_PATH"
+
       - name: Dry-run pack
         run: cd nodejs && npm pack --dry-run
+
+  windows-msvc:
+    name: Windows MSVC and Flutter plugin
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Configure and build C++23 DLL with MSVC
+        run: |
+          cmake -S native/src -B out/native -A x64 -DCMAKE_BUILD_TYPE=Release
+          cmake --build out/native --config Release --parallel
+
+      - name: Verify the Windows DLL C ABI exports
+        shell: pwsh
+        run: |
+          $exports = (dumpbin /nologo /exports out/native/Release/inditrans.dll) -join "`n"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          foreach ($symbol in @("transliterate", "isScriptSupported", "releaseBuffer")) {
+            if ($exports -notmatch "\b$symbol\b") { throw "Missing C ABI export: $symbol" }
+          }
+
+      - name: Build and run native C++ tests with MSVC
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force out | Out-Null
+          $sources = @((Get-ChildItem native/src/*.cpp, native/tests/*.cpp | ForEach-Object { $_.FullName }))
+          cl /nologo /std:c++latest /utf-8 /EHsc /DBOOST_UT_DISABLE_MODULE /I native/src $sources /Fe:out/inditrans_test.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & out/inditrans_test.exe
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.5'
+          cache: true
+
+      - name: Record Flutter and Dart versions
+        run: flutter --version
+
+      - name: Build Windows Flutter example
+        run: |
+          cd flutter/example
+          flutter pub get
+          flutter build windows --release
+
+      - name: Set up Emscripten for PowerShell release scripts
+        uses: emscripten-core/setup-emsdk@v16
+        with:
+          version: '6.0.10'
+
+      - name: Build standalone and JavaScript Wasm with PowerShell
+        shell: pwsh
+        run: |
+          .\tool\build_wasm.ps1 standalone
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          .\tool\build_wasm.ps1 js
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          git diff --exit-code -- flutter/assets/inditrans.wasm js/public/inditrans.js
+
+  apple-flutter:
+    name: Apple Clang and Flutter plugin
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Configure, build, and test C++23 engine
+        run: |
+          cmake -S native/src -B out/native -DCMAKE_BUILD_TYPE=Release
+          cmake --build out/native --parallel 2
+          clang++ -std=c++23 -DBOOST_UT_DISABLE_MODULE -fno-cxx-modules -O0 -g -I native/src native/src/*.cpp native/tests/*.cpp -o out/inditrans_test
+          out/inditrans_test
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.5'
+          cache: true
+
+      - name: Record Flutter and Dart versions
+        run: flutter --version
+
+      - name: Build macOS Flutter example
+        run: |
+          cd flutter/example
+          flutter pub get
+          flutter build macos --release
+
+      - name: Build iOS Flutter example
+        run: |
+          cd flutter/example
+          flutter build ios --release --no-codesign
+
+  android-flutter:
+    name: Android arm64 NDK and Flutter plugin
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.5'
+          cache: true
+
+      - name: Record Android SDK toolchain versions
+        run: |
+          flutter --version
+          grep -n 'val ndkVersion' "$FLUTTER_ROOT/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt"
+
+      - name: Build Android arm64 Flutter example
+        run: |
+          cd flutter/example
+          flutter pub get
+          flutter build apk --release --target-platform android-arm64
 
   windows-dll:
     name: Windows DLL Cross-Build

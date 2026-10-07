@@ -80,7 +80,7 @@ make perf-snapshot PERF_NAME=00-baseline
 make perf-snapshot PERF_NAME=01-buffer-ownership
 make perf-report
 ```
-`perf-snapshot` reuses `bench-save`, captures the four cold-start paths, force-rebuilds the standalone Wasm artifact, and records its raw byte size. `perf-report` compares every discovered numbered snapshot with `00-baseline`, distinguishes cold from warm allocation metrics, and treats `peak heap` as allocator-probe peak requested live bytes rather than process RSS. Use `bench-short-repeat` when making latency claims; a single snapshot timing is indicative only. The earlier step-by-step plan is paused; see `docs/static-lookup-design.md` for the current static lookup work.
+`perf-snapshot` reuses `bench-save`, captures the four cold-start paths, force-rebuilds the standalone Wasm artifact, and records its raw byte size. `perf-report` compares every discovered numbered snapshot with `00-baseline`, distinguishes cold from warm allocation metrics, and treats `peak heap` as allocator-probe peak requested live bytes rather than process RSS. Use `bench-short-repeat` when making latency claims; a single snapshot timing is indicative only. See `docs/performance.md` for the baseline procedure and `docs/performance-project.md` for completed milestones and accepted trade-offs.
 
 ### Flutter (`flutter/` directory)
 - **Get dependencies**: `flutter pub get`
@@ -141,8 +141,9 @@ make perf-report
 - Flutter package usage: [`flutter/README.md`](flutter/README.md)
 - Node.js package usage: [`nodejs/README.md`](nodejs/README.md)
 - Engine internals, pipeline, data structures: [`ARCHITECTURE.md`](ARCHITECTURE.md)
-- Static lookup design and measurements: [`docs/static-lookup-design.md`](docs/static-lookup-design.md)
-- Performance tuning plan and progress: [`docs/performance-tuning-plan.md`](docs/performance-tuning-plan.md)
+- Performance baseline and reproduction: [`docs/performance.md`](docs/performance.md)
+- Performance project completion record: [`docs/performance-project.md`](docs/performance-project.md)
+- Platform and toolchain support: [`docs/platform-support.md`](docs/platform-support.md)
 - Consolidated changelog: [`CHANGELOG.md`](CHANGELOG.md)
 - Release process: [`docs/release.md`](docs/release.md)
 

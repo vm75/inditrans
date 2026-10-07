@@ -28,7 +28,7 @@ ReadableLatin
 
 ## Requirements
 
-- Flutter ≥ 2.11.0 / Dart SDK ^3.10.8
+- Flutter ≥ 3.38.10 / Dart SDK ^3.10.8
 - No additional runtime dependencies for transliteration
 
 ## Installation
