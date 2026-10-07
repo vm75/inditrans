@@ -17,7 +17,7 @@ hosted jobs added in this change are awaiting execution.
   minimum is Flutter 3.38.10, which supplies the required Dart SDK and includes
   the macOS FFI plugin framework fix. CI pins Flutter 3.47.5 / Dart 3.13.4.
 - Node.js: Node 18.3 or later; the release build uses Emscripten 6.0.10.
-- Android uses CMake 3.22.1 and the pinned Flutter 3.47.5 NDK default
+- Android uses Gradle 8.14.3, CMake 3.22.1, and the pinned Flutter 3.47.5 NDK default
   `28.2.13676358`; CI records this value from Flutter's Gradle extension.
 - Apple plugin podspecs select C++23 and retain their current deployment
   targets (iOS 9.0, macOS 10.11).
@@ -28,7 +28,7 @@ hosted jobs added in this change are awaiting execution.
 |---|---|---|---|---|
 | Linux native | Local CMake 4.4.4 + GCC 16.2.1; CMake project selects C++23. Native tests compiled with Clang 23.1.1 and `-std=c++23`. | Release shared library and tests pass. | Native suite and ASan/UBSan suite pass. LSan cannot run in this sandbox because ptrace is restricted. | Locally verified; LSan unverified. |
 | Linux Flutter | Flutter 3.47.5 / Dart 3.13.4; CMake engine library. | Release library builds. | `dart analyze` passes. Flutter test runner cannot bind its local test socket in this sandbox. | Analysis verified; Flutter tests unverified locally. |
-| Windows MSVC | New `windows-2025` job; MSVC `/std:c++23`, CMake project C++23. | DLL, exported C ABI, Flutter Windows example, and PowerShell standalone/JS Wasm release builds configured in CI. | Native test executable configured in CI; hosted result pending. | Pending CI run. |
+| Windows MSVC | New `windows-2025` job; CMake project requests C++23; MSVC test compile uses `/std:c++latest` because the runner's MSVC rejects `/std:c++23`. | DLL, exported C ABI, Flutter Windows example, and PowerShell standalone/JS Wasm release builds configured in CI. | Native test executable configured in CI; hosted result pending. | Pending CI run. |
 | Windows MinGW | MinGW-w64 GCC 13+ through `tool/cmake/mingw64.cmake`. | Existing CI cross-build and export/dependency checks. | Wine smoke runs only on push. | CI configured; current run not available in this report. |
 | macOS and iOS | New `macos-15` job; Apple Clang, CMake C++23, podspec C++23. | Native engine plus Flutter macOS/iOS examples configured in CI. | Native C++ suite configured; hosted result pending. | Pending CI run. |
 | Android arm64 | New Ubuntu job; Flutter 3.47.5, NDK 28.2.13676358, CMake 3.22.1, engine C++23. | Flutter example APK build configured in CI. | No emulator/device test is configured. | Build result pending; runtime not exercised. |

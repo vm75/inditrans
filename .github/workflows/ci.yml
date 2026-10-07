@@ -304,7 +304,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force out | Out-Null
           $sources = @((Get-ChildItem native/src/*.cpp, native/tests/*.cpp | ForEach-Object { $_.FullName }))
-          cl /nologo /std:c++23 /utf-8 /EHsc /DBOOST_UT_DISABLE_MODULE /I native/src $sources /Fe:out/inditrans_test.exe
+          cl /nologo /std:c++latest /utf-8 /EHsc /DBOOST_UT_DISABLE_MODULE /I native/src $sources /Fe:out/inditrans_test.exe
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           & out/inditrans_test.exe
 
