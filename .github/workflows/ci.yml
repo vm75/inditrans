@@ -203,8 +203,11 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          flutter-version: '3.47.5'
           cache: true
+
+      - name: Record Flutter and Dart versions
+        run: flutter --version
 
       - name: Install Flutter dependencies
         run: cd flutter && flutter pub get
@@ -306,8 +309,11 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: '3.47.5'
           cache: true
+
+      - name: Record Flutter and Dart versions
+        run: flutter --version
 
       - name: Build Windows Flutter example
         run: |
@@ -345,8 +351,11 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: '3.47.5'
           cache: true
+
+      - name: Record Flutter and Dart versions
+        run: flutter --version
 
       - name: Build macOS Flutter example
         run: |
@@ -374,8 +383,13 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: '3.47.5'
           cache: true
+
+      - name: Record Android SDK toolchain versions
+        run: |
+          flutter --version
+          grep -n 'val ndkVersion' "$FLUTTER_ROOT/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt"
 
       - name: Build Android arm64 Flutter example
         run: |

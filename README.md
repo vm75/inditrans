@@ -60,7 +60,7 @@ make dll          # cross-compile Windows x86-64 DLL using MinGW-w64
 make validate     # validate version consistency and changelog
 ```
 
-Requires: CMake ≥ 3.20, Clang/LLVM ≥ 17 (or C++23-capable compiler), Emscripten 6.0.10, Flutter ≥ 2.11, Node.js ≥ 18.3 / Yarn.
+Requires: CMake ≥ 3.20, Clang/LLVM ≥ 17 (or C++23-capable compiler), Emscripten 6.0.10, Flutter ≥ 3.38.10 / Dart ≥ 3.10.8, Node.js ≥ 18.3 / Yarn.
 
 See [platform support](docs/platform-support.md) for the declared platform matrix, tested toolchains, and current acceptance evidence.
 

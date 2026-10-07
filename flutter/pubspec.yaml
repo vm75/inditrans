@@ -5,7 +5,7 @@ repository: https://github.com/vm75/inditrans/
 
 environment:
   sdk: ^3.10.8
-  flutter: ">=2.11.0"
+  flutter: ">=3.38.10"
 
 dependencies:
   universal_ffi: ^1.5.1
