@@ -63,6 +63,20 @@ Use `make bench-short-repeat` for five full latency sweeps when assessing small
 short-call changes. Do not treat sub-microsecond variation on shared hosts as
 a stable architectural effect.
 
+For engineering decisions, investigate repeatable whole-call regressions above
+approximately 3% on representative hot workloads and repeatable short-call p95
+regressions above approximately 5%, after accounting for noise. These are
+investigation thresholds, not absolute cross-host CI timing requirements. The
+pull-request timing job uses its existing 10% threshold on a shared hosted
+runner; hashes, case completeness, and allocation checks are also enforced.
+Metadata construction must remain allocation-free. Avoid large increases in
+allocation frequency or transient bytes without explicit justification, and
+do not regress streaming output toward the former roughly 25 MiB temporary
+buffer behavior. The selected 89.73 KiB Wasm is the accepted reference; future
+size growth requires justification, not a return to the superseded +5% limit
+against the old runtime-built Wasm. Compile-time transformation cost is an
+accepted trade-off, though substantial further increases should be justified.
+
 ## Final baseline results
 
 Throughput cells below show the median of the ten case medians at each scale;
@@ -170,11 +184,12 @@ change. Do not compare native timing claims with browser/Wasm runtime claims.
 
 ## Platform evidence
 
-The committed CI workflow runs Linux native tests and ASan/LSan/UBSan, Linux
+The acceptance workflow includes Linux native tests and ASan/LSan/UBSan,
 Flutter analysis/tests, Emscripten 6.0.10 standalone and JavaScript Wasm builds,
-Node tests, and a MinGW x86-64 DLL cross-build/export check. The DLL runtime
-smoke is configured only on push events. CI does not currently establish
-macOS, Android, MSVC, or browser runtime acceptance. Flutter declares Android,
-iOS, Linux, macOS, Windows, and Web plugin platforms; unsupported or unavailable
-runtime checks must be reported as unverified rather than inferred from a
-successful build on another host.
+Node tests, MinGW cross-build/export checks, MSVC native and C ABI checks,
+Windows PowerShell Wasm builds, Apple Clang native tests plus Flutter macOS/iOS
+builds, an Android arm64 Flutter build, and a Chromium browser fixture. The
+browser fixture exercises shared cases, repeated calls, and output release.
+Configured jobs are not proof of acceptance until their hosted runs pass; see
+the current per-platform results in [`platform-support.md`](platform-support.md).
+Android runtime remains unexercised unless a device/emulator test is added.
