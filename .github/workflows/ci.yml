@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [main, dev, 'experiment/**']
+    branches:
+      - main
   pull_request:
-    branches: [main, dev]
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -23,6 +25,9 @@ jobs:
 
       - name: Validate versions, manifests, and changelog
         run: python3 tool/verify_release.py
+
+      - name: Verify Unix and PowerShell Wasm release flags match
+        run: python3 tool/verify_wasm_build_parity.py
 
       - name: Verify generated artifacts are up to date
         run: |

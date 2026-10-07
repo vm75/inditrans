@@ -77,7 +77,7 @@ function build_wasm_standalone([string]$mode) {
     }
     else {
         em++ .\native\src\inditrans.cpp -I .\native\src `
-            -std=c++23 -fPIC -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG `
+            -std=c++23 -fPIC -Oz -flto -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG `
             "-Wl,--gc-sections,--no-entry,--export=__wasm_call_ctors" `
             -s EXPORTED_FUNCTIONS='["_malloc", "_free"]' `
             -s STANDALONE_WASM=1 `
@@ -118,7 +118,7 @@ function build_wasm_js([string]$mode) {
     }
     else {
         em++ .\native\src\inditrans.cpp -I .\native\src `
-            -std=c++23 -Oz -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno `
+            -std=c++23 -Oz -flto -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno `
             "-Wl,--gc-sections,--no-entry" `
             -DNDEBUG `
             -s EXPORTED_FUNCTIONS=$exportedFunctions `

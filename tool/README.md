@@ -10,6 +10,7 @@ python3 tool/generate_test_data.py
 python3 tool/import_script.py indic newScript
 python3 tool/bump_version.py patch --log "Describe the release change"
 python3 tool/verify_release.py --tag=v0.13.0
+python3 tool/verify_wasm_build_parity.py
 ```
 
 `generate_headers.py` reads `script_data.json`, `reader_data.json`,
@@ -23,6 +24,11 @@ files are checked in and trie IDs depend on deterministic input order.
 current types. Extend the parser and mapping when that header adds a new kind
 of argument or return value. The script locates the repository from its own
 path, so it can also be run from `flutter/` as documented in that package.
+
+`verify_wasm_build_parity.py` checks that the Unix and PowerShell release
+commands use matching compiler/linker flags and artifact settings for both
+Wasm targets. It is part of `make validate` and normal CI; debug commands are
+allowed to differ.
 
 The two upstream-data commands fetch their source JSON over HTTPS. The other
 commands run offline. Flutter's own analyzer, package manager, and tests still

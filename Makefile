@@ -7,6 +7,7 @@ version:
 
 validate:
 	python3 ./tool/verify_release.py
+	python3 ./tool/verify_wasm_build_parity.py
 
 ifeq ($(OS), Windows_NT)
     EXEC_EXT = .exe
