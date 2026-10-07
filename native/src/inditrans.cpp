@@ -60,7 +60,7 @@ public:
   InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options,
       const std::string_view& skipStart = "##", const std::string_view& skipEnd = "##") noexcept
       : ptr(input.data()), end(input.data() + input.length()), map(map), skipStart(skipStart), skipEnd(skipEnd), options(options) {
-    buffer.reserve(BufferCapacity);
+    buffer.reserve(input.size() < BufferCapacity ? input.size() : BufferCapacity);
     if (map.nonRoman) {
       policy = map.source ? ReaderPolicy::Explicit : ReaderPolicy::Indic;
     } else {
