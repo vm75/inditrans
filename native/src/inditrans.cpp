@@ -3,10 +3,10 @@
 #include "static_scripts.h"
 #include "type_defs.h"
 #include "utf.h"
+#include <array>
 #include <optional>
 #include <string>
 #include <variant>
-#include <vector>
 
 using InditransLogger = void(const std::string&);
 InditransLogger* inditransLogger = nullptr;
@@ -60,15 +60,9 @@ public:
       const std::string_view& skipStart = "##", const std::string_view& skipEnd = "##") noexcept
       : ptr(input.data()), end(input.data() + input.length()), map(map), skipStart(skipStart), skipEnd(skipEnd), options(options) {
     if (map.nonRoman) {
-      if (map.source)
-        policyFn = &InputReader::pull<ReaderPolicy::Explicit>;
-      else
-        policyFn = &InputReader::pull<ReaderPolicy::Indic>;
+      policy = map.source ? ReaderPolicy::Explicit : ReaderPolicy::Indic;
     } else {
-      if (map.folded)
-        policyFn = &InputReader::pull<ReaderPolicy::FoldedRoman>;
-      else
-        policyFn = &InputReader::pull<ReaderPolicy::Roman>;
+      policy = map.folded ? ReaderPolicy::FoldedRoman : ReaderPolicy::Roman;
     }
   }
 
@@ -79,19 +73,59 @@ private:
   const std::string_view skipStart;
   const std::string_view skipEnd;
   const TranslitOptions options;
-  std::vector<TokenOrString> buffer;
+  // Encoded token sequences use four length bits, so a single reader match
+  // contains at most 15 tokens. A fixed power-of-two queue keeps streaming
+  // lookahead allocation-free and avoids periodic vector compaction.
+  static constexpr size_t BufferCapacity = 16;
+  static_assert((BufferCapacity & (BufferCapacity - 1)) == 0);
+  std::array<TokenOrString, BufferCapacity> buffer;
   size_t head = 0;
-  void (InputReader::*policyFn)();
+  size_t count = 0;
+  ReaderPolicy policy { ReaderPolicy::Roman };
 
-  void ensure(size_t requiredSize) {
-    if (buffer.size() - head >= requiredSize) return;
-    if (head > 16) {
-      buffer.erase(buffer.begin(), buffer.begin() + head);
-      head = 0;
+  TokenOrString& front(size_t offset = 0) noexcept {
+    return buffer[(head + offset) & (BufferCapacity - 1)];
+  }
+
+  const TokenOrString& front(size_t offset = 0) const noexcept {
+    return buffer[(head + offset) & (BufferCapacity - 1)];
+  }
+
+  void popFront() noexcept {
+    head = (head + 1) & (BufferCapacity - 1);
+    --count;
+  }
+
+  void pushBack(const ScriptToken& value) noexcept {
+    buffer[(head + count) & (BufferCapacity - 1)] = value;
+    ++count;
+  }
+
+  void pushBack(std::string_view value) noexcept {
+    buffer[(head + count) & (BufferCapacity - 1)] = value;
+    ++count;
+  }
+
+  void pullNext() noexcept {
+    switch (policy) {
+      case ReaderPolicy::Explicit:
+        pull<ReaderPolicy::Explicit>();
+        break;
+      case ReaderPolicy::Indic:
+        pull<ReaderPolicy::Indic>();
+        break;
+      case ReaderPolicy::FoldedRoman:
+        pull<ReaderPolicy::FoldedRoman>();
+        break;
+      case ReaderPolicy::Roman:
+        pull<ReaderPolicy::Roman>();
+        break;
     }
-    while (buffer.size() - head < requiredSize && ptr < end) {
-      (this->*policyFn)();
-    }
+  }
+
+  inline void ensure(size_t requiredSize) noexcept {
+    while (count < requiredSize && ptr < end)
+      pullNext();
   }
 
   template <ReaderPolicy Policy>
@@ -100,9 +134,9 @@ private:
     if (match.sequence) {
       const auto tokens = match.tokens();
       if (tokens.front().tokenType != TokenType::Accent || options / TranslitOptions::IgnoreVedicAccents) {
-        buffer.emplace_back(tokens.front());
+        pushBack(tokens.front());
         for (size_t i = 1; i < tokens.size(); ++i)
-          buffer.emplace_back(tokens[i]);
+          pushBack(tokens[i]);
       }
       ptr += match.matchLen;
     } else {
@@ -118,7 +152,7 @@ private:
     if (skipXml && *ptr == '<') {
       const auto close = std::string_view(ptr, end - ptr).find('>');
       ptr = close == std::string_view::npos ? end : ptr + close + 1;
-      buffer.emplace_back(std::string_view(start, ptr - start));
+      pushBack(std::string_view(start, ptr - start));
     } else if (*ptr == skipStart[0] && ptr + skipStart.length() - 1 < end
         && std::string_view(ptr, skipStart.length()) == skipStart) {
       ptr += skipStart.length();
@@ -127,7 +161,7 @@ private:
       if (close == std::string_view::npos) {
         ptr = end;
       } else {
-        buffer.emplace_back(std::string_view(start, close));
+        pushBack(std::string_view(start, close));
         ptr += close + skipEnd.length();
       }
     } else {
@@ -135,21 +169,22 @@ private:
       while (ptr < end && *ptr != skipStart[0] && *ptr != '<' && map.lookupToken<Policy>(ptr, end).sequence == 0) {
         ptr++;
       }
-      buffer.emplace_back(std::string_view(start, ptr - start));
+      pushBack(std::string_view(start, ptr - start));
     }
     return ptr;
   }
 
 public:
-  inline bool hasMore() noexcept { 
+  inline bool hasMore() noexcept {
     ensure(1);
-    return head < buffer.size(); 
+    return count != 0;
   }
 
   TokenUnit lastToken = invalidTokenUnit;
+  // getNext() is called only after hasMore(), which fills the bounded queue.
   TokenUnitOrString getNext() noexcept {
-    ensure(1);
-    const auto& next = buffer[head++];
+    const auto next = front();
+    popFront();
     if (HoldsString(next)) {
       wordStart = true;
       return GetString(next);
@@ -192,9 +227,9 @@ private:
     if (start.tokenType == TokenType::Consonant) {
       while (true) {
         ensure(1);
-        if (head >= buffer.size()) break;
-        if (!HoldsScriptToken(buffer[head])) break;
-        const auto nextToken = GetScriptToken(buffer[head]);
+        if (count == 0) break;
+        if (!HoldsScriptToken(front())) break;
+        const auto nextToken = GetScriptToken(front());
         switch (nextToken.tokenType) {
           case TokenType::OtherDiacritic:
             tokenUnit.otherDiacritic = nextToken;
@@ -208,14 +243,14 @@ private:
           default:
             return tokenUnit;
         }
-        head++;
+        popFront();
       }
     } else if (start.tokenType == TokenType::Vowel) {
       while (true) {
         ensure(1);
-        if (head >= buffer.size()) break;
-        if (!HoldsScriptToken(buffer[head])) break;
-        const auto nextToken = GetScriptToken(buffer[head]);
+        if (count == 0) break;
+        if (!HoldsScriptToken(front())) break;
+        const auto nextToken = GetScriptToken(front());
         switch (nextToken.tokenType) {
           case TokenType::OtherDiacritic:
             tokenUnit.otherDiacritic = nextToken;
@@ -226,7 +261,7 @@ private:
           default:
             return tokenUnit;
         }
-        head++;
+        popFront();
       }
     }
     return tokenUnit;
@@ -247,34 +282,34 @@ private:
 
       while (true) {
         ensure(1);
-        if (head >= buffer.size()) break;
-        if (HoldsScriptToken(buffer[head])) {
-          auto nextToken = GetScriptToken(buffer[head]);
+        if (count == 0) break;
+        if (HoldsScriptToken(front())) {
+          auto nextToken = GetScriptToken(front());
           switch (nextToken.tokenType) {
             case TokenType::OtherDiacritic:
-              head++;
+              popFront();
               tokenUnit.otherDiacritic = nextToken;
               break;
             case TokenType::VowelMark:
-              head++;
+              popFront();
               tokenUnit.vowelMark = nextToken;
               hasVirama = tokenUnit.vowelMark == Virama;
               break;
             case TokenType::Accent:
-              head++;
+              popFront();
               tokenUnit.accent = nextToken;
               break;
             default:
               goto done;
           }
         } else if ((isPrimary || start.idx == 7 /* ஜ */)) {
-          auto offset = TamilSuperscripts.find(GetString(buffer[head]));
+          auto offset = TamilSuperscripts.find(GetString(front()));
           if (offset != TamilSuperscripts.npos) {
             tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + offset / "²"_len));
-            head++;
-          } else if ((offset = TamilSubscripts.find(GetString(buffer[head]))) != TamilSubscripts.npos) {
+            popFront();
+          } else if ((offset = TamilSubscripts.find(GetString(front()))) != TamilSubscripts.npos) {
             tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + offset / "²"_len));
-            head++;
+            popFront();
           } else {
             break;
           }
@@ -322,9 +357,9 @@ private:
     } else if (start.tokenType == TokenType::Vowel) {
       while (true) {
         ensure(1);
-        if (head >= buffer.size()) break;
-        if (!HoldsScriptToken(buffer[head])) break;
-        const auto nextToken = GetScriptToken(buffer[head]);
+        if (count == 0) break;
+        if (!HoldsScriptToken(front())) break;
+        const auto nextToken = GetScriptToken(front());
         if (nextToken.tokenType == TokenType::OtherDiacritic) {
           tokenUnit.otherDiacritic = nextToken;
         } else if (nextToken.tokenType == TokenType::Accent) {
@@ -332,7 +367,7 @@ private:
         } else {
           break;
         }
-        head++;
+        popFront();
       }
     }
     if (tokenUnit.leadToken.tokenType != TokenType::Consonant) {
@@ -348,9 +383,9 @@ private:
 
       while (true) {
         ensure(1);
-        if (head >= buffer.size()) break;
-        if (!HoldsScriptToken(buffer[head])) break;
-        auto nextToken = GetScriptToken(buffer[head]);
+        if (count == 0) break;
+        if (!HoldsScriptToken(front())) break;
+        auto nextToken = GetScriptToken(front());
         bool consume = false;
         switch (nextToken.tokenType) {
           case TokenType::Vowel:
@@ -377,7 +412,7 @@ private:
         if (!consume) {
           break;
         }
-        head++;
+        popFront();
       }
 
       if (!vowelAdded) {
@@ -389,9 +424,9 @@ private:
 
   TokenUnit inferGurmukhiAdhak() {
     ensure(1);
-    if (head >= buffer.size())
+    if (count == 0)
       return invalidTokenUnit;
-    const auto peek = buffer[head];
+    const auto peek = front();
     if (HoldsScriptToken(peek) && GetScriptToken(peek).tokenType == TokenType::Consonant) {
       TokenUnit tokenUnit = { GetScriptToken(peek) };
       if (tokenUnit.leadToken.idx < 24) {
@@ -423,10 +458,10 @@ private:
 
   bool isEndOfWord() noexcept {
     ensure(1);
-    if (head >= buffer.size()) {
+    if (count == 0) {
       return true;
     }
-    const auto& next = buffer[head];
+    const auto& next = front();
     if (HoldsString(next)) {
       return true;
     }
@@ -440,10 +475,10 @@ private:
 
   std::optional<TokenOrString> peekNext(size_t offset = 0) noexcept {
     ensure(offset + 1);
-    if (head + offset >= buffer.size()) {
+    if (offset >= count) {
       return std::nullopt;
     }
-    return buffer[head + offset];
+    return front(offset);
   }
 
   bool isNextSpace(size_t offset = 0) noexcept {
@@ -451,10 +486,10 @@ private:
     if (next == std::nullopt) {
       return false;
     }
-    if (!HoldsString(buffer[head + offset])) {
+    if (!HoldsString(front(offset))) {
       return false;
     }
-    auto str = GetString(buffer[head + offset]);
+    auto str = GetString(front(offset));
     for (auto c : str) {
       if (!std::isspace(c)) {
         return false;
