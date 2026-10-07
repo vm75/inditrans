@@ -7,13 +7,18 @@ the same toolchain and machine.
 
 ## Reproduce
 
-The historical clean-tree acceptance capture is commit
+The project performance baseline is the immutable Git tag
+`perf-00-baseline`, which currently resolves to
+`5824b0119ac7b960071f7e00f7c23257ac61dd33`. Use this tag when judging
+whether the completed performance project regressed runtime behavior.
+
+The historical clean-tree final acceptance capture is commit
 `e302ae3dd19727870a5b3c99b575dccb890ef80b`, captured 2026-10-07 UTC.
-The permanent production-history CI reference is
-`d11147582513b10e8c8d45b319a35dc2a3ab5fe8` on `dev`. Its core engine,
+The production squash commit
+`d11147582513b10e8c8d45b319a35dc2a3ab5fe8` has byte-identical core engine,
 generated script data, static metadata tables, and checked-in 91,883-byte Wasm
-are byte-identical to the accepted `e302ae3` state. The selected engine
-checkpoint remains `f79e14e4d49aa978ba866b9688da3a70e41bc6a2`.
+relative to that accepted state. The selected engine checkpoint remains
+`f79e14e4d49aa978ba866b9688da3a70e41bc6a2`.
 
 | Environment | Recorded value |
 |---|---|
