@@ -73,9 +73,10 @@ inline constexpr auto sourcePrefixes = []() consteval {
   std::array<uint32_t, readerTrie0.nodes.size()> masks { };
   for (size_t i = 0; i < masks.size(); ++i) {
     masks[i] = sourceNodes[i].sources;
-    const auto range = sourceNodes[i].alternatives;
-    for (size_t j = 0; j < range.count; ++j)
-      masks[i] |= sourceAlternatives[range.begin + j].sources;
+    const auto begin = sourceNodes[i].alternatives.begin;
+    const auto count = sourceNodes[i].alternatives.count;
+    for (size_t j = 0; j < count; ++j)
+      masks[i] |= sourceAlternatives[begin + j].sources;
   }
   for (size_t i = masks.size() - 1; i > 0; --i)
     masks[scratch[i].parent] |= masks[i];
