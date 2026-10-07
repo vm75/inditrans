@@ -27,8 +27,12 @@ init_emcc() {
 
   # set emsdk environment variables
   if [[ -f "${EMSDK}/emsdk_env.sh" ]]; then
+    caller_em_config="${EM_CONFIG:-}"
     export EMSDK_QUIET=1
     source "${EMSDK}/emsdk_env.sh"
+    if [[ -n "${caller_em_config}" ]]; then
+      export EM_CONFIG="${caller_em_config}"
+    fi
   fi
 
   # Verify active compiler

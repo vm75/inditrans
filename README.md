@@ -62,6 +62,8 @@ make validate     # validate version consistency and changelog
 
 Requires: CMake ≥ 3.20, Clang/LLVM ≥ 17 (or C++23-capable compiler), Emscripten 6.0.10, Flutter ≥ 2.11, Node.js ≥ 18.3 / Yarn.
 
+See [platform support](docs/platform-support.md) for the declared platform matrix, tested toolchains, and current acceptance evidence.
+
 ### Performance benchmarking
 
 The native benchmark suite measures throughput (MB/s and ns/call), per-call latency, output-size expansion, and—on Linux with glibc—heap allocation events, requested allocation bytes, peak requested live bytes, and bytes still live after the measured call.

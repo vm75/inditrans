@@ -133,9 +133,10 @@ precomputed `indic` sequence. Leaves select terminal-indexed fields; branching
 states retain parallel fields indexed by compact state, avoiding a dependent
 node-to-terminal load. The virtual reader touches only its sequence field. Empty alternative offsets
 are canonical zero at compile time; begin/count retain their original widths
-and direct runtime access. The [bounded follow-up](docs/compact-static-followup.md)
-records why narrower fields, pooled masks, sequence flags, and writer packing
-were rejected.
+and direct runtime access. Parallel direct fields keep traversal loads
+independent. Keep lookup representation changes evidence-driven and verify
+correctness, runtime performance, memory, and artifact size with the procedures
+in [the performance guide](docs/performance.md).
 
 Root/high-fanout nodes use direct tables; continuation-only tables use 64
 slots. Single-child nodes use equality, small fanout uses linear search, and
@@ -224,8 +225,8 @@ MinGW GCC ≥ 13. Static libgcc/libstdc++ linkage avoids their runtime DLL depen
 ## Related documents
 
 - [Agent guide](AGENTS.md)
-- [Static lookup design and measurements](docs/static-lookup-design.md)
-- [Compact static data experiment](docs/compact-static-experiment.md)
+- [Performance baseline and reproduction](docs/performance.md)
+- [Build and release](docs/release.md)
 - [Flutter usage](flutter/README.md)
 - [Node.js usage](nodejs/README.md)
 - [C exports](native/src/exports.h)

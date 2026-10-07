@@ -255,8 +255,110 @@ jobs:
       - name: Build and test
         run: cd nodejs && yarn test
 
+      - name: Set up Chrome for browser acceptance
+        uses: browser-actions/setup-chrome@v1
+        id: chrome
+        with:
+          chrome-version: stable
+
+      - name: Run shared browser fixture twice per conversion
+        env:
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
+        run: python3 tool/browser_smoke_test.py --browser "$CHROME_PATH"
+
       - name: Dry-run pack
         run: cd nodejs && npm pack --dry-run
+
+  windows-msvc:
+    name: Windows MSVC and Flutter plugin
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Configure and build C++23 DLL with MSVC
+        run: |
+          cmake -S native/src -B out/native -A x64 -DCMAKE_BUILD_TYPE=Release
+          cmake --build out/native --config Release --parallel
+
+      - name: Build and run native C++ tests with MSVC
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force out | Out-Null
+          $sources = @((Get-ChildItem native/src/*.cpp, native/tests/*.cpp | ForEach-Object { $_.FullName }))
+          cl /nologo /std:c++23 /EHsc /DBOOST_UT_DISABLE_MODULE /I native/src $sources /Fe:out/inditrans_test.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & out/inditrans_test.exe
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Build Windows Flutter example
+        run: |
+          cd flutter/example
+          flutter pub get
+          flutter build windows --release
+
+  apple-flutter:
+    name: Apple Clang and Flutter plugin
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Configure, build, and test C++23 engine
+        run: |
+          cmake -S native/src -B out/native -DCMAKE_BUILD_TYPE=Release
+          cmake --build out/native --parallel 2
+          clang++ -std=c++23 -DBOOST_UT_DISABLE_MODULE -fno-cxx-modules -O0 -g -I native/src native/src/*.cpp native/tests/*.cpp -o out/inditrans_test
+          out/inditrans_test
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Build macOS Flutter example
+        run: |
+          cd flutter/example
+          flutter pub get
+          flutter build macos --release
+
+      - name: Build iOS Flutter example
+        run: |
+          cd flutter/example
+          flutter build ios --release --no-codesign
+
+  android-flutter:
+    name: Android arm64 NDK and Flutter plugin
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Build Android arm64 Flutter example
+        run: |
+          cd flutter/example
+          flutter pub get
+          flutter build apk --release --target-platform android-arm64
 
   windows-dll:
     name: Windows DLL Cross-Build

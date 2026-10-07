@@ -1,66 +1,59 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Inditrans test</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <meta charset="utf-8">
+  <title>Inditrans browser tests</title>
 </head>
-
 <body>
-    <h1>Inditrans tests</h1>
-
-    <div id="test-results"></div>
-
-    <script src='../public/inditrans.js'></script>
-    <script>
-        window.addEventListener("load", (event) => {
-            // fetch test cases from '../../test-files/test-cases.json' and print
-            // the results
-            fetch('../../test-files/test-cases.json')
-                .then((response) => response.json())
-                .then((json) => {
-                    inditrans = Module.inditrans;
-
-                    testNumber = 1;
-                    // iterate over each test case
-                    json.forEach((testCase) => {
-                        // get the original text
-                        description = testCase['description'];
-                        originalText = testCase['text'];
-                        fromScript = testCase['script'];
-                        testCase["targets"].forEach((target) => {
-                            toScript = target['script'];
-                            expectedTransliteratedText = target['text'];
-                            options = inditrans.optionsToInt(target['options'] || "");
-                            actualTransliteratedText = inditrans.transliterate(originalText, fromScript, toScript, options);
-
-                            // add result to the test-results div
-                            testResults = document.getElementById("test-results");
-
-                            // create a result paragraph with the test case number, description, and colored result
-                            resultParagraph = document.createElement("p");
-                            resultParagraph.innerText = "Test Case " + testNumber + ": " + description + " (" + fromScript + " -> " + toScript + ") ";
-                            if (actualTransliteratedText == expectedTransliteratedText) {
-                                resultParagraph.style.color = "green";
-                                resultParagraph.innerText += "PASSED";
-                            } else {
-                                resultParagraph.style.color = "red";
-                                resultParagraph.innerText += "FAILED";
-                            }
-
-                            // add to div
-                            testResults.appendChild(resultParagraph);
-
-                            testNumber++;
-                        });
-                    });
-                });
+  <h1>Inditrans browser tests</h1>
+  <div id="test-results" data-status="running"></div>
+  <script src="../public/inditrans.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const waitForModule = new Promise((resolve, reject) => {
+        const deadline = Date.now() + 10000;
+        const poll = () => {
+          if (Module.inditrans) resolve(Module.inditrans);
+          else if (Date.now() >= deadline) reject(new Error("Wasm module initialization timed out"));
+          else setTimeout(poll, 10);
+        };
+        poll();
+      });
+      waitForModule
+        .then((inditrans) => fetch("../../test-files/test-cases.json")
+          .then((response) => response.json())
+          .then((cases) => ({ inditrans, cases })))
+        .then(({ inditrans, cases }) => {
+          const results = document.getElementById("test-results");
+          let count = 0;
+          let failures = 0;
+          cases.forEach((testCase) => {
+            testCase.targets.forEach((target) => {
+              const options = inditrans.optionsToInt(target.options || "");
+              const actual = inditrans.transliterate(
+                testCase.text, testCase.script, target.script, options);
+              // Repeat every call to exercise stable Wasm allocation and release.
+              const repeated = inditrans.transliterate(
+                testCase.text, testCase.script, target.script, options);
+              const passed = actual === target.text && repeated === target.text;
+              count += 1;
+              if (!passed) failures += 1;
+              const row = document.createElement("p");
+              row.innerText = `Test ${count}: ${testCase.description} (${testCase.script} -> ${target.script}) ${passed ? "PASSED" : "FAILED"}`;
+              row.style.color = passed ? "green" : "red";
+              results.appendChild(row);
+            });
+          });
+          results.dataset.status = failures === 0 ? "passed" : "failed";
+          results.dataset.count = String(count);
+          results.dataset.failures = String(failures);
+        })
+        .catch((error) => {
+          const results = document.getElementById("test-results");
+          results.dataset.status = "failed";
+          results.dataset.error = String(error);
         });
-
-
-    </script>
+    });
+  </script>
 </body>
-
 </html>
