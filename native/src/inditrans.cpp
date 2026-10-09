@@ -185,8 +185,9 @@ private:
       const auto close = std::string_view(ptr, end - ptr).find('>');
       ptr = close == std::string_view::npos ? end : ptr + close + 1;
       buffer[bufferSize++] = TokenOrString(std::string_view(start, ptr - start));
-    } else if (*ptr == skipStart[0] && ptr + skipStart.length() - 1 < end
-        && std::string_view(ptr, skipStart.length()) == skipStart) {
+    } else if (!skipStart.empty() && *ptr == skipStart.front()
+        && skipStart.size() <= static_cast<size_t>(end - ptr)
+        && std::string_view(ptr, skipStart.size()) == skipStart) {
       ptr += skipStart.length();
       start = ptr;
       const auto close = skipEnd.empty() ? std::string_view::npos : std::string_view(ptr, end - ptr).find(skipEnd);
@@ -201,7 +202,8 @@ private:
       // The trie consumes bytes, so raw runs can be scanned without decoding;
       // keep their original bytes intact until a token or delimiter starts.
       ptr++;
-      while (ptr < end && *ptr != skipStart[0] && *ptr != '<' && map.lookupToken<Policy>(ptr, end).sequence == 0) {
+      while (ptr < end && (skipStart.empty() || *ptr != skipStart.front())
+          && *ptr != '<' && map.lookupToken<Policy>(ptr, end).sequence == 0) {
         ptr++;
       }
       buffer[bufferSize++] = TokenOrString(std::string_view(start, ptr - start));
