@@ -11,36 +11,55 @@
 
 namespace inditrans::static_data {
 
-inline constexpr std::array<uint8_t, 1024> emptyTriplePages {};
+inline constexpr std::array<uint8_t, 1024> emptyTriplePages { };
 
+/// Selects the smallest unsigned integer type capable of representing the trie capacity,
+/// preferring uint16_t over uint32_t to halve memory footprint when capacity fits within 16 bits.
 template <size_t Capacity> using SmallestIndex = std::conditional_t<(Capacity <= 65535), uint16_t, uint32_t>;
 
+/// Represents an input key-value mapping entry for static trie compilation.
 template <typename Key> struct TrieEntry {
   using key_type = Key;
   using KeyView = std::conditional_t<std::is_same_v<Key, uint8_t>, std::string_view, std::span<const Key>>;
-  KeyView key;
-  uint16_t value;
+  KeyView key; ///< Key sequence (UTF-8 string view or span of keys)
+  uint16_t value; ///< Terminal value associated with this key
 };
 
+/// Compact node record within a flattened trie topology.
+///
+/// In branching nodes, outgoing edges are stored either in a dense direct-dispatch page
+/// or as a contiguous slice of sorted FlatEdge entries. For linear single-child chains,
+/// path compression packs 2 or 3 bytes directly into a FlatPath.
 template <typename Index> struct FlatNode {
-  Index edges { };
-  uint16_t value { }; // Zero is the absent-value sentinel.
-  uint16_t count { };
-  uint16_t dense { 65535 };
+  Index edges { }; ///< Base index into the FlatEdge array for sparse children
+  uint16_t value { }; ///< Terminal output value (0 indicates a non-terminal state)
+  uint16_t count { }; ///< Number of edges; top 2 bits (count >> 14) encode compressed path length
+  uint16_t dense { 65535 }; ///< Dense dispatch offset (or path index); 65535 if purely sparse edges
 };
 
+/// Represents a single character-to-child state transition edge.
 template <typename Key, typename Index> struct FlatEdge {
-  Key key { };
-  Index child { };
+  Key key { }; ///< Transition input key / byte
+  Index child { }; ///< Destination child node state index
 };
 
+/// Compressed path payload allowing 2 or 3 linear transition bytes to be checked simultaneously.
 template <typename Index> struct FlatPath {
-  uint32_t bytes { };
-  Index child { };
+  uint32_t bytes { }; ///< Packed comparison bytes (first | (second << 8) | (third << 16))
+  Index child { }; ///< Destination state reached upon matching all packed bytes
 };
 
-// All dictionaries of the same key/index type share this lookup implementation.
+/// Non-owning runtime view over a flattened trie providing high-throughput longest-prefix matching.
+///
+/// Traversal features:
+/// - Fused 3-byte prefix transitions (triplePages) accelerating Indic UTF-8 codepoints (0xE0..0xEF)
+/// - Fused 2-byte prefix transitions (prefixPages) for 2-byte UTF-8 sequences (0xC0..0xDF)
+/// - Dense root and high-fanout dispatch tables
+/// - Terminal leaf encoding (leafBit) storing terminal IDs directly in dispatch words
+/// - Linear path compression checking up to 3 bytes in a single 32-bit comparison
+/// - Bounded linear search for small fanouts (<= 8) and binary search for larger fanouts
 template <typename Key, typename Index> struct TrieView {
+  /// High bit of Index used as a discriminator tag to mark direct terminal leaf targets.
   static constexpr Index leafBit = Index(uint64_t { 1 } << (std::numeric_limits<Index>::digits - 1));
   const FlatNode<Index>* nodes;
   const FlatEdge<Key, Index>* edges;
@@ -51,6 +70,8 @@ template <typename Key, typename Index> struct TrieView {
   const Index* triples;
   const FlatPath<Index>* paths;
 
+  /// Looks up the next child state from @p state given transition @p key.
+  /// Returns 0 if no matching edge or dispatch slot exists.
   constexpr Index next(Index state, Key key) const noexcept {
     const auto& node = nodes[state];
     if constexpr (std::is_same_v<Key, uint8_t>) {
@@ -83,11 +104,17 @@ template <typename Key, typename Index> struct TrieView {
     return 0;
   }
 
+  /// Result of a longest prefix match query.
   struct Match {
-    uint16_t value { };
-    size_t length { };
+    uint16_t value { }; ///< Matched terminal value (0 if no match found)
+    size_t length { }; ///< Number of input bytes matched
   };
 
+  /// Performs longest prefix matching against the input range [begin, end).
+  ///
+  /// @tparam FoldAscii If true, folds uppercase ASCII ('A'..'Z') to lowercase on the fly.
+  /// @tparam Select Selector callable mapping terminal IDs / states to output sequence IDs.
+  /// @return Match containing the best (longest) accepted terminal value and byte length.
   template <bool FoldAscii = false, typename Select>
   [[gnu::always_inline]] constexpr Match match(const char* begin, const char* end, Select select) const noexcept
     requires std::is_same_v<Key, uint8_t>
@@ -176,30 +203,34 @@ template <typename Key, typename Index> struct TrieView {
   }
 };
 
-template <typename Key, typename Index, size_t Nodes, size_t DenseSlots, size_t PrefixTables, size_t TripleTables, size_t PathSlots>
+/// Compile-time fixed-size container storing all flattened trie arrays in contiguous read-only memory.
+template <typename Key, typename Index, size_t Nodes, size_t DenseSlots, size_t PrefixTables, size_t TripleTables,
+    size_t PathSlots>
 struct FlatTrie {
-  std::array<FlatNode<Index>, Nodes> nodes { };
-  std::array<FlatEdge<Key, Index>, Nodes - 1> edges { };
-  std::array<Index, DenseSlots> dense { };
-  std::array<uint8_t, std::is_same_v<Key, uint8_t> ? 64 : 0> prefixPages { };
-  std::array<Index, PrefixTables * 64> prefixes { };
-  std::array<uint8_t, TripleTables ? 1024 : 0> triplePages { };
-  std::array<Index, TripleTables * 64> triples { };
-  std::array<FlatPath<Index>, PathSlots> paths { };
+  std::array<FlatNode<Index>, Nodes> nodes { }; ///< Compact node topology records
+  std::array<FlatEdge<Key, Index>, Nodes - 1> edges { }; ///< Sparse edge transition records
+  std::array<Index, DenseSlots> dense { }; ///< Dense 256/64-slot dispatch tables
+  std::array<uint8_t, std::is_same_v<Key, uint8_t> ? 64 : 0> prefixPages { }; ///< 2-byte prefix page table
+  std::array<Index, PrefixTables * 64> prefixes { }; ///< Accelerated 2-byte prefix target states
+  std::array<uint8_t, TripleTables ? 1024 : 0> triplePages { }; ///< 3-byte prefix page directory
+  std::array<Index, TripleTables * 64> triples { }; ///< Accelerated 3-byte prefix target states
+  std::array<FlatPath<Index>, PathSlots> paths { }; ///< Multi-byte compressed path records
 
+  /// Constructs a non-owning TrieView pointing to the internal array data.
   constexpr TrieView<Key, Index> view() const noexcept {
-    return { nodes.data(), edges.data(), dense.data(), prefixPages.data(), prefixes.data(), TripleTables ? triplePages.data() : emptyTriplePages.data(),
-      triples.data(), paths.data() };
+    return { nodes.data(), edges.data(), dense.data(), prefixPages.data(), prefixes.data(),
+      TripleTables ? triplePages.data() : emptyTriplePages.data(), triples.data(), paths.data() };
   }
 };
 
+/// Topological dimensions of a compiled trie.
 struct TrieShape {
-  size_t nodes { 1 };
-  size_t depth { };
+  size_t nodes { 1 }; ///< Total number of trie nodes (including root)
+  size_t depth { }; ///< Maximum tree depth / longest key length
 };
 
-// Entries are sorted, unique and nonempty. Adjacent common prefixes count the
-// exact topology in O(total key length), without a heap-backed scratch tree.
+/// Computes the exact node count and maximum depth of a trie from sorted input entries in O(total key length).
+/// Requires entries to be lexicographically sorted, non-empty, and unique.
 template <auto const& Entries> consteval TrieShape trieShape() {
   using Key = typename std::remove_cvref_t<decltype(Entries[0])>::key_type;
   TrieShape shape { };
@@ -246,6 +277,8 @@ template <auto const& Entries> consteval auto trieScratch() {
           && static_cast<Key>(prev[common]) == static_cast<Key>(key[common]))
         ++common;
     }
+    // With sorted entries, the preceding path contains the entire shared
+    // prefix. Append the new suffix, keeping parents before children in scratch.
     for (size_t j = common; j < key.size(); ++j) {
       nodes[used] = { path[j], static_cast<Key>(key[j]), 0, 0, true };
       auto& parent = nodes[path[j]];
@@ -301,6 +334,11 @@ template <auto const& Entries> consteval size_t trieIndexCapacity() {
   return trieShape<Entries>().nodes * (std::is_same_v<Key, uint8_t> ? 2 : 1);
 }
 
+/// Constructs a fully flattened, static, read-only trie in consteval time from sorted entries.
+///
+/// Builds dense dispatch tables for nodes with fanout exceeding @p DenseThreshold,
+/// constructs fused 2-byte and 3-byte accelerated prefix entry points, encodes direct terminal
+/// leaf transitions into dispatch words, and compresses linear single-child chains into FlatPaths.
 template <auto const& Entries, typename Index = SmallestIndex<trieIndexCapacity<Entries>()>, size_t DenseThreshold = 16>
 consteval auto makeStaticTrie() {
   using Key = typename std::remove_cvref_t<decltype(Entries[0])>::key_type;

@@ -14,6 +14,8 @@
 using InditransLogger = void(const std::string&);
 InditransLogger* inditransLogger = nullptr;
 
+/// Replaces modern Grantha-derived consonants (ஸ, ஜ, ஜ²) with traditional Tamil orthography (ச, ச³, ச⁴)
+/// when the TamilTraditional option is enabled.
 constexpr std::string_view tamilTraditionalReplacement(std::string_view text) noexcept {
   if (text == "ஸ")
     return "ச";
@@ -24,24 +26,38 @@ constexpr std::string_view tamilTraditionalReplacement(std::string_view text) no
   return text;
 }
 
+/// Tests whether the transliteration option flag @p val is set within @p mask.
 inline constexpr bool operator*(const TranslitOptions& mask, const TranslitOptions& val) noexcept {
   return (mask & val) == val;
 }
+
+/// Tests whether the transliteration option flag @p val is NOT set within @p mask.
 inline constexpr bool operator/(const TranslitOptions& mask, const TranslitOptions& val) noexcept {
   return (mask & val) != val;
 }
 
-// Token payloads occupy four bytes; raw text uses a pointer and a length.
-// A null text pointer tags a token without a separate variant discriminator.
+/// Discriminated union without std::variant footprint overhead.
+///
+/// Stores either a 4-byte ScriptToken payload (indicated by text == nullptr, with the token
+/// bit-cast into value) or a borrowed UTF-8 string slice (text pointing to the buffer and
+/// value holding the length). Occupies 16 bytes on x86-64 and 8 bytes on Wasm32.
 struct TokenOrString {
-  const char* text;
-  size_t value;
+  const char* text; ///< Pointer to borrowed text, or nullptr if holding a ScriptToken
+  size_t value; ///< String length if text != nullptr; bit-cast ScriptToken payload if text == nullptr
   TokenOrString() = default;
-  TokenOrString(ScriptToken token) noexcept : text(nullptr), value(std::bit_cast<uint32_t>(token)) {}
-  TokenOrString(std::string_view view) noexcept : text(view.data() ? view.data() : ""), value(view.size()) {}
+  TokenOrString(ScriptToken token) noexcept
+      : text(nullptr)
+      , value(std::bit_cast<uint32_t>(token)) { }
+  TokenOrString(std::string_view view) noexcept
+      : text(view.data() ? view.data() : "")
+      , value(view.size()) { }
 };
 static_assert(sizeof(ScriptToken) == sizeof(uint32_t));
+
+/// Returns true if the item holds a ScriptToken (indicated by text == nullptr).
 inline bool HoldsScriptToken(const TokenOrString& item) noexcept { return item.text == nullptr; }
+
+/// Extracts the ScriptToken payload from a TokenOrString item.
 inline ScriptToken GetScriptToken(const TokenOrString& item) noexcept {
   return std::bit_cast<ScriptToken>(static_cast<uint32_t>(item.value));
 }
@@ -49,6 +65,7 @@ inline ScriptToken GetScriptToken(const TokenOrString& item) noexcept {
 template <typename T> inline bool HoldsScriptToken(const T& var) { return std::holds_alternative<ScriptToken>(var); }
 template <typename T> inline ScriptToken GetScriptToken(const T& var) { return std::get<ScriptToken>(var); }
 
+/// Represents either a fully grouped syllabic TokenUnit or an untransliterated string view.
 using TokenUnitOrString = std::variant<TokenUnit, std::string_view>;
 template <typename T> inline bool HoldsTokenUnit(const T& var) { return std::holds_alternative<TokenUnit>(var); }
 template <typename T> inline TokenUnit GetTokenUnit(const T& var) { return std::get<TokenUnit>(var); }
@@ -56,9 +73,12 @@ template <typename T> inline TokenUnit GetTokenUnit(const T& var) { return std::
 // Common for TokenOrString & TokenUnitOrString
 template <typename T> inline bool HoldsString(const T& var) { return std::holds_alternative<std::string_view>(var); }
 template <typename T> inline std::string_view GetString(const T& var) { return std::get<std::string_view>(var); }
-inline bool HoldsString(const TokenOrString& item) noexcept { return item.text != nullptr; }
-inline std::string_view GetString(const TokenOrString& item) noexcept { return { item.text, item.value }; }
 
+/// Returns true if the item holds a borrowed string view.
+inline bool HoldsString(const TokenOrString& item) noexcept { return item.text != nullptr; }
+
+/// Extracts the borrowed string view from a TokenOrString item.
+inline std::string_view GetString(const TokenOrString& item) noexcept { return { item.text, item.value }; }
 
 const TokenUnitOrString endOfText("");
 constexpr TokenUnit invalidTokenUnit(invalidScriptToken);
@@ -74,11 +94,20 @@ inline bool operator==(const TokenUnitOrString& a, const TokenUnitOrString& b) n
 }
 inline bool operator!=(const TokenUnitOrString& a, const TokenUnitOrString& b) noexcept { return !(a == b); }
 
+/// Streaming input tokenizer that scans UTF-8 text on demand and groups tokens into TokenUnits.
+///
+/// Operates with a bounded 16-element stack-allocated buffer (MaxSequence + Lookahead) without
+/// dynamic allocation, ring-buffer arithmetic, or array shifting.
 class InputReader {
 public:
   InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options,
-      const std::string_view& skipStart = "##", const std::string_view& skipEnd = "##") noexcept
-      : ptr(input.data()), end(input.data() + input.length()), map(map), skipStart(skipStart), skipEnd(skipEnd), options(options) {
+      const std::string_view& skipStart, const std::string_view& skipEnd) noexcept
+      : ptr(input.data())
+      , end(input.data() + input.length())
+      , map(map)
+      , skipStart(skipStart.empty() ? "##" : skipStart)
+      , skipEnd(skipEnd.empty() ? "##" : skipEnd)
+      , options(options) {
     if (map.nonRoman) {
       if (map.source)
         policyFn = [](InputReader& reader) { reader.pull<ReaderPolicy::Explicit>(); };
@@ -110,8 +139,11 @@ private:
   size_t head = 0;
   void (*policyFn)(InputReader&);
 
+  /// Ensures that at least @p requiredSize tokens/strings are available in the lookahead buffer.
+  /// Refills only when the current expansion has been consumed, avoiding circular shifting.
   void ensure(size_t requiredSize) {
-    if (bufferSize - head >= requiredSize) return;
+    if (bufferSize - head >= requiredSize)
+      return;
     assert(requiredSize <= Lookahead);
     // All live calls request one token. Refill only after consuming the
     // current expansion, so no shifting or ring-buffer arithmetic is needed.
@@ -122,8 +154,9 @@ private:
     }
   }
 
-  template <ReaderPolicy Policy>
-  void pull() noexcept {
+  /// Pulls the next longest token match using the configured Policy, appending extracted
+  /// ScriptTokens into the buffer, or delegates to pullUnrecognized on a miss.
+  template <ReaderPolicy Policy> void pull() noexcept {
     auto match = map.lookupToken<Policy>(ptr, end);
     if (match.sequence) {
       const auto tokens = match.tokens();
@@ -139,6 +172,10 @@ private:
     }
   }
 
+  /// Extracts contiguous spans of non-transliterated text:
+  /// 1. XML/HTML tags (e.g. `<tag>`) unless NoXMLTagHandling is set
+  /// 2. Protected skip spans delimited by skipStart and skipEnd (e.g. `##protected##`)
+  /// 3. Unrecognized character sequences that do not match any trie prefix
   template <ReaderPolicy Policy>
   [[gnu::noinline]] const char* pullUnrecognized(const char* ptr, const char* end, const ScriptReaderMap& map,
       const std::string_view& skipStart, const std::string_view& skipEnd) noexcept {
@@ -154,12 +191,15 @@ private:
       start = ptr;
       const auto close = skipEnd.empty() ? std::string_view::npos : std::string_view(ptr, end - ptr).find(skipEnd);
       if (close == std::string_view::npos) {
+        // An unmatched opening delimiter discards the remaining input.
         ptr = end;
       } else {
         buffer[bufferSize++] = TokenOrString(std::string_view(start, close));
         ptr += close + skipEnd.length();
       }
     } else {
+      // The trie consumes bytes, so raw runs can be scanned without decoding;
+      // keep their original bytes intact until a token or delimiter starts.
       ptr++;
       while (ptr < end && *ptr != skipStart[0] && *ptr != '<' && map.lookupToken<Policy>(ptr, end).sequence == 0) {
         ptr++;
@@ -170,12 +210,16 @@ private:
   }
 
 public:
-  inline bool hasMore() noexcept { 
+  /// Returns true if more tokens or raw string spans are available in the input stream.
+  inline bool hasMore() noexcept {
     ensure(1);
     return head < bufferSize;
   }
 
   TokenUnit lastToken = invalidTokenUnit;
+
+  /// Consumes the next token or string run and groups it into a complete TokenUnit cluster.
+  /// Handles special cases like Gurmukhi adhak and Tamil prefixes.
   TokenUnitOrString getNext() noexcept {
     ensure(1);
     const auto& next = buffer[head++];
@@ -216,13 +260,18 @@ public:
   }
 
 private:
+  /// Groups tokens for Indic scripts (Devanagari, Bengali, Telugu, etc.):
+  /// attaches dependent vowel marks (matras), virama, diacritics (anuswara/visarga),
+  /// and Vedic accents to the initiating consonant or independent vowel.
   TokenUnit readIndicTokenUnit(const ScriptToken& start) noexcept {
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
       while (true) {
         ensure(1);
-        if (head >= bufferSize) break;
-        if (!HoldsScriptToken(buffer[head])) break;
+        if (head >= bufferSize)
+          break;
+        if (!HoldsScriptToken(buffer[head]))
+          break;
         const auto nextToken = GetScriptToken(buffer[head]);
         switch (nextToken.tokenType) {
           case TokenType::OtherDiacritic:
@@ -242,8 +291,10 @@ private:
     } else if (start.tokenType == TokenType::Vowel) {
       while (true) {
         ensure(1);
-        if (head >= bufferSize) break;
-        if (!HoldsScriptToken(buffer[head])) break;
+        if (head >= bufferSize)
+          break;
+        if (!HoldsScriptToken(buffer[head]))
+          break;
         const auto nextToken = GetScriptToken(buffer[head]);
         switch (nextToken.tokenType) {
           case TokenType::OtherDiacritic:
@@ -261,11 +312,17 @@ private:
     return tokenUnit;
   }
 
+  /// Groups tokens for Tamil script, applying Tamil-specific phonological rules:
+  /// - Parses attached superscript/subscript numbers (¹²³⁴) to distinguish aspirated/voiced allophones
+  /// - Updates prefix recognizer state across prefix-stem boundaries
+  /// - Applies contextual phonetic rules (e.g. converting ச to ஸ at word start or after certain vowels,
+  ///   or voicing intervocalic / post-nasal stops)
   TokenUnit readTamilTokenUnit(const ScriptToken& start) noexcept {
     bool endOfPrefix = false;
     if (wordStart) {
       prefixLookupState.reset();
     } else {
+      // A recognized prefix keeps start-of-stem pronunciation rules active.
       endOfPrefix = (prefixLookupState.value != std::nullopt);
     }
 
@@ -276,7 +333,8 @@ private:
 
       while (true) {
         ensure(1);
-        if (head >= bufferSize) break;
+        if (head >= bufferSize)
+          break;
         if (HoldsScriptToken(buffer[head])) {
           auto nextToken = GetScriptToken(buffer[head]);
           switch (nextToken.tokenType) {
@@ -313,15 +371,16 @@ private:
       }
     done:
       if (options * TranslitOptions::TamilSuperscripted) {
+        // Explicit consonant variants bypass contextual pronunciation inference.
         return tokenUnit;
       }
 
-      // lookup before it is modified
+      // Match written Tamil before changing stop indices to their voiced forms.
       prefixLookup.lookup(tokenUnit, prefixLookupState);
 
-      // ... existing Tamil logic ...
       if (hasVirama) {
-        // ignore virama if end of word
+        // The legacy pronunciation rule drops a word-final primary stop with
+        // pulli as a whole unit, including any attached modifiers.
         return (isPrimary && isEndOfWord()) ? invalidTokenUnit : tokenUnit;
       }
       if (isPrimary) {
@@ -333,6 +392,8 @@ private:
             tokenUnit.leadToken = start.clone(31 /* ஸ */);
           }
         } else if (isVirama(lastToken)) {
+          // Geminates and stops after hard consonants stay unvoiced. Other
+          // clusters voice the stop (+2 in its varga), with a separate ச→ஸ rule.
           if (lastToken.leadToken != tokenUnit.leadToken && !isHardConsonant(lastToken)) {
             if (tokenUnit.leadToken.idx == 5 /* ச */ && !isSoftConsonant(lastToken)) {
               tokenUnit.leadToken = start.clone(31 /* ஸ */);
@@ -351,8 +412,10 @@ private:
     } else if (start.tokenType == TokenType::Vowel) {
       while (true) {
         ensure(1);
-        if (head >= bufferSize) break;
-        if (!HoldsScriptToken(buffer[head])) break;
+        if (head >= bufferSize)
+          break;
+        if (!HoldsScriptToken(buffer[head]))
+          break;
         const auto nextToken = GetScriptToken(buffer[head]);
         if (nextToken.tokenType == TokenType::OtherDiacritic) {
           tokenUnit.otherDiacritic = nextToken;
@@ -370,6 +433,9 @@ private:
     return tokenUnit;
   }
 
+  /// Groups tokens for Latin transliteration schemes:
+  /// attaches subsequent vowels or vowel marks to a lead consonant.
+  /// If a consonant is not followed by a vowel, an explicit virama is synthesized.
   TokenUnit readLatinTokenUnit(const ScriptToken& start) noexcept {
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
@@ -377,8 +443,10 @@ private:
 
       while (true) {
         ensure(1);
-        if (head >= bufferSize) break;
-        if (!HoldsScriptToken(buffer[head])) break;
+        if (head >= bufferSize)
+          break;
+        if (!HoldsScriptToken(buffer[head]))
+          break;
         auto nextToken = GetScriptToken(buffer[head]);
         bool consume = false;
         switch (nextToken.tokenType) {
@@ -386,6 +454,8 @@ private:
           case TokenType::VowelMark:
             if (!vowelAdded) {
               vowelAdded = true;
+              // Roman vowel index 0 is 'a'; leaving the mark absent represents
+              // the inherent vowel. The same index in VowelMark means virama.
               if (nextToken.idx != Diacritic_Virama) {
                 tokenUnit.vowelMark = { TokenType::VowelMark, nextToken.idx };
               }
@@ -416,12 +486,17 @@ private:
     return tokenUnit;
   }
 
+  /// Handles the Gurmukhi adhak gemination symbol:
+  /// peeks ahead at the following consonant and emits a halved version of it with virama
+  /// (e.g. adhak + k -> k + virama + k).
   TokenUnit inferGurmukhiAdhak() {
     ensure(1);
     if (head >= bufferSize)
       return invalidTokenUnit;
     const auto peek = buffer[head];
     if (HoldsScriptToken(peek) && GetScriptToken(peek).tokenType == TokenType::Consonant) {
+      // Leave the following consonant buffered: this unit supplies only the
+      // first half of the geminate, with aspiration removed within its varga.
       TokenUnit tokenUnit = { GetScriptToken(peek) };
       if (tokenUnit.leadToken.idx < 24) {
         tokenUnit.leadToken.idx -= tokenUnit.leadToken.idx % 5 % 2;
@@ -498,11 +573,16 @@ private:
   TamilPrefixLookup::LookupState prefixLookupState { };
 };
 
-template <typename Sink, ScriptType Type>
-class OutputWriter {
+/// Output generator specialized by ScriptType (Indic, Tamil, Latin) and output Sink.
+///
+/// Converts TokenUnit objects into target graphemes using the compiled ScriptWriterMap,
+/// applying script-specific orthographic rules, accent stripping, marker filtering, and vowel inferences.
+template <typename Sink, ScriptType Type> class OutputWriter {
 public:
   virtual ~OutputWriter() = default;
 
+  /// Writes a single TokenUnit cluster or raw string slice, with lookahead to the next token
+  /// for contextual orthography rules (such as anuswara assimilation or end-of-word checks).
   void writeTokenUnit(const TokenUnitOrString& tokenUnitOrString, const TokenUnitOrString& next) noexcept {
     if (HoldsString(tokenUnitOrString)) {
       push(GetString(tokenUnitOrString));
@@ -529,7 +609,6 @@ public:
     }
   }
 
-
   OutputWriter(const ScriptWriterMap& map, const TranslitOptions options, Sink& sink) noexcept
       : map(map)
       , options(options)
@@ -538,6 +617,8 @@ public:
   }
 
 protected:
+  /// Appends text to the destination sink, filtering out special disambiguation markers
+  /// unless RetainSpecialMarkers is configured.
   inline void push(const std::string_view& text) {
     if (options / TranslitOptions::RetainSpecialMarkers) {
       stripSpecialMarkers(text, buffer);
@@ -547,6 +628,8 @@ protected:
   }
 
 protected:
+  /// Writes a TokenUnit in standard Indic Brahmic scripts (Devanagari, Bengali, Telugu, etc.):
+  /// emits base consonant or vowel, attached matras, diacritics, and Vedic pitch accents.
   void writeIndicTokenUnit(const TokenUnit& tokenUnit) noexcept {
     if (options * TranslitOptions::ASCIINumerals && tokenUnit.leadToken.tokenType == TokenType::Symbol
         && tokenUnit.leadToken.idx < 10) {
@@ -566,6 +649,12 @@ protected:
     }
   }
 
+  /// Writes a TokenUnit in Tamil script, enforcing Tamil orthographic constraints:
+  /// - Distributes dental 'ந' at word/prefix start vs alveolar 'ன' word-medially/finally
+  /// - Applies optional TamilTraditional consonant replacements (e.g. ஸ -> ச)
+  /// - Places superscripts (¹²³⁴) after consonant or after matra as appropriate
+  /// - Inserts superscripts between the components of multi-part vowel marks
+  /// - Assimilates anuswara into following varga nasal stop
   void writeTamilTokenUnit(const TokenUnit& tokenUnit, const TokenUnitOrString& next) noexcept {
     bool endOfPrefix = prefixLookupState.value != std::nullopt;
     if (wordStart) {
@@ -577,11 +666,8 @@ protected:
     auto leadText = map.lookupChar(tokenUnit.leadToken);
 
     if (tokenUnit.leadToken.tokenType == TokenType::Consonant) {
-      // The consonant “ந்” will come in the middle of the words only.
-      // The consonant “ண்” and the consonant “ன்” will come at the middle and at the end of words
-      // When the consonant “ண்” becomes a uyir meiy it will not come in the beginning of any word
-      // When the consonant “ந்” becomes a uyir meiy it will only come at the beginning of the word. It will not come at
-      // the end of a any word When the consonant “ன்” becomes a uyir meiy it will not come in the beginning of any word
+      // Keep dental ந at word/prefix starts and within consonant clusters;
+      // use alveolar ன for medial syllables with vowels and final bare consonants.
       if (leadIdx == 19 /* ந */ && !(wordStart || endOfPrefix)
           && (tokenUnit.vowelMark.idx != Diacritic_Virama || isEndOfWord(next))) {
         leadText = "ன";
@@ -648,6 +734,8 @@ protected:
             || tokenUnit.leadToken.tokenType == TokenType::Vowel)) {
       auto lastChar = buffer.back().view();
       if (TamilSpecialChars.find(lastChar) != TamilSpecialChars.npos) {
+        // Place the accent before a trailing modifier. Copy the borrowed view
+        // before appending, since growing the sink can invalidate its storage.
         std::string lastCharStr { lastChar };
         buffer.pop_back();
         push(map.lookupChar(tokenUnit.accent));
@@ -658,6 +746,8 @@ protected:
     }
   }
 
+  /// Writes a TokenUnit in Latin transliteration:
+  /// an absent vowel mark emits the inherent 'a'; an explicit virama emits no vowel.
   void writeLatinTokenUnit(const TokenUnit& tokenUnit, const TokenUnitOrString& next) noexcept {
     auto& leadToken = tokenUnit.leadToken;
     push(map.lookupChar(leadToken.tokenType, leadToken.idx));
@@ -681,7 +771,11 @@ protected:
     }
   }
 
+  /// Assimilates anuswara (nasalization) to the class nasal of the following consonant
+  /// (e.g. ṅ before gutturals, ñ before palatals, ṇ before retroflex, n before dentals, m before labials).
   void inferAnuswara(const TokenUnitOrString& next) noexcept {
+    // Default to म when no varga can be inferred; each five-entry varga ends
+    // with its nasal. Tamil needs a pulli to keep that nasal vowel-free.
     size_t idx = 24 /* म */;
     if (next != endOfText && !HoldsString(next)) {
       auto tokenUnit = GetTokenUnit(next);
@@ -695,13 +789,15 @@ protected:
     }
   }
 
-  template <typename BufType>
-  void stripSpecialMarkers(const std::string_view& in, BufType& out) noexcept {
+  /// Strips internal non-ASCII disambiguation markers (e.g. 'ʽ', 'ʼ', 'ˮ', 'ˇ')
+  /// from the emitted text runs.
+  template <typename BufType> void stripSpecialMarkers(const std::string_view& in, BufType& out) noexcept {
     // Every marker byte is non-ASCII; preserve the substring predicate for
     // non-ASCII input, including the existing treatment of stray UTF-8 bytes.
     static_assert([] {
       for (const auto byte : SpecialMarkers)
-        if (static_cast<uint8_t>(byte) < 0x80) return false;
+        if (static_cast<uint8_t>(byte) < 0x80)
+          return false;
       return true;
     }());
     const char* ptr = in.data();
@@ -710,14 +806,16 @@ protected:
     while (ptr < end) {
       const auto ch = UtfUtils::nextUtf8Char(ptr);
       if (static_cast<uint8_t>(ch.front()) >= 0x80 && SpecialMarkers.find(ch) != SpecialMarkers.npos) {
-        if (ptr != run) out += std::string_view(run, ptr - run);
+        if (ptr != run)
+          out += std::string_view(run, ptr - run);
         ptr += ch.length();
         run = ptr;
       } else {
         ptr += ch.length();
       }
     }
-    if (ptr != run) out += std::string_view(run, ptr - run);
+    if (ptr != run)
+      out += std::string_view(run, ptr - run);
   }
 
   void setNasalConsonantSize() noexcept {
@@ -748,6 +846,9 @@ private:
   TamilPrefixLookup::LookupState prefixLookupState { };
 };
 
+/// Calculates an initial capacity estimation for the destination output buffer.
+/// When expanding Roman / Latin scripts into multi-byte Indic UTF-8 graphemes,
+/// reserves a 3x byte multiplier hint to avoid recurring reallocations.
 size_t outputCapacity(size_t bytes, const ScriptReaderMap& reader, const ScriptWriterMap& writer) noexcept {
   if (!reader.nonRoman && writer.getType() != ScriptType::Latin
       && bytes <= (std::numeric_limits<size_t>::max() - 1) / 3)
@@ -755,13 +856,17 @@ size_t outputCapacity(size_t bytes, const ScriptReaderMap& reader, const ScriptW
   return bytes + 1;
 }
 
+/// Typed transliteration driver: instantiates InputReader and OutputWriter specialized on Type,
+/// iterating through TokenUnits with 1-unit lookahead and passing them to the writer.
 template <typename Sink, ScriptType Type>
-bool transliterate_typed(const std::string_view& input, const ScriptReaderMap& readerMap, const ScriptWriterMap& writerMap,
-    TranslitOptions options, Sink& sink, const std::string_view& skipStart,
+bool transliterate_typed(const std::string_view& input, const ScriptReaderMap& readerMap,
+    const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
   InputReader reader(input, readerMap, options, skipStart, skipEnd);
 
   if (writerMap.getType() == ScriptType::Indic && !writerMap.isVedic()) {
+    // Keep source tokenization unchanged; only the writer suppresses accents
+    // that the target script cannot represent.
     options = options | TranslitOptions::IgnoreVedicAccents;
   }
   OutputWriter<Sink, Type> writer(writerMap, options, sink);
@@ -776,25 +881,37 @@ bool transliterate_typed(const std::string_view& input, const ScriptReaderMap& r
   return true;
 }
 
+/// Core transliteration dispatcher: routes execution to the appropriate OutputWriter specialization
+/// based on the target script's ScriptType (Indic, Tamil, or Latin).
 template <typename Sink>
-bool transliterate_core(const std::string_view& input, const ScriptReaderMap& readerMap, const ScriptWriterMap& writerMap,
-    TranslitOptions options, Sink& sink, const std::string_view& skipStart,
+bool transliterate_core(const std::string_view& input, const ScriptReaderMap& readerMap,
+    const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
   switch (writerMap.getType()) {
-    case ScriptType::Indic: return transliterate_typed<Sink, ScriptType::Indic>(input, readerMap, writerMap, options, sink, skipStart, skipEnd);
-    case ScriptType::Tamil: return transliterate_typed<Sink, ScriptType::Tamil>(input, readerMap, writerMap, options, sink, skipStart, skipEnd);
-    case ScriptType::Latin: return transliterate_typed<Sink, ScriptType::Latin>(input, readerMap, writerMap, options, sink, skipStart, skipEnd);
-    default: return false;
+    case ScriptType::Indic:
+      return transliterate_typed<Sink, ScriptType::Indic>(
+          input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+    case ScriptType::Tamil:
+      return transliterate_typed<Sink, ScriptType::Tamil>(
+          input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+    case ScriptType::Latin:
+      return transliterate_typed<Sink, ScriptType::Latin>(
+          input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+    default:
+      return false;
   }
 }
 
+/// Transliterates input into a heap-allocated TranslitBuffer via Utf8StringBuilder.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, TranslitBuffer& output, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
-  if (from == to) return false;
+  if (from == to)
+    return false;
   const auto* readerMap = getScriptReaderMap(from);
   const auto* writerMap = getScriptWriterMap(to);
-  if (!readerMap || !writerMap) return false;
+  if (!readerMap || !writerMap)
+    return false;
   Utf8StringBuilder sink;
   sink.reserve(outputCapacity(input.length(), *readerMap, *writerMap));
   if (!transliterate_core(input, *readerMap, *writerMap, options, sink, skipStart, skipEnd)) {
@@ -804,9 +921,11 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
   return true;
 }
 
+/// Zero-copy sink adaptor wrapping an existing std::string reference.
 struct StdStringSink {
   std::string& str;
-  StdStringSink(std::string& s) : str(s) {}
+  StdStringSink(std::string& s)
+      : str(s) { }
   void operator+=(char ch) { str += ch; }
   void operator+=(std::string_view view) { str += view; }
   size_t size() const { return str.size(); }
@@ -820,13 +939,16 @@ struct StdStringSink {
   }
 };
 
+/// Transliterates input directly into an existing std::string buffer.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, std::string& output, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
-  if (from == to) return false;
+  if (from == to)
+    return false;
   const auto* readerMap = getScriptReaderMap(from);
   const auto* writerMap = getScriptWriterMap(to);
-  if (!readerMap || !writerMap) return false;
+  if (!readerMap || !writerMap)
+    return false;
   // Append calls use the existing input-sized hint. Reserving extra prefix
   // capacity could invalidate a borrowed input view before the reader starts.
   output.reserve(output.empty() ? outputCapacity(input.length(), *readerMap, *writerMap) : input.length() + 1);
@@ -834,6 +956,7 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
   return transliterate_core(input, *readerMap, *writerMap, options, sink, skipStart, skipEnd);
 }
 
+/// Transliterates input and returns the result as a new std::string by value.
 std::string transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, const std::string_view& skipStart, const std::string_view& skipEnd) noexcept {
   std::string output;
@@ -861,7 +984,7 @@ char* CALL_CONV transliterate(const char* input, const char* from, const char* t
   }
 }
 
-/// returns a comma-separated list of scripts
+/// Checks concrete script names and aliases against the compiled name table.
 int CALL_CONV isScriptSupported(const char* script) { return inditrans::static_data::findScript(script) >= 0; }
 
 /// releaseBuffer

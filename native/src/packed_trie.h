@@ -4,9 +4,15 @@
 
 namespace inditrans::static_data {
 
-// A leaf contains a terminal ID in the dispatch word. Only branching states
-// and accepted prefixes with children need a node record.
+/// Specialized runtime view for packed static tries with compact state indices.
+///
+/// In this representation:
+/// - Direct terminal leaves encode the terminal ID directly into the transition word using leafBit,
+///   eliminating node and edge records for terminal leaves.
+/// - Linear chains without intermediate terminals are traversed via FlatPath (path compression).
+/// - Reachable branching states use compacted sequential indices.
 template <typename Index> struct PackedTrieView {
+  /// High bit of Index used to mark direct terminal leaf values.
   static constexpr Index leafBit = TrieView<uint8_t, Index>::leafBit;
   const FlatNode<Index>* nodes;
   const FlatEdge<uint8_t, Index>* edges;
@@ -17,6 +23,7 @@ template <typename Index> struct PackedTrieView {
   const Index* triples;
   const FlatPath<Index>* paths;
 
+  /// Looks up the next child state from @p state for transition byte @p key.
   constexpr Index next(Index state, uint8_t key) const noexcept {
     const auto& node = nodes[state];
     if (node.dense != 65535) {
@@ -48,6 +55,10 @@ template <typename Index> struct PackedTrieView {
 
   using Match = typename TrieView<uint8_t, Index>::Match;
 
+  /// Finds the longest matching prefix for input bytes in [begin, end).
+  ///
+  /// Evaluates accelerated 3-byte and 2-byte prefix tables first, then traverses
+  /// compact states, evaluating compressed paths and dispatching to @p select.
   template <bool FoldAscii = false, typename Select>
   [[gnu::always_inline]] constexpr Match match(const char* begin, const char* end, Select select) const noexcept {
     Match best { };
@@ -88,6 +99,8 @@ template <typename Index> struct PackedTrieView {
         value = select(node.value);
       if (value)
         best = { value, size_t(ptr - begin) };
+      // A longer spelling can belong to another source script. Only accepted
+      // terminals replace best, so a rejected extension preserves the shorter match.
       if (ptr == end)
         break;
       const auto pathLength = node.count >> 14;
@@ -124,8 +137,8 @@ template <typename Index> struct PackedTrieView {
   }
 };
 
-// Reachability includes every accelerated entry point and ordinary root
-// fallback. Compressed paths bypass nonterminal intermediate states.
+/// Computes reachability for all trie states from entry points (dense root, prefix tables, triple tables),
+/// assigning contiguous packed IDs to reachable branching nodes and pruning unreferenced states.
 template <auto const& Trie> consteval auto packedStates() {
   using Index = decltype(Trie.nodes[0].edges);
   constexpr auto leafBit = PackedTrieView<Index>::leafBit;
@@ -179,6 +192,8 @@ template <auto const& Trie> consteval auto packedState(auto encoded) {
   return ids[state];
 }
 
+/// Consteval pass that pools and deduplicates 64-slot and 256-slot dispatch pages across all nodes,
+/// drastically reducing the static ROM footprint of dense tables.
 template <auto const& Trie> consteval auto poolDispatch() {
   using Index = decltype(Trie.nodes[0].edges);
   struct Pool {
@@ -192,6 +207,8 @@ template <auto const& Trie> consteval auto poolDispatch() {
     std::array<Index, 256> converted { };
     for (size_t i = 0; i < input.size(); ++i)
       converted[i] = packedState<Trie>(input[i]);
+    // All pages use 64-slot alignment, so a continuation page may also reuse
+    // one quarter of an existing 256-slot byte dispatch table.
     for (size_t offset = 0; offset + input.size() <= pool.used; offset += 64) {
       bool same = true;
       for (size_t i = 0; i < input.size(); ++i)
@@ -236,6 +253,8 @@ template <auto const& Trie> consteval auto poolDispatch() {
 
 template <auto const& Trie> inline constexpr auto pooledDispatch = poolDispatch<Trie>();
 
+/// Consteval builder that packs a FlatTrie into the minimal Storage struct:
+/// retains reachable nodes, packs sparse edges, pools dispatch tables, and packs compressed paths.
 template <auto const& Trie> consteval auto packTrie() {
   using Index = decltype(Trie.nodes[0].edges);
   constexpr auto& ids = packedStateIds<Trie>;

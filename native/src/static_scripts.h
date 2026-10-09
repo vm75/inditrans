@@ -4,6 +4,8 @@
 #include "script_data.h"
 #include <optional>
 
+/// Resolves a TokenType and phoneme index to its UTF-8 string view from the pooled writer text.
+/// Out-of-bounds indices return an empty view; the category must be a valid TokenType.
 constexpr std::string_view ScriptWriterMap::lookupChar(TokenType type, size_t index) const noexcept {
   const auto category = static_cast<size_t>(type);
   assert(category < charMaps.size());
@@ -13,7 +15,13 @@ constexpr std::string_view ScriptWriterMap::lookupChar(TokenType type, size_t in
   return { inditrans::static_data::writerText.data() + static_cast<size_t>(entry.offset), entry.length };
 }
 
-enum class ReaderPolicy { Roman, FoldedRoman, Indic, Explicit };
+/// Parsing policy governing token matching from input text.
+enum class ReaderPolicy {
+  Roman, ///< Direct match in a Romanization trie (e.g. ITRANS, Harvard-Kyoto)
+  FoldedRoman, ///< Case-folded match in a Romanization trie (e.g. iast, iso)
+  Indic, ///< Match in the shared multi-script Indic trie using virtual Indic sequence mappings
+  Explicit ///< Match in the shared trie filtering for a specific explicit source script bitmask
+};
 
 namespace inditrans::static_data {
 // Build scratch payloads solely to derive prefix acceptance at compile time.
@@ -45,7 +53,7 @@ inline constexpr auto variantRanges = sourceField<&SourceTerminal::alternatives>
 // terminal record would add a dependent load on common Indic characters.
 template <auto Member> consteval auto branchField() {
   using Value = std::remove_cvref_t<decltype(sourceTerminals[0].*Member)>;
-  std::array<Value, packedReaderTrie0.nodes.size()> result {};
+  std::array<Value, packedReaderTrie0.nodes.size()> result { };
   constexpr auto& ids = packedStateIds<readerTrie0>;
   for (size_t i = 1; i < ids.size(); ++i)
     if (ids[i])
@@ -63,6 +71,7 @@ inline constexpr auto branchSequences = branchField<&SourceTerminal::sequence>()
 inline constexpr auto branchIndicSequences = branchField<&SourceTerminal::indicSequence>();
 inline constexpr auto branchVariants = branchField<&SourceTerminal::alternatives>();
 
+/// Selects sequence IDs for the virtual 'indic' reader, which imports base phonemes from Devanagari and other scripts.
 struct IndicSelector {
   constexpr uint16_t operator()(uint16_t terminal) const noexcept { return indicSequences[terminal]; }
   constexpr uint16_t operator()(uint16_t, ReaderIndex state) const noexcept { return branchIndicSequences[state]; }
@@ -78,6 +87,8 @@ inline constexpr auto sourcePrefixes = []() consteval {
     for (size_t j = 0; j < count; ++j)
       masks[i] |= sourceAlternatives[begin + j].sources;
   }
+  // Scratch children follow their parents. Walk backwards to collect every
+  // source accepting any terminal beneath each two-byte UTF-8 prefix.
   for (size_t i = masks.size() - 1; i > 0; --i)
     masks[scratch[i].parent] |= masks[i];
   std::array<uint32_t, 1024> result { };
@@ -90,12 +101,14 @@ inline constexpr auto sourcePrefixes = []() consteval {
   return result;
 }();
 
+/// Filters trie terminals by source script bitmask, returning primary sequence or alternative variants.
 struct SourceSelector {
   uint32_t mask;
   bool singleSource { };
 
   constexpr bool acceptsPrefix(uint8_t first, uint8_t second) noexcept {
     const auto accepted = sourcePrefixes[size_t(first - 0xe0) * 64 + (second & 0x3f)];
+    // A subtree owned by this source alone needs no per-terminal mask checks.
     singleSource = accepted == mask;
     return accepted & mask;
   }
@@ -120,17 +133,20 @@ struct SourceSelector {
 };
 }
 
+/// Source script descriptor providing lookup against static trie dictionaries.
 struct ScriptReaderMap {
   using Trie = inditrans::static_data::PackedTrieView<inditrans::static_data::ReaderIndex>;
-  const Trie* trie { };
-  uint32_t source { };
-  bool folded { };
-  bool nonRoman { };
+  const Trie* trie { }; ///< Pointer to static packed trie view
+  uint32_t source { }; ///< Source script bitmask (0 for virtual Indic or Roman schemes)
+  bool folded { }; ///< True if ASCII input should be case-folded
+  bool nonRoman { }; ///< True if source belongs to the shared Brahmic non-Roman trie
 
+  /// Output of a successful reader lookup.
   struct LookupResult {
-    uint16_t sequence { };
-    size_t matchLen { };
+    uint16_t sequence { }; ///< Encoded sequence ID (offset | (length << sequenceOffsetBits))
+    size_t matchLen { }; ///< Matched byte length in input stream
 
+    /// Decodes and returns the matched token sequence as a span of ScriptTokens.
     constexpr std::span<const ScriptToken> tokens() const noexcept {
       namespace data = inditrans::static_data;
       constexpr auto mask = (1u << data::sequenceOffsetBits) - 1;
@@ -138,6 +154,7 @@ struct ScriptReaderMap {
     }
   };
 
+  /// Looks up the longest matching token sequence starting at [begin, end) using the specified Policy.
   template <ReaderPolicy Policy>
   [[gnu::always_inline]] constexpr LookupResult lookupToken(const char* begin, const char* end) const noexcept {
     namespace data = inditrans::static_data;
@@ -146,8 +163,7 @@ struct ScriptReaderMap {
       const auto match = trie->match<Policy == ReaderPolicy::FoldedRoman>(begin, end, identity);
       return { match.value, match.length };
     } else if constexpr (Policy == ReaderPolicy::Indic) {
-      const auto match
-          = trie->match(begin, end, data::IndicSelector {});
+      const auto match = trie->match(begin, end, data::IndicSelector { });
       return { match.value, match.length };
     } else {
       const auto select = data::SourceSelector { source };
@@ -156,6 +172,7 @@ struct ScriptReaderMap {
     }
   }
 
+  /// Dispatches token lookup using the runtime policy configured on this ScriptReaderMap.
   constexpr LookupResult lookupToken(const char* begin, const char* end) const noexcept {
     if (nonRoman)
       return source ? lookupToken<ReaderPolicy::Explicit>(begin, end) : lookupToken<ReaderPolicy::Indic>(begin, end);
@@ -215,6 +232,8 @@ inline constexpr auto nameSlots = []() consteval {
   return slots;
 }();
 
+/// Resolves a script name or alias to its internal script index using the compile-time hash table.
+/// Performs full case-insensitive string comparison to handle any hash collisions. Returns -1 if not found.
 constexpr int findScript(std::string_view name) noexcept {
   auto slot = scriptNameHash(name) % nameSlots.size();
   while (auto id = nameSlots[slot]) {
@@ -228,6 +247,10 @@ constexpr int findScript(std::string_view name) noexcept {
 
 } // namespace inditrans::static_data
 
+/// Retrieves the immutable ScriptReaderMap descriptor for the specified source script.
+///
+/// Handles write-only checks (returns nullptr for e.g. "readablelatin"), the virtual "indic" script,
+/// script name alias resolution, and case-sensitive ASCII folding selection ("iso" vs "ISO").
 inline const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexcept {
   namespace data = inditrans::static_data;
   if (isWriteOnlyScript(script))
@@ -246,21 +269,31 @@ inline const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexce
   return &data::readers[size_t(id) * 2 + size_t(isCaseInsensitiveScripts(script))];
 }
 
+/// Retrieves the immutable ScriptWriterMap descriptor for the specified destination script.
+/// Returns nullptr if the script name is not recognized.
 inline const ScriptWriterMap* getScriptWriterMap(std::string_view script) noexcept {
   namespace data = inditrans::static_data;
   const auto id = data::findScript(script);
   return id < 0 ? nullptr : &data::writers[id];
 }
 
+/// Stateful recognizer for Tamil prefixes using a static token-key trie.
+///
+/// In Tamil orthography, certain grammatical prefixes affect consonant pronunciation and allophone choices
+/// across the prefix-stem boundary. This recognizer matches sequences of TokenUnits against the canonical prefixes.
 class TamilPrefixLookup {
 public:
+  /// Tracks the traversal state through the Tamil prefix token-key trie.
   struct LookupState {
-    uint16_t node { };
-    std::optional<bool> value { };
-    size_t matchLen { };
+    uint16_t node { }; ///< Current node index in the Tamil prefix trie
+    std::optional<bool> value { }; ///< Latched prefix match, retained until reset() at the next word
+    size_t matchLen { }; ///< Number of TokenUnits matched so far
     constexpr void reset() noexcept { *this = { }; }
   };
 
+  /// Advances prefix lookup by matching @p token against the current @p state.
+  /// Normalizes non-Tamil consonants to their primary Tamil base varga consonant.
+  /// Returns true if a valid transition was taken; false on miss or terminal leaf.
   constexpr bool lookup(const TokenUnit& token, LookupState& state) const noexcept {
     namespace data = inditrans::static_data;
     auto normalized = token;

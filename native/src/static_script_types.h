@@ -9,62 +9,72 @@
 
 namespace inditrans::static_data {
 
+/// Represents a bounded 16-bit half-open range [begin, begin + count).
 struct Range {
-  uint16_t begin;
-  uint16_t count;
+  uint16_t begin; ///< Starting index
+  uint16_t count; ///< Number of elements
 };
 
-// Empty alternative ranges never use their offset. Normalize it at compile
-// time while retaining the original direct-access runtime layout.
-consteval Range canonicalRange(Range range) {
-  return {range.count ? range.begin : uint16_t(0), range.count};
-}
+/// Normalizes empty ranges to begin=0 at compile time while preserving layout.
+consteval Range canonicalRange(Range range) { return { range.count ? range.begin : uint16_t(0), range.count }; }
 
-template <typename... Args>
-constexpr uint32_t scriptMask(Args... ids) noexcept {
+/// Generates a compile-time bitmask combining multiple script IDs.
+template <typename... Args> constexpr uint32_t scriptMask(Args... ids) noexcept {
   return ((1u << static_cast<uint32_t>(ids)) | ...);
 }
 
+/// Represents an alternative token sequence emitted when matching from specific source scripts.
 struct SourceVariant {
-  uint32_t sources { };
-  uint16_t sequence { };
+  uint32_t sources { }; ///< Bitmask of source scripts for which this variant applies
+  uint16_t sequence { }; ///< Token sequence ID emitted for matching sources
 
   constexpr SourceVariant() = default;
-  constexpr SourceVariant(uint32_t src, uint16_t seq) noexcept : sources(src), sequence(seq) {}
+  constexpr SourceVariant(uint32_t src, uint16_t seq) noexcept
+      : sources(src)
+      , sequence(seq) { }
 };
 
+/// Terminal trie record linking an input spelling to its primary and alternative token expansions.
 struct SourceTerminal {
-  uint32_t sources { };
-  uint16_t sequence { };
-  uint16_t indicSequence { };
-  Range alternatives { };
+  uint32_t sources { }; ///< Source scripts using the primary sequence; alternatives have their own masks
+  uint16_t sequence { }; ///< Primary emitted token sequence ID
+  uint16_t indicSequence { }; ///< Emitted sequence ID for the virtual Indic reader
+  Range alternatives { }; ///< Range of script-specific SourceVariant alternatives
 
   constexpr SourceTerminal() = default;
-  constexpr SourceTerminal(uint32_t src, uint16_t seq, uint16_t indicSeq = 0, Range alt = {}) noexcept
-      : sources(src), sequence(seq), indicSequence(indicSeq), alternatives(alt) {}
+  constexpr SourceTerminal(uint32_t src, uint16_t seq, uint16_t indicSeq = 0, Range alt = { }) noexcept
+      : sources(src)
+      , sequence(seq)
+      , indicSequence(indicSeq)
+      , alternatives(alt) { }
 };
 
+/// Descriptor mapping a script to its trie indices and source bitmask.
 struct ReaderInfo {
-  uint16_t graph;
-  uint16_t foldedGraph;
-  uint32_t source;
+  uint16_t graph; ///< Index of the standard reader trie
+  uint16_t foldedGraph; ///< Index of the case-folded reader trie
+  uint32_t source; ///< Bitmask identifying this script in shared multi-script tries
 };
 
+/// Associative mapping between a script name string and its internal script index.
 struct ScriptName {
-  std::string_view name;
-  uint16_t script;
+  std::string_view name; ///< Canonical name or alias
+  uint16_t script; ///< Internal script identifier
 };
 
+/// Compact representation of a target grapheme within the pooled UTF-8 writer text.
 struct WriterChar {
-  uint16_t offset { };
-  uint8_t length { };
+  uint16_t offset { }; ///< Byte offset into the shared writerText pool
+  uint8_t length { }; ///< Byte length of the target grapheme
 
   constexpr WriterChar() = default;
-  constexpr WriterChar(uint16_t off, uint8_t len) noexcept : offset(off), length(len) {}
+  constexpr WriterChar(uint16_t off, uint8_t len) noexcept
+      : offset(off)
+      , length(len) { }
 };
 
-template <size_t N>
-struct PackedUtf8 {
+/// Fixed-size compile-time UTF-8 string buffer for pooled text storage.
+template <size_t N> struct PackedUtf8 {
   char bytes[N] { };
 
   consteval PackedUtf8() = default;
@@ -81,10 +91,7 @@ struct PackedUtf8 {
   constexpr char operator[](size_t i) const noexcept { return bytes[i]; }
 };
 
-template <size_t N>
-consteval auto packUtf8(const char8_t (&str)[N]) {
-  return PackedUtf8<N>(str);
-}
+template <size_t N> consteval auto packUtf8(const char8_t (&str)[N]) { return PackedUtf8<N>(str); }
 
 struct Utf8Key {
   char bytes[16] { };
@@ -93,7 +100,8 @@ struct Utf8Key {
   consteval Utf8Key() = default;
 
   template <size_t M>
-  consteval Utf8Key(const char8_t (&str)[M]) : len(static_cast<uint8_t>(M - 1)) {
+  consteval Utf8Key(const char8_t (&str)[M])
+      : len(static_cast<uint8_t>(M - 1)) {
     static_assert(M <= 16, "Key exceeds capacity");
     for (size_t i = 0; i < M - 1; ++i)
       bytes[i] = static_cast<char>(str[i]);
@@ -141,8 +149,7 @@ constexpr ScriptToken exclusiveSymbol(uint8_t idx, ScriptType script = ScriptTyp
   return { TokenType::ExclusiveSymbol, idx, script };
 }
 
-template <size_t N>
-struct TokenSequence {
+template <size_t N> struct TokenSequence {
   std::array<ScriptToken, N> tokens { };
 
   constexpr size_t size() const noexcept { return N; }
@@ -156,13 +163,11 @@ struct TokenSequence {
   }
 };
 
-template <typename... Tokens>
-constexpr auto seq(Tokens... ts) noexcept {
+template <typename... Tokens> constexpr auto seq(Tokens... ts) noexcept {
   return TokenSequence<sizeof...(Tokens)> { { ts... } };
 }
 
-template <size_t TotalTokens, size_t TotalSequences>
-struct SequencePool {
+template <size_t TotalTokens, size_t TotalSequences> struct SequencePool {
   std::array<ScriptToken, TotalTokens> tokens { };
   std::array<Range, TotalSequences> ranges { };
   constexpr auto data() const noexcept { return tokens.data(); }
@@ -170,14 +175,11 @@ struct SequencePool {
   constexpr const ScriptToken& operator[](size_t i) const noexcept { return tokens[i]; }
 };
 
-template <typename T>
-struct SequenceLength;
+template <typename T> struct SequenceLength;
 
-template <size_t N>
-struct SequenceLength<TokenSequence<N>> : std::integral_constant<size_t, N> { };
+template <size_t N> struct SequenceLength<TokenSequence<N>> : std::integral_constant<size_t, N> { };
 
-template <typename... Seqs>
-consteval size_t sequencePoolTokenCount() {
+template <typename... Seqs> consteval size_t sequencePoolTokenCount() {
   const std::array<size_t, sizeof...(Seqs)> sizes { SequenceLength<std::remove_cvref_t<Seqs>>::value... };
   size_t total = 1;
   for (const auto size : sizes)
@@ -185,16 +187,14 @@ consteval size_t sequencePoolTokenCount() {
   return total;
 }
 
-template <typename... Seqs>
-consteval bool sequenceLengthsFit() {
+template <typename... Seqs> consteval bool sequenceLengthsFit() {
   for (const auto size : std::array<size_t, sizeof...(Seqs)> { SequenceLength<std::remove_cvref_t<Seqs>>::value... })
     if (size >= (1u << (16 - 12)))
       return false;
   return true;
 }
 
-template <typename F>
-constexpr void forEachSequence(F&) {}
+template <typename F> constexpr void forEachSequence(F&) { }
 
 template <typename F, typename First, typename... Rest>
 constexpr void forEachSequence(F& f, const First& first, const Rest&... rest) {
@@ -203,17 +203,17 @@ constexpr void forEachSequence(F& f, const First& first, const Rest&... rest) {
     forEachSequence(f, rest...);
 }
 
-template <typename... Seqs>
-consteval auto makeSequencePool(const Seqs&... seqs) {
+template <typename... Seqs> consteval auto makeSequencePool(const Seqs&... seqs) {
   constexpr size_t total = sequencePoolTokenCount<Seqs...>();
   static_assert(total <= (1u << 12), "Total sequence tokens exceeds offset capacity");
   static_assert(sequenceLengthsFit<Seqs...>(), "Sequence length exceeds length capacity");
   SequencePool<total, sizeof...(Seqs)> pool;
+  // Offset zero is reserved so an encoded sequence ID of zero means no match.
   pool.tokens[0] = ScriptToken(TokenType::Ignore, 255, ScriptType::Others);
   size_t offset = 1;
   size_t sequence = 0;
   const auto add = [&]<size_t N>(const TokenSequence<N>& s) {
-    pool.ranges[sequence++] = {static_cast<uint16_t>(offset), static_cast<uint16_t>(N)};
+    pool.ranges[sequence++] = { static_cast<uint16_t>(offset), static_cast<uint16_t>(N) };
     for (size_t i = 0; i < N; ++i)
       pool.tokens[offset++] = s[i];
   };
@@ -229,13 +229,17 @@ struct SemanticMapping {
   consteval SemanticMapping() = default;
 
   template <size_t N>
-  consteval SemanticMapping(Utf8Key k, const TokenSequence<N>& s) : key(k), count(static_cast<uint8_t>(N)) {
+  consteval SemanticMapping(Utf8Key k, const TokenSequence<N>& s)
+      : key(k)
+      , count(static_cast<uint8_t>(N)) {
     static_assert(N <= 4, "Sequence exceeds maximum mapping length");
     for (size_t i = 0; i < N; ++i)
       tokens[i] = s[i];
   }
 
-  consteval SemanticMapping(Utf8Key k, ScriptToken t) : key(k), count(1) {
+  consteval SemanticMapping(Utf8Key k, ScriptToken t)
+      : key(k)
+      , count(1) {
     tokens[0] = t;
   }
 };
@@ -274,7 +278,8 @@ struct TokenLookupTable {
 };
 
 template <size_t M>
-consteval std::array<ReaderEntry, M> deriveReaderEntries(const auto& seqTokens, unsigned seqBits, const std::array<SemanticMapping, M>& mappings) {
+consteval std::array<ReaderEntry, M> deriveReaderEntries(
+    const auto& seqTokens, unsigned seqBits, const std::array<SemanticMapping, M>& mappings) {
   TokenLookupTable table(seqTokens, seqBits);
   std::array<ReaderEntry, M> entries { };
   for (size_t m = 0; m < M; ++m) {
@@ -285,6 +290,8 @@ consteval std::array<ReaderEntry, M> deriveReaderEntries(const auto& seqTokens, 
       id = table.lookup(map.tokens[0]);
     }
     if (id == 0) {
+      // A mapping may reuse any contiguous token span, including part of an
+      // expansion; only canonical standalone IDs require sequence boundaries.
       for (size_t i = 1; i + N <= seqTokens.size(); ++i) {
         bool match = true;
         for (size_t j = 0; j < N; ++j) {
@@ -313,25 +320,28 @@ struct SourceEntry {
 };
 
 template <size_t N> consteval auto sourcePayloads(const std::array<SourceEntry, N>& mappings) {
-  std::array<SourceTerminal, N> result {};
-  for (size_t i = 0; i < N; ++i) result[i] = mappings[i].terminal;
+  std::array<SourceTerminal, N> result { };
+  for (size_t i = 0; i < N; ++i)
+    result[i] = mappings[i].terminal;
   return result;
 }
 
 template <size_t N> consteval auto sourceEntries(const std::array<SourceEntry, N>& mappings) {
   static_assert(N < 65536, "Source terminal IDs exceed capacity");
-  std::array<ReaderEntry, N> result {};
-  for (size_t i = 0; i < N; ++i) result[i] = {mappings[i].key, static_cast<uint16_t>(i + 1)};
+  std::array<ReaderEntry, N> result { };
+  for (size_t i = 0; i < N; ++i)
+    result[i] = { mappings[i].key, static_cast<uint16_t>(i + 1) };
   return result;
 }
 
-template <auto const& Text, size_t N>
-consteval WriterChar writerChar(const char8_t (&text)[N], uint16_t offset) {
+template <auto const& Text, size_t N> consteval WriterChar writerChar(const char8_t (&text)[N], uint16_t offset) {
   static_assert(N - 1 <= 255, "Writer length exceeds capacity");
-  if (size_t(offset) + N - 1 > Text.size()) std::abort();
+  if (size_t(offset) + N - 1 > Text.size())
+    std::abort();
   for (size_t i = 0; i < N - 1; ++i)
-    if (static_cast<uint8_t>(Text[offset + i]) != static_cast<uint8_t>(text[i])) std::abort();
-  const WriterChar result {offset, static_cast<uint8_t>(N - 1)};
+    if (static_cast<uint8_t>(Text[offset + i]) != static_cast<uint8_t>(text[i]))
+      std::abort();
+  const WriterChar result { offset, static_cast<uint8_t>(N - 1) };
   if (result.offset != offset || result.length != N - 1)
     std::abort();
   return result;
@@ -342,7 +352,8 @@ consteval auto sequenceLookup(const auto& pool, unsigned bits) {
   // Search sequence boundaries, so a token within an expansion cannot change
   // the canonical ID of a standalone token when source syntax changes.
   for (const auto range : pool.ranges) {
-    if (range.count != 1) continue;
+    if (range.count != 1)
+      continue;
     const auto token = pool.tokens[range.begin];
     const auto script = size_t(token.scriptType), type = size_t(token.tokenType), index = size_t(token.idx);
     if (script < 4 && type < 9 && index < 64 && result.single[script][type][index] == 0)
@@ -351,6 +362,15 @@ consteval auto sequenceLookup(const auto& pool, unsigned bits) {
   return result;
 }
 
+/// Packs the phonological components of a TokenUnit into a 64-bit integer key for trie lookup.
+///
+/// Bit layout:
+/// - Bits [0..3]:   leadToken.tokenType
+/// - Bits [4..11]:  leadToken.idx
+/// - Bits [12..13]: leadToken.scriptType
+/// - Bits [14..25]: vowelMark (tokenType + idx)
+/// - Bits [26..37]: otherDiacritic (tokenType + idx)
+/// - Bits [38..49]: accent (tokenType + idx)
 constexpr uint64_t prefixKey(const TokenUnit& unit) noexcept {
   const auto tokenKey
       = [](const Token& token) constexpr -> uint64_t { return uint64_t(token.tokenType) | (uint64_t(token.idx) << 4); };
@@ -358,10 +378,11 @@ constexpr uint64_t prefixKey(const TokenUnit& unit) noexcept {
       | (tokenKey(unit.otherDiacritic) << 26) | (tokenKey(unit.accent) << 38);
 }
 
+/// Sequence of packed 64-bit TokenUnit keys representing a Tamil prefix.
 struct TamilPrefixKey {
   using key_type = uint64_t;
-  uint64_t keys[4] { };
-  uint8_t count { };
+  uint64_t keys[4] { }; ///< Array of up to 4 packed TokenUnit keys
+  uint8_t count { }; ///< Number of valid keys in the sequence
 
   constexpr bool empty() const noexcept { return count == 0; }
   constexpr size_t size() const noexcept { return count; }
@@ -376,25 +397,20 @@ struct TamilPrefixKey {
   }
 };
 
+/// Entry in the static Tamil prefix lookup table.
 struct TamilEntry {
   using key_type = uint64_t;
-  TamilPrefixKey key;
-  uint16_t value { 1 };
+  TamilPrefixKey key; ///< Key sequence of packed TokenUnits
+  uint16_t value { 1 }; ///< Non-zero terminal indicator
 
-  constexpr bool operator<(const TamilEntry& other) const noexcept {
-    return key < other.key;
-  }
+  constexpr bool operator<(const TamilEntry& other) const noexcept { return key < other.key; }
 };
 
+/// Consteval function that tokenizes the canonical Tamil prefix strings using the compiled reader trie,
+/// constructs their packed TamilPrefixKey representations, and sorts them for static trie building.
 template <typename Trie, typename Terminals, typename Alternatives, typename Tokens, size_t N>
-consteval auto deriveTamilEntries(
-    const Trie& trie,
-    const Terminals& terminals,
-    const Alternatives& alternatives,
-    const Tokens& tokens,
-    unsigned seqBits,
-    uint32_t tamilSource,
-    const std::array<Utf8Key, N>& prefixes) {
+consteval auto deriveTamilEntries(const Trie& trie, const Terminals& terminals, const Alternatives& alternatives,
+    const Tokens& tokens, unsigned seqBits, uint32_t tamilSource, const std::array<Utf8Key, N>& prefixes) {
 
   const auto selector = [&](uint16_t, auto state) -> uint16_t {
     const auto termId = trie.nodes[state].value;
@@ -453,12 +469,14 @@ consteval auto deriveTamilEntries(
 
 } // namespace inditrans::static_data
 
-// All character-class views are populated by the generator, not bound on use.
+/// Target script descriptor defining output character mappings, script family, and Vedic capability.
+///
+/// Contains compile-time spans into the shared UTF-8 writer text pool for each TokenType category.
+/// The 9th slot is empty, allowing TokenType::Ignore lookups to safely return empty views without branching.
 struct ScriptWriterMap {
-  ScriptType scriptType;
-  bool vedic;
-  // The ninth, empty slot handles Ignore without a branch on every write.
-  std::array<std::span<const inditrans::static_data::WriterChar>, 9> charMaps;
+  ScriptType scriptType; ///< Script family (Indic, Tamil, Latin, Others)
+  bool vedic; ///< True if this script natively supports Vedic accent marks
+  std::array<std::span<const inditrans::static_data::WriterChar>, 9> charMaps; ///< Grapheme spans indexed by TokenType
 
   constexpr ScriptType getType() const noexcept { return scriptType; }
   constexpr bool isVedic() const noexcept { return vedic; }

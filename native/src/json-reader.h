@@ -1,3 +1,5 @@
+#pragma once
+
 #include "utf.h"
 #include <algorithm>
 #include <cstring>
@@ -9,13 +11,46 @@
 
 struct JsonObject;
 struct JsonArray;
+
+/**
+ * @brief Variant representing any primitive or composite JSON value.
+ *
+ * Types supported:
+ * - `void*`: Represents `null` (`nullptr`).
+ * - `std::string`: JSON string.
+ * - `bool`: JSON boolean (`true` / `false`).
+ * - `int64_t`: JSON integer numeral.
+ * - `long double`: JSON floating point numeral.
+ * - `JsonObject`: JSON object (key-value list).
+ * - `JsonArray`: JSON array (ordered list of values).
+ */
 using JsonValue = std::variant<void*, std::string, bool, int64_t, long double, JsonObject, JsonArray>;
+
+/**
+ * @brief Ordered list of JSON values representing a JSON array.
+ */
 struct JsonArray : public std::vector<JsonValue> { };
+
+/**
+ * @brief Ordered key-value list representing a JSON object.
+ *
+ * Backed by `std::vector<std::pair<std::string, JsonValue>>` to preserve insertion order.
+ */
 struct JsonObject : public std::vector<std::pair<std::string, JsonValue>> {
+  /**
+   * @brief Retrieves the value for a given key cast to type `T`.
+   *
+   * Performs a linear scan over the object entries. If found and the underlying variant
+   * holds type `T`, returns the unwrapped value; otherwise returns `std::nullopt`.
+   *
+   * @tparam T Expected C++ type matching an alternative in `JsonValue`.
+   * @param key Property name.
+   * @return Extracted value if present and matching type, otherwise `std::nullopt`.
+   */
   template <typename T> std::optional<T> get(const std::string_view& key) const noexcept {
     for (const auto& entry : *this) {
       if (entry.first == key) {
-        std::optional<T> res {};
+        std::optional<T> res { };
         if (std::holds_alternative<T>(entry.second)) {
           res = std::get<T>(entry.second);
         }
@@ -26,11 +61,26 @@ struct JsonObject : public std::vector<std::pair<std::string, JsonValue>> {
   }
 };
 
+/**
+ * @brief Lightweight, zero-dependency recursive-descent JSON parser.
+ *
+ * Supports standard JSON primitives, nested objects/arrays, Unicode escape sequences
+ * (`\uXXXX` decoded into UTF-8), and C/C++ style comments (both line comments and block comments).
+ */
 class JsonReader {
 public:
+  /**
+   * @brief Parses a JSON string into a structured JsonValue.
+   *
+   * @tparam T String container type providing `data()` and `length()`.
+   * @param str The raw JSON string or string view.
+   * @return Parsed JsonValue on success; std::nullopt on parse error.
+   */
   template <typename T> static std::optional<JsonValue> parseJson(const T& str) noexcept {
     auto start = str.data(), end = start + str.length();
     auto val = parseValue(start, end);
+    // parseValue uses an empty string as its error sentinel. This also rejects
+    // valid top-level strings; nested strings are still retained in containers.
     if (std::holds_alternative<std::string>(val)) {
       return std::nullopt;
     }
@@ -39,6 +89,16 @@ public:
 
 private:
   using stringpos = const char*;
+
+  /**
+   * @brief Parses the next JSON value (primitive, array, or object) from the input buffer.
+   *
+   * Recursively consumes tokens starting at `curr` up to `end`.
+   *
+   * @param curr In-out reference to character cursor in the input text.
+   * @param end Pointer past the end of the input buffer.
+   * @return Parsed JsonValue variant representing array, object, string, number, bool, or null.
+   */
   static JsonValue parseValue(stringpos& curr, stringpos end) noexcept {
     if (!skipSpaces(curr, end)) {
       return "";
@@ -170,7 +230,14 @@ private:
     return "";
   }
 
-  // Skip all chars until the delimitters (included)
+  /**
+   * @brief Advances cursor until any character matching `delims` is encountered (inclusive).
+   *
+   * @param curr In-out reference to character cursor in the input buffer.
+   * @param end Pointer past the end of the input buffer.
+   * @param delims String view of delimiter characters.
+   * @return The matched delimiter character, or 0 if end of buffer was reached.
+   */
   static char skipUntil(stringpos& curr, stringpos end, std::string_view delims) noexcept {
     while (curr < end) {
       auto ch = *curr++;
@@ -182,6 +249,13 @@ private:
     return 0;
   }
 
+  /**
+   * @brief Skips whitespace characters and C/C++ style comments (`//` and block comments).
+   *
+   * @param curr In-out reference to character cursor.
+   * @param end Pointer past the end of the input buffer.
+   * @return true if non-whitespace character was reached before `end`; false if EOF reached.
+   */
   static bool skipSpaces(stringpos& curr, stringpos end) noexcept {
     static constexpr std::string_view Spaces { " \t\n\r" };
     while (curr < end) {
@@ -208,8 +282,19 @@ private:
     return curr < end;
   }
 
-  // Reads all chars until the delimitters (excluded).
-  // If trim is true, skips leading whitespaces and trailing whitespaces and comma
+  /**
+   * @brief Reads characters until any delimiter is encountered (exclusive).
+   *
+   * Decodes JSON escape sequences in string literals, including:
+   * - Single-character escapes (`\t`, `\r`, `\n`, `\"`, `\\`, etc.)
+   * - 4-digit hexadecimal Unicode codepoints (`\uXXXX`) encoded into UTF-8.
+   *
+   * @param curr In-out reference to character cursor.
+   * @param end Pointer past the end of the input buffer.
+   * @param delims String view of delimiter characters that terminate reading.
+   * @param inString True if parsing inside a string literal.
+   * @return Decoded string contents.
+   */
   static std::string readUntil(
       stringpos& curr, stringpos end, std::string_view delims, bool inString = false) noexcept {
     std::string text;

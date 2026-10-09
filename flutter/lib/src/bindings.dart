@@ -25,7 +25,18 @@ class InditransBindings {
     ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup,
   ) : _lookup = lookup;
 
-  /// transliterate text from one script to another
+  /// Transliterates null-terminated UTF-8 text from source script to target script.
+  ///
+  /// Allocates a new null-terminated C string on the heap containing the transliterated result.
+  /// The caller assumes ownership of the returned pointer and MUST release it using releaseBuffer().
+  ///
+  /// @param text The null-terminated UTF-8 input string.
+  /// @param from Source script identifier or alias (e.g. "itrans", "devanagari").
+  /// @param to Target script identifier or alias (e.g. "bengali", "iast").
+  /// @param options Bitwise combination of TranslitOptions flags.
+  /// @param skipStart Delimiter marking the start of protected text blocks (e.g. "##").
+  /// @param skipEnd Delimiter marking the end of protected text blocks (e.g. "##").
+  /// @return Pointer to heap-allocated result string, or nullptr on failure.
   ffi.Pointer<ffi.Uint8> transliterate(
     ffi.Pointer<ffi.Uint8> text,
     ffi.Pointer<ffi.Uint8> from,
@@ -62,7 +73,13 @@ class InditransBindings {
           ffi.Pointer<ffi.Uint8>
         )>();
 
-  /// returns if the given script is supported
+  /// Checks whether a script identifier or alias is physically supported by the engine.
+  ///
+  /// Note: Virtual sources such as "indic" are handled dynamically by wrapper layers;
+  /// this function returns non-zero only if a concrete script dictionary exists for the name.
+  ///
+  /// @param script The script identifier or alias to query (case-insensitive).
+  /// @return Non-zero (1) if supported, 0 otherwise.
   int isScriptSupported(
     ffi.Pointer<ffi.Uint8> script,
   ) {
@@ -80,7 +97,11 @@ class InditransBindings {
           ffi.Pointer<ffi.Uint8>
         )>();
 
-  /// free up the memory allocated by the library
+  /// Deallocates memory previously allocated by transliterate().
+  ///
+  /// Must be called across the FFI/ABI boundary for every non-null buffer returned by transliterate().
+  ///
+  /// @param buffer Pointer to heap buffer to free (safe to pass nullptr).
   void releaseBuffer(
     ffi.Pointer<ffi.Uint8> buffer,
   ) {

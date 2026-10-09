@@ -109,7 +109,8 @@ def render(functions: list[dict]) -> str:
 
     for function in functions:
         args = function["args"]
-        lines += ["", f"  /// {function['comment']}", f"  {function['dart']} {function['name']}("]
+        lines += ["", *(f"  /// {line}" if line else "  ///" for line in function["comment"].splitlines()),
+                  f"  {function['dart']} {function['name']}("]
         lines.extend(f"    {arg['dart']} {arg['name']}," for arg in args)
         lines += ["  ) {", f"    return _{function['name']}({', '.join(arg['name'] for arg in args)});", "  }"]
 

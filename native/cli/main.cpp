@@ -15,6 +15,8 @@
 using InditransLogger = void(const std::string&);
 extern InditransLogger* inditransLogger;
 
+/// Parses a delimited string of option names (e.g. "TamilTraditional,ASCIINumerals")
+/// into a bitmask of TranslitOptions flags.
 TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
   Utf8String str(optStr);
   static constexpr std::array<std::string_view, static_cast<size_t>(MaxTranslitOptions)> optionStrings = {
@@ -41,11 +43,14 @@ TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
   return mask;
 }
 
+/// Parses command line arguments against a specification string (e.g. "-f:,-t:,-o:,-h,--help").
+/// Colons indicate flags that require an argument.
+/// Returns a vector where options precede "--" and positional arguments follow "--".
 std::vector<std::string> processArgs(std::string parseOptions, int argc, char** argv) {
   auto optString = "," + parseOptions + ",";
   bool stopParsing = false;
-  std::vector<std::string> options {};
-  std::vector<std::string> result {};
+  std::vector<std::string> options { };
+  std::vector<std::string> result { };
 
   int i = 1;
   while (i < argc) {
@@ -75,6 +80,7 @@ std::vector<std::string> processArgs(std::string parseOptions, int argc, char** 
   return options;
 }
 
+/// Prints CLI usage instructions and options summary to stdout.
 static void printUsage(const char* prog) {
   std::cout << "Usage: " << prog << " [options] [text]\n"
             << "Options:\n"
