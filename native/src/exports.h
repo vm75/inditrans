@@ -67,8 +67,8 @@ enum TranslitOptions {
 /// @param from Source script identifier or alias (e.g. "itrans", "devanagari").
 /// @param to Target script identifier or alias (e.g. "bengali", "iast").
 /// @param options Bitwise combination of TranslitOptions flags.
-/// @param skipStart Delimiter marking the start of protected text blocks (e.g. "##").
-/// @param skipEnd Delimiter marking the end of protected text blocks (e.g. "##").
+/// @param skipStart Delimiter marking the start of protected text blocks; empty defaults to "##".
+/// @param skipEnd Delimiter marking the end of protected text blocks; empty defaults to "##".
 /// @return Pointer to heap-allocated result string, or nullptr on failure.
 ext_def(char*) transliterate(const char* text, const char* from, const char* to, unsigned long options,
     const char* skipStart, const char* skipEnd);

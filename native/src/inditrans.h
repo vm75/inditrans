@@ -41,8 +41,8 @@ using TranslitBuffer = std::unique_ptr<char, TranslitBufferDeleter>;
 /// @param to Target script identifier or alias (e.g. "bengali", "iast").
 /// @param options Transliteration flags controlling orthography, Vedic accents, etc.
 /// @param out Output TranslitBuffer receiving the newly allocated null-terminated result.
-/// @param skipStart Delimiter marking the beginning of protected/untransliterated blocks (default: "##").
-/// @param skipEnd Delimiter marking the end of protected/untransliterated blocks (default: "##").
+/// @param skipStart Delimiter marking the beginning of protected blocks; empty defaults to "##".
+/// @param skipEnd Delimiter marking the end of protected blocks; empty defaults to "##".
 /// @return True if transliteration succeeded; false if script names were identical or unrecognized.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, TranslitBuffer& out, const std::string_view& skipStart = "##",
@@ -57,8 +57,8 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
 /// @param to Target script identifier or alias.
 /// @param options Transliteration flags controlling orthography, Vedic accents, etc.
 /// @param out Reference to std::string receiving the transliterated text.
-/// @param skipStart Delimiter marking the beginning of protected blocks (default: "##").
-/// @param skipEnd Delimiter marking the end of protected blocks (default: "##").
+/// @param skipStart Delimiter marking the beginning of protected blocks; empty defaults to "##".
+/// @param skipEnd Delimiter marking the end of protected blocks; empty defaults to "##".
 /// @return True on success; false if script names were identical or unrecognized.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, std::string& out, const std::string_view& skipStart = "##",
@@ -70,8 +70,8 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
 /// @param from Source script identifier or alias.
 /// @param to Target script identifier or alias.
 /// @param options Transliteration flags controlling orthography, Vedic accents, etc.
-/// @param skipStart Delimiter marking the beginning of protected blocks (default: "##").
-/// @param skipEnd Delimiter marking the end of protected blocks (default: "##").
+/// @param skipStart Delimiter marking the beginning of protected blocks; empty defaults to "##".
+/// @param skipEnd Delimiter marking the end of protected blocks; empty defaults to "##".
 /// @return The transliterated string on success, or an empty string on failure.
 std::string transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, const std::string_view& skipStart = "##", const std::string_view& skipEnd = "##") noexcept;
