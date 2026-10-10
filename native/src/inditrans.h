@@ -22,6 +22,16 @@ inline constexpr TranslitOptions operator|(TranslitOptions x, TranslitOptions y)
   return static_cast<TranslitOptions>(static_cast<uint64_t>(x) | static_cast<uint64_t>(y));
 }
 
+/// Tests whether the transliteration option flag @p val is set within @p mask.
+inline constexpr bool operator*(const TranslitOptions& mask, const TranslitOptions& val) noexcept {
+  return (mask & val) == val;
+}
+
+/// Tests whether the transliteration option flag @p val is NOT set within @p mask.
+inline constexpr bool operator/(const TranslitOptions& mask, const TranslitOptions& val) noexcept {
+  return (mask & val) != val;
+}
+
 /// Parses a delimited string of option names (e.g. "TamilTraditional,IgnoreVedicAccents")
 /// into a bitmask of TranslitOptions flags.
 TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept;
