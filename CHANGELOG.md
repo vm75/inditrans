@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.13.1]
+- **Transliteration features**:
+  - Adopt uniform phonemic mapping for ITRANS vowels adhering to the [ITRANS specification](https://www.aczoom.com/itrans/): `e`/`o` represent short vowels (Kannada `ಎ`/`ಒ`, Devanagari `ऎ`/`ऒ`), `E`/`O` represent long vowels (`ಏ`/`ಓ`, `ए`/`ओ`), with `^e`/`^o` supported as aliases (fixes #37).
+
 ## [0.13.0]
 - **Transliteration features**:
   - Add `skipStart` and `skipEnd` delimiter support to allow passthrough of protected regions (defaults to `##...##`).

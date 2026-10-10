@@ -386,5 +386,35 @@
         "text": "हद्द बच्चिओ कद्द"
       }
     ]
+  },
+  {
+    "description": "ITRANS short and long e/o across scripts",
+    "text": "te tE to tO",
+    "script": "itrans",
+    "targets": [
+      { "script": "devanagari", "text": "तॆ ते तॊ तो" },
+      { "script": "kannada", "text": "ತೆ ತೇ ತೊ ತೋ" },
+      { "script": "telugu", "text": "తె తే తొ తో" },
+      { "script": "tamil", "text": "தெ தே தொ தோ" },
+      { "script": "malayalam", "text": "തെ തേ തൊ തോ" }
+    ]
+  },
+  {
+    "description": "ITRANS independent vowels e/E/o/O and ^e/^o aliases",
+    "text": "e E o O ^e ^o",
+    "script": "itrans",
+    "targets": [
+      { "script": "devanagari", "text": "ऎ ए ऒ ओ ऎ ऒ" },
+      { "script": "kannada", "text": "ಎ ಏ ಒ ಓ ಎ ಒ" }
+    ]
+  },
+  {
+    "description": "ITRANS issue 37 tere bina and tErE bina",
+    "text": "tere bina, tErE bina, t^er^e bina",
+    "script": "itrans",
+    "targets": [
+      { "script": "kannada", "text": "ತೆರೆ ಬಿನ, ತೇರೇ ಬಿನ, ತೆರೆ ಬಿನ" },
+      { "script": "devanagari", "text": "तॆरॆ बिन, तेरे बिन, तॆरॆ बिन" }
+    ]
   }
 ]

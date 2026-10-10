@@ -22,9 +22,16 @@ Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
 [IAST](https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration) ·
 [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) ·
 [ISO 15919](https://en.wikipedia.org/wiki/ISO_15919) ·
-[ITRANS](https://en.wikipedia.org/wiki/ITRANS) ·
+[ITRANS](https://www.aczoom.com/itrans/) ·
 [TITUS](https://titus.uni-frankfurt.de/indexe.htm) ·
 ReadableLatin
+
+### ITRANS notation notes
+
+`inditrans` implements uniform phonemic vowel mapping adhering to the [ITRANS specification](https://www.aczoom.com/itrans/):
+- **Short vowels**: `e` and `o` encode short vowels (e.g. Kannada `ಎ` / `ೆ`, Telugu `ఎ` / `ె`, Tamil `எ` / `ெ`, Malayalam `എ` / `െ`, Devanagari `ऎ` / `ॆ`). `^e` and `^o` remain supported as aliases.
+- **Long vowels**: `E` and `O` encode long vowels (e.g. Kannada `ಏ` / `ೇ`, Telugu `ఏ` / `ే`, Tamil `ஏ` / `ே`, Malayalam `ഏ` / `േ`, Devanagari `ए` / `े`).
+- Examples: `te` $\to$ `तॆ` / `ತೆ`, `tE` $\to$ `ते` / `ತೇ`; `tere bina` $\to$ `ತೆರೆ ಬಿನ` (Kannada), `tErE bina` $\to$ `ತೇರೇ ಬಿನ` (Kannada) / `तेरे बिन` (Devanagari).
 
 ## Requirements
 

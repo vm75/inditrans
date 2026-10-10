@@ -22,7 +22,7 @@ Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
 [IAST](https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration) ·
 [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) ·
 [ISO 15919](https://en.wikipedia.org/wiki/ISO_15919) ·
-[ITRANS](https://en.wikipedia.org/wiki/ITRANS) ·
+[ITRANS](https://www.aczoom.com/itrans/) ·
 [TITUS](https://titus.uni-frankfurt.de/indexe.htm) ·
 [Harvard-Kyoto](https://en.wikipedia.org/wiki/Harvard-Kyoto) ·
 [Velthuis](https://en.wikipedia.org/wiki/Velthuis) ·
@@ -30,6 +30,17 @@ Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
 [WX](https://en.wikipedia.org/wiki/WX_notation)
 
 **Custom Latin notations:** ReadableLatin
+
+### ITRANS notation notes
+
+`inditrans` implements uniform phonemic vowel mapping adhering to the [ITRANS specification](https://www.aczoom.com/itrans/):
+- **Short vowels**: `e` and `o` encode short vowels across all scripts (e.g. Kannada `ಎ` / `ೆ`, Telugu `ఎ` / `ె`, Tamil `எ` / `ெ`, Malayalam `എ` / `െ`, Devanagari `ऎ` / `ॆ`). The legacy markers `^e` and `^o` remain supported as aliases for `e` and `o`.
+- **Long vowels**: `E` and `O` encode long vowels (e.g. Kannada `ಏ` / `ೇ`, Telugu `ఏ` / `ే`, Tamil `ஏ` / `ே`, Malayalam `ഏ` / `േ`, Devanagari `ए` / `े`). `ee` and `oo` also continue to represent long vowels where standard.
+- **Examples**:
+  - `te` $\to$ `तॆ` / `ತೆ` (short *e*); `tE` $\to$ `ते` / `ತೇ` (long *e*)
+  - `to` $\to$ `तॊ` / `ತೊ` (short *o*); `tO` $\to$ `तो` / `ತೋ` (long *o*)
+  - `tere bina` $\to$ `ತೆರೆ ಬಿನ` (Kannada), `तॆरॆ बिन` (Devanagari)
+  - `tErE bina` $\to$ `ತೇರೇ ಬಿನ` (Kannada), `तेरे बिन` (Devanagari)
 
 ## Distributions
 

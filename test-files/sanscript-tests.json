@@ -25,7 +25,7 @@
       },
       {
         "script": "itrans",
-        "text": "a aa i ee u uu R^i R^I L^i L^I e ai o au"
+        "text": "a aa i ee u uu R^i R^I L^i L^I E ai O au"
       },
       {
         "script": "optitrans",
@@ -87,7 +87,7 @@
       },
       {
         "script": "itrans",
-        "text": "ka khaa gi ghee ~Nu chuu chhR^i jR^I jhL^i ~nL^I Te Thai Do Dhau NaM taH th"
+        "text": "ka khaa gi ghee ~Nu chuu chhR^i jR^I jhL^i ~nL^I TE Thai DO Dhau NaM taH th"
       },
       {
         "script": "optitrans",
@@ -397,7 +397,7 @@
       },
       {
         "script": "itrans",
-        "text": "dharmakShetre kurukShetre samavetaa yuyutsavaH ."
+        "text": "dharmakShEtrE kurukShEtrE samavEtaa yuyutsavaH ."
       },
       {
         "script": "optitrans",
