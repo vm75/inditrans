@@ -48,6 +48,9 @@
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
   },
+  "resolutions": {
+    "handlebars": "^4.7.10"
+  },
   "keywords": [
     "Transliterate",
     "Transliterator",
