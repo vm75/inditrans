@@ -127,6 +127,10 @@ make perf-report
 - The single consolidated changelog is authoritative in root `CHANGELOG.md`.
 - Releases are tag-based (`vX.Y.Z`), validated by `tool/verify_release.py`, and
   published via `.github/workflows/release.yml` with pub.dev OIDC and npm trusted publishing.
+- For pub.dev, `dart-lang/setup-dart@v1` must initialize OIDC credentials even
+  when Flutter is installed with `subosito/flutter-action`. For npm, do not set
+  `registry-url` in `actions/setup-node` in the Yarn-based release job: its
+  token-placeholder `.npmrc` breaks dependency installation without a token.
 - In the release build job, build native libraries before Emscripten setup to avoid
   its `cmake/` directory interfering with native build command lookup.
 - The normal `.github/workflows/ci.yml` workflow runs fast Linux-based checks for

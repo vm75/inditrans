@@ -152,6 +152,11 @@ jobs:
           name: inditrans-wasm
           path: flutter/assets
 
+      # The official Dart action obtains pub.dev OIDC credentials for this job.
+      # Flutter setup alone does not configure pub.dev publishing authentication.
+      - name: Configure pub.dev OIDC
+        uses: dart-lang/setup-dart@v1
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -167,6 +172,7 @@ jobs:
         run: cd flutter && flutter pub publish --dry-run
 
       - name: Publish to pub.dev (OIDC)
+        timeout-minutes: 10
         run: cd flutter && flutter pub publish --force
 
   publish-npm:
@@ -202,7 +208,8 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
+          # npm defaults to the public registry. Setting registry-url creates
+          # a token-based .npmrc that makes Yarn install fail without a token.
           package-manager-cache: false
 
       - name: Install dependencies

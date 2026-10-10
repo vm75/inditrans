@@ -301,6 +301,24 @@ class WorkflowIntegrityTest(unittest.TestCase):
         self.assertIsNotNone(gh_match)
         self.assertIn("contents: write", gh_match.group(0))
 
+    def test_pub_publish_configures_oidc_before_flutter(self):
+        """Flutter setup alone does not provision pub.dev OIDC credentials."""
+        pub_job = self.release_yaml.split("  publish-pub:", 1)[1].split("  publish-npm:", 1)[0]
+        self.assertIn("environment: pub.dev", pub_job)
+        self.assertLess(
+            pub_job.index("uses: dart-lang/setup-dart@v1"),
+            pub_job.index("uses: subosito/flutter-action@v2"),
+        )
+        self.assertIn("flutter pub publish --force", pub_job)
+
+    def test_npm_install_does_not_require_token_config(self):
+        """setup-node registry-url creates an .npmrc token placeholder that breaks Yarn."""
+        npm_job = self.release_yaml.split("  publish-npm:", 1)[1].split("  github-release:", 1)[0]
+        self.assertIn("environment: npm", npm_job)
+        self.assertNotIn("registry-url:", npm_job)
+        self.assertIn("yarn install --frozen-lockfile", npm_job)
+        self.assertIn("npm publish --access=public", npm_job)
+
     def test_no_hardcoded_npm_tokens_in_release_workflow(self):
         """Release workflow uses OIDC trusted publishing; no long-lived token secret is referenced."""
         self.assertNotIn("secrets.NPM_TOKEN", self.release_yaml)

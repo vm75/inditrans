@@ -80,7 +80,7 @@ The tag-triggered release workflow strictly enforces the canonical path:
    - Deterministically verifies all binary artifacts exist and are non-empty.
    - Performs fail-closed publish dry-runs (`flutter pub publish --dry-run` and `npm pack --dry-run`).
 4. **`publish`**:
-   - **`publish-pub`**: Publishes package to [pub.dev](https://pub.dev/packages/inditrans) using pub.dev Automated Publishing via GitHub Actions OIDC (`id-token: write`, `flutter pub publish --force`).
+   - **`publish-pub`**: Publishes package to [pub.dev](https://pub.dev/packages/inditrans) using pub.dev Automated Publishing via GitHub Actions OIDC (`id-token: write`, `dart-lang/setup-dart@v1` to initialize credentials, then `flutter pub publish --force`).
    - **`publish-npm`**: Publishes package to [npm](https://www.npmjs.com/package/@vm75/inditrans) using npm Trusted Publishing via GitHub Actions OIDC (`id-token: write`, `npm publish --access=public`).
 5. **`github-release`**:
    - Creates a GitHub Release for tag `vX.Y.Z` using `gh release create`.
@@ -106,16 +106,16 @@ To verify the release pipeline safely without creating a real release or publish
 
 ## Security and registry configuration
 
-- **pub.dev (OIDC Trusted Publishing)**:
-  - Enabled via the pub.dev package Admin settings under **Automated publishing** -> **Publishing from GitHub Actions**.
-  - Repository is configured with GitHub workflow `.github/workflows/release.yml` and environment `pub.dev`.
-  - Pub requires `id-token: write` permission to exchange an OpenID Connect token with pub.dev, eliminating the need for long-lived credentials.
-- **npm (OIDC Trusted Publishing)**:
-  - Configured on npmjs.com under package settings for `@vm75/inditrans` under **Publishing Access** -> **Trusted Publishing**.
-  - Configured with provider GitHub Actions, owner/repository `vm75/inditrans`, workflow `.github/workflows/release.yml`, and environment `npm`.
-  - The release job uses GitHub Actions OIDC (`id-token: write`) and `npm publish --access=public`; no long-lived `NPM_TOKEN` or `NODE_AUTH_TOKEN` is required.
+- **pub.dev (GitHub Actions OIDC)**:
+  - In the [inditrans package Admin settings](https://pub.dev/packages/inditrans/admin), enable **Publishing from GitHub Actions**: repository `vm75/inditrans`, tag pattern `v{{version}}`, and publishing from `push` events.
+  - Enable **Require GitHub Actions environment**, naming it `pub.dev`, to match `publish-pub.environment` in `.github/workflows/release.yml`. The `workflow_dispatch` option is not needed for this tag-only workflow.
+  - The job needs `id-token: write` **and** `dart-lang/setup-dart@v1` to acquire pub.dev OIDC credentials before `flutter pub publish --force`. Setting up Flutter alone can fall back to interactive OAuth and hang the CI job.
+- **npm (GitHub Actions OIDC)**:
+  - In [@vm75/inditrans package settings](https://www.npmjs.com/package/@vm75/inditrans), configure a GitHub Actions trusted publisher with owner `vm75`, repository `inditrans`, workflow filename **`release.yml`** (not the full path), and environment `npm`.
+  - **Enable `Allow npm publish`**, since the release workflow publishes directly with `npm publish --access=public`. `Allow npm dist-tag` is not required. Stage-only trust is not sufficient for the current command.
+  - The job requires `id-token: write`, Node 24 with npm 11.5.1+, and no long-lived npm token. Do **not** specify `registry-url` for `actions/setup-node` in this job: it creates an npm configuration with an unexpanded token placeholder that makes `yarn install` fail. npm automatically uses its default public registry when publishing with OIDC.
 - **GitHub Environments**:
-  - GitHub Environments `pub.dev` and `npm` can be configured with deployment protection rules and required reviewers if manual gates are desired prior to registry publication.
+  - Create environments named exactly `pub.dev` and `npm` in [repository settings](https://github.com/vm75/inditrans/settings/environments). Restrict deployment branches/tags as desired. Required reviewers are optional and create a **manual approval gate**; omit them for unattended releases. Prefer protecting release tags from untrusted pushes.
 
 ## Partial releases and failure recovery
 
@@ -139,7 +139,7 @@ Release integrity requires that published package versions are immutable and rel
   - One registry now contains version `X.Y.Z`, while the other does not.
   - Inspect the failed job in the GitHub Actions run logs (e.g., registry outage or OIDC misconfiguration).
   - If the failure was transient (network timeout or temporary registry error): rerun only the failed job (`publish-npm` or `publish-pub`) from the GitHub Actions UI.
-  - If the issue cannot be resolved by rerunning the job: **do not attempt to unpublish or overwrite**. Advance to the next version on `main` (e.g. `v0.13.1`), commit, tag, and publish. Both registries will synchronize on the newer release.
+  - If the issue requires a workflow change, note that **rerunning an old tag uses the workflow stored in that tagged commit**, not the corrected workflow from `main`. Publish a new version and tag from `main` after the fix. Do not move the old tag or attempt to overwrite a published version.
 
 - **Both packages publish, but GitHub Release creation fails**:
   - Both packages are safely live on their respective registries.
