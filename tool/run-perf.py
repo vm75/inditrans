@@ -57,21 +57,23 @@ def restore_workspace(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--run-tags", action="store_true", help="snapshot all perf-* tags, stashing and restoring workspace changes")
+    parser.add_argument("--run-tags", action="store_true", help="snapshot perf-* tags (all tags when none are listed)")
     parser.add_argument("--current", action="store_true", help="snapshot current workspace as 99-current (default without options)")
+    parser.add_argument("tags", nargs="*", help="specific perf-* tags to snapshot; implies --run-tags")
     args = parser.parse_args()
     def stop_on_signal(signum: int, _frame: object) -> None:
         raise SystemExit(128 + signum)
 
     for signum in (signal.SIGINT, signal.SIGTERM):
         signal.signal(signum, stop_on_signal)
-    run_current = args.current or not args.run_tags
+    run_tags = args.run_tags or bool(args.tags)
+    run_current = args.current or not run_tags
 
     root = Path(git(Path.cwd(), "rev-parse", "--show-toplevel", capture=True))
     cpu = os.environ.get("CPU", "0")
     runs = os.environ.get("RUNS", "5")
 
-    if args.run_tags:
+    if run_tags:
         current_commit = git(root, "rev-parse", "HEAD", capture=True)
         current_branch = git(root, "symbolic-ref", "--quiet", "--short", "HEAD", check=False, capture=True)
         dirty = git(root, "status", "--porcelain", "--untracked-files=all", capture=True)
@@ -82,10 +84,13 @@ def main() -> int:
             stash_commit = git(root, "rev-parse", "refs/stash", capture=True)
         checkout_started = True
         try:
-            tags = git(root, "tag", "--list", "perf-*", capture=True).splitlines()
+            available_tags = git(root, "tag", "--list", "perf-*", capture=True).splitlines()
+            tags = args.tags if args.tags else available_tags
             for ref in sorted(tags):
+                if ref not in available_tags:
+                    raise ValueError(f"Unknown performance tag: {ref}")
                 name = ref.removeprefix("perf-")
-                if (root / "out" / "perf" / f"{name}-wasm-size.txt").is_file():
+                if not args.tags and (root / "out" / "perf" / f"{name}-wasm-size.txt").is_file():
                     print(f"Skipping {name}\n", flush=True)
                     continue
                 snapshot(root, ref, name, cpu, runs)
