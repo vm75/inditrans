@@ -58,6 +58,7 @@ jobs:
         run: |
           make dll
           ./tool/verify_dll.sh native/build_win/inditrans.dll
+          git restore --source=HEAD --worktree flutter/example.dart/inditrans.dll
 
       - name: Build Linux shared library for FFI tests
         run: |

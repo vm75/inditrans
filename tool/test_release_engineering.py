@@ -260,6 +260,17 @@ class WorkflowIntegrityTest(unittest.TestCase):
             with self.subTest(command=command):
                 self.assertLess(build_job.index(command), emsdk_setup)
 
+    def test_release_restores_generated_dll_copy_before_package_validation(self):
+        """DLL verification should not leave the checked-in example copy dirty for pub dry-runs."""
+        build_job = self.release_yaml.split("  test-and-build:", 1)[1].split("  publish-pub:", 1)[0]
+        verify = build_job.index("./tool/verify_dll.sh native/build_win/inditrans.dll")
+        restore = build_job.index(
+            "git restore --source=HEAD --worktree flutter/example.dart/inditrans.dll"
+        )
+        package_validation = build_job.index("--check-packages")
+        self.assertLess(verify, restore)
+        self.assertLess(restore, package_validation)
+
     def test_release_analysis_resolves_standalone_example_dependencies(self):
         """Root analysis includes the standalone Dart example's package imports."""
         build_job = self.release_yaml.split("  test-and-build:", 1)[1].split("  publish-pub:", 1)[0]
