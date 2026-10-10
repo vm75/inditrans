@@ -98,9 +98,10 @@ To verify the release pipeline safely without creating a real release or publish
   python3 tool/verify_release.py --tag=v0.13.0 --check-packages --check-artifacts
   ```
 - **Continuous Integration**:
-  The normal CI workflow (`.github/workflows/ci.yml`) runs on pushes to `main` and PRs targeting `main`, running release validation, native engine tests, Flutter tests/dry-run, and Node.js tests/dry-run.
+  The normal CI workflow (`.github/workflows/ci.yml`) runs fast Linux-based checks on pushes to `main` and PRs targeting `main` (skipping doc-only changes), running release validation, native engine tests, Flutter tests/dry-run, and Node.js tests/dry-run.
   Its PR performance gate compares timing, output hashes, and allocation metrics
   against `perf-00-baseline`, using the current harness with unchanged tagged engine sources.
+  Multi-platform acceptance (macOS, Windows MSVC, and Android arm64) is maintained in a separate workflow (`.github/workflows/platform.yml`), triggered explicitly on `platform-*` tags or manual `workflow_dispatch`.
 
 ## Security and registry configuration
 

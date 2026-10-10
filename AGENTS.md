@@ -129,8 +129,11 @@ make perf-report
   published via `.github/workflows/release.yml` with pub.dev OIDC and npm trusted publishing.
 - In the release build job, build native libraries before Emscripten setup to avoid
   its `cmake/` directory interfering with native build command lookup.
-- The normal `.github/workflows/ci.yml` workflow runs for pull requests targeting
-  `main` and pushes to `main`; release tags are handled by the separate release workflow.
+- The normal `.github/workflows/ci.yml` workflow runs fast Linux-based checks for
+  pull requests targeting `main` and pushes to `main` (skipping doc-only changes);
+  multi-platform acceptance (macOS, Windows MSVC, Android) is isolated in
+  `.github/workflows/platform.yml` on `platform-*` tags or manual dispatch;
+  release tags are handled by the separate release workflow.
 - The shared test-case suite is at `test-files/test-cases.json`; changes to the engine that
   affect expected output must be reflected there.
 - Follow KISS and YAGNI: prefer the smallest change that satisfies the request.

@@ -199,10 +199,11 @@ class WorkflowIntegrityTest(unittest.TestCase):
 
     def setUp(self):
         self.ci_yaml = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        self.platform_yaml = (ROOT / ".github/workflows/platform.yml").read_text(encoding="utf-8")
         self.release_yaml = (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
 
     def test_ci_workflow_never_publishes(self):
-        """Verify CI workflow triggered by branches/PRs never contains publishing commands."""
+        """Verify CI and platform workflows never contain publishing commands."""
         forbidden_commands = [
             "flutter pub publish --force",
             "npm publish",
@@ -210,6 +211,15 @@ class WorkflowIntegrityTest(unittest.TestCase):
         ]
         for cmd in forbidden_commands:
             self.assertNotIn(cmd, self.ci_yaml, f"CI workflow should not contain publish command: {cmd}")
+            self.assertNotIn(cmd, self.platform_yaml, f"Platform workflow should not contain publish command: {cmd}")
+
+    def test_platform_workflow_trigger_restricted(self):
+        """Platform workflow must trigger strictly on platform-* tags or manual dispatch."""
+        self.assertIn("push:", self.platform_yaml)
+        self.assertIn("tags:", self.platform_yaml)
+        self.assertIn("- 'platform-*'", self.platform_yaml)
+        self.assertIn("workflow_dispatch:", self.platform_yaml)
+        self.assertNotIn("branches:", self.platform_yaml)
 
     def test_release_workflow_trigger_restricted_to_semver_tags(self):
         """Release workflow must trigger strictly on SemVer tags 'v*.*.*'."""
