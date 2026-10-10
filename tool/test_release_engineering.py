@@ -250,6 +250,14 @@ class WorkflowIntegrityTest(unittest.TestCase):
             with self.subTest(command=command):
                 self.assertLess(build_job.index(command), emsdk_setup)
 
+    def test_release_analysis_resolves_standalone_example_dependencies(self):
+        """Root analysis includes the standalone Dart example's package imports."""
+        build_job = self.release_yaml.split("  test-and-build:", 1)[1].split("  publish-pub:", 1)[0]
+        self.assertLess(
+            build_job.index("(cd example.dart && dart pub get)"),
+            build_job.index("dart analyze"),
+        )
+
     def test_oidc_permissions_least_privilege(self):
         """Verify workflow-level and job-level permissions enforce least privilege and OIDC id-token write."""
         # Top-level default must be read-only

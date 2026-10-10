@@ -95,6 +95,7 @@ jobs:
         run: |
           cd flutter
           flutter pub get
+          (cd example.dart && dart pub get)
           dart analyze
           LD_LIBRARY_PATH=../native/build_linux flutter test
 
