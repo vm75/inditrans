@@ -53,6 +53,17 @@ jobs:
             mingw-w64-x86-64-dev \
             wine64
 
+      # Build native libraries before Emscripten adds its cmake/ directory to PATH.
+      - name: Build and smoke test Windows DLL
+        run: |
+          make dll
+          ./tool/verify_dll.sh native/build_win/inditrans.dll
+
+      - name: Build Linux shared library for FFI tests
+        run: |
+          cmake -S native/src -B native/build_linux
+          cmake --build native/build_linux
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -79,16 +90,6 @@ jobs:
 
       - name: Run C++ test suite
         run: make test
-
-      - name: Build and smoke test Windows DLL
-        run: |
-          make dll
-          ./tool/verify_dll.sh native/build_win/inditrans.dll
-
-      - name: Build Linux shared library for FFI tests
-        run: |
-          cmake -S native/src -B native/build_linux
-          cmake --build native/build_linux
 
       - name: Run Flutter analysis and tests
         run: |

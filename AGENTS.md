@@ -127,6 +127,8 @@ make perf-report
 - The single consolidated changelog is authoritative in root `CHANGELOG.md`.
 - Releases are tag-based (`vX.Y.Z`), validated by `tool/verify_release.py`, and
   published via `.github/workflows/release.yml` with pub.dev OIDC and npm trusted publishing.
+- In the release build job, build native libraries before Emscripten setup to avoid
+  its `cmake/` directory interfering with native build command lookup.
 - The normal `.github/workflows/ci.yml` workflow runs for pull requests targeting
   `main` and pushes to `main`; release tags are handled by the separate release workflow.
 - The shared test-case suite is at `test-files/test-cases.json`; changes to the engine that

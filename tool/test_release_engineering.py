@@ -237,6 +237,19 @@ class WorkflowIntegrityTest(unittest.TestCase):
             r"github-release:\s+name:[^\n]+\s+needs:\s*\[validate,\s*test-and-build,\s*publish-pub,\s*publish-npm\]",
         )
 
+    def test_native_release_builds_precede_emscripten_setup(self):
+        """Keep Emscripten's cmake/ directory out of native build command lookup."""
+        build_job = self.release_yaml.split("  test-and-build:", 1)[1].split("  publish-pub:", 1)[0]
+        emsdk_setup = build_job.index("uses: emscripten-core/setup-emsdk@")
+        for command in (
+            "make dll",
+            "./tool/verify_dll.sh native/build_win/inditrans.dll",
+            "cmake -S native/src -B native/build_linux",
+            "cmake --build native/build_linux",
+        ):
+            with self.subTest(command=command):
+                self.assertLess(build_job.index(command), emsdk_setup)
+
     def test_oidc_permissions_least_privilege(self):
         """Verify workflow-level and job-level permissions enforce least privilege and OIDC id-token write."""
         # Top-level default must be read-only
