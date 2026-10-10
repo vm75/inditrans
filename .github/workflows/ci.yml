@@ -29,6 +29,9 @@ jobs:
       - name: Verify Unix and PowerShell Wasm release flags match
         run: python3 tool/verify_wasm_build_parity.py
 
+      - name: Run release engineering regression tests
+        run: python3 tool/test_release_engineering.py
+
       - name: Verify generated artifacts are up to date
         run: |
           python3 tool/generate_headers.py

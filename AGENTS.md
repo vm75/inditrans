@@ -126,7 +126,7 @@ make perf-report
   manifests and build configs are kept in sync via `python3 tool/bump_version.py`.
 - The single consolidated changelog is authoritative in root `CHANGELOG.md`.
 - Releases are tag-based (`vX.Y.Z`), validated by `tool/verify_release.py`, and
-  published via `.github/workflows/release.yml` with pub.dev OIDC and npm provenance.
+  published via `.github/workflows/release.yml` with pub.dev OIDC and npm trusted publishing.
 - The normal `.github/workflows/ci.yml` workflow runs for pull requests targeting
   `main` and pushes to `main`; release tags are handled by the separate release workflow.
 - The shared test-case suite is at `test-files/test-cases.json`; changes to the engine that

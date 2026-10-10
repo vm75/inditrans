@@ -5,11 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-- Raise the minimum Flutter SDK to 3.38.10 to match the Dart 3.10.8 constraint across declared platforms.
-
-## [0.13.0] - 2026-09-21
-* Add skipStart and skipEnd options
+## [0.13.0]
+- **Transliteration features**:
+  - Add `skipStart` and `skipEnd` delimiter support to allow passthrough of protected regions (defaults to `##...##`).
+  - Add Harvard-Kyoto (`Script.hk`) and additional notation support across runtimes.
+  - Handle empty, single-character, and oversized protected-span delimiters safely.
+- **Engine architecture & performance**:
+  - Upgrade engine to C++23 standard across native, Flutter, Apple, Android, Windows, and WASM builds.
+  - Optimize memory usage: streaming chunk readers with reusable token chunks, non-owning character maps, stack-allocated readers and writers, and allocation-free sinks.
+  - Replace dynamic runtime map allocations with compact, static lookup tables and specialized script type conversions.
+  - Match transliteration buffer allocation and deallocation across boundaries (`releaseBuffer`).
+- **Toolchains & platforms**:
+  - Reproducible Linux-to-Windows x86-64 DLL cross-compilation with MinGW-w64 (`make dll`) exporting strict C ABI symbols (`transliterate`, `isScriptSupported`, `releaseBuffer`).
+  - Statically link MinGW C++ runtime libraries to eliminate external DLL runtime dependencies.
+  - Upgrade and pin Emscripten to 6.0.10 for standalone Flutter WASM and Node.js WASM builds with deterministic parity checks.
+  - Upgrade Node.js package to TypeScript 6.x and Node 24 support.
+  - Raise minimum Flutter SDK constraint to 3.38.10 / Dart 3.10.8 across declared platforms.
+- **Release engineering & repository reorganization**:
+  - Reorganize repository into canonical root structure: move shared C++ engine sources, CLI, and test suite from `flutter/native/` to root `native/`.
+  - Establish automated, tag-driven release workflow (`.github/workflows/release.yml`) for `vX.Y.Z` Git tags.
+  - Enable GitHub Actions OIDC trusted publishing for both pub.dev and npm (`@vm75/inditrans`).
+  - Move repository code-generation and maintenance tooling to Python.
+  - Add comprehensive release regression test suite (`tool/test_release_engineering.py`) and validator alignment.
+  - Expand project documentation: consolidated root `CHANGELOG.md`, `ARCHITECTURE.md`, `AGENTS.md`, and distribution guides.
 
 ## [0.12.1]
 * Fixed tamil supersctipt encoding

@@ -79,7 +79,7 @@ The tag-triggered release workflow strictly enforces the canonical path:
    - Performs fail-closed publish dry-runs (`flutter pub publish --dry-run` and `npm pack --dry-run`).
 4. **`publish`**:
    - **`publish-pub`**: Publishes package to [pub.dev](https://pub.dev/packages/inditrans) using pub.dev Automated Publishing via GitHub Actions OIDC (`id-token: write`, `flutter pub publish --force`).
-   - **`publish-npm`**: Publishes package to [npm](https://www.npmjs.com/package/@vm75/inditrans) using `npm publish --provenance --access=public` with `NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}` and Sigstore provenance (`id-token: write`).
+   - **`publish-npm`**: Publishes package to [npm](https://www.npmjs.com/package/@vm75/inditrans) using npm Trusted Publishing via GitHub Actions OIDC (`id-token: write`, `npm publish --access=public`).
 5. **`github-release`**:
    - Creates a GitHub Release for tag `vX.Y.Z` using `gh release create`.
    - Attaches the release notes extracted during the `validate` step.
@@ -107,8 +107,47 @@ To verify the release pipeline safely without creating a real release or publish
   - Enabled via the pub.dev package Admin settings under **Automated publishing** -> **Publishing from GitHub Actions**.
   - Repository is configured with GitHub workflow `.github/workflows/release.yml` and environment `pub.dev`.
   - Pub requires `id-token: write` permission to exchange an OpenID Connect token with pub.dev, eliminating the need for long-lived credentials.
-- **npm (Provenance & Token)**:
-  - npm Trusted Publishing is configured for repository `vm75/inditrans` and workflow `.github/workflows/release.yml`.
-  - The release job uses GitHub Actions OIDC (`id-token: write`) and `npm publish --access=public`; no long-lived `NPM_TOKEN` is required.
+- **npm (OIDC Trusted Publishing)**:
+  - Configured on npmjs.com under package settings for `@vm75/inditrans` under **Publishing Access** -> **Trusted Publishing**.
+  - Configured with provider GitHub Actions, owner/repository `vm75/inditrans`, workflow `.github/workflows/release.yml`, and environment `npm`.
+  - The release job uses GitHub Actions OIDC (`id-token: write`) and `npm publish --access=public`; no long-lived `NPM_TOKEN` or `NODE_AUTH_TOKEN` is required.
 - **GitHub Environments**:
   - GitHub Environments `pub.dev` and `npm` can be configured with deployment protection rules and required reviewers if manual gates are desired prior to registry publication.
+
+## Partial releases and failure recovery
+
+Release integrity requires that published package versions are immutable and release tags are never moved or deleted to mask failures.
+
+### Invariants
+1. **Tags are immutable**: Never move or delete an existing `vX.Y.Z` tag that has triggered build or publish steps.
+2. **Registry versions are immutable**: Neither pub.dev nor npm allows re-publishing or overwriting an already published version number.
+3. **Fail-safe isolation**: Jobs are isolated and dependent; publication only occurs after all validation, compilation, and testing steps pass.
+
+### Recovery scenarios
+
+- **Validation or build fails (before publication)**:
+  - No packages are published to either registry.
+  - Fix the underlying issue on `main`.
+  - Bump to a new patch/minor version using `python3 tool/bump_version.py`.
+  - Create and push a new tag for the incremented version (e.g. `v0.13.1`).
+  - Do not move or reuse the failed tag.
+
+- **pub.dev succeeds, but npm fails (or vice versa)**:
+  - One registry now contains version `X.Y.Z`, while the other does not.
+  - Inspect the failed job in the GitHub Actions run logs (e.g., registry outage or OIDC misconfiguration).
+  - If the failure was transient (network timeout or temporary registry error): rerun only the failed job (`publish-npm` or `publish-pub`) from the GitHub Actions UI.
+  - If the issue cannot be resolved by rerunning the job: **do not attempt to unpublish or overwrite**. Advance to the next version on `main` (e.g. `v0.13.1`), commit, tag, and publish. Both registries will synchronize on the newer release.
+
+- **Both packages publish, but GitHub Release creation fails**:
+  - Both packages are safely live on their respective registries.
+  - Inspect why `github-release` failed (e.g., transient GitHub API issue).
+  - Rerun the `github-release` job in GitHub Actions.
+  - Alternatively, create the GitHub Release manually using the tagged commit notes:
+    ```bash
+    python3 tool/verify_release.py --tag=vX.Y.Z --extract-changelog=release_notes.md
+    gh release create "vX.Y.Z" --title "Release vX.Y.Z" --notes-file release_notes.md --verify-tag
+    ```
+
+- **Workflow rerun after successful publication**:
+  - If a workflow run is retried after a package has already been published to pub.dev or npm, the registry will reject the duplicate version with a fail-closed error.
+  - Do not attempt to force republishing over an existing version. Instead, bump the version and push a fresh tag.

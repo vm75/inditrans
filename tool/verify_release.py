@@ -41,6 +41,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--tag", dest="tag_option", help="release tag (same as positional tag)")
     parser.add_argument("--extract-changelog", metavar="PATH")
     parser.add_argument("--check-packages", action="store_true")
+    parser.add_argument("--check-artifacts", action="store_true", help="explicitly check required artifacts (default behavior unless --skip-artifacts is given)")
     parser.add_argument("--skip-artifacts", action="store_true")
     args = parser.parse_args(argv)
 
