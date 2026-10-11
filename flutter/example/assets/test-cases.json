@@ -627,5 +627,40 @@
         "options": "TamilSuperscripted"
       }
     ]
+  },
+  {
+    "description": "Tamil writer nasal selection and marker boundary lookahead",
+    "text": "अन् अन्  अन्²  अन्²xyz अन्₃  अन्⁴  अन्², अन्²\nअन् xyz अन्त अन्न",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "அன் அன்  அன்²  அன்²xyz அன்₃  அன்⁴  அன்², அன்²\nஅன் xyz அந்த அந்ன"
+      }
+    ]
+  },
+  {
+    "description": "Tamil marker and virama interaction clusters",
+    "text": "க்¹ க்² க்³ க்⁴ க்₁ க்₂ க்₃ க்₄ ச்² ட்² த்² ப்² ஜ்² க²் க³் க₂் க₃்",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "क् ख् ग् घ् क् ख् ग् घ् छ् ठ् थ् फ् झ् ख् ग् ख् ग्",
+        "options": "TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "Tamil markers with bound limits and non-eligible consonants",
+    "text": "ஜ³ ப, ஜ⁴ ப, ஜ₃ ப, ஜ₄ ப, ர², ல³, ய⁴, வ₁, ஸ₂, ஹ₃, ன⁴",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "ज³ प, ज⁴ प, ज₃ प, ज₄ प, र², ल³, य⁴, व₁, स₂, ह₃, ऩ⁴",
+        "options": "TamilSuperscripted"
+      }
+    ]
   }
 ]

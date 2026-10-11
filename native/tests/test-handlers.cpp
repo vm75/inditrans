@@ -275,6 +275,72 @@ suite<"Tamil handler tests"> tamilTests = [] {
     expect(!matchTamilMarker("·").has_value());
   };
 
+  "isTamilMarkerSpan helper"_test = [] {
+    // Isolated markers (superscripts and subscripts) must be full marker spans
+    expect(isTamilMarkerSpan("¹"));
+    expect(isTamilMarkerSpan("²"));
+    expect(isTamilMarkerSpan("³"));
+    expect(isTamilMarkerSpan("⁴"));
+    expect(isTamilMarkerSpan("₁"));
+    expect(isTamilMarkerSpan("₂"));
+    expect(isTamilMarkerSpan("₃"));
+    expect(isTamilMarkerSpan("₄"));
+
+    // Preserved spans with trailing whitespace, punctuation, or text must NOT be full marker spans
+    expect(!isTamilMarkerSpan("² "));
+    expect(!isTamilMarkerSpan("²  "));
+    expect(!isTamilMarkerSpan("²xyz"));
+    expect(!isTamilMarkerSpan("²,"));
+    expect(!isTamilMarkerSpan("²."));
+    expect(!isTamilMarkerSpan("²\n"));
+    expect(!isTamilMarkerSpan("₃ "));
+    expect(!isTamilMarkerSpan("₃xyz"));
+    expect(!isTamilMarkerSpan("⁴ "));
+
+    // Multiple consecutive markers or non-markers
+    expect(!isTamilMarkerSpan("²³"));
+    expect(!isTamilMarkerSpan(""));
+    expect(!isTamilMarkerSpan(" "));
+    expect(!isTamilMarkerSpan("a"));
+    expect(!isTamilMarkerSpan("5"));
+    expect(!isTamilMarkerSpan("⁵"));
+    expect(!isTamilMarkerSpan("·"));
+  };
+
+  "Tamil writer word-boundary and nasal selection"_test = [] {
+    // A. Word-final dental/alveolar nasal selection
+    expect(transliterate("अन्", "devanagari", "tamil", TranslitOptions::None) == "அன்");
+    expect(transliterate("अन् ", "devanagari", "tamil", TranslitOptions::None) == "அன் ");
+    expect(transliterate("अन्,", "devanagari", "tamil", TranslitOptions::None) == "அன்,");
+    expect(transliterate("अन्.", "devanagari", "tamil", TranslitOptions::None) == "அன்.");
+    expect(transliterate("अन्\n", "devanagari", "tamil", TranslitOptions::None) == "அன்\n");
+    expect(transliterate("अन् xyz", "devanagari", "tamil", TranslitOptions::None) == "அன் xyz");
+    expect(transliterate("अन्त", "devanagari", "tamil", TranslitOptions::None) == "அந்த");
+    expect(transliterate("अन्न", "devanagari", "tamil", TranslitOptions::None) == "அந்ன");
+
+    // B. Preserved spans beginning with a superscript or subscript
+    expect(transliterate("अन्² ", "devanagari", "tamil", TranslitOptions::None) == "அன்² ");
+    expect(transliterate("अन्²xyz", "devanagari", "tamil", TranslitOptions::None) == "அன்²xyz");
+    expect(transliterate("अन्²,", "devanagari", "tamil", TranslitOptions::None) == "அன்²,");
+    expect(transliterate("अन्²\n", "devanagari", "tamil", TranslitOptions::None) == "அன்²\n");
+    expect(transliterate("अन्⁴ ", "devanagari", "tamil", TranslitOptions::None) == "அன்⁴ ");
+    expect(transliterate("अन्₁ ", "devanagari", "tamil", TranslitOptions::None) == "அன்₁ ");
+    expect(transliterate("अन्₂ ", "devanagari", "tamil", TranslitOptions::None) == "அன்₂ ");
+    expect(transliterate("अन्₃ ", "devanagari", "tamil", TranslitOptions::None) == "அன்₃ ");
+    expect(transliterate("अन्₄ ", "devanagari", "tamil", TranslitOptions::None) == "அன்₄ ");
+    expect(transliterate("अन्₃xyz", "devanagari", "tamil", TranslitOptions::None) == "அன்₃xyz");
+
+    // C. Marker-only spans (isolated marker retains dental nasal attachment)
+    expect(transliterate("अन्¹", "devanagari", "tamil", TranslitOptions::None) == "அந்¹");
+    expect(transliterate("अन्²", "devanagari", "tamil", TranslitOptions::None) == "அந்²");
+    expect(transliterate("अन्³", "devanagari", "tamil", TranslitOptions::None) == "அந்³");
+    expect(transliterate("अन्⁴", "devanagari", "tamil", TranslitOptions::None) == "அந்⁴");
+    expect(transliterate("अन्₁", "devanagari", "tamil", TranslitOptions::None) == "அந்₁");
+    expect(transliterate("अन्₂", "devanagari", "tamil", TranslitOptions::None) == "அந்₂");
+    expect(transliterate("अन्₃", "devanagari", "tamil", TranslitOptions::None) == "அந்₃");
+    expect(transliterate("अन्₄", "devanagari", "tamil", TranslitOptions::None) == "அந்₄");
+  };
+
   "TamilReaderHandler superscript and subscript parsing"_test = [] {
     TamilReaderHandler reader;
     ScriptToken ka(TokenType::Consonant, 0, ScriptType::Tamil);
@@ -399,6 +465,63 @@ suite<"Tamil handler tests"> tamilTests = [] {
         == "खprotectedप");
     // Unsupported marker combinations on same consonant
     expect(transliterate("க²³ ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख³ प");
+    expect(transliterate("க₂₃ ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख₃ प");
+    expect(transliterate("க்²³", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख्³");
+    // Unsupported markers
+    expect(transliterate("க⁵", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "क⁵");
+    expect(transliterate("க₀", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "क₀");
+    expect(transliterate("ஜ³ ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ज³ प");
+    expect(transliterate("ஜ⁴ ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ज⁴ प");
+    expect(transliterate("ஜ₃ ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ज₃ प");
+    expect(transliterate("ஜ₄ ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ज₄ प");
+    // Non-eligible consonants
+    expect(transliterate("ல³", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ल³");
+    expect(transliterate("ய⁴", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "य⁴");
+    expect(transliterate("வ₁", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "व₁");
+    expect(transliterate("ஸ₂", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "स₂");
+    expect(transliterate("ஹ₃", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ह₃");
+    expect(transliterate("ன⁴", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ऩ⁴");
+
+    // F. Marker and virama interactions
+    // Marker immediately after consonant with virama
+    expect(transliterate("க்¹", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "क्");
+    expect(transliterate("க்²", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख्");
+    expect(transliterate("க்³", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ग्");
+    expect(transliterate("க்⁴", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "घ्");
+    expect(transliterate("க்₁", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "क्");
+    expect(transliterate("க்₂", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख्");
+    expect(transliterate("க்₃", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ग्");
+    expect(transliterate("க்₄", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "घ्");
+    expect(transliterate("ச்²", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "छ्");
+    expect(transliterate("ட்²", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ठ्");
+    expect(transliterate("த்²", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "थ्");
+    expect(transliterate("ப்²", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "फ्");
+    expect(transliterate("ஜ்²", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "झ्");
+
+    // Marker immediately before virama
+    expect(transliterate("க²்", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख्");
+    expect(transliterate("க³்", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ग्");
+    expect(transliterate("க₂்", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख्");
+    expect(transliterate("க₃்", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ग्");
+
+    // Additional vowel marks
+    expect(transliterate("கே⁴", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "घे");
+    expect(transliterate("கொ³", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "गॊ");
+    expect(transliterate("கா₂", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "खा");
+    expect(transliterate("கி₃", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "गि");
+    expect(transliterate("கு₄", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "घु");
+
+    // Vedic accents with markers
+    expect(transliterate("கா²॒", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "खा॒");
+    expect(transliterate("க₃॒", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ग॒");
+    expect(transliterate("க்²॒", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख्॒");
+
+    // Virama marker clusters followed by boundaries
+    expect(transliterate("க்² ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख् प");
+    expect(transliterate("க்²\nப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख्\nप");
+    expect(transliterate("க்²,ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख्,प");
+    expect(transliterate("க்².", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख्.");
+
     // Non-Tamil source script
     expect(transliterate("क² प", "devanagari", "tamil", TranslitOptions::TamilSuperscripted) == "க² ப");
   };

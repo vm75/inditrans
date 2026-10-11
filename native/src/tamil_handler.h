@@ -51,6 +51,12 @@ inline constexpr std::optional<TamilMarker> matchTamilMarker(std::string_view st
   return std::nullopt;
 }
 
+/// Returns true if the entire preserved span represents an isolated Tamil marker (superscript or subscript).
+inline constexpr bool isTamilMarkerSpan(std::string_view str) noexcept {
+  const auto marker = matchTamilMarker(str);
+  return marker.has_value() && marker->byteLength == str.size();
+}
+
 /// Phonological predicates for Tamil consonants and clusters.
 inline constexpr bool isPrimaryStop(uint8_t idx) noexcept {
   return idx <= 20 /* ப */ && idx % 5 == 0;
@@ -78,7 +84,7 @@ inline bool isTamilEndOfWord(const TokenUnitOrString& next) noexcept {
     return true;
   }
   if (HoldsString(next)) {
-    return !matchTamilMarker(GetString(next)).has_value();
+    return !isTamilMarkerSpan(GetString(next));
   }
   const auto token = GetTokenUnit(next);
   return token.leadToken.tokenType == TokenType::Symbol;
