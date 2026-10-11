@@ -69,7 +69,7 @@ private:
 
   /// Ensures that at least @p requiredSize tokens/strings are available in the lookahead buffer.
   /// Refills only when the current expansion has been consumed, avoiding circular shifting.
-  void ensure(size_t requiredSize) {
+  [[gnu::always_inline]] inline void ensure(size_t requiredSize) {
     if (bufferSize - head >= requiredSize)
       return;
     assert(requiredSize <= Lookahead);
@@ -84,7 +84,7 @@ private:
 
   /// Pulls the next longest token match using the configured Policy, appending extracted
   /// ScriptTokens into the buffer, or delegates to PreservedSpanHandler on a miss.
-  template <ReaderPolicy Policy> void pull() noexcept {
+  template <ReaderPolicy Policy> [[gnu::always_inline]] inline void pull() noexcept {
     auto match = map.lookupToken<Policy>(ptr, end);
     if (match.sequence) {
       const auto tokens = match.tokens();
@@ -96,9 +96,8 @@ private:
       }
       ptr += match.matchLen;
     } else {
-      ptr = handlers::PreservedSpanHandler::pullUnrecognized<Policy>(
-          ptr, end, map, skipStart, skipEnd, options,
-          [this](std::string_view span) { buffer[bufferSize++] = TokenOrString(span); });
+      ptr = handlers::PreservedSpanHandler::pullUnrecognized<Policy, TokenOrString>(
+          ptr, end, map, skipStart, skipEnd, options, buffer.data(), bufferSize);
     }
   }
 
@@ -109,35 +108,35 @@ public:
     return head < bufferSize;
   }
 
+  [[gnu::always_inline]] inline bool isEndOfWord() noexcept {
+    ensure(1);
+    if (head >= bufferSize) {
+      return true;
+    }
+    const auto& next = buffer[head];
+    if (HoldsString(next)) {
+      return true;
+    }
+    const auto token = GetScriptToken(next);
+    return token.tokenType == TokenType::Symbol;
+  }
+
+  [[gnu::always_inline]] inline const TokenOrString* peek() noexcept {
+    ensure(1);
+    return head < bufferSize ? &buffer[head] : nullptr;
+  }
+
+  [[gnu::always_inline]] inline void advance() noexcept {
+    head++;
+  }
+
   TokenUnit lastToken = invalidTokenUnit;
 
-  /// Stream adapter providing zero-allocation token lookahead and boundary checks to handlers.
-  struct StreamAdaptor {
-    InputReader& reader;
+  friend class handlers::IndicReaderHandler;
+  friend class handlers::LatinReaderHandler;
+  friend class handlers::TamilReaderHandler;
 
-    const TokenOrString* peek() noexcept {
-      reader.ensure(1);
-      if (reader.head >= reader.bufferSize)
-        return nullptr;
-      return &reader.buffer[reader.head];
-    }
-
-    void advance() noexcept { reader.head++; }
-
-    bool isEndOfWord() noexcept {
-      reader.ensure(1);
-      if (reader.head >= reader.bufferSize) {
-        return true;
-      }
-      const auto& next = reader.buffer[reader.head];
-      if (HoldsString(next)) {
-        return true;
-      }
-      const auto token = GetScriptToken(next);
-      return token.tokenType == TokenType::Symbol;
-    }
-  };
-
+public:
   /// Consumes the next token or string run and groups it into a complete TokenUnit cluster.
   /// Delegates script-specific assembly to isolated handlers.
   TokenUnitOrString getNext() noexcept {
@@ -145,15 +144,17 @@ public:
     const auto& next = buffer[head++];
     if (HoldsString(next)) {
       wordStart = true;
-      tamilReader.onWordBoundary();
       return GetString(next);
     }
 
     const auto& token = GetScriptToken(next);
-    StreamAdaptor stream { *this };
 
     if (handlers::GurmukhiAdhakHandler::isAdhak(token)) {
-      return handlers::GurmukhiAdhakHandler::handleAdhak([&stream]() { return stream.peek(); });
+      return handlers::GurmukhiAdhakHandler::handleAdhak([this]() -> const TokenOrString* {
+        ensure(1);
+        if (head >= bufferSize) return nullptr;
+        return &buffer[head];
+      });
     }
     if (token == Skip) {
       return invalidTokenUnit;
@@ -162,13 +163,13 @@ public:
     TokenUnit tokenUnit = { token };
     switch (token.scriptType) {
       case ScriptType::Indic:
-        tokenUnit = handlers::IndicReaderHandler::assemble(token, stream);
+        tokenUnit = handlers::IndicReaderHandler::assemble(token, *this);
         break;
       case ScriptType::Tamil:
-        tokenUnit = tamilReader.assemble(token, stream, wordStart, lastToken, options);
+        tokenUnit = tamilReader.assemble(token, *this, wordStart, lastToken, options);
         break;
       case ScriptType::Latin:
-        tokenUnit = handlers::LatinReaderHandler::assemble(token, stream);
+        tokenUnit = handlers::LatinReaderHandler::assemble(token, *this);
         break;
       default:
         break;
@@ -201,7 +202,7 @@ public:
 
   /// Writes a single TokenUnit cluster or raw string slice, with lookahead to the next token
   /// for contextual orthography rules (such as anuswara assimilation or end-of-word checks).
-  void writeTokenUnit(const TokenUnitOrString& tokenUnitOrString, const TokenUnitOrString& next) noexcept {
+  [[gnu::always_inline]] inline void writeTokenUnit(const TokenUnitOrString& tokenUnitOrString, const TokenUnitOrString& next) noexcept {
     if (HoldsString(tokenUnitOrString)) {
       push(GetString(tokenUnitOrString));
       wordStart = true;
@@ -213,19 +214,17 @@ public:
       if (tokenUnit.leadToken.tokenType == TokenType::Ignore) {
         return;
       }
-      auto pushFn = [this](std::string_view text) { push(text); };
       if constexpr (Type == ScriptType::Indic) {
-        handlers::IndicWriterHandler::write(tokenUnit, map, options, pushFn);
+        handlers::IndicWriterHandler::write(tokenUnit, map, options, *this);
       } else if constexpr (Type == ScriptType::Tamil) {
-        tamilWriter.write(tokenUnit, next, map, options, pushFn, buffer, wordStart);
+        tamilWriter.write(tokenUnit, next, map, options, *this, buffer, wordStart);
       } else if constexpr (Type == ScriptType::Latin) {
-        handlers::LatinWriterHandler::write(tokenUnit, next, map, options, pushFn);
+        handlers::LatinWriterHandler::write(tokenUnit, next, map, options, *this);
       }
       wordStart = (tokenUnit.leadToken.tokenType == TokenType::Symbol);
     }
   }
 
-protected:
   /// Appends text to the destination sink, filtering out special disambiguation markers
   /// unless RetainSpecialMarkers is configured.
   inline void push(const std::string_view& text) {

@@ -58,7 +58,7 @@ public:
   void reset() noexcept { prefixLookupState.reset(); }
 
   template <typename Stream>
-  TokenUnit assemble(const ScriptToken& start, Stream& stream, bool wordStart,
+  [[gnu::always_inline]] TokenUnit assemble(const ScriptToken& start, Stream& stream, bool wordStart,
       const TokenUnit& lastToken, TranslitOptions options) noexcept {
     bool endOfPrefix = false;
     if (wordStart) {
@@ -190,10 +190,10 @@ public:
   void onWordBoundary() noexcept { prefixLookupState.reset(); }
   void reset() noexcept { prefixLookupState.reset(); }
 
-  template <typename PushFn, typename Buffer>
-  void write(const TokenUnit& tokenUnit, const TokenUnitOrString& next,
+  template <typename Writer, typename Buffer>
+  [[gnu::always_inline]] void write(const TokenUnit& tokenUnit, const TokenUnitOrString& next,
       const ScriptWriterMap& map, TranslitOptions options,
-      PushFn&& push, Buffer& buffer, bool wordStart) noexcept {
+      Writer& writer, Buffer& buffer, bool wordStart) noexcept {
     const bool endOfPrefix = prefixLookupState.value != std::nullopt;
     if (wordStart) {
       prefixLookupState.reset();
@@ -219,48 +219,48 @@ public:
       } else {
         superscript = "";
       }
-      push(leadText);
+      writer.push(leadText);
 
       std::string_view vowelMarkReminder { };
       if (tokenUnit.vowelMark.idx != InvalidToken) {
         const auto vowelMark = map.lookupChar(tokenUnit.vowelMark);
         if (vowelMark.size() > UtfUtils::nextCharLen(vowelMark.data())) {
-          push(UtfUtils::nextUtf8Char(vowelMark.data()));
+          writer.push(UtfUtils::nextUtf8Char(vowelMark.data()));
           vowelMarkReminder = vowelMark.substr(UtfUtils::nextCharLen(vowelMark.data()));
         } else {
-          push(vowelMark);
+          writer.push(vowelMark);
         }
       }
 
       if (options * TranslitOptions::TamilSuperscripted && !superscript.empty()) {
-        push(superscript);
+        writer.push(superscript);
       }
       if (!vowelMarkReminder.empty()) {
-        push(vowelMarkReminder);
+        writer.push(vowelMarkReminder);
       }
 
       if (tokenUnit.otherDiacritic.idx != InvalidToken) {
         if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara) {
-          AnuswaraAssimilator::emit<ScriptType::Tamil>(next, map, push);
+          AnuswaraAssimilator::emit<ScriptType::Tamil>(next, map, writer);
         } else {
-          push(map.lookupChar(tokenUnit.otherDiacritic));
+          writer.push(map.lookupChar(tokenUnit.otherDiacritic));
         }
       }
     } else {
       if (tokenUnit.leadToken.tokenType == TokenType::Vowel) {
-        push(leadText);
+        writer.push(leadText);
 
         if (tokenUnit.otherDiacritic.idx != InvalidToken) {
           if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara) {
-            AnuswaraAssimilator::emit<ScriptType::Tamil>(next, map, push);
+            AnuswaraAssimilator::emit<ScriptType::Tamil>(next, map, writer);
           } else {
-            push(map.lookupChar(tokenUnit.otherDiacritic));
+            writer.push(map.lookupChar(tokenUnit.otherDiacritic));
           }
         }
       } else if (AsciiNumeralFormatter::matches(tokenUnit.leadToken, options)) {
-        AsciiNumeralFormatter::emit(tokenUnit.leadToken.idx, push);
+        AsciiNumeralFormatter::emit(tokenUnit.leadToken.idx, writer);
       } else {
-        push(leadText);
+        writer.push(leadText);
       }
     }
 
@@ -273,10 +273,10 @@ public:
         // before appending, since growing the sink can invalidate its storage.
         const std::string lastCharStr { lastChar };
         buffer.pop_back();
-        push(map.lookupChar(tokenUnit.accent));
-        push(lastCharStr);
+        writer.push(map.lookupChar(tokenUnit.accent));
+        writer.push(lastCharStr);
       } else {
-        push(map.lookupChar(tokenUnit.accent));
+        writer.push(map.lookupChar(tokenUnit.accent));
       }
     }
   }

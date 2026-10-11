@@ -134,10 +134,13 @@ one-token lookahead used by the writer.
    reader handlers: `IndicReaderHandler` attaches marks and accents, `TamilReaderHandler`
    applies superscript parsing and contextual pronunciation rules, `GurmukhiAdhakHandler`
    evaluates gemination without consumption, and `LatinReaderHandler` groups consonants
-   with following vowels or synthesizes virama.
+   with following vowels or synthesizes virama. Handlers are `friend` classes to
+   `InputReader`, eliminating abstraction overhead by accessing the token buffer directly.
 4. One dispatch selects an Indic, Tamil, or Latin `OutputWriter` specialization.
    The writer delegates to `IndicWriterHandler`, `TamilWriterHandler`, or `LatinWriterHandler`
-   via compile-time `if constexpr` branch elimination. Inactive handlers occupy no
+   via compile-time `if constexpr` branch elimination. Handlers receive a reference
+   to the strongly-typed `Writer` rather than using `std::function` or lambda callbacks,
+   allowing the compiler to fully inline output emission. Inactive handlers occupy no
    state or execution time (`[[no_unique_address]]`). Both sinks write directly to
    result storage. `SpecialMarkerFilter` copies retained text runs together and checks
    ASCII before searching the non-ASCII marker string. Roman-to-non-Latin output

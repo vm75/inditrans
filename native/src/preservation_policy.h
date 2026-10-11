@@ -15,16 +15,16 @@ namespace inditrans::handlers {
 /// 3. Unrecognized character sequences that do not match any trie prefix
 class PreservedSpanHandler {
 public:
-  template <ReaderPolicy Policy, typename AppendFn>
+  template <ReaderPolicy Policy, typename TokenOutType>
   [[gnu::noinline]] static const char* pullUnrecognized(const char* ptr, const char* end,
       const ScriptReaderMap& map, const std::string_view& skipStart, const std::string_view& skipEnd,
-      TranslitOptions options, AppendFn&& append) noexcept {
+      TranslitOptions options, TokenOutType* outBuffer, size_t& outSize) noexcept {
     const bool skipXml = !(options * TranslitOptions::NoXMLTagHandling);
     const auto* start = ptr;
     if (skipXml && *ptr == '<') {
       const auto close = std::string_view(ptr, end - ptr).find('>');
       ptr = close == std::string_view::npos ? end : ptr + close + 1;
-      append(std::string_view(start, ptr - start));
+      outBuffer[outSize++] = TokenOutType(std::string_view(start, ptr - start));
     } else if (!skipStart.empty() && *ptr == skipStart.front()
         && skipStart.size() <= static_cast<size_t>(end - ptr)
         && std::string_view(ptr, skipStart.size()) == skipStart) {
@@ -35,7 +35,7 @@ public:
         // An unmatched opening delimiter discards the remaining input.
         ptr = end;
       } else {
-        append(std::string_view(start, close));
+        outBuffer[outSize++] = TokenOutType(std::string_view(start, close));
         ptr += close + skipEnd.length();
       }
     } else {
@@ -46,7 +46,7 @@ public:
           && *ptr != '<' && map.lookupToken<Policy>(ptr, end).sequence == 0) {
         ptr++;
       }
-      append(std::string_view(start, ptr - start));
+      outBuffer[outSize++] = TokenOutType(std::string_view(start, ptr - start));
     }
     return ptr;
   }
@@ -67,6 +67,10 @@ public:
 
   template <typename BufType>
   static void stripSpecialMarkers(const std::string_view& in, BufType& out) noexcept {
+    if (in.length() == 1 && static_cast<uint8_t>(in.front()) < 0x80) {
+      out += in;
+      return;
+    }
     // Every marker byte is non-ASCII; preserve the substring predicate for
     // non-ASCII input, including the existing treatment of stray UTF-8 bytes.
     static_assert([] {

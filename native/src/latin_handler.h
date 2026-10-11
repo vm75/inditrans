@@ -14,16 +14,16 @@ namespace inditrans::handlers {
 class LatinReaderHandler {
 public:
   template <typename Stream>
-  static TokenUnit assemble(const ScriptToken& start, Stream& stream) noexcept {
+  [[gnu::always_inline]] static inline TokenUnit assemble(const ScriptToken& start, Stream& stream) noexcept {
     TokenUnit tokenUnit = { start };
     if (start.tokenType == TokenType::Consonant) {
       bool vowelAdded = false;
 
       while (true) {
-        const auto* peek = stream.peek();
-        if (!peek || !HoldsScriptToken(*peek))
+        stream.ensure(1);
+        if (stream.head >= stream.bufferSize || !HoldsScriptToken(stream.buffer[stream.head]))
           break;
-        const auto nextToken = GetScriptToken(*peek);
+        const auto nextToken = GetScriptToken(stream.buffer[stream.head]);
         bool consume = false;
         switch (nextToken.tokenType) {
           case TokenType::Vowel:
@@ -68,27 +68,27 @@ public:
 /// Assimilates anuswara if no explicit diacritic character is mapped.
 class LatinWriterHandler {
 public:
-  template <typename PushFn>
-  static void write(const TokenUnit& tokenUnit, const TokenUnitOrString& next,
-      const ScriptWriterMap& map, TranslitOptions options, PushFn&& push) noexcept {
+  template <typename Writer>
+  [[gnu::always_inline]] static inline void write(const TokenUnit& tokenUnit, const TokenUnitOrString& next,
+      const ScriptWriterMap& map, TranslitOptions options, Writer& writer) noexcept {
     const auto& leadToken = tokenUnit.leadToken;
-    push(map.lookupChar(leadToken.tokenType, leadToken.idx));
+    writer.push(map.lookupChar(leadToken.tokenType, leadToken.idx));
     if (leadToken.tokenType == TokenType::Consonant) {
       if (tokenUnit.vowelMark.idx == InvalidToken) {
-        push(map.lookupChar(TokenType::Vowel, Diacritic_Virama));
+        writer.push(map.lookupChar(TokenType::Vowel, Diacritic_Virama));
       } else if (tokenUnit.vowelMark.idx != Diacritic_Virama) {
-        push(map.lookupChar(tokenUnit.vowelMark));
+        writer.push(map.lookupChar(tokenUnit.vowelMark));
       }
     }
     if (tokenUnit.accent.idx != InvalidToken && options / TranslitOptions::IgnoreVedicAccents) {
-      push(map.lookupChar(tokenUnit.accent));
+      writer.push(map.lookupChar(tokenUnit.accent));
     }
     if (tokenUnit.otherDiacritic.idx != InvalidToken) {
       const auto lookup = map.lookupChar(tokenUnit.otherDiacritic);
       if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara && lookup.empty()) {
-        AnuswaraAssimilator::emit<ScriptType::Latin>(next, map, push);
+        AnuswaraAssimilator::emit<ScriptType::Latin>(next, map, writer);
       } else {
-        push(lookup);
+        writer.push(lookup);
       }
     }
   }

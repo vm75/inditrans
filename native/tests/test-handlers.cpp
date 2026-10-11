@@ -21,21 +21,28 @@ using namespace inditrans::handlers;
 namespace {
 
 struct VectorStream {
-  std::vector<TokenOrString> tokens;
-  size_t pos { 0 };
+  std::vector<TokenOrString> buffer;
+  size_t head { 0 };
+  size_t bufferSize { 0 };
 
-  const TokenOrString* peek() noexcept {
-    if (pos >= tokens.size())
-      return nullptr;
-    return &tokens[pos];
+  void add(TokenOrString t) {
+    buffer.push_back(std::move(t));
+    bufferSize = buffer.size();
   }
 
-  void advance() noexcept { pos++; }
+  void ensure(size_t /*n*/) const noexcept {}
 
-  bool isEndOfWord() noexcept {
-    if (pos >= tokens.size())
+  const TokenOrString* peek() noexcept {
+    if (head >= bufferSize) return nullptr;
+    return &buffer[head];
+  }
+
+  void advance() noexcept { head++; }
+
+  bool isEndOfWord() const noexcept {
+    if (head >= bufferSize)
       return true;
-    const auto& next = tokens[pos];
+    const auto& next = buffer[head];
     if (HoldsString(next))
       return true;
     return GetScriptToken(next).tokenType == TokenType::Symbol;
@@ -50,17 +57,17 @@ suite<"Preservation handler tests"> preservationTests = [] {
     const auto* map = getScriptReaderMap("devanagari");
     expect(map != nullptr);
 
-    std::vector<std::string> chunks;
-    auto append = [&](std::string_view s) { chunks.emplace_back(s); };
+    TokenOrString buffer[10];
+    size_t outSize = 0;
 
     const char* ptr = text.data();
     const char* end = ptr + text.size();
 
-    ptr = PreservedSpanHandler::pullUnrecognized<ReaderPolicy::Indic>(
-        ptr, end, *map, "##", "##", TranslitOptions::None, append);
+    ptr = PreservedSpanHandler::pullUnrecognized<ReaderPolicy::Indic, TokenOrString>(
+        ptr, end, *map, "##", "##", TranslitOptions::None, buffer, outSize);
 
-    expect(chunks.size() == 1u);
-    expect(chunks.front() == "<div class=\"foo\">");
+    expect(outSize == 1u);
+    expect(GetString(buffer[0]) == "<div class=\"foo\">");
     expect(ptr == text.data() + 17);
   };
 
@@ -69,17 +76,17 @@ suite<"Preservation handler tests"> preservationTests = [] {
     const auto* map = getScriptReaderMap("devanagari");
     expect(map != nullptr);
 
-    std::vector<std::string> chunks;
-    auto append = [&](std::string_view s) { chunks.emplace_back(s); };
+    TokenOrString buffer[10];
+    size_t outSize = 0;
 
     const char* ptr = text.data();
     const char* end = ptr + text.size();
 
-    ptr = PreservedSpanHandler::pullUnrecognized<ReaderPolicy::Indic>(
-        ptr, end, *map, "##", "##", TranslitOptions::None, append);
+    ptr = PreservedSpanHandler::pullUnrecognized<ReaderPolicy::Indic, TokenOrString>(
+        ptr, end, *map, "##", "##", TranslitOptions::None, buffer, outSize);
 
-    expect(chunks.size() == 1u);
-    expect(chunks.front() == "skip this text");
+    expect(outSize == 1u);
+    expect(GetString(buffer[0]) == "skip this text");
     expect(std::string_view(ptr, end - ptr) == "rest");
   };
 
@@ -137,7 +144,11 @@ suite<"Contextual handler tests"> contextualTests = [] {
     expect(!AsciiNumeralFormatter::matches(highSymbol, TranslitOptions::ASCIINumerals));
 
     std::string out;
-    AsciiNumeralFormatter::emit(5, [&](std::string_view s) { out += s; });
+    struct DummyWriter {
+      std::string& out;
+      void push(std::string_view s) { out += s; }
+    } writer { out };
+    AsciiNumeralFormatter::emit(5, writer);
     expect(out == "5");
   };
 
@@ -219,7 +230,7 @@ suite<"Tamil handler tests"> tamilTests = [] {
 
     // Consonant followed by superscript "²"
     VectorStream stream;
-    stream.tokens.push_back(TokenOrString(std::string_view("²")));
+    stream.add(TokenOrString(std::string_view("²")));
 
     auto result = reader.assemble(ka, stream, true, invalidTokenUnit, TranslitOptions::TamilSuperscripted);
     expect(result.leadToken.idx == 1u); // ka + offset 1
@@ -266,7 +277,7 @@ suite<"Tamil handler tests"> tamilTests = [] {
 
     // Attached virama at end of word
     VectorStream stream;
-    stream.tokens.push_back(TokenOrString(Virama));
+    stream.add(TokenOrString(Virama));
 
     auto result = reader.assemble(ka, stream, false, invalidTokenUnit, TranslitOptions::None);
     expect(result == invalidTokenUnit); // Word-final primary stop with pulli is dropped
@@ -280,8 +291,8 @@ suite<"Indic and Latin handler tests"> indicLatinTests = [] {
     ScriptToken anuswara(TokenType::OtherDiacritic, 1, ScriptType::Indic);
 
     VectorStream stream;
-    stream.tokens.push_back(TokenOrString(aa));
-    stream.tokens.push_back(TokenOrString(anuswara));
+    stream.add(TokenOrString(aa));
+    stream.add(TokenOrString(anuswara));
 
     auto unit = IndicReaderHandler::assemble(ka, stream);
     expect(unit.leadToken == ka);
@@ -304,7 +315,7 @@ suite<"Indic and Latin handler tests"> indicLatinTests = [] {
     ScriptToken iMark(TokenType::Vowel, 2, ScriptType::Latin);
 
     VectorStream stream;
-    stream.tokens.push_back(TokenOrString(iMark));
+    stream.add(TokenOrString(iMark));
 
     auto unit = LatinReaderHandler::assemble(ka, stream);
     expect(unit.leadToken == ka);

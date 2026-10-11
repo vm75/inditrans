@@ -29,12 +29,12 @@ public:
 
   /// Emits the assimilated nasal consonant into the destination output.
   /// If TargetScript is Tamil, appends a pulli (virama) to keep the nasal vowelless.
-  template <ScriptType TargetScript, typename PushFn>
-  static void emit(const TokenUnitOrString& next, const ScriptWriterMap& map, PushFn&& push) noexcept {
+  template <ScriptType TargetScript, typename Writer>
+  static void emit(const TokenUnitOrString& next, const ScriptWriterMap& map, Writer& writer) noexcept {
     const size_t idx = inferNasalIndex(next);
-    push(map.lookupChar(TokenType::Consonant, idx));
+    writer.push(map.lookupChar(TokenType::Consonant, idx));
     if constexpr (TargetScript == ScriptType::Tamil) {
-      push(map.lookupChar(Virama));
+      writer.push(map.lookupChar(Virama));
     }
   }
 };
@@ -48,10 +48,10 @@ public:
         && token.idx < 10;
   }
 
-  template <typename PushFn>
-  static void emit(uint8_t idx, PushFn&& push) noexcept {
-    char str[2] = { static_cast<char>('0' + idx), 0 };
-    push(str);
+  template <typename Writer>
+  static void emit(uint8_t idx, Writer& writer) noexcept {
+    char str[1] = { static_cast<char>('0' + idx) };
+    writer.push(std::string_view(str, 1));
   }
 };
 

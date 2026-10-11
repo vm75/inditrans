@@ -16,7 +16,7 @@ public:
 
   /// Evaluates adhak against the next buffered item without consuming it.
   template <typename PeekFn>
-  static TokenUnit handleAdhak(PeekFn&& peek) noexcept {
+  [[gnu::always_inline]] static inline TokenUnit handleAdhak(PeekFn&& peek) noexcept {
     const auto peekItem = peek();
     if (peekItem && HoldsScriptToken(*peekItem)) {
       const auto nextToken = GetScriptToken(*peekItem);
