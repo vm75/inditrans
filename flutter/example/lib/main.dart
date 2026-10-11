@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:inditrans/inditrans.dart' as inditrans;
-import 'package:google_fonts/google_fonts.dart';
 
 class TestSpec {
   final String description;
@@ -94,8 +93,8 @@ class _MyAppState extends State<MyApp> {
             textAlign: TextAlign.left,
           ),
         );
-        widgets.add(Text('Expected: ${testCase.expected}', style: GoogleFonts.notoSansTamil(), textAlign: TextAlign.left));
-        widgets.add(Text('Actual: $actual', style: GoogleFonts.notoSansTamil(), textAlign: TextAlign.left));
+        widgets.add(Text('Expected: ${testCase.expected}', textAlign: TextAlign.left));
+        widgets.add(Text('Actual: $actual', textAlign: TextAlign.left));
       }
       widgets.add(const SizedBox(height: 10));
     }
