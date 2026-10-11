@@ -100,6 +100,123 @@ tables require more binary storage than the tag's runtime-built metadata.
 Size reductions must preserve hot-path performance. Compile-time transformation cost is an
 accepted trade-off, though substantial further increases should be justified.
 
+## Robust benchmarking and noise mitigation
+
+Local performance measurements on multi-task workstations (including WSL2 environments) are subject to host noise: background operating system services, Windows thread scheduling, CPU frequency scaling, thermal throttling, and transient CPU spikes. To make performance comparisons reliable without requiring an entirely isolated machine, IndiTrans employs robust aggregation, measurement variability tracking, and counterbalanced paired benchmarking.
+
+### Within-run vs. across-run aggregation
+
+Each benchmark suite executes at two distinct layers of measurement:
+
+1. **Within-run measurement**:
+   - In `native/bench/benchmark.cpp`, 31 timing iterations are collected per benchmark case and input scale. The inner binary reports the median sample and p95 across those 31 iterations.
+   - In `native/bench/short_call.cpp`, 10,000 transliteration calls are executed per case. The inner binary computes and reports per-call p50 and p95 (including returned-string destruction).
+2. **Across-run aggregation**:
+   - `tool/repeat_short_bench.py` executes the entire benchmark binary multiple times (default 9 runs locally, 5 in CI).
+   - For every case and input size, the run-level metrics (throughput medians, short-call p50, and short-call p95) are aggregated across runs using `statistics.median()`.
+   - *Statistical note*: The across-run median of run-level p95 values represents the typical p95 observed across benchmark sweeps, not the mathematically pooled p95 of all 50,000–90,000 individual calls concatenated together.
+
+### Why median aggregation is preferred over arithmetic mean
+
+Workstation noise is typically episodic: 7 or 8 runs execute under normal CPU frequencies, while 1 or 2 runs experience temporary host background activity or context switching.
+
+For example, consider five sweeps of a short-call benchmark:
+```text
+Run 1:  700 ns
+Run 2:  710 ns
+Run 3:  720 ns
+Run 4: 1200 ns (host CPU disturbance)
+Run 5: 1500 ns (host background load)
+
+Arithmetic mean: 966 ns (+34% distorted by background activity)
+Median:          720 ns (accurately reflects undisturbed performance)
+```
+The arithmetic mean is non-robust and heavily distorted by isolated delays. The median accurately reflects typical execution time when a minority of runs are disturbed.
+
+For backwards compatibility or diagnostic comparisons, `--aggregate mean` remains available in `tool/repeat_short_bench.py` and `BENCH_AGGREGATE=mean make bench-save`.
+
+### Variability tracking and measurement quality
+
+A stable median can mask high underlying volatility if the host PC is busy. To surface unstable data, sidecar statistics files (`*-stats.csv`) are generated alongside standard aggregated results:
+
+- `runs`: Count of completed valid runs.
+- `median_ns`: Median across completed runs.
+- `min_ns`, `max_ns`: Extreme observed values across runs.
+- `mad_ns`: Median Absolute Deviation from the median:
+  $$\text{MAD} = \text{median}\left(\{|x_i - \text{median}(X)|\}\right)$$
+- `relative_mad_pct`: Relative MAD as a percentage of the median ($100 \times \text{MAD} / \text{median}$).
+
+Quality classifications:
+- **Stable** ($\text{relative MAD} \le 2\%$): Low run-to-run noise; measurements are reproducible.
+- **Noisy** ($2\% < \text{relative MAD} \le 5\%$): Noticeable host activity; small differences should be interpreted cautiously.
+- **Highly unstable** ($\text{relative MAD} > 5\%$): Severe background noise; the benchmark should be re-run on a quieter machine.
+
+These thresholds are configurable via `--noise-warning-pct` and `--noise-critical-pct` in `repeat_short_bench.py`, `perf_report.py`, and `run-perf.py`.
+
+### Preserving raw measurements and avoiding cherry-picking
+
+- **Never silently discard outliers**: All completed runs are recorded in `*-runs.csv` and `paired-runs.csv`. Outlier filtering can discard genuine tail-latency degradations.
+- **Never cherry-pick the minimum**: Reporting the fastest observed run selects for transient CPU boost bursts, cold CPU cache states, or measurement anomalies. Minimums yield overly optimistic, non-reproducible claims that fail in realistic environments.
+
+### Counterbalanced paired benchmarking
+
+Sequential benchmarking (measuring baseline $N$ times, then measuring candidate $N$ times) is vulnerable to thermal drift and host load shifts between sessions. If the CPU thermal-throttles or background indexing begins during candidate measurements, candidate appears slower even if code performance improved.
+
+IndiTrans provides a dedicated **paired comparison mode** (`tool/run-perf.py --paired` or `tool/paired_bench.py`):
+
+1. **Pre-build isolation**:
+   - Baseline and candidate revisions are resolved to full git commit SHAs.
+   - Trees are extracted using `git archive` into isolated `/tmp` directories, leaving the working tree completely untouched and safe.
+   - Both benchmark binaries (`inditrans_bench` and `inditrans_short_bench`) are compiled up front under identical flags (`-std=c++23 -O3 -DNDEBUG`) using the candidate harness for strict comparability.
+2. **Counterbalanced execution order**:
+   - Benchmarks alternate execution order across rounds:
+     - Round 1: Baseline ($A$) $\to$ Candidate ($B$)
+     - Round 2: Candidate ($B$) $\to$ Baseline ($A$)
+     - Round 3: Baseline ($A$) $\to$ Candidate ($B$)
+     - Round 4: Candidate ($B$) $\to$ Baseline ($A$)
+   - Both binaries execute on the same pinned CPU core.
+3. **Median of paired ratios**:
+   - For each round $i$, the paired ratio is calculated:
+     $$r_i = \frac{C_i}{B_i}$$
+   - The overall performance delta is computed from the median of these paired ratios:
+     $$\Delta\% = 100 \times (\text{median}(r_i) - 1.0)$$
+   - *Advantage over ratio of medians*: If host throttling slows both processes by $2\times$ during a round, $r_i$ remains constant ($2.0 C / 2.0 B = C / B$). If an isolated hitch affects either baseline or candidate in one round, that round's ratio is an outlier rejected by the across-round median.
+4. **Parity and correctness checks**:
+   - FNV-1a 64-bit output hashes are validated across all rounds for both baseline and candidate. Any hash mismatch or missing benchmark case halts the comparison with an explicit error.
+
+### CLI usage examples
+
+Run a paired comparison between baseline commit and current branch with 9 counterbalanced rounds on CPU 0:
+```sh
+python3 tool/run-perf.py --paired --baseline fa145f3 --candidate HEAD --runs 9 --cpu 0
+```
+
+Run standalone repeated latency benchmarks with median aggregation and sidecar statistics:
+```sh
+python3 tool/repeat_short_bench.py \
+  --binary out/inditrans_short_bench \
+  --runs 9 \
+  --cpu 0 \
+  --aggregate median \
+  --stats-output out/perf/latency-stats.csv \
+  --raw-output out/perf/latency-runs.csv \
+  > out/perf/latency.csv
+```
+
+Generate cumulative performance report highlighting noisy cases:
+```sh
+python3 tool/perf_report.py \
+  --noise-warning-pct 2.0 \
+  --noise-critical-pct 5.0
+```
+
+Save baseline and compare with custom runs and strict regression enforcement:
+```sh
+make bench-save BENCH_RUNS=9 BENCH_AGGREGATE=median
+# ... make code modifications ...
+BENCH_STRICT=1 make bench-compare BENCH_RUNS=9 BENCH_AGGREGATE=median
+```
+
 ## Historical compact-static acceptance results
 
 Throughput cells below show the median of the ten case medians at each scale;

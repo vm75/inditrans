@@ -29,6 +29,8 @@ class Snapshot:
     throughput: dict[tuple[str, int], int]
     latency: dict[tuple[str, int], int]
     cold_cases: dict[str, tuple[int, int]]
+    throughput_stats: dict[tuple[str, int], dict[str, str]]
+    latency_stats: dict[tuple[str, int], dict[str, str]]
 
 
 def parse_args() -> argparse.Namespace:
@@ -46,6 +48,18 @@ def parse_args() -> argparse.Namespace:
         "--cold-case",
         default="cold-devanagari-to-telugu",
         help="cold-start case for the cold-latency table",
+    )
+    parser.add_argument(
+        "--noise-warning-pct",
+        type=float,
+        default=2.0,
+        help="relative MAD percentage above which measurements are flagged as noisy (default: 2.0)",
+    )
+    parser.add_argument(
+        "--noise-critical-pct",
+        type=float,
+        default=5.0,
+        help="relative MAD percentage above which measurements are flagged as highly unstable (default: 5.0)",
     )
     parser.add_argument(
         "--step",
@@ -164,6 +178,27 @@ def display_name(prefix_name: str) -> str:
     return (name or prefix_name).replace("_", " ").replace("-", " ")
 
 
+def read_stats_dict(prefix: Path, suffix: str) -> dict[tuple[str, int], dict[str, str]]:
+    path = prefix.with_name(prefix.name + suffix)
+    if not path.is_file():
+        return {}
+    rows = read_csv_rows(path)
+    if not rows:
+        return {}
+    header = rows[0]
+    try:
+        case_col = header.index("case")
+        bytes_col = header.index("input_bytes")
+    except ValueError:
+        return {}
+    result = {}
+    for row in rows[1:]:
+        if len(row) > max(case_col, bytes_col):
+            key = (row[case_col], int(row[bytes_col]))
+            result[key] = {header[i]: row[i] for i in range(len(row)) if i < len(header)}
+    return result
+
+
 def load_snapshot(directory: Path, name: str, latency_case: str, alloc_case: str, cold_case: str) -> Snapshot:
     prefix = directory / name
     cold_latency = read_cold_latency(prefix, cold_case)
@@ -180,6 +215,8 @@ def load_snapshot(directory: Path, name: str, latency_case: str, alloc_case: str
         throughput=read_metric_matrix(prefix, "-throughput.csv", "median_ns"),
         latency=read_metric_matrix(prefix, "-latency.csv", "p50_ns"),
         cold_cases=read_all_cold(prefix),
+        throughput_stats=read_stats_dict(prefix, "-throughput-stats.csv"),
+        latency_stats=read_stats_dict(prefix, "-latency-stats.csv"),
     )
 
 
@@ -257,6 +294,8 @@ def render_report(
     latency_case: str,
     alloc_case: str,
     cold_case: str,
+    noise_warning_pct: float = 2.0,
+    noise_critical_pct: float = 5.0,
 ) -> str:
     lines = [
         "# Performance progression",
@@ -418,6 +457,61 @@ def render_report(
             ],
         )
     )
+    has_latency_stats = any(s.latency_stats for s in snapshots)
+    if has_latency_stats:
+        lines.extend(["", "## Short-call run-level variability (relative MAD)", ""])
+        lines.append(f"Shows relative MAD % across sweeps (≤ {noise_warning_pct:.1f}% is stable; > {noise_warning_pct:.1f}% is noisy).")
+        lines.append("")
+        variability_rows = []
+        for key in latency_keys:
+            row = [key[0]]
+            for snapshot in snapshots:
+                st = snapshot.latency_stats.get(key)
+                if st and "relative_mad_pct" in st:
+                    try:
+                        val = float(st["relative_mad_pct"])
+                        flag = " ⚠️" if val > noise_warning_pct else ""
+                        row.append(f"{val:.1f}%{flag}")
+                    except (ValueError, TypeError):
+                        row.append("—")
+                else:
+                    row.append("—")
+            variability_rows.append(row)
+        lines.extend(markdown_table(["Case", *[s.display_name if s is not baseline else "Baseline" for s in snapshots]], variability_rows))
+
+    warnings = []
+    for snapshot in snapshots:
+        for (case_name, size), stats in snapshot.latency_stats.items():
+            try:
+                rel_mad = float(stats.get("relative_mad_pct", 0.0))
+            except (ValueError, TypeError):
+                continue
+            if rel_mad > noise_critical_pct:
+                warnings.append(
+                    f"- 🔴 **CRITICAL (highly unstable)**: `{snapshot.name}` short-call `{case_name}` relative MAD is **{rel_mad:.1f}%** (> {noise_critical_pct:.1f}%). Host background load detected; repeat measurement."
+                )
+            elif rel_mad > noise_warning_pct:
+                warnings.append(
+                    f"- ⚠️ **WARNING (noisy)**: `{snapshot.name}` short-call `{case_name}` relative MAD is **{rel_mad:.1f}%** (> {noise_warning_pct:.1f}%). Small deltas should be interpreted with caution."
+                )
+        for (case_name, size), stats in snapshot.throughput_stats.items():
+            try:
+                rel_mad = float(stats.get("relative_mad_pct", 0.0))
+            except (ValueError, TypeError):
+                continue
+            if rel_mad > noise_critical_pct:
+                warnings.append(
+                    f"- 🔴 **CRITICAL (highly unstable)**: `{snapshot.name}` throughput `{case_name}` ({format_bytes(size)}) relative MAD is **{rel_mad:.1f}%** (> {noise_critical_pct:.1f}%). Host background load detected; repeat measurement."
+                )
+            elif rel_mad > noise_warning_pct:
+                warnings.append(
+                    f"- ⚠️ **WARNING (noisy)**: `{snapshot.name}` throughput `{case_name}` ({format_bytes(size)}) relative MAD is **{rel_mad:.1f}%** (> {noise_warning_pct:.1f}%). Small deltas should be interpreted with caution."
+                )
+
+    if warnings:
+        lines.extend(["", "## Measurement quality warnings", ""])
+        lines.extend(warnings)
+
     return "\n".join(lines) + "\n"
 
 
@@ -435,7 +529,15 @@ def main() -> int:
             load_snapshot(args.dir, name, args.latency_case, args.alloc_case, args.cold_case)
             for name in step_names
         )
-        report = render_report(snapshots, baseline, args.latency_case, args.alloc_case, args.cold_case)
+        report = render_report(
+            snapshots,
+            baseline,
+            args.latency_case,
+            args.alloc_case,
+            args.cold_case,
+            noise_warning_pct=args.noise_warning_pct,
+            noise_critical_pct=args.noise_critical_pct,
+        )
     except (OSError, ValueError) as exc:
         print(f"perf-report: {exc}", file=sys.stderr)
         return 2

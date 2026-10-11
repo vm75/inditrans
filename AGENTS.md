@@ -47,6 +47,7 @@ Makefile                Top-level build, test, and publish targets
 - **Run all available benchmarks with a formatted summary**: `make bench-all`
 - **Save a performance baseline**: `make bench-save` (writes `out/bench-baseline-*.csv`)
 - **Compare current results against saved baseline**: `make bench-compare` (flags regressions ≥ 5%; output mismatches fail)
+- **Run counterbalanced paired benchmark**: `python3 tool/run-perf.py --paired --baseline <ref> --candidate <ref> --runs 9` (alternates execution order, uses median of paired ratios to eliminate host workstation noise)
 - **Capture a cumulative tuning snapshot**: `make perf-snapshot PERF_NAME=00-baseline`
 - **Generate the cumulative tuning report**: `make perf-report`
 - **Make performance regressions fail**: `BENCH_STRICT=1 make bench-compare`

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a native CSV benchmark repeatedly and emit arithmetic-mean timing values."""
+"""Run a native CSV benchmark repeatedly and emit aggregated timing values."""
 
 from __future__ import annotations
 
@@ -9,7 +9,20 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from statistics import fmean
+
+# Support running both as `tool/repeat_short_bench.py` and when sys.path lacks `tool/`
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT / "tool") not in sys.path:
+    sys.path.insert(0, str(ROOT / "tool"))
+
+from perf_stats import (
+    aggregate_metric,
+    classify_quality,
+    compute_mad,
+    compute_relative_mad,
+    rounded_mean,
+    rounded_median,
+)
 
 
 THROUGHPUT_HEADER = [
@@ -33,6 +46,23 @@ SCHEMAS = {
     tuple(LATENCY_HEADER): ("p50_ns", "p95_ns"),
 }
 
+STATS_HEADER = [
+    "case",
+    "input_bytes",
+    "runs",
+    "median_ns",
+    "min_ns",
+    "max_ns",
+    "mad_ns",
+    "relative_mad_pct",
+    "p95_median_ns",
+    "p95_min_ns",
+    "p95_max_ns",
+    "p95_mad_ns",
+    "p95_relative_mad_pct",
+    "quality",
+]
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -40,9 +70,32 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--runs", type=int, default=5, help="number of complete benchmark runs")
     parser.add_argument("--cpu", default="", help="optional Linux CPU id/list passed to taskset")
     parser.add_argument(
+        "--aggregate",
+        choices=["median", "mean"],
+        default="median",
+        help="aggregation method across repeated runs (default: median)",
+    )
+    parser.add_argument(
         "--raw-output",
         type=Path,
         help="optional CSV path that receives every unaggregated run",
+    )
+    parser.add_argument(
+        "--stats-output",
+        type=Path,
+        help="optional CSV path that receives variability and quality statistics",
+    )
+    parser.add_argument(
+        "--noise-warning-pct",
+        type=float,
+        default=2.0,
+        help="threshold percentage for classifying run as noisy (default: 2.0)",
+    )
+    parser.add_argument(
+        "--noise-critical-pct",
+        type=float,
+        default=5.0,
+        help="threshold percentage for classifying run as highly unstable (default: 5.0)",
     )
     return parser.parse_args()
 
@@ -55,10 +108,6 @@ def command(binary: Path, cpu: str) -> list[str]:
     if taskset is None:
         raise ValueError("--cpu requires taskset")
     return [taskset, "-c", cpu, *cmd]
-
-
-def rounded_mean(values: list[float]) -> int:
-    return int(fmean(values) + 0.5)
 
 
 def main() -> int:
@@ -141,6 +190,50 @@ def main() -> int:
             writer.writerow(["run", *header])
             writer.writerows(raw_rows)
 
+    if args.stats_output is not None:
+        args.stats_output.parent.mkdir(parents=True, exist_ok=True)
+        stats_rows: list[list[str]] = []
+        for case_name, input_bytes in order:
+            first, second = metrics[(case_name, input_bytes)]
+            first_median = rounded_median(first)
+            first_min = int(min(first) + 0.5)
+            first_max = int(max(first) + 0.5)
+            first_mad = compute_mad(first)
+            first_rel_mad = compute_relative_mad(first)
+
+            second_median = rounded_median(second)
+            second_min = int(min(second) + 0.5)
+            second_max = int(max(second) + 0.5)
+            second_mad = compute_mad(second)
+            second_rel_mad = compute_relative_mad(second)
+
+            quality = classify_quality(
+                first_rel_mad,
+                warning_pct=args.noise_warning_pct,
+                critical_pct=args.noise_critical_pct,
+            )
+
+            stats_rows.append([
+                case_name,
+                input_bytes,
+                str(len(first)),
+                str(first_median),
+                str(first_min),
+                str(first_max),
+                f"{first_mad:.1f}",
+                f"{first_rel_mad:.2f}",
+                str(second_median),
+                str(second_min),
+                str(second_max),
+                f"{second_mad:.1f}",
+                f"{second_rel_mad:.2f}",
+                quality,
+            ])
+        with args.stats_output.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.writer(handle, lineterminator="\n")
+            writer.writerow(STATS_HEADER)
+            writer.writerows(stats_rows)
+
     writer = csv.writer(sys.stdout, lineterminator="\n")
     writer.writerow(header)
     for case_name, input_bytes in order:
@@ -149,8 +242,8 @@ def main() -> int:
         values = {
             "case": case_name,
             "input_bytes": input_bytes,
-            metric_columns[0]: str(rounded_mean(first)),
-            metric_columns[1]: str(rounded_mean(second)),
+            metric_columns[0]: str(aggregate_metric(first, mode=args.aggregate)),
+            metric_columns[1]: str(aggregate_metric(second, mode=args.aggregate)),
             "output_size_sink": output_size_sink,
             "output_fnv1a64": output_hash,
         }
