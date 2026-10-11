@@ -102,7 +102,7 @@ def normalize_snapshot(prefix: Path) -> None:
 
         temporary = output.with_name(output.name + ".tmp")
         with temporary.open("w", newline="", encoding="utf-8") as handle:
-            writer = csv.DictWriter(handle, fieldnames=fields[1:], lineterminator="\\n")
+            writer = csv.DictWriter(handle, fieldnames=fields[1:], lineterminator="\n")
             writer.writeheader()
             writer.writerows(summaries)
         temporary.replace(output)
