@@ -7,11 +7,9 @@ version:
 
 validate:
 	python3 ./tool/verify_release.py
+	python3 ./tool/test_repeat_short_bench.py
 	python3 ./tool/verify_wasm_build_parity.py
 	python3 ./tool/test_release_engineering.py
-	python3 ./tool/test_repeat_short_bench.py
-	python3 ./tool/test_perf_aggregation.py
-	python3 ./tool/test_paired_bench.py
 
 ifeq ($(OS), Windows_NT)
     EXEC_EXT = .exe

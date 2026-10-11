@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
-"""Capture performance snapshots for tagged milestones and/or the current workspace, or run paired benchmarks."""
+"""Capture performance snapshots for tagged milestones and/or the current workspace."""
 
 from __future__ import annotations
 
 import argparse
+import csv
 import os
 import signal
 import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-if str(ROOT / "tool") not in sys.path:
-    sys.path.insert(0, str(ROOT / "tool"))
-
-from paired_bench import run_paired_benchmarks
+from repeat_short_bench import SCHEMAS, rounded_median
 
 
 def run(command: list[str], *, cwd: Path, check: bool = True, capture: bool = False) -> str:
@@ -32,7 +29,7 @@ def git(root: Path, *args: str, check: bool = True, capture: bool = False) -> st
     return run(["git", *args], cwd=root, check=check, capture=capture)
 
 
-def snapshot(root: Path, ref: str, name: str, cpu: str, runs: str, aggregate: str) -> None:
+def snapshot(root: Path, ref: str, name: str, cpu: str, runs: str) -> None:
     print(f"==> Running snapshot for {name} ({ref})...", flush=True)
     git(root, "restore", ".")
     git(root, "checkout", "--detach", ref)
@@ -44,7 +41,6 @@ def snapshot(root: Path, ref: str, name: str, cpu: str, runs: str, aggregate: st
             f"BENCH_RUNS={runs}",
             f"BENCH_CPU={cpu}",
             f"PERF_CPU={cpu}",
-            f"BENCH_AGGREGATE={aggregate}",
         ],
         cwd=root,
     )
@@ -69,16 +65,51 @@ def restore_workspace(
                 break
 
 
+def normalize_snapshot(prefix: Path) -> None:
+    """Recompute old-tag aggregates from raw runs using the current median policy."""
+    for kind in ("throughput", "latency"):
+        output = prefix.with_name(f"{prefix.name}-{kind}.csv")
+        if not output.is_file():
+            continue
+        raw = prefix.with_name(f"{prefix.name}-{kind}-runs.csv")
+        if not raw.is_file():
+            raise ValueError(f"Cannot normalize {output}: missing {raw}; rerun the snapshot")
+
+        with raw.open(newline="", encoding="utf-8") as handle:
+            reader = csv.DictReader(handle)
+            fields = reader.fieldnames
+            if not fields or fields[0] != "run" or tuple(fields[1:]) not in SCHEMAS:
+                raise ValueError(f"Unexpected raw benchmark CSV header: {raw}")
+            metrics = SCHEMAS[tuple(fields[1:])]
+            groups: dict[tuple[str, str], list[dict[str, str]]] = {}
+            for row in reader:
+                key = (row["case"], row["input_bytes"])
+                if key in groups:
+                    first = groups[key][0]
+                    for field in ("output_size_sink", "output_fnv1a64"):
+                        if row[field] != first[field]:
+                            raise ValueError(f"Output mismatch across runs for {key} in {raw}")
+                groups.setdefault(key, []).append(row)
+        if not groups:
+            raise ValueError(f"No benchmark results in {raw}")
+
+        summaries = []
+        for rows in groups.values():
+            record = {field: rows[0][field] for field in fields[1:]}
+            for metric in metrics:
+                record[metric] = str(rounded_median([float(row[metric]) for row in rows]))
+            summaries.append(record)
+
+        temporary = output.with_name(output.name + ".tmp")
+        with temporary.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fields[1:], lineterminator="\\n")
+            writer.writeheader()
+            writer.writerows(summaries)
+        temporary.replace(output)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--paired", action="store_true", help="run paired counterbalanced baseline vs candidate benchmarking")
-    parser.add_argument("--baseline", default="perf-00-baseline", help="baseline git ref for paired benchmarking (default: perf-00-baseline)")
-    parser.add_argument("--candidate", default="HEAD", help="candidate git ref for paired benchmarking (default: HEAD)")
-    parser.add_argument("--runs", type=int, default=None, help="number of repeated benchmark runs (default: 9 locally)")
-    parser.add_argument("--cpu", default=None, help="CPU affinity passed to taskset (default: $CPU or 0)")
-    parser.add_argument("--aggregate", choices=["median", "mean"], default="median", help="aggregation method (default: median)")
-    parser.add_argument("--noise-warning-pct", type=float, default=2.0, help="relative MAD threshold for noisy warning (default: 2.0)")
-    parser.add_argument("--noise-critical-pct", type=float, default=5.0, help="relative MAD threshold for critical noise (default: 5.0)")
     parser.add_argument("--run-tags", action="store_true", help="snapshot perf-* tags (all tags when none are listed)")
     parser.add_argument("--current", action="store_true", help="snapshot current workspace as 99-current (default without options)")
     parser.add_argument("tags", nargs="*", help="specific perf-* tags to snapshot; implies --run-tags")
@@ -93,29 +124,7 @@ def main() -> int:
     root = Path(git(Path.cwd(), "rev-parse", "--show-toplevel", capture=True))
 
     cpu = os.environ.get("CPU", "0")
-    if args.cpu is not None:
-        cpu = args.cpu
-
     runs = os.environ.get("RUNS", "9")
-    if args.runs is not None:
-        runs = str(args.runs)
-    runs_int = int(runs)
-    runs_str = runs
-
-    if args.paired:
-        code, _, _ = run_paired_benchmarks(
-            repo_root=root,
-            baseline_ref=args.baseline,
-            candidate_ref=args.candidate,
-            runs=runs_int,
-            cpu=cpu,
-            suite="all",
-            output_dir=root / "out" / "perf",
-            noise_warning_pct=args.noise_warning_pct,
-            noise_critical_pct=args.noise_critical_pct,
-            fail_on_hash_mismatch=True,
-        )
-        return code
 
     run_tags = args.run_tags or bool(args.tags)
     run_current = args.current or not run_tags
@@ -140,7 +149,7 @@ def main() -> int:
                 if not args.tags and (root / "out" / "perf" / f"{name}-wasm-size.txt").is_file():
                     print(f"Skipping {name}\n", flush=True)
                     continue
-                snapshot(root, ref, name, cpu, runs_str, args.aggregate)
+                snapshot(root, ref, name, cpu, runs)
         finally:
             restore_workspace(root, current_commit, current_branch, stash_commit, checkout_started)
 
@@ -152,13 +161,19 @@ def main() -> int:
                 "make",
                 "perf-snapshot",
                 "PERF_NAME=99-current",
-                f"BENCH_RUNS={runs_str}",
+                f"BENCH_RUNS={runs}",
                 f"BENCH_CPU={cpu}",
                 f"PERF_CPU={cpu}",
-                f"BENCH_AGGREGATE={args.aggregate}",
             ],
             cwd=root,
         )
+
+    # Historical tags may contain the old mean-based repeat helper. Normalize every
+    # snapshot from its raw runs so the progression report compares like with like.
+    perf_dir = root / "out" / "perf"
+    for throughput_csv in sorted(perf_dir.glob("*-throughput.csv")):
+        name = throughput_csv.name.removesuffix("-throughput.csv")
+        normalize_snapshot(perf_dir / name)
 
     report_path = root / "out" / "report.md"
     report_path.parent.mkdir(parents=True, exist_ok=True)
