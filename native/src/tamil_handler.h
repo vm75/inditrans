@@ -10,9 +10,52 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <optional>
 #include <string_view>
 
 namespace inditrans::handlers {
+
+/// Disambiguation marker payload for Tamil consonants.
+struct TamilMarker {
+  uint8_t phonemeOffset; ///< Canonical phoneme offset (0..3) within the varga
+  uint8_t byteLength;    ///< UTF-8 byte length of the matched marker
+};
+
+/// Decodes an attached Tamil superscript (¹²³⁴) or subscript (₁₂₃₄) disambiguation marker
+/// into its canonical phoneme offset (0..3) and UTF-8 byte length.
+inline constexpr std::optional<TamilMarker> matchTamilMarker(std::string_view str) noexcept {
+  if (str.size() >= 2 && static_cast<uint8_t>(str[0]) == 0xC2) {
+    switch (static_cast<uint8_t>(str[1])) {
+      case 0xB9: return TamilMarker { 0, 2 }; // ¹
+      case 0xB2: return TamilMarker { 1, 2 }; // ²
+      case 0xB3: return TamilMarker { 2, 2 }; // ³
+      default:   return std::nullopt;
+    }
+  }
+  if (str.size() >= 3 && static_cast<uint8_t>(str[0]) == 0xE2) {
+    const auto second = static_cast<uint8_t>(str[1]);
+    const auto third = static_cast<uint8_t>(str[2]);
+    if (second == 0x81 && third == 0xB4) {
+      return TamilMarker { 3, 3 }; // ⁴
+    }
+    if (second == 0x82) {
+      switch (third) {
+        case 0x81: return TamilMarker { 0, 3 }; // ₁
+        case 0x82: return TamilMarker { 1, 3 }; // ₂
+        case 0x83: return TamilMarker { 2, 3 }; // ₃
+        case 0x84: return TamilMarker { 3, 3 }; // ₄
+        default:   return std::nullopt;
+      }
+    }
+  }
+  return std::nullopt;
+}
+
+/// Returns true if the entire preserved span represents an isolated Tamil marker (superscript or subscript).
+inline constexpr bool isTamilMarkerSpan(std::string_view str) noexcept {
+  const auto marker = matchTamilMarker(str);
+  return marker.has_value() && marker->byteLength == str.size();
+}
 
 /// Phonological predicates for Tamil consonants and clusters.
 inline constexpr bool isPrimaryStop(uint8_t idx) noexcept {
@@ -41,7 +84,7 @@ inline bool isTamilEndOfWord(const TokenUnitOrString& next) noexcept {
     return true;
   }
   if (HoldsString(next)) {
-    return TamilSuperscripts.find(GetString(next)) == TamilSuperscripts.npos;
+    return !isTamilMarkerSpan(GetString(next));
   }
   const auto token = GetTokenUnit(next);
   return token.leadToken.tokenType == TokenType::Symbol;
@@ -72,6 +115,7 @@ public:
     if (start.tokenType == TokenType::Consonant) {
       const bool isPrimary = isPrimaryStop(start.idx);
       bool hasVirama = false;
+      bool hasMarker = false;
 
       while (true) {
         const auto* peek = stream.peek();
@@ -96,15 +140,17 @@ public:
             default:
               goto done;
           }
-        } else if (isPrimary || start.idx == 7 /* ஜ */) {
+        } else if ((isPrimary || start.idx == 7 /* ஜ */) && !hasMarker) {
           const auto str = GetString(*peek);
-          auto offset = TamilSuperscripts.find(str);
-          if (offset != TamilSuperscripts.npos) {
-            tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + offset / "²"_len));
-            stream.advance();
-          } else if ((offset = TamilSubscripts.find(str)) != TamilSubscripts.npos) {
-            tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + offset / "²"_len));
-            stream.advance();
+          if (const auto marker = matchTamilMarker(str)) {
+            const auto maxOffset = (start.idx == 7) ? 1 : 3;
+            if (marker->phonemeOffset <= maxOffset) {
+              tokenUnit.leadToken = start.clone(static_cast<uint8_t>(start.idx + marker->phonemeOffset));
+              hasMarker = true;
+              stream.advance(marker->byteLength);
+            } else {
+              break;
+            }
           } else {
             break;
           }

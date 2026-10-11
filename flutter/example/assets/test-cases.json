@@ -586,5 +586,81 @@
         "text": "akkha makkhaṇa labbha hattha lacchamī"
       }
     ]
+  },
+  {
+    "description": "Tamil superscripts and subscripts disambiguation",
+    "text": "க¹ க² க³ க⁴ க₁ க₂ க₃ க₄ ச₁ ச₂ ச₃ ச₄ ட₁ ட₂ ட₃ ட₄ த₁ த₂ த₃ த₄ ப₁ ப₂ ப₃ ப₄ ஜ₁ ஜ₂",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "क ख ग घ क ख ग घ च छ ज झ ट ठ ड ढ त थ द ध प फ ब भ ज झ",
+        "options": "TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "Tamil superscripts with lookahead and boundary whitespace",
+    "text": "க² ப, க²  ப, க²\nப, க²,ப, க². கு³ ப, க²xyz",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "ख प, ख  प, ख\nप, ख,प, ख. गु प, खxyz",
+        "options": "TamilSuperscripted"
+      },
+      {
+        "script": "readablelatin",
+        "text": "kha pa, kha  pa, kha\npa, kha,pa, kha. gu pa, khaxyz",
+        "options": "TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "Tamil superscripts with vowel marks and preserved structures",
+    "text": "கா² கி³ கு⁴॒ க² <tag>content</tag> ##protected## க⁴",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "खा गि घु॒ ख <tag>content</tag> protected घ",
+        "options": "TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "Tamil writer nasal selection and marker boundary lookahead",
+    "text": "अन् अन्  अन्²  अन्²xyz अन्₃  अन्⁴  अन्², अन्²\nअन् xyz अन्त अन्न",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "அன் அன்  அன்²  அன்²xyz அன்₃  அன்⁴  அன்², அன்²\nஅன் xyz அந்த அந்ன"
+      }
+    ]
+  },
+  {
+    "description": "Tamil marker and virama interaction clusters",
+    "text": "க்¹ க்² க்³ க்⁴ க்₁ க்₂ க்₃ க்₄ ச்² ட்² த்² ப்² ஜ்² க²் க³் க₂் க₃்",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "क् ख् ग् घ् क् ख् ग् घ् छ् ठ् थ् फ् झ् ख् ग् ख् ग्",
+        "options": "TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "Tamil markers with bound limits and non-eligible consonants",
+    "text": "ஜ³ ப, ஜ⁴ ப, ஜ₃ ப, ஜ₄ ப, ர², ல³, ய⁴, வ₁, ஸ₂, ஹ₃, ன⁴",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "ज³ प, ज⁴ प, ज₃ प, ज₄ प, र², ल³, य⁴, व₁, स₂, ह₃, ऩ⁴",
+        "options": "TamilSuperscripted"
+      }
+    ]
   }
 ]
