@@ -77,6 +77,14 @@ sample the first transliteration in fresh processes and exclude process launch.
 Allocation figures are requested allocator bytes, not RSS or Wasm linear-memory
 capacity.
 
+Across repeated benchmark sweeps, timings are now aggregated with the median
+rather than the arithmetic mean; every run remains available in the raw
+`*-runs.csv` files. `python3 tool/run-perf.py` defaults to nine sweeps locally
+(override with `RUNS`), while Makefile commands and CI continue to default to
+five (override with `BENCH_RUNS`). When reporting historical tagged snapshots,
+`run-perf.py` recomputes their aggregates from raw runs so that old and new
+revisions use the same median-based method.
+
 For A/B checks, use `make bench-save` before a change and `make bench-compare`
 afterward. The default report threshold is 5%; set `BENCH_STRICT=1` to fail at
 or above it. Output/hash mismatches and missing benchmark cases always fail.

@@ -7,6 +7,7 @@ version:
 
 validate:
 	python3 ./tool/verify_release.py
+	python3 ./tool/test_repeat_short_bench.py
 	python3 ./tool/verify_wasm_build_parity.py
 	python3 ./tool/test_release_engineering.py
 
@@ -210,7 +211,7 @@ bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	fi
 	@python3 "$(PERF_TOOL_DIR)/perf_metadata.py" > $(BENCH_BASELINE)-info.txt
 	@printf "bench_runs=%s\nbench_cpu=%s\n" "$(BENCH_RUNS)" "$(BENCH_CPU)" >> $(BENCH_BASELINE)-info.txt
-	@echo "Baseline saved → averaged CSVs plus raw *-runs.csv ($(BENCH_RUNS) runs)"
+	@echo "Baseline saved → median CSVs plus raw *-runs.csv ($(BENCH_RUNS) runs)"
 	@cat $(BENCH_BASELINE)-info.txt
 
 # Save one cumulative tuning snapshot using the benchmark formats plus raw standalone Wasm size.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run a native CSV benchmark repeatedly and emit arithmetic-mean timing values."""
+"""Run a native CSV benchmark repeatedly and emit median timing values."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from statistics import fmean
+from statistics import median
 
 
 THROUGHPUT_HEADER = [
@@ -57,8 +57,8 @@ def command(binary: Path, cpu: str) -> list[str]:
     return [taskset, "-c", cpu, *cmd]
 
 
-def rounded_mean(values: list[float]) -> int:
-    return int(fmean(values) + 0.5)
+def rounded_median(values: list[float]) -> int:
+    return int(median(values) + 0.5)
 
 
 def main() -> int:
@@ -149,8 +149,8 @@ def main() -> int:
         values = {
             "case": case_name,
             "input_bytes": input_bytes,
-            metric_columns[0]: str(rounded_mean(first)),
-            metric_columns[1]: str(rounded_mean(second)),
+            metric_columns[0]: str(rounded_median(first)),
+            metric_columns[1]: str(rounded_median(second)),
             "output_size_sink": output_size_sink,
             "output_fnv1a64": output_hash,
         }
