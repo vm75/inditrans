@@ -24,6 +24,7 @@ int main(int argc, char** argv) {
   std::string_view seed;
   std::string_view from;
   std::string_view to;
+  TranslitOptions options = TranslitOptions::None;
   if (mode == "latin") {
     seed = "śrī gurubhyo namaḥ, namaste bhāratam. ";
     from = "iso";
@@ -44,6 +45,19 @@ int main(int argc, char** argv) {
     seed = "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । ";
     from = "indic";
     to = "iso";
+  } else if (mode == "tamil-to-iso") {
+    seed = "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப । ";
+    from = "tamil";
+    to = "iso";
+  } else if (mode == "tamil-to-devanagari") {
+    seed = "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப । ";
+    from = "tamil";
+    to = "devanagari";
+  } else if (mode == "tamil-superscript-output") {
+    seed = "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । ";
+    from = "devanagari";
+    to = "tamil";
+    options = TranslitOptions::TamilSuperscripted;
   } else {
     seed = "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । ";
     from = "devanagari";
@@ -54,7 +68,7 @@ int main(int argc, char** argv) {
   while (input.size() < targetBytes) input.append(seed);
 
   for (size_t i = 0; i < warmups; ++i) {
-    const auto output = transliterate(input, from, to, TranslitOptions::None);
+    const auto output = transliterate(input, from, to, options);
     (void)output;
   }
 
@@ -64,7 +78,7 @@ int main(int argc, char** argv) {
   resetAllocProbe();
 #endif
   for (size_t i = 0; i < repetitions; ++i) {
-    const auto output = transliterate(input, from, to, TranslitOptions::None);
+    const auto output = transliterate(input, from, to, options);
     outputBytes = output.size();
     for (const auto byte : output) checksum += static_cast<uint8_t>(byte);
   }

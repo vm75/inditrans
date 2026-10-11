@@ -79,9 +79,9 @@ capacity.
 
 Across repeated benchmark sweeps, timings are now aggregated with the median
 rather than the arithmetic mean; every run remains available in the raw
-`*-runs.csv` files. `python3 tool/run-perf.py` defaults to nine sweeps locally
-(override with `RUNS`), while Makefile commands and CI continue to default to
-five (override with `BENCH_RUNS`). When reporting historical tagged snapshots,
+`*-runs.csv` files. `python3 tool/run-perf.py` defaults to five sweeps locally
+(override with `RUNS`), matching Makefile commands and CI (override with `BENCH_RUNS`).
+When reporting historical tagged snapshots,
 `run-perf.py` recomputes their aggregates from raw runs so that old and new
 revisions use the same median-based method.
 

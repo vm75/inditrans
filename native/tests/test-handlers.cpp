@@ -282,6 +282,62 @@ suite<"Tamil handler tests"> tamilTests = [] {
     auto result = reader.assemble(ka, stream, false, invalidTokenUnit, TranslitOptions::None);
     expect(result == invalidTokenUnit); // Word-final primary stop with pulli is dropped
   };
+
+  "TamilReaderHandler word-final soft pulli retention"_test = [] {
+    TamilReaderHandler reader;
+    // Word-final soft consonants (m, n, l, r) with pulli must NOT be dropped
+    for (uint8_t idx : { 24 /* m */, 27 /* l */, 36 /* n */ }) {
+      ScriptToken token(TokenType::Consonant, idx, ScriptType::Tamil);
+      VectorStream stream;
+      stream.add(TokenOrString(Virama));
+
+      auto result = reader.assemble(token, stream, false, invalidTokenUnit, TranslitOptions::None);
+      expect(result != invalidTokenUnit);
+      expect(result.leadToken == token);
+      expect(result.vowelMark == Virama);
+    }
+  };
+
+  "TamilReaderHandler post-nasal stop voicing"_test = [] {
+    TamilReaderHandler reader;
+    // For each varga stop (k=0, c=5, T=10, t=15, p=20), preceding nasal virama voices it (+2)
+    const std::vector<std::pair<uint8_t, uint8_t>> pairs = {
+      { 4 /* ṅ */, 0 /* k */ },
+      { 9 /* ñ */, 5 /* c */ },
+      { 14 /* ṇ */, 10 /* ṭ */ },
+      { 19 /* n */, 15 /* t */ },
+      { 24 /* m */, 20 /* p */ },
+    };
+    for (const auto& [nasalIdx, stopIdx] : pairs) {
+      TokenUnit nasalUnit(ScriptToken(TokenType::Consonant, nasalIdx, ScriptType::Tamil));
+      nasalUnit.vowelMark = Virama;
+
+      ScriptToken stop(TokenType::Consonant, stopIdx, ScriptType::Tamil);
+      VectorStream stream;
+      auto result = reader.assemble(stop, stream, false, nasalUnit, TranslitOptions::None);
+      expect(result.leadToken.idx == static_cast<uint8_t>(stopIdx + 2));
+    }
+  };
+
+  "TamilReaderHandler prefix boundary prevents intervocalic voicing"_test = [] {
+    TamilReaderHandler reader;
+    // "அது" prefix: a (vowel 0), tu (consonant 15, vowelMark 4)
+    ScriptToken aVowel(TokenType::Vowel, 0, ScriptType::Tamil);
+    VectorStream emptyStream;
+    reader.assemble(aVowel, emptyStream, true, invalidTokenUnit, TranslitOptions::None);
+
+    ScriptToken taCons(TokenType::Consonant, 15, ScriptType::Tamil);
+    VectorStream uStream;
+    uStream.add(TokenOrString(ScriptToken(TokenType::VowelMark, 4, ScriptType::Tamil)));
+    auto tuUnit = reader.assemble(taCons, uStream, false, TokenUnit(aVowel), TranslitOptions::None);
+
+    // Stem start: pa (consonant 20). Because prefix "அது" was recognized,
+    // endOfPrefix is true, so pa stays 20 (p) and is NOT voiced to 22 (b)!
+    ScriptToken paCons(TokenType::Consonant, 20, ScriptType::Tamil);
+    VectorStream paStream;
+    auto stemResult = reader.assemble(paCons, paStream, false, tuUnit, TranslitOptions::None);
+    expect(stemResult.leadToken.idx == 20u); // Unvoiced 'p' preserved at prefix boundary
+  };
 };
 
 suite<"Indic and Latin handler tests"> indicLatinTests = [] {

@@ -282,7 +282,7 @@ bench-compare: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(BENCH_BASELINE)-allocs.csv ] && [ -s $(BENCH_BASELINE)-allocs.csv ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
 	  echo "━━━  Allocation regression check  (malloc+calloc+realloc events, requested bytes, peak live bytes)  ━━━"; \
 	  printf "" > out/bench-current-allocs.csv; \
-	  for mode in devanagari latin virtual-indic expansion protected mixed-protected; do \
+	  for mode in devanagari latin virtual-indic expansion protected mixed-protected tamil-to-iso tamil-to-devanagari tamil-superscript-output; do \
 	    raw=$$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $$mode 1048576 1 0 2>&1 1>/dev/null); \
 	    echo "$$raw" | awk -v m=$$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$$2+$$5+$$8,$$3+$$6+$$9,$$15,$$13 }'; \
 	  done > out/bench-current-allocs.csv; \

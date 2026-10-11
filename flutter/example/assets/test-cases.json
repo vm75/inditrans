@@ -215,6 +215,14 @@
       {
         "script": "readablelatin",
         "text": "tanga padakkam charchchaikkuriya cheydigaL paappaa pambaa ambaa krubai tandu rakshiyamba"
+      },
+      {
+        "script": "devanagari",
+        "text": "तङ्ग पदक्कम् चर्च्चैक्कुरिय चॆय्दिगळ् पाप्पा पम्बा अम्बा क्रुबै तन्दु रक्षियम्ब"
+      },
+      {
+        "script": "iso",
+        "text": "taṅga padakkam carccaikkuriya ceydigaḷ pāppā pambā ambā krubai tandu rakṣiyamba"
       }
     ]
   },
@@ -405,7 +413,10 @@
     "script": "itrans",
     "targets": [
       { "script": "devanagari", "text": "ऎ ए ऒ ओ ऎ ऒ" },
-      { "script": "kannada", "text": "ಎ ಏ ಒ ಓ ಎ ಒ" }
+      { "script": "kannada", "text": "ಎ ಏ ಒ ಓ ಎ ಒ" },
+      { "script": "telugu", "text": "ఎ ఏ ఒ ఓ ఎ ఒ" },
+      { "script": "tamil", "text": "எ ஏ ஒ ஓ எ ஒ" },
+      { "script": "malayalam", "text": "എ ഏ ഒ ഓ എ ഒ" }
     ]
   },
   {
@@ -415,6 +426,165 @@
     "targets": [
       { "script": "kannada", "text": "ತೆರೆ ಬಿನ, ತೇರೇ ಬಿನ, ತೆರೆ ಬಿನ" },
       { "script": "devanagari", "text": "तॆरॆ बिन, तेरे बिन, तॆरॆ बिन" }
+    ]
+  },
+  {
+    "description": "Tamil contextual consonant voicing",
+    "text": "அகம் அக்கம் தங்கம் அசை மச்சம் பஞ்சு படம் பட்டம் வண்டு பதம் பத்து பந்து கபடம் கப்பல் கம்பு",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "agam akkam taṅgam asai maccam pañju paḍam paṭṭam vaṇḍu padam pattu pandu kabaḍam kappal kambu"
+      },
+      {
+        "script": "devanagari",
+        "text": "अगम् अक्कम् तङ्गम् असै मच्चम् पञ्जु पडम् पट्टम् वण्डु पदम् पत्तु पन्दु कबडम् कप्पल् कम्बु"
+      }
+    ]
+  },
+  {
+    "description": "Tamil pulli word-final consonants",
+    "text": "அக் அத் அப் அன் அம் அல் அர் அழ் அள்",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a a a aṉ am al ar aḻ aḷ"
+      },
+      {
+        "script": "devanagari",
+        "text": "अ अ अ अऩ् अम् अल् अर् अऴ् अळ्"
+      }
+    ]
+  },
+  {
+    "description": "Tamil prefix recognition",
+    "text": "அதுபோல இதுபோல ஒருபக்கம் மாநகர் அந்தநாள் இந்தவகை",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "adupōla idupōla orupakkam mānakar andanāḷ indavakai"
+      },
+      {
+        "script": "devanagari",
+        "text": "अदुपोल इदुपोल ऒरुपक्कम् मानकर् अन्दनाळ् इन्दवकै"
+      }
+    ]
+  },
+  {
+    "description": "Tamil word boundary voicing reset",
+    "text": "பல கண் பலகண்",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "pala kaṇ palagaṇ"
+      },
+      {
+        "script": "devanagari",
+        "text": "पल कण् पलगण्"
+      }
+    ]
+  },
+  {
+    "description": "Tamil superscripted and traditional combinations",
+    "text": "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् ।",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "ஶ்ரீ॒ குருப்யோ நம꞉ । நமச்தே பாரதம் ।",
+        "options": "TamilTraditional"
+      },
+      {
+        "script": "tamil",
+        "text": "ஶ்ரீ॒ கு³ருப்⁴யோ நம꞉ । நமச்தே பா⁴ரதம் ।",
+        "options": "TamilTraditional TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "Tamil dental and alveolar n",
+    "text": "नमस्ते कान अन्त गान कान्",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "நமஸ்தே கான அந்த கான கான்"
+      },
+      {
+        "script": "tamil",
+        "text": "நமச்தே கான அந்த கான கான்",
+        "options": "TamilTraditional"
+      }
+    ]
+  },
+  {
+    "description": "Tamil anuswara assimilation",
+    "text": "अंक अंच अंट अंत कंप इदं संस्कृत",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "அங்க அஞ்ச அண்ட அந்த கம்ப இதம் ஸம்ஸ்க்ருத"
+      },
+      {
+        "script": "tamil",
+        "text": "அங்க அஞ்ச அண்ட அந்த கம்ப இதம் சம்ச்க்ருத",
+        "options": "TamilTraditional"
+      }
+    ]
+  },
+  {
+    "description": "Tamil numerals and ASCIINumerals",
+    "text": "௦௧௨௩௪௫௬௭௮௯",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "०१२३४५६७८९"
+      },
+      {
+        "script": "devanagari",
+        "text": "0123456789",
+        "options": "ASCIINumerals"
+      },
+      {
+        "script": "iso",
+        "text": "0123456789"
+      }
+    ]
+  },
+  {
+    "description": "Virtual Indic mixed Tamil and Devanagari",
+    "text": "வணக்கம், यह एक परीक्षा है ।",
+    "script": "indic",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "vaṇakkam, yaha ēka parīkṣā hai ."
+      },
+      {
+        "script": "devanagari",
+        "text": "वणक्कम्, यह एक परीक्षा है ।"
+      }
+    ]
+  },
+  {
+    "description": "Gurmukhi adhak consonant gemination",
+    "text": "ਅੱਖ ਮੱਖਣ ਲੱਭ ਹੱਥ ਲੱਛਮੀ",
+    "script": "gurmukhi",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "अक्ख मक्खण लब्भ हत्थ लच्छमी"
+      },
+      {
+        "script": "iso",
+        "text": "akkha makkhaṇa labbha hattha lacchamī"
+      }
     ]
   }
 ]

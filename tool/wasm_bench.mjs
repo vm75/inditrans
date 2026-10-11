@@ -13,6 +13,7 @@ const e = instance.exports;
 if (e.__wasm_call_ctors) e.__wasm_call_ctors();
 else if (e._initialize) e._initialize();
 const seedIndic = "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । ";
+const seedTamil = "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப । ";
 const cases = [
   ["devanagari", "telugu", "indic-to-indic", seedIndic],
   ["devanagari", "tamil", "tamil-output", seedIndic],
@@ -39,6 +40,10 @@ const cases = [
     "mixed-protected-spans",
     "नमस्ते ##a long protected raw span with text नमस्ते and symbols 🙂## भारतम् । ",
   ],
+  ["tamil", "iso", "tamil-to-latin", seedTamil],
+  ["tamil", "devanagari", "tamil-to-indic", seedTamil],
+  ["indic", "iso", "virtual-tamil-to-latin", seedTamil],
+  ["devanagari", "tamil", "tamil-superscript-output", seedIndic, 2],
 ];
 if (process.argv[3] && !cases.some((entry) => entry[2] === process.argv[3])) {
   throw new Error(`Unknown benchmark case: ${process.argv[3]}`);
@@ -60,14 +65,14 @@ const read = (ptr) => {
 console.log(
   "case,input_bytes,median_ns,sample_p95_ns,output_size_sink,output_fnv1a64",
 );
-for (const [from, to, label, seed] of cases) {
+for (const [from, to, label, seed, options = 0] of cases) {
   if (process.argv[3] && process.argv[3] !== label) continue;
   for (const target of [32, 4096, 65536]) {
     const text = seed.repeat(Math.ceil(target / Buffer.byteLength(seed)));
     const inputBytes = Buffer.byteLength(text);
     const args = [text, from, to, "##", "##"].map(encode);
     const call = () =>
-      e.transliterate(args[0], args[1], args[2], 0, args[3], args[4]);
+      e.transliterate(args[0], args[1], args[2], options, args[3], args[4]);
     for (let i = 0; i < 32; ++i) e.releaseBuffer(call());
     const samples = [];
     const reps = target === 32 ? 2000 : target === 4096 ? 200 : 32;

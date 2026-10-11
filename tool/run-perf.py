@@ -124,7 +124,7 @@ def main() -> int:
     root = Path(git(Path.cwd(), "rev-parse", "--show-toplevel", capture=True))
 
     cpu = os.environ.get("CPU", "0")
-    runs = os.environ.get("RUNS", "9")
+    runs = os.environ.get("RUNS", "5")
 
     run_tags = args.run_tags or bool(args.tags)
     run_current = args.current or not run_tags
