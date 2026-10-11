@@ -15,19 +15,44 @@ struct Case {
   std::string_view to;
   std::string_view label;
   std::string_view input;
+  TranslitOptions options = TranslitOptions::None;
 };
 
+constexpr std::string_view devanagariSeed = "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । ";
+constexpr std::string_view latinSeed = "śrī gurubhyo namaḥ, namaste bhāratam. ";
+constexpr std::string_view expansionSeed = "अॅॐऍ";
+constexpr std::string_view protectedSeed = "##a protected span with raw text नमस्ते and symbols 🙂 ##";
+constexpr std::string_view mixedProtectedSeed = "नमस्ते ##a long protected raw span with text नमस्ते and symbols 🙂## भारतम् । ";
+constexpr std::string_view tamilSeed = "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப । ";
+constexpr std::string_view tamilSuperscriptSeed = "ஶ்ரீ கு³ருப்⁴யோ நம꞉ । ";
+constexpr std::string_view tamilPrefixSeed = "அதுபோல ";
+constexpr std::string_view tamilCompoundVowelsSeed = "கொ கோ கௌ ";
+constexpr std::string_view gurmukhiAdhakSeed = "ਹੱਦ ਬੱਚਿਓ ਕੱਦ । ";
+constexpr std::string_view itransPhonemicSeed = "e E o O ^e ^o ";
+
 constexpr std::array cases {
-  Case { "devanagari", "telugu", "indic-to-indic", "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । " },
-  Case { "devanagari", "tamil", "tamil-output", "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । " },
-  Case { "iso", "devanagari", "latin-input", "śrī gurubhyo namaḥ, namaste bhāratam. " },
-  Case { "indic", "iso", "virtual-indic-to-latin", "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । " },
-  Case { "indic", "devanagari", "virtual-indic-to-indic", "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । " },
-  Case { "indic", "tamil", "virtual-indic-to-tamil", "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । " },
-  Case { "devanagari", "iso", "latin-output", "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । " },
-  Case { "devanagari", "telugu", "expansion-heavy", "अॅॐऍ" },
-  Case { "devanagari", "telugu", "protected-spans", "##a protected span with raw text नमस्ते and symbols 🙂 ##" },
-  Case { "devanagari", "telugu", "mixed-protected-spans", "नमस्ते ##a long protected raw span with text नमस्ते and symbols 🙂## भारतम् । " },
+  Case { "devanagari", "telugu", "indic-to-indic", devanagariSeed },
+  Case { "devanagari", "tamil", "tamil-output", devanagariSeed },
+  Case { "iso", "devanagari", "latin-input", latinSeed },
+  Case { "indic", "iso", "virtual-indic-to-latin", devanagariSeed },
+  Case { "indic", "devanagari", "virtual-indic-to-indic", devanagariSeed },
+  Case { "indic", "tamil", "virtual-indic-to-tamil", devanagariSeed },
+  Case { "devanagari", "iso", "latin-output", devanagariSeed },
+  Case { "devanagari", "telugu", "expansion-heavy", expansionSeed },
+  Case { "devanagari", "telugu", "protected-spans", protectedSeed },
+  Case { "devanagari", "telugu", "mixed-protected-spans", mixedProtectedSeed },
+  Case { "tamil", "devanagari", "tamil-to-indic", tamilSeed },
+  Case { "tamil", "iso", "tamil-to-latin", tamilSeed },
+  Case { "indic", "devanagari", "virtual-tamil-to-indic", tamilSeed },
+  Case { "indic", "iso", "virtual-tamil-to-latin", tamilSeed },
+  Case { "tamil", "devanagari", "tamil-superscript-input", tamilSuperscriptSeed, TranslitOptions::TamilSuperscripted },
+  Case { "devanagari", "tamil", "tamil-superscript-output", devanagariSeed, TranslitOptions::TamilSuperscripted },
+  Case { "devanagari", "tamil", "tamil-traditional-output", devanagariSeed, TranslitOptions::TamilTraditional },
+  Case { "tamil", "iso", "tamil-prefix", tamilPrefixSeed },
+  Case { "tamil", "iso", "tamil-compound-vowels", tamilCompoundVowelsSeed },
+  Case { "iast", "tamil", "latin-to-tamil", latinSeed },
+  Case { "gurmukhi", "devanagari", "gurmukhi-adhak", gurmukhiAdhakSeed },
+  Case { "itrans", "devanagari", "itrans-phonemic-vowels", itransPhonemicSeed },
 };
 
 void measure(const Case& testCase) {
@@ -37,7 +62,7 @@ void measure(const Case& testCase) {
   uint64_t outputSizeSink = 0;
 
   for (size_t i = 0; i < warmups; ++i) {
-    const auto output = transliterate(testCase.input, testCase.from, testCase.to, TranslitOptions::None);
+    const auto output = transliterate(testCase.input, testCase.from, testCase.to, testCase.options);
     outputSizeSink += output.size();
   }
 
@@ -45,7 +70,7 @@ void measure(const Case& testCase) {
     size_t outputSize = 0;
     const auto start = Clock::now();
     {
-      const auto output = transliterate(testCase.input, testCase.from, testCase.to, TranslitOptions::None);
+      const auto output = transliterate(testCase.input, testCase.from, testCase.to, testCase.options);
       outputSize = output.size();
     }
     const auto end = Clock::now();
@@ -53,7 +78,7 @@ void measure(const Case& testCase) {
     outputSizeSink += outputSize;
   }
 
-  const auto checkOutput = transliterate(testCase.input, testCase.from, testCase.to, TranslitOptions::None);
+  const auto checkOutput = transliterate(testCase.input, testCase.from, testCase.to, testCase.options);
   uint64_t outputHash = 14695981039346656037ull;
   for (const unsigned char byte : checkOutput) {
     outputHash = (outputHash ^ byte) * 1099511628211ull;

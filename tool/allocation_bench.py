@@ -12,7 +12,17 @@ import sys
 from pathlib import Path
 
 
-MODES = ("devanagari", "latin", "virtual-indic", "expansion", "protected", "mixed-protected")
+MODES = (
+    "devanagari",
+    "latin",
+    "virtual-indic",
+    "expansion",
+    "protected",
+    "mixed-protected",
+    "tamil-to-iso",
+    "tamil-to-devanagari",
+    "tamil-superscript-output",
+)
 REPORT_RE = re.compile(
     r"malloc=(\d+),(\d+) calloc=(\d+),(\d+) realloc=(\d+),(\d+) "
     r"free=(\d+) live=(\d+) peak=(\d+) untracked=(\d+)"

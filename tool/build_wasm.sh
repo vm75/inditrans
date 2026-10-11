@@ -58,31 +58,34 @@ build_wasm_standalone() {
 
   # get the path to the output directory
   outDir='./flutter/assets'
+  srcDir="${WASM_SRC_DIR:-${2:-./native/src}}"
+  outFile="${WASM_OUT:-${3:-$outDir/inditrans.wasm}}"
 
   # create the output directory if it does not exist
-  if [[ ! -d "${outDir}" ]]; then
-    mkdir -p "${outDir}"
+  outParent="$(dirname "$outFile")"
+  if [[ ! -d "${outParent}" ]]; then
+    mkdir -p "${outParent}"
   fi
 
   # build the function
-  if [[ $2 == "debug" ]]; then
-    em++ ./native/src/inditrans.cpp -I ./native/src \
+  if [[ $1 == "debug" ]]; then
+    em++ $srcDir/inditrans.cpp -I $srcDir \
       -std=c++23 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address \
       "-Wl,--no-entry,--export=__wasm_call_ctors" \
       -DDEBUG \
       -s EXPORTED_FUNCTIONS="${exportedFunctions}" \
       -s ENVIRONMENT='web,worker' \
       -s FILESYSTEM=0 \
-      -o "${outDir}/inditrans.wasm"
+      -o "$outFile"
   else
-    em++ ./native/src/inditrans.cpp -I ./native/src \
+    em++ $srcDir/inditrans.cpp -I $srcDir \
       -std=c++23 -fPIC -Oz -flto -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG \
       "-Wl,--gc-sections,--no-entry,--export=__wasm_call_ctors" \
       -s EXPORTED_FUNCTIONS='["_malloc", "_free"]' \
       -s STANDALONE_WASM=1 \
       -s ENVIRONMENT='web,worker' \
       -s FILESYSTEM=0 \
-      -o "${outDir}/inditrans.wasm"
+      -o "$outFile"
   fi
 }
 
@@ -139,7 +142,7 @@ cd $(dirname ${BASH_SOURCE[0]})/..
 
 # build
 if [ "$1" == "standalone" ]; then
-  build_wasm_standalone "$2"
+  build_wasm_standalone "$2" "$3" "$4"
 elif [ "$1" == "js" ]; then
   build_wasm_js "$2"
 else

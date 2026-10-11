@@ -30,8 +30,11 @@ returned `std::string`.
 | Generated data | `native/src/script_data.h` | Typed dictionaries, pooled text, token expansions, aliases, writer tables |
 | Trie builders | `native/src/static_trie.h`, `packed_trie.h` | C++23 `consteval` topology, packing, and bounded byte/token-key lookup |
 | Script descriptors | `native/src/static_script_types.h`, `static_scripts.h` | Static name resolution, source policies, writer views, Tamil prefix state |
-| InputReader | `native/src/inditrans.cpp` | Scan through a bounded `TokenOrString` window and group into `TokenUnit` objects |
-| OutputWriter | `native/src/inditrans.cpp` | Apply output rules and append graphemes to the selected output sink |
+| Token Stream Model | `native/src/token_stream.h` | `TokenOrString` discriminated union, `TokenUnitOrString`, zero-allocation streaming adaptors |
+| Preservation Policy | `native/src/preservation_policy.h` | XML/HTML tag preservation, protected skip spans, raw run scanning, special marker filtering |
+| Contextual Handlers | `native/src/contextual_handlers.h` | Anuswara phoneme assimilation, ASCII numeral formatting, Tamil traditional replacements |
+| Script Handlers | `gurmukhi_handler.h`, `tamil_handler.h`, `indic_handler.h`, `latin_handler.h` | Isolated, independently testable reading and writing rules for each script family |
+| Engine Pipeline | `native/src/inditrans.cpp` | Coordinates input tokenization, streaming token units, lookahead, and output writing via static handler dispatch |
 | UTF-8 helpers | `native/src/utf.h` | UTF-8 encoding/decoding and output-buffer ownership |
 | Generator | `tool/generate_headers.py`, `tool/python/static_scripts.py` | Resolve script semantics before C++ compilation |
 | Canonical input | `tool/script_data.json`, `tool/reader_data.json` | Script spellings/aliases/equivalents; accents, exclusive symbols, Tamil prefixes |
@@ -40,14 +43,16 @@ returned `std::string`.
 ## Dependency direction
 
 ```text
-inditrans.cpp → static_scripts.h → script_data.h → static_script_types.h
-                         │                              │
-                         └──────────────────────────────┴→ packed_trie.h → static_trie.h / type_defs.h
+inditrans.cpp → {preservation_policy.h, contextual_handlers.h, gurmukhi_handler.h,
+                 tamil_handler.h, indic_handler.h, latin_handler.h}
+                 │
+                 └─→ token_stream.h → static_scripts.h → script_data.h → static_script_types.h
+                                              │                              │
+                                              └──────────────────────────────┴→ packed_trie.h → static_trie.h / type_defs.h
 inditrans.cpp → script_constants.h / utf.h / inditrans.h
 ```
 
-`inditrans.cpp` is the engine's translation unit. Headers provide inline code
-and constant data; the native engine does not depend on Flutter or Node.js.
+`inditrans.cpp` coordinates the transliteration pipeline without embedding language-specific rules. Headers provide inline code, static handlers, and constant data; the native engine does not depend on Flutter or Node.js.
 Legacy `trie.h`, `char_trie.h`, and `utilities.h` remain utility/test code and
 are absent from the production transliteration dependency path.
 
@@ -122,18 +127,25 @@ one-token lookahead used by the writer.
    sequences into a fixed 16-entry window. Refills reuse the window after the
    current sequence is consumed, with no allocation, shifting, or ring arithmetic.
    The checked four-bit sequence count bounds expansions at 15 tokens; live
-   reader calls require one token of lookahead. `pullUnrecognized` handles raw
-   text, XML, and protected spans as borrowed views. XML options are evaluated
+   reader calls require one token of lookahead. `PreservedSpanHandler::pullUnrecognized`
+   handles raw text, XML, and protected spans as borrowed views. XML options are evaluated
    outside the hot match loop.
-3. `InputReader::getNext()` groups tokens. Indic attaches marks and accents;
-   Tamil applies superscript and pronunciation rules; Latin groups consonants
-   with following vowels/virama.
+3. `InputReader::getNext()` coordinates token assembly by delegating to isolated
+   reader handlers: `IndicReaderHandler` attaches marks and accents, `TamilReaderHandler`
+   applies superscript parsing and contextual pronunciation rules, `GurmukhiAdhakHandler`
+   evaluates gemination without consumption, and `LatinReaderHandler` groups consonants
+   with following vowels or synthesizes virama. Handlers are `friend` classes to
+   `InputReader`, eliminating abstraction overhead by accessing the token buffer directly.
 4. One dispatch selects an Indic, Tamil, or Latin `OutputWriter` specialization.
-   Each looks up target graphemes by token class/index and applies the existing
-   rules. Both sinks write directly to result storage. Marker filtering copies
-   retained text runs together and checks ASCII before searching the non-ASCII
-   marker string. Roman-to-non-Latin output reserves three input bytes per byte
-   as a growth hint; both sinks can still grow for larger expansions.
+   The writer delegates to `IndicWriterHandler`, `TamilWriterHandler`, or `LatinWriterHandler`
+   via compile-time `if constexpr` branch elimination. Handlers receive a reference
+   to the strongly-typed `Writer` rather than using `std::function` or lambda callbacks,
+   allowing the compiler to fully inline output emission. Inactive handlers occupy no
+   state or execution time (`[[no_unique_address]]`). Both sinks write directly to
+   result storage. `SpecialMarkerFilter` copies retained text runs together and checks
+   ASCII before searching the non-ASCII marker string. Roman-to-non-Latin output
+   reserves three input bytes per byte as a growth hint; both sinks can still grow
+   for larger expansions.
 5. The C export releases the result buffer to its caller. The wrapper copies
    the string and calls `releaseBuffer()`.
 
@@ -214,17 +226,18 @@ The C boundary exports only `transliterate`, `isScriptSupported`, and
 Windows x86-64 cross-compilation uses `tool/cmake/mingw64.cmake` with C++23 and
 MinGW GCC ≥ 13. Static libgcc/libstdc++ linkage avoids their runtime DLL dependencies.
 
-## Script-specific rules
+## Script-specific rules and isolated handlers
 
-| Feature | Location |
-|---|---|
-| Tamil allophones and consonant variants | `InputReader::readTamilTokenUnit` |
-| Tamil ந→ன position rule, traditional replacements | `OutputWriter::writeTamilTokenUnit` |
-| Tamil prefix recognition | Static `TamilPrefixLookup` used by reader/writer |
-| Gurmukhi adhak | `InputReader::inferGurmukhiAdhak` |
-| Anuswara assimilation | `OutputWriter::inferAnuswara` |
-| XML and configured protected spans | `InputReader::scanUnrecognized` |
-| Vedic accent stripping | InputReader and OutputWriter |
+| Feature | Handler / Location | Responsibility |
+|---|---|---|
+| Tamil allophones and consonant variants | `handlers::TamilReaderHandler` (`native/src/tamil_handler.h`) | Parses superscript/subscript numbers; evaluates context-dependent voicing and ச→ஸ alternation |
+| Tamil ந→ன position rule, traditional replacements | `handlers::TamilWriterHandler` (`native/src/tamil_handler.h`) | Enforces dental vs alveolar nasal placement, traditional Grantha substitutions, superscript reordering |
+| Tamil prefix recognition | Static `TamilPrefixLookup` used by `TamilReaderHandler` & `TamilWriterHandler` | Tracks prefix trie transitions and maintains start-of-stem pronunciation rules |
+| Gurmukhi adhak | `handlers::GurmukhiAdhakHandler` (`native/src/gurmukhi_handler.h`) | Evaluates adhak gemination symbol, de-aspirates consonant, emits virama unit |
+| Anuswara assimilation | `handlers::AnuswaraAssimilator` (`native/src/contextual_handlers.h`) | Assimilates anuswara to class nasal across consonant vargas; shared between Tamil and Latin writers |
+| ASCII numeral conversion | `handlers::AsciiNumeralFormatter` (`native/src/contextual_handlers.h`) | Formats script numerals as ASCII digits '0'..'9' when `ASCIINumerals` is enabled |
+| XML and configured protected spans | `handlers::PreservedSpanHandler` (`native/src/preservation_policy.h`) | Streams through XML tags, configured skip delimiters (`skipStart`/`skipEnd`), and unmapped byte runs |
+| Vedic accent stripping & special marker filtering | `handlers::SpecialMarkerFilter` (`native/src/preservation_policy.h`) | Filters non-ASCII disambiguation markers unless `RetainSpecialMarkers` is set |
 
 ## Extension points
 

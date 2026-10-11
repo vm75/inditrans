@@ -79,11 +79,32 @@ capacity.
 
 Across repeated benchmark sweeps, timings are now aggregated with the median
 rather than the arithmetic mean; every run remains available in the raw
-`*-runs.csv` files. `python3 tool/run-perf.py` defaults to nine sweeps locally
-(override with `RUNS`), while Makefile commands and CI continue to default to
-five (override with `BENCH_RUNS`). When reporting historical tagged snapshots,
-`run-perf.py` recomputes their aggregates from raw runs so that old and new
-revisions use the same median-based method.
+`*-runs.csv` files. `python3 tool/run-perf.py` defaults to five sweeps locally
+(override with `RUNS`), matching Makefile commands and CI (override with `BENCH_RUNS`).
+Historical tagged snapshots are measured against the current benchmark harness
+using persistent, sparse Git worktrees under `out/perf/worktrees/` without
+modifying or checking out revisions in the primary working tree.
+When reporting historical tagged snapshots, `run-perf.py` recomputes their
+aggregates from raw runs so that old and new revisions use the same median-based method.
+Snapshots record both engine commit metadata and current harness content fingerprints
+so that changes to benchmark cases or harness tools automatically invalidate stale snapshots.
+
+### Worktree cache management
+
+Historical worktrees under `out/perf/worktrees/` are persistent caches that isolate
+historical engine sources (`native/src/`) without cloning the repository or checking out
+unrelated files (such as Flutter, Node.js, or older benchmark tooling). Valid worktrees
+are reused across runs.
+
+To inspect or remove worktrees manually:
+```sh
+git worktree list
+git worktree remove out/perf/worktrees/perf-00-baseline
+```
+
+Note: Because historical worktrees reside under `out/`, manually deleting the entire `out/` directory
+with `rm -rf out` will remove the worktree directories while leaving linked-worktree metadata in `.git/worktrees/`.
+If that occurs, run `git worktree prune` to clean up stale registrations.
 
 For A/B checks, use `make bench-save` before a change and `make bench-compare`
 afterward. The default report threshold is 5%; set `BENCH_STRICT=1` to fail at
