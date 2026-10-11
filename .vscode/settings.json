@@ -28,7 +28,17 @@
     "dist/**": true,
     "**.so": true,
     "**.db": true,
-    "yarn.lock": true
+    "yarn.lock": true,
+    "**/ephemeral/**": true,
+    "**/.plugin_symlinks/**": true
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/ephemeral/**": true,
+    "**/.plugin_symlinks/**": true,
+    "**/.gradle/**": true
   },
   "[typescript], [javascript]": {
     "editor.formatOnSave": false,
