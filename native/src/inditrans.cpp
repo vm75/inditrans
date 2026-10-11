@@ -126,8 +126,21 @@ public:
     return head < bufferSize ? &buffer[head] : nullptr;
   }
 
-  [[gnu::always_inline]] inline void advance() noexcept {
-    head++;
+  [[gnu::always_inline]] inline void advance(size_t bytes = 0) noexcept {
+    if (bytes == 0) {
+      head++;
+      return;
+    }
+    if (head < bufferSize && HoldsString(buffer[head])) {
+      const auto str = GetString(buffer[head]);
+      if (bytes >= str.size()) {
+        head++;
+      } else {
+        buffer[head] = TokenOrString(str.substr(bytes));
+      }
+    } else {
+      head++;
+    }
   }
 
   TokenUnit lastToken = invalidTokenUnit;
