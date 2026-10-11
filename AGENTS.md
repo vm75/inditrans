@@ -48,6 +48,7 @@ Makefile                Top-level build, test, and publish targets
 - **Save a performance baseline**: `make bench-save` (writes `out/bench-baseline-*.csv`)
 - **Compare current results against saved baseline**: `make bench-compare` (flags regressions ≥ 5%; output mismatches fail)
 - **Capture a cumulative tuning snapshot**: `make perf-snapshot PERF_NAME=00-baseline`
+- **Run historical and current benchmarks**: `python3 tool/run-perf.py --run-tags` (uses persistent sparse worktrees under `out/perf/worktrees/` and current harness; specify tags e.g. `python3 tool/run-perf.py perf-00-baseline --current`)
 - **Generate the cumulative tuning report**: `make perf-report`
 - **Make performance regressions fail**: `BENCH_STRICT=1 make bench-compare`
 - **Run all tests**: `make testall`
@@ -80,11 +81,18 @@ architecture comparisons; see `docs/performance-reassessment.md` for local evide
 
 For cumulative tuning progress, use numbered snapshots under `out/perf/`:
 ```bash
+# Automated worktree-based snapshotting across historical tags and current revision:
+python3 tool/run-perf.py perf-00-baseline --current
+# Or manual snapshot capture in the active workspace:
 make perf-snapshot PERF_NAME=00-baseline
 make perf-snapshot PERF_NAME=01-buffer-ownership
 make perf-report
 ```
-`perf-snapshot` reuses `bench-save`, captures the four cold-start paths, force-rebuilds the standalone Wasm artifact, and records its raw byte size. `perf-report` compares every discovered numbered snapshot with `00-baseline`, distinguishes cold from warm allocation metrics, and treats `peak heap` as allocator-probe peak requested live bytes rather than process RSS. Use `bench-short-repeat` when making latency claims; a single snapshot timing is indicative only. See `docs/performance.md` for the baseline procedure and `docs/performance-project.md` for completed milestones and accepted trade-offs.
+`tool/run-perf.py` measures historical tags using persistent sparse Git worktrees
+under `out/perf/worktrees/` without checking out or modifying the primary working tree.
+Worktrees isolate `native/src/` and are reused across invocations; clean them up manually
+via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `out/` was removed).
+`perf-snapshot` reuses `bench-save`, captures the cold-start paths, force-rebuilds the standalone Wasm artifact, and records its raw byte size. `perf-report` compares every discovered numbered snapshot with `00-baseline`, distinguishes cold from warm allocation metrics, and treats `peak heap` as allocator-probe peak requested live bytes rather than process RSS. Use `bench-short-repeat` when making latency claims; a single snapshot timing is indicative only. See `docs/performance.md` for the baseline procedure and `docs/performance-project.md` for completed milestones and accepted trade-offs.
 
 ### Flutter (`flutter/` directory)
 - **Get dependencies**: `flutter pub get`

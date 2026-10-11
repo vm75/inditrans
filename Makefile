@@ -8,6 +8,7 @@ version:
 validate:
 	python3 ./tool/verify_release.py
 	python3 ./tool/test_repeat_short_bench.py
+	python3 ./tool/test_perf_worktree.py
 	python3 ./tool/verify_wasm_build_parity.py
 	python3 ./tool/test_release_engineering.py
 
@@ -38,6 +39,7 @@ BENCH_REGRESSION_THRESHOLD ?= 5
 BENCH_STRICT ?= 0
 BENCH_RUNS ?= 5
 BENCH_CPU ?= $(PERF_CPU)
+WASM_OUT ?= flutter/assets/inditrans.wasm
 PERF_DIR ?= out/perf
 PERF_NAME ?=
 PERF_BASELINE ?= 00-baseline
@@ -46,6 +48,7 @@ PERF_ALLOC_CASE ?= devanagari
 PERF_COLD_CASE ?= cold-devanagari-to-telugu
 PERF_REPEATS ?= 5
 PERF_CPU ?=
+PERF_METADATA_FLAGS ?=
 COLD_BENCH_SAMPLES ?= 501
 PERF_TOOL_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))tool
 ALLOC_PROBE_SUPPORTED := $(shell test "$$(uname -s 2>/dev/null)" = "Linux" && getconf GNU_LIBC_VERSION >/dev/null 2>&1 && echo 1 || echo 0)
@@ -209,7 +212,7 @@ bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 0 --format csv > $(BENCH_BASELINE)-allocs.csv; \
 	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 1 --format csv > $(BENCH_BASELINE)-allocs-warm.csv; \
 	fi
-	@python3 "$(PERF_TOOL_DIR)/perf_metadata.py" > $(BENCH_BASELINE)-info.txt
+	@python3 "$(PERF_TOOL_DIR)/perf_metadata.py" $(PERF_METADATA_FLAGS) > $(BENCH_BASELINE)-info.txt
 	@printf "bench_runs=%s\nbench_cpu=%s\n" "$(BENCH_RUNS)" "$(BENCH_CPU)" >> $(BENCH_BASELINE)-info.txt
 	@echo "Baseline saved → median CSVs plus raw *-runs.csv ($(BENCH_RUNS) runs)"
 	@cat $(BENCH_BASELINE)-info.txt
@@ -221,8 +224,8 @@ perf-snapshot: $(NATIVE_COLD_BENCH) | out
 	@mkdir -p "$(PERF_DIR)"
 	@$(MAKE) bench-save BENCH_BASELINE="$(PERF_DIR)/$(PERF_NAME)"
 	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" > "$(PERF_DIR)/$(PERF_NAME)-cold.csv"
-	@$(MAKE) -B flutter/assets/inditrans.wasm
-	@python3 -c "from pathlib import Path; print(Path('flutter/assets/inditrans.wasm').stat().st_size)" > "$(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
+	@WASM_SRC_DIR="$(NATIVE_SRC)" WASM_OUT="$(WASM_OUT)" ./tool/build_wasm.$(SCRIPT_EXT) standalone
+	@python3 -c "from pathlib import Path; print(Path('$(WASM_OUT)').stat().st_size)" > "$(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
 	@echo "Wasm size saved → $(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
 
 perf-report:
@@ -333,28 +336,36 @@ out:
 	mkdir -p out
 
 $(NATIVE_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/benchmark.cpp
+	@mkdir -p $(dir $@)
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/benchmark.cpp -o $@
 
 $(NATIVE_SHORT_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/short_call.cpp
+	@mkdir -p $(dir $@)
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/short_call.cpp -o $@
 
 $(NATIVE_LOOKUP_BENCH): $(NATIVE_H) $(NATIVE_DIR)/bench/lookup.cpp | out
+	@mkdir -p $(dir $@)
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_DIR)/bench/lookup.cpp -o $@
 
 $(NATIVE_LOOKUP_ALLOC_BENCH): $(NATIVE_H) $(NATIVE_DIR)/bench/lookup.cpp | out
+	@mkdir -p $(dir $@)
 	clang++ -std=c++23 -O3 -DNDEBUG -DINDTRANSLIT_ALLOC_PROBE -I $(NATIVE_SRC) $(NATIVE_DIR)/bench/lookup.cpp -ldl -o $@
 
 $(NATIVE_COLD_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/cold_start.cpp | out
+	@mkdir -p $(dir $@)
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_DIR)/bench/cold_start.cpp $(NATIVE_CPP) -o $@
 
 $(NATIVE_MEM_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/memory.cpp
+	@mkdir -p $(dir $@)
 	clang++ -std=c++23 -O3 -DNDEBUG -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/memory.cpp -o $@
 
 ifeq ($(ALLOC_PROBE_SUPPORTED),1)
 $(NATIVE_ALLOC_BENCH): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/bench/memory.cpp
+	@mkdir -p $(dir $@)
 	clang++ -std=c++23 -O3 -DNDEBUG -DINDTRANSLIT_ALLOC_PROBE -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/bench/memory.cpp -ldl -o $@
 
 $(LINUX_ALLOC_PROBE): $(NATIVE_DIR)/bench/allocation_probe_linux.c
+	@mkdir -p $(dir $@)
 	clang -std=c11 -O2 -fPIC -shared $(NATIVE_DIR)/bench/allocation_probe_linux.c -o $@
 endif
 

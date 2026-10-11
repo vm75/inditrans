@@ -53,37 +53,39 @@ function init_emcc {
 }
 
 # create a function
-function build_wasm_standalone([string]$mode) {
+function build_wasm_standalone([string]$mode, [string]$customSrcDir, [string]$customOutFile) {
     $exportedFunctions = '["_malloc", "_free", "_transliterate", "_isScriptSupported", "_releaseBuffer"]'
 
     # get the path to the output directory
     $outDir = ".\flutter\assets"
+    $srcDir = if ($customSrcDir) { $customSrcDir } elseif ($env:WASM_SRC_DIR) { $env:WASM_SRC_DIR } else { ".\native\src" }
+    $outFile = if ($customOutFile) { $customOutFile } elseif ($env:WASM_OUT) { $env:WASM_OUT } else { "$outDir\inditrans.wasm" }
 
-    # create the output directory if it does not exist
-    if (!(Test-Path $outDir)) {
-        New-Item -ItemType Directory -Path $outDir | Out-Null
+    $outParent = Split-Path -Parent $outFile
+    if ($outParent -and !(Test-Path $outParent)) {
+        New-Item -ItemType Directory -Path $outParent | Out-Null
     }
 
     # build the function
     if ($mode -eq "debug") {
-        em++ .\native\src\inditrans.cpp -I .\native\src `
+        em++ $srcDir\inditrans.cpp -I $srcDir `
             -std=c++23 -g3 --profiling-funcs -s ASSERTIONS=1 -fsanitize=address `
             "-Wl,--no-entry,--export=__wasm_call_ctors" `
             -DDEBUG `
             -s EXPORTED_FUNCTIONS=$exportedFunctions `
             -s ENVIRONMENT='web,worker' `
             -s FILESYSTEM=0 `
-            -o "$outDir\inditrans.wasm"
+            -o "$outFile"
     }
     else {
-        em++ .\native\src\inditrans.cpp -I .\native\src `
+        em++ $srcDir\inditrans.cpp -I $srcDir `
             -std=c++23 -fPIC -Oz -flto -fno-exceptions -fno-rtti -fno-stack-protector -ffunction-sections -fdata-sections -fno-math-errno -DNDEBUG `
             "-Wl,--gc-sections,--no-entry,--export=__wasm_call_ctors" `
             -s EXPORTED_FUNCTIONS='["_malloc", "_free"]' `
             -s STANDALONE_WASM=1 `
             -s ENVIRONMENT='web,worker' `
             -s FILESYSTEM=0 `
-            -o "$outDir\inditrans.wasm"
+            -o "$outFile"
     }
 }
 
@@ -143,8 +145,11 @@ Set-Location "$PSScriptRoot\.."
 $target = if ($args.Count -gt 0) { $args[0] } else { "" }
 $mode = if ($args.Count -gt 1) { $args[1] } else { "" }
 
+$srcArg = if ($args.Count -gt 2) { $args[2] } else { "" }
+$outArg = if ($args.Count -gt 3) { $args[3] } else { "" }
+
 if ($target -eq "standalone") {
-    build_wasm_standalone $mode
+    build_wasm_standalone $mode $srcArg $outArg
 }
 elseif ($target -eq "js") {
     build_wasm_js $mode
