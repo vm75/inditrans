@@ -400,11 +400,26 @@
     "text": "te tE to tO",
     "script": "itrans",
     "targets": [
-      { "script": "devanagari", "text": "तॆ ते तॊ तो" },
-      { "script": "kannada", "text": "ತೆ ತೇ ತೊ ತೋ" },
-      { "script": "telugu", "text": "తె తే తొ తో" },
-      { "script": "tamil", "text": "தெ தே தொ தோ" },
-      { "script": "malayalam", "text": "തെ തേ തൊ തോ" }
+      {
+        "script": "devanagari",
+        "text": "तॆ ते तॊ तो"
+      },
+      {
+        "script": "kannada",
+        "text": "ತೆ ತೇ ತೊ ತೋ"
+      },
+      {
+        "script": "telugu",
+        "text": "తె తే తొ తో"
+      },
+      {
+        "script": "tamil",
+        "text": "தெ தே தொ தோ"
+      },
+      {
+        "script": "malayalam",
+        "text": "തെ തേ തൊ തോ"
+      }
     ]
   },
   {
@@ -412,11 +427,26 @@
     "text": "e E o O ^e ^o",
     "script": "itrans",
     "targets": [
-      { "script": "devanagari", "text": "ऎ ए ऒ ओ ऎ ऒ" },
-      { "script": "kannada", "text": "ಎ ಏ ಒ ಓ ಎ ಒ" },
-      { "script": "telugu", "text": "ఎ ఏ ఒ ఓ ఎ ఒ" },
-      { "script": "tamil", "text": "எ ஏ ஒ ஓ எ ஒ" },
-      { "script": "malayalam", "text": "എ ഏ ഒ ഓ എ ഒ" }
+      {
+        "script": "devanagari",
+        "text": "ऎ ए ऒ ओ ऎ ऒ"
+      },
+      {
+        "script": "kannada",
+        "text": "ಎ ಏ ಒ ಓ ಎ ಒ"
+      },
+      {
+        "script": "telugu",
+        "text": "ఎ ఏ ఒ ఓ ఎ ఒ"
+      },
+      {
+        "script": "tamil",
+        "text": "எ ஏ ஒ ஓ எ ஒ"
+      },
+      {
+        "script": "malayalam",
+        "text": "എ ഏ ഒ ഓ എ ഒ"
+      }
     ]
   },
   {
@@ -424,8 +454,14 @@
     "text": "tere bina, tErE bina, t^er^e bina",
     "script": "itrans",
     "targets": [
-      { "script": "kannada", "text": "ತೆರೆ ಬಿನ, ತೇರೇ ಬಿನ, ತೆರೆ ಬಿನ" },
-      { "script": "devanagari", "text": "तॆरॆ बिन, तेरे बिन, तॆरॆ बिन" }
+      {
+        "script": "kannada",
+        "text": "ತೆರೆ ಬಿನ, ತೇರೇ ಬಿನ, ತೆರೆ ಬಿನ"
+      },
+      {
+        "script": "devanagari",
+        "text": "तॆरॆ बिन, तेरे बिन, तॆरॆ बिन"
+      }
     ]
   },
   {
@@ -659,6 +695,48 @@
       {
         "script": "devanagari",
         "text": "ज³ प, ज⁴ प, ज₃ प, ज₄ प, र², ल³, य⁴, व₁, स₂, ह₃, ऩ⁴",
+        "options": "TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "DisableInference preserves a non-assimilated Tamil nasal",
+    "text": "अंक",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "அங்க"
+      },
+      {
+        "script": "tamil",
+        "text": "அம்க",
+        "options": "DisableInference"
+      },
+      {
+        "script": "tamil",
+        "text": "அங்க",
+        "options": "TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "DisableInference bypasses Tamil reader allophone inference",
+    "text": "அக¹",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "अग"
+      },
+      {
+        "script": "devanagari",
+        "text": "अक",
+        "options": "DisableInference"
+      },
+      {
+        "script": "devanagari",
+        "text": "अक",
         "options": "TamilSuperscripted"
       }
     ]

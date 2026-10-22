@@ -8,6 +8,7 @@ Module['onRuntimeInitialized'] = function () {
             'IgnoreVedicAccents': 8,
             'RetainSpecialMarkers': 16,
             'NoXMLTagHandling': 32,
+            'DisableInference': 64,
         },
         'Scripts': [
             'assamese',

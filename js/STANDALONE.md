@@ -165,7 +165,8 @@ Inditrans.Option = {
   ASCIINumerals: 4,           // Force ASCII numerals
   IgnoreVedicAccents: 8,      // Ignore Vedic accents
   RetainSpecialMarkers: 16,   // Retain special markers
-  NoXMLTagHandling: 32        // Do not handle XML tags
+  NoXMLTagHandling: 32,       // Do not handle XML tags
+  DisableInference: 64        // Disable contextual Tamil inference and anuswara assimilation
 }
 ```
 

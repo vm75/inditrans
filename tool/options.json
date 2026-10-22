@@ -39,5 +39,10 @@
         "name": "NoXMLTagHandling",
         "comment": "Do not check for xml/html tags, and treat them as normal text",
         "value": 32
+    },
+    {
+        "name": "DisableInference",
+        "comment": "Disable contextual pronunciation inference (including anuswara assimilation and Tamil reading/writing rules)",
+        "value": 64
     }
 ]

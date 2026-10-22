@@ -10,7 +10,7 @@
 #include "exports.h"
 
 /// Maximum number of configurable transliteration option flags.
-constexpr size_t MaxTranslitOptions = 7;
+constexpr size_t MaxTranslitOptions = 8;
 
 /// Bitwise AND operator for combining/querying TranslitOptions bitmasks.
 inline constexpr TranslitOptions operator&(TranslitOptions x, TranslitOptions y) noexcept {

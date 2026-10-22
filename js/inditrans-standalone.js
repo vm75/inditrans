@@ -67,7 +67,9 @@
     TamilSuperscripted: 2,
     ASCIINumerals: 4,
     IgnoreVedicAccents: 8,
-    RetainSpecialMarkers: 16
+    RetainSpecialMarkers: 16,
+    NoXMLTagHandling: 32,
+    DisableInference: 64
   };
 
   let moduleReady = false;
