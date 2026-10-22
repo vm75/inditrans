@@ -319,6 +319,17 @@ static constexpr TranslitOptions effectiveInferenceOptions(std::string_view from
   return options;
 }
 
+// Enforce source-vs-target semantics even when no observable difference exists
+// for a destination script with an explicit anuswara mapping.
+static_assert(effectiveInferenceOptions("tamil", TranslitOptions::TamilSuperscripted)
+    * TranslitOptions::DisableInference);
+static_assert(effectiveInferenceOptions("devanagari", TranslitOptions::TamilSuperscripted)
+    / TranslitOptions::DisableInference);
+static_assert(effectiveInferenceOptions("indic", TranslitOptions::TamilSuperscripted)
+    / TranslitOptions::DisableInference);
+static_assert(effectiveInferenceOptions("tamil", TranslitOptions::None)
+    / TranslitOptions::DisableInference);
+
 /// Transliterates input into a heap-allocated TranslitBuffer via Utf8StringBuilder.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, TranslitBuffer& output, const std::string_view& skipStart,
