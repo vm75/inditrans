@@ -23,4 +23,7 @@ export enum Option {
 
   /// Do not check for xml/html tags, and treat them as normal text
   NoXMLTagHandling = 32,
+
+  /// Disable contextual pronunciation inference (including anuswara assimilation and Tamil reading/writing rules)
+  DisableInference = 64,
 }

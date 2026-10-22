@@ -309,6 +309,30 @@ bool transliterate_core(const std::string_view& input, const ScriptReaderMap& re
   }
 }
 
+/// When reading explicitly selected Tamil with superscripted disambiguation, do not
+/// additionally infer pronunciation or contextual nasals. Do not apply this to an
+/// 'indic' virtual source (which may mix Tamil and other scripts), or to output-only
+/// TamilSuperscripted formatting.
+static constexpr TranslitOptions effectiveInferenceOptions(std::string_view from, TranslitOptions options) noexcept {
+  if (inditrans::static_data::compareScriptName(from, "tamil") == 0
+      && options * TranslitOptions::TamilSuperscripted)
+    return options | TranslitOptions::DisableInference;
+  return options;
+}
+
+// Enforce source-vs-target semantics even when no observable difference exists
+// for a destination script with an explicit anuswara mapping.
+static_assert(effectiveInferenceOptions("tamil", TranslitOptions::TamilSuperscripted)
+    * TranslitOptions::DisableInference);
+static_assert(effectiveInferenceOptions("TAMIL", TranslitOptions::TamilSuperscripted)
+    * TranslitOptions::DisableInference);
+static_assert(effectiveInferenceOptions("devanagari", TranslitOptions::TamilSuperscripted)
+    / TranslitOptions::DisableInference);
+static_assert(effectiveInferenceOptions("indic", TranslitOptions::TamilSuperscripted)
+    / TranslitOptions::DisableInference);
+static_assert(effectiveInferenceOptions("tamil", TranslitOptions::None)
+    / TranslitOptions::DisableInference);
+
 /// Transliterates input into a heap-allocated TranslitBuffer via Utf8StringBuilder.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, TranslitBuffer& output, const std::string_view& skipStart,
@@ -321,7 +345,7 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
     return false;
   Utf8StringBuilder sink;
   sink.reserve(outputCapacity(input.length(), *readerMap, *writerMap));
-  if (!transliterate_core(input, *readerMap, *writerMap, options, sink, skipStart, skipEnd)) {
+  if (!transliterate_core(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd)) {
     return false;
   }
   output.reset(sink.release());
@@ -360,7 +384,7 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
   // capacity could invalidate a borrowed input view before the reader starts.
   output.reserve(output.empty() ? outputCapacity(input.length(), *readerMap, *writerMap) : input.length() + 1);
   StdStringSink sink(output);
-  return transliterate_core(input, *readerMap, *writerMap, options, sink, skipStart, skipEnd);
+  return transliterate_core(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd);
 }
 
 /// Transliterates input and returns the result as a new std::string by value.

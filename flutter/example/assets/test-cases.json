@@ -662,5 +662,47 @@
         "options": "TamilSuperscripted"
       }
     ]
+  },
+  {
+    "description": "DisableInference preserves a non-assimilated Tamil nasal",
+    "text": "अंक",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "அங்க"
+      },
+      {
+        "script": "tamil",
+        "text": "அம்க",
+        "options": "DisableInference"
+      },
+      {
+        "script": "tamil",
+        "text": "அங்க",
+        "options": "TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "DisableInference bypasses Tamil reader allophone inference",
+    "text": "அக¹",
+    "script": "tamil",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "अग"
+      },
+      {
+        "script": "devanagari",
+        "text": "अक",
+        "options": "DisableInference"
+      },
+      {
+        "script": "devanagari",
+        "text": "अक",
+        "options": "TamilSuperscripted"
+      }
+    ]
   }
 ]

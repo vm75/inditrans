@@ -12,6 +12,7 @@ class Option {
     'ignorevedicaccents': 8,
     'retainspecialmarkers': 16,
     'noxmltaghandling': 32,
+    'disableinference': 64,
   };
 
   /// No options (default)
@@ -34,6 +35,9 @@ class Option {
 
   /// Do not check for xml/html tags, and treat them as normal text
   static final NoXMLTagHandling = Option._(32);
+
+  /// Disable contextual pronunciation inference (including anuswara assimilation and Tamil reading/writing rules)
+  static final DisableInference = Option._(64);
 
   /// Returns the int value of the option flag
   int get value => _value;

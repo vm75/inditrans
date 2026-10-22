@@ -56,6 +56,8 @@ enum TranslitOptions {
   RetainSpecialMarkers = 16,
   /// Do not check for xml/html tags, and treat them as normal text
   NoXMLTagHandling = 32,
+  /// Disable contextual pronunciation inference (including anuswara assimilation and Tamil reading/writing rules)
+  DisableInference = 64,
 };
 
 /// Transliterates null-terminated UTF-8 text from source script to target script.

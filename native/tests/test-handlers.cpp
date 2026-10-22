@@ -150,6 +150,36 @@ suite<"Contextual handler tests"> contextualTests = [] {
     expect(AnuswaraAssimilator::inferNasalIndex(semiUnit) == 24u);
   };
 
+  "DisableInference option and source-side Tamil superscript behavior"_test = [] {
+    constexpr auto disabled = TranslitOptions::DisableInference;
+    constexpr auto superscripted = TranslitOptions::TamilSuperscripted;
+
+    // Defaults remain inferred. Explicit opt-out uses the target's literal nasal mapping.
+    expect(transliterate("अंक", "devanagari", "tamil", TranslitOptions::None) == "அங்க");
+    expect(transliterate("अंक", "devanagari", "tamil", disabled) == "அம்க");
+
+    // TamilSuperscripted is an OUTPUT formatting option here: it must not disable inference.
+    expect(transliterate("अंक", "devanagari", "tamil", superscripted) == "அங்க");
+
+    // Explicit DisableInference bypasses Tamil reader voicing even without TamilSuperscripted.
+    expect(transliterate("அக¹", "tamil", "devanagari", TranslitOptions::None) == "अग");
+    expect(transliterate("அக¹", "tamil", "devanagari", disabled) == "अक");
+    expect(transliterate("அக¹", "tamil", "devanagari", superscripted) == "अक");
+    expect(transliterate("அக¹", "tamil", "devanagari", disabled | superscripted) == "अक");
+
+    // Tamil positional nasal substitutions are also contextual inference.
+    expect(transliterate("अन्", "devanagari", "tamil", TranslitOptions::None) == "அன்");
+    expect(transliterate("अन्", "devanagari", "tamil", disabled) == "அந்");
+
+    // Source names are case-insensitive, including automatic writer normalization.
+    for (const auto source : { "tamil", "TAMIL", "Tamil" }) {
+      expect(transliterate("அந", source, "TaMiL", superscripted) == "அந");
+      TranslitBuffer output;
+      expect(transliterate("அம்ʼக¹", source, "TaMiL", superscripted, output));
+      expect(std::string_view(output.get()) == "அம்க");
+    }
+  };
+
   "ASCII numeral formatting"_test = [] {
     Token numToken(TokenType::Symbol, 5);
     expect(AsciiNumeralFormatter::matches(numToken, TranslitOptions::ASCIINumerals));

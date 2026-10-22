@@ -125,3 +125,21 @@ if (result !== expected) {
 }
 
 console.log(`✓ Standalone WASM smoke test passed (${wasmBuffer.length} bytes, ${imports.length} imports, result: '${result}')`);
+
+// Exercise new flags against the actual bundled engine, not just its exports.
+for (const [text, from, to, options, expected] of [
+  ['अंक', 'devanagari', 'tamil', 64, 'அம்க'],
+  ['அக¹', 'tamil', 'devanagari', 64, 'अक'],
+  ['அந', 'TAMIL', 'tamil', 2, 'அந'],
+]) {
+  const pointers = [text, from, to, '##', '##'].map(writeUtf8);
+  const output = exports.transliterate(pointers[0], pointers[1], pointers[2], options, pointers[3], pointers[4]);
+  const actual = readUtf8(output);
+  exports.releaseBuffer(output);
+  pointers.forEach(ptr => exports.free(ptr));
+  if (actual !== expected) {
+    console.error(`Error: ${from} -> ${to} with options ${options}: '${actual}', expected '${expected}'`);
+    process.exit(1);
+  }
+}
+console.log('✓ Standalone WASM inference options passed');

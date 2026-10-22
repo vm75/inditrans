@@ -75,6 +75,9 @@ Pass an `Option` value (or combine with `+`) as the fourth argument to `translit
 | `Option.IgnoreVedicAccents` | Strip Vedic accent markers |
 | `Option.RetainSpecialMarkers` | Keep non-standard character markers |
 | `Option.NoXMLTagHandling` | Treat XML/HTML tags as plain text |
+| `Option.DisableInference` | Disable anuswara assimilation and contextual Tamil pronunciation/letter inference |
+
+For Tamil **source** text, `Option.TamilSuperscripted` also enables `DisableInference` automatically; using it only for Tamil **output** does not. With `DisableInference`, a target's mapped anuswara is emitted instead of a contextually inferred nasal (which may differ in spelling).
 
 The `skipStart` and `skipEnd` parameters (default `"##"`) mark regions that are not
 transliterated and are passed through unchanged.

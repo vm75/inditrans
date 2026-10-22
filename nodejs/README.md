@@ -98,6 +98,9 @@ Returns `true` when the given script name is recognised.
 | `Option.IgnoreVedicAccents` | `8` | Strip Vedic accent markers |
 | `Option.RetainSpecialMarkers` | `16` | Keep non-standard character markers |
 | `Option.NoXMLTagHandling` | `32` | Treat XML/HTML tags as plain text |
+| `Option.DisableInference` | `64` | Disable anuswara assimilation and contextual Tamil pronunciation/letter inference |
+
+For Tamil **source** text, `Option.TamilSuperscripted` automatically enables `DisableInference`. The same flag on Tamil **output** does not disable inference. When disabled, a mapped anuswara spelling is emitted rather than assimilated to the next consonant.
 
 Combine flags with the bitwise OR operator: `Option.IgnoreVedicAccents | Option.TamilSuperscripted`.
 

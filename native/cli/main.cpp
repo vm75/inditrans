@@ -27,6 +27,7 @@ TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
     "IgnoreVedicAccents",
     "RetainSpecialMarkers",
     "NoXMLTagHandling",
+    "DisableInference",
   };
 
   TranslitOptions mask { TranslitOptions::None };

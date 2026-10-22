@@ -159,8 +159,8 @@ public:
         }
       }
     done:
-      if (options * TranslitOptions::TamilSuperscripted) {
-        // Explicit consonant variants bypass contextual pronunciation inference.
+      if (options * TranslitOptions::TamilSuperscripted || options * TranslitOptions::DisableInference) {
+        // Explicit consonant variants and opt-out bypass contextual pronunciation inference.
         return tokenUnit;
       }
 
@@ -252,7 +252,7 @@ public:
     if (tokenUnit.leadToken.tokenType == TokenType::Consonant) {
       // Keep dental ந at word/prefix starts and within consonant clusters;
       // use alveolar ன for medial syllables with vowels and final bare consonants.
-      if (leadIdx == 19 /* ந */ && !(wordStart || endOfPrefix)
+      if (leadIdx == 19 /* ந */ && options / TranslitOptions::DisableInference && !(wordStart || endOfPrefix)
           && (tokenUnit.vowelMark.idx != Diacritic_Virama || isTamilEndOfWord(next))) {
         leadText = "ன";
       } else if (options * TranslitOptions::TamilTraditional) {
@@ -286,7 +286,8 @@ public:
       }
 
       if (tokenUnit.otherDiacritic.idx != InvalidToken) {
-        if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara) {
+        if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara
+              && options / TranslitOptions::DisableInference) {
           AnuswaraAssimilator::emit<ScriptType::Tamil>(next, map, writer);
         } else {
           writer.push(map.lookupChar(tokenUnit.otherDiacritic));
@@ -297,7 +298,8 @@ public:
         writer.push(leadText);
 
         if (tokenUnit.otherDiacritic.idx != InvalidToken) {
-          if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara) {
+          if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara
+              && options / TranslitOptions::DisableInference) {
             AnuswaraAssimilator::emit<ScriptType::Tamil>(next, map, writer);
           } else {
             writer.push(map.lookupChar(tokenUnit.otherDiacritic));
