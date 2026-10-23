@@ -85,9 +85,18 @@ public:
     }
     if (tokenUnit.otherDiacritic.idx != InvalidToken) {
       const auto lookup = map.lookupChar(tokenUnit.otherDiacritic);
-      if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara && lookup.empty()
-          && options / TranslitOptions::DisableInference) {
-        AnuswaraAssimilator::emit<ScriptType::Latin>(next, map, writer);
+      if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara && (options / TranslitOptions::DisableInference)) {
+        if (map.isIndlish()) {
+          if (AnuswaraAssimilator::canAssimilate(next)) {
+            AnuswaraAssimilator::emit<ScriptType::Latin>(next, map, writer);
+          } else {
+            writer.push(lookup);
+          }
+        } else if (lookup.empty()) {
+          AnuswaraAssimilator::emit<ScriptType::Latin>(next, map, writer);
+        } else {
+          writer.push(lookup);
+        }
       } else {
         writer.push(lookup);
       }

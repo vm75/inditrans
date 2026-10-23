@@ -14,6 +14,14 @@ namespace inditrans::handlers {
 /// (e.g. ṅ before velars, ñ before palatals, ṇ before retroflex, n before dentals, m before labials).
 class AnuswaraAssimilator {
 public:
+  /// Returns true if the next token is a varga consonant (stop groups 1..5) eligible for nasal assimilation.
+  static constexpr bool canAssimilate(const TokenUnitOrString& next) noexcept {
+    if (next == endOfText || HoldsString(next))
+      return false;
+    const auto tokenUnit = GetTokenUnit(next);
+    return tokenUnit.leadToken.tokenType == TokenType::Consonant && tokenUnit.leadToken.idx <= 24;
+  }
+
   /// Infers the canonical consonant phoneme index for the assimilated nasal.
   /// Defaults to 'म' (idx 24) when the following phoneme does not belong to the five vargas.
   static constexpr size_t inferNasalIndex(const TokenUnitOrString& next) noexcept {

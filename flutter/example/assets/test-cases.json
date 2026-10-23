@@ -26,12 +26,12 @@
         "options": "TamilSuperscripted"
       },
       {
-        "script": "readablelatin",
-        "text": "shree̱ gu̱ru̱bhyO nama̱h̥ ! ha̱ri̱h̥ OM !! OM ga̱Naanaa̎nͫ tvaa ga̱Napa̍tigum havaamahE ka̱vinͫ ka̍vee̱naamu̍pa̱mashra̍vastamanͫ"
+        "script": "indlish",
+        "text": "shrI̱ gu̱ru̱bhyO nama̱ḥ ! ha̱ri̱ḥ OM !! OM ga̱NAnA̎ṁ tvA ga̱Napa̍tigum havAmahE ka̱viṁ ka̍vI̱nAmu̍pa̱mashra̍vastamaṁ"
       },
       {
-        "script": "readablelatin",
-        "text": "shree gurubhyO namah̥ ! harih̥ OM !! OM gaNaanaanͫ tvaa gaNapatigum havaamahE kavinͫ kaveenaamupamashravastamanͫ",
+        "script": "indlish",
+        "text": "shrI gurubhyO namaḥ ! hariḥ OM !! OM gaNAnAṁ tvA gaNapatigum havAmahE kaviṁ kavInAmupamashravastamaṁ",
         "options": "IgnoreVedicAccents"
       },
       {
@@ -55,7 +55,7 @@
         "text": "க்ஷ த்ர ஜ்ஞ ஶ்ர"
       },
       {
-        "script": "readablelatin",
+        "script": "indlish",
         "text": "ksha tra jna shra"
       },
       {
@@ -79,7 +79,7 @@
         "text": "n̆ga  n̆ja  n̆ḍa  n̆da  m̆ba"
       },
       {
-        "script": "readablelatin",
+        "script": "indlish",
         "text": "nga  nja  nDa  nda  mba"
       }
     ]
@@ -94,7 +94,7 @@
         "text": "With virama: kSha, With ZWNJ: kSha, With ZWJ: kSha, With udaat: kSha"
       },
       {
-        "script": "readablelatin",
+        "script": "indlish",
         "text": "With virama: ksha, With ZWNJ: ksha, With ZWJ: ksha, With udaat: ksha"
       }
     ]
@@ -148,7 +148,7 @@
     "script": "tamil",
     "targets": [
       {
-        "script": "readablelatin",
+        "script": "indlish",
         "text": "ko kO kau"
       }
     ]
@@ -168,8 +168,13 @@
         "options": "TamilSuperscripted TamilTraditional"
       },
       {
-        "script": "readablelatin",
-        "text": "panͫktee panͫDit anͫja idanͫ sanͫskr̥tam sanͫskr̥tanͫ"
+        "script": "indlish",
+        "text": "panktI paNDit anja idaṁ saṁskr̥tam saṁskr̥taṁ"
+      },
+      {
+        "script": "indlish",
+        "text": "paṁktI paṁDit aṁja idaṁ saṁskr̥tam saṁskr̥taṁ",
+        "options": "DisableInference"
       },
       {
         "script": "iso",
@@ -191,8 +196,8 @@
         "text": "ஃபகீர ஃபிக்ர ஃபேக"
       },
       {
-        "script": "readablelatin",
-        "text": "fakeera fikra fEka"
+        "script": "indlish",
+        "text": "fakIra fikra fEka"
       }
     ]
   },
@@ -213,8 +218,8 @@
     "script": "tamil",
     "targets": [
       {
-        "script": "readablelatin",
-        "text": "tanga padakkam charchchaikkuriya cheydigaL paappaa pambaa ambaa krubai tandu rakshiyamba"
+        "script": "indlish",
+        "text": "tanga padakkam charchchaikkuriya cheydigaL pAppA pambA ambA krubai tandu rakshiyamba"
       },
       {
         "script": "devanagari",
@@ -255,7 +260,7 @@
     "script": "devanagari",
     "targets": [
       {
-        "script": "readablelatin",
+        "script": "indlish",
         "text": "kr̥shNa"
       }
     ]
@@ -291,13 +296,18 @@
     ]
   },
   {
-    "description": "Indic->readablelatin",
+    "description": "Indic->indlish",
     "text": "धन्य अंजनीच्या सुता",
     "script": "indic",
     "targets": [
       {
-        "script": "readablelatin",
-        "text": "dhanya anͫjaneechyaa sutaa"
+        "script": "indlish",
+        "text": "dhanya anjanIchyA sutA"
+      },
+      {
+        "script": "indlish",
+        "text": "dhanya aṁjanIchyA sutA",
+        "options": "DisableInference"
       }
     ]
   },
@@ -307,7 +317,7 @@
     "script": "tamil",
     "targets": [
       {
-        "script": "readablelatin",
+        "script": "indlish",
         "text": "adupOla"
       }
     ]
@@ -534,6 +544,31 @@
         "script": "tamil",
         "text": "அங்க அஞ்ச அண்ட அந்த கம்ப இதம் சம்ச்க்ருத",
         "options": "TamilTraditional"
+      },
+      {
+        "script": "indlish",
+        "text": "anka ancha aNTa anta kampa idaṁ saṁskr̥ta"
+      },
+      {
+        "script": "indlish",
+        "text": "aṁka aṁcha aṁTa aṁta kaṁpa idaṁ saṁskr̥ta",
+        "options": "DisableInference"
+      }
+    ]
+  },
+  {
+    "description": "Indlish contextual anuswara assimilation",
+    "text": "अंक अंच अंट अंत अंप अंबा संस्कृतम् अंश अहं अं अँ",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "indlish",
+        "text": "anka ancha aNTa anta ampa ambA saṁskr̥tam aṁsha ahaṁ aṁ am̐"
+      },
+      {
+        "script": "indlish",
+        "text": "aṁka aṁcha aṁTa aṁta aṁpa aṁbA saṁskr̥tam aṁsha ahaṁ aṁ am̐",
+        "options": "DisableInference"
       }
     ]
   },
@@ -610,7 +645,7 @@
         "options": "TamilSuperscripted"
       },
       {
-        "script": "readablelatin",
+        "script": "indlish",
         "text": "kha pa, kha  pa, kha\npa, kha,pa, kha. gu pa, khaxyz",
         "options": "TamilSuperscripted"
       }

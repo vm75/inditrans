@@ -12,8 +12,7 @@ void main() async {
   await inditrans.init();
 
   // read json file
-  final json =
-      jsonDecode(File('../test-files/test-cases.json').readAsStringSync());
+  final json = jsonDecode(File('../test-files/test-cases.json').readAsStringSync());
 
   // iterate over json which is in the form as in the file test-cases.json
   for (final input in (json as List).cast<Map<String, dynamic>>()) {
@@ -29,15 +28,14 @@ void main() async {
         continue;
       }
       test(description, () {
-        final actual =
-            inditrans.transliterate(inputText, inputScript, targetScript, options);
+        final actual = inditrans.transliterate(inputText, inputScript, targetScript, options);
         expect(actual, expected);
       });
     }
   }
 
   try {
-    inditrans.transliterate('Dummy', Script.readableLatin, Script.indic);
+    inditrans.transliterate('Dummy', Script.indlish, Script.indic);
   } catch (e) {
     print(e);
   }

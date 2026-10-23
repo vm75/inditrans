@@ -6,7 +6,7 @@
 #include <string_view>
 
 /// Scripts that can only be used as destination targets ('to'), not as input sources ('from').
-constexpr std::array<std::string_view, 1> WriteOnlyScripts { "readablelatin" };
+constexpr std::array<std::string_view, 1> WriteOnlyScripts { "indlish" };
 
 /// Returns true if the script is write-only.
 inline constexpr auto isWriteOnlyScript = [](std::string_view script) noexcept {

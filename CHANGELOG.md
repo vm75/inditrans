@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.14.1]
+- **Indlish Romanization**:
+  - Rename `readableLatin` to `indlish` across native C++ engine, Flutter/Dart (`Script.indlish`), and TypeScript/JavaScript packages (`Script.indlish`).
+  - Update vowel and diacritic notation for intuitive English readability.
+  - Implement contextual anuswara assimilation before varga consonants: velar, palatal, and dental stops assimilate to `n`, retroflex stops assimilate to `N`, and labial stops assimilate to `m`.
+  - Fallback to explicit `ṁ` when anuswara occurs before non-varga consonants (sibilants, semivowels, aspirates), vowels, symbols, raw-string skip boundaries, or at word endings.
+  - Honor `DisableInference` option to bypass contextual assimilation and consistently output explicit `ṁ`.
+  - Preserve chandrabindu as `m̐` without nasal assimilation.
+
 ## [0.14.0]
 - Add `DisableInference` across native, Flutter, Node.js, and standalone JavaScript APIs to disable anuswara assimilation and contextual Tamil pronunciation and letter substitutions.
 - Automatically disable inference when reading Tamil with `TamilSuperscripted`, including case-insensitive source names; Tamil output formatting alone continues to infer pronunciation.
