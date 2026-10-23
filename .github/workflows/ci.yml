@@ -248,6 +248,12 @@ jobs:
       - name: Build WASM artifacts
         run: make wasm
 
+      - name: Verify checked-in WASM artifacts are up to date
+        run: |
+          git diff --exit-code -- \
+            flutter/assets/inditrans.wasm \
+            js/public/inditrans.js
+
       - name: Smoke test standalone Flutter WASM
         run: make test_wasm
 

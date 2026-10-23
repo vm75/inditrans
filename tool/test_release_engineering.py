@@ -213,6 +213,15 @@ class WorkflowIntegrityTest(unittest.TestCase):
             self.assertNotIn(cmd, self.ci_yaml, f"CI workflow should not contain publish command: {cmd}")
             self.assertNotIn(cmd, self.platform_yaml, f"Platform workflow should not contain publish command: {cmd}")
 
+    def test_ci_verifies_wasm_artifacts_are_up_to_date(self):
+        """Ensure ci.yml verifies that checked-in WASM binaries match rebuilt outputs."""
+        nodejs_job = self.ci_yaml.split("  nodejs:", 1)[1]
+        build_wasm = nodejs_job.index("make wasm")
+        diff_check = nodejs_job.index("git diff --exit-code --")
+        self.assertLess(build_wasm, diff_check)
+        self.assertIn("flutter/assets/inditrans.wasm", nodejs_job)
+        self.assertIn("js/public/inditrans.js", nodejs_job)
+
     def test_platform_workflow_trigger_restricted(self):
         """Platform workflow must trigger strictly on platform-* tags or manual dispatch."""
         self.assertIn("push:", self.platform_yaml)
