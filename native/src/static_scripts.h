@@ -15,6 +15,14 @@ constexpr std::string_view ScriptWriterMap::lookupChar(TokenType type, size_t in
   return { inditrans::static_data::writerText.data() + static_cast<size_t>(entry.offset), entry.length };
 }
 
+/// Returns true if this writer target is the Inglish Romanization scheme.
+constexpr bool ScriptWriterMap::isInglish() const noexcept {
+  return this == &inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Inglish)];
+}
+
+static_assert(inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Inglish)].isInglish());
+static_assert(!inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Iast)].isInglish());
+
 /// Parsing policy governing token matching from input text.
 enum class ReaderPolicy {
   Roman, ///< Direct match in a Romanization trie (e.g. ITRANS, Harvard-Kyoto)

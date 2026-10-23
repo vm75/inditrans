@@ -169,7 +169,12 @@
       },
       {
         "script": "inglish",
-        "text": "paṁktI paṁDit aṁja idaṁ saṁskr̥tam saṁskr̥taṁ"
+        "text": "panktI paNDit anja idaṁ saṁskr̥tam saṁskr̥taṁ"
+      },
+      {
+        "script": "inglish",
+        "text": "paṁktI paṁDit aṁja idaṁ saṁskr̥tam saṁskr̥taṁ",
+        "options": "DisableInference"
       },
       {
         "script": "iso",
@@ -297,7 +302,12 @@
     "targets": [
       {
         "script": "inglish",
-        "text": "dhanya aṁjanIchyA sutA"
+        "text": "dhanya anjanIchyA sutA"
+      },
+      {
+        "script": "inglish",
+        "text": "dhanya aṁjanIchyA sutA",
+        "options": "DisableInference"
       }
     ]
   },
@@ -534,6 +544,31 @@
         "script": "tamil",
         "text": "அங்க அஞ்ச அண்ட அந்த கம்ப இதம் சம்ச்க்ருத",
         "options": "TamilTraditional"
+      },
+      {
+        "script": "inglish",
+        "text": "anka ancha aNTa anta kampa idaṁ saṁskr̥ta"
+      },
+      {
+        "script": "inglish",
+        "text": "aṁka aṁcha aṁTa aṁta kaṁpa idaṁ saṁskr̥ta",
+        "options": "DisableInference"
+      }
+    ]
+  },
+  {
+    "description": "Inglish contextual anuswara assimilation",
+    "text": "अंक अंच अंट अंत अंप अंबा संस्कृतम् अंश अहं अं अँ",
+    "script": "devanagari",
+    "targets": [
+      {
+        "script": "inglish",
+        "text": "anka ancha aNTa anta ampa ambA saṁskr̥tam aṁsha ahaṁ aṁ am̐"
+      },
+      {
+        "script": "inglish",
+        "text": "aṁka aṁcha aṁTa aṁta aṁpa aṁbA saṁskr̥tam aṁsha ahaṁ aṁ am̐",
+        "options": "DisableInference"
       }
     ]
   },

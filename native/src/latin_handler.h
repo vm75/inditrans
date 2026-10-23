@@ -85,8 +85,10 @@ public:
     }
     if (tokenUnit.otherDiacritic.idx != InvalidToken) {
       const auto lookup = map.lookupChar(tokenUnit.otherDiacritic);
-      if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara && lookup.empty()
-          && options / TranslitOptions::DisableInference) {
+      if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara
+          && (options / TranslitOptions::DisableInference)
+          && (lookup.empty() || map.isInglish())
+          && AnuswaraAssimilator::canAssimilate(next)) {
         AnuswaraAssimilator::emit<ScriptType::Latin>(next, map, writer);
       } else {
         writer.push(lookup);
