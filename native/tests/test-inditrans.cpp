@@ -176,3 +176,25 @@ void testInitransMain() noexcept {
   suite<"test-cases.json tests"> inditransTests = [] { testAllTranslit("test-files/test-cases.json"); };
   suite<"sanscript-tests.json tests"> sanscriptTests = [] { testAllTranslit("test-files/sanscript-tests.json"); };
 }
+
+suite<"Security regression tests"> securityRegressionTests = [] {
+  "Default empty string_view"_test = [] {
+    expect(transliterate(std::string_view {}, "itrans", "devanagari", TranslitOptions::None).empty());
+  };
+
+  "Output string may back input view"_test = [] {
+    std::string output;
+    for (int i = 0; i < 256; ++i)
+      output += "क";
+    const std::string_view input(output);
+    const auto expected = output + transliterate(input, "devanagari", "tamil", TranslitOptions::None);
+    expect(transliterate(input, "devanagari", "tamil", TranslitOptions::None, output));
+    expect(output == expected);
+  };
+
+  "C ABI rejects null pointers and unknown option bits"_test = [] {
+    expect(::transliterate(nullptr, "itrans", "devanagari", 0, "##", "##") == nullptr);
+    expect(::transliterate("a", "itrans", "devanagari", ~0ul, "##", "##") == nullptr);
+    expect(::isScriptSupported(nullptr) == 0);
+  };
+};

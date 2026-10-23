@@ -54,6 +54,8 @@ using TranslitBuffer = std::unique_ptr<char, TranslitBufferDeleter>;
 /// @param skipStart Delimiter marking the beginning of protected blocks; empty defaults to "##".
 /// @param skipEnd Delimiter marking the end of protected blocks; empty defaults to "##".
 /// @return True if transliteration succeeded; false if script names were identical or unrecognized.
+/// @pre Nonempty views refer to valid storage for the duration of the call; empty views, including a default
+///      `std::string_view`, are accepted. `input` must contain well-formed UTF-8.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, TranslitBuffer& out, const std::string_view& skipStart = "##",
     const std::string_view& skipEnd = "##") noexcept;
@@ -70,6 +72,9 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
 /// @param skipStart Delimiter marking the beginning of protected blocks; empty defaults to "##".
 /// @param skipEnd Delimiter marking the end of protected blocks; empty defaults to "##".
 /// @return True on success; false if script names were identical or unrecognized.
+/// @pre Nonempty views refer to valid storage for the duration of the call; empty views, including a default
+///      `std::string_view`, are accepted. Views that refer into `out` are copied before output is appended.
+///      `input` must contain well-formed UTF-8.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, std::string& out, const std::string_view& skipStart = "##",
     const std::string_view& skipEnd = "##") noexcept;

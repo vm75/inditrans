@@ -77,8 +77,14 @@ String transliterate(
       nativeSkipStart.cast<Uint8>(),
       nativeSkipEnd.cast<Uint8>(),
     );
-    final result = buffer.cast<Utf8>();
-    return result == nullptr ? '' : result.toDartString();
+    if (buffer == nullptr) {
+      return '';
+    }
+    try {
+      return buffer.cast<Utf8>().toDartString();
+    } finally {
+      _bindings.releaseBuffer(buffer);
+    }
   });
 }
 

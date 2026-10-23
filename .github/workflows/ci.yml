@@ -76,6 +76,7 @@ jobs:
           mkdir -p out
           clang++ \
             -std=c++23 \
+            -fno-cxx-modules \
             -DBOOST_UT_DISABLE_MODULE \
             -O1 -g \
             -fno-omit-frame-pointer \
@@ -91,6 +92,9 @@ jobs:
           LSAN_OPTIONS: exitcode=23
           UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
         run: ./out/inditrans_sanitize_test
+
+      - name: Run dedicated security regression probes
+        run: bash native/security/run_regressions.sh
 
   performance:
     name: Performance Regression Gate

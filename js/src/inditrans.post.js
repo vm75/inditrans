@@ -61,9 +61,11 @@ Module['onRuntimeInitialized'] = function () {
             if (stringPtr == 0) {
                 return '';
             }
-            const result = utf8ToString(stringPtr);
-            releaseBuffer(stringPtr);
-            return result;
+            try {
+                return utf8ToString(stringPtr);
+            } finally {
+                releaseBuffer(stringPtr);
+            }
         },
         'isScriptSupported': (script) => {
             const cwrap = Module['cwrap'] || (typeof cwrap !== 'undefined' ? cwrap : null);

@@ -114,6 +114,37 @@ suite<"Preservation handler tests"> preservationTests = [] {
     std::string outRetained;
     SpecialMarkerFilter::push(in, outRetained, TranslitOptions::RetainSpecialMarkers);
     expect(outRetained == in);
+
+    const char truncated[] = { char(0xe2) };
+    std::string preserved;
+    SpecialMarkerFilter::stripSpecialMarkers(std::string_view(truncated, sizeof(truncated)), preserved);
+    expect(preserved.size() == sizeof(truncated));
+    expect(static_cast<unsigned char>(preserved.front()) == 0xe2);
+
+    std::string empty;
+    SpecialMarkerFilter::stripSpecialMarkers(std::string_view {}, empty);
+    expect(empty.empty());
+
+    std::string malformed { char(0xe2), 'x' };
+    malformed += "ʼ";
+    std::string malformedOut;
+    SpecialMarkerFilter::stripSpecialMarkers(malformed, malformedOut);
+    expect(malformedOut == std::string_view(malformed.data(), 2));
+  };
+
+  "UTF-8 builder short replacement"_test = [] {
+    Utf8StringBuilder builder;
+    builder.reserve(16);
+    builder += "abcdef";
+    builder.replace(1, 4, "x");
+    expect(builder.size() == 3u);
+    expect(std::string_view(builder.back().view()) == "f");
+    auto* result = builder.release();
+    expect(result != nullptr);
+    if (result) {
+      expect(std::string_view(result) == "axf");
+      std::free(result);
+    }
   };
 };
 

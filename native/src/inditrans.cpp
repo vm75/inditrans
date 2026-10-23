@@ -13,6 +13,9 @@
 #include <array>
 #include <bit>
 #include <cassert>
+#include <cstdlib>
+#include <cstring>
+#include <functional>
 #include <limits>
 #include <string>
 #include <type_traits>
@@ -30,8 +33,8 @@ class InputReader {
 public:
   InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options,
       const std::string_view& skipStart, const std::string_view& skipEnd) noexcept
-      : ptr(input.data())
-      , end(input.data() + input.length())
+      : ptr(input.data() ? input.data() : "")
+      , end(ptr + input.length())
       , map(map)
       , skipStart(skipStart.empty() ? "##" : skipStart)
       , skipEnd(skipEnd.empty() ? "##" : skipEnd)
@@ -333,6 +336,32 @@ static_assert(effectiveInferenceOptions("indic", TranslitOptions::TamilSuperscri
 static_assert(effectiveInferenceOptions("tamil", TranslitOptions::None)
     / TranslitOptions::DisableInference);
 
+static bool viewOverlapsString(std::string_view view, const std::string& output) noexcept {
+  if (view.empty())
+    return false;
+  const auto* viewEnd = view.data() + view.size();
+  const auto* outputBegin = output.data();
+  const auto* outputEnd = outputBegin + output.capacity() + 1;
+  const std::less<const char*> less;
+  return less(view.data(), outputEnd) && less(outputBegin, viewEnd);
+}
+
+struct AliasedViewStorage {
+  char* data { nullptr };
+  ~AliasedViewStorage() { std::free(data); }
+};
+
+static bool preserveAliasedView(std::string_view& view, const std::string& output, AliasedViewStorage& copy) noexcept {
+  if (!viewOverlapsString(view, output))
+    return true;
+  copy.data = static_cast<char*>(std::malloc(view.size()));
+  if (!copy.data)
+    return false;
+  std::memcpy(copy.data, view.data(), view.size());
+  view = std::string_view(copy.data, view.size());
+  return true;
+}
+
 /// Transliterates input into a heap-allocated TranslitBuffer via Utf8StringBuilder.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, TranslitBuffer& output, const std::string_view& skipStart,
@@ -348,7 +377,12 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
   if (!transliterate_core(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd)) {
     return false;
   }
-  output.reset(sink.release());
+  if (sink.hasFailed())
+    return false;
+  auto* result = sink.release();
+  if (!result)
+    return false;
+  output.reset(result);
   return true;
 }
 
@@ -374,17 +408,28 @@ struct StdStringSink {
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, std::string& output, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
-  if (from == to)
+  // Snapshot every argument view that may be invalidated by appending to output.
+  AliasedViewStorage inputCopy, fromCopy, toCopy, skipStartCopy, skipEndCopy;
+  std::string_view safeInput = input, safeFrom = from, safeTo = to;
+  std::string_view safeSkipStart = skipStart, safeSkipEnd = skipEnd;
+  if (!preserveAliasedView(safeInput, output, inputCopy)
+      || !preserveAliasedView(safeFrom, output, fromCopy)
+      || !preserveAliasedView(safeTo, output, toCopy)
+      || !preserveAliasedView(safeSkipStart, output, skipStartCopy)
+      || !preserveAliasedView(safeSkipEnd, output, skipEndCopy))
     return false;
-  const auto* readerMap = getScriptReaderMap(from);
-  const auto* writerMap = getScriptWriterMap(to);
+  if (safeFrom == safeTo)
+    return false;
+  const auto* readerMap = getScriptReaderMap(safeFrom);
+  const auto* writerMap = getScriptWriterMap(safeTo);
   if (!readerMap || !writerMap)
     return false;
   // Append calls use the existing input-sized hint. Reserving extra prefix
   // capacity could invalidate a borrowed input view before the reader starts.
-  output.reserve(output.empty() ? outputCapacity(input.length(), *readerMap, *writerMap) : input.length() + 1);
+  output.reserve(output.empty() ? outputCapacity(safeInput.length(), *readerMap, *writerMap) : safeInput.length() + 1);
   StdStringSink sink(output);
-  return transliterate_core(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd);
+  return transliterate_core(safeInput, *readerMap, *writerMap, effectiveInferenceOptions(safeFrom, options), sink,
+      safeSkipStart, safeSkipEnd);
 }
 
 /// Transliterates input and returns the result as a new std::string by value.
@@ -403,6 +448,9 @@ extern "C" {
 /// transliterate
 char* CALL_CONV transliterate(const char* input, const char* from, const char* to, unsigned long options,
     const char* skipStart, const char* skipEnd) {
+  constexpr unsigned long validOptions = 0x7ful;
+  if (!input || !from || !to || !skipStart || !skipEnd || (options & ~validOptions) != 0)
+    return nullptr;
   TranslitBuffer output;
   std::string_view inputView(input);
   std::string_view skipStartView(skipStart);
@@ -416,7 +464,9 @@ char* CALL_CONV transliterate(const char* input, const char* from, const char* t
 }
 
 /// Checks concrete script names and aliases against the compiled name table.
-int CALL_CONV isScriptSupported(const char* script) { return inditrans::static_data::findScript(script) >= 0; }
+int CALL_CONV isScriptSupported(const char* script) {
+  return script && inditrans::static_data::findScript(script) >= 0;
+}
 
 /// releaseBuffer
 void CALL_CONV releaseBuffer(char* buffer) { std::free(buffer); }

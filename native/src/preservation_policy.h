@@ -79,17 +79,31 @@ public:
           return false;
       return true;
     }());
-    const char* ptr = in.data();
+    const char* ptr = in.data() ? in.data() : "";
     const char* end = ptr + in.length();
     const char* run = ptr;
     while (ptr < end) {
-      const auto ch = UtfUtils::nextUtf8Char(ptr);
+      const auto remaining = static_cast<size_t>(end - ptr);
+      auto charLength = UtfUtils::nextCharLen(ptr);
+      if (charLength > remaining) {
+        charLength = 1;
+      } else {
+        for (size_t offset = 1; offset < charLength; ++offset) {
+          if ((static_cast<uint8_t>(ptr[offset]) & 0xc0) != 0x80) {
+            charLength = 1;
+            break;
+          }
+        }
+      }
+      const auto ch = std::string_view(ptr, charLength);
       if (static_cast<uint8_t>(ch.front()) >= 0x80 && SpecialMarkers.find(ch) != SpecialMarkers.npos) {
         if (ptr != run)
           out += std::string_view(run, ptr - run);
         ptr += ch.length();
         run = ptr;
       } else {
+        // Incomplete/invalid sequences are preserved a byte at a time. Marker
+        // strings are complete UTF-8 sequences, so no truncated prefix can match one.
         ptr += ch.length();
       }
     }

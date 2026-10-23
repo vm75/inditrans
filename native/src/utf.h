@@ -1,7 +1,11 @@
 #pragma once
 
+#include <algorithm>
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
+#include <functional>
+#include <limits>
 #include <memory>
 #include <string>
 #include <vector>
@@ -125,6 +129,8 @@ struct UtfUtils {
 
   /// Decodes a UTF-8 byte buffer of length @p len into a vector of UTF-32 codepoints.
   static void toUtf32Str(const char* str, size_t len, std::vector<char32_t>& out) noexcept {
+    if (!str)
+      str = "";
     auto end = str + len;
     while (str < end) {
       out.emplace_back(toChar32(str));
@@ -135,7 +141,7 @@ struct UtfUtils {
   static std::u32string toUtf32Str(std::string_view str) noexcept {
     std::u32string out;
     out.reserve(str.length());
-    auto pos = str.data();
+    auto pos = str.data() ? str.data() : "";
     auto end = pos + str.length();
     while (pos < end) {
       out += toChar32(pos);
@@ -235,11 +241,11 @@ public:
   }
 
   constexpr Utf8String(const char* str, size_t len) noexcept
-      : start(str)
-      , end(str + len) { }
+      : start(str ? str : "")
+      , end(start + (str ? len : 0)) { }
 
   constexpr Utf8String(const std::string_view& str) noexcept
-      : start(str.data())
+      : start(str.data() ? str.data() : "")
       , end(start + str.length()) { }
 
   constexpr Utf8String(const char* begin, const char* end) noexcept
@@ -352,7 +358,7 @@ constexpr size_t operator""_len(const char32_t* str, size_t len) { return std::u
 class Utf8StringBuilder {
 public:
   /// Pre-allocates buffer capacity to at least @p size bytes.
-  void reserve(size_t size) noexcept { grow(std::max(size, bufferSize)); }
+  void reserve(size_t size) noexcept { grow(size); }
 
   Utf8StringBuilder() noexcept { }
 
@@ -360,11 +366,13 @@ public:
     buffer = other.buffer;
     other.buffer = nullptr;
     bufferSize = other.bufferSize;
-    other.bufferSize = 1;
+    other.bufferSize = 0;
     ptr = other.ptr;
     other.ptr = nullptr;
     end = other.end;
     other.end = nullptr;
+    failed = other.failed;
+    other.failed = false;
   }
 
   ~Utf8StringBuilder() noexcept {
@@ -376,76 +384,172 @@ public:
 
   /// Appends a single byte / ASCII character, doubling capacity if needed.
   inline void operator+=(char ch) noexcept {
-    if (ptr == end) {
-      grow(bufferSize * 2);
+    if (failed)
+      return;
+    if (buffer && ptr != end) {
+      *ptr++ = ch;
+      return;
     }
+    const auto used = size();
+    if (used == std::numeric_limits<size_t>::max() || !ensureCapacity(used + 1))
+      return;
     *ptr++ = ch;
   }
 
   /// Appends a string view, expanding capacity if needed.
   inline void operator+=(std::string_view str) noexcept {
-    if (ptr + str.length() >= end) {
-      grow(bufferSize * 2 + str.length());
+    if (str.empty())
+      return;
+    const auto used = size();
+    if (str.length() > std::numeric_limits<size_t>::max() - used) {
+      failed = true;
+      return;
     }
-    for (auto ch : str) {
-      *ptr++ = ch;
+    // Appending from this builder's own storage must survive a possible realloc.
+    char* staged = nullptr;
+    if (overlaps(str)) {
+      staged = static_cast<char*>(std::malloc(str.length()));
+      if (!staged) {
+        failed = true;
+        return;
+      }
+      std::memcpy(staged, str.data(), str.length());
+      str = std::string_view(staged, str.length());
     }
+    if (!ensureCapacity(used + str.length())) {
+      std::free(staged);
+      return;
+    }
+    std::memcpy(ptr, str.data(), str.length());
+    ptr += str.length();
+    std::free(staged);
   }
 
   /// Appends a null terminator, detaches ownership of the heap buffer, and returns it.
   /// The caller takes ownership and must release it with std::free / releaseBuffer.
   char* release() noexcept {
+    if (failed || size() == std::numeric_limits<size_t>::max() || !ensureCapacity(size() + 1))
+      return nullptr;
     (*this) += 0;
     auto buf = buffer;
     buffer = nullptr;
+    ptr = nullptr;
+    end = nullptr;
+    bufferSize = 0;
     return buf;
   }
 
-  inline size_t size() const noexcept { return ptr - buffer; }
+  inline size_t size() const noexcept { return buffer ? static_cast<size_t>(ptr - buffer) : 0; }
 
-  inline size_t length() const noexcept { return ptr - buffer; }
+  inline size_t length() const noexcept { return size(); }
+
+  inline bool hasFailed() const noexcept { return failed; }
 
   /// Returns the last UTF-8 character in the buffer.
   inline Utf8Char back() noexcept {
+    if (size() == 0)
+      return Utf8ChZero;
     auto len = UtfUtils::prevCharLen(ptr);
     return Utf8Char(ptr - len);
   }
 
   /// Removes the last UTF-8 character from the buffer.
   inline void pop_back() noexcept {
+    if (size() == 0)
+      return;
     auto len = UtfUtils::prevCharLen(ptr);
     ptr -= len;
   }
 
   /// Replaces @p numChars bytes at byte offset @p pos with @p repl.
   inline void replace(size_t pos, size_t numChars, std::string_view repl) noexcept {
+    const auto used = size();
+    if (failed || pos > used)
+      return;
+    const auto removed = std::min(numChars, used - pos);
     const auto replLen = repl.length();
-    if (ptr + replLen >= end) {
-      grow(bufferSize * 2 + replLen);
+    if (replLen > std::numeric_limits<size_t>::max() - (used - removed)) {
+      failed = true;
+      return;
     }
-    auto s = buffer + pos;
-    auto e = s + numChars;
-    if (e >= ptr) {
-      ptr = s;
-      (*this) += repl;
-    } else {
-      std::memmove(s + replLen, e, ptr - e);
-      std::memcpy(s, repl.data(), replLen);
-      ptr += (repl.length() - numChars);
+    const auto newSize = used - removed + replLen;
+
+    // Save a replacement that aliases the builder before shifting or growing it.
+    char* staged = nullptr;
+    if (overlaps(repl)) {
+      staged = static_cast<char*>(std::malloc(replLen));
+      if (!staged) {
+        failed = true;
+        return;
+      }
+      std::memcpy(staged, repl.data(), replLen);
+      repl = std::string_view(staged, replLen);
     }
+    if (newSize == 0) {
+      if (buffer)
+        ptr = buffer;
+      std::free(staged);
+      return;
+    }
+    if (!ensureCapacity(newSize)) {
+      std::free(staged);
+      return;
+    }
+
+    auto* start = buffer + pos;
+    auto* removedEnd = start + removed;
+    const auto tailSize = used - pos - removed;
+    std::memmove(start + replLen, removedEnd, tailSize);
+    if (replLen != 0)
+      std::memcpy(start, repl.data(), replLen);
+    ptr = buffer + newSize;
+    std::free(staged);
   }
 
 private:
-  inline void grow(size_t newSize) {
-    size_t used = (ptr - buffer);
-    bufferSize = std::max(used, newSize);
-    buffer = static_cast<char*>(std::realloc(buffer, bufferSize));
-    ptr = buffer + used;
-    end = buffer + bufferSize;
+  inline bool overlaps(std::string_view str) const noexcept {
+    if (!buffer || str.empty())
+      return false;
+    const auto* strEnd = str.data() + str.size();
+    const std::less<const char*> less;
+    return less(str.data(), end) && less(buffer, strEnd);
   }
 
-  size_t bufferSize { 1 };
+  inline bool ensureCapacity(size_t required) noexcept {
+    if (failed)
+      return false;
+    if (required <= bufferSize)
+      return true;
+    size_t newSize = bufferSize ? bufferSize : 1;
+    while (newSize < required) {
+      if (newSize > std::numeric_limits<size_t>::max() / 2) {
+        newSize = required;
+        break;
+      }
+      newSize *= 2;
+    }
+    return grow(newSize);
+  }
+
+  inline bool grow(size_t newSize) noexcept {
+    if (newSize <= bufferSize)
+      return !failed;
+    const size_t used = size();
+    auto* grown = static_cast<char*>(std::realloc(buffer, newSize));
+    if (!grown) {
+      failed = true;
+      return false;
+    }
+    buffer = grown;
+    bufferSize = newSize;
+    ptr = buffer + used;
+    end = buffer + bufferSize;
+    return true;
+  }
+
+  size_t bufferSize { 0 };
   char* buffer { };
   char* ptr { };
   char* end { };
+  bool failed { false };
 };

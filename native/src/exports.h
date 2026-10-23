@@ -72,6 +72,9 @@ enum TranslitOptions {
 /// @param skipStart Delimiter marking the start of protected text blocks; empty defaults to "##".
 /// @param skipEnd Delimiter marking the end of protected text blocks; empty defaults to "##".
 /// @return Pointer to heap-allocated result string, or nullptr on failure.
+/// Null arguments and option bits outside the defined `TranslitOptions` flags are rejected with nullptr.
+/// Other pointer arguments must point to accessible NUL-terminated strings. `text` must contain
+/// well-formed UTF-8; the first NUL terminates the input.
 ext_def(char*) transliterate(const char* text, const char* from, const char* to, unsigned long options,
     const char* skipStart, const char* skipEnd);
 
@@ -82,6 +85,7 @@ ext_def(char*) transliterate(const char* text, const char* from, const char* to,
 ///
 /// @param script The script identifier or alias to query (case-insensitive).
 /// @return Non-zero (1) if supported, 0 otherwise.
+/// Null returns 0. A non-null argument must point to an accessible NUL-terminated string.
 ext_def(int) isScriptSupported(const char* script);
 
 /// Deallocates memory previously allocated by transliterate().

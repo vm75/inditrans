@@ -1,0 +1,36 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '17 4 * * 1'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: C++ security-extended analysis
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: cpp
+          queries: security-extended
+          build-mode: manual
+
+      - name: Build native engine
+        run: |
+          cmake -S native/src -B out/codeql -DCMAKE_BUILD_TYPE=Debug
+          cmake --build out/codeql --parallel 2
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v4
