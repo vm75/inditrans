@@ -156,13 +156,14 @@ suite<"Contextual handler tests"> contextualTests = [] {
     expect(AnuswaraAssimilator::inferNasalIndex(sibilantUnit) == 24u);
     expect(!AnuswaraAssimilator::canAssimilate(sibilantUnit));
 
-    // Non-consonant tokens (vowels, symbols) with low indices must never trigger nasal inference
+    // Historical shared inferNasalIndex evaluates idx < 24 without checking tokenType,
+    // preserving existing Tamil behavior. Inglish canAssimilate strictly validates consonants.
     TokenUnit vowelUnit(ScriptToken(TokenType::Vowel, 0 /* a */, ScriptType::Indic));
-    expect(AnuswaraAssimilator::inferNasalIndex(vowelUnit) == 24u);
+    expect(AnuswaraAssimilator::inferNasalIndex(vowelUnit) == 4u);
     expect(!AnuswaraAssimilator::canAssimilate(vowelUnit));
 
     TokenUnit symbolUnit(ScriptToken(TokenType::Symbol, 0 /* '0' */, ScriptType::Indic));
-    expect(AnuswaraAssimilator::inferNasalIndex(symbolUnit) == 24u);
+    expect(AnuswaraAssimilator::inferNasalIndex(symbolUnit) == 4u);
     expect(!AnuswaraAssimilator::canAssimilate(symbolUnit));
 
     TokenUnitOrString strSpan(std::string_view("raw"));
@@ -234,6 +235,110 @@ suite<"Contextual handler tests"> contextualTests = [] {
 
     // Explicit Tamil source with TamilSuperscripted automatically disables inference
     expect(transliterate("அம்ʼக¹", "tamil", "inglish", superscripted) == "aṁka");
+  };
+
+  "Legacy Roman empty-mapping anuswara inference fallback"_test = [] {
+    struct StringWriter {
+      std::string text;
+      void push(std::string_view sv) {
+        text.append(sv.data(), sv.size());
+      }
+    };
+
+    const auto* iastMap = getScriptWriterMap("iast");
+    expect(iastMap != nullptr);
+
+    // Synthetic Latin writer map with empty anuswara mapping
+    ScriptWriterMap syntheticMap = *iastMap;
+    syntheticMap.charMaps[static_cast<size_t>(TokenType::OtherDiacritic)] = {};
+    expect(syntheticMap.lookupChar(TokenType::OtherDiacritic, Diacritic_Anuswara).empty());
+    expect(!syntheticMap.isInglish());
+
+    TokenUnit unit(ScriptToken(TokenType::Consonant, 0 /* k */, ScriptType::Indic));
+    unit.otherDiacritic = { TokenType::OtherDiacritic, Diacritic_Anuswara };
+
+    auto writeWithNext = [&](const TokenUnitOrString& next, TranslitOptions opts = TranslitOptions::None) {
+      StringWriter writer;
+      LatinWriterHandler::write(unit, next, syntheticMap, opts, writer);
+      return writer.text;
+    };
+
+    // 1. Next token is a varga consonant (velar -> ṅ, palatal -> ñ, retroflex -> ṇ, dental -> n, labial -> m)
+    TokenUnit velar(ScriptToken(TokenType::Consonant, 0 /* k */, ScriptType::Indic));
+    expect(writeWithNext(velar) == "kaṅ");
+
+    TokenUnit palatal(ScriptToken(TokenType::Consonant, 5 /* c */, ScriptType::Indic));
+    expect(writeWithNext(palatal) == "kañ");
+
+    TokenUnit retroflex(ScriptToken(TokenType::Consonant, 10 /* ṭ */, ScriptType::Indic));
+    expect(writeWithNext(retroflex) == "kaṇ");
+
+    TokenUnit dental(ScriptToken(TokenType::Consonant, 15 /* t */, ScriptType::Indic));
+    expect(writeWithNext(dental) == "kan");
+
+    TokenUnit labial(ScriptToken(TokenType::Consonant, 20 /* p */, ScriptType::Indic));
+    expect(writeWithNext(labial) == "kam");
+
+    // 2. Next token is a non-varga consonant -> falls back to m (idx 24)
+    TokenUnit semi(ScriptToken(TokenType::Consonant, 25 /* y */, ScriptType::Indic));
+    expect(writeWithNext(semi) == "kam");
+
+    TokenUnit sibilant(ScriptToken(TokenType::Consonant, 31 /* s */, ScriptType::Indic));
+    expect(writeWithNext(sibilant) == "kam");
+
+    // 3. Next token is a vowel -> legacy shared inferNasalIndex evaluates idx < 24
+    TokenUnit vowel0(ScriptToken(TokenType::Vowel, 0 /* a */, ScriptType::Indic));
+    expect(writeWithNext(vowel0) == "kaṅ");
+
+    // 4. Next token is a symbol or punctuation -> legacy shared inferNasalIndex evaluates idx < 24
+    TokenUnit symbol0(ScriptToken(TokenType::Symbol, 0, ScriptType::Indic));
+    expect(writeWithNext(symbol0) == "kaṅ");
+
+    // 5. Next token is a raw-string boundary -> falls back to m (idx 24)
+    TokenUnitOrString rawBoundary(std::string_view("boundary"));
+    expect(writeWithNext(rawBoundary) == "kam");
+
+    // 6. Next token is end-of-input -> falls back to m (idx 24)
+    expect(writeWithNext(endOfText) == "kam");
+
+    // 7. With DisableInference, empty mapping suppresses anuswara output entirely
+    expect(writeWithNext(velar, TranslitOptions::DisableInference) == "ka");
+    expect(writeWithNext(semi, TranslitOptions::DisableInference) == "ka");
+    expect(writeWithNext(endOfText, TranslitOptions::DisableInference) == "ka");
+  };
+
+  "Tamil anuswara inference backward compatibility"_test = [] {
+    constexpr auto disabled = TranslitOptions::DisableInference;
+
+    // Varga stop assimilation
+    expect(transliterate("अंक", "devanagari", "tamil", TranslitOptions::None) == "அங்க");
+    expect(transliterate("अंक", "devanagari", "tamil", disabled) == "அம்க");
+    expect(transliterate("अंच", "devanagari", "tamil", TranslitOptions::None) == "அஞ்ச");
+    expect(transliterate("अंच", "devanagari", "tamil", disabled) == "அம்ச");
+    expect(transliterate("अंट", "devanagari", "tamil", TranslitOptions::None) == "அண்ட");
+    expect(transliterate("अंट", "devanagari", "tamil", disabled) == "அம்ட");
+    expect(transliterate("अंत", "devanagari", "tamil", TranslitOptions::None) == "அந்த");
+    expect(transliterate("अंत", "devanagari", "tamil", disabled) == "அம்த");
+    expect(transliterate("अंप", "devanagari", "tamil", TranslitOptions::None) == "அம்ப");
+    expect(transliterate("अंप", "devanagari", "tamil", disabled) == "அம்ப");
+    expect(transliterate("अंबा", "devanagari", "tamil", TranslitOptions::None) == "அம்பா");
+    expect(transliterate("अंबा", "devanagari", "tamil", disabled) == "அம்பா");
+
+    // Non-varga consonants retain m
+    expect(transliterate("संस्कृतम्", "devanagari", "tamil", TranslitOptions::None) == "ஸம்ஸ்க்ருதம்");
+    expect(transliterate("संस्कृतम्", "devanagari", "tamil", disabled) == "ஸம்ஸ்க்ருதம்");
+    expect(transliterate("अंश", "devanagari", "tamil", TranslitOptions::None) == "அம்ஶ");
+    expect(transliterate("अंश", "devanagari", "tamil", disabled) == "அம்ஶ");
+
+    // Word endings and isolated anuswara
+    expect(transliterate("अहं", "devanagari", "tamil", TranslitOptions::None) == "அஹம்");
+    expect(transliterate("अहं", "devanagari", "tamil", disabled) == "அஹம்");
+    expect(transliterate("अं", "devanagari", "tamil", TranslitOptions::None) == "அம்");
+    expect(transliterate("अं", "devanagari", "tamil", disabled) == "அம்");
+
+    // Before vowel: legacy shared inference maps idx 0 to 4 (ங்)
+    expect(transliterate("अंअ", "devanagari", "tamil", TranslitOptions::None) == "அங்அ");
+    expect(transliterate("अंअ", "devanagari", "tamil", disabled) == "அம்அ");
   };
 
   "DisableInference option and source-side Tamil superscript behavior"_test = [] {

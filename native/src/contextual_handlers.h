@@ -28,7 +28,7 @@ public:
     size_t idx = 24 /* म */;
     if (next != endOfText && !HoldsString(next)) {
       const auto tokenUnit = GetTokenUnit(next);
-      if (tokenUnit.leadToken.tokenType == TokenType::Consonant && tokenUnit.leadToken.idx <= 24) {
+      if (tokenUnit.leadToken.idx < 24) {
         idx = (((tokenUnit.leadToken.idx / 5) * 5) + 4);
       }
     }
