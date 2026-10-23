@@ -476,8 +476,8 @@ suite<"Tamil handler tests"> tamilTests = [] {
     expect(transliterate("க²॒", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख॒");
     expect(transliterate("க²᳚", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख᳚");
 
-    // Destination scripts: Latin (readablelatin, iast, iso)
-    expect(transliterate("க² ப", "tamil", "readablelatin", TranslitOptions::TamilSuperscripted) == "kha pa");
+    // Destination scripts: Latin (inglish, iast, iso)
+    expect(transliterate("க² ப", "tamil", "inglish", TranslitOptions::TamilSuperscripted) == "kha pa");
     expect(transliterate("க² ப", "tamil", "iast", TranslitOptions::TamilSuperscripted) == "kha pa");
     expect(transliterate("க² ப", "tamil", "iso", TranslitOptions::TamilSuperscripted) == "kha pa");
 

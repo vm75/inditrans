@@ -128,8 +128,8 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - `native/src/script_data.h` is generated from `tool/script_data.json` and
   `tool/reader_data.json`. Readers/writers and Tamil prefixes must remain immutable,
   with no runtime builders, caches, equivalent parsing, or writer-table binding.
-- `Script.readableLatin` and `Script.wx` are read-only (cannot be used as `from`).
-  `Script.indic` is write-only (cannot be used as `to`). Enforced in both Dart and TypeScript.
+- `Script.inglish` and `Script.wx` are write-only (cannot be used as `from`).
+  `Script.indic` is read-only (cannot be used as `to`). Enforced in Dart (`_readNotSupported` / `_writeNotSupported`) and by the native engine (which rejects `inglish` as a source reader and `indic` as a target writer).
 - The Git tag (`vMAJOR.MINOR.PATCH`) is the sole release authority; package
   manifests and build configs are kept in sync via `python3 tool/bump_version.py`.
 - The single consolidated changelog is authoritative in root `CHANGELOG.md`.

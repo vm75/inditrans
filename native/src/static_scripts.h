@@ -249,7 +249,7 @@ constexpr int findScript(std::string_view name) noexcept {
 
 /// Retrieves the immutable ScriptReaderMap descriptor for the specified source script.
 ///
-/// Handles write-only checks (returns nullptr for e.g. "readablelatin"), the virtual "indic" script,
+/// Handles write-only checks (returns nullptr for e.g. "inglish"), the virtual "indic" script,
 /// script name alias resolution, and case-sensitive ASCII folding selection ("iso" vs "ISO").
 inline const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexcept {
   namespace data = inditrans::static_data;

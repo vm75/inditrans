@@ -24,7 +24,7 @@ Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
 [ISO 15919](https://en.wikipedia.org/wiki/ISO_15919) ·
 [ITRANS](https://www.aczoom.com/itrans/) ·
 [TITUS](https://titus.uni-frankfurt.de/indexe.htm) ·
-ReadableLatin
+Inglish (my own take on a readable roman/latin representation for Indian scripts)
 
 ### ITRANS notation notes
 

@@ -29,7 +29,7 @@ Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
 [SLP1](https://en.wikipedia.org/wiki/SLP1) ·
 [WX](https://en.wikipedia.org/wiki/WX_notation)
 
-**Custom Latin notations:** ReadableLatin
+**Custom Latin notations:** Inglish (my own take on a readable roman/latin representation for Indian scripts)
 
 ### ITRANS notation notes
 

@@ -37,7 +37,7 @@ void main() async {
   }
 
   try {
-    inditrans.transliterate('Dummy', Script.readableLatin, Script.indic);
+    inditrans.transliterate('Dummy', Script.inglish, Script.indic);
   } catch (e) {
     print(e);
   }

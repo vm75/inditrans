@@ -206,7 +206,7 @@ transitions remain in `TamilPrefixLookup`.
 
 - Shared consonant/vowel indices must stay consistent across scripts.
 - Latin readers omit vowel marks except virama; writers infer inherent vowels.
-- Wrappers restrict `readableLatin`/`wx` to output and `indic` to input.
+- Wrappers restrict `inglish`/`wx` to output (write-only) and `indic` to input (read-only).
   Native exact-name role checks retain their legacy behavior (including the
   native `wx` reader); do not infer native restrictions from wrapper roles.
 - Native `isScriptSupported` reports physical records, so virtual `indic` is

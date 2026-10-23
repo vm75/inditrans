@@ -108,7 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added support for Tamil prefix
 
 ## [0.3.2]
-* Renamed indicroman to readablelatin
+* Renamed indicroman to inglish
 
 ## [0.3.1]
 * Improved Tamil transliteration based on rules
@@ -117,7 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed Sinhara symbols
 
 ## [0.1.9]
-* modified easyroman and renamed to readablelatin
+* modified easyroman and renamed to inglish
 
 ## [0.1.8]
 * Made InferAnuswara automatic. Fixed Diacritic for Vowels.

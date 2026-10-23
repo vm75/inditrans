@@ -33,8 +33,10 @@ Future<void> init([String? modulePath]) async {
   _bindings = InditransBindings(_ffiHelper.library);
 }
 
-const _readNotSupported = [Script.readableLatin, Script.wx];
+/// Write-only scripts: cannot be used as input sources (`from`).
+const _readNotSupported = [Script.inglish, Script.wx];
 
+/// Read-only scripts: cannot be used as destination targets (`to`).
 const _writeNotSupported = [Script.indic];
 
 /// Transliterates [text] from [from] script to [to] script.
