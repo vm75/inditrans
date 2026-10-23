@@ -30,10 +30,11 @@ struct VectorStream {
     bufferSize = buffer.size();
   }
 
-  void ensure(size_t /*n*/) const noexcept {}
+  void ensure(size_t /*n*/) const noexcept { }
 
   const TokenOrString* peek() noexcept {
-    if (head >= bufferSize) return nullptr;
+    if (head >= bufferSize)
+      return nullptr;
     return &buffer[head];
   }
 
@@ -157,7 +158,7 @@ suite<"Contextual handler tests"> contextualTests = [] {
     expect(!AnuswaraAssimilator::canAssimilate(sibilantUnit));
 
     // Historical shared inferNasalIndex evaluates idx < 24 without checking tokenType,
-    // preserving existing Tamil behavior. Inglish canAssimilate strictly validates consonants.
+    // preserving existing Tamil behavior. Indlish canAssimilate strictly validates consonants.
     TokenUnit vowelUnit(ScriptToken(TokenType::Vowel, 0 /* a */, ScriptType::Indic));
     expect(AnuswaraAssimilator::inferNasalIndex(vowelUnit) == 4u);
     expect(!AnuswaraAssimilator::canAssimilate(vowelUnit));
@@ -171,78 +172,76 @@ suite<"Contextual handler tests"> contextualTests = [] {
     expect(!AnuswaraAssimilator::canAssimilate(strSpan));
   };
 
-  "Inglish contextual anuswara inference and DisableInference option"_test = [] {
+  "Indlish contextual anuswara inference and DisableInference option"_test = [] {
     constexpr auto disabled = TranslitOptions::DisableInference;
     constexpr auto superscripted = TranslitOptions::TamilSuperscripted;
 
-    // Varga stop group assimilation in inglish:
+    // Varga stop group assimilation in indlish:
     // Velar stop (k/kh/g/gh) -> n
-    expect(transliterate("अंक", "devanagari", "inglish", TranslitOptions::None) == "anka");
-    expect(transliterate("अंक", "devanagari", "inglish", disabled) == "aṁka");
+    expect(transliterate("अंक", "devanagari", "indlish", TranslitOptions::None) == "anka");
+    expect(transliterate("अंक", "devanagari", "indlish", disabled) == "aṁka");
 
     // Palatal stop (ch/CH/j/jh) -> n
-    expect(transliterate("अंच", "devanagari", "inglish", TranslitOptions::None) == "ancha");
-    expect(transliterate("अंच", "devanagari", "inglish", disabled) == "aṁcha");
+    expect(transliterate("अंच", "devanagari", "indlish", TranslitOptions::None) == "ancha");
+    expect(transliterate("अंच", "devanagari", "indlish", disabled) == "aṁcha");
 
     // Retroflex stop (T/TH/D/DH) -> N
-    expect(transliterate("अंट", "devanagari", "inglish", TranslitOptions::None) == "aNTa");
-    expect(transliterate("अंट", "devanagari", "inglish", disabled) == "aṁTa");
-    expect(transliterate("पंडित्", "devanagari", "inglish", TranslitOptions::None) == "paNDit");
-    expect(transliterate("पंडित्", "devanagari", "inglish", disabled) == "paṁDit");
+    expect(transliterate("अंट", "devanagari", "indlish", TranslitOptions::None) == "aNTa");
+    expect(transliterate("अंट", "devanagari", "indlish", disabled) == "aṁTa");
+    expect(transliterate("पंडित्", "devanagari", "indlish", TranslitOptions::None) == "paNDit");
+    expect(transliterate("पंडित्", "devanagari", "indlish", disabled) == "paṁDit");
 
     // Dental stop (t/th/d/dh) -> n
-    expect(transliterate("अंत", "devanagari", "inglish", TranslitOptions::None) == "anta");
-    expect(transliterate("अंत", "devanagari", "inglish", disabled) == "aṁta");
+    expect(transliterate("अंत", "devanagari", "indlish", TranslitOptions::None) == "anta");
+    expect(transliterate("अंत", "devanagari", "indlish", disabled) == "aṁta");
 
     // Labial stop (p/ph/b/bh) -> m
-    expect(transliterate("अंप", "devanagari", "inglish", TranslitOptions::None) == "ampa");
-    expect(transliterate("अंप", "devanagari", "inglish", disabled) == "aṁpa");
-    expect(transliterate("अंबा", "devanagari", "inglish", TranslitOptions::None) == "ambA");
-    expect(transliterate("अंबा", "devanagari", "inglish", disabled) == "aṁbA");
+    expect(transliterate("अंप", "devanagari", "indlish", TranslitOptions::None) == "ampa");
+    expect(transliterate("अंप", "devanagari", "indlish", disabled) == "aṁpa");
+    expect(transliterate("अंबा", "devanagari", "indlish", TranslitOptions::None) == "ambA");
+    expect(transliterate("अंबा", "devanagari", "indlish", disabled) == "aṁbA");
 
     // Non-varga consonants (sibilants, semivowels, aspirate) retain literal ṁ
-    expect(transliterate("संस्कृतम्", "devanagari", "inglish", TranslitOptions::None) == "saṁskr̥tam");
-    expect(transliterate("संस्कृतम्", "devanagari", "inglish", disabled) == "saṁskr̥tam");
-    expect(transliterate("अंश", "devanagari", "inglish", TranslitOptions::None) == "aṁsha");
-    expect(transliterate("अंश", "devanagari", "inglish", disabled) == "aṁsha");
-    expect(transliterate("किंवा", "devanagari", "inglish", TranslitOptions::None) == "kiṁvA");
-    expect(transliterate("किंवा", "devanagari", "inglish", disabled) == "kiṁvA");
+    expect(transliterate("संस्कृतम्", "devanagari", "indlish", TranslitOptions::None) == "saṁskr̥tam");
+    expect(transliterate("संस्कृतम्", "devanagari", "indlish", disabled) == "saṁskr̥tam");
+    expect(transliterate("अंश", "devanagari", "indlish", TranslitOptions::None) == "aṁsha");
+    expect(transliterate("अंश", "devanagari", "indlish", disabled) == "aṁsha");
+    expect(transliterate("किंवा", "devanagari", "indlish", TranslitOptions::None) == "kiṁvA");
+    expect(transliterate("किंवा", "devanagari", "indlish", disabled) == "kiṁvA");
 
     // End-of-input or word boundary retains literal ṁ
-    expect(transliterate("अहं", "devanagari", "inglish", TranslitOptions::None) == "ahaṁ");
-    expect(transliterate("अहं", "devanagari", "inglish", disabled) == "ahaṁ");
-    expect(transliterate("अं", "devanagari", "inglish", TranslitOptions::None) == "aṁ");
-    expect(transliterate("अं", "devanagari", "inglish", disabled) == "aṁ");
+    expect(transliterate("अहं", "devanagari", "indlish", TranslitOptions::None) == "ahaṁ");
+    expect(transliterate("अहं", "devanagari", "indlish", disabled) == "ahaṁ");
+    expect(transliterate("अं", "devanagari", "indlish", TranslitOptions::None) == "aṁ");
+    expect(transliterate("अं", "devanagari", "indlish", disabled) == "aṁ");
 
     // Chandrabindu remains m̐ (never assimilated)
-    expect(transliterate("अँ", "devanagari", "inglish", TranslitOptions::None) == "am̐");
-    expect(transliterate("अँ", "devanagari", "inglish", disabled) == "am̐");
+    expect(transliterate("अँ", "devanagari", "indlish", TranslitOptions::None) == "am̐");
+    expect(transliterate("अँ", "devanagari", "indlish", disabled) == "am̐");
 
     // Lookahead vowel or symbol does not trigger nasal inference
-    expect(transliterate("अंअ", "devanagari", "inglish", TranslitOptions::None) == "aṁa");
-    expect(transliterate("अं1", "devanagari", "inglish", TranslitOptions::None) == "aṁ1");
-    expect(transliterate("अं,क", "devanagari", "inglish", TranslitOptions::None) == "aṁ,ka");
+    expect(transliterate("अंअ", "devanagari", "indlish", TranslitOptions::None) == "aṁa");
+    expect(transliterate("अं1", "devanagari", "indlish", TranslitOptions::None) == "aṁ1");
+    expect(transliterate("अं,क", "devanagari", "indlish", TranslitOptions::None) == "aṁ,ka");
 
     // Nasal inference does not cross word boundaries or raw-string skip spans
-    expect(transliterate("अं क", "devanagari", "inglish", TranslitOptions::None) == "aṁ ka");
-    expect(transliterate("अं##क##", "devanagari", "inglish", TranslitOptions::None) == "aṁक");
+    expect(transliterate("अं क", "devanagari", "indlish", TranslitOptions::None) == "aṁ ka");
+    expect(transliterate("अं##क##", "devanagari", "indlish", TranslitOptions::None) == "aṁक");
 
-    // Non-inglish Roman outputs remain unaffected
+    // Non-indlish Roman outputs remain unaffected
     expect(transliterate("अंक", "devanagari", "iso", TranslitOptions::None) == "aṁka");
     expect(transliterate("अंक", "devanagari", "itrans", TranslitOptions::None) == "aMka");
     expect(transliterate("अंक", "devanagari", "hk", TranslitOptions::None) == "aMka");
     expect(transliterate("अंक", "devanagari", "iast", TranslitOptions::None) == "aṃka");
 
     // Explicit Tamil source with TamilSuperscripted automatically disables inference
-    expect(transliterate("அம்ʼக¹", "tamil", "inglish", superscripted) == "aṁka");
+    expect(transliterate("அம்ʼக¹", "tamil", "indlish", superscripted) == "aṁka");
   };
 
   "Legacy Roman empty-mapping anuswara inference fallback"_test = [] {
     struct StringWriter {
       std::string text;
-      void push(std::string_view sv) {
-        text.append(sv.data(), sv.size());
-      }
+      void push(std::string_view sv) { text.append(sv.data(), sv.size()); }
     };
 
     const auto* iastMap = getScriptWriterMap("iast");
@@ -250,9 +249,9 @@ suite<"Contextual handler tests"> contextualTests = [] {
 
     // Synthetic Latin writer map with empty anuswara mapping
     ScriptWriterMap syntheticMap = *iastMap;
-    syntheticMap.charMaps[static_cast<size_t>(TokenType::OtherDiacritic)] = {};
+    syntheticMap.charMaps[static_cast<size_t>(TokenType::OtherDiacritic)] = { };
     expect(syntheticMap.lookupChar(TokenType::OtherDiacritic, Diacritic_Anuswara).empty());
-    expect(!syntheticMap.isInglish());
+    expect(!syntheticMap.isIndlish());
 
     TokenUnit unit(ScriptToken(TokenType::Consonant, 0 /* k */, ScriptType::Indic));
     unit.otherDiacritic = { TokenType::OtherDiacritic, Diacritic_Anuswara };
@@ -437,8 +436,8 @@ suite<"Gurmukhi handler tests"> gurmukhiTests = [] {
 
 suite<"Tamil handler tests"> tamilTests = [] {
   "Phonological predicates"_test = [] {
-    expect(isPrimaryStop(0));  // க
-    expect(isPrimaryStop(5));  // ச
+    expect(isPrimaryStop(0)); // க
+    expect(isPrimaryStop(5)); // ச
     expect(isPrimaryStop(10)); // ட
     expect(isPrimaryStop(15)); // த
     expect(isPrimaryStop(20)); // ப
@@ -667,8 +666,8 @@ suite<"Tamil handler tests"> tamilTests = [] {
     expect(transliterate("க²॒", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख॒");
     expect(transliterate("க²᳚", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख᳚");
 
-    // Destination scripts: Latin (inglish, iast, iso)
-    expect(transliterate("க² ப", "tamil", "inglish", TranslitOptions::TamilSuperscripted) == "kha pa");
+    // Destination scripts: Latin (indlish, iast, iso)
+    expect(transliterate("க² ப", "tamil", "indlish", TranslitOptions::TamilSuperscripted) == "kha pa");
     expect(transliterate("க² ப", "tamil", "iast", TranslitOptions::TamilSuperscripted) == "kha pa");
     expect(transliterate("க² ப", "tamil", "iso", TranslitOptions::TamilSuperscripted) == "kha pa");
 
@@ -679,11 +678,12 @@ suite<"Tamil handler tests"> tamilTests = [] {
     // Non-eligible consonants: ர (ra) is not a primary stop
     expect(transliterate("ர²", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "र²");
     // XML/HTML tags
-    expect(transliterate("க²<span class=\"foo\">text</span>ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted)
+    expect(
+        transliterate("க²<span class=\"foo\">text</span>ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted)
         == "ख<span class=\"foo\">text</span>प");
     // Skip delimiters
-    expect(transliterate("க²##protected##ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted)
-        == "खprotectedप");
+    expect(
+        transliterate("க²##protected##ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "खprotectedप");
     // Unsupported marker combinations on same consonant
     expect(transliterate("க²³ ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख³ प");
     expect(transliterate("க₂₃ ப", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख₃ प");

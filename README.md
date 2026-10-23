@@ -29,7 +29,7 @@ Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
 [SLP1](https://en.wikipedia.org/wiki/SLP1) ·
 [WX](https://en.wikipedia.org/wiki/WX_notation)
 
-**Custom Latin notations:** Inglish (my own take on a readable roman/latin representation for Indian scripts)
+**Custom Latin notations:** Indlish (my own take on a readable roman/latin representation for Indian scripts)
 
 ### ITRANS notation notes
 
@@ -61,7 +61,7 @@ test-files/ Shared test-case JSON used by all distributions
 ```
 
 ## Building and testing
- 
+
 ```sh
 make all          # build native CLI, WASM, and Flutter plugin
 make test         # run C++ native tests

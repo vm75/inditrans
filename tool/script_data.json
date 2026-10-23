@@ -273,7 +273,7 @@
         "j~n": [ "GY", "dny" ]
       }
     },
-    "inglish": {
+    "indlish": {
       "vowels": [ "a", "A", "i", "I", "u", "U", "r̥", "r̥", "l̥", "l̥", "e", "E", "ai", "o", "O", "au", "ă", "̆e", "̆o" ],
       "vowelMarks": [ "", "A", "i", "I", "u", "U", "r̥", "r̥", "l̥", "l̥", "e", "E", "ai", "o", "O", "au", "ă", "̆e", "̆o" ],
       "consonants": [ "k", "kh", "g", "gh", "n", "ch", "CH", "j", "jh", "n", "T", "TH", "D", "DH", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "sh", "sh", "s", "h", "L", "zh", "R", "n", "q", "qh", "gh", "z", "D", "Dh", "f", "y", "ng", "nj", "nD", "nd", "mb" ],

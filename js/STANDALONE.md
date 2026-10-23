@@ -129,7 +129,7 @@ Inditrans.Script = {
   hk: 'hk',
   iast: 'iast',
   indic: 'indic',
-  inglish: 'inglish',
+  indlish: 'indlish',
   ipa: 'ipa',
   iso: 'iso',
   itrans: 'itrans',

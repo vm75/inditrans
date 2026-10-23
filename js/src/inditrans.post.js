@@ -22,7 +22,7 @@ Module['onRuntimeInitialized'] = function () {
             'hk',
             'iast',
             'indic',
-            'inglish',
+            'indlish',
             'ipa',
             'iso',
             'itrans',

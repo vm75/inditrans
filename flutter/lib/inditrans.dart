@@ -34,7 +34,7 @@ Future<void> init([String? modulePath]) async {
 }
 
 /// Write-only scripts: cannot be used as input sources (`from`).
-const _readNotSupported = [Script.inglish, Script.wx];
+const _readNotSupported = [Script.indlish, Script.wx];
 
 /// Read-only scripts: cannot be used as destination targets (`to`).
 const _writeNotSupported = [Script.indic];

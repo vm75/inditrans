@@ -87,7 +87,14 @@ def parse_args(argv: list[str]) -> tuple[str | None, list[str], str | None]:
         else:
             raise ValueError(f"Unknown argument: {arg}")
         index += 1
-    return kind, (messages if messages else _interactive_changelog()), custom
+
+    if not messages:
+        changelog_path = Path("CHANGELOG.md")
+        has_unreleased = changelog_path.is_file() and "## [Unreleased]" in changelog_path.read_text(encoding="utf-8")
+        if not has_unreleased:
+            messages = _interactive_changelog()
+
+    return kind, messages, custom
 
 
 def _interactive_changelog() -> list[str]:
@@ -121,10 +128,26 @@ def main(argv: list[str]) -> int:
 
         changelog = Path("CHANGELOG.md")
         previous = changelog.read_text(encoding="utf-8")
-        section = f"## [{new}]\n" + "".join(f"* {message}\n" for message in messages) + "\n"
-        changelog.write_text(section + previous, encoding="utf-8")
+        extra = "".join(f"* {message}\n" for message in messages)
+        if "## [Unreleased]" in previous:
+            section = f"## [{new}]\n" + (f"{extra}\n" if extra else "")
+            contents = previous.replace("## [Unreleased]\n", section, 1)
+            if contents == previous:
+                contents = previous.replace("## [Unreleased]", f"## [{new}]" + (f"\n{extra}" if extra else ""), 1)
+            changelog.write_text(contents, encoding="utf-8")
+        else:
+            section = f"## [{new}]\n{extra}\n"
+            match = re.search(r"^##\s+\[", previous, re.MULTILINE)
+            if match:
+                contents = previous[:match.start()] + section + previous[match.start():]
+            else:
+                contents = section + previous
+            changelog.write_text(contents, encoding="utf-8")
         print(f"Updated version from '{old}' to {new}")
-        print(f"Commit log: {'. '.join(messages)}")
+        if messages:
+            print(f"Commit log: {'. '.join(messages)}")
+        else:
+            print(f"Commit log: Promoted [Unreleased] notes to {new}")
         return 0
     except (OSError, ValueError, EOFError) as error:
         print(error, file=sys.stderr)

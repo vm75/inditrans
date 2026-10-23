@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-- **Inglish Romanization**:
-  - Rename `readableLatin` to `inglish` across native C++ engine, Flutter/Dart (`Script.inglish`), and TypeScript/JavaScript packages (`Script.inglish`).
+## [0.14.1]
+- **Indlish Romanization**:
+  - Rename `readableLatin` to `indlish` across native C++ engine, Flutter/Dart (`Script.indlish`), and TypeScript/JavaScript packages (`Script.indlish`).
   - Update vowel and diacritic notation for intuitive English readability.
   - Implement contextual anuswara assimilation before varga consonants: velar, palatal, and dental stops assimilate to `n`, retroflex stops assimilate to `N`, and labial stops assimilate to `m`.
   - Fallback to explicit `ṁ` when anuswara occurs before non-varga consonants (sibilants, semivowels, aspirates), vowels, symbols, raw-string skip boundaries, or at word endings.

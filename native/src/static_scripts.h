@@ -15,13 +15,15 @@ constexpr std::string_view ScriptWriterMap::lookupChar(TokenType type, size_t in
   return { inditrans::static_data::writerText.data() + static_cast<size_t>(entry.offset), entry.length };
 }
 
-/// Returns true if this writer target is the Inglish Romanization scheme.
-constexpr bool ScriptWriterMap::isInglish() const noexcept {
-  return this == &inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Inglish)];
+/// Returns true if this writer target is the Indlish Romanization scheme.
+constexpr bool ScriptWriterMap::isIndlish() const noexcept {
+  return this == &inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Indlish)];
 }
 
-static_assert(inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Inglish)].isInglish());
-static_assert(!inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Iast)].isInglish());
+static_assert(
+    inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Indlish)].isIndlish());
+static_assert(
+    !inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Iast)].isIndlish());
 
 /// Parsing policy governing token matching from input text.
 enum class ReaderPolicy {
@@ -257,7 +259,7 @@ constexpr int findScript(std::string_view name) noexcept {
 
 /// Retrieves the immutable ScriptReaderMap descriptor for the specified source script.
 ///
-/// Handles write-only checks (returns nullptr for e.g. "inglish"), the virtual "indic" script,
+/// Handles write-only checks (returns nullptr for e.g. "indlish"), the virtual "indic" script,
 /// script name alias resolution, and case-sensitive ASCII folding selection ("iso" vs "ISO").
 inline const ScriptReaderMap* getScriptReaderMap(std::string_view script) noexcept {
   namespace data = inditrans::static_data;

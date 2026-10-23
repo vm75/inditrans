@@ -11,7 +11,7 @@ enum Script {
   hk,
   iast,
   indic,
-  inglish,
+  indlish,
   ipa,
   iso,
   itrans,
@@ -44,8 +44,7 @@ extension ToScriptExtension on String {
   Script? toScript() {
     try {
       final name = toLowerCase().split('.').last;
-      return Script.values.firstWhere(
-          (e) => e.name.toLowerCase() == name || e.toString() == this);
+      return Script.values.firstWhere((e) => e.name.toLowerCase() == name || e.toString() == this);
     } catch (e) {
       return null;
     }

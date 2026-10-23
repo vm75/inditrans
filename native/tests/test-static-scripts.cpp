@@ -99,7 +99,7 @@ suite<"Static script data"> staticScriptsTests = [] {
     expect(getScriptReaderMap("unknown") == nullptr);
     expect(getScriptWriterMap("indic") == nullptr);
     expect(getScriptReaderMap("INDIC") == nullptr);
-    expect(getScriptReaderMap("inglish") == nullptr);
+    expect(getScriptReaderMap("indlish") == nullptr);
     // Preserve exact source-name sensitivity of Roman ASCII folding.
     const auto lower = lookup("iso", "Kh");
     const auto upper = lookup("ISO", "Kh");

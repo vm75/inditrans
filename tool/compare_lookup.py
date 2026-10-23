@@ -80,7 +80,7 @@ def main() -> None:
     spellings["indic"] = set().union(*(spellings[name] for name in non_roman), spellings.get("indic", set()))
     aliases["indic"] = "indic"
     all_keys = sorted(set().union(*spellings.values()) - {""})
-    names = sorted(set(aliases) | {name.upper() for name in aliases} | {"unknown", "inglish"})
+    names = sorted(set(aliases) | {name.upper() for name in aliases} | {"unknown", "indlish"})
     before, after = Library(args.before), Library(args.after)
     checks = 0
 

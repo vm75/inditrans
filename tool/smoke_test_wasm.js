@@ -131,10 +131,10 @@ for (const [text, from, to, options, expected] of [
   ['अंक', 'devanagari', 'tamil', 64, 'அம்க'],
   ['அக¹', 'tamil', 'devanagari', 64, 'अक'],
   ['அந', 'TAMIL', 'tamil', 2, 'அந'],
-  ['अंक', 'devanagari', 'inglish', 0, 'anka'],
-  ['अंक', 'devanagari', 'inglish', 64, 'aṁka'],
-  ['अंट', 'devanagari', 'inglish', 0, 'aNTa'],
-  ['अंट', 'devanagari', 'inglish', 64, 'aṁTa'],
+  ['अंक', 'devanagari', 'indlish', 0, 'anka'],
+  ['अंक', 'devanagari', 'indlish', 64, 'aṁka'],
+  ['अंट', 'devanagari', 'indlish', 0, 'aNTa'],
+  ['अंट', 'devanagari', 'indlish', 64, 'aṁTa'],
 ]) {
   const pointers = [text, from, to, '##', '##'].map(writeUtf8);
   const output = exports.transliterate(pointers[0], pointers[1], pointers[2], options, pointers[3], pointers[4]);

@@ -26,11 +26,11 @@
         "options": "TamilSuperscripted"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "shrI̱ gu̱ru̱bhyO nama̱ḥ ! ha̱ri̱ḥ OM !! OM ga̱NAnA̎ṁ tvA ga̱Napa̍tigum havAmahE ka̱viṁ ka̍vI̱nAmu̍pa̱mashra̍vastamaṁ"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "shrI gurubhyO namaḥ ! hariḥ OM !! OM gaNAnAṁ tvA gaNapatigum havAmahE kaviṁ kavInAmupamashravastamaṁ",
         "options": "IgnoreVedicAccents"
       },
@@ -55,7 +55,7 @@
         "text": "க்ஷ த்ர ஜ்ஞ ஶ்ர"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "ksha tra jna shra"
       },
       {
@@ -79,7 +79,7 @@
         "text": "n̆ga  n̆ja  n̆ḍa  n̆da  m̆ba"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "nga  nja  nDa  nda  mba"
       }
     ]
@@ -94,7 +94,7 @@
         "text": "With virama: kSha, With ZWNJ: kSha, With ZWJ: kSha, With udaat: kSha"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "With virama: ksha, With ZWNJ: ksha, With ZWJ: ksha, With udaat: ksha"
       }
     ]
@@ -148,7 +148,7 @@
     "script": "tamil",
     "targets": [
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "ko kO kau"
       }
     ]
@@ -168,11 +168,11 @@
         "options": "TamilSuperscripted TamilTraditional"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "panktI paNDit anja idaṁ saṁskr̥tam saṁskr̥taṁ"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "paṁktI paṁDit aṁja idaṁ saṁskr̥tam saṁskr̥taṁ",
         "options": "DisableInference"
       },
@@ -196,7 +196,7 @@
         "text": "ஃபகீர ஃபிக்ர ஃபேக"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "fakIra fikra fEka"
       }
     ]
@@ -218,7 +218,7 @@
     "script": "tamil",
     "targets": [
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "tanga padakkam charchchaikkuriya cheydigaL pAppA pambA ambA krubai tandu rakshiyamba"
       },
       {
@@ -260,7 +260,7 @@
     "script": "devanagari",
     "targets": [
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "kr̥shNa"
       }
     ]
@@ -296,16 +296,16 @@
     ]
   },
   {
-    "description": "Indic->inglish",
+    "description": "Indic->indlish",
     "text": "धन्य अंजनीच्या सुता",
     "script": "indic",
     "targets": [
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "dhanya anjanIchyA sutA"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "dhanya aṁjanIchyA sutA",
         "options": "DisableInference"
       }
@@ -317,7 +317,7 @@
     "script": "tamil",
     "targets": [
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "adupOla"
       }
     ]
@@ -546,27 +546,27 @@
         "options": "TamilTraditional"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "anka ancha aNTa anta kampa idaṁ saṁskr̥ta"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "aṁka aṁcha aṁTa aṁta kaṁpa idaṁ saṁskr̥ta",
         "options": "DisableInference"
       }
     ]
   },
   {
-    "description": "Inglish contextual anuswara assimilation",
+    "description": "Indlish contextual anuswara assimilation",
     "text": "अंक अंच अंट अंत अंप अंबा संस्कृतम् अंश अहं अं अँ",
     "script": "devanagari",
     "targets": [
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "anka ancha aNTa anta ampa ambA saṁskr̥tam aṁsha ahaṁ aṁ am̐"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "aṁka aṁcha aṁTa aṁta aṁpa aṁbA saṁskr̥tam aṁsha ahaṁ aṁ am̐",
         "options": "DisableInference"
       }
@@ -645,7 +645,7 @@
         "options": "TamilSuperscripted"
       },
       {
-        "script": "inglish",
+        "script": "indlish",
         "text": "kha pa, kha  pa, kha\npa, kha,pa, kha. gu pa, khaxyz",
         "options": "TamilSuperscripted"
       }
