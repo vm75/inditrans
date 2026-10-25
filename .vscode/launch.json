@@ -52,18 +52,18 @@
       "name": "Build wasm (powershell)",
       "type": "PowerShell",
       "request": "launch",
-      "script": "${workspaceFolder}/tool/build_wasm.ps1 wasm",
+      "script": "${workspaceFolder}/scripts/build_wasm.ps1 wasm",
       "cwd": "${cwd}"
     },
     {
       "name": "Bump Version",
-      "type": "dart",
+      "type": "debugpy",
       "request": "launch",
-      "program": "tool/bump_version.dart",
+      "program": "${workspaceFolder}/scripts/bump_version.py",
       "cwd": "${workspaceFolder}",
       "args": [
         "patch",
-        "log",
+        "--log",
         "test",
       ]
     },

@@ -73,7 +73,7 @@ if [ -n "$WINE_BIN" ]; then
   CXX="${CXX:-x86_64-w64-mingw32-g++}"
   if command -v "$CXX" &>/dev/null; then
     echo "Running optional runtime smoke test with $WINE_BIN..."
-    SMOKE_SRC="tool/windows_smoke_test.cpp"
+    SMOKE_SRC="tests/integration/windows_smoke.cpp"
     if [ -f "$SMOKE_SRC" ]; then
       BUILD_DIR=$(dirname "$DLL")
       "$CXX" -std=c++23 -I native/src "$SMOKE_SRC" -L "$BUILD_DIR" -linditrans -static-libgcc -static-libstdc++ -o "$BUILD_DIR/windows_smoke_test.exe"

@@ -11,8 +11,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 BUILDERS = {
-    "Unix": (ROOT / "tool/build_wasm.sh", "\\"),
-    "PowerShell": (ROOT / "tool/build_wasm.ps1", "`"),
+    "Unix": (ROOT / "scripts/build_wasm.sh", "\\"),
+    "PowerShell": (ROOT / "scripts/build_wasm.ps1", "`"),
 }
 REQUIRED = {
     "standalone": {

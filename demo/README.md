@@ -1,0 +1,134 @@
+# Inditrans demo
+
+A standalone, buildless page for comparing scripts and fonts, with a script
+keyboard and live transliteration. Open `index.html` in a browser, or serve it
+from the repository root:
+
+```sh
+python3 -m http.server 8000
+```
+
+Visit <http://localhost:8000/demo/>. Internet access is required for engine assets
+and hosted fonts.
+
+The default input is the mixed-script sample, with **Mixed Indic** as the source
+and **Indlish** as the output. The **reset icon** restores that text, both default
+scripts, and all conversion options. Appearance and keyboard preferences are retained.
+
+Conversion options include **Skip-start** and **Skip-end**, both defaulting to
+`##`. Text between them is preserved exactly, and the delimiters are removed from
+the output. Empty delimiter fields use `##`. Delimiters are saved with the session.
+
+The selected font is tried first, followed by other fonts for that script and a
+[bundled Indic fallback](fonts/README.md). The fallback includes all ten Indic
+scripts offered by the demo and shared Vedic marks in one face, so complete
+accented syllables can render even when individual script fonts lack a mark.
+It also covers Mixed Indic without depending on device fonts. Other downloaded
+Indic and Latin fonts remain available as further fallbacks. Custom
+fonts and **Charis SIL (installed)** must be installed locally. If characters
+remain boxes, check that `fonts.googleapis.com` and `fonts.gstatic.com` are
+accessible; no Android language or keyboard setting is required for web fonts.
+
+Choose **Find more fonts…** in either font dropdown to open Font Dev Tools (also
+available by clicking the version or pressing **Ctrl+Shift+D**). **Find online
+fonts** queries the [Fontsource catalog](https://fontsource.org/docs/api/fonts)
+for Google Fonts and adds families by script subset; fonts download from Google
+only when selected. **Find installed fonts** asks for local-font permission in
+supported desktop browsers on HTTPS or localhost. It reads character maps locally
+to filter families by basic script coverage; font files are never uploaded.
+Coverage does not guarantee shaping quality or Vedic accent support. Other
+browsers can still use **Custom installed font…** by family name.
+
+Discovered fonts and dev-tool settings last for the current page session and
+survive script changes. Dev tools also support custom fallback stacks and loading
+a family from a CSS URL. Failed stylesheet or font downloads report an error.
+The loaded-font list reports download status, including idle and failed faces;
+use the browser's rendered-font inspector to identify fonts used for particular
+glyphs. **Selected font only** removes demo fallbacks, but the browser may still
+use system fallback fonts.
+
+Telugu extended-vowel markers include an invisible separator. When a Vedic
+accent follows, the demo displays that separator after the accents so the
+browser can shape one syllable. Conversion, saved sessions, and copying retain
+the engine's original separator order.
+
+**Theme** offers System, Light, and Dark. System follows your device’s appearance
+and updates automatically when it changes. Your choice is saved in this browser.
+
+Settings and both panes are saved automatically in this browser's local storage.
+Reloading restores scripts, fonts, size, options, keyboard mode/layout, group colors,
+and text. Turn off **Group colors** in the keyboard controls for uniform keys and
+no group color dots in either theme.
+
+The desktop layout can use the full browser width, including wide monitors.
+Drag the grip above the keyboard to change its height, or the bottom-right corner
+for width and height. Keys scale with the available space; the text panes match
+the width and use the remaining height. Focus a grip and use arrow keys to resize,
+or double-click it to restore automatic sizing. The size is saved with the session.
+
+Use **↶ / ↷** beside the keyboard mode to undo or redo input edits, including ASCII
+typing, on-screen keys, and resetting the input text. Shortcuts: **Ctrl/Cmd+Z** to undo,
+**Ctrl/Cmd+Shift+Z** or **Ctrl+Y** to redo. History retains up to 100 edits in the
+current page session; reloading starts a fresh history with the saved text.
+
+## Mobile
+
+On screens up to 600px wide and short touch screens in landscape, each pane has
+its own script selector in its toolbar. The top bar and both pane toolbars stay
+visible while typing with the phone’s keyboard, and both panes keep equal height. Indic sources use
+**ASCII → script** automatically with the phone’s English keyboard; Roman sources
+accept direct input. Autocorrection and automatic capitalization are disabled
+because shortcuts are case-sensitive. The desktop input-mode preference is preserved.
+
+Tap the **book icon** for a full-screen reference matching the selected source, including
+vowels, consonants, signs, and symbols. Mixed Indic has a typing-layout selector
+in the reference, and typing notes appear after the shortcut tables. Closing the
+reference preserves the input selection.
+Each pane has a copy control for its complete text. The **reset icon** in the
+source toolbar restores the default mixed-script text, source and output scripts,
+and conversion options; the conversion-options icon is in the target toolbar.
+Desktop uses the same reset behavior.
+The text-size slider in the top toolbar adjusts both panes and stays visible while typing.
+The **settings icon** opens fonts, theme, and help. All mobile dialogs fill the screen, with scrollable
+content and a visible close button. The desktop script keyboard stays hidden on mobile.
+
+## Engine version
+
+Each demo is bound to the release tag in `ENGINE_VERSION` in `index.html`
+(currently `v0.14.1`), displayed in the version badge. Engine assets load directly
+from that tag; there is no release discovery or version switching. URL parameters
+and previously saved version choices do not change it. To publish a demo for a
+different release, update `ENGINE_VERSION` to that tag.
+
+## ASCII input
+
+Choose **ASCII → script** in the keyboard controls. Shortcuts appear below each
+key and use the selected Indic input script (or keyboard layout for Mixed Indic).
+
+| Input | Devanagari result | Meaning |
+| --- | --- | --- |
+| `ki` | कि | Vowels immediately after consonants become signs |
+| `k:i` | कइ | `:` forces an independent vowel |
+| `` k`Sh `` | क्ष | Backtick (`` ` ``) inserts virama explicitly |
+| `kh` / `k;h` | ख / कह | `;` separates overlapping shortcuts |
+| `\k` | k | Backslash escapes a literal ASCII character |
+
+Paste and system input methods bypass ASCII conversion. Direct input remains
+available; ASCII mode is disabled for Roman input scripts.
+
+## Regression tests
+
+From the repository root, with Node.js installed:
+
+```sh
+make test_demo
+```
+
+This runs `demo/tests/ascii.test.cjs`, `demo/tests/state.test.cjs`,
+`demo/tests/editor.test.cjs`, and `demo/tests/fonts.test.cjs` against the page's
+actual code, checking shortcuts,
+contextual vowels, escaping, session storage, undo/redo history, glyph spacing,
+keyboard resize controls, and font discovery and loading.
+It needs no browser, dependencies, or network. It also runs in `make testall` and
+the Node.js job in CI for pushes to `main` and pull requests targeting `main`
+(documentation-only changes are skipped). It does not test browser interactions.

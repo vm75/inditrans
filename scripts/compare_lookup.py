@@ -61,7 +61,7 @@ def main() -> None:
     parser.add_argument("--tokens-after", type=Path)
     args = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
-    source_data = json.loads((root / "tool/script_data.json").read_text())
+    source_data = json.loads((root / "scripts/script_data.json").read_text())
     scripts = {name: info for group in source_data.values() for name, info in group.items()}
     non_roman = {name for kind, group in source_data.items() if kind != "latin" for name in group}
     aliases = {name: name for name in scripts}

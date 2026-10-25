@@ -12,7 +12,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-TOOL = Path(__file__).resolve().parent
+SCRIPTS = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(SCRIPTS))
 import repeat_short_bench
 
 
@@ -48,7 +49,7 @@ class MedianBenchmarkTest(unittest.TestCase):
                 binary.chmod(binary.stat().st_mode | stat.S_IXUSR)
                 raw = root / "raw.csv"
                 proc = subprocess.run(
-                    [sys.executable, str(TOOL / "repeat_short_bench.py"),
+                    [sys.executable, str(SCRIPTS / "repeat_short_bench.py"),
                      "--binary", str(binary), "--runs", "5", "--raw-output", str(raw)],
                     check=True, capture_output=True, text=True,
                 )
@@ -58,7 +59,7 @@ class MedianBenchmarkTest(unittest.TestCase):
                 self.assertEqual(len(raw.read_text().splitlines()), 6)
 
     def test_old_snapshot_reaggregated_from_raw_runs(self) -> None:
-        normalize = runpy.run_path(str(TOOL / "run-perf.py"))["normalize_snapshot"]
+        normalize = runpy.run_path(str(SCRIPTS / "run-perf.py"))["normalize_snapshot"]
         with tempfile.TemporaryDirectory() as temp:
             prefix = Path(temp) / "00-baseline"
             target = Path(str(prefix) + "-throughput.csv")
@@ -80,7 +81,7 @@ class MedianBenchmarkTest(unittest.TestCase):
             self.assertEqual(len(raw.read_text().splitlines()), 6)
 
     def test_missing_raw_snapshot_fails_instead_of_mixing_statistics(self) -> None:
-        normalize = runpy.run_path(str(TOOL / "run-perf.py"))["normalize_snapshot"]
+        normalize = runpy.run_path(str(SCRIPTS / "run-perf.py"))["normalize_snapshot"]
         with tempfile.TemporaryDirectory() as temp:
             prefix = Path(temp) / "00-baseline"
             Path(str(prefix) + "-throughput.csv").write_text("old data\n", encoding="utf-8")

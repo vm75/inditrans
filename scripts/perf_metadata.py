@@ -45,7 +45,7 @@ def compute_harness_fingerprint(root: Path) -> str:
         "build_wasm.ps1",
     ]
     for tf in tool_files:
-        path = root / "tool" / tf
+        path = root / "scripts" / tf
         if path.is_file():
             hasher.update(str(path.relative_to(root)).encode("utf-8"))
             hasher.update(path.read_bytes())
@@ -66,7 +66,7 @@ def cpu_name() -> str:
 
 
 def required_emscripten() -> str:
-    path = Path("tool/build_wasm.sh")
+    path = Path("scripts/build_wasm.sh")
     if not path.is_file():
         return "unknown"
     match = re.search(r'^REQUIRED_EMSDK_VERSION="([^"]+)"', path.read_text(encoding="utf-8"), re.MULTILINE)

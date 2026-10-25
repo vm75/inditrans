@@ -36,8 +36,8 @@ returned `std::string`.
 | Script Handlers | `gurmukhi_handler.h`, `tamil_handler.h`, `indic_handler.h`, `latin_handler.h` | Isolated, independently testable reading and writing rules for each script family |
 | Engine Pipeline | `native/src/inditrans.cpp` | Coordinates input tokenization, streaming token units, lookahead, and output writing via static handler dispatch |
 | UTF-8 helpers | `native/src/utf.h` | UTF-8 encoding/decoding and output-buffer ownership |
-| Generator | `tool/generate_headers.py`, `tool/python/static_scripts.py` | Resolve script semantics before C++ compilation |
-| Canonical input | `tool/script_data.json`, `tool/reader_data.json` | Script spellings/aliases/equivalents; accents, exclusive symbols, Tamil prefixes |
+| Generator | `scripts/generate_headers.py`, `scripts/python/static_scripts.py` | Resolve script semantics before C++ compilation |
+| Canonical input | `scripts/script_data.json`, `scripts/reader_data.json` | Script spellings/aliases/equivalents; accents, exclusive symbols, Tamil prefixes |
 | Wrappers | `flutter/lib/inditrans.dart`, `nodejs/src/index.ts` | Public APIs, role checks, native/Wasm calls and result release |
 
 ## Dependency direction
@@ -60,7 +60,7 @@ are absent from the production transliteration dependency path.
 
 ### Script table (`script_data.h`)
 
-Run `python3 tool/generate_headers.py` from the repository root after changing
+Run `python3 scripts/generate_headers.py` from the repository root after changing
 canonical data. Never edit the generated header or Dart/TypeScript script and
 option enums by hand.
 
@@ -223,7 +223,7 @@ transitions remain in `TamilPrefixLookup`.
 
 The C boundary exports only `transliterate`, `isScriptSupported`, and
 `releaseBuffer`. MinGW and MSVC clients therefore do not share a C++ ABI.
-Windows x86-64 cross-compilation uses `tool/cmake/mingw64.cmake` with C++23 and
+Windows x86-64 cross-compilation uses `scripts/cmake/mingw64.cmake` with C++23 and
 MinGW GCC ≥ 13. Static libgcc/libstdc++ linkage avoids their runtime DLL dependencies.
 
 ## Script-specific rules and isolated handlers
@@ -241,10 +241,10 @@ MinGW GCC ≥ 13. Static libgcc/libstdc++ linkage avoids their runtime DLL depen
 
 ## Extension points
 
-- Add scripts, aliases, and equivalents to `tool/script_data.json`, then regenerate.
+- Add scripts, aliases, and equivalents to `scripts/script_data.json`, then regenerate.
   Add expected outputs to `test-files/test-cases.json` and rebuild distributions.
-- Update accents, exclusive symbols, or Tamil prefixes in `tool/reader_data.json`.
-- Add option metadata to `tool/options.json`, regenerate, and implement its behavior
+- Update accents, exclusive symbols, or Tamil prefixes in `scripts/reader_data.json`.
+- Add option metadata to `scripts/options.json`, regenerate, and implement its behavior
   in the engine. Regenerate FFI bindings when the export header changes.
 - Change byte matcher layout in `packed_trie.h` and scratch/token-key layout in
   `static_trie.h`; preserve bounded matching and source policies. Compare native and Wasm performance and size.

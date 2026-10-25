@@ -22,9 +22,12 @@ flutter/example.dart/   Vanilla Dart (non-Flutter) example
 nodejs/src/             TypeScript API (index.ts, Script.ts, Option.ts)
 nodejs/test/            Node.js/Jest test suite
 js/                     WASM JS build consumed by nodejs/
-tool/                   Python generators and maintenance tools; JSON files are canonical inputs
-tool/python/            Shared code-generation logic for script, option, and trie tables
-tool/reader_data.json    Canonical accents, exclusive symbols, Tamil prefixes
+scripts/                Build, release, and maintenance commands; JSON files are canonical inputs
+scripts/python/         Shared code-generation logic for script, option, and trie tables
+scripts/reader_data.json Canonical accents, exclusive symbols, Tamil prefixes
+scripts/tests/          Regression tests for maintenance commands
+demo/tests/             Browser demo component tests (Node.js)
+tests/integration/      Browser, standalone WASM, and Windows DLL smoke tests
 test-files/             Shared test-case JSON used by all distributions
 Makefile                Top-level build, test, and publish targets
 ```
@@ -38,7 +41,7 @@ Makefile                Top-level build, test, and publish targets
 - **Run native performance benchmark**: `make bench`
 - **Run isolated shared-reader lookup benchmark**: `make bench-lookup`
 - **Probe lookup metadata allocations (Linux/glibc)**: `make bench-lookup-alloc-linux`
-- **Regenerate script/reader data and enums**: `python3 tool/generate_headers.py`
+- **Regenerate script/reader data and enums**: `python3 scripts/generate_headers.py`
 - **Run per-call latency benchmark**: `make bench-short` (includes returned-string destruction)
 - **Repeat short-call benchmark for stable latency claims**: `make bench-short-repeat` (5 full runs by default; override with `PERF_REPEATS`; optional Linux pinning with `PERF_CPU`)
 - **Measure first-call latency in fresh processes**: `make bench-cold` (four representative paths, 501 samples each by default; override with `COLD_BENCH_SAMPLES`; optional Linux pinning with `PERF_CPU`)
@@ -48,10 +51,12 @@ Makefile                Top-level build, test, and publish targets
 - **Save a performance baseline**: `make bench-save` (writes `out/bench-baseline-*.csv`)
 - **Compare current results against saved baseline**: `make bench-compare` (flags regressions ≥ 5%; output mismatches fail)
 - **Capture a cumulative tuning snapshot**: `make perf-snapshot PERF_NAME=00-baseline`
-- **Run historical and current benchmarks**: `python3 tool/run-perf.py --run-tags` (uses persistent sparse worktrees under `out/perf/worktrees/` and current harness; specify tags e.g. `python3 tool/run-perf.py perf-00-baseline --current`)
+- **Run historical and current benchmarks**: `python3 scripts/run-perf.py --run-tags` (uses persistent sparse worktrees under `out/perf/worktrees/` and current harness; specify tags e.g. `python3 scripts/run-perf.py perf-00-baseline --current`)
 - **Generate the cumulative tuning report**: `make perf-report`
 - **Make performance regressions fail**: `BENCH_STRICT=1 make bench-compare`
 - **Run all tests**: `make testall`
+- **Run demo keyboard and session regressions**: `make test_demo` (Node.js; no browser or dependencies required)
+- **Run maintenance script regressions**: `make test_scripts` (Python standard library)
 - **Validate release/version**: `make validate`
 - **Publish all**: `make publish` (local manual fallback; prefer tag-based CI release)
 
@@ -82,13 +87,13 @@ architecture comparisons; see `docs/performance-reassessment.md` for local evide
 For cumulative tuning progress, use numbered snapshots under `out/perf/`:
 ```bash
 # Automated worktree-based snapshotting across historical tags and current revision:
-python3 tool/run-perf.py perf-00-baseline --current
+python3 scripts/run-perf.py perf-00-baseline --current
 # Or manual snapshot capture in the active workspace:
 make perf-snapshot PERF_NAME=00-baseline
 make perf-snapshot PERF_NAME=01-buffer-ownership
 make perf-report
 ```
-`tool/run-perf.py` measures historical tags using persistent sparse Git worktrees
+`scripts/run-perf.py` measures historical tags using persistent sparse Git worktrees
 under `out/perf/worktrees/` without checking out or modifying the primary working tree.
 Worktrees isolate `native/src/` and are reused across invocations; clean them up manually
 via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `out/` was removed).
@@ -98,9 +103,9 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - **Get dependencies**: `flutter pub get`
 - **Lint / analyze**: `dart analyze`
 - **Test**: `flutter test` (native library must be built first)
-- **Regenerate FFI bindings**: `python3 ../tool/generate_bindings.py` (from `flutter/`)
+- **Regenerate FFI bindings**: `python3 ../scripts/generate_bindings.py` (from `flutter/`)
 - **Build native (Linux)**: `cmake -B native/build_linux native/src && cmake --build native/build_linux`
-- **Cross-compile native (Windows)**: `cmake -S native/src -B native/build_win -DCMAKE_TOOLCHAIN_FILE=$(pwd)/tool/cmake/mingw64.cmake && cmake --build native/build_win`
+- **Cross-compile native (Windows)**: `cmake -S native/src -B native/build_win -DCMAKE_TOOLCHAIN_FILE=$(pwd)/scripts/cmake/mingw64.cmake && cmake --build native/build_win`
 - **Publish**: `flutter pub publish`
 
 ### Node.js (`nodejs/` directory)
@@ -113,27 +118,27 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - C++23 is the required project language standard. Toolchains must meet minimums:
   CMake ≥ 3.20, Clang/LLVM ≥ 17 (or C++23-capable compiler), Emscripten 6.0.10, Node.js ≥ 18.3.
 - Windows `inditrans.dll` (x86-64) is cross-compiled from Linux using MinGW-w64 (`x86_64-w64-mingw32-g++`)
-  via `tool/cmake/mingw64.cmake` (`make dll`). Requires C++23 (MinGW GCC ≥ 13).
+  via `scripts/cmake/mingw64.cmake` (`make dll`). Requires C++23 (MinGW GCC ≥ 13).
 - The public DLL ABI is strictly a C interface (`extern "C"`) exporting `transliterate`,
   `isScriptSupported`, and `releaseBuffer`. No C++ ABI types (`std::string`, STL containers, exceptions)
   cross the boundary, guaranteeing compatibility across compilers (MinGW, MSVC) and Dart FFI.
 - The Windows DLL is linked with `-static-libgcc -static-libstdc++` to eliminate MinGW C++ runtime
   DLL dependencies (`libstdc++-6.dll`, `libgcc_s_seh-1.dll`).
 - `flutter/lib/src/bindings.dart` is generated from `native/src/exports.h` by
-  `tool/generate_bindings.py` — edit the header, then regenerate; never hand-edit the bindings file.
+  `scripts/generate_bindings.py` — edit the header, then regenerate; never hand-edit the bindings file.
 - `flutter/assets/inditrans.wasm` and `js/public/inditrans.js` must be rebuilt from C++
   source whenever the native API changes; they are not auto-generated by `flutter build`.
-- `nodejs/src/Script.ts` and `nodejs/src/Option.ts` are generated from `tool/`; do not
+- `nodejs/src/Script.ts` and `nodejs/src/Option.ts` are generated from `scripts/`; do not
   hand-edit them.
-- `native/src/script_data.h` is generated from `tool/script_data.json` and
-  `tool/reader_data.json`. Readers/writers and Tamil prefixes must remain immutable,
+- `native/src/script_data.h` is generated from `scripts/script_data.json` and
+  `scripts/reader_data.json`. Readers/writers and Tamil prefixes must remain immutable,
   with no runtime builders, caches, equivalent parsing, or writer-table binding.
 - `Script.indlish` and `Script.wx` are write-only (cannot be used as `from`).
   `Script.indic` is read-only (cannot be used as `to`). Enforced in Dart (`_readNotSupported` / `_writeNotSupported`) and by the native engine (which rejects `indlish` as a source reader and `indic` as a target writer).
 - The Git tag (`vMAJOR.MINOR.PATCH`) is the sole release authority; package
-  manifests and build configs are kept in sync via `python3 tool/bump_version.py`.
+  manifests and build configs are kept in sync via `python3 scripts/bump_version.py`.
 - The single consolidated changelog is authoritative in root `CHANGELOG.md`.
-- Releases are tag-based (`vX.Y.Z`), validated by `tool/verify_release.py`, and
+- Releases are tag-based (`vX.Y.Z`), validated by `scripts/verify_release.py`, and
   published via `.github/workflows/release.yml` with pub.dev OIDC and npm trusted publishing.
 - For pub.dev, `dart-lang/setup-dart@v1` must initialize OIDC credentials even
   when Flutter is installed with `subosito/flutter-action`. For npm, do not set
@@ -163,6 +168,8 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - GitHub project overview: [`README.md`](README.md)
 - Flutter package usage: [`flutter/README.md`](flutter/README.md)
 - Node.js package usage: [`nodejs/README.md`](nodejs/README.md)
+- Browser demo usage and tests: [`demo/README.md`](demo/README.md)
+- Maintenance scripts and test organization: [`scripts/README.md`](scripts/README.md)
 - Engine internals, pipeline, data structures: [`ARCHITECTURE.md`](ARCHITECTURE.md)
 - Performance baseline and reproduction: [`docs/performance.md`](docs/performance.md)
 - Performance project completion record: [`docs/performance-project.md`](docs/performance-project.md)
@@ -174,7 +181,7 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 
 - `dart analyze` passes with no new errors or warnings (for Flutter changes).
 - Relevant tests pass: `make test` (C++), `flutter test` (Dart), `yarn test` (Node.js).
-- `python3 tool/verify_release.py` (`make validate`) passes.
+- `python3 scripts/verify_release.py` (`make validate`) passes.
 - If the native API changed: `bindings.dart` regenerated, WASM rebuilt, `Script.ts`/`Option.ts`
   regenerated.
 - No unrelated files or dependencies were changed.
@@ -191,4 +198,4 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 | Native API (`exports.h`) | regenerate `bindings.dart`, WASM, `Script.ts`/`Option.ts` |
 | Engine pipeline, data structures, invariants | `ARCHITECTURE.md` |
 | Release process or CI/CD workflow | `docs/release.md`, `AGENTS.md` |
-| New user-visible release | `CHANGELOG.md`, bump versions via `tool/bump_version.py` |
+| New user-visible release | `CHANGELOG.md`, bump versions via `scripts/bump_version.py` |

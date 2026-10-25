@@ -72,7 +72,7 @@ The consonant ordering contains the five Sanskrit stop/nasal series, other Indic
 
 An absent vowel mark on an Indic consonant encodes the inherent-vowel convention; a virama is index zero in the vowel-mark category. That convention is useful for transliteration but does not encode whether a particular inherent vowel is pronounced. Nor does the common index prove identical surface pronunciation across languages. The `ipa` script is another table of output strings, not a language-conditioned pronunciation engine.
 
-`ScriptToken::extra` expands an input equivalent into multiple tokens. It is not a set of competing readings. Its byte-sized index also makes it unsuitable as a general lexicon record identifier. The `languages` field is parsed into `ScriptInfo` but is not consulted by the transliteration pipeline. `hindi` and `sanskrit` are aliases of Devanagari in [tool/script_data.json](../tool/script_data.json), not distinct pronunciation policies.
+`ScriptToken::extra` expands an input equivalent into multiple tokens. It is not a set of competing readings. Its byte-sized index also makes it unsuitable as a general lexicon record identifier. The `languages` field is parsed into `ScriptInfo` but is not consulted by the transliteration pipeline. `hindi` and `sanskrit` are aliases of Devanagari in [scripts/script_data.json](../scripts/script_data.json), not distinct pronunciation policies.
 
 ### 1.3 Where interpretation already enters
 
@@ -91,7 +91,7 @@ The live tokenizer uses `Char32Trie<ScriptToken>` in `utilities.h`: Unicode scal
 
 [char_trie.h](../native/src/char_trie.h) contains an unused packed structure with 16-bit keys/offsets. It is not evidence of a working generated static-trie pipeline. Its token reconstruction argument order is suspicious, and packed layout, offset limits, endianness, and alignment would need validation before reuse. A lexicon with tens of thousands of entries should not inherit these limits accidentally.
 
-[generate_headers.py](../tool/generate_headers.py) and [codegen_data.py](../tool/python/codegen_data.py) are the actual data-generation path. They serialize the editable JSON tables, generate script/option declarations, and add selected Latin equivalents. They provide a useful authoring/build pattern for optional linguistic data. They do not implement universal Unicode normalization or generate a pronunciation model.
+[generate_headers.py](../scripts/generate_headers.py) and [codegen_data.py](../scripts/python/codegen_data.py) are the actual data-generation path. They serialize the editable JSON tables, generate script/option declarations, and add selected Latin equivalents. They provide a useful authoring/build pattern for optional linguistic data. They do not implement universal Unicode normalization or generate a pronunciation model.
 
 The virtual `indic` reader combines non-Latin script maps. That supports mixed **scripts**, not mixed-language interpretation. It retains only the broad script family on tokens. Source-script identity must be retained separately if a later resolver needs to distinguish Bengali and Devanagari inside that input.
 
@@ -101,7 +101,7 @@ The shared suite resolves through a symlink from [test-files/test-cases.json](..
 
 These are valuable compatibility fixtures: Tamil inference, prefixes, superscripts, compound vowels, accents, skip behavior, and other script cases. They do not establish pronunciation accuracy, ambiguity recall, dialect coverage, or performance on mixed devotional text. Node and Dart consume the shared fixture, but their harnesses do not reproduce all native matrix/round-trip logic. The native loader can silently do no work if the fixture cannot be opened or parsed; a passing process alone is therefore weak coverage evidence.
 
-[Node's wrapper](../nodejs/src/index.ts) loads Emscripten JavaScript with `require`, waits conditionally for runtime initialization, then calls the JS bridge. [The build script](../tool/build_wasm.sh) uses `SINGLE_FILE=1`, `-Oz`, and memory growth for that distribution. The standalone Flutter Wasm artifact has a separate build path. [Dart](../flutter/lib/inditrans.dart) loads native/Wasm through `universal_ffi`.
+[Node's wrapper](../nodejs/src/index.ts) loads Emscripten JavaScript with `require`, waits conditionally for runtime initialization, then calls the JS bridge. [The build script](../scripts/build_wasm.sh) uses `SINGLE_FILE=1`, `-Oz`, and memory growth for that distribution. The standalone Flutter Wasm artifact has a separate build path. [Dart](../flutter/lib/inditrans.dart) loads native/Wasm through `universal_ffi`.
 
 Source inspection also reveals integration concerns to keep separate from linguistic design:
 
@@ -703,7 +703,7 @@ My current preference is to preserve the token/index core, make custom handling 
 | Area | Authoritative evidence |
 |---|---|
 | Core, token grouping, interpretation, output ownership | `native/src/inditrans.cpp`, `type_defs.h`, `inditrans.h`, `exports.h`, `script_constants.h`, `utf.h` |
-| Tries and data | `utilities.h`, `trie.h`, `char_trie.h`, `tool/script_data.json`, header-generator source |
+| Tries and data | `utilities.h`, `trie.h`, `char_trie.h`, `scripts/script_data.json`, header-generator source |
 | Test scope | Native transliteration harness, shared JSON and its symlinks, sanscript fixture, Dart and Node harnesses |
 | Build and integration | `Makefile`, native CMake, Wasm build script, JS post-glue, Node wrapper/manifest, Dart wrapper, CI configuration |
 | History | File-following Git history and selected code/commit diffs, independent of issues/plans |
@@ -715,7 +715,7 @@ Generated implementation files were not hand-edited or used as substitutes for t
 The repository documentation audit was run before and after writing, as an index. Local Markdown links and section anchors were checked, and the new file was checked for whitespace errors. The release validator was executed using the installed SDK directly:
 
 ```text
-python3 tool/verify_release.py
+python3 scripts/verify_release.py
 ```
 
 It passed for version `0.13.0`, checking manifest agreement, changelog presence, and artifact existence. That validation does not prove artifact/source parity or pronunciation correctness. Runtime tests and performance benchmarks were not run because this deliverable changes research documentation only. Language coverage, model quality, runtime costs, and the performance of extracted policies remain explicitly unmeasured design questions.

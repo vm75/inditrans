@@ -7,5 +7,6 @@
 *.pdf binary
 *.ico binary
 *.wasm binary
+*.woff2 binary
 *.dll binary
 *.so binary

@@ -82,13 +82,13 @@ def format_object(value: dict, depth: int = 0) -> str:
 
 def main(argv: list[str]) -> int:
     if len(argv) < 2:
-        print(f"Usage: python3 tool/import_script.py <category> <script1> [script2] ...\nCategories: {', '.join(CATEGORIES)}")
+        print(f"Usage: python3 scripts/import_script.py <category> <script1> [script2] ...\nCategories: {', '.join(CATEGORIES)}")
         return 2
     category = argv[0].lower()
     if category not in CATEGORIES:
         print(f"Invalid category: {category}\nValid categories: {', '.join(CATEGORIES)}", file=sys.stderr)
         return 2
-    path = Path("tool/script_data.json")
+    path = Path("scripts/script_data.json")
     if not Path("flutter/pubspec.yaml").is_file():
         print("Run from repository root", file=sys.stderr)
         return 1

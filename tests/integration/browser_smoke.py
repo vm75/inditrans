@@ -19,8 +19,7 @@ def main() -> int:
     if not browser:
         raise SystemExit(f"Browser executable not found: {args.browser}")
 
-    root = Path(__file__).resolve().parents[1]
-    fixture = (root / "js/tests/test.html").as_uri()
+    fixture = Path(__file__).resolve().with_name("browser.html").as_uri()
     with tempfile.TemporaryDirectory(prefix="inditrans-chrome-") as profile:
         result = subprocess.run(
             [

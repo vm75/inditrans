@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+const fs = require('node:fs');
+const path = require('node:path');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const wasmPath = path.resolve(__dirname, '../flutter/assets/inditrans.wasm');
+const wasmPath = path.resolve(__dirname, '../../flutter/assets/inditrans.wasm');
 
 if (!fs.existsSync(wasmPath)) {
   console.error(`Error: WASM file not found at ${wasmPath}`);
@@ -46,7 +42,7 @@ try {
   process.exit(1);
 }
 
-const exports = instance.exports;
+const wasmExports = instance.exports;
 
 // 3. Verify required exports exist for Flutter loader and C API
 const requiredExports = [
@@ -59,33 +55,33 @@ const requiredExports = [
 ];
 
 for (const name of requiredExports) {
-  if (typeof exports[name] === 'undefined') {
+  if (typeof wasmExports[name] === 'undefined') {
     console.error(`Error: Missing required WASM export: ${name}`);
     process.exit(1);
   }
 }
 
 // 4. Perform static initialization if present (__wasm_call_ctors or _initialize)
-if (typeof exports.__wasm_call_ctors === 'function') {
-  exports.__wasm_call_ctors();
-} else if (typeof exports._initialize === 'function') {
-  exports._initialize();
+if (typeof wasmExports.__wasm_call_ctors === 'function') {
+  wasmExports.__wasm_call_ctors();
+} else if (typeof wasmExports._initialize === 'function') {
+  wasmExports._initialize();
 }
 
 // Helper functions for reading/writing UTF-8 strings
 function writeUtf8(str) {
   const bytes = Buffer.from(str + '\0', 'utf8');
-  const ptr = exports.malloc(bytes.length);
+  const ptr = wasmExports.malloc(bytes.length);
   if (!ptr) {
     throw new Error('Failed to allocate memory in WASM module');
   }
-  new Uint8Array(exports.memory.buffer, ptr, bytes.length).set(bytes);
+  new Uint8Array(wasmExports.memory.buffer, ptr, bytes.length).set(bytes);
   return ptr;
 }
 
 function readUtf8(ptr) {
   if (!ptr) return '';
-  const mem = new Uint8Array(exports.memory.buffer, ptr);
+  const mem = new Uint8Array(wasmExports.memory.buffer, ptr);
   let len = 0;
   while (mem[len] !== 0) len++;
   return Buffer.from(mem.subarray(0, len)).toString('utf8');
@@ -93,8 +89,8 @@ function readUtf8(ptr) {
 
 // 5. Test isScriptSupported
 const devanagariPtr = writeUtf8('devanagari');
-const supported = exports.isScriptSupported(devanagariPtr);
-exports.free(devanagariPtr);
+const supported = wasmExports.isScriptSupported(devanagariPtr);
+wasmExports.free(devanagariPtr);
 
 if (supported !== 1) {
   console.error(`Error: isScriptSupported('devanagari') returned ${supported}, expected 1`);
@@ -108,15 +104,15 @@ const toPtr = writeUtf8('devanagari');
 const skipStartPtr = writeUtf8('##');
 const skipEndPtr = writeUtf8('##');
 
-const outPtr = exports.transliterate(textPtr, fromPtr, toPtr, 0, skipStartPtr, skipEndPtr);
+const outPtr = wasmExports.transliterate(textPtr, fromPtr, toPtr, 0, skipStartPtr, skipEndPtr);
 const result = readUtf8(outPtr);
 
-exports.releaseBuffer(outPtr);
-exports.free(textPtr);
-exports.free(fromPtr);
-exports.free(toPtr);
-exports.free(skipStartPtr);
-exports.free(skipEndPtr);
+wasmExports.releaseBuffer(outPtr);
+wasmExports.free(textPtr);
+wasmExports.free(fromPtr);
+wasmExports.free(toPtr);
+wasmExports.free(skipStartPtr);
+wasmExports.free(skipEndPtr);
 
 const expected = 'नमस्ते';
 if (result !== expected) {
@@ -126,7 +122,7 @@ if (result !== expected) {
 
 console.log(`✓ Standalone WASM smoke test passed (${wasmBuffer.length} bytes, ${imports.length} imports, result: '${result}')`);
 
-// Exercise new flags against the actual bundled engine, not just its exports.
+// Exercise new flags against the actual bundled engine, not just its wasmExports.
 for (const [text, from, to, options, expected] of [
   ['अंक', 'devanagari', 'tamil', 64, 'அம்க'],
   ['அக¹', 'tamil', 'devanagari', 64, 'अक'],
@@ -137,10 +133,10 @@ for (const [text, from, to, options, expected] of [
   ['अंट', 'devanagari', 'indlish', 64, 'aṁTa'],
 ]) {
   const pointers = [text, from, to, '##', '##'].map(writeUtf8);
-  const output = exports.transliterate(pointers[0], pointers[1], pointers[2], options, pointers[3], pointers[4]);
+  const output = wasmExports.transliterate(pointers[0], pointers[1], pointers[2], options, pointers[3], pointers[4]);
   const actual = readUtf8(output);
-  exports.releaseBuffer(output);
-  pointers.forEach(ptr => exports.free(ptr));
+  wasmExports.releaseBuffer(output);
+  pointers.forEach(ptr => wasmExports.free(ptr));
   if (actual !== expected) {
     console.error(`Error: ${from} -> ${to} with options ${options}: '${actual}', expected '${expected}'`);
     process.exit(1);

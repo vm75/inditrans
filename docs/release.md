@@ -30,7 +30,7 @@ The single consolidated changelog is maintained in `CHANGELOG.md` at repository 
 3. Bump the version across package manifests and record release notes:
    ```bash
    # Bump patch, minor, or major version:
-   python3 ./tool/bump_version.py patch --log "Short description of changes"
+   python3 ./scripts/bump_version.py patch --log "Short description of changes"
    # Or interactively:
    make version
    ```
@@ -38,7 +38,7 @@ The single consolidated changelog is maintained in `CHANGELOG.md` at repository 
    ```bash
    make validate
    # Or with tag and dry-run package checks:
-  python3 tool/verify_release.py --tag=vX.Y.Z --check-packages --check-artifacts
+  python3 scripts/verify_release.py --tag=vX.Y.Z --check-packages --check-artifacts
    ```
 5. Commit the version bump:
    ```bash
@@ -92,14 +92,14 @@ To verify the release pipeline safely without creating a real release or publish
 
 - **Local validation**:
   ```bash
-  python3 tool/verify_release.py --check-packages --check-artifacts
+  python3 scripts/verify_release.py --check-packages --check-artifacts
   ```
 - **Tag-specific validation**:
   ```bash
-  python3 tool/verify_release.py --tag=v0.13.0 --check-packages --check-artifacts
+  python3 scripts/verify_release.py --tag=v0.13.0 --check-packages --check-artifacts
   ```
 - **Continuous Integration**:
-  The normal CI workflow (`.github/workflows/ci.yml`) runs fast Linux-based checks on pushes to `main` and PRs targeting `main` (skipping doc-only changes), running release validation, native engine tests, Flutter tests/dry-run, and Node.js tests/dry-run.
+  The normal CI workflow (`.github/workflows/ci.yml`) runs fast Linux-based checks on pushes to `main` and PRs targeting `main` (skipping doc-only changes), running release validation, maintenance script regressions (`make test_scripts`), native engine tests, Flutter tests/dry-run, Node.js tests/dry-run, and demo regressions (`make test_demo`).
   Its PR performance gate compares timing, output hashes, and allocation metrics
   against `perf-00-baseline`, using the current harness with unchanged tagged engine sources.
   Multi-platform acceptance (macOS, Windows MSVC, and Android arm64) is maintained in a separate workflow (`.github/workflows/platform.yml`), triggered explicitly on `platform-*` tags or manual `workflow_dispatch`.
@@ -131,7 +131,7 @@ Release integrity requires that published package versions are immutable and rel
 - **Validation or build fails (before publication)**:
   - No packages are published to either registry.
   - Fix the underlying issue on `main`.
-  - Bump to a new patch/minor version using `python3 tool/bump_version.py`.
+  - Bump to a new patch/minor version using `python3 scripts/bump_version.py`.
   - Create and push a new tag for the incremented version (e.g. `v0.13.1`).
   - Do not move or reuse the failed tag.
 
@@ -147,7 +147,7 @@ Release integrity requires that published package versions are immutable and rel
   - Rerun the `github-release` job in GitHub Actions.
   - Alternatively, create the GitHub Release manually using the tagged commit notes:
     ```bash
-    python3 tool/verify_release.py --tag=vX.Y.Z --extract-changelog=release_notes.md
+    python3 scripts/verify_release.py --tag=vX.Y.Z --extract-changelog=release_notes.md
     gh release create "vX.Y.Z" --title "Release vX.Y.Z" --notes-file release_notes.md --verify-tag
     ```
 

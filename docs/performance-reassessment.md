@@ -120,7 +120,7 @@ LeakSanitizer is unavailable in the sandbox. Output hashes agree throughout
 native, Wasm, and cold-call comparisons. Windows execution was not measured.
 
 See [the reproduction guide](performance.md) for tag-based native builds and
-`node tool/wasm_bench.mjs flutter/assets/inditrans.wasm` for the standalone
+`node scripts/wasm_bench.mjs flutter/assets/inditrans.wasm` for the standalone
 matrix. Pin both engines to the same CPU and use the same toolchain.
 
 Raw local files are ignored under `out/reassessment/`:

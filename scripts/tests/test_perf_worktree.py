@@ -5,12 +5,14 @@ from __future__ import annotations
 
 import csv
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
-TOOL_DIR = Path(__file__).resolve().parent
-ROOT_DIR = TOOL_DIR.parent
+SCRIPT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = SCRIPT_DIR.parent
+sys.path.insert(0, str(SCRIPT_DIR))
 
 import importlib
 import perf_metadata

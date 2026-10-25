@@ -3,14 +3,12 @@ default: all
 all: native wasm flutter
 
 version:
-	python3 ./tool/bump_version.py
+	python3 ./scripts/bump_version.py
 
 validate:
-	python3 ./tool/verify_release.py
-	python3 ./tool/test_repeat_short_bench.py
-	python3 ./tool/test_perf_worktree.py
-	python3 ./tool/verify_wasm_build_parity.py
-	python3 ./tool/test_release_engineering.py
+	python3 ./scripts/verify_release.py
+	python3 ./scripts/verify_wasm_build_parity.py
+	$(MAKE) test_scripts
 
 ifeq ($(OS), Windows_NT)
     EXEC_EXT = .exe
@@ -50,7 +48,7 @@ PERF_REPEATS ?= 5
 PERF_CPU ?=
 PERF_METADATA_FLAGS ?=
 COLD_BENCH_SAMPLES ?= 501
-PERF_TOOL_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))tool
+PERF_SCRIPT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))scripts
 ALLOC_PROBE_SUPPORTED := $(shell test "$$(uname -s 2>/dev/null)" = "Linux" && getconf GNU_LIBC_VERSION >/dev/null 2>&1 && echo 1 || echo 0)
 ifeq ($(ALLOC_PROBE_SUPPORTED),1)
     ALLOC_BENCH_DEPS = $(NATIVE_ALLOC_BENCH) $(LINUX_ALLOC_PROBE)
@@ -62,7 +60,7 @@ NATIVE_H = $(wildcard $(NATIVE_SRC)/*.h)
 NATIVETEST_DIR = $(NATIVE_DIR)/tests
 NATIVETEST_CC = $(wildcard $(NATIVE_DIR)/tests/*.cpp)
 NATIVETEST_H = $(wildcard $(NATIVE_DIR)/tests/*.h)
-GENERATOR_UTILS = $(wildcard tool/python/*.py)
+GENERATOR_UTILS = $(wildcard scripts/python/*.py)
 EXAMPLE_DART = flutter/example.dart
 USE_CHECKED_IN_SCRIPT_DATA ?= 0
 
@@ -76,8 +74,8 @@ so: $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_SRC)/CMakeLists.txt
 	cmake --build $(NATIVE_DIR)/build_linux
 	cp $(NATIVE_DIR)/build_linux/libinditrans.so $(EXAMPLE_DART)/libinditrans.so
 
-dll: $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_SRC)/CMakeLists.txt tool/cmake/mingw64.cmake
-	cmake -S $(NATIVE_SRC) -B $(NATIVE_DIR)/build_win -DCMAKE_TOOLCHAIN_FILE=$(abspath tool/cmake/mingw64.cmake)
+dll: $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_SRC)/CMakeLists.txt scripts/cmake/mingw64.cmake
+	cmake -S $(NATIVE_SRC) -B $(NATIVE_DIR)/build_win -DCMAKE_TOOLCHAIN_FILE=$(abspath scripts/cmake/mingw64.cmake)
 	cmake --build $(NATIVE_DIR)/build_win
 	cp $(NATIVE_DIR)/build_win/inditrans.dll $(EXAMPLE_DART)/inditrans.dll
 
@@ -98,8 +96,8 @@ $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 	clang++ -std=c++23 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
 ifeq ($(USE_CHECKED_IN_SCRIPT_DATA),0)
-$(NATIVE_SRC)/script_data.h: tool/script_data.json tool/reader_data.json tool/options.json docs/extended-latin.txt tool/generate_headers.py $(GENERATOR_UTILS)
-	python3 tool/generate_headers.py
+$(NATIVE_SRC)/script_data.h: scripts/script_data.json scripts/reader_data.json scripts/options.json docs/extended-latin.txt scripts/generate_headers.py $(GENERATOR_UTILS)
+	python3 scripts/generate_headers.py
 else
 $(NATIVE_SRC)/script_data.h:
 	@echo "Missing checked-in $(NATIVE_SRC)/script_data.h while USE_CHECKED_IN_SCRIPT_DATA=1"
@@ -109,24 +107,31 @@ endif
 wasm: flutter/assets/inditrans.wasm js/public/inditrans.js
 
 flutter/assets/inditrans.wasm: $(NATIVE_CPP) $(NATIVE_H)
-	./tool/build_wasm.$(SCRIPT_EXT) standalone
+	./scripts/build_wasm.$(SCRIPT_EXT) standalone
 
 js/public/inditrans.js: $(NATIVE_CPP) $(NATIVE_H) js/src/inditrans.post.js
-	./tool/build_wasm.$(SCRIPT_EXT) js
+	./scripts/build_wasm.$(SCRIPT_EXT) js
 
-flutter/lib/src/bindings.dart: $(NATIVE_SRC)/exports.h tool/generate_bindings.py
-	python3 tool/generate_bindings.py
+flutter/lib/src/bindings.dart: $(NATIVE_SRC)/exports.h scripts/generate_bindings.py
+	python3 scripts/generate_bindings.py
 
 flutter: flutter/lib/src/bindings.dart flutter/assets/inditrans.wasm
 
 # test
-testall: test test_wasm test_flutter test_nodejs
+.PHONY: test_demo test_scripts
+testall: test test_wasm test_flutter test_nodejs test_demo test_scripts
+
+test_scripts:
+	python3 -m unittest discover -s scripts/tests
+
+test_demo:
+	node --test demo/tests/ascii.test.cjs demo/tests/state.test.cjs demo/tests/editor.test.cjs demo/tests/fonts.test.cjs
 
 test: $(NATIVE_TEST) test-files/test-cases.json
 	$(NATIVE_TEST)
 
 test_wasm: flutter/assets/inditrans.wasm
-	node tool/smoke_test_wasm.js
+	node tests/integration/wasm_smoke.cjs
 
 bench: $(NATIVE_BENCH)
 	$(NATIVE_BENCH)
@@ -150,11 +155,11 @@ bench-short: $(NATIVE_SHORT_BENCH)
 
 .PHONY: bench-short-repeat
 bench-short-repeat: $(NATIVE_SHORT_BENCH)
-	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(PERF_REPEATS) --cpu "$(PERF_CPU)"
+	@python3 "$(PERF_SCRIPT_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(PERF_REPEATS) --cpu "$(PERF_CPU)"
 
 .PHONY: bench-cold
 bench-cold: $(NATIVE_COLD_BENCH)
-	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)"
+	@python3 "$(PERF_SCRIPT_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)"
 
 .PHONY: output-size-bench mem-bench
 output-size-bench: $(NATIVE_MEM_BENCH)
@@ -178,7 +183,7 @@ bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_COLD_BENCH) $(NATIVE_M
 	  NR >1 { printf "%-28s  %8s  %9.3f  %9.3f\n",$$1,$$2,$$3/1000,$$4/1000 }'
 	@echo ""
 	@echo "━━━  Cold-start latency  (first transliteration in fresh processes; $(COLD_BENCH_SAMPLES) samples)  ━━━"
-	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" | awk -F, '\
+	@python3 "$(PERF_SCRIPT_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" | awk -F, '\
 	  NR==1 { printf "%-30s %8s %8s %9s %9s %s\n","case","bytes","samples","p50_µs","p95_µs","output_fnv1a64" } \
 	  NR>1 { printf "%-30s %8s %8s %9.3f %9.3f %s\n",$$1,$$2,$$5,$$3/1000,$$4/1000,$$7 }'
 	@echo ""
@@ -187,14 +192,14 @@ bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_COLD_BENCH) $(NATIVE_M
 	@echo ""
 	@echo "━━━  Cold allocations  (~1 MiB target; first measured transliteration; Linux/glibc only)  ━━━"
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
-	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 0 --format table; \
+	  python3 "$(PERF_SCRIPT_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 0 --format table; \
 	else \
 	  echo "  (skipped: allocator probe requires Linux with glibc)"; \
 	fi
 	@echo ""
 	@echo "━━━  Warm allocations  (~1 MiB target; one unmeasured warmup; Linux/glibc only)  ━━━"
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
-	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 1 --format table; \
+	  python3 "$(PERF_SCRIPT_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 1 --format table; \
 	else \
 	  echo "  (skipped: allocator probe requires Linux with glibc)"; \
 	fi
@@ -204,15 +209,15 @@ bench-all: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(NATIVE_COLD_BENCH) $(NATIVE_M
 .PHONY: bench-save
 bench-save: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@mkdir -p "$(dir $(BENCH_BASELINE))"
-	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output "$(BENCH_BASELINE)-throughput-runs.csv" > $(BENCH_BASELINE)-throughput.csv
-	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output "$(BENCH_BASELINE)-latency-runs.csv" > $(BENCH_BASELINE)-latency.csv
+	@python3 "$(PERF_SCRIPT_DIR)/repeat_short_bench.py" --binary $(NATIVE_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output "$(BENCH_BASELINE)-throughput-runs.csv" > $(BENCH_BASELINE)-throughput.csv
+	@python3 "$(PERF_SCRIPT_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output "$(BENCH_BASELINE)-latency-runs.csv" > $(BENCH_BASELINE)-latency.csv
 	@printf "" > $(BENCH_BASELINE)-allocs.csv
 	@printf "" > $(BENCH_BASELINE)-allocs-warm.csv
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
-	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 0 --format csv > $(BENCH_BASELINE)-allocs.csv; \
-	  python3 "$(PERF_TOOL_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 1 --format csv > $(BENCH_BASELINE)-allocs-warm.csv; \
+	  python3 "$(PERF_SCRIPT_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 0 --format csv > $(BENCH_BASELINE)-allocs.csv; \
+	  python3 "$(PERF_SCRIPT_DIR)/allocation_bench.py" --binary $(NATIVE_ALLOC_BENCH) --probe $(LINUX_ALLOC_PROBE) --warmups 1 --format csv > $(BENCH_BASELINE)-allocs-warm.csv; \
 	fi
-	@python3 "$(PERF_TOOL_DIR)/perf_metadata.py" $(PERF_METADATA_FLAGS) > $(BENCH_BASELINE)-info.txt
+	@python3 "$(PERF_SCRIPT_DIR)/perf_metadata.py" $(PERF_METADATA_FLAGS) > $(BENCH_BASELINE)-info.txt
 	@printf "bench_runs=%s\nbench_cpu=%s\n" "$(BENCH_RUNS)" "$(BENCH_CPU)" >> $(BENCH_BASELINE)-info.txt
 	@echo "Baseline saved → median CSVs plus raw *-runs.csv ($(BENCH_RUNS) runs)"
 	@cat $(BENCH_BASELINE)-info.txt
@@ -223,13 +228,13 @@ perf-snapshot: $(NATIVE_COLD_BENCH) | out
 	@if [ -z "$(PERF_NAME)" ]; then echo "Set PERF_NAME, for example: make perf-snapshot PERF_NAME=00-baseline"; exit 2; fi
 	@mkdir -p "$(PERF_DIR)"
 	@$(MAKE) bench-save BENCH_BASELINE="$(PERF_DIR)/$(PERF_NAME)"
-	@python3 "$(PERF_TOOL_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" > "$(PERF_DIR)/$(PERF_NAME)-cold.csv"
-	@WASM_SRC_DIR="$(NATIVE_SRC)" WASM_OUT="$(WASM_OUT)" ./tool/build_wasm.$(SCRIPT_EXT) standalone
+	@python3 "$(PERF_SCRIPT_DIR)/cold_start_bench.py" --binary $(NATIVE_COLD_BENCH) --samples $(COLD_BENCH_SAMPLES) --cpu "$(PERF_CPU)" > "$(PERF_DIR)/$(PERF_NAME)-cold.csv"
+	@WASM_SRC_DIR="$(NATIVE_SRC)" WASM_OUT="$(WASM_OUT)" ./scripts/build_wasm.$(SCRIPT_EXT) standalone
 	@python3 -c "from pathlib import Path; print(Path('$(WASM_OUT)').stat().st_size)" > "$(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
 	@echo "Wasm size saved → $(PERF_DIR)/$(PERF_NAME)-wasm-size.txt"
 
 perf-report:
-	@python3 "$(PERF_TOOL_DIR)/perf_report.py" --dir "$(PERF_DIR)" --baseline "$(PERF_BASELINE)" --latency-case "$(PERF_LATENCY_CASE)" --alloc-case "$(PERF_ALLOC_CASE)" --cold-case "$(PERF_COLD_CASE)"
+	@python3 "$(PERF_SCRIPT_DIR)/perf_report.py" --dir "$(PERF_DIR)" --baseline "$(PERF_BASELINE)" --latency-case "$(PERF_LATENCY_CASE)" --alloc-case "$(PERF_ALLOC_CASE)" --cold-case "$(PERF_COLD_CASE)"
 
 # Compare current results against the saved baseline. Output mismatches always fail.
 # Performance regressions are reported by default and fail when BENCH_STRICT=1.
@@ -238,8 +243,8 @@ bench-compare: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@if [ ! -f $(BENCH_BASELINE)-throughput.csv ]; then echo "No baseline. Run: make bench-save first."; exit 1; fi
 	@if [ ! -f $(BENCH_BASELINE)-latency.csv ]; then echo "No latency baseline. Run: make bench-save first."; exit 1; fi
 	@rm -f out/bench-compare-failed
-	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output out/bench-current-throughput-runs.csv > out/bench-current-throughput.csv
-	@python3 "$(PERF_TOOL_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output out/bench-current-latency-runs.csv > out/bench-current-latency.csv
+	@python3 "$(PERF_SCRIPT_DIR)/repeat_short_bench.py" --binary $(NATIVE_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output out/bench-current-throughput-runs.csv > out/bench-current-throughput.csv
+	@python3 "$(PERF_SCRIPT_DIR)/repeat_short_bench.py" --binary $(NATIVE_SHORT_BENCH) --runs $(BENCH_RUNS) --cpu "$(BENCH_CPU)" --raw-output out/bench-current-latency-runs.csv > out/bench-current-latency.csv
 	@echo ""
 	@if [ -f $(BENCH_BASELINE)-info.txt ]; then echo "Baseline : $$(cat $(BENCH_BASELINE)-info.txt)"; else echo "Baseline : metadata unavailable"; fi
 	@echo "Current  : commit=$$(git rev-parse --short HEAD 2>/dev/null||echo unknown)  date=$$(date '+%Y-%m-%d %H:%M')  runs=$(BENCH_RUNS)  cpu=$(BENCH_CPU)"

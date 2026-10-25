@@ -13,6 +13,8 @@ A transliteration library for [Indic/Brahmic](https://en.wikipedia.org/wiki/Brah
 - Special handling for Tamil, Malayalam, Gurmukhi, and other scripts tuned for readability.
 - [Vedic accent](https://en.wikipedia.org/wiki/Vedic_accent) support for Vedic scriptures.
 
+Try the [live demo](https://vm75.github.io/inditrans/) to compare scripts, type with ASCII shortcuts, and copy transliterated text.
+
 ## Supported scripts
 
 **Indic/Brahmic:** Assamese, Bengali, Burmese, Devanagari, Gujarati, Gurmukhi, Kannada,
@@ -56,7 +58,9 @@ flutter/    Flutter FFI plugin (Dart + C++ shared library + WASM)
 nodejs/     TypeScript/JavaScript package (WASM via Emscripten)
 js/         WASM build output consumed by nodejs/
 native/     Canonical C++23 engine (source, tests, CLI, and benchmarks)
-tool/       Code-generation utilities (script data, bindings, version bump)
+scripts/    Build, code-generation, release, and maintenance commands
+demo/       Browser demo and its component tests
+tests/      Integration tests against built artifacts
 test-files/ Shared test-case JSON used by all distributions
 ```
 
@@ -65,7 +69,9 @@ test-files/ Shared test-case JSON used by all distributions
 ```sh
 make all          # build native CLI, WASM, and Flutter plugin
 make test         # run C++ native tests
-make testall      # run native, Flutter, and Node.js tests
+make testall      # run native, WASM, Flutter, Node.js, demo, and script tests
+make test_demo    # run demo component tests
+make test_scripts # run maintenance script regressions
 make bench-all    # run the native benchmark summary
 make dll          # cross-compile Windows x86-64 DLL using MinGW-w64
 make validate     # validate version consistency and changelog
@@ -111,7 +117,7 @@ make dll
 ```
 
 - **Target**: Windows x86-64 (`inditrans.dll`), copied to `flutter/example.dart/inditrans.dll`.
-- **Toolchain**: Cross-compiled using MinGW-w64 (`x86_64-w64-mingw32-g++`) with CMake toolchain `tool/cmake/mingw64.cmake`.
+- **Toolchain**: Cross-compiled using MinGW-w64 (`x86_64-w64-mingw32-g++`) with CMake toolchain `scripts/cmake/mingw64.cmake`.
 - **Language standard**: Enforces C++23 internally (GCC ≥ 13).
 - **Public ABI**: Plain C interface (`extern "C"`) exposing `transliterate`, `isScriptSupported`, and `releaseBuffer`. No C++ types (`std::string`, STL containers, exceptions) cross the boundary, ensuring full compatibility with MSVC callers, Dart FFI, and other runtimes.
 - **Runtime dependencies**: Linked with `-static-libgcc -static-libstdc++` to eliminate MinGW C++ runtime DLL dependencies (`libstdc++-6.dll`, `libgcc_s_seh-1.dll`).

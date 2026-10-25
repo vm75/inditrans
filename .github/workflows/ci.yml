@@ -32,18 +32,18 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Validate versions, manifests, and changelog
-        run: python3 tool/verify_release.py
+        run: python3 scripts/verify_release.py
 
       - name: Verify Unix and PowerShell Wasm release flags match
-        run: python3 tool/verify_wasm_build_parity.py
+        run: python3 scripts/verify_wasm_build_parity.py
 
-      - name: Run release engineering regression tests
-        run: python3 tool/test_release_engineering.py
+      - name: Run maintenance script regression tests
+        run: make test_scripts
 
       - name: Verify generated artifacts are up to date
         run: |
-          python3 tool/generate_headers.py
-          python3 tool/generate_bindings.py
+          python3 scripts/generate_headers.py
+          python3 scripts/generate_bindings.py
           git diff --exit-code -- \
             native/src/script_data.h \
             native/src/exports.h \
@@ -245,6 +245,9 @@ jobs:
           cache: 'yarn'
           cache-dependency-path: 'nodejs/yarn.lock'
 
+      - name: Run demo regression tests
+        run: make test_demo
+
       - name: Build WASM artifacts
         run: make wasm
 
@@ -272,7 +275,7 @@ jobs:
       - name: Run shared browser fixture twice per conversion
         env:
           CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
-        run: python3 tool/browser_smoke_test.py --browser "$CHROME_PATH"
+        run: python3 tests/integration/browser_smoke.py --browser "$CHROME_PATH"
 
       - name: Dry-run pack
         run: cd nodejs && npm pack --dry-run
@@ -302,10 +305,10 @@ jobs:
         run: make dll
 
       - name: Verify Windows DLL exports and dependencies
-        run: ./tool/verify_dll.sh native/build_win/inditrans.dll
+        run: ./scripts/verify_dll.sh native/build_win/inditrans.dll
 
       - name: Verify example.dart DLL copy
-        run: ./tool/verify_dll.sh flutter/example.dart/inditrans.dll
+        run: ./scripts/verify_dll.sh flutter/example.dart/inditrans.dll
 
       - name: Upload Windows DLL artifact
         uses: actions/upload-artifact@v4

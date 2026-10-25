@@ -22,7 +22,7 @@ jobs:
 
       - name: Validate versions and changelog
         run: |
-          python3 tool/verify_release.py \
+          python3 scripts/verify_release.py \
             --tag=${{ github.ref_name }} \
             --extract-changelog=release_notes.md
 
@@ -57,7 +57,7 @@ jobs:
       - name: Build and smoke test Windows DLL
         run: |
           make dll
-          ./tool/verify_dll.sh native/build_win/inditrans.dll
+          ./scripts/verify_dll.sh native/build_win/inditrans.dll
           git restore --source=HEAD --worktree flutter/example.dart/inditrans.dll
 
       - name: Build Linux shared library for FFI tests
@@ -108,7 +108,7 @@ jobs:
 
       - name: Verify compiled artifacts and packaging dry-runs
         run: |
-          python3 tool/verify_release.py \
+          python3 scripts/verify_release.py \
             --tag=${{ github.ref_name }} \
             --check-artifacts \
             --check-packages

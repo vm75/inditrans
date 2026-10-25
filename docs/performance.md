@@ -18,7 +18,7 @@ mkdir -p out/reassessment
 for bench in benchmark short_call; do
   clang++ -std=c++23 -O3 -DNDEBUG -I "$tag_tree/native/src" \
     "$tag_tree/native/src/inditrans.cpp" "native/bench/$bench.cpp" -o "$tag_tree/$bench"
-  python3 tool/repeat_short_bench.py --binary "$tag_tree/$bench" --runs 5 --cpu "$CPU" \
+  python3 scripts/repeat_short_bench.py --binary "$tag_tree/$bench" --runs 5 --cpu "$CPU" \
     --raw-output "out/reassessment/tag-$bench-runs.csv" > "out/reassessment/tag-$bench.csv"
 done
 make bench-save BENCH_BASELINE=out/reassessment/current BENCH_RUNS=5 BENCH_CPU="$CPU"
@@ -79,7 +79,7 @@ capacity.
 
 Across repeated benchmark sweeps, timings are now aggregated with the median
 rather than the arithmetic mean; every run remains available in the raw
-`*-runs.csv` files. `python3 tool/run-perf.py` defaults to five sweeps locally
+`*-runs.csv` files. `python3 scripts/run-perf.py` defaults to five sweeps locally
 (override with `RUNS`), matching Makefile commands and CI (override with `BENCH_RUNS`).
 Historical tagged snapshots are measured against the current benchmark harness
 using persistent, sparse Git worktrees under `out/perf/worktrees/` without

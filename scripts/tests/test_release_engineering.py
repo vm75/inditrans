@@ -24,9 +24,9 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-# Add repository root to path
-ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "tool"))
+# Import the maintenance scripts from their parent directory.
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts"))
 
 import verify_release
 
@@ -262,7 +262,7 @@ class WorkflowIntegrityTest(unittest.TestCase):
         emsdk_setup = build_job.index("uses: emscripten-core/setup-emsdk@")
         for command in (
             "make dll",
-            "./tool/verify_dll.sh native/build_win/inditrans.dll",
+            "./scripts/verify_dll.sh native/build_win/inditrans.dll",
             "cmake -S native/src -B native/build_linux",
             "cmake --build native/build_linux",
         ):
@@ -272,7 +272,7 @@ class WorkflowIntegrityTest(unittest.TestCase):
     def test_release_restores_generated_dll_copy_before_package_validation(self):
         """DLL verification should not leave the checked-in example copy dirty for pub dry-runs."""
         build_job = self.release_yaml.split("  test-and-build:", 1)[1].split("  publish-pub:", 1)[0]
-        verify = build_job.index("./tool/verify_dll.sh native/build_win/inditrans.dll")
+        verify = build_job.index("./scripts/verify_dll.sh native/build_win/inditrans.dll")
         restore = build_job.index(
             "git restore --source=HEAD --worktree flutter/example.dart/inditrans.dll"
         )

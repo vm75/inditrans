@@ -22,9 +22,9 @@ def main() -> int:
         print("Run from root folder", file=sys.stderr)
         return 1
 
-    scripts = ScriptData("tool/script_data.json", LatinEquivalents("docs/extended-latin.txt"))
+    scripts = ScriptData("scripts/script_data.json", LatinEquivalents("docs/extended-latin.txt"))
     scripts.prepare_equivalents()
-    StaticScripts(scripts.script_info_list, "tool/reader_data.json").write_header(
+    StaticScripts(scripts.script_info_list, "scripts/reader_data.json").write_header(
         "native/src/script_data.h"
     )
 
@@ -32,7 +32,7 @@ def main() -> int:
     ScriptsHeaders(scripts.script_list).update_typescript("nodejs/src/Script.ts")
     ScriptsHeaders(scripts.script_list).update_javascript("js/src/inditrans.post.js")
 
-    options = OptionHeaders("tool/options.json")
+    options = OptionHeaders("scripts/options.json")
     options.update_native("native/src/exports.h")
     options.update_dart("flutter/lib/src/option.dart")
     options.update_typescript("nodejs/src/Option.ts")

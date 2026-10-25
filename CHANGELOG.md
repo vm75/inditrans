@@ -44,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Establish automated, tag-driven release workflow (`.github/workflows/release.yml`) for `vX.Y.Z` Git tags.
   - Enable GitHub Actions OIDC trusted publishing for both pub.dev and npm (`@vm75/inditrans`).
   - Move repository code-generation and maintenance tooling to Python.
-  - Add comprehensive release regression test suite (`tool/test_release_engineering.py`) and validator alignment.
+  - Add comprehensive release regression test suite (`scripts/tests/test_release_engineering.py`) and validator alignment.
   - Expand project documentation: consolidated root `CHANGELOG.md`, `ARCHITECTURE.md`, `AGENTS.md`, and distribution guides.
 
 ## [0.12.1]
