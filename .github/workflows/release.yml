@@ -155,8 +155,8 @@ jobs:
       - name: Install dependencies
         run: cd flutter && flutter pub get
 
-      - name: Prepare changelog for pub packaging
-        run: cp CHANGELOG.md flutter/CHANGELOG.md
+      - name: Bundle native sources and changelog for pub packaging
+        run: python3 scripts/prepare_flutter_package.py
 
       - name: Verify pub dry-run
         run: cd flutter && flutter pub publish --dry-run

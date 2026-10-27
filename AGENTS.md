@@ -142,6 +142,7 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - The Git tag (`vMAJOR.MINOR.PATCH`) is the sole release authority; package
   manifests and build configs are kept in sync via `python3 scripts/bump_version.py`.
 - The single consolidated changelog is authoritative in root `CHANGELOG.md`.
+- Before a Flutter package publish/dry-run, run `python3 scripts/prepare_flutter_package.py` to bundle canonical `native/src/` into Git-ignored `flutter/src/` (included by `.pubignore`) and copy the changelog. `verify_release.py --check-packages` does this and runs `tests/integration/flutter_package_smoke.py` to build outside the monorepo. Platform builds use canonical sources in a checkout and bundled sources in installed packages.
 - Releases are tag-based (`vX.Y.Z`), validated by `scripts/verify_release.py`, and
   published via `.github/workflows/release.yml` with pub.dev OIDC and npm trusted publishing.
 - For pub.dev, `dart-lang/setup-dart@v1` must initialize OIDC credentials even

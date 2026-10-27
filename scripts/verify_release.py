@@ -6,8 +6,11 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import sys
+
+from prepare_flutter_package import prepare_package
 
 
 SEMVER = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
@@ -128,10 +131,13 @@ def main(argv: list[str] | None = None) -> int:
         temp_changelog = Path("flutter/CHANGELOG.md")
         created = not temp_changelog.exists()
         try:
-            if created and changelog.is_file():
-                temp_changelog.write_bytes(changelog.read_bytes())
+            prepare_package(Path.cwd())
+            run_dry_run([sys.executable, "tests/integration/flutter_package_smoke.py"], ".",
+                        "isolated Flutter native package build", errors)
             run_dry_run(["flutter", "pub", "publish", "--dry-run"], "flutter",
                         "flutter pub publish --dry-run", errors)
+        except (OSError, shutil.Error) as error:
+            errors.append(f"Flutter package preparation failed: {error}")
         finally:
             if created and temp_changelog.exists():
                 temp_changelog.unlink()

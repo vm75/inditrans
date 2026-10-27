@@ -58,9 +58,12 @@ jobs:
       - name: Record Flutter and Dart versions
         run: flutter --version
 
-      - name: Build Windows Flutter example
+      - name: Stage isolated Flutter package
+        run: python3 scripts/prepare_flutter_package.py --output out/flutter-package
+
+      - name: Build Windows Flutter example from packaged sources
         run: |
-          cd flutter/example
+          cd out/flutter-package/example
           flutter pub get
           flutter build windows --release
 
@@ -86,15 +89,18 @@ jobs:
       - name: Record Flutter and Dart versions
         run: flutter --version
 
-      - name: Build macOS Flutter example
+      - name: Stage isolated Flutter package
+        run: python3 scripts/prepare_flutter_package.py --output out/flutter-package
+
+      - name: Build macOS Flutter example from packaged sources
         run: |
-          cd flutter/example
+          cd out/flutter-package/example
           flutter pub get
           flutter build macos --release
 
       - name: Build iOS Flutter example
         run: |
-          cd flutter/example
+          cd out/flutter-package/example
           flutter pub get
           flutter build ios --release --no-codesign
 
@@ -121,8 +127,11 @@ jobs:
           flutter --version
           grep -n 'val ndkVersion' "$FLUTTER_ROOT/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt"
 
-      - name: Build Android arm64 Flutter example
+      - name: Stage isolated Flutter package
+        run: python3 scripts/prepare_flutter_package.py --output out/flutter-package
+
+      - name: Build Android arm64 Flutter example from packaged sources
         run: |
-          cd flutter/example
+          cd out/flutter-package/example
           flutter pub get
           flutter build apk --release --target-platform android-arm64

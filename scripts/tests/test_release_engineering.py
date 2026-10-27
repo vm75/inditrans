@@ -213,6 +213,19 @@ class WorkflowIntegrityTest(unittest.TestCase):
             self.assertNotIn(cmd, self.ci_yaml, f"CI workflow should not contain publish command: {cmd}")
             self.assertNotIn(cmd, self.platform_yaml, f"Platform workflow should not contain publish command: {cmd}")
 
+    def test_flutter_publishing_bundles_native_sources(self):
+        pub_job = self.release_yaml.split("  publish-pub:", 1)[1].split("  publish-npm:", 1)[0]
+        for workflow in (pub_job, self.ci_yaml):
+            self.assertLess(workflow.index("python3 scripts/prepare_flutter_package.py"),
+                            workflow.index("flutter pub publish --dry-run"))
+        self.assertIn("python3 tests/integration/flutter_package_smoke.py", self.ci_yaml)
+
+    def test_platform_builds_use_isolated_flutter_package(self):
+        self.assertEqual(self.platform_yaml.count(
+            "python3 scripts/prepare_flutter_package.py --output out/flutter-package"), 3)
+        self.assertEqual(self.platform_yaml.count("cd out/flutter-package/example"), 4)
+        self.assertNotIn("cd flutter/example", self.platform_yaml)
+
     def test_ci_verifies_wasm_artifacts_are_up_to_date(self):
         """Ensure ci.yml verifies that checked-in WASM binaries match rebuilt outputs."""
         nodejs_job = self.ci_yaml.split("  nodejs:", 1)[1]

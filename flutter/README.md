@@ -91,6 +91,12 @@ flutter test             # run tests (native library must be built)
 python3 ../scripts/generate_bindings.py  # regenerate FFI bindings after native API changes
 ```
 
+Checkout builds use the shared engine in `../native/src/`. Before publishing,
+run `python3 scripts/prepare_flutter_package.py` from the repository root to
+bundle it in `flutter/src/` and copy the changelog. Installed pub.dev packages
+build from those bundled sources. Verify that layout with
+`python3 tests/integration/flutter_package_smoke.py` from the repository root.
+
 ## Documentation
 
 - [Changelog](CHANGELOG.md)

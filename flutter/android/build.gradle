@@ -40,10 +40,11 @@ android {
     // Invoke the shared CMake build with the Android Gradle Plugin.
     externalNativeBuild {
         cmake {
-            path = "../../native/src/CMakeLists.txt"
+            // Develop against the canonical engine; pub.dev ships its own copy.
+            path = file("../../native/src/CMakeLists.txt").exists() ? "../../native/src/CMakeLists.txt" : "../src/CMakeLists.txt"
             version = "3.22.1"
 
-            // The Android build invokes the shared CMake build in native/src/CMakeLists.txt,
+            // The Android build invokes the shared engine's CMakeLists.txt,
             // which requires CMake >= 3.20 for C++23 standard support.
         }
     }

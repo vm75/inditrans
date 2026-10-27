@@ -11,6 +11,8 @@ python3 scripts/import_script.py indic newScript
 python3 scripts/bump_version.py patch --log "Describe the release change"
 python3 scripts/verify_release.py --tag=v0.13.0
 python3 scripts/verify_wasm_build_parity.py
+python3 scripts/prepare_flutter_package.py
+python3 tests/integration/flutter_package_smoke.py
 ```
 
 ## Test organization
@@ -38,6 +40,13 @@ isolated by `uv run`; see [font sources and reproduction](../demo/fonts/README.m
 They are not needed to serve the demo or run the standard-library script tests.
 
 ## Generation and validation
+
+`prepare_flutter_package.py` refreshes `flutter/src/` from canonical `native/src/`
+and copies the root changelog before pub publishing. The source copy is ignored
+by Git and included by `flutter/.pubignore`. Run the isolated package smoke test
+after preparation to check CMake builds, the native ABI, and Apple source
+forwarders without access to the monorepo engine. CI and release packaging run
+these checks automatically; normal checkout builds use canonical sources.
 
 `generate_headers.py` reads `script_data.json`, `reader_data.json`,
 `options.json`, and `docs/extended-roman.txt`, then updates generated C++, Dart,

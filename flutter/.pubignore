@@ -1,0 +1,17 @@
+# Pub uses these rules instead of .gitignore. Keep the generated src/ engine.
+*.class
+*.log
+*.pyc
+*.swp
+*.iml
+*.ipr
+*.iws
+ephemeral/
+migrate_working_dir/
+pubspec.lock
+**/doc/api/
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies

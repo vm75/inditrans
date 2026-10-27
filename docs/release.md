@@ -79,8 +79,9 @@ The tag-triggered release workflow strictly enforces the canonical path:
      - Node.js Jest test suite (`yarn test`).
    - Deterministically verifies all binary artifacts exist and are non-empty.
    - Performs fail-closed publish dry-runs (`flutter pub publish --dry-run` and `npm pack --dry-run`).
+   - Stages `native/src/` as `flutter/src/` with `python3 scripts/prepare_flutter_package.py` and builds the native plugin in an isolated package layout before the pub dry-run. The source bundle is ignored by Git but included by `flutter/.pubignore`.
 4. **`publish`**:
-   - **`publish-pub`**: Publishes package to [pub.dev](https://pub.dev/packages/inditrans) using pub.dev Automated Publishing via GitHub Actions OIDC (`id-token: write`, `dart-lang/setup-dart@v1` to initialize credentials, then `flutter pub publish --force`).
+   - **`publish-pub`**: Bundles native sources and the root changelog with `python3 scripts/prepare_flutter_package.py`, then publishes the package to [pub.dev](https://pub.dev/packages/inditrans) using pub.dev Automated Publishing via GitHub Actions OIDC (`id-token: write`, `dart-lang/setup-dart@v1` to initialize credentials, then `flutter pub publish --force`).
    - **`publish-npm`**: Publishes package to [npm](https://www.npmjs.com/package/@vm75/inditrans) using npm Trusted Publishing via GitHub Actions OIDC (`id-token: write`, `npm publish --access=public`).
 5. **`github-release`**:
    - Creates a GitHub Release for tag `vX.Y.Z` using `gh release create`.
@@ -103,6 +104,7 @@ To verify the release pipeline safely without creating a real release or publish
   Its PR performance gate compares timing, output hashes, and allocation metrics
   against `perf-00-baseline`, using the current harness with unchanged tagged engine sources.
   Multi-platform acceptance (macOS, Windows MSVC, and Android arm64) is maintained in a separate workflow (`.github/workflows/platform.yml`), triggered explicitly on `platform-*` tags or manual `workflow_dispatch`.
+  Its Flutter builds use an isolated copy made by `python3 scripts/prepare_flutter_package.py --output out/flutter-package`, exercising bundled sources rather than the monorepo layout.
 - **Demo deployment**: `.github/workflows/pages.yml` stages `demo/` and the matching
   checkout's `js/` engine assets together, with the site root redirecting to `demo/`.
   Rebuild the engine before shipping mapping changes; the demo no longer loads an

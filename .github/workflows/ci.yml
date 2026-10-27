@@ -220,8 +220,11 @@ jobs:
       - name: Run Flutter tests
         run: cd flutter && LD_LIBRARY_PATH=../native/build_linux flutter test
 
-      - name: Copy root CHANGELOG.md for dry-run
-        run: cp CHANGELOG.md flutter/CHANGELOG.md
+      - name: Bundle native sources and changelog for pub packaging
+        run: python3 scripts/prepare_flutter_package.py
+
+      - name: Build native plugin from isolated package layout
+        run: python3 tests/integration/flutter_package_smoke.py
 
       - name: Dry-run publish
         run: cd flutter && flutter pub publish --dry-run
