@@ -67,8 +67,8 @@ The tag-triggered release workflow strictly enforces the canonical path:
    - Verifies `CHANGELOG.md` contains an entry for `X.Y.Z`.
    - Extracts release notes into an artifact (`release_notes.md`) for the GitHub Release.
 3. **`test/build`**:
-   - Builds and smoke tests the Windows DLL and builds the Linux shared library before Emscripten setup, avoiding its `cmake/` directory in native build command lookup.
-   - Restores the checked-in Dart example DLL after verification so package validation sees a clean checkout.
+   - Builds the Linux shared library before Emscripten setup, avoiding its `cmake/` directory in native build command lookup.
+   - Windows DLL cross-build, export/dependency verification, and main-branch Wine smoke tests run in `.github/workflows/ci.yml`; release jobs omit these duplicate checks and their MinGW/Wine installation.
    - Rebuilds all publishable artifacts from the exact tagged commit:
      - Standalone WASM (`flutter/assets/inditrans.wasm`) and JS WASM (`js/public/inditrans.js`) via Emscripten (`make wasm`).
      - Linux native shared library for Flutter FFI tests.

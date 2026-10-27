@@ -150,6 +150,8 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
   token-placeholder `.npmrc` breaks dependency installation without a token.
 - In the release build job, build native libraries before Emscripten setup to avoid
   its `cmake/` directory interfering with native build command lookup.
+- Windows DLL cross-build and validation run in `.github/workflows/ci.yml` for
+  PRs/main (Wine runtime smoke tests on main); keep MinGW/Wine out of release jobs.
 - The normal `.github/workflows/ci.yml` workflow runs fast Linux-based checks for
   pull requests targeting `main` and pushes to `main` (skipping doc-only changes);
   multi-platform acceptance (macOS, Windows MSVC, Android) is isolated in

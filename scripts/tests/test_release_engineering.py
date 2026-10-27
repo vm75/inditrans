@@ -261,24 +261,21 @@ class WorkflowIntegrityTest(unittest.TestCase):
         build_job = self.release_yaml.split("  test-and-build:", 1)[1].split("  publish-pub:", 1)[0]
         emsdk_setup = build_job.index("uses: emscripten-core/setup-emsdk@")
         for command in (
-            "make dll",
-            "./scripts/verify_dll.sh native/build_win/inditrans.dll",
             "cmake -S native/src -B native/build_linux",
             "cmake --build native/build_linux",
         ):
             with self.subTest(command=command):
                 self.assertLess(build_job.index(command), emsdk_setup)
 
-    def test_release_restores_generated_dll_copy_before_package_validation(self):
-        """DLL verification should not leave the checked-in example copy dirty for pub dry-runs."""
-        build_job = self.release_yaml.split("  test-and-build:", 1)[1].split("  publish-pub:", 1)[0]
-        verify = build_job.index("./scripts/verify_dll.sh native/build_win/inditrans.dll")
-        restore = build_job.index(
-            "git restore --source=HEAD --worktree flutter/example.dart/inditrans.dll"
-        )
-        package_validation = build_job.index("--check-packages")
-        self.assertLess(verify, restore)
-        self.assertLess(restore, package_validation)
+    def test_windows_dll_validation_runs_in_branch_ci_only(self):
+        """Keep Windows cross-build coverage off the release publishing path."""
+        windows_job = self.ci_yaml.split("  windows-dll:", 1)[1]
+        for command in ("make dll", "./scripts/verify_dll.sh native/build_win/inditrans.dll"):
+            with self.subTest(command=command):
+                self.assertIn(command, windows_job)
+                self.assertNotIn(command, self.release_yaml)
+        self.assertNotIn("mingw", self.release_yaml)
+        self.assertNotIn("wine64", self.release_yaml)
 
     def test_release_analysis_resolves_standalone_example_dependencies(self):
         """Root analysis includes the standalone Dart example's package imports."""

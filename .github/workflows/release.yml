@@ -41,25 +41,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Install native and Windows cross-build tools
+      - name: Install native build tools
         run: |
           sudo apt-get update
           sudo apt-get install -y \
             cmake \
             build-essential \
-            clang \
-            g++-mingw-w64-x86-64 \
-            binutils-mingw-w64-x86-64 \
-            mingw-w64-x86-64-dev \
-            wine64
+            clang
 
       # Build native libraries before Emscripten adds its cmake/ directory to PATH.
-      - name: Build and smoke test Windows DLL
-        run: |
-          make dll
-          ./scripts/verify_dll.sh native/build_win/inditrans.dll
-          git restore --source=HEAD --worktree flutter/example.dart/inditrans.dll
-
       - name: Build Linux shared library for FFI tests
         run: |
           cmake -S native/src -B native/build_linux
