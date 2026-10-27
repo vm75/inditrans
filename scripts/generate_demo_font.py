@@ -54,6 +54,38 @@ SCRIPT_TAGS = {
 }
 
 
+def classify_tamil_annotations(font):
+    """Let Vedic marks attach past spacing Tamil superscript annotations.
+
+    The merger's locl substitutions select Tamil-specific copies of common
+    glyphs. Only classify those copies as GDEF marks: their advances stay intact,
+    while Tamil mark-to-base positioning can reach the preceding Tamil base.
+    Latin superscripts retain their original classification and shaping.
+    """
+    gsub = font["GSUB"].table
+    cmap = font.getBestCmap()
+    annotations = {cmap[ord(char)] for char in "²³⁴"}
+    localized = set()
+    for record in gsub.ScriptList.ScriptRecord:
+        if record.ScriptTag not in SCRIPT_TAGS["Tamil"]:
+            continue
+        languages = [record.Script.DefaultLangSys] + [lang.LangSys for lang in record.Script.LangSysRecord]
+        for language in filter(None, languages):
+            for index in language.FeatureIndex:
+                feature = gsub.FeatureList.FeatureRecord[index]
+                if feature.FeatureTag != "locl":
+                    continue
+                for lookup in feature.Feature.LookupListIndex:
+                    for subtable in gsub.LookupList.Lookup[lookup].SubTable:
+                        subtable = getattr(subtable, "ExtSubTable", subtable)
+                        for source, target in getattr(subtable, "mapping", {}).items():
+                            if source in annotations and target != source:
+                                font["GDEF"].table.GlyphClassDef.classDefs[target] = 3
+                                localized.add(source)
+    if localized != annotations:
+        raise ValueError("Missing Tamil-specific superscript glyphs after merging")
+
+
 def add_shared_mark_positioning(font, source_coverage):
     """Attach borrowed Vedic marks using the receiving glyph's own bounds.
 
@@ -161,6 +193,7 @@ def main():
     subsetter = subset.Subsetter(options=options)
     subsetter.populate(unicodes={code for start, end in RANGES for code in range(start, end + 1)})
     subsetter.subset(font)
+    classify_tamil_annotations(font)
     add_shared_mark_positioning(font, source_coverage)
     family = "Inditrans Indic Fallback"
     names = {

@@ -17,6 +17,11 @@ import uharfbuzz as hb
 
 ROOT = Path(__file__).resolve().parents[1]
 
+BUNDLED_SCRIPTS = {
+    "assamese", "bengali", "devanagari", "gujarati", "gurmukhi", "kannada",
+    "malayalam", "oriya", "sinhala", "tamil", "telugu",
+}
+
 
 REFERENCE_FONTS = {
     "urdu": ("NotoNastaliqUrdu", "2fd7b78ce48768b4d7b251457191e0f6db4c85e966a8a10a1f04e196dad35bb6"),
@@ -100,7 +105,8 @@ console.log(JSON.stringify({scripts: Object.fromEntries(Object.entries(data.scri
   .filter(([, script]) => script.kind === 'indic').map(([id]) => [id, data.maps[id]])), rawCases}));
 """
     data = json.loads(subprocess.check_output(["node", "-e", extract], cwd=ROOT, text=True))
-    corpus = data["scripts"]
+    # Other catalog entries use hosted/reference fonts, not the bundled face.
+    corpus = {script: layout for script, layout in data["scripts"].items() if script in BUNDLED_SCRIPTS}
     bundled = TTFont(ROOT / "demo/fonts/inditrans-indic-fallback.woff2")
     bundled.flavor = None
     decompressed = io.BytesIO()
@@ -119,6 +125,41 @@ console.log(JSON.stringify({scripts: Object.fromEntries(Object.entries(data.scri
             raise AssertionError(f"Missing glyph after shaping: {text!r}")
         count += 1
         return buffer
+
+    dotted_circle = bundled.getGlyphID(bundled.getBestCmap()[0x25CC])
+    circles = lambda shaped: sum(glyph.codepoint == dotted_circle for glyph in shaped.glyph_infos)
+    width = lambda shaped: sum(position.x_advance for position in shaped.glyph_positions)
+
+    def accent_positions(shaped, length):
+        pen = 0
+        positions = []
+        for glyph, position in zip(shaped.glyph_infos, shaped.glyph_positions):
+            positions.append((glyph.codepoint, pen + position.x_offset, position.y_offset))
+            pen += position.x_advance
+        return positions[-length:]
+
+    annotation_cases = 0
+    for base in ["க", "கி", "கு", "கீ", "க்ஷ", "த்யே", "ஃக"]:
+        for digit in "²³⁴":
+            for accent in marks[1:]:
+                reference = check(base + accent)
+                annotated = check(base + digit + accent)
+                if circles(annotated) or width(annotated) != width(check(base + digit)):
+                    raise AssertionError(f"Broken Tamil annotation cluster: {base + digit + accent!r}")
+                # Glyph existence is insufficient: the accent must attach to the
+                # same Tamil base as it does without the annotation, not the digit.
+                if accent_positions(annotated, len(accent)) != accent_positions(reference, len(accent)):
+                    raise AssertionError(f"Detached Tamil annotation accent: {base + digit + accent!r}")
+                annotation_cases += 1
+    print(f"{annotation_cases} Tamil annotation cases preserve accent attachment and character spacing")
+
+    oriya_cases = ["ଗ॒", "ଗ॑", "ଗୁ॒", "ଗୀ॑", "ଗ୍ଗ॒", "ଗ୍ୟ॑", "କ୍ଷ॒", "କ୍ଷୀ॑"]
+    for text in oriya_cases:
+        accented = check(text)
+        native = check(text.rstrip("॒॑"))
+        if circles(accented) or width(accented) != width(native):
+            raise AssertionError(f"Broken Oriya accent cluster: {text!r}")
+    print(f"{len(oriya_cases)} Oriya accent cases add no dotted circles or spacing")
 
     for script, layout in corpus.items():
         for values in layout.values():
@@ -147,12 +188,9 @@ console.log(JSON.stringify({scripts: Object.fromEntries(Object.entries(data.scri
         mark = buffer.glyph_positions[-1]
         if mark.x_advance != 0 or (mark.x_offset == 0 and mark.y_offset == 0):
             raise AssertionError(f"Unattached borrowed Vedic mark: {text!r}")
-    dotted_circle = bundled.getGlyphID(bundled.getBestCmap()[0x25CC])
     for text, native in data["rawCases"]:
         buffer = check(text)
         reference = check(native)
-        circles = lambda shaped: sum(glyph.codepoint == dotted_circle for glyph in shaped.glyph_infos)
-        width = lambda shaped: sum(position.x_advance for position in shaped.glyph_positions)
         if circles(buffer) != circles(reference) or width(buffer) != width(reference):
             raise AssertionError(f"Broken raw Telugu accent cluster: {text!r}")
     print(f"{len(data['rawCases'])} raw Telugu accent cases add no dotted circles or spacing")

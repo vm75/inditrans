@@ -14,12 +14,19 @@ demo mode prioritizes a restricted family registration of this face across its
 covered Indic scripts, shared Vedic marks, and Tamil superscript annotation
 digits. Unicode-range restrictions leave ordinary Latin text with the selected
 font. The original unrestricted family remains later in the stack for extra
-fallback coverage. This font provides both, retaining the source fonts' shaping tables and adding attachment
-anchors for borrowed combining marks absent from each original script font.
+fallback coverage. This font provides both, retaining the source fonts' shaping
+tables and adding attachment anchors for borrowed combining marks absent from
+each original script font.
 This also avoids leaving a Telugu or other script's accent at the Devanagari
 font's unadjusted position. Native mark positioning is preserved. Diagnostic
 font modes can still select a script font, one font, or a custom stack explicitly;
 normal mode may use this fallback's serif style for covered Indic characters.
+
+Tamil's localized superscript glyphs (`²³⁴`) are classified as marks in
+GDEF. This lets an accent after a superscript attach to the preceding Tamil base
+instead of floating after the digit. The digit keeps its original advance, and
+Latin superscripts retain their original glyph classes. Text and clipboard
+contents remain the literal engine output.
 
 Sources are pinned to the archived `notofonts/noto-fonts` revision
 [`ffebf8c`](https://github.com/notofonts/noto-fonts/tree/ffebf8c1ee449e544955a7e813c54f9b73848eac).
@@ -44,8 +51,10 @@ uv run scripts/verify_demo_font.py
 This uses HarfBuzz shaping and fails if any result contains glyph ID zero
 (`.notdef`), and checks that borrowed Vedic marks attach without adding spacing.
 It checks raw Telugu vowels/conjuncts with real accents against native clusters,
-rejecting extra dotted circles or character spacing. It also builds the CLI and
-shapes forward outputs with five pinned reference fonts for Urdu/Nastaliq, Thai,
+rejecting extra dotted circles or character spacing. It checks Tamil superscripts
+against unannotated syllables: accent glyph positions must match, with no inserted
+dotted circles or extra accent spacing. It also builds the CLI and shapes forward
+outputs with five pinned reference fonts for Urdu/Nastaliq, Thai,
 Tibetan, Burmese and Khmer. Those downloaded fonts are cached under
 `out/demo-font-sources/`; they are not merged into the bundled Indic face.
 Checking only that fonts loaded, or checking isolated accent

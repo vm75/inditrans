@@ -35,6 +35,9 @@ when individual script fonts lack a mark. Its Unicode range leaves ordinary
 Latin text to the selected font. The unrestricted registration remains later
 in the stack for its additional fallback coverage. **Script fonts only**,
 **Selected font only**, and **Custom stack** remain diagnostic overrides.
+The font dropdowns still list the scripts' catalog fonts; in Full mode, covered
+Indic text uses the combined face even when a catalog font is selected. Use a
+diagnostic override to compare the selected face itself.
 It covers those same scripts in Mixed Indic without depending on device fonts;
 Grantha and the other script families use their hosted fonts. Other downloaded
 Indic and Roman fonts remain available as further fallbacks. Custom
