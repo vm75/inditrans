@@ -17,16 +17,23 @@ The default input is the mixed-script sample, with **Mixed Indic** as the source
 and **Indlish** as the output. The **reset icon** restores that text, both default
 scripts, and all conversion options. Appearance and keyboard preferences are retained.
 
+Script choices are grouped as **Indic**, **Roman**, and **Perso-Arabic**, with
+**Mixed Indic** remaining a separate input choice. Tamil is in Indic and retains
+its specialized transliteration rules. Choices marked with **\*** support
+accent output in Inditrans; their keyboards offer the corresponding accent keys.
+This capability is independent of script family and font coverage.
+
 Conversion options include **Skip-start** and **Skip-end**, both defaulting to
 `##`. Text between them is preserved exactly, and the delimiters are removed from
 the output. Empty delimiter fields use `##`. Delimiters are saved with the session.
 
 The selected font is tried first, followed by other fonts for that script and a
-[bundled Indic fallback](fonts/README.md). The fallback includes all ten Indic
-scripts offered by the demo and shared Vedic marks in one face, so complete
+[bundled Indic fallback](fonts/README.md). The fallback includes ten Indic
+scripts and shared Vedic marks in one face, so complete
 accented syllables can render even when individual script fonts lack a mark.
-It also covers Mixed Indic without depending on device fonts. Other downloaded
-Indic and Latin fonts remain available as further fallbacks. Custom
+It covers those same scripts in Mixed Indic without depending on device fonts;
+Grantha and the other script families use their hosted fonts. Other downloaded
+Indic and Roman fonts remain available as further fallbacks. Custom
 fonts and **Charis SIL (installed)** must be installed locally. If characters
 remain boxes, check that `fonts.googleapis.com` and `fonts.gstatic.com` are
 accessible; no Android language or keyboard setting is required for web fonts.
@@ -53,6 +60,9 @@ The panes, clipboard and saved sessions use the raw engine string. Extended
 vowels now use native approximations, so no Telugu separator rearrangement is
 needed. Old saved strings remain literal text; the demo does not reconstruct
 removed synthetic distinctions.
+
+**Grantha** uses Unicode Grantha characters, `lang="sa-Gran"`, and the hosted
+Noto Sans Grantha font. It replaces the former Tamil Extended option.
 
 **Urdu (Nastaliq)** uses `lang="ur"`, RTL direction, additional line spacing, and
 Noto Nastaliq Urdu with Noto Naskh Arabic fallback. Its font is downloaded rather

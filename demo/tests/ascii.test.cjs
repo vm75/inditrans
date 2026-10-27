@@ -8,13 +8,14 @@ const assert = require('node:assert/strict');
 // Exercise the buildless demo's actual tables and composer without a browser dependency.
 const html = readFileSync(join(__dirname, '../index.html'), 'utf8');
 const tables = html.slice(html.indexOf('const KEYBOARD_MAPS'), html.indexOf('const KEYBOARD_REFERENCE_MAP'));
+const catalog = html.slice(html.indexOf('const SCRIPT_CATALOG'), html.indexOf('const ROMAN_FONTS'));
 const composer = html.slice(html.indexOf('function createAsciiComposer'), html.indexOf('function createKeyboard'));
-const { KEYBOARD_MAPS, ASCII_KEYBOARD_TOKENS, createAsciiComposer, VEDIC_KEYBOARD_ACCENTS } = runInNewContext(
-  tables + '\n' + composer + ';({ KEYBOARD_MAPS, ASCII_KEYBOARD_TOKENS, createAsciiComposer, VEDIC_KEYBOARD_ACCENTS })'
+const { KEYBOARD_MAPS, ASCII_KEYBOARD_TOKENS, createAsciiComposer, keyboardAccents, SCRIPT_CATALOG } = runInNewContext(
+  tables + '\n' + catalog + '\n' + composer + ';({ KEYBOARD_MAPS, ASCII_KEYBOARD_TOKENS, createAsciiComposer, keyboardAccents, SCRIPT_CATALOG })'
 );
 function layoutFor(script) {
   const layout = KEYBOARD_MAPS[script];
-  return { ...layout, symbols: [...layout.symbols, ...layout.vedicSymbols], accents: script === 'urdu' ? [] : VEDIC_KEYBOARD_ACCENTS };
+  return { ...layout, symbols: [...layout.symbols, ...layout.vedicSymbols], accents: keyboardAccents(script) };
 }
 const compose = createAsciiComposer(layoutFor('devanagari'));
 
@@ -26,7 +27,7 @@ test('every character slot has a unique ASCII shortcut', () => {
     const layout = layoutFor(script);
     const convert = createAsciiComposer(layout);
     for (const [group, shortcuts] of Object.entries(ASCII_KEYBOARD_TOKENS)) {
-      if (script === 'urdu' && group === 'accents') { assert.equal(layout.accents.length, 0); continue; }
+      if (group === 'accents' && layout.accents.length === 0) { assert.equal(layout.accents.length, 0); continue; }
       assert.equal(shortcuts.length, layout[group].length, script + ': ' + group);
       shortcuts.forEach((token, index) => {
         if (layout[group][index]) assert.equal(convert(token), layout[group][index], script + ': ' + token);
@@ -46,6 +47,14 @@ test('vowels become signs only immediately after a consonant', () => {
   assert.equal(compose('i', 'क्'), 'इ');
   assert.equal(createAsciiComposer(layoutFor('telugu'))('ki'), 'కి');
   assert.equal(createAsciiComposer(layoutFor('kannada'))('ki'), 'ಕಿ');
+});
+
+test('Grantha keyboard composes supplementary letters, signs and conjuncts', () => {
+  const convert = createAsciiComposer(layoutFor('grantha'));
+  assert.equal(KEYBOARD_MAPS.tamilExtended, undefined);
+  for (const [ascii, expected] of Object.entries({
+    'k`Sh.i': '𑌕𑍍𑌷𑌿', kO: '𑌕𑍋', 'kR^I': '𑌕𑍄', OM: '𑍐'
+  })) assert.equal(convert(ascii), expected, ascii);
 });
 
 test('Indlish collisions, symbols and accents remain distinct', () => {
@@ -144,4 +153,29 @@ test('Urdu ASCII vowels use explicit points and separate independent carriers', 
   assert.equal(convert('ki'), 'کِ');
   assert.equal(convert('kI'), 'کِی');
   assert.equal(convert('i'), 'اِ');
+});
+
+test('script families and accent keyboards match the canonical data', () => {
+  const data = JSON.parse(readFileSync(join(__dirname, '../../scripts/script_data.json'), 'utf8'));
+  const groups = Object.values(SCRIPT_CATALOG).filter(entry => entry.separator).map(entry => entry.label);
+  assert.deepEqual(Array.from(groups), ['── Indic ──', '── Roman ──', '── Perso-Arabic ──']);
+  let family;
+  const families = ['indic', 'roman', 'persoArabic'];
+  let index = 0;
+  for (const [id, entry] of Object.entries(SCRIPT_CATALOG)) {
+    if (entry.separator) { family = families[index++]; continue; }
+    if (id === 'indic') { assert.equal(entry.target, false); continue; }
+    assert.ok(Object.hasOwn(data[family], id), id + ': wrong dropdown group');
+  }
+  for (const [kind, scripts] of Object.entries(data)) {
+    for (const [id, info] of Object.entries(scripts)) {
+      const entry = SCRIPT_CATALOG[id];
+      assert.equal(entry.kind, kind, id);
+      assert.equal(entry.supportsVedicAccents, info.supportsVedicAccents, id);
+      assert.equal(keyboardAccents(id).length, info.supportsVedicAccents ? 3 : 0, id);
+    }
+  }
+  assert.equal(SCRIPT_CATALOG.tamil.kind, 'indic');
+  assert.equal(keyboardAccents('tamil')[0], '॒');
+  assert.equal(keyboardAccents('iso')[0], '̱');
 });

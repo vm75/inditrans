@@ -40,10 +40,23 @@ They are not needed to serve the demo or run the standard-library script tests.
 ## Generation and validation
 
 `generate_headers.py` reads `script_data.json`, `reader_data.json`,
-`options.json`, and `docs/extended-latin.txt`, then updates generated C++, Dart,
+`options.json`, and `docs/extended-roman.txt`, then updates generated C++, Dart,
 TypeScript, and JavaScript declarations. The shared generator code lives in
 `python/`; its ordering and output formatting are deliberate because generated
 files are checked in and trie IDs depend on deterministic input order.
+
+`script_data.json` has three family groups: `indic`, `roman`, and `persoArabic`.
+Each script must declare a boolean `supportsVedicAccents` describing Inditrans'
+output capability. Tamil is in `indic` with `processingType: "tamil"` to select
+its specialized engine handlers; other scripts use their family by default.
+The generator rejects unknown families, missing/non-boolean capabilities, and
+unsupported processing overrides. Accent input recognition remains independent
+of output support.
+
+The importer accepts those same three families. Use `--vedic-accents` when
+importing an Indic script with accent output support; Roman imports enable it
+by default. Other imports default to false. Review imported inventories and set
+`processingType: "tamil"` when authoring a Tamil profile before generation.
 
 `generate_bindings.py` parses the small exported C ABI in
 `native/src/exports.h`. Its type map is intentionally limited to the ABI's

@@ -27,11 +27,11 @@ REFERENCE_FONTS = {
 }
 
 
-def verify_reference_fonts(latin_font):
+def verify_reference_fonts(roman_font):
     subprocess.run(["make", "out/inditrans"], cwd=ROOT, check=True)
     # Forward engine output, with native/contextual forms covered by shared tests.
     script_data = json.loads((ROOT / "scripts/script_data.json").read_text())
-    inventory = script_data["latin"]["iso"]
+    inventory = script_data["roman"]["iso"]
     source = " ".join(inventory["vowels"] + [c + "a" for c in inventory["consonants"]]
                       + ["a" + mark for mark in inventory["otherDiacritics"]]
                       + ["ki", "kī", "ku", "kū", "kē", "krē", "kka", "kta", "khā", "śrī", "kaī", "āē", "kqa"])
@@ -67,14 +67,14 @@ def verify_reference_fonts(latin_font):
         print(f"{script}: {len(text.split())} raw engine syllables shaped with pinned {family}")
 
 
-    for script in script_data["latin"]:
+    for script in script_data["roman"]:
         if script == "iso":
             texts = [subprocess.check_output([str(ROOT / "out/inditrans"), "-f", "devanagari", "-t", "iso", "ऍ कॅ ᳵ ᳶ"], text=True),
                      subprocess.check_output([str(ROOT / "out/inditrans"), "-f", "urdu", "-t", "iso", "ثَ صَ حَ طَ عَ ذَ ضَ ظَ ژَ"], text=True)]
         else:
             texts = [subprocess.check_output([str(ROOT / "out/inditrans"), "-f", "iso", "-t", script, source], text=True)]
         for text in texts:
-            buffer = hb.Buffer(); buffer.add_str(text.strip()); buffer.guess_segment_properties(); hb.shape(latin_font, buffer)
+            buffer = hb.Buffer(); buffer.add_str(text.strip()); buffer.guess_segment_properties(); hb.shape(roman_font, buffer)
             if any(g.codepoint == 0 for g in buffer.glyph_infos):
                 raise AssertionError(f"Missing glyph in Roman profile {script}: {text!r}")
         print(f"{script}: forward Roman output has complete bundled font coverage")

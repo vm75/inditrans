@@ -469,18 +469,18 @@ consteval auto deriveTamilEntries(const Trie& trie, const Terminals& terminals, 
 
 enum class IndicOrthography : uint8_t { Plain, Thai, Tibetan, Burmese, Khmer, Gurmukhi };
 
-/// Target script descriptor defining output character mappings, script family, and Vedic capability.
+/// Target script descriptor defining output mappings, processing type, and Vedic accent capability.
 ///
 /// Contains compile-time spans into the shared UTF-8 writer text pool for each TokenType category.
 /// The 9th slot is empty, allowing TokenType::Ignore lookups to safely return empty views without branching.
 struct ScriptWriterMap {
-  ScriptType scriptType; ///< Script family (Indic, Tamil, Latin, Perso-Arabic)
-  bool vedic; ///< True if this script natively supports Vedic accent marks
+  ScriptType scriptType; ///< Engine processing type (Indic, Tamil, Roman, Perso-Arabic)
+  bool vedicAccents; ///< True if Inditrans supports Vedic accent output for this script
   std::array<std::span<const inditrans::static_data::WriterChar>, 9> charMaps; ///< Grapheme spans indexed by TokenType
   IndicOrthography orthography { IndicOrthography::Plain };
 
   constexpr ScriptType getType() const noexcept { return scriptType; }
-  constexpr bool isVedic() const noexcept { return vedic; }
+  constexpr bool supportsVedicAccents() const noexcept { return vedicAccents; }
   constexpr bool isIndlish() const noexcept;
   constexpr std::string_view lookupChar(TokenType type, size_t index) const noexcept;
   constexpr std::string_view lookupChar(const Token& token) const noexcept {

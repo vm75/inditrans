@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.0]
+- Use lightweight same-script copying with configurable marker, Tamil annotation, accent, XML tag, and protected-span handling.
+- Disable Vedic accent output and demo accent keys for WX and SLP1.
+- Disable Vedic accent output and demo accent keys for Grantha.
+- Group scripts as Indic, Roman, and Perso-Arabic, with explicit Vedic accent output support; keep Tamil in Indic with its specialized transliteration handlers.
+- Use Roman terminology consistently across engine code, generated data, tooling, demo, and documentation.
+- Replace the Malayalam-based `tamilExtended` profile with Unicode Grantha (`grantha`) across the engine, Dart/TypeScript/JavaScript APIs, and demo keyboard. The old script ID is removed.
+
 ## [0.15.0]
 - Specialize common readers once per call to omit Thai and Urdu checks from Vedic, Tamil and Roman conversion loops.
 - Focus native performance comparisons on Vedic scripts, Tamil and ISO; promote this engine to the main performance baseline.
@@ -109,7 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * added support for xml tag skip
 
 ## [0.4.2]
-* Added case insensitive support for iast, iso and ipa. Added support for extended latin chars with composition
+* Added case insensitive support for iast, iso and ipa. Added support for extended roman chars with composition
 
 ## [0.4.1]
 * Split symbols, Zero Width chars and Vedic symbols

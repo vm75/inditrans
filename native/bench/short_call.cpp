@@ -19,7 +19,7 @@ struct Case {
 };
 
 constexpr std::string_view devanagariSeed = "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । ";
-constexpr std::string_view latinSeed = "śrī gurubhyo namaḥ, namaste bhāratam. ";
+constexpr std::string_view romanSeed = "śrī gurubhyo namaḥ, namaste bhāratam. ";
 constexpr std::string_view expansionSeed = "अॅॐऍ";
 constexpr std::string_view protectedSeed = "##a protected span with raw text नमस्ते and symbols 🙂 ##";
 constexpr std::string_view mixedProtectedSeed = "नमस्ते ##a long protected raw span with text नमस्ते and symbols 🙂## भारतम् । ";
@@ -29,11 +29,11 @@ constexpr std::string_view tamilPrefixSeed = "அதுபோல ";
 constexpr std::string_view tamilCompoundVowelsSeed = "கொ கோ கௌ ";
 constexpr std::string_view gurmukhiAdhakSeed = "ਹੱਦ ਬੱਚਿਓ ਕੱਦ । ";
 
-// Explicit Vedic scripts, Tamil, and ISO only; no virtual Indic reader.
+// Explicit Indic sources (including Grantha) and ISO; no virtual Indic reader.
 constexpr std::array cases {
   Case { "devanagari", "telugu", "devanagari-to-telugu", devanagariSeed },
   Case { "devanagari", "tamil", "tamil-output", devanagariSeed },
-  Case { "iso", "devanagari", "iso-to-devanagari", latinSeed },
+  Case { "iso", "devanagari", "iso-to-devanagari", romanSeed },
   Case { "devanagari", "iso", "devanagari-to-iso", devanagariSeed },
   Case { "devanagari", "telugu", "expansion-heavy", expansionSeed },
   Case { "devanagari", "telugu", "protected-spans", protectedSeed },
@@ -45,7 +45,7 @@ constexpr std::array cases {
   Case { "devanagari", "tamil", "tamil-traditional-output", devanagariSeed, TranslitOptions::TamilTraditional },
   Case { "tamil", "iso", "tamil-prefix", tamilPrefixSeed },
   Case { "tamil", "iso", "tamil-compound-vowels", tamilCompoundVowelsSeed },
-  Case { "iso", "tamil", "iso-to-tamil", latinSeed },
+  Case { "iso", "tamil", "iso-to-tamil", romanSeed },
   Case { "gurmukhi", "devanagari", "gurmukhi-adhak", gurmukhiAdhakSeed },
   Case { "assamese", "devanagari", "assamese-to-devanagari", "নম॒স্তে॑ ভা॒ৰতম্ । " },
   Case { "bengali", "devanagari", "bengali-to-devanagari", "নম॒স্তে॑ ভা॒রতম্ । " },
@@ -54,7 +54,7 @@ constexpr std::array cases {
   Case { "malayalam", "devanagari", "malayalam-to-devanagari", "നമ॒സ്തേ॑ ഭാ॒രതമ് । " },
   Case { "oriya", "devanagari", "oriya-to-devanagari", "ନମ॒ସ୍ତେ॑ ଭା॒ରତମ୍ । " },
   Case { "telugu", "devanagari", "telugu-to-devanagari", "నమ॒స్తే॑ భా॒రతమ్ । " },
-  Case { "tamilExtended", "devanagari", "tamilExtended-to-devanagari", "നമ॒സ്‌തേ॑ ഭാ॒രതമ്‌ । " },
+  Case { "grantha", "devanagari", "grantha-to-devanagari", "𑌨𑌮॒𑌸𑍍𑌤𑍇॑ 𑌭𑌾॒𑌰𑌤𑌮𑍍 । " },
 };
 
 void measure(const Case& testCase) {

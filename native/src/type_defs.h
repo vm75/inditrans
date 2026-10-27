@@ -10,11 +10,11 @@
 
 using namespace std::literals::string_view_literals;
 
-/// High-level script family classification governing transliteration rules.
+/// Engine processing types governing transliteration rules; Tamil specializes the Indic family.
 enum class ScriptType : uint8_t {
   Indic, ///< Standard Brahmic abugidas (Devanagari, Bengali, Telugu, Kannada, etc.)
   Tamil, ///< Tamil script, which features a reduced consonant set, allophones, and superscripts
-  Latin, ///< Romanization schemes (ITRANS, Harvard-Kyoto, IAST, SLP1, Velthuis, etc.)
+  Roman, ///< Romanization schemes (ITRANS, Harvard-Kyoto, IAST, SLP1, Velthuis, etc.)
   PersoArabic, ///< Urdu abjad; the fourth value fits existing two-bit family fields
   Others = PersoArabic ///< Sentinel/shared-symbol family retained for internal compatibility
 };

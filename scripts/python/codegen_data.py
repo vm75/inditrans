@@ -19,13 +19,23 @@ class ScriptInfo:
     name: str
     info: dict
 
+    def __post_init__(self) -> None:
+        if self.category not in {"indic", "roman", "persoArabic"}:
+            raise ValueError(f"{self.name}: unknown script family {self.category}")
+        if type(self.info.get("supportsVedicAccents")) is not bool:
+            raise ValueError(f"{self.name}: supportsVedicAccents must be an explicit boolean")
+        if "processingType" in self.info and not (
+            self.category == "indic" and self.info["processingType"] == "tamil"
+        ):
+            raise ValueError(f"{self.name}: unsupported processingType for {self.category}")
+
     @property
     def script_type(self) -> str:
-        return self.category
+        return self.info.get("processingType", self.category)
 
 
-class LatinEquivalents:
-    """Read UnicodeData-style rows and map extended Latin code points to folds."""
+class RomanEquivalents:
+    """Read UnicodeData-style Latin letter names and map code points to Roman folds."""
 
     def __init__(self, path: str | Path, include_modifiers: bool = False):
         combining: dict[str, str] = {}
@@ -93,9 +103,9 @@ def legacy_upper(text: str) -> str:
 
 
 class ScriptData:
-    """Load script definitions, add derived Latin spellings, and retain source order."""
+    """Load script definitions, add derived Roman spellings, and retain source order."""
 
-    def __init__(self, path: str | Path, latin_equivalents: LatinEquivalents):
+    def __init__(self, path: str | Path, roman_equivalents: RomanEquivalents):
         data = json.loads(Path(path).read_text(encoding="utf-8"))
         self.script_info_list = [
             ScriptInfo(category, name, info)
@@ -108,7 +118,7 @@ class ScriptData:
             self.script_list.append(script.name)
             self.script_list.extend(script.info.get("aliases", []))
         self.script_list.append("indic")
-        self.latin_equivalents = latin_equivalents
+        self.roman_equivalents = roman_equivalents
 
     @staticmethod
     def _utf16_units(text: str) -> list[int]:
@@ -130,7 +140,7 @@ class ScriptData:
 
         parts = []
         for unit in self._utf16_units(spelling):
-            options = self.latin_equivalents.equivalents.get(unit)
+            options = self.roman_equivalents.equivalents.get(unit)
             if options:
                 parts.append(options[0])
                 changed = True
@@ -147,9 +157,9 @@ class ScriptData:
             equivalents[spelling] = values
 
     def prepare_equivalents(self) -> None:
-        """Add uppercase/diacritic-free inputs expected by the Latin readers."""
+        """Add uppercase/diacritic-free inputs expected by the Roman readers."""
         for script in self.script_info_list:
-            if script.category != "latin":
+            if script.category != "roman":
                 continue
             equivalents = script.info.setdefault("equivalents", {})
             uppercase = script.name in {"iast", "ipa", "iso"}

@@ -31,9 +31,54 @@
       e.value=value; e.setSelectionRange(value.length,value.length);
       e.dispatchEvent(new w.InputEvent('input',{bubbles:true,inputType:'insertText'}));
     };
+    for (const id of ['source-script','target-script']) {
+      const options=[...field(id).options];
+      check(options.filter(option=>option.disabled && option.value==='').map(option=>option.textContent).join('|')===
+        '── Indic ──|── Roman ──|── Perso-Arabic ──','three family groups in '+id);
+      const tamil=options.find(option=>option.value==='tamil');
+      const sinhala=options.find(option=>option.value==='sinhala');
+      check(tamil.textContent.endsWith('*') && tamil.title.includes('Vedic accent output'),'Tamil accent capability label in '+id);
+      check(!sinhala.textContent.endsWith('*'),'Sinhala has no accent capability label in '+id);
+      const indic=options.findIndex(option=>option.textContent==='── Indic ──');
+      const roman=options.findIndex(option=>option.textContent==='── Roman ──');
+      check(options.indexOf(tamil)>indic && options.indexOf(tamil)<roman,'Tamil belongs to Indic in '+id);
+    }
+    change('source-script','devanagari'); change('target-script','tamil'); input('क॒');
+    check(field('target-text').value.includes('॒'),'Tamil still preserves Vedic accents');
+    change('target-script','sinhala');
+    check(!field('target-text').value.includes('॒'),'Sinhala still suppresses unsupported accent output');
+    change('source-script','tamil');
+    check(field('toggle-group-accents').parentElement.title.includes('(3)'),'Tamil keyboard offers accents');
+    change('source-script','sinhala');
+    check(field('toggle-group-accents').parentElement.title.includes('(0)'),'Sinhala keyboard has no accent keys');
+    for (const script of ['wx','slp1']) {
+      const option=[...field('target-script').options].find(option=>option.value===script);
+      check(!option.textContent.endsWith('*'),script+' has no accent support marker');
+      change('source-script','devanagari'); change('target-script',script); input('क॒ क॑ क᳚');
+      check(field('target-text').value==='ka ka ka',script+' omits Vedic accent output');
+    }
+    change('source-script','slp1');
+    check(field('toggle-group-accents').parentElement.title.includes('(0)'),'SLP1 keyboard has no accent keys');
     change('source-script','devanagari'); change('target-script','telugu');
     input('के॒॑ ##text\u200b##');
     check(field('target-text').value==='కే॒॑ text\u200b','raw Telugu accents and protected separator');
+    for (const id of ['source-script','target-script']) {
+      const options=[...field(id).options];
+      check(options.some(option=>option.value==='grantha' && !option.disabled),'Grantha is selectable in '+id);
+      check(!options.some(option=>option.value==='tamilExtended'),'removed Tamil Extended option in '+id);
+      check(!options.find(option=>option.value==='grantha').textContent.endsWith('*'),'Grantha has no accent support label in '+id);
+    }
+    change('target-script','grantha'); input('नमस्ते');
+    check(field('target-text').value==='𑌨𑌮𑌸𑍍𑌤𑍇','Grantha output uses supplementary Unicode letters');
+    check(field('target-text').lang==='sa-Gran','Grantha pane language');
+    check(field('target-font').value==='Noto Sans Grantha','Grantha font selection');
+    input('अ॒ग्निमी॑ळे॒');
+    check(field('target-text').value==='𑌅𑌗𑍍𑌨𑌿𑌮𑍀𑌳𑍇','Grantha omits Vedic accent output');
+    change('source-script','grantha'); change('target-script','devanagari'); input('𑌕𑍍𑌷');
+    check(field('target-text').value==='क्ष','Grantha input reads conjuncts');
+    check([...d.querySelectorAll('.keyboard-key-source')].some(key=>key.textContent==='𑌕'),'Grantha keyboard uses its own letters');
+    check(field('toggle-group-accents').parentElement.title.includes('(0)'),'Grantha keyboard has no accent keys');
+    check(w.Inditrans.Script.grantha==='grantha','standalone wrapper exposes Grantha');
     change('source-script','iso'); change('target-script','urdu');
     input('kaī');
     check(field('target-text').value==='کَئِی','Urdu raw Unicode output');

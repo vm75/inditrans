@@ -63,7 +63,7 @@ Thus the statement in [ARCHITECTURE.md](../ARCHITECTURE.md) that only the output
 | Representation | Current content | Architectural consequence |
 |---|---|---|
 | `Token` | One-byte category and one-byte index | Small, easy to copy, direct table lookup |
-| `ScriptToken` | `Token`, broad `ScriptType`, extra-expansion index | Knows Indic/Tamil/Latin family, not full language or even exact Indic source script |
+| `ScriptToken` | `Token`, broad `ScriptType`, extra-expansion index | Knows Indic/Tamil/Roman family, not full language or even exact Indic source script |
 | `TokenUnit` | Lead token, one vowel mark, one other diacritic, one accent | Useful consonant/vowel grouping; not a full syllable, phoneme string, or arbitrary combining-mark sequence |
 | Raw string view | Unrecognized/preserved input span | Retains bytes while source memory remains alive; no semantic boundary classification |
 | Script tables | Parallel arrays plus equivalents and aliases | Reuses the same index across scripts; many-to-one mappings and approximations are possible |
@@ -91,9 +91,9 @@ The live tokenizer uses `Char32Trie<ScriptToken>` in `utilities.h`: Unicode scal
 
 [char_trie.h](../native/src/char_trie.h) contains an unused packed structure with 16-bit keys/offsets. It is not evidence of a working generated static-trie pipeline. Its token reconstruction argument order is suspicious, and packed layout, offset limits, endianness, and alignment would need validation before reuse. A lexicon with tens of thousands of entries should not inherit these limits accidentally.
 
-[generate_headers.py](../scripts/generate_headers.py) and [codegen_data.py](../scripts/python/codegen_data.py) are the actual data-generation path. They serialize the editable JSON tables, generate script/option declarations, and add selected Latin equivalents. They provide a useful authoring/build pattern for optional linguistic data. They do not implement universal Unicode normalization or generate a pronunciation model.
+[generate_headers.py](../scripts/generate_headers.py) and [codegen_data.py](../scripts/python/codegen_data.py) are the actual data-generation path. They serialize the editable JSON tables, generate script/option declarations, and add selected Roman equivalents. They provide a useful authoring/build pattern for optional linguistic data. They do not implement universal Unicode normalization or generate a pronunciation model.
 
-The virtual `indic` reader combines non-Latin script maps. That supports mixed **scripts**, not mixed-language interpretation. It retains only the broad script family on tokens. Source-script identity must be retained separately if a later resolver needs to distinguish Bengali and Devanagari inside that input.
+The virtual `indic` reader combines non-Roman script maps. That supports mixed **scripts**, not mixed-language interpretation. It retains only the broad script family on tokens. Source-script identity must be retained separately if a later resolver needs to distinguish Bengali and Devanagari inside that input.
 
 ### 1.5 Tests and wrappers
 
@@ -364,7 +364,7 @@ These are logical responsibilities. Decoding, bounded local policy evaluation, a
 | Multipart vowel-mark ordering and accent placement | Script encoder | Local rendering state |
 | Skip spans, source preservation, output ownership | Generic pipeline | Explicit span/lifetime handling |
 
-In the existing code, `inferAnuswara()` is called for Tamil output and for Latin output when the table's anuswara string is empty. It chooses a nasal index from the following lead index, defaults to index 24 (`m`), writes it, and adds virama for Tamil. It does not verify that the next lead token is a consonant before interpreting its index. Thus it currently combines a contextual choice with target encoding and an underspecified boundary test.
+In the existing code, `inferAnuswara()` is called for Tamil output and for Roman output when the table's anuswara string is empty. It chooses a nasal index from the following lead index, defaults to index 24 (`m`), writes it, and adds virama for Tamil. It does not verify that the next lead token is a consonant before interpreting its index. Thus it currently combines a contextual choice with target encoding and an underspecified boundary test.
 
 Simply moving that function to a header would hide coupling rather than clarify it. A cleaner conceptual split is a small decision helper that returns the selected nasal/conversion action, and a target adapter that encodes that action using the existing writer. Pronunciation-specific nasalization belongs in the reading layer. Ordinary orthographic conversion should retain an explicit anuswara where the target supports it, subject to the selected compatibility convention.
 

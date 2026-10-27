@@ -74,10 +74,10 @@ make perf-snapshot PERF_NAME=00-baseline BENCH_RUNS=5 BENCH_CPU="$CPU" PERF_CPU=
 
 Raw CSVs and metadata are written under ignored `out/perf/`. They remain local
 artifacts and are not committed. The
-throughput matrix focuses on explicit scripts in the canonical `vedic` group,
-Tamil, and ISO Romanization, at short, approximately 4 KiB, and 1 MiB input
-sizes. It includes every Vedic source profile, Vedic accents, Tamil variants,
-and protected spans. Virtual `indic`, the `indic` script group, Perso-Arabic,
+throughput matrix focuses on Indic scripts with Vedic accent output support
+(including Tamil), Grantha as an explicit source, and ISO Romanization, at short, approximately 4 KiB, and 1 MiB input
+sizes. It includes every accent-capable Indic source profile, Vedic accents, Tamil variants,
+and protected spans. Virtual `indic`, other Indic scripts without accent output support, Perso-Arabic,
 and other Roman schemes are outside this performance matrix. Every case/size
 output hash must match when comparing revisions. Short
 call measurements include returned-string destruction. Cold measurements
@@ -155,11 +155,11 @@ Short-call p50/p95 are nanoseconds and include returned-string destruction.
 |---|---:|---:|
 | indic-to-indic | 1,379 | 1,793 |
 | tamil-output | 1,693 | 2,134 |
-| latin-input | 1,431 | 1,940 |
-| virtual-indic-to-latin | 1,182 | 1,469 |
+| roman-input | 1,431 | 1,940 |
+| virtual-indic-to-roman | 1,182 | 1,469 |
 | virtual-indic-to-indic | 1,242 | 1,605 |
 | virtual-indic-to-tamil | 1,389 | 1,597 |
-| latin-output | 1,226 | 1,629 |
+| roman-output | 1,226 | 1,629 |
 | expansion-heavy | 271 | 321 |
 | protected-spans | 458 | 503 |
 | mixed-protected-spans | 1,064 | 1,358 |
@@ -180,7 +180,7 @@ events, requested bytes, peak requested-live bytes, and retained live bytes.
 | Workload | Events cold/warm | Requested B cold/warm | Peak B cold/warm | Retained B cold/warm |
 |---|---:|---:|---:|---:|
 | devanagari | 7 / 7 | 1,050,181 / 1,050,181 | 1,049,821 / 1,049,821 | 0 / 0 |
-| latin | 9 / 9 | 7,341,708 / 7,341,708 | 6,292,364 / 6,292,364 | 0 / 0 |
+| roman | 9 / 9 | 7,341,708 / 7,341,708 | 6,292,364 / 6,292,364 | 0 / 0 |
 | virtual-indic | 7 / 7 | 1,050,181 / 1,050,181 | 1,049,821 / 1,049,821 | 0 / 0 |
 | expansion | 8 / 8 | 3,147,269 / 3,147,269 | 3,146,525 / 3,146,525 | 0 / 0 |
 | protected | 7 / 7 | 1,050,113 / 1,050,113 | 1,049,753 / 1,049,753 | 0 / 0 |
@@ -234,7 +234,7 @@ ten-case throughput matrix and short-call suite, all output hashes, 501 cold
 samples per representative path, and cold/warm allocation probes for six
 workloads. Reusable metadata lookup allocates zero bytes. Whole-call memory
 varies by workload: representative peak requested-live values were 1,049,821 B
-for Devanagari, 6,292,364 B for Latin, and 3,146,525 B for expansion-heavy
+for Devanagari, 6,292,364 B for Roman, and 3,146,525 B for expansion-heavy
 input. These are workload-specific requested allocator peaks, not a universal
 engine peak or process RSS.
 

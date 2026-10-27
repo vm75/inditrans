@@ -96,7 +96,7 @@ $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 	clang++ -std=c++23 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
 ifeq ($(USE_CHECKED_IN_SCRIPT_DATA),0)
-$(NATIVE_SRC)/script_data.h: scripts/script_data.json scripts/reader_data.json scripts/options.json docs/extended-latin.txt scripts/generate_headers.py $(GENERATOR_UTILS)
+$(NATIVE_SRC)/script_data.h: scripts/script_data.json scripts/reader_data.json scripts/options.json docs/extended-roman.txt scripts/generate_headers.py $(GENERATOR_UTILS)
 	python3 scripts/generate_headers.py
 else
 $(NATIVE_SRC)/script_data.h:
@@ -290,7 +290,7 @@ bench-compare: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(BENCH_BASELINE)-allocs.csv ] && [ -s $(BENCH_BASELINE)-allocs.csv ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
 	  echo "━━━  Allocation regression check  (malloc+calloc+realloc events, requested bytes, peak live bytes)  ━━━"; \
 	  printf "" > out/bench-current-allocs.csv; \
-	  for mode in devanagari latin iso-to-tamil expansion protected mixed-protected tamil-to-iso tamil-to-devanagari tamil-superscript-output; do \
+	  for mode in devanagari roman iso-to-tamil expansion protected mixed-protected tamil-to-iso tamil-to-devanagari tamil-superscript-output; do \
 	    raw=$$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $$mode 1048576 1 0 2>&1 1>/dev/null); \
 	    echo "$$raw" | awk -v m=$$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$$2+$$5+$$8,$$3+$$6+$$9,$$15,$$13 }'; \
 	  done > out/bench-current-allocs.csv; \

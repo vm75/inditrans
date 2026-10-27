@@ -134,6 +134,9 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - `native/src/script_data.h` is generated from `scripts/script_data.json` and
   `scripts/reader_data.json`. Readers/writers and Tamil prefixes must remain immutable,
   with no runtime builders, caches, equivalent parsing, or writer-table binding.
+- Canonical script families are `indic`, `roman`, and `persoArabic`. Each script
+  declares `supportsVedicAccents`; Tamil remains in `indic` with
+  `processingType: "tamil"` to preserve its dedicated engine handlers.
 - `Script.indlish` and `Script.wx` are write-only (cannot be used as `from`).
   `Script.indic` is read-only (cannot be used as `to`). Enforced in Dart (`_readNotSupported` / `_writeNotSupported`) and by the native engine (which rejects `indlish` as a source reader and `indic` as a target writer).
 - The Git tag (`vMAJOR.MINOR.PATCH`) is the sole release authority; package

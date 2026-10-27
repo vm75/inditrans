@@ -2,7 +2,7 @@
 """Compare old/new C libraries over script spellings, aliases, options and mixed text.
 
 --spellings accepts legacy-generated TSV rows (script name, spelling). This
-includes Latin alternatives synthesized by the old header generator. Optional
+includes Roman alternatives synthesized by the old header generator. Optional
 token probes export probe_lookup(source, text, uint32_t* tokens, uint32_t* length)
 and pack type/index/script type at bit offsets 0/8/16.
 """
@@ -63,7 +63,7 @@ def main() -> None:
     root = Path(__file__).resolve().parent.parent
     source_data = json.loads((root / "scripts/script_data.json").read_text())
     scripts = {name: info for group in source_data.values() for name, info in group.items()}
-    non_roman = {name for kind, group in source_data.items() if kind != "latin" for name in group}
+    non_roman = {name for kind, group in source_data.items() if kind != "roman" for name in group}
     aliases = {name: name for name in scripts}
     for name, info in scripts.items():
         aliases.update({alias: name for alias in info.get("aliases", [])})

@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](../LICENSE)
 
 A transliteration library for [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts)
-and Latin scripts for Flutter and Dart. Uses FFI on native platforms and WASM on Web for
+and Roman scripts for Flutter and Dart. Uses FFI on native platforms and WASM on Web for
 near-native performance, with no server dependency.
 
 - Available on all platforms (Android, iOS, Linux, macOS, Windows, Web).
@@ -15,16 +15,16 @@ near-native performance, with no server dependency.
 
 ## Supported scripts
 
-**Indic/Brahmic:** Assamese, Bengali, Burmese, Devanagari, Gujarati, Gurmukhi, Kannada,
-Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
+**Indic/Brahmic:** Assamese, Bengali, Burmese, Devanagari, Grantha, Gujarati, Gurmukhi,
+Kannada, Khmer, Malayalam, Oriya, Sinhala, Tamil, Telugu, Thai, Tibetan
 
-**Latin/Roman:**
+**Roman schemes:**
 [IAST](https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration) ·
 [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) ·
 [ISO 15919](https://en.wikipedia.org/wiki/ISO_15919) ·
 [ITRANS](https://www.aczoom.com/itrans/) ·
 [TITUS](https://titus.uni-frankfurt.de/indexe.htm) ·
-Indlish (my own take on a readable roman/latin representation for Indian scripts)
+Indlish (my own take on a readable Roman representation for Indian scripts)
 
 ### ITRANS notation notes
 

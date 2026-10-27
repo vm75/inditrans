@@ -1,4 +1,5 @@
 #include "static_scripts.h"
+#include "inditrans.h"
 #include "ut.hpp"
 
 using namespace boost::ut;
@@ -25,6 +26,24 @@ auto lookup(std::string_view source, std::string_view input) {
 } // namespace
 
 suite<"Static script data"> staticScriptsTests = [] {
+  "accent capability is independent of Tamil processing"_test = [] {
+    expect(getScriptWriterMap("tamil")->getType() == ScriptType::Tamil);
+    for (const auto name : { "tamil", "devanagari", "grantha", "iso", "sinhala", "thai", "urdu", "wx", "slp1" }) {
+      const auto* map = getScriptWriterMap(name);
+      const bool supports = std::string_view(name) != "sinhala" && std::string_view(name) != "thai"
+          && std::string_view(name) != "urdu" && std::string_view(name) != "grantha"
+          && std::string_view(name) != "wx" && std::string_view(name) != "slp1";
+      expect(map->supportsVedicAccents() == supports);
+      const auto accented = transliterate("क॒", "indic", name, TranslitOptions::None);
+      const auto plain = transliterate("क॒", "indic", name, TranslitOptions::IgnoreVedicAccents);
+      expect(!plain.empty());
+      expect((accented != plain) == supports);
+      TranslitBuffer buffer;
+      expect(transliterate("क॒", "indic", name, TranslitOptions::None, buffer));
+      expect(std::string_view(buffer.get()) == accented);
+    }
+  };
+
   "longest accepted prefix and bounded bytes"_test = [] {
     constexpr std::string_view input = "ab!";
     const auto all = [](uint16_t id) { return id; };
@@ -70,7 +89,7 @@ suite<"Static script data"> staticScriptsTests = [] {
   "one graph, source restrictions, virtual precedence"_test = [] {
     const auto* shared = getScriptReaderMap("indic")->trie;
     for (size_t id = 0; id < data::writers.size(); ++id) {
-      if (data::writers[id].scriptType != ScriptType::Latin) {
+      if (data::writers[id].scriptType != ScriptType::Roman) {
         expect(data::readers[id * 2].trie == shared);
       }
     }

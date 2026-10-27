@@ -10,7 +10,7 @@ ordering.
 from pathlib import Path
 import sys
 
-from python.codegen_data import LatinEquivalents, OptionHeaders, ScriptData, ScriptsHeaders
+from python.codegen_data import RomanEquivalents, OptionHeaders, ScriptData, ScriptsHeaders
 from python.static_scripts import StaticScripts
 
 
@@ -22,7 +22,7 @@ def main() -> int:
         print("Run from root folder", file=sys.stderr)
         return 1
 
-    scripts = ScriptData("scripts/script_data.json", LatinEquivalents("docs/extended-latin.txt"))
+    scripts = ScriptData("scripts/script_data.json", RomanEquivalents("docs/extended-roman.txt"))
     scripts.prepare_equivalents()
     StaticScripts(scripts.script_info_list, "scripts/reader_data.json").write_header(
         "native/src/script_data.h"

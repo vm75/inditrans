@@ -46,6 +46,8 @@ using TranslitBuffer = std::unique_ptr<char, TranslitBufferDeleter>;
 
 /// Transliterates text from a source script to a target script, writing the result into a TranslitBuffer.
 ///
+/// Identical script names use a copy filter without script lookup. Only marker,
+/// Tamil superscript, accent, XML, and skip-span options apply.
 /// @param input The UTF-8 input text to transliterate.
 /// @param from Source script identifier or alias (e.g. "itrans", "devanagari").
 /// @param to Target script identifier or alias (e.g. "bengali", "iast").
@@ -53,7 +55,7 @@ using TranslitBuffer = std::unique_ptr<char, TranslitBufferDeleter>;
 /// @param out Output TranslitBuffer receiving the newly allocated null-terminated result.
 /// @param skipStart Delimiter marking the beginning of protected blocks; empty defaults to "##".
 /// @param skipEnd Delimiter marking the end of protected blocks; empty defaults to "##".
-/// @return True if transliteration succeeded; false if script names were identical or unrecognized.
+/// @return True if transliteration succeeded; false if different script names were unrecognized.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, TranslitBuffer& out, const std::string_view& skipStart = "##",
     const std::string_view& skipEnd = "##") noexcept;
@@ -62,6 +64,8 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
 ///
 /// Existing contents are preserved; the string may grow as output is appended.
 ///
+/// Identical script names use a copy filter without script lookup. Only marker,
+/// Tamil superscript, accent, XML, and skip-span options apply.
 /// @param input The UTF-8 input text to transliterate.
 /// @param from Source script identifier or alias.
 /// @param to Target script identifier or alias.
@@ -69,13 +73,15 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
 /// @param out Reference to std::string receiving the transliterated text.
 /// @param skipStart Delimiter marking the beginning of protected blocks; empty defaults to "##".
 /// @param skipEnd Delimiter marking the end of protected blocks; empty defaults to "##".
-/// @return True on success; false if script names were identical or unrecognized.
+/// @return True on success; false if different script names were unrecognized.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, std::string& out, const std::string_view& skipStart = "##",
     const std::string_view& skipEnd = "##") noexcept;
 
 /// Transliterates text from a source script to a target script, returning the result by value.
 ///
+/// Identical script names use a copy filter without script lookup. Only marker,
+/// Tamil superscript, accent, XML, and skip-span options apply.
 /// @param input The UTF-8 input text to transliterate.
 /// @param from Source script identifier or alias.
 /// @param to Target script identifier or alias.

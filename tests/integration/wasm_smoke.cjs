@@ -97,6 +97,15 @@ if (supported !== 1) {
   process.exit(1);
 }
 
+for (const [script, expected] of [['grantha', 1], ['tamilExtended', 0]]) {
+  const pointer = writeUtf8(script);
+  const actual = wasmExports.isScriptSupported(pointer);
+  wasmExports.free(pointer);
+  if (actual !== expected) {
+    throw new Error(`isScriptSupported('${script}') returned ${actual}, expected ${expected}`);
+  }
+}
+
 // 6. Test transliterate call: Harvard-Kyoto "namaste" to Devanagari -> "नमस्ते"
 const textPtr = writeUtf8('namaste');
 const fromPtr = writeUtf8('hk');
@@ -122,8 +131,15 @@ if (result !== expected) {
 
 console.log(`✓ Standalone WASM smoke test passed (${wasmBuffer.length} bytes, ${imports.length} imports, result: '${result}')`);
 
-// Exercise new flags against the actual bundled engine, not just its wasmExports.
+// Exercise flags and supplementary-plane script text against the bundled engine.
 for (const [text, from, to, options, expected] of [
+  ['क॒ क॑ क᳚', 'devanagari', 'slp1', 0, 'ka ka ka'],
+  ['क॒ क॑ क᳚', 'devanagari', 'wx', 0, 'ka ka ka'],
+  ['नमस्ते', 'devanagari', 'grantha', 0, '𑌨𑌮𑌸𑍍𑌤𑍇'],
+  ['अ॒ग्निमी॑ळे॒', 'devanagari', 'grantha', 0, '𑌅𑌗𑍍𑌨𑌿𑌮𑍀𑌳𑍇'],
+  ['𑌨𑌮𑌸𑍍𑌤𑍇', 'grantha', 'devanagari', 0, 'नमस्ते'],
+  ['𑌕𑍋', 'grantha', 'iso', 0, 'kō'],
+  ['𑌕𑍍𑌷', 'indic', 'devanagari', 0, 'क्ष'],
   ['अंक', 'devanagari', 'tamil', 64, 'அம்க'],
   ['அக¹', 'tamil', 'devanagari', 64, 'अक'],
   ['அந', 'TAMIL', 'tamil', 2, 'அந'],
@@ -142,4 +158,4 @@ for (const [text, from, to, options, expected] of [
     process.exit(1);
   }
 }
-console.log('✓ Standalone WASM inference options passed');
+console.log('✓ Standalone WASM Grantha and inference options passed');

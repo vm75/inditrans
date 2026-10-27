@@ -94,11 +94,8 @@ class StaticScripts:
         self.sequence_ids: dict[str, int] = {}
 
     def script_type(self, script: ScriptInfo) -> str:
-        if script.category == "latin":
-            return "Latin"
-        if script.category == "persoArabic":
-            return "PersoArabic"
-        return "Tamil" if script.category == "tamil" else "Indic"
+        return {"indic": "Indic", "tamil": "Tamil", "roman": "Roman",
+                "persoArabic": "PersoArabic"}[script.script_type]
 
     def chars(self, script: ScriptInfo, kind: str) -> list[str]:
         if script.category == "persoArabic":
@@ -107,9 +104,9 @@ class StaticScripts:
             if kind == "exclusiveSymbols":
                 return ["\u200c", "\u200d", "\u200b", "ّ", "ھ", "َ"]
         if kind == "accents":
-            return self.constants["LatinAccents" if script.category == "latin" else "VedicAccents"]
+            return self.constants["RomanAccents" if script.category == "roman" else "VedicAccents"]
         if kind == "exclusiveSymbols":
-            return [] if script.category == "latin" else self.constants["ExclusiveSymbols"]
+            return [] if script.category == "roman" else self.constants["ExclusiveSymbols"]
         return script.info.get(kind, [])
 
     def _add(self, table: dict[str, ReaderToken], spelling: str, token: ReaderToken, mode: str) -> None:
@@ -126,7 +123,7 @@ class StaticScripts:
         excluded = {self._typed_token(script, identity) for identity in script.info.get("readerExclusions", [])}
         for kind, category in enumerate(CLASSES):
             for index, spelling in enumerate(self.chars(script, category)):
-                if script.category == "latin" and kind == 1 and index != 0:
+                if script.category == "roman" and kind == 1 and index != 0:
                     continue
                 token = Token(kind, index, self.script_type(script))
                 if token in excluded:
@@ -238,7 +235,7 @@ class StaticScripts:
 
     def _prefix_key(self, unit: list[Token]) -> int:
         lead = unit[0]
-        value = lead.type | (lead.index << 4) | (["Indic", "Tamil", "Latin", "Others"].index(lead.script) << 12)
+        value = lead.type | (lead.index << 4) | (["Indic", "Tamil", "Roman", "Others"].index(lead.script) << 12)
         for slot, token in enumerate(unit[1:]):
             value |= (token.type | (token.index << 4)) << (14 + slot * 12)
         return value
@@ -271,7 +268,7 @@ class StaticScripts:
         indic = dict(explicit[devanagari])
         ordered = sorted(self.scripts, key=lambda script: script.name.lower())
         for script in ordered:
-            if script.name != "devanagari" and script.category not in {"latin", "persoArabic"}:
+            if script.name != "devanagari" and script.category not in {"roman", "persoArabic"}:
                 for spelling, token in explicit[self.scripts.index(script)].items():
                     # Native aliases/canonical equivalents belong to Mixed Indic;
                     # ASCII control spellings such as Burmese {} remain literal.
@@ -282,7 +279,7 @@ class StaticScripts:
         # only when a spelling maps to different tokens across source scripts.
         non_roman: dict[str, dict[int, int]] = {}
         for source, script in enumerate(self.scripts):
-            if script.category == "latin":
+            if script.category == "roman":
                 continue
             for spelling, token in explicit[source].items():
                 sequence = self._sequence(token)
@@ -331,7 +328,7 @@ class StaticScripts:
         graph_tokens: list[dict[str, ReaderToken] | None] = [None]
         readers = []
         for index, script in enumerate(self.scripts):
-            if script.category != "latin":
+            if script.category != "roman":
                 readers.append(f"/* ScriptId::{script_id_names[index]} */ {{0, 0, {format_mask(1 << index)}}}")
                 continue
             normal = {key: self._sequence(token) for key, token in explicit[index].items()}
@@ -395,7 +392,7 @@ class StaticScripts:
                 item = ranges[array_key]
                 script_ranges.append(f"std::span{{writerChars}}.subspan({item.begin}, {item.count})")
             orthography = {"thai": "Thai", "tibetan": "Tibetan", "burmese": "Burmese", "khmer": "Khmer", "gurmukhi": "Gurmukhi"}.get(script.name, "Plain")
-            writers.append(f"/* ScriptId::{script_id_names[i]} */ {{ScriptType::{self.script_type(script)}, {str(script.category == 'vedic').lower()}, "
+            writers.append(f"/* ScriptId::{script_id_names[i]} */ {{ScriptType::{self.script_type(script)}, {str(script.info['supportsVedicAccents']).lower()}, "
                             f"{{{{{', '.join(script_ranges)}}}}}, IndicOrthography::{orthography}}}")
 
         names = {script.name.lower(): i for i, script in enumerate(self.scripts)}
@@ -411,6 +408,8 @@ class StaticScripts:
             *(f"    {name} = {idx}," for idx, name in enumerate(script_id_names)),
             "};\n",
         ]
+        accents = "".join(self.constants["VedicAccents"] + self.constants["RomanAccents"])
+        output += [f'inline constexpr std::string_view copyAccents = "{accents}";', ""]
         output += ["inline constexpr auto writerText = packUtf8(", *text_pool, ");\n"]
         self._array(output, "WriterChar", "writerChars", char_entries)
         self._array(output, "ScriptWriterMap", "writers", writers)

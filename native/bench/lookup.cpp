@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
   // Every explicit non-Roman reader and indic sees the same union keys. This
   // includes accepted spellings, compounds, and source-rejected terminals.
   for (size_t id = 0; id <= data::writers.size(); ++id) {
-    if (id < data::writers.size() && data::writers[id].getType() == ScriptType::Latin)
+    if (id < data::writers.size() && data::writers[id].getType() == ScriptType::Roman)
       continue;
     const auto* reader = id == data::writers.size() ? &data::readers.back() : &data::readers[id * 2];
     std::string_view name = "indic";

@@ -4,7 +4,7 @@
 #include "gurmukhi_handler.h"
 #include "indic_handler.h"
 #include "inditrans.h"
-#include "latin_handler.h"
+#include "roman_handler.h"
 #include "preservation_policy.h"
 #include "script_constants.h"
 #include "static_scripts.h"
@@ -247,7 +247,7 @@ suite<"Contextual handler tests"> contextualTests = [] {
     const auto* iastMap = getScriptWriterMap("iast");
     expect(iastMap != nullptr);
 
-    // Synthetic Latin writer map with empty anuswara mapping
+    // Synthetic Roman writer map with empty anuswara mapping
     ScriptWriterMap syntheticMap = *iastMap;
     syntheticMap.charMaps[static_cast<size_t>(TokenType::OtherDiacritic)] = { };
     expect(syntheticMap.lookupChar(TokenType::OtherDiacritic, Diacritic_Anuswara).empty());
@@ -258,7 +258,7 @@ suite<"Contextual handler tests"> contextualTests = [] {
 
     auto writeWithNext = [&](const TokenUnitOrString& next, TranslitOptions opts = TranslitOptions::None) {
       StringWriter writer;
-      LatinWriterHandler::write(unit, next, syntheticMap, opts, writer);
+      RomanWriterHandler::write(unit, next, syntheticMap, opts, writer);
       return writer.text;
     };
 
@@ -666,7 +666,7 @@ suite<"Tamil handler tests"> tamilTests = [] {
     expect(transliterate("க²॒", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख॒");
     expect(transliterate("க²᳚", "tamil", "devanagari", TranslitOptions::TamilSuperscripted) == "ख᳚");
 
-    // Destination scripts: Latin (indlish, iast, iso)
+    // Destination scripts: Roman (indlish, iast, iso)
     expect(transliterate("க² ப", "tamil", "indlish", TranslitOptions::TamilSuperscripted) == "kha pa");
     expect(transliterate("க² ப", "tamil", "iast", TranslitOptions::TamilSuperscripted) == "kha pa");
     expect(transliterate("க² ப", "tamil", "iso", TranslitOptions::TamilSuperscripted) == "kha pa");
@@ -852,7 +852,7 @@ suite<"Tamil handler tests"> tamilTests = [] {
   };
 };
 
-suite<"Indic and Latin handler tests"> indicLatinTests = [] {
+suite<"Indic and Roman handler tests"> indicRomanTests = [] {
   "IndicReaderHandler cluster assembly"_test = [] {
     ScriptToken ka(TokenType::Consonant, 0, ScriptType::Indic);
     ScriptToken aa(TokenType::VowelMark, 1, ScriptType::Indic);
@@ -868,26 +868,50 @@ suite<"Indic and Latin handler tests"> indicLatinTests = [] {
     expect(unit.otherDiacritic == anuswara);
   };
 
-  "LatinReaderHandler virama synthesis"_test = [] {
-    ScriptToken ka(TokenType::Consonant, 0, ScriptType::Latin);
+  "RomanReaderHandler virama synthesis"_test = [] {
+    ScriptToken ka(TokenType::Consonant, 0, ScriptType::Roman);
     VectorStream emptyStream;
 
-    auto unit = LatinReaderHandler::assemble(ka, emptyStream);
+    auto unit = RomanReaderHandler::assemble(ka, emptyStream);
     expect(unit.leadToken == ka);
     expect(unit.vowelMark.tokenType == TokenType::VowelMark);
     expect(unit.vowelMark.idx == 0u); // Explicit virama synthesized when no vowel follows
   };
 
-  "LatinReaderHandler vowel grouping"_test = [] {
-    ScriptToken ka(TokenType::Consonant, 0, ScriptType::Latin);
-    ScriptToken iMark(TokenType::Vowel, 2, ScriptType::Latin);
+  "RomanReaderHandler vowel grouping"_test = [] {
+    ScriptToken ka(TokenType::Consonant, 0, ScriptType::Roman);
+    ScriptToken iMark(TokenType::Vowel, 2, ScriptType::Roman);
 
     VectorStream stream;
     stream.add(TokenOrString(iMark));
 
-    auto unit = LatinReaderHandler::assemble(ka, stream);
+    auto unit = RomanReaderHandler::assemble(ka, stream);
     expect(unit.leadToken == ka);
     expect(unit.vowelMark.tokenType == TokenType::VowelMark);
     expect(unit.vowelMark.idx == 2u);
+  };
+};
+
+
+suite<"Same-script copy tests"> copyTests = [] {
+  "Custom delimiters and both output sinks"_test = [] {
+    constexpr auto options = TranslitOptions::IgnoreVedicAccents;
+    const std::string input = "க²[[ʽ²॒]]॒";
+    std::string appended = "prefix:";
+    expect(transliterate(input, "tamil", "tamil", options, appended, "[[", "]]"));
+    expect(appended == "prefix:கʽ²॒");
+    TranslitBuffer allocated;
+    expect(transliterate(input, "tamil", "tamil", options, allocated, "[[", "]]"));
+    expect(std::string(allocated.get()) == "கʽ²॒");
+  };
+  "Default delimiters and unmatched protected spans"_test = [] {
+    expect(transliterate(std::string_view("a##ʽ²##b"), "iast", "iast", TranslitOptions::None, "", "") == "aʽ²b");
+    expect(transliterate("a##discard", "iast", "iast", TranslitOptions::None) == "a");
+    expect(transliterate("a<xʽ²॒", "iast", "iast", TranslitOptions::IgnoreVedicAccents) == "a<xʽ²॒");
+    expect(transliterate("", "iast", "iast", TranslitOptions::None) == "");
+  };
+  "Copy does not resolve scripts or normalize text"_test = [] {
+    expect(transliterate("aʽ²॒", "copy", "copy", TranslitOptions::None) == "a॒");
+    expect(transliterate("x⁵₀😀", "iso", "iso", TranslitOptions::None) == "x⁵₀😀");
   };
 };

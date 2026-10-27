@@ -3,7 +3,7 @@
 #include "gurmukhi_handler.h"
 #include "indic_handler.h"
 #include "indic_orthography.h"
-#include "latin_handler.h"
+#include "roman_handler.h"
 #include "perso_arabic_handler.h"
 #include "preservation_policy.h"
 #include "script_constants.h"
@@ -161,7 +161,7 @@ public:
   uint8_t thaiVowel { InvalidToken };
 
   friend class handlers::IndicReaderHandler;
-  friend class handlers::LatinReaderHandler;
+  friend class handlers::RomanReaderHandler;
   friend class handlers::TamilReaderHandler;
 
 public:
@@ -215,8 +215,8 @@ public:
       case ScriptType::Tamil:
         tokenUnit = tamilReader.assemble(token, *this, wordStart, lastToken, options);
         break;
-      case ScriptType::Latin:
-        tokenUnit = handlers::LatinReaderHandler::assemble(token, *this);
+      case ScriptType::Roman:
+        tokenUnit = handlers::RomanReaderHandler::assemble(token, *this);
         break;
       case ScriptType::PersoArabic:
         if constexpr (ExtendedReader)
@@ -257,7 +257,7 @@ private:
   handlers::TamilReaderHandler tamilReader { };
 };
 
-/// Output generator specialized by ScriptType (Indic, Tamil, Latin) and output Sink.
+/// Output generator specialized by ScriptType (Indic, Tamil, Roman) and output Sink.
 ///
 /// Converts TokenUnit objects into target graphemes using the compiled ScriptWriterMap,
 /// delegating orthographic rules, accent stripping, marker filtering, and vowel inferences
@@ -293,8 +293,8 @@ public:
           handlers::IndicWriterHandler::write(tokenUnit, map, options, *this);
       } else if constexpr (Type == ScriptType::Tamil) {
         tamilWriter.write(tokenUnit, next, map, options, *this, buffer, wordStart);
-      } else if constexpr (Type == ScriptType::Latin) {
-        handlers::LatinWriterHandler::write(tokenUnit, next, map, options, *this);
+      } else if constexpr (Type == ScriptType::Roman) {
+        handlers::RomanWriterHandler::write(tokenUnit, next, map, options, *this);
       } else if constexpr (Type == ScriptType::PersoArabic) {
         persoArabicWriter.write(tokenUnit, next, map, options, *this, wordStart);
       }
@@ -322,10 +322,10 @@ private:
 };
 
 /// Calculates an initial capacity estimation for the destination output buffer.
-/// When expanding Roman / Latin scripts into multi-byte Indic UTF-8 graphemes,
+/// When expanding Roman schemes into multi-byte Indic UTF-8 graphemes,
 /// reserves a 3x byte multiplier hint to avoid recurring reallocations.
 size_t outputCapacity(size_t bytes, const ScriptReaderMap& reader, const ScriptWriterMap& writer) noexcept {
-  if (!reader.nonRoman && writer.getType() != ScriptType::Latin
+  if (!reader.nonRoman && writer.getType() != ScriptType::Roman
       && bytes <= (std::numeric_limits<size_t>::max() - 1) / 3)
     return bytes * 3 + 1;
   return bytes + 1;
@@ -339,7 +339,7 @@ bool transliterate_typed(const std::string_view& input, const ScriptReaderMap& r
     const std::string_view& skipEnd) noexcept {
   InputReader<ExtendedReader> reader(input, readerMap, options, skipStart, skipEnd);
 
-  if (writerMap.getType() == ScriptType::Indic && !writerMap.isVedic()) {
+  if (!writerMap.supportsVedicAccents()) {
     // Keep source tokenization unchanged; only the writer suppresses accents
     // that the target script cannot represent.
     options = options | TranslitOptions::IgnoreVedicAccents;
@@ -357,7 +357,7 @@ bool transliterate_typed(const std::string_view& input, const ScriptReaderMap& r
 }
 
 /// Core transliteration dispatcher: routes execution to the appropriate OutputWriter specialization
-/// based on the target script's ScriptType (Indic, Tamil, or Latin).
+/// based on the target script's ScriptType (Indic, Tamil, or Roman).
 template <typename Sink, bool ExtendedReader>
 bool transliterate_dispatch(const std::string_view& input, const ScriptReaderMap& readerMap,
     const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink, const std::string_view& skipStart,
@@ -372,8 +372,8 @@ bool transliterate_dispatch(const std::string_view& input, const ScriptReaderMap
     case ScriptType::Tamil:
       return transliterate_typed<Sink, ScriptType::Tamil, false, ExtendedReader>(
           input, readerMap, writerMap, options, sink, skipStart, skipEnd);
-    case ScriptType::Latin:
-      return transliterate_typed<Sink, ScriptType::Latin, false, ExtendedReader>(
+    case ScriptType::Roman:
+      return transliterate_typed<Sink, ScriptType::Roman, false, ExtendedReader>(
           input, readerMap, writerMap, options, sink, skipStart, skipEnd);
     case ScriptType::PersoArabic:
       return transliterate_typed<Sink, ScriptType::PersoArabic, false, ExtendedReader>(
@@ -420,12 +420,52 @@ static_assert(effectiveInferenceOptions("indic", TranslitOptions::TamilSuperscri
 static_assert(effectiveInferenceOptions("tamil", TranslitOptions::None)
     / TranslitOptions::DisableInference);
 
+/// Same-script copy: no script resolution, token lookup, inference, or writer dispatch.
+template <typename Sink>
+static void copyText(std::string_view input, TranslitOptions options, Sink& sink,
+    std::string_view skipStart, std::string_view skipEnd) noexcept {
+  if (skipStart.empty()) skipStart = "##";
+  if (skipEnd.empty()) skipEnd = "##";
+  while (!input.empty()) {
+    if (options / TranslitOptions::NoXMLTagHandling && input.front() == '<') {
+      const auto close = input.find('>');
+      const auto length = close == input.npos ? input.size() : close + 1;
+      sink += input.substr(0, length);
+      input.remove_prefix(length);
+    } else if (input.starts_with(skipStart)) {
+      input.remove_prefix(skipStart.size());
+      const auto close = input.find(skipEnd);
+      // Match the transliteration path: an unmatched opener discards the remainder.
+      if (close == input.npos) return;
+      sink += input.substr(0, close);
+      input.remove_prefix(close + skipEnd.size());
+    } else {
+      const auto length = std::min(UtfUtils::nextCharLen(input.data()), input.size());
+      const auto ch = input.substr(0, length);
+      const bool remove = static_cast<uint8_t>(ch.front()) >= 0x80
+          && ((options / TranslitOptions::RetainSpecialMarkers && SpecialMarkers.find(ch) != SpecialMarkers.npos)
+              || (options / TranslitOptions::TamilSuperscripted
+                  && (TamilSuperscripts.find(ch) != TamilSuperscripts.npos
+                      || TamilSubscripts.find(ch) != TamilSubscripts.npos))
+              || (options * TranslitOptions::IgnoreVedicAccents
+                  && static_data::copyAccents.find(ch) != static_data::copyAccents.npos));
+      if (!remove) sink += ch;
+      input.remove_prefix(length);
+    }
+  }
+}
+
 /// Transliterates input into a heap-allocated TranslitBuffer via Utf8StringBuilder.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, TranslitBuffer& output, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
-  if (from == to)
-    return false;
+  if (from == to) {
+    Utf8StringBuilder sink;
+    sink.reserve(input.size() + 1);
+    copyText(input, options, sink, skipStart, skipEnd);
+    output.reset(sink.release());
+    return true;
+  }
   const auto* readerMap = getScriptReaderMap(from);
   const auto* writerMap = getScriptWriterMap(to);
   if (!readerMap || !writerMap)
@@ -462,8 +502,11 @@ struct StdStringSink {
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, std::string& output, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
-  if (from == to)
-    return false;
+  if (from == to) {
+    StdStringSink sink(output);
+    copyText(input, options, sink, skipStart, skipEnd);
+    return true;
+  }
   const auto* readerMap = getScriptReaderMap(from);
   const auto* writerMap = getScriptWriterMap(to);
   if (!readerMap || !writerMap)

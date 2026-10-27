@@ -878,7 +878,7 @@
       gap: var(--key-gap);
       max-height: calc(100vh - 220px);
       overflow-y: auto;
-      overflow-x: auto;
+      overflow-x: hidden;
       padding: 4px 6px;
       border: 1px solid #e2eaf5;
       border-radius: 10px;
@@ -898,7 +898,7 @@
       flex: 0 0 var(--key-width);
       width: var(--key-width);
       max-width: none;
-      min-width: 16px;
+      min-width: 0;
       min-height: calc(35px * var(--key-scale));
       padding: calc(2px * var(--key-scale)) 1px;
     }
@@ -2967,7 +2967,7 @@
               <rect x="2.5" y="5" width="19" height="14" rx="3" />
               <path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M7 13h.01M11 13h.01M15 13h.01M7 16h10" />
             </svg></span>
-          <h2 id="keyboard-heading">Script keyboard</h2>
+          <h2 id="keyboard-heading">Keyboard</h2>
         </div>
 
         <!-- Checkboxes alongside Script keyboard header to toggle visible key rows/families -->
@@ -2976,21 +2976,21 @@
         <div class="keyboard-actions">
           <label class="keyboard-toggle-label" title="Color keyboard keys by group">
             <input id="keyboard-group-colors" type="checkbox" checked>
-            Group colors
+            Colors
           </label>
           <button id="undo-button" class="keyboard-toggle" type="button" disabled title="Undo (Ctrl/Cmd+Z)"
             aria-label="Undo">↶</button>
           <button id="redo-button" class="keyboard-toggle" type="button" disabled
             title="Redo (Ctrl/Cmd+Shift+Z or Ctrl+Y)" aria-label="Redo">↷</button>
           <select id="keyboard-mode" class="keyboard-mode" aria-label="Keyboard input mode">
-            <option value="direct">Direct input</option>
-            <option value="ascii">ASCII → script</option>
+            <option value="direct">Native</option>
+            <option value="ascii">ASCII</option>
           </select>
           <select id="keyboard-script" class="keyboard-script" aria-label="Keyboard script" disabled>
             <option value="devanagari">Devanagari</option>
           </select>
           <button id="keyboard-toggle" class="keyboard-toggle" type="button" aria-controls="keyboard-content"
-            aria-expanded="true">Hide keyboard ↑</button>
+            aria-expanded="true">↑</button>
         </div>
       </div>
 
@@ -3101,7 +3101,7 @@
           and ; between shortcuts to separate them (k;h → कह, kh → ख).
           Dot-prefixed signs also work explicitly. Backslash escapes the next ASCII character;
           pasted text and your system input method are left unchanged.</p>
-        <p>If a font lacks a glyph or accent, the demo uses downloaded Indic and Latin fallback fonts.
+        <p>If a font lacks a glyph or accent, the demo uses downloaded Indic and Roman fallback fonts.
           Allow fonts.googleapis.com and fonts.gstatic.com if characters appear as boxes. For precise font comparisons,
           check the browser's rendered-font inspector.</p>
       </div>
@@ -3223,6 +3223,62 @@
 
       // Keyboard symbols come from Inditrans script/reader tables; unavailable scripts are disabled.
       const KEYBOARD_MAPS = {
+        assamese: {
+          vowels: ["অ", "আ", "ই", "ঈ", "উ", "ঊ", "ঋ", "ৠ", "ঌ", "ৡ", "এ", "এ", "ঐ", "ও", "ও", "ঔ", "অ্যা", "অ্যা", "অ", "অ্যা", "উ", "অ্যা"],
+          consonants: ["ক", "খ", "গ", "ঘ", "ঙ", "চ", "ছ", "জ", "ঝ", "ঞ", "ট", "ঠ", "ড", "ঢ", "ণ", "ত", "থ", "দ", "ধ", "ন", "প", "ফ", "ব", "ভ", "ম", "য", "ৰ", "ল", "ৱ", "শ", "ষ", "স", "হ", "ল়", "ষ়", "ৰ়", "ন়", "ক়", "খ়", "গ়", "জ়", "ড়", "ঢ়", "ফ়", "য়", "ঁˆগ", "ঁˆজ", "ঁˆড", "ঁˆদ", "ঁˆব", "চ", "ছ", "ত", "ঝ়", "ৱ়", "স", "স", "হ", "ত", "হ", "জ়", "জ়", "জ়", "জ"],
+          vowelMarks: ["্", "া", "ি", "ী", "ু", "ূ", "ৃ", "ৄ", "ৢ", "ৣ", "ে", "ে", "ৈ", "ো", "ো", "ৌ", "্যা", "্যা", "", "্যা", "ু", "্যা"],
+          otherDiacritics: ["ঁ", "ং", "ঃ", "ঃ", "ঃ", "ঃ", "ঁ", "ং"],
+          symbols: ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "ওঁ", "।", "॥"],
+          vedicSymbols: ["ঽ", "ꣳ", "ꣴ"],
+        },
+        burmese: {
+          vowels: ["အ", "အာ", "ဣ", "ဤ", "ဥ", "ဦ", "ၒ", "ၓ", "ၔ", "ၕ", "ဧ", "ဧ", "အဲ", "ဩ", "ဩ", "ဪ", "အဲ", "အဲ", "ဩ", "ဧ", "ဥ", "အဲ"],
+          consonants: ["က", "ခ", "ဂ", "ဃ", "င", "စ", "ဆ", "ဇ", "ဈ", "ဉ", "ဋ", "ဌ", "ဍ", "ဎ", "ဏ", "တ", "ထ", "ဒ", "ဓ", "န", "ပ", "ဖ", "ဗ", "ဘ", "မ", "ယ", "ရ", "လ", "ဝ", "ၐ", "ၑ", "သ", "ဟ", "ဠ", "ဠ", "ရ", "န", "က", "ခ", "ဂ", "ဇ", "ဍ", "ဎ", "ဖ", "ယ", "ံဂ", "ံဇ", "ံဍ", "ံဒ", "ံဗ", "စ", "ဆ", "တ", "ဇ", "ဝ", "သ", "သ", "ဟ", "တ", "ဟ", "ဇ", "ဇ", "ဇ", "ဇ"],
+          vowelMarks: ["်", "ာ", "ိ", "ီ", "ု", "ူ", "ၖ", "ၗ", "ၘ", "ၙ", "ေ", "ေ", "ဲ", "ော", "ော", "ော်", "ဲ", "ဲ", "ော", "ေ", "ု", "ဲ"],
+          otherDiacritics: ["ံ", "ံ", "း", "း", "း", "း", "ံ", "ံ"],
+          symbols: ["၀", "၁", "၂", "၃", "၄", "၅", "၆", "၇", "၈", "၉", "ဥုံ", "၊", "။"],
+          vedicSymbols: ["'", "ꣳ", "ꣴ"],
+        },
+        khmer: {
+          vowels: ["អ", "អា", "ឥ", "ឦ", "ឧ", "ឩ", "ឫ", "ឬ", "ឭ", "ឮ", "ឯ", "ឯ", "ឰ", "ឱ", "ឱ", "ឳ", "អែ", "អែ", "ឱ", "ឯ", "ឧ", "អែ"],
+          consonants: ["ក", "ខ", "គ", "ឃ", "ង", "ច", "ឆ", "ជ", "ឈ", "ញ", "ដ", "ឋ", "ឌ", "ឍ", "ណ", "ត", "ថ", "ទ", "ធ", "ន", "ប", "ផ", "ព", "ភ", "ម", "យ", "រ", "ល", "វ", "ឝ", "ឞ", "ស", "ហ", "ឡ", "ឡ", "រ", "ន", "ក", "ខ", "គ", "ជ", "ឌ", "ឍ", "ផ", "យ", "ំគ", "ំជ", "ំឌ", "ំទ", "ំព", "ច", "ឆ", "ត", "ជ", "វ", "ស", "ស", "ហ", "ត", "ហ", "ជ", "ជ", "ជ", "ជ"],
+          vowelMarks: ["៑", "ា", "ិ", "ី", "ុ", "ូ", "្ឫ", "្ឬ", "្ឭ", "្ឮ", "េ", "េ", "ៃ", "ោ", "ោ", "ៅ", "ែ", "ែ", "ោ", "េ", "ុ", "ែ"],
+          otherDiacritics: ["ំ", "ំ", "ះ", "ះ", "ះ", "ះ", "ំ", "ំ"],
+          symbols: ["០", "១", "២", "៣", "៤", "៥", "៦", "៧", "៨", "៩", "ឱំ", "។", "៕"],
+          vedicSymbols: ["ៜ", "ꣳ", "ꣴ"],
+        },
+        ipa: {
+          vowels: ["ə", "ɑː", "ɪ", "iː", "u", "uː", "ɾɨ", "ɾɨː", "lɨ", "lɨː", "e", "eː", "əɪ", "o", "oː", "əu", "æ", "æː", "ɔ", "ɛ", "ɯ", "ɛː"],
+          consonants: ["k", "kʰ", "g", "gʰ", "ŋ", "t͡ʃ", "t͡ʃʰ", "d͡ʒ", "d͡ʒʰ", "ɲ", "ʈ", "ʈʰ", "ɖ", "ɖʰ", "ɳ", "t̪", "t̪ʰ", "d̪", "d̪ʰ", "n̪", "p", "pʰ", "b", "bʰ", "m", "j", "ɾ", "l", "ʋ", "ʃ", "ʂ", "s̪", "ɦ", "ɭ", "ɻ", "r", "n", "q", "x", "ɣ", "z", "ɽ", "ɽʰ", "f", "ẏ", "ᵑɡ", "ᶮd͡ʒ", "ᶯɖ", "ⁿd", "ᵐb", "t͡s", "t͡sʰ", "t", "ʒ", "w", "s", "s", "h", "t̪", "ʔ", "z", "z", "z", "d͡z"],
+          vowelMarks: ["", "ɑː", "ɪ", "iː", "u", "uː", "ɾɨ", "ɾɨː", "lɨ", "lɨː", "e", "eː", "əɪ", "o", "oː", "əu", "æ", "æː", "ɔ", "ɛ", "ɯ", "ɛː"],
+          otherDiacritics: ["̃ʽ", "̃", "h", "xʽ", "h", "h", "̃ʽ", "̃"],
+          symbols: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "oːm", ".", ".."],
+          vedicSymbols: ["ə̸", "gͫ", "gͫ̄"],
+        },
+        grantha: {
+          vowels: ["𑌅", "𑌆", "𑌇", "𑌈", "𑌉", "𑌊", "𑌋", "𑍠", "𑌌", "𑍡", "𑌏", "𑌏", "𑌐", "𑌓", "𑌓", "𑌔", "𑌏", "𑌏", "𑌓", "𑌏", "𑌉", "𑌏"],
+          consonants: ["𑌕", "𑌖", "𑌗", "𑌘", "𑌙", "𑌚", "𑌛", "𑌜", "𑌝", "𑌞", "𑌟", "𑌠", "𑌡", "𑌢", "𑌣", "𑌤", "𑌥", "𑌦", "𑌧", "𑌨", "𑌪", "𑌫", "𑌬", "𑌭", "𑌮", "𑌯", "𑌰", "𑌲", "𑌵", "𑌶", "𑌷", "𑌸", "𑌹", "𑌳", "𑌳", "𑌰", "𑌨", "𑌕", "𑌖", "𑌗", "𑌜", "𑌡", "𑌢", "𑌫", "𑌯", "𑌂𑌗", "𑌂𑌜", "𑌂𑌡", "𑌂𑌦", "𑌂𑌬", "𑌚", "𑌛", "𑌤", "𑌜", "𑌵", "𑌸", "𑌸", "𑌹", "𑌤", "𑌹", "𑌜", "𑌜", "𑌜", "𑌜"],
+          vowelMarks: ["𑍍", "𑌾", "𑌿", "𑍀", "𑍁", "𑍂", "𑍃", "𑍄", "𑍢", "𑍣", "𑍇", "𑍇", "𑍈", "𑍋", "𑍋", "𑍌", "𑍇", "𑍇", "𑍋", "𑍇", "𑍁", "𑍇"],
+          otherDiacritics: ["𑌁", "𑌂", "𑌃", "𑌃", "ᳵ", "ᳶ", "𑌁", "𑌂"],
+          symbols: ["௦", "௧", "௨", "௩", "௪", "௫", "௬", "௭", "௮", "௯", "𑍐", "।", "॥"],
+          vedicSymbols: ["𑌽", "𑍞", "𑍟"],
+        },
+        thai: {
+          vowels: ["อ", "อา", "อิ", "อี", "อุ", "อู", "ฤ", "ฤๅ", "ฦ", "ฦๅ", "เอะ", "เอ", "ไอ", "โอะ", "โอ", "เอา", "แอะ", "แอ", "เอาะ", "แอะ", "อุ", "แอ"],
+          consonants: ["ก", "ข", "ค", "ฆ", "ง", "จ", "ฉ", "ช", "ฌ", "ญ", "ฏ", "ฐ", "ฑ", "ฒ", "ณ", "ต", "ถ", "ท", "ธ", "น", "ป", "ผ", "พ", "ภ", "ม", "ย", "ร", "ล", "ว", "ศ", "ษ", "ส", "ห", "ฬ", "ฬ", "ร", "น", "ก", "ฃ", "ฅ", "ซ", "ร", "รฺห", "ฟ", "ย", "ํค", "ํช", "ํฑ", "ํท", "ํพ", "จ", "ฉ", "ต", "ช", "ว", "ส", "ส", "ห", "ต", "ห", "ซ", "ซ", "ซ", "ช"],
+          vowelMarks: ["ฺ", "า", "ิ", "ี", "ุ", "ู", "ฺฤ", "ฺฤๅ", "ฺฦ", "ฺฦๅ", "เะ", "เ", "ไ", "โะ", "โ", "เา", "แะ", "แ", "เาะ", "แะ", "ุ", "แ"],
+          otherDiacritics: ["ํ", "ํ", "ะ", "ะ", "ะ", "ะ", "ํ", "ํ"],
+          symbols: ["๐", "๑", "๒", "๓", "๔", "๕", "๖", "๗", "๘", "๙", "โอํ", "ฯ", "๚"],
+          vedicSymbols: ["'", "ꣳ", "ꣴ"],
+        },
+        tibetan: {
+          vowels: ["ཨ", "ཨཱ", "ཨི", "ཨཱི", "ཨུ", "ཨཱུ", "རྀ", "རཱྀ", "ལྀ", "ལཱྀ", "ཨེ", "ཨེ", "ཨཻ", "ཨོ", "ཨོ", "ཨཽ", "ཨེ", "ཨེ", "ཨོ", "ཨེ", "ཨུ", "ཨེ"],
+          consonants: ["ཀ", "ཁ", "ག", "གྷ", "ང", "ཅ", "ཆ", "ཇ", "ཇྷ", "ཉ", "ཊ", "ཋ", "ཌ", "ཌྷ", "ཎ", "ཏ", "ཐ", "ད", "དྷ", "ན", "པ", "ཕ", "བ", "བྷ", "མ", "ཡ", "ར", "ལ", "ཝ", "ཤ", "ཥ", "ས", "ཧ", "ལ༹", "ཥ༹", "ར༹", "ན༹", "ཫ", "ཁ༹", "ག༹", "ཟ", "ཬ", "ཬྷ", "ཕ༹", "ཡ༹", "ྃཀ", "ྃཛ", "ྃཌ", "ྃད", "ྃབ", "ཙ", "ཚ", "ཏ", "ཞ", "ཝ", "ས", "ས", "ཧ", "ཏ", "ཧ", "ཟ", "ཟ", "ཟ", "ཛ"],
+          vowelMarks: ["྄", "ཱ", "ི", "ཱི", "ུ", "ཱུ", "ྲྀ", "ྲཱྀ", "ླྀ", "ླཱྀ", "ེ", "ེ", "ཻ", "ོ", "ོ", "ཽ", "ེ", "ེ", "ོ", "ེ", "ུ", "ེ"],
+          otherDiacritics: ["ྃ", "ཾ", "ཿ", "ཿ", "ྈ", "ྉ", "ྃ", "ཾ"],
+          symbols: ["༠", "༡", "༢", "༣", "༤", "༥", "༦", "༧", "༨", "༩", "ༀ", "།", "༎"],
+          vedicSymbols: ["྅", "ꣳ", "ꣴ"],
+        },
         sinhala: {
           vowels: ["අ", "ආ", "ඉ", "ඊ", "උ", "ඌ", "ඍ", "ඎ", "ඏ", "ඐ", "එ", "ඒ", "ඓ", "ඔ", "ඕ", "ඖ", "ඇ", "ඈ", "ඔ", "එ", "උ", "ඈ"],
           consonants: ["ක", "ඛ", "ග", "ඝ", "ඞ", "ච", "ඡ", "ජ", "ඣ", "ඤ", "ට", "ඨ", "ඩ", "ඪ", "ණ", "ත", "ථ", "ද", "ධ", "න", "ප", "ඵ", "බ", "භ", "ම", "ය", "ර", "ල", "ව", "ශ", "ෂ", "ස", "හ", "ළ", "ළ", "ර", "න", "ක", "ඛ", "ග", "ජ", "ඩ", "ඪ", "ෆ", "ය", "ඟ", "ඦ", "ඬ", "ඳ", "ඹ", "ච", "ඡ", "ත", "ජ", "ව", "ස", "ස", "හ", "ත", "හ", "ජ", "ජ", "ජ", "ජ"],
@@ -3387,7 +3443,7 @@
       };
 
       const VEDIC_KEYBOARD_ACCENTS = ["॒", "॑", "᳚"];
-      const LATIN_KEYBOARD_ACCENTS = ["̱", "̍", "̎"];
+      const ROMAN_KEYBOARD_ACCENTS = ["̱", "̍", "̎"];
 
       // ASCII input tokens follow the same character order as KEYBOARD_MAPS.
       // Indlish-inspired spellings with distinct tokens for every keyboard slot.
@@ -3459,63 +3515,28 @@
         "prenasal": "emerald"
       };
 
-      // Add a script here; source/target default to true. Fonts default to LATIN_FONTS.
+      // Add a script here; source/target default to true. Fonts default to ROMAN_FONTS.
       // Indic keyboard choices are derived from kind + keyboard, in catalog order.
       // Example: assamese: { label: 'Assamese', kind: 'indic', lang: 'as',
       //   fonts: ['Noto Serif Bengali'], keyboard: KEYBOARD_MAPS.bengali }.
       // The active engine must support the ID; unavailable entries remain disabled.
       const SCRIPT_CATALOG = {
-        urdu: {
-          label: 'Urdu (Nastaliq)', kind: 'persoArabic', lang: 'ur', dir: 'rtl',
-          fonts: ['Noto Nastaliq Urdu', 'Noto Naskh Arabic'],
-          sample: 'اَ آ اِ اِی اُ اُو کَ کِ کُ کا کِی کُو',
-          keyboard: KEYBOARD_MAPS.urdu,
+        indic: {
+          "label": "Mixed Indic",
+          "target": false,
         },
-        indlish: {
-          "label": "Indlish",
-          "source": false,
-          "keyboard": KEYBOARD_MAPS.indlish,
+        separatorIndic: {
+          label: '── Indic ──', separator: true,
         },
-        devanagari: {
-          "label": "Devanagari",
-          "kind": "indic",
-          "fonts": ["Noto Serif Devanagari", "Noto Sans Devanagari", "Tiro Devanagari Sanskrit"],
-          "lang": "sa-Deva",
-          "keyboard": KEYBOARD_MAPS.devanagari,
-        },
-        tamil: {
-          "label": "Tamil",
-          "kind": "indic",
-          "fonts": ["Noto Serif Tamil", "Noto Sans Tamil", "Tiro Tamil"],
-          "lang": "sa-Taml",
-          "sample": "ஓம் நமஃ ஶிவாய",
-          "keyboard": KEYBOARD_MAPS.tamil,
-        },
-        telugu: {
-          "label": "Telugu",
-          "kind": "indic",
-          "fonts": ["Noto Serif Telugu", "Noto Sans Telugu", "Tiro Telugu"],
-          "lang": "sa-Telu",
-          "sample": "అ॒గ్నిమీ॑ళే । త్వ॒ త్య॒ త్వో॒ త్యో॒ త్వం᳚",
-          "keyboard": KEYBOARD_MAPS.telugu,
-        },
-        kannada: {
-          "label": "Kannada",
-          "kind": "indic",
-          "fonts": ["Noto Serif Kannada", "Noto Sans Kannada", "Tiro Kannada"],
-          "lang": "sa-Knda",
-          "sample": "ಅ॒ಗ್ನಿಮೀ॑ಳೇ । ತ್ವ॒ ತ್ಯ॒ ತ್ವೋ॒ ತ್ಯೋ॒ ತ್ವಂ᳚",
-          "keyboard": KEYBOARD_MAPS.kannada,
-        },
-        malayalam: {
-          "label": "Malayalam",
-          "kind": "indic",
-          "fonts": ["Noto Serif Malayalam", "Noto Sans Malayalam"],
-          "lang": "sa-Mlym",
-          "sample": "ഓം നമഃ ശിവായ",
-          "keyboard": KEYBOARD_MAPS.malayalam,
+        assamese: {
+          supportsVedicAccents: true,
+          "label": "Assamese", "kind": "indic",
+          "keyboard": KEYBOARD_MAPS.assamese,
+          "fonts": ["Noto Serif Bengali", "Noto Sans Bengali"], "lang": "as",
+          "sample": "অগ্নিমীळে নমঃ",
         },
         bengali: {
+          supportsVedicAccents: true,
           "label": "Bengali",
           "kind": "indic",
           "fonts": ["Noto Serif Bengali", "Noto Sans Bengali", "Tiro Bangla"],
@@ -3523,7 +3544,30 @@
           "sample": "অ॒গ্নিমী॑ळে নমঃ",
           "keyboard": KEYBOARD_MAPS.bengali,
         },
+        burmese: {
+          supportsVedicAccents: false,
+          "label": "Burmese", "kind": "indic",
+          "keyboard": KEYBOARD_MAPS.burmese,
+          "fonts": ["Noto Serif Myanmar", "Noto Sans Myanmar"], "lang": "my",
+          "sample": "အဂ္နိမီဠေ နမಃ",
+        },
+        devanagari: {
+          supportsVedicAccents: true,
+          "label": "Devanagari",
+          "kind": "indic",
+          "fonts": ["Noto Serif Devanagari", "Noto Sans Devanagari", "Tiro Devanagari Sanskrit"],
+          "lang": "sa-Deva",
+          "keyboard": KEYBOARD_MAPS.devanagari,
+        },
+        grantha: {
+          supportsVedicAccents: false,
+          "label": "Grantha", "kind": "indic",
+          "keyboard": KEYBOARD_MAPS.grantha,
+          "fonts": ["Noto Sans Grantha"], "lang": "sa-Gran",
+          "sample": "𑍐 𑌨𑌮𑌃 𑌶𑌿𑌵𑌾𑌯",
+        },
         gujarati: {
+          supportsVedicAccents: true,
           "label": "Gujarati",
           "kind": "indic",
           "fonts": ["Noto Serif Gujarati", "Noto Sans Gujarati"],
@@ -3532,6 +3576,7 @@
           "keyboard": KEYBOARD_MAPS.gujarati,
         },
         gurmukhi: {
+          supportsVedicAccents: true,
           "label": "Gurmukhi",
           "kind": "indic",
           "fonts": ["Noto Serif Gurmukhi", "Noto Sans Gurmukhi"],
@@ -3539,15 +3584,33 @@
           "sample": "ੴ ਸਤਿ ਨਾਮੁ",
           "keyboard": KEYBOARD_MAPS.gurmukhi,
         },
-        sinhala: {
-          "label": "Sinhala",
+        kannada: {
+          supportsVedicAccents: true,
+          "label": "Kannada",
           "kind": "indic",
-          "fonts": ["Noto Serif Sinhala", "Noto Sans Sinhala"],
-          "lang": "sa-Sinh",
-          "sample": "ඕං නමඃ ශිවාය",
-          "keyboard": KEYBOARD_MAPS.sinhala,
+          "fonts": ["Noto Serif Kannada", "Noto Sans Kannada", "Tiro Kannada"],
+          "lang": "sa-Knda",
+          "sample": "ಅ॒ಗ್ನಿಮೀ॑ಳೇ । ತ್ವ॒ ತ್ಯ॒ ತ್ವೋ॒ ತ್ಯೋ॒ ತ್ವಂ᳚",
+          "keyboard": KEYBOARD_MAPS.kannada,
+        },
+        khmer: {
+          supportsVedicAccents: false,
+          "label": "Khmer", "kind": "indic",
+          "keyboard": KEYBOARD_MAPS.khmer,
+          "fonts": ["Noto Serif Khmer", "Noto Sans Khmer"], "lang": "km",
+          "sample": "អគ្និមីឡេ នមៈ",
+        },
+        malayalam: {
+          supportsVedicAccents: true,
+          "label": "Malayalam",
+          "kind": "indic",
+          "fonts": ["Noto Serif Malayalam", "Noto Sans Malayalam"],
+          "lang": "sa-Mlym",
+          "sample": "ഓം നമഃ ശിവായ",
+          "keyboard": KEYBOARD_MAPS.malayalam,
         },
         oriya: {
+          supportsVedicAccents: true,
           "label": "Odia",
           "kind": "indic",
           "fonts": ["Noto Serif Oriya", "Noto Sans Oriya"],
@@ -3555,56 +3618,144 @@
           "sample": "ଓଁ ନମଃ ଶିବାୟ",
           "keyboard": KEYBOARD_MAPS.oriya,
         },
-        iast: {
-          "label": "IAST",
-          "sample": "śrī̍ gurubhyo̱ namaḥ̎ । agnim īḷe purohitaṃ",
-          "keyboard": KEYBOARD_MAPS.iast,
+        sinhala: {
+          supportsVedicAccents: false,
+          "label": "Sinhala",
+          "kind": "indic",
+          "fonts": ["Noto Serif Sinhala", "Noto Sans Sinhala"],
+          "lang": "sa-Sinh",
+          "sample": "ඕං නමඃ ශිවාය",
+          "keyboard": KEYBOARD_MAPS.sinhala,
         },
-        itrans: {
-          "label": "ITRANS",
-          "sample": "shrI gurubhyo namaH . hariH OM",
-          "keyboard": KEYBOARD_MAPS.itrans,
+        tamil: {
+          supportsVedicAccents: true,
+          "label": "Tamil",
+          "kind": "indic",
+          "fonts": ["Noto Serif Tamil", "Noto Sans Tamil", "Tiro Tamil"],
+          "lang": "sa-Taml",
+          "sample": "ஓம் நமஃ ஶிவாய",
+          "keyboard": KEYBOARD_MAPS.tamil,
+        },
+        telugu: {
+          supportsVedicAccents: true,
+          "label": "Telugu",
+          "kind": "indic",
+          "fonts": ["Noto Serif Telugu", "Noto Sans Telugu", "Tiro Telugu"],
+          "lang": "sa-Telu",
+          "sample": "అ॒గ్నిమీ॑ళే । త్వ॒ త్య॒ త్వో॒ త్యో॒ త్వం᳚",
+          "keyboard": KEYBOARD_MAPS.telugu,
+        },
+        thai: {
+          supportsVedicAccents: false,
+          "label": "Thai", "kind": "indic",
+          "keyboard": KEYBOARD_MAPS.thai,
+          "fonts": ["Noto Serif Thai", "Noto Sans Thai"], "lang": "th",
+          "sample": "อัคนิมีเฬ นมะ",
+        },
+        tibetan: {
+          supportsVedicAccents: false,
+          "label": "Tibetan", "kind": "indic",
+          "keyboard": KEYBOARD_MAPS.tibetan,
+          "fonts": ["Noto Serif Tibetan", "Noto Sans Tibetan"], "lang": "bo",
+          "sample": "ཨགྣིམཱིལེ ནམཿ",
+        },
+        separatorRoman: {
+          label: '── Roman ──', separator: true,
         },
         hk: {
+          supportsVedicAccents: true,
+          kind: 'roman',
           "label": "Harvard-Kyoto",
           "sample": "zrI gurubhyo namaH . hariH oM",
           "keyboard": KEYBOARD_MAPS.hk,
         },
+        iast: {
+          supportsVedicAccents: true,
+          kind: 'roman',
+          "label": "IAST",
+          "sample": "śrī̍ gurubhyo̱ namaḥ̎ । agnim īḷe purohitaṃ",
+          "keyboard": KEYBOARD_MAPS.iast,
+        },
+        indlish: {
+          supportsVedicAccents: true,
+          kind: 'roman',
+          "label": "Indlish",
+          "source": false,
+          "keyboard": KEYBOARD_MAPS.indlish,
+        },
+        ipa: {
+          supportsVedicAccents: true,
+          kind: 'roman',
+          "label": "IPA",
+          "keyboard": KEYBOARD_MAPS.ipa,
+          "sample": "ɐɡnɪm iːɭeː puroːɦɪtɐm",
+        },
         iso: {
+          supportsVedicAccents: true,
+          kind: 'roman',
           "label": "ISO 15919",
           "keyboard": KEYBOARD_MAPS.iso,
         },
+        itrans: {
+          supportsVedicAccents: true,
+          kind: 'roman',
+          "label": "ITRANS",
+          "sample": "shrI gurubhyo namaH . hariH OM",
+          "keyboard": KEYBOARD_MAPS.itrans,
+        },
         slp1: {
+          supportsVedicAccents: false,
+          kind: 'roman',
           "label": "SLP1",
           "keyboard": KEYBOARD_MAPS.slp1,
         },
+        titus: {
+          supportsVedicAccents: true,
+          kind: 'roman',
+          "label": "TITUS",
+          "keyboard": KEYBOARD_MAPS.titus,
+        },
         velthuis: {
+          supportsVedicAccents: true,
+          kind: 'roman',
           "label": "Velthuis",
           "keyboard": KEYBOARD_MAPS.velthuis,
         },
         wx: {
+          supportsVedicAccents: false,
+          kind: 'roman',
           "label": "WX",
           "keyboard": KEYBOARD_MAPS.wx,
         },
-        titus: {
-          "label": "TITUS",
-          "keyboard": KEYBOARD_MAPS.titus,
+        separatorPersoArabic: {
+          label: '── Perso-Arabic ──', separator: true,
         },
-        indic: {
-          "label": "Mixed Indic",
-          "target": false,
+        urdu: {
+          supportsVedicAccents: false,
+          label: 'Urdu (Nastaliq)', kind: 'persoArabic', lang: 'ur', dir: 'rtl',
+          fonts: ['Noto Nastaliq Urdu', 'Noto Naskh Arabic'],
+          sample: 'اَ آ اِ اِی اُ اُو کَ کِ کُ کا کِی کُو',
+          keyboard: KEYBOARD_MAPS.urdu,
         },
       };
-      const LATIN_FONTS = ["Inter", "Georgia", "Gentium Plus", "Andika", "Charis SIL (installed)", "system-ui", "serif", "sans-serif"];
+
+      function keyboardAccents(script) {
+        const entry = SCRIPT_CATALOG[script];
+        if (!entry.supportsVedicAccents) return [];
+        return entry.kind === 'roman' ? ROMAN_KEYBOARD_ACCENTS : VEDIC_KEYBOARD_ACCENTS;
+      }
+      const ROMAN_FONTS = ["Inter", "Georgia", "Gentium Plus", "Andika", "Charis SIL (installed)", "system-ui", "serif", "sans-serif"];
       // Font dev tools: controls fallback mode for both panes. Not persisted to localStorage.
       let devFontSettings = { mode: 'full', customStack: '' };
       // Session-only discoveries; rebuilding a script dropdown must preserve these.
       const additionalFonts = new Map();
       const onlineFontLoads = new Map();
+      // External font services use the subset name 'latin' for Roman fonts.
       const SCRIPT_FONT_PROBES = {
         devanagari: 'कमा', tamil: 'கமா', telugu: 'కమా', kannada: 'ಕಮಾ',
-        malayalam: 'കമാ', bengali: 'কমা', gujarati: 'કમા', gurmukhi: 'ਕਮਾ',
-        sinhala: 'කමා', oriya: 'କମା', arabic: 'کَما', latin: 'Aa'
+        malayalam: 'കമാ', grantha: '𑌕𑌮𑌾', bengali: 'কমা', gujarati: 'કમા', gurmukhi: 'ਕਮਾ',
+        assamese: 'কমা', burmese: 'ကမာ', khmer: 'កមា', sinhala: 'කමා',
+        oriya: 'କମା', thai: 'กมา', tibetan: 'ཀམ', arabic: 'کَما', latin: 'Aa'
       };
 
       function fontSubset(script) {
@@ -3693,7 +3844,7 @@
         return false;
       }
 
-      // Add hosted families here, then list them in a script's fonts (or LATIN_FONTS).
+      // Add hosted families here, then list them in a script's fonts (or ROMAN_FONTS).
       // Unlisted fonts use an installed family; the custom-font prompt remains available.
       const FONT_RESOURCES = {
         "Noto Nastaliq Urdu": "wght@400;700",
@@ -3703,6 +3854,7 @@
         "Inter": "wght@400;700",
         "Noto Sans Bengali": "wght@400;700",
         "Noto Sans Devanagari": "wght@400;700",
+        "Noto Sans Grantha": "",
         "Noto Sans Gujarati": "wght@400;700",
         "Noto Sans Gurmukhi": "wght@400;700",
         "Noto Sans Kannada": "wght@400;700",
@@ -3729,7 +3881,7 @@
       };
 
       function loadFonts() {
-        const families = new Set([...LATIN_FONTS, ...Object.values(SCRIPT_CATALOG).flatMap(script => script.fonts || [])]);
+        const families = new Set([...ROMAN_FONTS, ...Object.values(SCRIPT_CATALOG).flatMap(script => script.fonts || [])]);
         const query = Object.entries(FONT_RESOURCES)
           .filter(([family]) => families.has(family))
           .map(([family, axes]) => 'family=' + encodeURIComponent(family).replace(/%20/g, '+') + (axes ? ':' + axes : ''))
@@ -3748,7 +3900,7 @@
       ];
 
       const DEMO_DEFAULTS = { sourceScript: 'indic', targetScript: 'indlish', skipStart: '##', skipEnd: '##' };
-      const ENGINE_VERSION = 'v0.15.0';
+      const ENGINE_VERSION = 'v0.16.0';
       const DEMO_STORAGE_KEY = 'inditrans-demo-state-v1';
       function readDemoState() {
         try {
@@ -3814,7 +3966,7 @@
       function createAppearance({ sourceScript, targetScript, sourceFont, targetFont, sourceText, targetText, onDiscoverFonts }) {
         const textSize = element('text-size');
         const textSizeValue = element('text-size-value');
-        function isLatin(script) { return !['indic', 'persoArabic'].includes(SCRIPT_CATALOG[script].kind); }
+        function isRoman(script) { return !['indic', 'persoArabic'].includes(SCRIPT_CATALOG[script].kind); }
         function fontName(value) { return value === 'Charis SIL (installed)' ? 'Charis SIL' : value; }
         function cssFont(name) { return ['serif', 'sans-serif', 'system-ui'].includes(name) ? name : JSON.stringify(name); }
         function fontStack(name, script) {
@@ -3840,13 +3992,20 @@
             ? font.subsets.includes(subset)
             : font.subsets.some(s => s !== 'latin' && Object.hasOwn(SCRIPT_FONT_PROBES, s))))
             .map(([family]) => family).sort();
-          return [...new Set([...(SCRIPT_CATALOG[script].fonts || LATIN_FONTS), ...discovered]), 'Custom installed font…', 'Find more fonts…'];
+          return [...new Set([...(SCRIPT_CATALOG[script].fonts || ROMAN_FONTS), ...discovered]), 'Custom installed font…', 'Find more fonts…'];
         }
         function populateScripts() {
           for (const [select, isSource] of [[sourceScript, true], [targetScript, false]]) {
-            for (const id of Object.keys(SCRIPT_CATALOG)) {
-              if (SCRIPT_CATALOG[id][isSource ? 'source' : 'target'] === false) continue;
-              const option = new Option(SCRIPT_CATALOG[id].label, id);
+            for (const [id, script] of Object.entries(SCRIPT_CATALOG)) {
+              if (script.separator) {
+                const option = new Option(script.label, '');
+                option.disabled = true;
+                select.add(option);
+                continue;
+              }
+              if (script[isSource ? 'source' : 'target'] === false) continue;
+              const option = new Option(script.label + (script.supportsVedicAccents ? '*' : ''), id);
+              if (script.supportsVedicAccents) option.title = 'Vedic accent output supported by Inditrans';
               select.add(option);
             }
           }
@@ -3902,7 +4061,7 @@
             text.style.lineHeight = entry.dir === 'rtl' ? '2.4' : '';
           }
         }
-        return { populateScripts, populateFonts, applyFont, applyTextSize, updateLanguage, isLatin, fontStack };
+        return { populateScripts, populateFonts, applyFont, applyTextSize, updateLanguage, isRoman, fontStack };
       }
 
       function createEditHistory(limit = 100) {
@@ -4137,7 +4296,7 @@
       }
 
       function createKeyboard({ sourceScript, sourceText, appearance, editor, keyboardMaps }) {
-        const { isLatin, fontStack } = appearance;
+        const { isRoman, fontStack } = appearance;
         const { insertAtCursor, handleKeyboardControl } = editor;
         const INDIC_SCRIPTS = Object.keys(SCRIPT_CATALOG).filter(id =>
           SCRIPT_CATALOG[id].kind === 'indic' && SCRIPT_CATALOG[id].keyboard);
@@ -4216,14 +4375,16 @@
         // Row 1: symbols + diacritics + accents
         // Row 2: vowels
         // Row 3: signs (vowelMarks)
-        // Rows 4-5: consonants
+        // Rows 4-7: base, prenasalized, and additional consonants
         const KEYBOARD_GROUPS = [
           { id: 'symbols', label: 'Symbols', property: 'symbols', color: 'number' },
           { id: 'otherDiacritics', label: 'Diacritics', property: 'otherDiacritics', color: 'diacritic' },
           { id: 'accents', label: 'Accents', property: 'accents', color: 'accent' },
           { id: 'vowels', label: 'Vowels', property: 'vowels', color: 'vowel' },
           { id: 'vowelMarks', label: 'Signs', property: 'vowelMarks', color: 'vowelmark' },
-          { id: 'consonants', label: 'Consonants', property: 'consonants' }
+          { id: 'consonants', label: 'Consonants', property: 'consonants', start: 0, end: 45 },
+          { id: 'prenasalizedConsonants', label: 'Prenasalized', property: 'consonants', start: 45, end: 50, color: 'prenasal' },
+          { id: 'additionalConsonants', label: 'Extended', property: 'consonants', start: 50, end: 64, color: 'prenasal' }
         ];
 
         // All groups checked by default so all rows are visible
@@ -4234,7 +4395,8 @@
           { row: 2, groups: ['vowels'] },
           { row: 3, groups: ['vowelMarks'] },
           { row: 4, groups: ['consonants'], end: 25 },
-          { row: 5, groups: ['consonants'], start: 25 }
+          { row: 5, groups: ['consonants'], start: 25 },
+          { row: 6, groups: ['prenasalizedConsonants', 'additionalConsonants'] }
         ];
         const CONSONANT_CATEGORIES = [
           { end: 5, color: 'varga-1', label: 'Ka-varga (Velar)' },
@@ -4248,25 +4410,26 @@
           { end: Infinity, color: 'prenasal', label: 'Additional consonants' }
         ];
         function keyCategory(group, index) {
-          if (group.id === 'consonants') return CONSONANT_CATEGORIES.find(category => index < category.end);
+          if (group.property === 'consonants') return CONSONANT_CATEGORIES.find(category => index < category.end);
           if (group.id === 'symbols') return index < 10 ? { color: 'number', label: 'Number' } : { color: 'symbol' };
           return { color: group.color };
         }
         function activeKeyboardScript() {
           return sourceScript.value === 'indic' ? activeIndicKeyboardScript : sourceScript.value;
         }
-        function keyboardIsRoman() { return isLatin(activeKeyboardScript()); }
+        function keyboardIsRoman() { return isRoman(activeKeyboardScript()); }
         function keyboardLayout() {
           const script = activeKeyboardScript();
           return keyboardMaps[script] || SCRIPT_CATALOG[script].keyboard || keyboardMaps.devanagari;
         }
         function keyboardGroupKeys(group) {
-          if (group.id === 'accents') return SCRIPT_CATALOG[activeKeyboardScript()].kind === 'persoArabic' ? [] : keyboardIsRoman() ? LATIN_KEYBOARD_ACCENTS : VEDIC_KEYBOARD_ACCENTS;
+          if (group.id === 'accents') return keyboardAccents(activeKeyboardScript());
           if (group.id === 'symbols') return [...keyboardLayout().symbols, ...keyboardLayout().vedicSymbols];
-          return keyboardLayout()[group.property];
+          const values = keyboardLayout()[group.property];
+          return group.property === 'consonants' ? values.slice(group.start, group.end) : values;
         }
         function keyboardReference(group, index) {
-          return KEYBOARD_REFERENCE_MAP[group.id]?.[index] || '';
+          return KEYBOARD_REFERENCE_MAP[group.tokenGroup || group.id]?.[index] || '';
         }
         function keyboardKeyDisplay(value, group, roman) {
           return (value && (group.id === 'accents' || (!roman && group.id === 'vowelMarks') || /^\p{Mark}/u.test(value)) ? '◌' : '') + (value || '—');
@@ -4381,7 +4544,7 @@
             : (/^[a-zA-Z0-9\s._'+-]+$/.test(refText) && !/[\u0900-\u097F]/.test(refText));
 
           button.append(primary);
-          const shortcut = ASCII_KEYBOARD_TOKENS[group.id]?.[index];
+          const shortcut = ASCII_KEYBOARD_TOKENS[group.tokenGroup || group.id]?.[index];
           if (asciiEnabled() && shortcut && value) {
             const hint = document.createElement('span');
             hint.className = 'keyboard-key-shortcut';
@@ -4414,12 +4577,7 @@
           const keysContainer = element('keyboard-keys');
           keysContainer.replaceChildren();
 
-          const hasRow1 = activeKeyboardGroups.has('symbols') || activeKeyboardGroups.has('otherDiacritics') || activeKeyboardGroups.has('accents');
-          const hasRow2 = activeKeyboardGroups.has('vowels');
-          const hasRow3 = activeKeyboardGroups.has('vowelMarks');
-          const hasRow45 = activeKeyboardGroups.has('consonants');
-
-          if (!hasRow1 && !hasRow2 && !hasRow3 && !hasRow45) {
+          if (!KEYBOARD_GROUPS.some(group => activeKeyboardGroups.has(group.id))) {
             const empty = document.createElement('div');
             empty.className = 'keyboard-empty-note';
             empty.textContent = 'No key rows selected. Check one or more boxes above to view keys.';
@@ -4436,11 +4594,16 @@
               const group = KEYBOARD_GROUPS.find(group => group.id === id);
               const values = keyboardGroupKeys(group);
               for (let i = definition.start || 0; i < Math.min(definition.end ?? values.length, values.length); i++) {
-                row.append(createKeyButton(values[i], keyboardReference(group, i), group, i));
+                const keyIndex = (group.start || 0) + i;
+                const keyGroup = group.property === 'consonants' ? { ...group, tokenGroup: 'consonants' } : group;
+                row.append(createKeyButton(values[i], keyboardReference(keyGroup, keyIndex), keyGroup, keyIndex));
               }
             }
             if (definition.row !== 5 || row.childElementCount) keysContainer.append(row);
           }
+
+          const columnCount = Math.max(1, ...[...keysContainer.children].map(row => row.childElementCount));
+          keysContainer.style.setProperty('--key-cols', columnCount);
 
           updateKeyboardFont();
         }
@@ -4506,7 +4669,7 @@
             container.append(note);
             return;
           }
-          for (const id of ['vowels', 'consonants', 'vowelMarks', 'otherDiacritics', 'symbols', 'accents']) {
+          for (const id of ['vowels', 'consonants', 'prenasalizedConsonants', 'additionalConsonants', 'vowelMarks', 'otherDiacritics', 'symbols', 'accents']) {
             const group = KEYBOARD_GROUPS.find(group => group.id === id);
             const section = document.createElement('section');
             section.className = 'reference-group';
@@ -4515,7 +4678,8 @@
             const grid = document.createElement('dl');
             grid.className = 'reference-grid';
             keyboardGroupKeys(group).forEach((value, index) => {
-              const token = ASCII_KEYBOARD_TOKENS[id]?.[index];
+              const tokenGroup = group.property === 'consonants' ? 'consonants' : (group.tokenGroup || id);
+              const token = ASCII_KEYBOARD_TOKENS[tokenGroup]?.[(group.start || 0) + index];
               if (!value || !token) return;
               const entry = document.createElement('div');
               entry.className = 'reference-entry' + (Array.from(value).length > 2 ? ' reference-entry--wide' : '');
@@ -4542,7 +4706,7 @@
           composeAscii = createAsciiComposer({
             ...layout,
             symbols: [...layout.symbols, ...layout.vedicSymbols],
-            accents: VEDIC_KEYBOARD_ACCENTS
+            accents: keyboardAccents(activeKeyboardScript())
           });
           const keyboardScript = element('keyboard-script');
           if (sourceScript.value === 'indic') {
@@ -4629,7 +4793,7 @@
         let size = null;
         let frame;
         function scaleKeys() {
-          if (!size || keyboard.classList.contains('is-collapsed')) return;
+          if (keyboard.classList.contains('is-collapsed')) return;
           measureKeyboardGlyphs(keys);
           const rows = [...keys.querySelectorAll('.keyboard-row')];
           const buttons = [...keys.querySelectorAll('.keyboard-key')];
@@ -4638,10 +4802,12 @@
           const rowHeight = Math.max(...buttons.map(button => button.getBoundingClientRect().height)) / scale;
           const glyphWidth = Math.max(...buttons.map(button =>
             Math.max(...[...button.children].map(child => child.scrollWidth)))) / scale;
-          const availableWidth = Math.max(16, (keys.clientWidth - 14 - 24 * 3) / 25);
+          const columns = parseInt(getComputedStyle(keys).getPropertyValue('--key-cols'), 10) || 25;
+          const gap = parseFloat(getComputedStyle(keys).getPropertyValue('--key-gap')) || 3;
+          const availableWidth = Math.max(1, (keys.clientWidth - 14 - (columns - 1) * gap) / columns);
           const availableHeight = Math.max(40, keys.clientHeight - 10 - (rows.length - 1) * 3);
-          const next = Math.max(.5, Math.min(2, availableWidth / (glyphWidth + 6),
-            availableHeight / (rows.length * rowHeight)));
+          const next = Math.max(.35, Math.min(size ? 2 : 1, availableWidth / (glyphWidth + 6),
+            size ? availableHeight / (rows.length * rowHeight) : 1));
           if (Math.abs(next - scale) > .02) {
             keyboard.style.setProperty('--key-scale', next.toFixed(2));
             measureKeyboardGlyphs(keys);
@@ -5257,7 +5423,7 @@
           element('keyboard-content').hidden = collapsed;
           element('keyboard-shell').classList.toggle('is-collapsed', collapsed);
           element('keyboard-toggle').setAttribute('aria-expanded', String(!collapsed));
-          element('keyboard-toggle').textContent = collapsed ? 'Show keyboard ↓' : 'Hide keyboard ↑';
+          element('keyboard-toggle').textContent = collapsed ? '↓' : '↑';
         }
         function setKeyboardGroupColors(enabled) {
           element('keyboard-group-colors').checked = enabled;

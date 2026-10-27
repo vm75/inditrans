@@ -46,7 +46,7 @@ function harness({ queryLocalFonts, fetch = async () => { throw new Error('Offli
     setTimeout, clearTimeout,
     Option: function(text, value) { return Object.assign(node(value), { text }); },
     SCRIPT_CATALOG: { tamil: { kind: 'indic', fonts: ['Tamil Base'] }, devanagari: { kind: 'indic', fonts: ['Devanagari Base'] },
-      iast: {}, indic: {} }, LATIN_FONTS: ['Inter'],
+      iast: {}, indic: {} }, ROMAN_FONTS: ['Inter'],
     args: { sourceScript, targetScript, sourceFont, targetFont, sourceText, targetText, onDiscoverFonts: () => nodes['font-devtools'].showModal() },
     updateKeyboardFont() { keyboardUpdates++; }
   });

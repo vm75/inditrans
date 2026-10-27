@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
   std::string_view from;
   std::string_view to;
   TranslitOptions options = TranslitOptions::None;
-  if (mode == "latin") {
+  if (mode == "roman") {
     seed = "śrī gurubhyo namaḥ, namaste bhāratam. ";
     from = "iso";
     to = "devanagari";

@@ -59,8 +59,7 @@ String transliterate(
   String skipStart = '##',
   String skipEnd = '##',
 ]) {
-  if (from == to ||
-      text.isEmpty ||
+  if (text.isEmpty ||
       _readNotSupported.contains(from) ||
       _writeNotSupported.contains(to)) {
     return text;

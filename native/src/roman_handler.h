@@ -8,10 +8,10 @@
 
 namespace inditrans::handlers {
 
-/// Groups tokens for Latin transliteration schemes (ITRANS, IAST, SLP1, Harvard-Kyoto, etc.):
+/// Groups tokens for Roman transliteration schemes (ITRANS, IAST, SLP1, Harvard-Kyoto, etc.):
 /// attaches subsequent vowels or vowel marks to a lead consonant.
 /// If a consonant is not followed by a vowel, an explicit virama is synthesized.
-class LatinReaderHandler {
+class RomanReaderHandler {
 public:
   template <typename Stream>
   [[gnu::always_inline]] static inline TokenUnit assemble(const ScriptToken& start, Stream& stream) noexcept {
@@ -65,10 +65,10 @@ public:
   }
 };
 
-/// Writes a TokenUnit in Latin transliteration:
+/// Writes a TokenUnit in Roman transliteration:
 /// an absent vowel mark emits the inherent 'a'; an explicit virama emits no vowel.
 /// Assimilates anuswara if no explicit diacritic character is mapped.
-class LatinWriterHandler {
+class RomanWriterHandler {
 public:
   template <typename Writer>
   [[gnu::always_inline]] static inline void write(const TokenUnit& tokenUnit, const TokenUnitOrString& next,
@@ -90,12 +90,12 @@ public:
       if (isAnuswara(tokenUnit.otherDiacritic) && (options / TranslitOptions::DisableInference)) {
         if (map.isIndlish()) {
           if (AnuswaraAssimilator::canAssimilate(next)) {
-            AnuswaraAssimilator::emit<ScriptType::Latin>(next, map, writer);
+            AnuswaraAssimilator::emit<ScriptType::Roman>(next, map, writer);
           } else {
             writer.push(lookup);
           }
         } else if (lookup.empty()) {
-          AnuswaraAssimilator::emit<ScriptType::Latin>(next, map, writer);
+          AnuswaraAssimilator::emit<ScriptType::Roman>(next, map, writer);
         } else {
           writer.push(lookup);
         }

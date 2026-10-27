@@ -1,5 +1,67 @@
 [
   {
+    "description": "Same-script copy filters markers and Tamil annotations",
+    "script": "tamil",
+    "text": "க² க்₃ ʽʼˮˇ ॒॑᳚ 123",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "க க்  ॒॑᳚ 123"
+      },
+      {
+        "script": "tamil",
+        "text": "க² க்₃ ʽʼˮˇ ॒॑᳚ 123",
+        "options": "TamilSuperscripted RetainSpecialMarkers"
+      },
+      {
+        "script": "tamil",
+        "text": "க க்   123",
+        "options": "IgnoreVedicAccents TamilTraditional ASCIINumerals DisableInference"
+      }
+    ]
+  },
+  {
+    "description": "Same-script copy preserves tags and skip spans",
+    "script": "iast",
+    "text": "aʽ<tag x=\"ʽ²॒\">b²</tag>##ʽ²॒##c॒",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "a<tag x=\"ʽ²॒\">b</tag>ʽ²॒c",
+        "options": "IgnoreVedicAccents"
+      },
+      {
+        "script": "iast",
+        "text": "a<tag x=\"\">b</tag>ʽ²॒c",
+        "options": "IgnoreVedicAccents NoXMLTagHandling"
+      }
+    ]
+  },
+  {
+    "description": "Same-script copy ignores orthographic options",
+    "script": "devanagari",
+    "text": "अंक १२३ क् ॒",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "अंक १२३ क् ॒",
+        "options": "ASCIINumerals DisableInference TamilTraditional"
+      }
+    ]
+  },
+  {
+    "description": "Same-script copy removes Roman Vedic accents",
+    "script": "iso",
+    "text": "a̱a̍a॒̎॑᳚ᳺ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "aaa",
+        "options": "IgnoreVedicAccents"
+      }
+    ]
+  },
+  {
     "description": "devanagari",
     "text": "धृत्वा",
     "script": "devanagari",
@@ -1228,8 +1290,8 @@
         "text": "அ ஆ இ ஈ உ ஊ க கீ க்"
       },
       {
-        "script": "tamilExtended",
-        "text": "അ ആ ഇ ഈ ഉ ഊ ക കീ ക്‌"
+        "script": "grantha",
+        "text": "𑌅 𑌆 𑌇 𑌈 𑌉 𑌊 𑌕 𑌕𑍀 𑌕𑍍"
       },
       {
         "script": "telugu",
@@ -1451,9 +1513,9 @@
     ]
   },
   {
-    "description": "Native tamilExtended vowel and consonant readings",
-    "script": "tamilExtended",
-    "text": "അ ആ ഇ ഈ ഉ ഊ ക കീ ക്‌",
+    "description": "Native Grantha vowel and consonant readings",
+    "script": "grantha",
+    "text": "𑌅 𑌆 𑌇 𑌈 𑌉 𑌊 𑌕 𑌕𑍀 𑌕𑍍",
     "targets": [
       {
         "script": "iso",
@@ -2016,6 +2078,184 @@
       {
         "script": "gurmukhi",
         "text": "ਅਕ੍॑ਕ ਅਕ੍ਂਕ"
+      }
+    ]
+  },
+  {
+    "description": "Grantha independent Sanskrit vowel inventory",
+    "script": "iso",
+    "text": "a ā i ī u ū r̥ r̥̄ l̥ l̥̄ ē ai ō au",
+    "type": "to-and-fro",
+    "targets": [
+      {
+        "script": "grantha",
+        "options": "",
+        "text": "𑌅 𑌆 𑌇 𑌈 𑌉 𑌊 𑌋 𑍠 𑌌 𑍡 𑌏 𑌐 𑌓 𑌔"
+      }
+    ]
+  },
+  {
+    "description": "Grantha Sanskrit consonant inventory including lla",
+    "script": "iso",
+    "text": "ka kha ga gha ṅa ca cha ja jha ña ṭa ṭha ḍa ḍha ṇa ta tha da dha na pa pha ba bha ma ya ra la va śa ṣa sa ha ḷa",
+    "type": "to-and-fro",
+    "targets": [
+      {
+        "script": "grantha",
+        "options": "",
+        "text": "𑌕 𑌖 𑌗 𑌘 𑌙 𑌚 𑌛 𑌜 𑌝 𑌞 𑌟 𑌠 𑌡 𑌢 𑌣 𑌤 𑌥 𑌦 𑌧 𑌨 𑌪 𑌫 𑌬 𑌭 𑌮 𑌯 𑌰 𑌲 𑌵 𑌶 𑌷 𑌸 𑌹 𑌳"
+      }
+    ]
+  },
+  {
+    "description": "Grantha dependent vowels and terminal virama",
+    "script": "iso",
+    "text": "ka kā ki kī ku kū kr̥ kr̥̄ kl̥ kl̥̄ kē kai kō kau k",
+    "type": "to-and-fro",
+    "targets": [
+      {
+        "script": "grantha",
+        "options": "",
+        "text": "𑌕 𑌕𑌾 𑌕𑌿 𑌕𑍀 𑌕𑍁 𑌕𑍂 𑌕𑍃 𑌕𑍄 𑌕𑍢 𑌕𑍣 𑌕𑍇 𑌕𑍈 𑌕𑍋 𑌕𑍌 𑌕𑍍"
+      }
+    ]
+  },
+  {
+    "description": "Grantha conjuncts use native virama sequences",
+    "script": "iso",
+    "text": "kṣa jña śrī strī",
+    "type": "to-and-fro",
+    "targets": [
+      {
+        "script": "grantha",
+        "options": "",
+        "text": "𑌕𑍍𑌷 𑌜𑍍𑌞 𑌶𑍍𑌰𑍀 𑌸𑍍𑌤𑍍𑌰𑍀"
+      }
+    ]
+  },
+  {
+    "description": "Grantha symbols, diacritics, Vedic anusvaras and Tamil digits",
+    "script": "devanagari",
+    "text": "ॐ अँ अं अः अᳵ अᳶ ऽ ꣳ ꣴ ०१२३४५६७८९ । ॥",
+    "type": "to-and-fro",
+    "targets": [
+      {
+        "script": "grantha",
+        "options": "",
+        "text": "𑍐 𑌅𑌁 𑌅𑌂 𑌅𑌃 𑌅ᳵ 𑌅ᳶ 𑌽 𑍞 𑍟 ௦௧௨௩௪௫௬௭௮௯ । ॥"
+      }
+    ]
+  },
+  {
+    "description": "Grantha omits unsupported Vedic accents on output",
+    "script": "devanagari",
+    "text": "अ॒ग्निमी॑ळे॒ नमः᳚",
+    "targets": [
+      {
+        "script": "grantha",
+        "options": "",
+        "text": "𑌅𑌗𑍍𑌨𑌿𑌮𑍀𑌳𑍇 𑌨𑌮𑌃"
+      }
+    ]
+  },
+  {
+    "description": "Grantha accepts canonically decomposed vowel signs",
+    "script": "grantha",
+    "text": "𑌕𑍋 𑌕𑍌",
+    "targets": [
+      {
+        "script": "iso",
+        "options": "",
+        "text": "kō kau"
+      }
+    ]
+  },
+  {
+    "description": "Mixed Indic reads supplementary-plane Grantha letters and conjuncts",
+    "script": "indic",
+    "text": "𑌕𑍍𑌷 𑌜𑍍𑌞 𑍐",
+    "targets": [
+      {
+        "script": "devanagari",
+        "options": "",
+        "text": "क्ष ज्ञ ॐ"
+      }
+    ]
+  },
+  {
+    "description": "Grantha unsupported vowels approximate native long e and o",
+    "script": "iso",
+    "text": "e ē o ō æ ǣ ô ê ŭ ê̄",
+    "targets": [
+      {
+        "script": "grantha",
+        "options": "",
+        "text": "𑌏 𑌏 𑌓 𑌓 𑌏 𑌏 𑌓 𑌏 𑌉 𑌏"
+      }
+    ]
+  },
+  {
+    "description": "Grantha native e and o retain long vowel readings",
+    "script": "grantha",
+    "text": "𑌏 𑌓 𑌕𑍇 𑌕𑍋",
+    "targets": [
+      {
+        "script": "iso",
+        "options": "",
+        "text": "ē ō kē kō"
+      }
+    ]
+  },
+  {
+    "description": "Grantha approximates non-native consonants without false source identities",
+    "script": "iso",
+    "text": "ḻa ṟa ṉa qa k͟ha ġa za ṛa ṛha fa ẏa n̆ga n̆ja n̆ḍa n̆da m̆ba",
+    "targets": [
+      {
+        "script": "grantha",
+        "options": "",
+        "text": "𑌳 𑌰 𑌨 𑌕 𑌖 𑌗 𑌜 𑌡 𑌢 𑌫 𑌯 𑌂𑌗 𑌂𑌜 𑌂𑌡 𑌂𑌦 𑌂𑌬"
+      }
+    ]
+  },
+  {
+    "description": "Grantha writer honors ASCII digits",
+    "script": "devanagari",
+    "text": "०१२३४५६७८९",
+    "targets": [
+      {
+        "script": "grantha",
+        "text": "0123456789",
+        "options": "ASCIINumerals"
+      }
+    ]
+  },
+  {
+    "description": "Grantha accent suppression also accepts IgnoreVedicAccents",
+    "script": "devanagari",
+    "text": "अ॒ग्निमी॑ळे॒",
+    "targets": [
+      {
+        "script": "grantha",
+        "text": "𑌅𑌗𑍍𑌨𑌿𑌮𑍀𑌳𑍇",
+        "options": "IgnoreVedicAccents"
+      }
+    ]
+  },
+  {
+    "description": "SLP1 and WX omit unsupported Vedic accents",
+    "script": "devanagari",
+    "text": "क॒ क॑ क᳚",
+    "targets": [
+      {
+        "script": "slp1",
+        "text": "ka ka ka",
+        "options": ""
+      },
+      {
+        "script": "wx",
+        "text": "ka ka ka",
+        "options": ""
       }
     ]
   }

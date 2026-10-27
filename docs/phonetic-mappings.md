@@ -31,6 +31,7 @@ including basic anchors for every canonical writer and selected native readers.
 | bengali | Same vowel approximation policy as Assamese; Bengali r/v source choices remain distinct from Assamese. Extended zh/w use ঝ়/ৱ়. |
 | burmese | Native letters retained; ae uses အဲ; remove synthetic short/extended-vowel modifiers; stacks use U+1039, terminal suppression U+103A. |
 | devanagari | Native letters/signs retained; candra e reads as ê, independently of Sinhala ae; add affricates, loan letters and visarga allophones. |
+| grantha | Unicode Grantha letters/signs, virama and Vedic anusvara signs; uses Tamil digits and shared dandas; Vedic accents are omitted on output. Native e/o read as long ē/ō; unsupported short/open vowels and non-Sanskrit consonants use closest native approximations. Replaces the Malayalam-based Tamil Extended profile. |
 | gujarati | Native candra e/o retained; short e/o approximate native long forms; candra e uses the separate ê identity. |
 | gurmukhi | Short e/o use native long forms, ae/long ae use ਐ and open o uses ਔ; vocalic r/l use ru/lu approximations; tippi gets its own ISO notation; extended zh uses ਝ਼. Emit adhak for simple geminates after vowels, including k+kh and other unaspirated+aspirated pairs. |
 | kannada | Native mappings retained; ae/long ae/open o approximate short e/long e/short o; jihvamuliya/upadhmaniya use native signs. |
@@ -39,7 +40,6 @@ including basic anchors for every canonical writer and selected native readers.
 | oriya | Extended vowels approximate native e/ē/o; distinguish native ଵ (v) and ୱ (w) when reading and writing; dotted ବ଼ remains a va alias. |
 | sinhala | Native short/long ae stay distinct; open o approximates ඔ; no synthetic modifier is needed. |
 | tamil | Keep native/Grantha and selected superscript/traditional modes; extended vowels approximate e/ē/o, vocalic r/l use ru/lu; native ru is read as r + u; written word-final stops with pulli are retained. Accept the rare native anusvara sign ஂ without changing ordinary m-based output. |
-| tamilExtended | Existing Malayalam-based profile retained, including its ZWNJ virama; remove fake extended-vowel modifiers. |
 | telugu | Extended vowels approximate ఎ/ఏ/ఒ and matching signs; real accents remain accents; add native ఁ, ౘ and ౙ with separate identities. |
 | thai | Keep the Sanskrit/Pali transliteration inventory; independent vowels and dependent preposed vowels use Unicode visual order; the prefix applies to the whole consonant cluster. |
 | tibetan | Palatal c/ch/j/jh use ཅ/ཆ/ཇ/ཇྷ; alveolar ĉ/ĉh/dz use ཙ/ཚ/ཛ. Balti q/ṛ/ṛh use ཫ/ཬ/ཬྷ, retaining older aliases. Use subjoined consonants in stacks, accept fixed subjoined wa/ya/ra and canonical decompositions, and use explicit vowel suppression before extensions without subjoined forms. |
@@ -51,9 +51,15 @@ including basic anchors for every canonical writer and selected native readers.
 | itrans | Existing scheme retained; M, .n and .m read as anusvara; the dot aliases no longer become punctuation plus n. |
 | indlish | Output-only readable approximations remain valid; duplicate spellings do not imply recoverable source identities. |
 | titus | Existing scheme inventory retained; new sounds use existing closest representations. |
-| wx | Existing output role and scheme inventory retained. |
-| slp1 | Preserve K as kh when reading; its existing aytham output approximation does not create a second native reading of K. |
+| wx | Existing output role and scheme inventory retained; Vedic accents are omitted on output. |
+| slp1 | Preserve K as kh when reading; its existing aytham output approximation does not create a second native reading of K. Vedic accents are omitted on output. |
 | velthuis | Existing scheme inventory and aliases retained; new sounds use existing closest representations. |
+
+Grantha mappings follow the [modern Grantha letter tables](https://en.wikipedia.org/wiki/Grantha_script#Modern_Grantha)
+and the [Unicode Grantha chart](https://www.unicode.org/charts/PDF/U11300.pdf).
+Canonically decomposed o/au vowel signs are accepted. Prenasalized consonant
+approximations use native anusvara plus the corresponding stop; they are read as
+those native sequences rather than invented single letters.
 
 New identities are appended: vowels 19 (ê), 20 (ŭ) and 21 (long ê), consonants 50–63
 (ts, aspirated ts, alveolar t, zh, w, eight Urdu loan-letter distinctions and dz),

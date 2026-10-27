@@ -9,7 +9,7 @@ from urllib.request import urlopen
 
 URL = ("https://raw.githubusercontent.com/virtualvinodh/aksharamukha/master/"
        "aksharamukha-back/resources/script_mapping/script_mapping.json")
-CATEGORIES = ("vedic", "indic", "latin", "tamil")
+CATEGORIES = ("indic", "roman", "persoArabic")
 METADATA = {"description", "nonSupportingPrograms", "comments", "TODO", "dev"}
 
 
@@ -21,7 +21,7 @@ def value_at(source: dict, dotted_path: str):
     return value
 
 
-def make_script(name: str, source: dict) -> dict:
+def make_script(name: str, source: dict, supports_vedic_accents: bool = False) -> dict:
     """Select the shared engine's fixed character classes from upstream fields."""
     def take(path: str, start: int, count: int = 1) -> list[str]:
         return list(value_at(source, path)[start:start + count])
@@ -40,6 +40,7 @@ def make_script(name: str, source: dict) -> dict:
     vedic_symbols = take("others.symbols", 0)
     vedic_symbols += ["gͫ", "gͫ̄"] if vowel_marks[0] == "" else ["ꣳ", "ꣴ"]
     return {
+        "supportsVedicAccents": supports_vedic_accents,
         "vowels": vowels,
         "vowelMarks": vowel_marks,
         "consonants": (take("consonants.main", 0, 33) + take("consonants.south", 0, 4)
@@ -81,10 +82,12 @@ def format_object(value: dict, depth: int = 0) -> str:
 
 
 def main(argv: list[str]) -> int:
+    supports_accents = "--vedic-accents" in argv
+    argv = [arg for arg in argv if arg != "--vedic-accents"]
     if len(argv) < 2:
-        print(f"Usage: python3 scripts/import_script.py <category> <script1> [script2] ...\nCategories: {', '.join(CATEGORIES)}")
+        print(f"Usage: python3 scripts/import_script.py <category> <script1> [script2] ... [--vedic-accents]\nCategories: {', '.join(CATEGORIES)}")
         return 2
-    category = argv[0].lower()
+    category = next((name for name in CATEGORIES if name.lower() == argv[0].lower()), argv[0])
     if category not in CATEGORIES:
         print(f"Invalid category: {category}\nValid categories: {', '.join(CATEGORIES)}", file=sys.stderr)
         return 2
@@ -111,7 +114,7 @@ def main(argv: list[str]) -> int:
             print(f'⏭️  Script "{name}" already exists, skipping')
             continue
         try:
-            script_data[category][name] = make_script(name, upstream[name])
+            script_data[category][name] = make_script(name, upstream[name], supports_accents or category == "roman")
             print(f'✅ Added "{name}" to category "{category}"')
             added += 1
         except (KeyError, IndexError, TypeError) as error:

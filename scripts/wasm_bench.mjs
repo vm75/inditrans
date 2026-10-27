@@ -20,13 +20,13 @@ const cases = [
   [
     "iso",
     "devanagari",
-    "latin-input",
+    "roman-input",
     "śrī gurubhyo namaḥ, namaste bhāratam. ",
   ],
-  ["indic", "iso", "virtual-indic-to-latin", seedIndic],
+  ["indic", "iso", "virtual-indic-to-roman", seedIndic],
   ["indic", "devanagari", "virtual-indic-to-indic", seedIndic],
   ["indic", "tamil", "virtual-indic-to-tamil", seedIndic],
-  ["devanagari", "iso", "latin-output", seedIndic],
+  ["devanagari", "iso", "roman-output", seedIndic],
   ["devanagari", "telugu", "expansion-heavy", "अॅॐऍ"],
   [
     "devanagari",
@@ -40,9 +40,9 @@ const cases = [
     "mixed-protected-spans",
     "नमस्ते ##a long protected raw span with text नमस्ते and symbols 🙂## भारतम् । ",
   ],
-  ["tamil", "iso", "tamil-to-latin", seedTamil],
+  ["tamil", "iso", "tamil-to-roman", seedTamil],
   ["tamil", "devanagari", "tamil-to-indic", seedTamil],
-  ["indic", "iso", "virtual-tamil-to-latin", seedTamil],
+  ["indic", "iso", "virtual-tamil-to-roman", seedTamil],
   ["devanagari", "tamil", "tamil-superscript-output", seedIndic, 2],
 ];
 if (process.argv[3] && !cases.some((entry) => entry[2] === process.argv[3])) {

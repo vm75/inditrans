@@ -19,7 +19,7 @@ This is a historical capture. The main `perf-00-baseline` tag now identifies the
   Token grouping, source precedence, and output rules are unchanged.
 - Marker filtering appends retained runs together. A compile-time check permits
   the ASCII shortcut while retaining the original non-ASCII substring predicate.
-- Fresh Roman-to-non-Latin results reserve three times the input length as a
+- Fresh Roman-to-non-Roman results reserve three times the input length as a
   growth hint. Append calls retain their previous reservation behavior.
 - Writer text shares substrings and suffixes. Checked glyph literals and direct
   offset/length lookup remain. Release Wasm uses `-Oz -flto`.
@@ -57,11 +57,11 @@ mean of the three per-run medians. Every output size and FNV-1a hash agrees.
 |---|---:|---:|---:|
 | Indic → Indic | −10.2% | −13.7% | −52.3% |
 | Tamil output | −11.5% | −10.4% | −47.5% |
-| Latin input | −17.3% | −14.8% | −54.7% |
-| Virtual Indic → Latin | −11.6% | −16.9% | −62.6% |
+| Roman input | −17.3% | −14.8% | −54.7% |
+| Virtual Indic → Roman | −11.6% | −16.9% | −62.6% |
 | Virtual Indic → Indic | −9.2% | −9.7% | −57.3% |
 | Virtual Indic → Tamil | −13.8% | −15.7% | −53.9% |
-| Latin output | −14.6% | −21.9% | −60.1% |
+| Roman output | −14.6% | −21.9% | −60.1% |
 | Expansion-heavy | −16.5% | −12.9% | −57.8% |
 | Protected spans | −42.8% | −42.7% | −81.5% |
 | Mixed protected spans | −21.6% | −26.2% | −71.5% |
@@ -89,7 +89,7 @@ with zero retained bytes and zero untracked events.
 | Workload | Tag cold events | Selected events | Tag cold peak B | Selected peak B |
 |---|---:|---:|---:|---:|
 | Indic → Indic | 2,762 | 1 | 26,359,260 | 1,048,669 |
-| Latin input | 3,022 | 1 | 29,512,781 | 3,145,796 |
+| Roman input | 3,022 | 1 | 29,512,781 | 3,145,796 |
 | Virtual Indic | 6,712 | 1 | 26,484,604 | 1,048,669 |
 | Expansion-heavy | 2,763 | 2 | 27,405,773 | 3,145,757 |
 | Protected spans | 2,762 | 1 | 26,357,560 | 1,048,601 |

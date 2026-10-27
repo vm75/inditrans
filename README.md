@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/npm/v/@vm75/inditrans?label=npm)](https://www.npmjs.com/package/@vm75/inditrans)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-A transliteration library for [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts), Urdu/Perso-Arabic and Latin scripts, implemented as a C++23 engine compiled to a shared library (native) and WASM (Web/Node.js). The same phoneme-level pipeline is exposed to Flutter/Dart and JavaScript/TypeScript.
+A transliteration library for [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts), Urdu/Perso-Arabic and Roman scripts, implemented as a C++23 engine compiled to a shared library (native) and WASM (Web/Node.js). The same phoneme-level pipeline is exposed to Flutter/Dart and JavaScript/TypeScript.
 
 - No server required. FFI (native) or WASM (Web/Node.js) for near-native performance.
 - ITRANS toggle transliteration — wrap any region in `##…##` to pass it through unchanged.
@@ -17,15 +17,15 @@ Try the [live demo](https://vm75.github.io/inditrans/) to compare scripts, type 
 
 ## Supported scripts
 
-**Indic/Brahmic:** Assamese, Bengali, Burmese, Devanagari, Gujarati, Gurmukhi, Kannada,
-Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
+**Indic/Brahmic:** Assamese, Bengali, Burmese, Devanagari, Grantha, Gujarati, Gurmukhi,
+Kannada, Khmer, Malayalam, Oriya, Sinhala, Tamil, Telugu, Thai, Tibetan
 
 **Urdu/Perso-Arabic:** Urdu (`urdu`, alias `nastaliq`), rendered with a Nastaliq-capable font. Explicit vowels are supported; omitted vowels are not inferred.
 
 Forward target approximations and notation extensions are described in the
 [mapping review](docs/phonetic-mappings.md).
 
-**Standard Latin notations:**
+**Standard Roman schemes:**
 [IAST](https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration) ·
 [IPA](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet) ·
 [ISO 15919](https://en.wikipedia.org/wiki/ISO_15919) ·
@@ -36,7 +36,11 @@ Forward target approximations and notation extensions are described in the
 [SLP1](https://en.wikipedia.org/wiki/SLP1) ·
 [WX](https://en.wikipedia.org/wiki/WX_notation)
 
-**Custom Latin notations:** Indlish (my own take on a readable roman/latin representation for Indian scripts)
+**Custom Roman schemes:** Indlish (my own take on a readable Roman representation for Indian scripts)
+
+Vedic accent support is a per-script capability, independent of these groups.
+Tamil belongs to Indic and retains its specialized transliteration rules.
+The [demo](demo/README.md) labels choices that support Vedic accent output.
 
 ### ITRANS notation notes
 
