@@ -2,7 +2,9 @@
 #include "contextual_handlers.h"
 #include "gurmukhi_handler.h"
 #include "indic_handler.h"
+#include "indic_orthography.h"
 #include "latin_handler.h"
+#include "perso_arabic_handler.h"
 #include "preservation_policy.h"
 #include "script_constants.h"
 #include "static_scripts.h"
@@ -26,7 +28,7 @@ InditransLogger* inditransLogger = nullptr;
 ///
 /// Operates with a bounded 16-element stack-allocated buffer (MaxSequence + Lookahead) without
 /// dynamic allocation, ring-buffer arithmetic, or array shifting.
-class InputReader {
+template <bool ExtendedReader> class InputReader {
 public:
   InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options,
       const std::string_view& skipStart, const std::string_view& skipEnd) noexcept
@@ -38,14 +40,14 @@ public:
       , options(options) {
     if (map.nonRoman) {
       if (map.source)
-        policyFn = [](InputReader& reader) { reader.pull<ReaderPolicy::Explicit>(); };
+        policyFn = [](InputReader& reader) { reader.template pull<ReaderPolicy::Explicit>(); };
       else
-        policyFn = [](InputReader& reader) { reader.pull<ReaderPolicy::Indic>(); };
+        policyFn = [](InputReader& reader) { reader.template pull<ReaderPolicy::Indic>(); };
     } else {
       if (map.folded)
-        policyFn = [](InputReader& reader) { reader.pull<ReaderPolicy::FoldedRoman>(); };
+        policyFn = [](InputReader& reader) { reader.template pull<ReaderPolicy::FoldedRoman>(); };
       else
-        policyFn = [](InputReader& reader) { reader.pull<ReaderPolicy::Roman>(); };
+        policyFn = [](InputReader& reader) { reader.template pull<ReaderPolicy::Roman>(); };
     }
   }
 
@@ -90,7 +92,15 @@ private:
       const auto tokens = match.tokens();
       if (tokens.front().tokenType != TokenType::Accent || options / TranslitOptions::IgnoreVedicAccents) {
         assert(bufferSize + tokens.size() <= BufferCapacity);
-        buffer[bufferSize++] = TokenOrString(tokens.front());
+        auto lead = tokens.front();
+        if constexpr (Policy == ReaderPolicy::Indic) {
+          // The virtual source needs Thai's preposed-vowel assembly too. Keep
+          // this provenance on the copied token, never on the immutable table.
+          if (end - ptr >= 3 && uint8_t(ptr[0]) == 0xe0
+              && (uint8_t(ptr[1]) == 0xb8 || uint8_t(ptr[1]) == 0xb9))
+            lead.reserved = 1;
+        }
+        buffer[bufferSize++] = TokenOrString(lead);
         for (size_t i = 1; i < tokens.size(); ++i)
           buffer[bufferSize++] = TokenOrString(tokens[i]);
       }
@@ -105,6 +115,8 @@ public:
   /// Returns true if more tokens or raw string spans are available in the input stream.
   inline bool hasMore() noexcept {
     ensure(1);
+    if constexpr (ExtendedReader)
+      return head < bufferSize || persoArabicReader.hasPending();
     return head < bufferSize;
   }
 
@@ -144,6 +156,9 @@ public:
   }
 
   TokenUnit lastToken = invalidTokenUnit;
+  [[no_unique_address]] std::conditional_t<ExtendedReader,
+      handlers::PersoArabicReaderHandler, handlers::EmptyWriterHandler> persoArabicReader { };
+  uint8_t thaiVowel { InvalidToken };
 
   friend class handlers::IndicReaderHandler;
   friend class handlers::LatinReaderHandler;
@@ -153,14 +168,33 @@ public:
   /// Consumes the next token or string run and groups it into a complete TokenUnit cluster.
   /// Delegates script-specific assembly to isolated handlers.
   TokenUnitOrString getNext() noexcept {
+    if constexpr (ExtendedReader) {
+      if (persoArabicReader.hasPending()) [[unlikely]]
+        return persoArabicReader.takePending();
+    }
+  readToken:
     ensure(1);
     const auto& next = buffer[head++];
     if (HoldsString(next)) {
       wordStart = true;
+      if constexpr (ExtendedReader)
+        thaiVowel = InvalidToken;
       return GetString(next);
     }
 
-    const auto& token = GetScriptToken(next);
+    const auto token = GetScriptToken(next);
+    const bool thai = ExtendedReader && (token.reserved == 1
+        || map.source == inditrans::static_data::scriptMask(inditrans::static_data::ScriptId::Thai));
+    if constexpr (ExtendedReader) {
+      if (thai && token.tokenType == TokenType::VowelMark
+          && (token.idx == 11 || token.idx == 12 || token.idx == 14 || token.idx == 17)) [[unlikely]] {
+        const auto* following = peek();
+        if (following && HoldsScriptToken(*following) && GetScriptToken(*following).tokenType == TokenType::Consonant) {
+          thaiVowel = token.idx;
+          goto readToken;
+        }
+      }
+    }
 
     if (handlers::GurmukhiAdhakHandler::isAdhak(token)) {
       return handlers::GurmukhiAdhakHandler::handleAdhak([this]() -> const TokenOrString* {
@@ -184,8 +218,30 @@ public:
       case ScriptType::Latin:
         tokenUnit = handlers::LatinReaderHandler::assemble(token, *this);
         break;
+      case ScriptType::PersoArabic:
+        if constexpr (ExtendedReader)
+          tokenUnit = persoArabicReader.assemble(token, *this);
+        break;
       default:
         break;
+    }
+    if constexpr (ExtendedReader) {
+      if (thai && thaiVowel == InvalidToken && token.tokenType == TokenType::Consonant && tokenUnit.vowelMark.idx == 18) [[unlikely]] {
+        // Without a preposed e, the suffix aa + sara a is long aa + visarga.
+        tokenUnit.vowelMark.idx = 1;
+        tokenUnit.otherDiacritic = { TokenType::OtherDiacritic, 2 };
+      }
+      if (thai && thaiVowel != InvalidToken && token.tokenType == TokenType::Consonant && tokenUnit.vowelMark.idx != 0) [[unlikely]] {
+        auto vowel = thaiVowel == 17 ? uint8_t(21) : thaiVowel;
+        const bool shortens = tokenUnit.otherDiacritic.idx == 2 && thaiVowel != 12;
+        const auto suffix = shortens ? 10 : tokenUnit.vowelMark.idx;
+        if (suffix == 10) vowel = thaiVowel == 14 ? 13 : thaiVowel == 17 ? 19 : 10;
+        else if (thaiVowel == 11 && suffix == 1) vowel = 15;
+        else if (thaiVowel == 11 && suffix == 18) vowel = 18;
+        tokenUnit.vowelMark = { TokenType::VowelMark, vowel };
+        if (shortens) tokenUnit.otherDiacritic = {};
+        thaiVowel = InvalidToken;
+      }
     }
     wordStart = (token.tokenType == TokenType::Symbol);
     if (wordStart) {
@@ -206,7 +262,7 @@ private:
 /// Converts TokenUnit objects into target graphemes using the compiled ScriptWriterMap,
 /// delegating orthographic rules, accent stripping, marker filtering, and vowel inferences
 /// to compile-time selected handlers.
-template <typename Sink, ScriptType Type> class OutputWriter {
+template <typename Sink, ScriptType Type, bool ContextualIndic = false> class OutputWriter {
 public:
   OutputWriter(const ScriptWriterMap& map, const TranslitOptions options, Sink& sink) noexcept
       : map(map)
@@ -217,10 +273,13 @@ public:
   /// for contextual orthography rules (such as anuswara assimilation or end-of-word checks).
   [[gnu::always_inline]] inline void writeTokenUnit(const TokenUnitOrString& tokenUnitOrString, const TokenUnitOrString& next) noexcept {
     if (HoldsString(tokenUnitOrString)) {
-      push(GetString(tokenUnitOrString));
+      // Literal/protected/XML spans are already source text, not writer notation.
+      buffer += GetString(tokenUnitOrString);
       wordStart = true;
       if constexpr (Type == ScriptType::Tamil) {
         tamilWriter.onWordBoundary();
+      } else if constexpr (Type == ScriptType::Indic && ContextualIndic) {
+        indicWriter.onWordBoundary();
       }
     } else {
       const auto tokenUnit = GetTokenUnit(tokenUnitOrString);
@@ -228,11 +287,16 @@ public:
         return;
       }
       if constexpr (Type == ScriptType::Indic) {
-        handlers::IndicWriterHandler::write(tokenUnit, map, options, *this);
+        if constexpr (ContextualIndic)
+          indicWriter.write(tokenUnit, next, map, options, *this, buffer);
+        else
+          handlers::IndicWriterHandler::write(tokenUnit, map, options, *this);
       } else if constexpr (Type == ScriptType::Tamil) {
         tamilWriter.write(tokenUnit, next, map, options, *this, buffer, wordStart);
       } else if constexpr (Type == ScriptType::Latin) {
         handlers::LatinWriterHandler::write(tokenUnit, next, map, options, *this);
+      } else if constexpr (Type == ScriptType::PersoArabic) {
+        persoArabicWriter.write(tokenUnit, next, map, options, *this, wordStart);
       }
       wordStart = (tokenUnit.leadToken.tokenType == TokenType::Symbol);
     }
@@ -251,6 +315,10 @@ private:
   bool wordStart { true };
   [[no_unique_address]] std::conditional_t<Type == ScriptType::Tamil,
       handlers::TamilWriterHandler, handlers::EmptyWriterHandler> tamilWriter { };
+  [[no_unique_address]] std::conditional_t<Type == ScriptType::PersoArabic,
+      handlers::PersoArabicWriterHandler, handlers::EmptyWriterHandler> persoArabicWriter { };
+  [[no_unique_address]] std::conditional_t<Type == ScriptType::Indic && ContextualIndic,
+      handlers::IndicOrthographyHandler, handlers::EmptyWriterHandler> indicWriter { };
 };
 
 /// Calculates an initial capacity estimation for the destination output buffer.
@@ -265,18 +333,18 @@ size_t outputCapacity(size_t bytes, const ScriptReaderMap& reader, const ScriptW
 
 /// Typed transliteration driver: instantiates InputReader and OutputWriter specialized on Type,
 /// iterating through TokenUnits with 1-unit lookahead and passing them to the writer.
-template <typename Sink, ScriptType Type>
+template <typename Sink, ScriptType Type, bool ContextualIndic = false, bool ExtendedReader = true>
 bool transliterate_typed(const std::string_view& input, const ScriptReaderMap& readerMap,
     const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
-  InputReader reader(input, readerMap, options, skipStart, skipEnd);
+  InputReader<ExtendedReader> reader(input, readerMap, options, skipStart, skipEnd);
 
   if (writerMap.getType() == ScriptType::Indic && !writerMap.isVedic()) {
     // Keep source tokenization unchanged; only the writer suppresses accents
     // that the target script cannot represent.
     options = options | TranslitOptions::IgnoreVedicAccents;
   }
-  OutputWriter<Sink, Type> writer(writerMap, options, sink);
+  OutputWriter<Sink, Type, ContextualIndic> writer(writerMap, options, sink);
 
   TokenUnitOrString curr = (reader.hasMore() ? reader.getNext() : endOfText);
   while (curr != endOfText) {
@@ -290,23 +358,42 @@ bool transliterate_typed(const std::string_view& input, const ScriptReaderMap& r
 
 /// Core transliteration dispatcher: routes execution to the appropriate OutputWriter specialization
 /// based on the target script's ScriptType (Indic, Tamil, or Latin).
-template <typename Sink>
-bool transliterate_core(const std::string_view& input, const ScriptReaderMap& readerMap,
+template <typename Sink, bool ExtendedReader>
+bool transliterate_dispatch(const std::string_view& input, const ScriptReaderMap& readerMap,
     const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink, const std::string_view& skipStart,
     const std::string_view& skipEnd) noexcept {
   switch (writerMap.getType()) {
     case ScriptType::Indic:
-      return transliterate_typed<Sink, ScriptType::Indic>(
+      if (writerMap.orthography != IndicOrthography::Plain)
+        return transliterate_typed<Sink, ScriptType::Indic, true, ExtendedReader>(
+            input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+      return transliterate_typed<Sink, ScriptType::Indic, false, ExtendedReader>(
           input, readerMap, writerMap, options, sink, skipStart, skipEnd);
     case ScriptType::Tamil:
-      return transliterate_typed<Sink, ScriptType::Tamil>(
+      return transliterate_typed<Sink, ScriptType::Tamil, false, ExtendedReader>(
           input, readerMap, writerMap, options, sink, skipStart, skipEnd);
     case ScriptType::Latin:
-      return transliterate_typed<Sink, ScriptType::Latin>(
+      return transliterate_typed<Sink, ScriptType::Latin, false, ExtendedReader>(
+          input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+    case ScriptType::PersoArabic:
+      return transliterate_typed<Sink, ScriptType::PersoArabic, false, ExtendedReader>(
           input, readerMap, writerMap, options, sink, skipStart, skipEnd);
     default:
       return false;
   }
+}
+
+/// Select reader capabilities once per call. Explicit non-Thai/non-Urdu sources
+/// cannot produce preposed Thai vowels or pending Urdu shadda units.
+template <typename Sink>
+bool transliterate_core(const std::string_view& input, const ScriptReaderMap& readerMap,
+    const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink, const std::string_view& skipStart,
+    const std::string_view& skipEnd) noexcept {
+  namespace data = inditrans::static_data;
+  constexpr auto extendedSources = data::scriptMask(data::ScriptId::Thai, data::ScriptId::Urdu);
+  if (readerMap.nonRoman && (!readerMap.source || (readerMap.source & extendedSources)))
+    return transliterate_dispatch<Sink, true>(input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+  return transliterate_dispatch<Sink, false>(input, readerMap, writerMap, options, sink, skipStart, skipEnd);
 }
 
 /// When reading explicitly selected Tamil with superscripted disambiguation, do not
@@ -360,6 +447,7 @@ struct StdStringSink {
   void operator+=(char ch) { str += ch; }
   void operator+=(std::string_view view) { str += view; }
   size_t size() const { return str.size(); }
+  void replace(size_t offset, size_t count, std::string_view text) { str.replace(offset, count, text); }
   Utf8Char back() const {
     auto len = UtfUtils::prevCharLen(str.data() + str.size());
     return Utf8Char(str.data() + str.size() - len);

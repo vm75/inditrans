@@ -66,5 +66,25 @@ standalone C ABI on the ten native throughput workloads, at short, 4 KiB, and
 64 KiB scales. CSV output includes median/p95 timing, output sizes, and FNV-1a
 hashes. Timed calls include result release; UTF-8 decoding and hashing happen
 outside timing. Use the same Node version and CPU for both revisions; the
-64 KiB ceiling lets the eager reader in `perf-00-baseline` fit its original
-standalone memory limit.
+64 KiB ceiling lets the historical eager reader in
+`perf-00-baseline-pre-0.15.0` fit its original standalone memory limit.
+
+### Mapping validation
+
+`readerOverrides` in `script_data.json` selects explicit native token sequences;
+`readerExclusions` lists writer approximations that must not become native
+reader entries. Use existing `equivalents` for additional spellings of the same
+identity. Generation validates indices, complete writer inventories, alias
+resolution and source collisions. Canonical Unicode equivalents are expanded at
+generation time, including equivalents of explicit aliases. Duplicate target spellings remain valid and
+are reported in `out/static-lookup-collisions.json`. See
+[forward mapping choices](../docs/phonetic-mappings.md).
+
+`uv run scripts/verify_demo_font.py` checks the bundled Indic face and downloads
+five hash-pinned reference fonts for the remaining script families. It requires
+the native CLI toolchain and builds `out/inditrans` to shape actual forward output.
+The reference fonts are cached in `out/demo-font-sources/`.
+
+`make testall` runs native, standalone Wasm, Flutter, Node.js, demo and maintenance
+tests. The Flutter target builds the Linux shared library and runs `flutter test`;
+it does not launch the interactive Chrome example.

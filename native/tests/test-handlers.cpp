@@ -782,7 +782,7 @@ suite<"Tamil handler tests"> tamilTests = [] {
     expect(result.leadToken.idx == 2u); // voiced க³ (idx + 2)
   };
 
-  "TamilReaderHandler word-final pulli dropping"_test = [] {
+  "TamilReaderHandler word-final pulli retains the written stop"_test = [] {
     TamilReaderHandler reader;
     ScriptToken ka(TokenType::Consonant, 0 /* க */, ScriptType::Tamil);
 
@@ -791,7 +791,8 @@ suite<"Tamil handler tests"> tamilTests = [] {
     stream.add(TokenOrString(Virama));
 
     auto result = reader.assemble(ka, stream, false, invalidTokenUnit, TranslitOptions::None);
-    expect(result == invalidTokenUnit); // Word-final primary stop with pulli is dropped
+    expect(result.leadToken == ka);
+    expect(result.vowelMark == Virama);
   };
 
   "TamilReaderHandler word-final soft pulli retention"_test = [] {

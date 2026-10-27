@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'demo/**'
+      - 'js/public/inditrans.js'
+      - 'js/inditrans-standalone.js'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -25,8 +27,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Stage demo with matching engine assets
+        run: |
+          mkdir -p "$RUNNER_TEMP/site/js/public"
+          cp -R demo "$RUNNER_TEMP/site/demo"
+          cp js/public/inditrans.js "$RUNNER_TEMP/site/js/public/"
+          cp js/inditrans-standalone.js "$RUNNER_TEMP/site/js/"
+          printf '<!doctype html><meta http-equiv="refresh" content="0;url=demo/"><a href="demo/">Inditrans demo</a>\n' > "$RUNNER_TEMP/site/index.html"
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: demo
+          path: ${{ runner.temp }}/site
       - id: deployment
         uses: actions/deploy-pages@v4

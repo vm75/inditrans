@@ -15,7 +15,8 @@ enum class ScriptType : uint8_t {
   Indic, ///< Standard Brahmic abugidas (Devanagari, Bengali, Telugu, Kannada, etc.)
   Tamil, ///< Tamil script, which features a reduced consonant set, allophones, and superscripts
   Latin, ///< Romanization schemes (ITRANS, Harvard-Kyoto, IAST, SLP1, Velthuis, etc.)
-  Others ///< Non-alphabetic scripts or special character tables
+  PersoArabic, ///< Urdu abjad; the fourth value fits existing two-bit family fields
+  Others = PersoArabic ///< Sentinel/shared-symbol family retained for internal compatibility
 };
 
 /// Returns true if the script belongs to the Brahmic family (Indic or Tamil).

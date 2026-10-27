@@ -120,19 +120,29 @@ test('reset restores the complete conversion state before replacing and converti
   assert.match(html, /element\('sample-button'\)\.addEventListener\('click', resetDemo\)/);
 });
 
+test('demo badge matches the package version', () => {
+  const { version } = JSON.parse(readFileSync(join(__dirname, '../../nodejs/package.json'), 'utf8'));
+  assert.equal(html.match(/const ENGINE_VERSION = '([^']+)'/)[1], `v${version}`);
+});
+
 test('engine adapter and wrapper forward custom skip delimiters with conversion flags', async () => {
   let received;
+  const loadedScripts = [];
   const api = {
     Option: { None: 0, NoXMLTagHandling: 32 }, ready: async () => {}, getSupportedScripts: () => ['indic', 'indlish'],
     transliterate(...args) { received = args; return 'converted'; }
   };
   const code = html.slice(html.indexOf('function createEngineProfile()'), html.indexOf('const element ='));
   const { createEngine, createEngineProfile } = runInNewContext(code + ';({createEngine, createEngineProfile})', {
-    ENGINE_VERSION: 'v0.14.1', KEYBOARD_MAPS: {}, window: { Inditrans: api }, URL,
-    document: { createElement: () => ({}), head: { append: script => script.onload() } }
+    ENGINE_VERSION: 'v0.15.0', KEYBOARD_MAPS: {}, window: { Inditrans: api }, URL,
+    document: { baseURI: 'https://example.test/inditrans/demo/', createElement: () => ({}), head: { append: script => { loadedScripts.push(script.src); script.onload(); } } }
   });
   const engine = createEngine(createEngineProfile());
   await engine.load();
+  assert.deepEqual(loadedScripts, [
+    'https://example.test/inditrans/js/public/inditrans.js?v=v0.15.0',
+    'https://example.test/inditrans/js/inditrans-standalone.js?v=v0.15.0'
+  ]);
   assert.equal(engine.transliterate(defaultText, 'indic', 'indlish', ['NoXMLTagHandling'], '[', ']'), 'converted');
   assert.deepEqual(received, [defaultText, 'indic', 'indlish', 32, '[', ']']);
 });

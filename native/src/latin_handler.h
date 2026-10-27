@@ -32,17 +32,19 @@ public:
               vowelAdded = true;
               // Roman vowel index 0 is 'a'; leaving the mark absent represents
               // the inherent vowel. The same index in VowelMark means virama.
-              if (nextToken.idx != Diacritic_Virama) {
+              if (nextToken.tokenType == TokenType::VowelMark || nextToken.idx != Diacritic_Virama) {
                 tokenUnit.vowelMark = { TokenType::VowelMark, nextToken.idx };
               }
               consume = true;
             }
             break;
           case TokenType::OtherDiacritic:
+            if (tokenUnit.otherDiacritic.idx != InvalidToken) break;
             tokenUnit.otherDiacritic = nextToken;
             consume = true;
             break;
           case TokenType::Accent:
+            if (tokenUnit.accent.idx != InvalidToken) break;
             tokenUnit.accent = nextToken;
             consume = true;
             break;
@@ -85,7 +87,7 @@ public:
     }
     if (tokenUnit.otherDiacritic.idx != InvalidToken) {
       const auto lookup = map.lookupChar(tokenUnit.otherDiacritic);
-      if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara && (options / TranslitOptions::DisableInference)) {
+      if (isAnuswara(tokenUnit.otherDiacritic) && (options / TranslitOptions::DisableInference)) {
         if (map.isIndlish()) {
           if (AnuswaraAssimilator::canAssimilate(next)) {
             AnuswaraAssimilator::emit<ScriptType::Latin>(next, map, writer);

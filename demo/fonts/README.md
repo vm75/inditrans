@@ -4,7 +4,8 @@
 Noto Serif Regular and its Devanagari, Bengali, Gurmukhi, Gujarati, Oriya, Tamil,
 Telugu, Kannada, Malayalam and Sinhala families. It is distributed under the
 [SIL Open Font License](OFL.txt); copyright notices are included in the font
-and license file.
+and license file. The subset includes the four IPA prenasalization modifiers
+used by the engine, so Roman output also has complete glyph coverage.
 
 Mobile browsers can keep a base letter and its combining marks in one font run.
 A fallback list of separate script and accent fonts therefore still produces
@@ -37,7 +38,10 @@ uv run scripts/verify_demo_font.py
 
 This uses HarfBuzz shaping and fails if any result contains glyph ID zero
 (`.notdef`), and checks that borrowed Vedic marks attach without adding spacing.
-It also checks the demo's Telugu separator adjustment against accented vowels
-and conjuncts, rejecting extra dotted circles or character spacing.
+It checks raw Telugu vowels/conjuncts with real accents against native clusters,
+rejecting extra dotted circles or character spacing. It also builds the CLI and
+shapes forward outputs with five pinned reference fonts for Urdu/Nastaliq, Thai,
+Tibetan, Burmese and Khmer. Those downloaded fonts are cached under
+`out/demo-font-sources/`; they are not merged into the bundled Indic face.
 Checking only that fonts loaded, or checking isolated accent
 characters, does not detect the original rendering problem.

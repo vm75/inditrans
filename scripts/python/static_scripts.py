@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
+import unicodedata
 from pathlib import Path
 
 from .codegen_data import ScriptInfo
@@ -95,9 +96,16 @@ class StaticScripts:
     def script_type(self, script: ScriptInfo) -> str:
         if script.category == "latin":
             return "Latin"
+        if script.category == "persoArabic":
+            return "PersoArabic"
         return "Tamil" if script.category == "tamil" else "Indic"
 
     def chars(self, script: ScriptInfo, kind: str) -> list[str]:
+        if script.category == "persoArabic":
+            if kind == "accents":
+                return []
+            if kind == "exclusiveSymbols":
+                return ["\u200c", "\u200d", "\u200b", "ّ", "ھ", "َ"]
         if kind == "accents":
             return self.constants["LatinAccents" if script.category == "latin" else "VedicAccents"]
         if kind == "exclusiveSymbols":
@@ -115,12 +123,21 @@ class StaticScripts:
                                "winner": old.emitted_key, "ignored": token.emitted_key})
 
     def _add_base(self, table: dict[str, ReaderToken], script: ScriptInfo, mode: str) -> None:
+        excluded = {self._typed_token(script, identity) for identity in script.info.get("readerExclusions", [])}
         for kind, category in enumerate(CLASSES):
             for index, spelling in enumerate(self.chars(script, category)):
                 if script.category == "latin" and kind == 1 and index != 0:
                     continue
                 token = Token(kind, index, self.script_type(script))
-                self._add(table, spelling, ReaderToken(token), mode)
+                if token in excluded:
+                    continue
+                identities = script.info.get("readerOverrides", {}).get(spelling)
+                if identities:
+                    tokens = [self._typed_token(script, identity) for identity in identities]
+                    reading = ReaderToken(tokens[0], tuple(tokens[1:]))
+                else:
+                    reading = ReaderToken(token)
+                self._add(table, spelling, reading, mode)
 
     @staticmethod
     def _fold_ascii(text: str) -> str:
@@ -139,15 +156,19 @@ class StaticScripts:
     def _reader(self, script: ScriptInfo, fold: bool = False) -> dict[str, ReaderToken]:
         table: dict[str, ReaderToken] = {}
         mode = script.name + (":folded" if fold else "")
+        overrides = script.info.get("readerOverrides", {})
+        for spelling, identities in overrides.items():
+            if not spelling or not isinstance(identities, list) or not identities:
+                raise ValueError(f"{mode}: invalid reader override {spelling!r}")
+            tokens = [self._typed_token(script, identity) for identity in identities]
+            table[spelling] = ReaderToken(tokens[0], tuple(tokens[1:]))
+        audit_start = len(self.audit)
         self._add_base(table, script, mode)
         equivalents = script.info.get("equivalents", {})
         for target in sorted(equivalents, key=utf8_key):
             token: ReaderToken | None = None
             if len(target) >= 3 and target[1] == ":":
-                kind = TYPE_CHARS.find(target[0])
-                if kind < 0:
-                    continue
-                token = ReaderToken(Token(kind, int(target[2:]) & 255, self.script_type(script)))
+                token = ReaderToken(self._typed_token(script, target))
             else:
                 rest = target
                 lead = self._match(table, rest, fold)
@@ -163,13 +184,33 @@ class StaticScripts:
                         rest = rest[next_match.length:]
                     token = ReaderToken(lead.token.lead, tuple(extra)) if extra else lead.token
                     if rest:
-                        self.audit.append({"mode": mode, "partialTarget": target, "remainder": rest})
+                        raise ValueError(f"{mode}: partial alias target {target!r}: {rest!r}")
             if token is None:
-                self.audit.append({"mode": mode, "unresolvedTarget": target})
-                continue
+                raise ValueError(f"{mode}: unresolved alias target {target!r}")
             for alias in equivalents[target]:
                 self._add(table, alias, token, mode)
+        # Normalize source spellings and aliases during generation, not per call.
+        # For example Malayalam ൌ also accepts its canonical sequence ൌ.
+        for spelling, token in tuple(table.items()):
+            for form in ("NFC", "NFD"):
+                self._add(table, unicodedata.normalize(form, spelling), token, mode)
+        if script.name != "indlish":  # Output-only notation has no native reading.
+            for conflict in self.audit[audit_start:]:
+                if conflict["spelling"] not in overrides:
+                    raise ValueError(f"{mode}: ambiguous reading {conflict['spelling']!r}; add readerOverrides")
         return table
+
+    def _typed_token(self, script: ScriptInfo, identity: str) -> Token:
+        try:
+            prefix, index = identity.split(":")
+            kind = TYPE_CHARS.index(prefix)
+            index = int(index)
+            count = len(self.constants["ExclusiveSymbols"]) if prefix == "x" else len(self.chars(script, CLASSES[kind]))
+            if len(prefix) != 1 or not 0 <= index < count or index >= 64:
+                raise ValueError()
+        except (ValueError, IndexError):
+            raise ValueError(f"{script.name}: invalid token identity {identity!r}") from None
+        return Token(kind, index, self.script_type(script))
 
     def _sequence(self, token: ReaderToken) -> int:
         if token.emitted_key in self.sequence_ids:
@@ -205,16 +246,37 @@ class StaticScripts:
     def write_header(self, path: str | Path) -> None:
         if len(self.scripts) > 32:
             raise ValueError("source mask capacity exceeded")
+        for category in ("vowels", "vowelMarks", "consonants", "otherDiacritics", "symbols", "vedicSymbols"):
+            required = max(len(script.info[category]) for script in self.scripts)
+            for script in self.scripts:
+                if len(script.info[category]) != required or required > 64:
+                    raise ValueError(f"{script.name}: incomplete {category} mapping (expected {required})")
         explicit = [self._reader(script) for script in self.scripts]
         folded = [self._reader(script, True) if script.name in {"iast", "iso"} else explicit[i]
                   for i, script in enumerate(self.scripts)]
+        for script, reader in zip(self.scripts, explicit):
+            for kind in ("vowels", "vowelMarks", "consonants", "otherDiacritics"):
+                spellings: dict[str, list[int]] = {}
+                for index, spelling in enumerate(script.info[kind]):
+                    if spelling:
+                        spellings.setdefault(spelling, []).append(index)
+                for spelling, indices in spellings.items():
+                    if len(indices) > 1:
+                        reading = reader.get(spelling)
+                        self.audit.append({"mode": script.name, "writerCategory": kind,
+                                           "spelling": spelling, "writerIndices": indices,
+                                           "nativeReading": reading.emitted_key if reading else None})
         devanagari = next(i for i, script in enumerate(self.scripts) if script.name == "devanagari")
 
         indic = dict(explicit[devanagari])
         ordered = sorted(self.scripts, key=lambda script: script.name.lower())
         for script in ordered:
-            if script.name != "devanagari" and script.category != "latin":
-                self._add_base(indic, script, "indic")
+            if script.name != "devanagari" and script.category not in {"latin", "persoArabic"}:
+                for spelling, token in explicit[self.scripts.index(script)].items():
+                    # Native aliases/canonical equivalents belong to Mixed Indic;
+                    # ASCII control spellings such as Burmese {} remain literal.
+                    if not spelling.isascii():
+                        self._add(indic, spelling, token, "indic")
 
         # Merge equal token sequences into source masks, retaining alternatives
         # only when a spelling maps to different tokens across source scripts.
@@ -332,8 +394,9 @@ class StaticScripts:
                     ranges[array_key] = Range(begin, len(array))
                 item = ranges[array_key]
                 script_ranges.append(f"std::span{{writerChars}}.subspan({item.begin}, {item.count})")
+            orthography = {"thai": "Thai", "tibetan": "Tibetan", "burmese": "Burmese", "khmer": "Khmer", "gurmukhi": "Gurmukhi"}.get(script.name, "Plain")
             writers.append(f"/* ScriptId::{script_id_names[i]} */ {{ScriptType::{self.script_type(script)}, {str(script.category == 'vedic').lower()}, "
-                            f"{{{{{', '.join(script_ranges)}}}}}}}")
+                            f"{{{{{', '.join(script_ranges)}}}}}, IndicOrthography::{orthography}}}")
 
         names = {script.name.lower(): i for i, script in enumerate(self.scripts)}
         for i, script in enumerate(self.scripts):

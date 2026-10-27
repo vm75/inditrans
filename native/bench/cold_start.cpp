@@ -19,7 +19,7 @@ constexpr std::array cases {
   Case { "cold-devanagari-to-telugu", "devanagari", "telugu", "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । " },
   Case { "cold-iso-to-devanagari", "iso", "devanagari", "śrī gurubhyo namaḥ, namaste bhāratam. " },
   Case { "cold-devanagari-to-tamil", "devanagari", "tamil", "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । " },
-  Case { "cold-indic-to-iso", "indic", "iso", "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । " },
+  Case { "cold-iso-to-tamil", "iso", "tamil", "śrī gurubhyo namaḥ, namaste bhāratam. " },
   Case { "cold-tamil-to-iso", "tamil", "iso", "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப । " },
   Case { "cold-tamil-to-devanagari", "tamil", "devanagari", "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப । " },
 };

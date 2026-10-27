@@ -73,10 +73,10 @@ class LatinEquivalents:
 
 ARRAY_TYPES = {
     "aliases": None,
-    "vowels": 19,
-    "vowelMarks": 19,
-    "consonants": 50,
-    "otherDiacritics": 4,
+    "vowels": 22,
+    "vowelMarks": 22,
+    "consonants": 64,
+    "otherDiacritics": 8,
     "symbols": 13,
     "vedicSymbols": 3,
 }
@@ -153,8 +153,12 @@ class ScriptData:
                 continue
             equivalents = script.info.setdefault("equivalents", {})
             uppercase = script.name in {"iast", "ipa", "iso"}
+            excluded = set(script.info.get("readerExclusions", []))
+            prefixes = {"vowels": "v", "vowelMarks": "m", "consonants": "c", "otherDiacritics": "o", "symbols": "s", "vedicSymbols": "S"}
             for category in ARRAY_TYPES:
-                for spelling in script.info.get(category, []):
+                for index, spelling in enumerate(script.info.get(category, [])):
+                    if f"{prefixes.get(category)}:{index}" in excluded:
+                        continue
                     self._add_equivalent(spelling, equivalents, uppercase)
 
 

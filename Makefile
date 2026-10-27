@@ -41,7 +41,7 @@ WASM_OUT ?= flutter/assets/inditrans.wasm
 PERF_DIR ?= out/perf
 PERF_NAME ?=
 PERF_BASELINE ?= 00-baseline
-PERF_LATENCY_CASE ?= indic-to-indic
+PERF_LATENCY_CASE ?= devanagari-to-telugu
 PERF_ALLOC_CASE ?= devanagari
 PERF_COLD_CASE ?= cold-devanagari-to-telugu
 PERF_REPEATS ?= 5
@@ -290,7 +290,7 @@ bench-compare: $(NATIVE_BENCH) $(NATIVE_SHORT_BENCH) $(ALLOC_BENCH_DEPS) | out
 	@if [ "$(ALLOC_PROBE_SUPPORTED)" = "1" ] && [ -f $(BENCH_BASELINE)-allocs.csv ] && [ -s $(BENCH_BASELINE)-allocs.csv ] && [ -f $(LINUX_ALLOC_PROBE) ]; then \
 	  echo "━━━  Allocation regression check  (malloc+calloc+realloc events, requested bytes, peak live bytes)  ━━━"; \
 	  printf "" > out/bench-current-allocs.csv; \
-	  for mode in devanagari latin virtual-indic expansion protected mixed-protected tamil-to-iso tamil-to-devanagari tamil-superscript-output; do \
+	  for mode in devanagari latin iso-to-tamil expansion protected mixed-protected tamil-to-iso tamil-to-devanagari tamil-superscript-output; do \
 	    raw=$$(LD_PRELOAD=$(LINUX_ALLOC_PROBE) $(NATIVE_ALLOC_BENCH) $$mode 1048576 1 0 2>&1 1>/dev/null); \
 	    echo "$$raw" | awk -v m=$$mode -F'[ =,]+' '{ printf "%s,%d,%d,%s,%s\n",m,$$2+$$5+$$8,$$3+$$6+$$9,$$15,$$13 }'; \
 	  done > out/bench-current-allocs.csv; \
@@ -374,8 +374,8 @@ $(LINUX_ALLOC_PROBE): $(NATIVE_DIR)/bench/allocation_probe_linux.c
 	clang -std=c11 -O2 -fPIC -shared $(NATIVE_DIR)/bench/allocation_probe_linux.c -o $@
 endif
 
-test_flutter: wasm flutter/lib/src/bindings.dart
-	cd flutter/example && flutter run -d chrome
+test_flutter: so wasm flutter/lib/src/bindings.dart
+	cd flutter && LD_LIBRARY_PATH=../native/build_linux:$$LD_LIBRARY_PATH flutter test
 
 test_nodejs:
 	cd nodejs && yarn && yarn test

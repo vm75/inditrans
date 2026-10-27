@@ -287,6 +287,7 @@ def main() -> int:
     parser.add_argument("--run-tags", action="store_true", help="snapshot perf-* tags (all tags when none are listed)")
     parser.add_argument("--current", action="store_true", help="snapshot current workspace as 99-current (default without options)")
     parser.add_argument("tags", nargs="*", help="specific perf-* tags to snapshot; implies --run-tags")
+    parser.add_argument("--baseline", default="00-baseline", help="snapshot prefix used as the report baseline")
     args = parser.parse_args()
 
     def stop_on_signal(signum: int, _frame: object) -> None:
@@ -344,9 +345,9 @@ def main() -> int:
         normalize_snapshot(perf_dir / name)
 
     # Validate that participating snapshots contain compatible benchmark cases before generating report
-    baseline_prefix = perf_dir / "00-baseline"
-    if baseline_prefix.with_name("00-baseline-throughput.csv").is_file():
-        validate_snapshot_compatibility(baseline_prefix, expected_cases, "00-baseline")
+    baseline_prefix = perf_dir / args.baseline
+    if baseline_prefix.with_name(f"{args.baseline}-throughput.csv").is_file():
+        validate_snapshot_compatibility(baseline_prefix, expected_cases, args.baseline)
     for latency_csv in sorted(perf_dir.glob("*-latency.csv")):
         name = latency_csv.name.removesuffix("-latency.csv")
         validate_snapshot_compatibility(perf_dir / name, expected_cases, name)
@@ -360,7 +361,7 @@ def main() -> int:
                 "-f",
                 str(root / "Makefile"),
                 "perf-report",
-                "PERF_BASELINE=00-baseline",
+                f"PERF_BASELINE={args.baseline}",
                 f"PERF_DIR={root / 'out' / 'perf'}",
             ],
             cwd=root,

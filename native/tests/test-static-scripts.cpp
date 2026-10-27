@@ -78,12 +78,15 @@ suite<"Static script data"> staticScriptsTests = [] {
     const auto tamil = lookup("indic", "க");
     expect(tamil.matchLen == 3_u && tamil.tokens().size() == 1_u);
     expect(tamil.tokens().front() == ScriptToken(TokenType::Consonant, 0, ScriptType::Tamil));
-    // Malayalam chillu expansions are accepted explicitly but not by indic.
+    // Mixed Indic accepts native aliases and their complete expansions too.
     const auto chillu = lookup("malayalam", "ൻ");
     expect(chillu.tokens().size() == 2_u && chillu.matchLen == 3_u);
     expect(chillu.tokens().front() == ScriptToken(TokenType::Consonant, 19, ScriptType::Indic));
     expect(chillu.tokens().back() == ScriptToken(TokenType::VowelMark, 0, ScriptType::Indic));
-    expect(lookup("indic", "ൻ").tokens().empty());
+    const auto mixedChillu = lookup("indic", "ൻ");
+    expect(mixedChillu.tokens().size() == 2_u && mixedChillu.matchLen == 3_u);
+    expect(mixedChillu.tokens().front() == chillu.tokens().front());
+    expect(mixedChillu.tokens().back() == chillu.tokens().back());
     // Devanagari equivalents are imported into the virtual reader.
     const auto nukta = lookup("indic", "क़");
     expect(nukta.matchLen == 6_u && nukta.tokens().size() == 1_u);

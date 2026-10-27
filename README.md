@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/npm/v/@vm75/inditrans?label=npm)](https://www.npmjs.com/package/@vm75/inditrans)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-A transliteration library for [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts) and Latin scripts, implemented as a C++23 engine compiled to a shared library (native) and WASM (Web/Node.js). The same phoneme-level pipeline is exposed to Flutter/Dart and JavaScript/TypeScript.
+A transliteration library for [Indic/Brahmic](https://en.wikipedia.org/wiki/Brahmic_scripts), Urdu/Perso-Arabic and Latin scripts, implemented as a C++23 engine compiled to a shared library (native) and WASM (Web/Node.js). The same phoneme-level pipeline is exposed to Flutter/Dart and JavaScript/TypeScript.
 
 - No server required. FFI (native) or WASM (Web/Node.js) for near-native performance.
 - ITRANS toggle transliteration — wrap any region in `##…##` to pass it through unchanged.
@@ -19,6 +19,11 @@ Try the [live demo](https://vm75.github.io/inditrans/) to compare scripts, type 
 
 **Indic/Brahmic:** Assamese, Bengali, Burmese, Devanagari, Gujarati, Gurmukhi, Kannada,
 Khmer, Malayalam, Oriya, Sinhala, Tamil, Tamil-Extended, Telugu, Thai, Tibetan
+
+**Urdu/Perso-Arabic:** Urdu (`urdu`, alias `nastaliq`), rendered with a Nastaliq-capable font. Explicit vowels are supported; omitted vowels are not inferred.
+
+Forward target approximations and notation extensions are described in the
+[mapping review](docs/phonetic-mappings.md).
 
 **Standard Latin notations:**
 [IAST](https://en.wikipedia.org/wiki/International_Alphabet_of_Sanskrit_Transliteration) ·

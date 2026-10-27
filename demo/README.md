@@ -8,8 +8,10 @@ from the repository root:
 python3 -m http.server 8000
 ```
 
-Visit <http://localhost:8000/demo/>. Internet access is required for engine assets
-and hosted fonts.
+Visit <http://localhost:8000/demo/>. Build matching engine assets with `make wasm`
+first. Internet access is required for hosted fonts; engine assets are loaded
+from this checkout. Pages deploys the demo and matching checked-in JS/Wasm
+bundle together, with the site root redirecting to `demo/`.
 
 The default input is the mixed-script sample, with **Mixed Indic** as the source
 and **Indlish** as the output. The **reset icon** restores that text, both default
@@ -47,10 +49,17 @@ use the browser's rendered-font inspector to identify fonts used for particular
 glyphs. **Selected font only** removes demo fallbacks, but the browser may still
 use system fallback fonts.
 
-Telugu extended-vowel markers include an invisible separator. When a Vedic
-accent follows, the demo displays that separator after the accents so the
-browser can shape one syllable. Conversion, saved sessions, and copying retain
-the engine's original separator order.
+The panes, clipboard and saved sessions use the raw engine string. Extended
+vowels now use native approximations, so no Telugu separator rearrangement is
+needed. Old saved strings remain literal text; the demo does not reconstruct
+removed synthetic distinctions.
+
+**Urdu (Nastaliq)** uses `lang="ur"`, RTL direction, additional line spacing, and
+Noto Nastaliq Urdu with Noto Naskh Arabic fallback. Its font is downloaded rather
+than included in the ten-script Indic fallback. Mixed Indic excludes Urdu;
+select Urdu explicitly when converting it. Explicit vowels are reliable inputs;
+bare consonants do not acquire guessed vowels. See the
+[mapping review](../docs/phonetic-mappings.md) for source limitations.
 
 **Theme** offers System, Light, and Dark. System follows your device’s appearance
 and updates automatically when it changes. Your choice is saved in this browser.
@@ -94,11 +103,10 @@ content and a visible close button. The desktop script keyboard stays hidden on 
 
 ## Engine version
 
-Each demo is bound to the release tag in `ENGINE_VERSION` in `index.html`
-(currently `v0.14.1`), displayed in the version badge. Engine assets load directly
-from that tag; there is no release discovery or version switching. URL parameters
-and previously saved version choices do not change it. To publish a demo for a
-different release, update `ENGINE_VERSION` to that tag.
+The version badge shows `v0.15.0`. The page loads the matching engine assets
+shipped with its checkout/site, with the version in asset URLs to refresh browser
+caches. Rebuild with `make wasm` after changing mappings or native code. Pages stages `demo/` and the
+matching `js/` assets together; deploy both when updating output conventions.
 
 ## ASCII input
 
@@ -132,3 +140,15 @@ keyboard resize controls, and font discovery and loading.
 It needs no browser, dependencies, or network. It also runs in `make testall` and
 the Node.js job in CI for pushes to `main` and pull requests targeting `main`
 (documentation-only changes are skipped). It does not test browser interactions.
+
+For actual Chromium DOM paths, after `make wasm` and font verification:
+
+```sh
+python3 tests/integration/browser_smoke.py --browser chromium
+python3 tests/integration/browser_smoke.py --browser chromium --fixture demo.html
+```
+
+The demo fixture checks raw Telugu/Urdu strings, direction/language, dispatched
+composition/cut paths, undo/redo and saved-state restoration. Its clipboard-button
+check uses a stub; it does not claim OS clipboard or physical IME coverage. It
+loads the pinned Nastaliq reference font cached by the font verifier.

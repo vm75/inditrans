@@ -1,9 +1,13 @@
 # Performance reassessment
 
-Local capture: 2026-10-07. Reference: `perf-00-baseline` (locally
+Local capture: 2026-10-07. Reference at capture: `perf-00-baseline` (locally
 `0898c5d3cca74abd81e6846761d7003eca8ddebe`). The branch started at `f30fec7`.
 Tagged engine sources were unchanged; both engines used the current harness.
 All changes and measurements remain local. Hosted CI has not run this revision.
+
+This is a historical capture. The main `perf-00-baseline` tag now identifies the
+0.15.0 engine; the previous baseline (`fa145f3`) is archived as
+`perf-00-baseline-pre-0.15.0`.
 
 ## Selected implementation
 

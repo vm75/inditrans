@@ -120,3 +120,21 @@ yarn test       # build WASM and run tests
 ## License
 
 [MIT](../LICENSE)
+
+## Forward accuracy and Urdu
+
+`Script.urdu` (alias `Script.nastaliq`) supports Urdu/Perso-Arabic text. Use a
+Nastaliq-capable font and RTL text direction in your application. The returned
+string is ordinary Unicode in logical order. Explicit vowels, aspirates and
+shadda are supported; ordinary unvocalized Urdu needs lexical information to
+recover omitted vowels, so bare consonants receive no guessed vowel.
+
+Targets use their native letters or documented phonetic approximations; source
+distinctions may merge. ISO input now accepts the additional spreadsheet
+notations, including ê, ŭ, ĉ, ž, w and the Urdu loan-letter spellings. Artificial
+extended-vowel separators/accents have been replaced by native approximations.
+Real supported accents remain separate marks. There is no round-trip guarantee.
+
+The script profiles implement transliteration, not complete language-specific
+pronunciation. See the repository's [mapping review](https://github.com/vm75/inditrans/blob/main/docs/phonetic-mappings.md)
+for exact notation behavior and limitations.

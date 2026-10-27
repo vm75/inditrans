@@ -43,6 +43,11 @@ constexpr uint8_t Diacritic_Virama = 0;
 /// Index for Anuswara (nasalization mark) in the OtherDiacritic category.
 constexpr uint8_t Diacritic_Anuswara = 1;
 
+/// Tippi has separate ISO spelling but shares anusvara's assimilation behavior.
+constexpr bool isAnuswara(const Token& token) noexcept {
+  return token.tokenType == TokenType::OtherDiacritic && (token.idx == Diacritic_Anuswara || token.idx == 7);
+}
+
 /// Index for the Skip exclusive symbol (sentinel to ignore token).
 constexpr uint8_t ExclusiveSymbol_Skip = 2;
 

@@ -33,7 +33,7 @@ returned `std::string`.
 | Token Stream Model | `native/src/token_stream.h` | `TokenOrString` discriminated union, `TokenUnitOrString`, zero-allocation streaming adaptors |
 | Preservation Policy | `native/src/preservation_policy.h` | XML/HTML tag preservation, protected skip spans, raw run scanning, special marker filtering |
 | Contextual Handlers | `native/src/contextual_handlers.h` | Anuswara phoneme assimilation, ASCII numeral formatting, Tamil traditional replacements |
-| Script Handlers | `gurmukhi_handler.h`, `tamil_handler.h`, `indic_handler.h`, `latin_handler.h` | Isolated, independently testable reading and writing rules for each script family |
+| Script Handlers | `gurmukhi_handler.h`, `tamil_handler.h`, `indic_handler.h`, `indic_orthography.h`, `latin_handler.h`, `perso_arabic_handler.h` | Isolated, independently testable reading and writing rules for each script family |
 | Engine Pipeline | `native/src/inditrans.cpp` | Coordinates input tokenization, streaming token units, lookahead, and output writing via static handler dispatch |
 | UTF-8 helpers | `native/src/utf.h` | UTF-8 encoding/decoding and output-buffer ownership |
 | Generator | `scripts/generate_headers.py`, `scripts/python/static_scripts.py` | Resolve script semantics before C++ compilation |
@@ -44,7 +44,8 @@ returned `std::string`.
 
 ```text
 inditrans.cpp → {preservation_policy.h, contextual_handlers.h, gurmukhi_handler.h,
-                 tamil_handler.h, indic_handler.h, latin_handler.h}
+                 tamil_handler.h, indic_handler.h, indic_orthography.h,
+                 latin_handler.h, perso_arabic_handler.h}
                  │
                  └─→ token_stream.h → static_scripts.h → script_data.h → static_script_types.h
                                               │                              │
@@ -52,7 +53,7 @@ inditrans.cpp → {preservation_policy.h, contextual_handlers.h, gurmukhi_handle
 inditrans.cpp → script_constants.h / utf.h / inditrans.h
 ```
 
-`inditrans.cpp` coordinates the transliteration pipeline without embedding language-specific rules. Headers provide inline code, static handlers, and constant data; the native engine does not depend on Flutter or Node.js.
+`inditrans.cpp` coordinates the transliteration pipeline, including provenance for Thai preposed vowels in the virtual reader. Headers provide inline code, static handlers, and constant data; the native engine does not depend on Flutter or Node.js.
 Legacy `trie.h`, `char_trie.h`, and `utilities.h` remain utility/test code and
 are absent from the production transliteration dependency path.
 
@@ -64,12 +65,20 @@ Run `python3 scripts/generate_headers.py` from the repository root after changin
 canonical data. Never edit the generated header or Dart/TypeScript script and
 option enums by hand.
 
-The generator preserves base insertion order, first-wins collisions, sorted
-equivalent processing, and Latin uppercase/decomposed alternatives. It resolves
-textual and `type:index` equivalent targets into complete emitted token sequences,
-including the legacy shallow expansion rules. Collisions, partially matched
-and unresolved targets are recorded in `out/static-lookup-collisions.json`.
-There is no equivalent parser in the runtime engine.
+The generator resolves textual and `type:index` alias targets into complete
+emitted token sequences and retains the established shallow expansion rules.
+`readerOverrides` explicitly selects native readings when writer approximations
+coincide; `readerExclusions` prevents approximated output sequences from becoming
+native source tokens. Unexplained incompatible explicit-source readings, partial
+or unresolved aliases, invalid indices and incomplete writer inventories fail
+generation. Output-only Indlish is exempt from source-reading collision checks.
+Writer duplicates, native reading choices and virtual-source collisions are
+reported in `out/static-lookup-collisions.json`. Canonical equivalents of native spellings and aliases are
+expanded during generation; runtime Unicode normalization is unnecessary.
+See [mapping choices and inventory review](docs/phonetic-mappings.md).
+Mixed Indic merges the native non-ASCII reader entries, with Devanagari
+precedence; script-specific ASCII control aliases remain literal, and Urdu is
+excluded. There is no equivalent parser or mutable mapping builder in the runtime engine.
 
 Readable `SourceEntry` records associate UTF-8 spellings with source masks,
 named token sequences, virtual results, and exceptional variant ranges.
@@ -90,7 +99,7 @@ suffixes. The generator assigns offsets; `writerChar` checks every complete
 glyph against the resulting bytes at compile time. Lookup still uses one
 direct offset and length. Each target's descriptor holds eight
 compile-time spans of compact offset/length entries, an empty `Ignore` slot, its script
-type, and Vedic flag. Accent/exclusive-symbol tables and identical class arrays
+type, Vedic flag, and a small Indic orthography selector. Accent/exclusive-symbol tables and identical class arrays
 are shared.
 
 ### Token model
@@ -98,7 +107,7 @@ are shared.
 ```text
 TokenType   = Vowel | VowelMark | Consonant | OtherDiacritic | Accent |
               Symbol | VedicSymbol | ExclusiveSymbol | Ignore
-ScriptType  = Indic | Tamil | Latin | Others
+ScriptType  = Indic | Tamil | Latin | PersoArabic  (Others aliases the fourth value)
 Token       = { TokenType, idx }
 ScriptToken = { TokenType, idx, ScriptType }
 TokenUnit   = { leadToken, vowelMark, otherDiacritic, accent }
@@ -107,7 +116,8 @@ TokenUnit   = { leadToken, vowelMark, otherDiacritic, accent }
 Indices use the shared phoneme ordering. An expansion is a checked 16-bit span:
 12 bits for its offset into the token pool, 4 for its count; zero means no match.
 `ScriptToken` stays four bytes wide for word-sized copies and preserves the
-existing `TokenUnit` field layout. Expansion metadata belongs to the static span,
+existing `TokenUnit` field layout. Its fourth byte can mark Thai origin on a
+copied virtual-reader token; static table entries remain immutable. Expansion metadata belongs to the static span,
 rather than an extra-token index inside each token.
 
 `TokenOrString` stores a pointer and a word. A null pointer identifies a four-byte
@@ -130,18 +140,27 @@ one-token lookahead used by the writer.
    reader calls require one token of lookahead. `PreservedSpanHandler::pullUnrecognized`
    handles raw text, XML, and protected spans as borrowed views. XML options are evaluated
    outside the hot match loop.
-3. `InputReader::getNext()` coordinates token assembly by delegating to isolated
+3. Source capabilities select an `InputReader` specialization once per call.
+   Thai, Urdu, and virtual `indic` sources use the general reader; other explicit
+   sources and Roman schemes compile out Thai ordering and Urdu pending-unit checks.
+   `InputReader::getNext()` coordinates token assembly by delegating to isolated
    reader handlers: `IndicReaderHandler` attaches marks and accents, `TamilReaderHandler`
    applies superscript parsing and contextual pronunciation rules, `GurmukhiAdhakHandler`
    evaluates gemination without consumption, and `LatinReaderHandler` groups consonants
-   with following vowels or synthesizes virama. Handlers are `friend` classes to
+   with following vowels or synthesizes virama. The Urdu reader consumes explicit
+   vowels and keeps one pending unit when shadda expands a consonant; unmarked
+   consonants receive no guessed vowel. Repeated marks are left in the stream
+   instead of overwriting an attached mark. The Indic/Tamil/Latin handlers are `friend` classes to
    `InputReader`, eliminating abstraction overhead by accessing the token buffer directly.
-4. One dispatch selects an Indic, Tamil, or Latin `OutputWriter` specialization.
-   The writer delegates to `IndicWriterHandler`, `TamilWriterHandler`, or `LatinWriterHandler`
+4. One dispatch selects an Indic, Tamil, Latin, or Perso-Arabic `OutputWriter` specialization.
+   The writer delegates to the corresponding family handler, with narrow Indic
+   orthography rules for Thai preposed vowels, Tibetan subjoining, Burmese/Khmer stacking
+   and Gurmukhi gemination,
    via compile-time `if constexpr` branch elimination. Handlers receive a reference
    to the strongly-typed `Writer` rather than using `std::function` or lambda callbacks,
    allowing the compiler to fully inline output emission. Inactive handlers occupy no
-   state or execution time (`[[no_unique_address]]`). Both sinks write directly to
+   state (`[[no_unique_address]]`). Thai preposed vowels are inserted at a saved
+   byte offset in the existing output, without a separate cluster buffer. Both sinks write directly to
    result storage. `SpecialMarkerFilter` copies retained text runs together and checks
    ASCII before searching the non-ASCII marker string. Roman-to-non-Latin output
    reserves three input bytes per byte as a growth hint; both sinks can still grow
@@ -234,6 +253,7 @@ MinGW GCC ≥ 13. Static libgcc/libstdc++ linkage avoids their runtime DLL depen
 | Tamil ந→ன position rule, traditional replacements | `handlers::TamilWriterHandler` (`native/src/tamil_handler.h`) | Enforces dental vs alveolar nasal placement, traditional Grantha substitutions, superscript reordering |
 | Tamil prefix recognition | Static `TamilPrefixLookup` used by `TamilReaderHandler` & `TamilWriterHandler` | Tracks prefix trie transitions and maintains start-of-stem pronunciation rules |
 | Gurmukhi adhak | `handlers::GurmukhiAdhakHandler` (`native/src/gurmukhi_handler.h`) | Evaluates adhak gemination symbol, de-aspirates consonant, emits virama unit |
+| Gurmukhi adhak output | `handlers::IndicOrthographyHandler` (`native/src/indic_orthography.h`) | Replaces simple geminates after vowels with adhak, using the reader's de-aspiration rule; retains other clusters explicitly |
 | Anuswara assimilation | `handlers::AnuswaraAssimilator` (`native/src/contextual_handlers.h`) | Assimilates anuswara to class nasal across consonant vargas; shared between Tamil and Latin writers |
 | ASCII numeral conversion | `handlers::AsciiNumeralFormatter` (`native/src/contextual_handlers.h`) | Formats script numerals as ASCII digits '0'..'9' when `ASCIINumerals` is enabled |
 | XML and configured protected spans | `handlers::PreservedSpanHandler` (`native/src/preservation_policy.h`) | Streams through XML tags, configured skip delimiters (`skipStart`/`skipEnd`), and unmapped byte runs |

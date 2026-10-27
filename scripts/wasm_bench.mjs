@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { performance } from "node:perf_hooks";
 // Calls the standalone C ABI and includes releaseBuffer in each timed call.
-// The 64 KiB ceiling also fits the perf-00-baseline engine's eager reader.
+// The 64 KiB ceiling also fits the historical perf-00-baseline-pre-0.15.0 engine's eager reader.
 const artifact = process.argv[2];
 if (!artifact)
   throw new Error("Usage: node wasm_bench.mjs artifact.wasm [case]");

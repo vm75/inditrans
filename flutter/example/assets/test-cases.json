@@ -6,7 +6,7 @@
     "targets": [
       {
         "script": "tamil",
-        "text": "த்⁴ருʼத்வா",
+        "text": "த்⁴ருத்வா",
         "options": "TamilSuperscripted RetainSpecialMarkers"
       }
     ]
@@ -219,15 +219,15 @@
     "targets": [
       {
         "script": "indlish",
-        "text": "tanga padakkam charchchaikkuriya cheydigaL pAppA pambA ambA krubai tandu rakshiyamba"
+        "text": "tangap padakkam charchchaikkuriya cheydigaL pAppA pambA ambA krubai tandu rakshiyamba"
       },
       {
         "script": "devanagari",
-        "text": "तङ्ग पदक्कम् चर्च्चैक्कुरिय चॆय्दिगळ् पाप्पा पम्बा अम्बा क्रुबै तन्दु रक्षियम्ब"
+        "text": "तङ्गप् पदक्कम् चर्च्चैक्कुरिय चॆय्दिगळ् पाप्पा पम्बा अम्बा क्रुबै तन्दु रक्षियम्ब"
       },
       {
         "script": "iso",
-        "text": "taṅga padakkam carccaikkuriya ceydigaḷ pāppā pambā ambā krubai tandu rakṣiyamba"
+        "text": "taṅgap padakkam carccaikkuriya ceydigaḷ pāppā pambā ambā krubai tandu rakṣiyamba"
       }
     ]
   },
@@ -410,11 +410,26 @@
     "text": "te tE to tO",
     "script": "itrans",
     "targets": [
-      { "script": "devanagari", "text": "तॆ ते तॊ तो" },
-      { "script": "kannada", "text": "ತೆ ತೇ ತೊ ತೋ" },
-      { "script": "telugu", "text": "తె తే తొ తో" },
-      { "script": "tamil", "text": "தெ தே தொ தோ" },
-      { "script": "malayalam", "text": "തെ തേ തൊ തോ" }
+      {
+        "script": "devanagari",
+        "text": "तॆ ते तॊ तो"
+      },
+      {
+        "script": "kannada",
+        "text": "ತೆ ತೇ ತೊ ತೋ"
+      },
+      {
+        "script": "telugu",
+        "text": "తె తే తొ తో"
+      },
+      {
+        "script": "tamil",
+        "text": "தெ தே தொ தோ"
+      },
+      {
+        "script": "malayalam",
+        "text": "തെ തേ തൊ തോ"
+      }
     ]
   },
   {
@@ -422,11 +437,26 @@
     "text": "e E o O ^e ^o",
     "script": "itrans",
     "targets": [
-      { "script": "devanagari", "text": "ऎ ए ऒ ओ ऎ ऒ" },
-      { "script": "kannada", "text": "ಎ ಏ ಒ ಓ ಎ ಒ" },
-      { "script": "telugu", "text": "ఎ ఏ ఒ ఓ ఎ ఒ" },
-      { "script": "tamil", "text": "எ ஏ ஒ ஓ எ ஒ" },
-      { "script": "malayalam", "text": "എ ഏ ഒ ഓ എ ഒ" }
+      {
+        "script": "devanagari",
+        "text": "ऎ ए ऒ ओ ऎ ऒ"
+      },
+      {
+        "script": "kannada",
+        "text": "ಎ ಏ ಒ ಓ ಎ ಒ"
+      },
+      {
+        "script": "telugu",
+        "text": "ఎ ఏ ఒ ఓ ఎ ఒ"
+      },
+      {
+        "script": "tamil",
+        "text": "எ ஏ ஒ ஓ எ ஒ"
+      },
+      {
+        "script": "malayalam",
+        "text": "എ ഏ ഒ ഓ എ ഒ"
+      }
     ]
   },
   {
@@ -434,8 +464,14 @@
     "text": "tere bina, tErE bina, t^er^e bina",
     "script": "itrans",
     "targets": [
-      { "script": "kannada", "text": "ತೆರೆ ಬಿನ, ತೇರೇ ಬಿನ, ತೆರೆ ಬಿನ" },
-      { "script": "devanagari", "text": "तॆरॆ बिन, तेरे बिन, तॆरॆ बिन" }
+      {
+        "script": "kannada",
+        "text": "ತೆರೆ ಬಿನ, ತೇರೇ ಬಿನ, ತೆರೆ ಬಿನ"
+      },
+      {
+        "script": "devanagari",
+        "text": "तॆरॆ बिन, तेरे बिन, तॆरॆ बिन"
+      }
     ]
   },
   {
@@ -460,11 +496,11 @@
     "targets": [
       {
         "script": "iso",
-        "text": "a a a aṉ am al ar aḻ aḷ"
+        "text": "ak at ap aṉ am al ar aḻ aḷ"
       },
       {
         "script": "devanagari",
-        "text": "अ अ अ अऩ् अम् अल् अर् अऴ् अळ्"
+        "text": "अक् अत् अप् अऩ् अम् अल् अर् अऴ् अळ्"
       }
     ]
   },
@@ -737,6 +773,1249 @@
         "script": "devanagari",
         "text": "अक",
         "options": "TamilSuperscripted"
+      }
+    ]
+  },
+  {
+    "description": "Native Telugu approximations contain no synthetic accent or separator",
+    "script": "devanagari",
+    "text": "ऍ एॕ ऑ कॅ कॕ कॉ के॒",
+    "targets": [
+      {
+        "script": "telugu",
+        "text": "ఎ ఏ ఒ కె కే కొ కే॒"
+      }
+    ]
+  },
+  {
+    "description": "Native Telugu vowel accents keep their source identity",
+    "script": "telugu",
+    "text": "కె॒ కే॑ ఎ॒ ఏ॑",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ke̱ kē̍ e̱ ē̍"
+      },
+      {
+        "script": "devanagari",
+        "text": "कॆ॒ के॑ ऎ॒ ए॑"
+      }
+    ]
+  },
+  {
+    "description": "Sinhala ae stays separate from candra e",
+    "script": "iso",
+    "text": "æ ǣ ê",
+    "targets": [
+      {
+        "script": "sinhala",
+        "text": "ඇ ඈ එ"
+      },
+      {
+        "script": "devanagari",
+        "text": "ऍ एॕ ऍ"
+      }
+    ]
+  },
+  {
+    "description": "Native candra e uses its own ISO notation",
+    "script": "devanagari",
+    "text": "ऍ कॅ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ê kê"
+      }
+    ]
+  },
+  {
+    "description": "Native Bengali e reads as long e despite short-vowel approximations",
+    "script": "bengali",
+    "text": "এ কে",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ē kē"
+      }
+    ]
+  },
+  {
+    "description": "New affricate alveolar fricative and approximant inputs",
+    "script": "iso",
+    "text": "ĉa ĉha ṯa ža wa",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "च़ छ़ त़ झ़ व़"
+      },
+      {
+        "script": "ipa",
+        "text": "t͡sə t͡sʰə tə ʒə wə"
+      }
+    ]
+  },
+  {
+    "description": "Telugu alveolar affricates have forward phonetic values",
+    "script": "telugu",
+    "text": "ౘ ౙ",
+    "targets": [
+      {
+        "script": "ipa",
+        "text": "t͡sə d͡zə"
+      }
+    ]
+  },
+  {
+    "description": "Malayalam explicit half u leaves ordinary virama unchanged",
+    "script": "malayalam",
+    "text": "കു് ക്",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kŭ k"
+      }
+    ]
+  },
+  {
+    "description": "Visarga allophones are not avagraha",
+    "script": "devanagari",
+    "text": "ᳵ ᳶ ऽ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ẖ ḫ ’"
+      },
+      {
+        "script": "kannada",
+        "text": "ೱ ೲ ಽ"
+      }
+    ]
+  },
+  {
+    "description": "Telugu short nasal and Gurmukhi tippi ISO notation",
+    "script": "iso",
+    "text": "n̆ ṃ",
+    "targets": [
+      {
+        "script": "telugu",
+        "text": "ఁ ం"
+      },
+      {
+        "script": "gurmukhi",
+        "text": "ਁ ੰ"
+      }
+    ]
+  },
+  {
+    "description": "ISO apostrophe and dead r input aliases",
+    "script": "iso",
+    "text": "' r̆",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "ऽ र्"
+      }
+    ]
+  },
+  {
+    "description": "Urdu vowels and carriers differ from consonant vowel signs",
+    "script": "iso",
+    "text": "a ā i ī u ū ka ki ku kā kī kū khā",
+    "targets": [
+      {
+        "script": "urdu",
+        "text": "اَ آ اِ اِی اُ اُو کَ کِ کُ کا کِی کُو کھا"
+      }
+    ]
+  },
+  {
+    "description": "Explicit Urdu vowels and aspirates read forward",
+    "script": "urdu",
+    "text": "اَ آ اِ اِی اُ اُو کَ کِ کُ کا کِی کُو کھا",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka ki ku kā kī kū khā"
+      }
+    ]
+  },
+  {
+    "description": "Urdu bare consonants do not invent inherent a",
+    "script": "urdu",
+    "text": "کتب",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ktb"
+      },
+      {
+        "script": "devanagari",
+        "text": "क्त्ब्"
+      }
+    ]
+  },
+  {
+    "description": "Urdu shadda preserves both halves and trailing vowels",
+    "script": "urdu",
+    "text": "کَّ کِّ کّ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kka kki kk"
+      }
+    ]
+  },
+  {
+    "description": "Urdu aspirate accepts an intervening vowel point",
+    "script": "urdu",
+    "text": "کِھ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "khi"
+      }
+    ]
+  },
+  {
+    "description": "Urdu loan letters retain selected notation identities",
+    "script": "iso",
+    "text": "s̱a s̤a h̤a t̤a ʻa ẕa ża ẓa ža",
+    "targets": [
+      {
+        "script": "urdu",
+        "text": "ثَ صَ حَ طَ عَ ذَ ضَ ظَ ژَ"
+      }
+    ]
+  },
+  {
+    "description": "Urdu loan native spellings emit ISO notation",
+    "script": "urdu",
+    "text": "ثَ صَ حَ طَ عَ ذَ ضَ ظَ ژَ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "s̱a s̤a h̤a t̤a ʻa ẕa ża ẓa ža"
+      }
+    ]
+  },
+  {
+    "description": "Nastaliq alias and numeral option",
+    "script": "iso",
+    "text": "ka 123",
+    "targets": [
+      {
+        "script": "nastaliq",
+        "text": "کَ ۱۲۳"
+      },
+      {
+        "script": "urdu",
+        "text": "کَ 123",
+        "options": "ASCIINumerals"
+      }
+    ]
+  },
+  {
+    "description": "Multiple real accents survive forward assembly",
+    "script": "devanagari",
+    "text": "क॒॑ अ॒॑",
+    "targets": [
+      {
+        "script": "telugu",
+        "text": "క॒॑ అ॒॑"
+      },
+      {
+        "script": "iso",
+        "text": "ka̱̍ a̱̍"
+      },
+      {
+        "script": "telugu",
+        "text": "క అ",
+        "options": "IgnoreVedicAccents"
+      }
+    ]
+  },
+  {
+    "description": "Thai vowels precede the whole consonant cluster",
+    "script": "iso",
+    "text": "kē krē e ē o ō ai au æ ǣ ô",
+    "targets": [
+      {
+        "script": "thai",
+        "text": "เก เกฺร เอะ เอ โอะ โอ ไอ เอา แอะ แอ เอาะ"
+      }
+    ]
+  },
+  {
+    "description": "Thai preposed vowels and vowel suffixes read forward",
+    "script": "thai",
+    "text": "เก เกฺร เอะ เอ โอะ โอ ไอ เอา แอะ แอ เอาะ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kē krē e ē o ō ai au ê ê̄ ô"
+      }
+    ]
+  },
+  {
+    "description": "Mixed Indic includes native Thai preposed vowels",
+    "script": "indic",
+    "text": "เก เกฺร",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kē krē"
+      }
+    ]
+  },
+  {
+    "description": "Native stacking and coeng are emitted directly",
+    "script": "iso",
+    "text": "kka kta",
+    "targets": [
+      {
+        "script": "tibetan",
+        "text": "ཀྐ ཀྟ"
+      },
+      {
+        "script": "burmese",
+        "text": "က္က က္တ"
+      },
+      {
+        "script": "khmer",
+        "text": "ក្ក ក្ត"
+      }
+    ]
+  },
+  {
+    "description": "Native tibetan stacks read with vowel suppression",
+    "script": "tibetan",
+    "text": "ཀྐ ཀྟ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kka kta"
+      }
+    ]
+  },
+  {
+    "description": "Native burmese stacks read with vowel suppression",
+    "script": "burmese",
+    "text": "က္က က္တ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kka kta"
+      }
+    ]
+  },
+  {
+    "description": "Native khmer stacks read with vowel suppression",
+    "script": "khmer",
+    "text": "ក្ក ក្ត",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kka kta"
+      }
+    ]
+  },
+  {
+    "description": "Mixed Indic includes Tibetan subjoined consonants",
+    "script": "indic",
+    "text": "ཀྐ ཀྟ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kka kta"
+      }
+    ]
+  },
+  {
+    "description": "Tibetan palatal and alveolar affricates stay distinct",
+    "script": "tibetan",
+    "text": "ཅ ཆ ཇ ཇྷ ཙ ཚ ཛ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ca cha ja jha ĉa ĉha dza"
+      }
+    ]
+  },
+  {
+    "description": "Telugu voiced alveolar affricate has a Tibetan native match",
+    "script": "telugu",
+    "text": "ౙ",
+    "targets": [
+      {
+        "script": "tibetan",
+        "text": "ཛ"
+      }
+    ]
+  },
+  {
+    "description": "Urdu vowels between base and aspiration also support bh",
+    "script": "urdu",
+    "text": "بِھ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "bhi"
+      }
+    ]
+  },
+  {
+    "description": "Urdu gemination does not collapse a longer repeated cluster",
+    "script": "iso",
+    "text": "kkka",
+    "targets": [
+      {
+        "script": "urdu",
+        "text": "کّْکَ"
+      }
+    ]
+  },
+  {
+    "description": "Reviewed forward vowel and consonant anchors for every writer",
+    "script": "iso",
+    "text": "a ā i ī u ū ka kī k",
+    "targets": [
+      {
+        "script": "assamese",
+        "text": "অ আ ই ঈ উ ঊ ক কী ক্"
+      },
+      {
+        "script": "bengali",
+        "text": "অ আ ই ঈ উ ঊ ক কী ক্"
+      },
+      {
+        "script": "burmese",
+        "text": "အ အာ ဣ ဤ ဥ ဦ က ကီ က်"
+      },
+      {
+        "script": "devanagari",
+        "text": "अ आ इ ई उ ऊ क की क्"
+      },
+      {
+        "script": "gujarati",
+        "text": "અ આ ઇ ઈ ઉ ઊ ક કી ક્"
+      },
+      {
+        "script": "gurmukhi",
+        "text": "ਅ ਆ ਇ ਈ ਉ ਊ ਕ ਕੀ ਕ੍"
+      },
+      {
+        "script": "kannada",
+        "text": "ಅ ಆ ಇ ಈ ಉ ಊ ಕ ಕೀ ಕ್"
+      },
+      {
+        "script": "khmer",
+        "text": "អ អា ឥ ឦ ឧ ឩ ក កី ក៑"
+      },
+      {
+        "script": "malayalam",
+        "text": "അ ആ ഇ ഈ ഉ ഊ ക കീ ക്"
+      },
+      {
+        "script": "oriya",
+        "text": "ଅ ଆ ଇ ଈ ଉ ଊ କ କୀ କ୍"
+      },
+      {
+        "script": "sinhala",
+        "text": "අ ආ ඉ ඊ උ ඌ ක කී ක්"
+      },
+      {
+        "script": "tamil",
+        "text": "அ ஆ இ ஈ உ ஊ க கீ க்"
+      },
+      {
+        "script": "tamilExtended",
+        "text": "അ ആ ഇ ഈ ഉ ഊ ക കീ ക്‌"
+      },
+      {
+        "script": "telugu",
+        "text": "అ ఆ ఇ ఈ ఉ ఊ క కీ క్"
+      },
+      {
+        "script": "thai",
+        "text": "อ อา อิ อี อุ อู ก กี กฺ"
+      },
+      {
+        "script": "tibetan",
+        "text": "ཨ ཨཱ ཨི ཨཱི ཨུ ཨཱུ ཀ ཀཱི ཀ྄"
+      },
+      {
+        "script": "urdu",
+        "text": "اَ آ اِ اِی اُ اُو کَ کِی کْ"
+      },
+      {
+        "script": "hk",
+        "text": "a A i I u U ka kI k"
+      },
+      {
+        "script": "iast",
+        "text": "a ā i ī u ū ka kī k"
+      },
+      {
+        "script": "ipa",
+        "text": "ə ɑː ɪ iː u uː kə kiː k"
+      },
+      {
+        "script": "itrans",
+        "text": "a aa i ee u uu ka kee k"
+      },
+      {
+        "script": "indlish",
+        "text": "a A i I u U ka kI k"
+      },
+      {
+        "script": "titus",
+        "text": "a ā i ī u ū ka kī k"
+      },
+      {
+        "script": "wx",
+        "text": "a A i I u U ka kI k"
+      },
+      {
+        "script": "slp1",
+        "text": "a A i I u U ka kI k"
+      },
+      {
+        "script": "velthuis",
+        "text": "a aa i ii u uu ka kii k"
+      }
+    ]
+  },
+  {
+    "description": "ISO writer forward anchor",
+    "script": "devanagari",
+    "text": "अ आ इ ई उ ऊ क की क्",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Urdu vowel hiatus uses hamza on yeh",
+    "script": "iso",
+    "text": "kaī",
+    "targets": [
+      {
+        "script": "urdu",
+        "text": "کَئِی"
+      }
+    ]
+  },
+  {
+    "description": "Urdu hamza vowel carrier is read as an independent vowel",
+    "script": "urdu",
+    "text": "کَئِی",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kaī"
+      }
+    ]
+  },
+  {
+    "description": "Native assamese vowel and consonant readings",
+    "script": "assamese",
+    "text": "অ আ ই ঈ উ ঊ ক কী ক্",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native bengali vowel and consonant readings",
+    "script": "bengali",
+    "text": "অ আ ই ঈ উ ঊ ক কী ক্",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native burmese vowel and consonant readings",
+    "script": "burmese",
+    "text": "အ အာ ဣ ဤ ဥ ဦ က ကီ က်",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native devanagari vowel and consonant readings",
+    "script": "devanagari",
+    "text": "अ आ इ ई उ ऊ क की क्",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native gujarati vowel and consonant readings",
+    "script": "gujarati",
+    "text": "અ આ ઇ ઈ ઉ ઊ ક કી ક્",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native gurmukhi vowel and consonant readings",
+    "script": "gurmukhi",
+    "text": "ਅ ਆ ਇ ਈ ਉ ਊ ਕ ਕੀ ਕ੍",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native kannada vowel and consonant readings",
+    "script": "kannada",
+    "text": "ಅ ಆ ಇ ಈ ಉ ಊ ಕ ಕೀ ಕ್",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native khmer vowel and consonant readings",
+    "script": "khmer",
+    "text": "អ អា ឥ ឦ ឧ ឩ ក កី ក៑",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native malayalam vowel and consonant readings",
+    "script": "malayalam",
+    "text": "അ ആ ഇ ഈ ഉ ഊ ക കീ ക്",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native oriya vowel and consonant readings",
+    "script": "oriya",
+    "text": "ଅ ଆ ଇ ଈ ଉ ଊ କ କୀ କ୍",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native sinhala vowel and consonant readings",
+    "script": "sinhala",
+    "text": "අ ආ ඉ ඊ උ ඌ ක කී ක්",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native tamil vowel and consonant readings",
+    "script": "tamil",
+    "text": "அ ஆ இ ஈ உ ஊ க கீ க்",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native tamilExtended vowel and consonant readings",
+    "script": "tamilExtended",
+    "text": "അ ആ ഇ ഈ ഉ ഊ ക കീ ക്‌",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native telugu vowel and consonant readings",
+    "script": "telugu",
+    "text": "అ ఆ ఇ ఈ ఉ ఊ క కీ క్",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native thai vowel and consonant readings",
+    "script": "thai",
+    "text": "อ อา อิ อี อุ อู ก กี กฺ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native tibetan vowel and consonant readings",
+    "script": "tibetan",
+    "text": "ཨ ཨཱ ཨི ཨཱི ཨུ ཨཱུ ཀ ཀཱི ཀ྄",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native urdu vowel and consonant readings",
+    "script": "urdu",
+    "text": "اَ آ اِ اِی اُ اُو کَ کِی کْ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native hk vowel and consonant readings",
+    "script": "hk",
+    "text": "a A i I u U ka kI k",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native iast vowel and consonant readings",
+    "script": "iast",
+    "text": "a ā i ī u ū ka kī k",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native ipa vowel and consonant readings",
+    "script": "ipa",
+    "text": "ə ɑː ɪ iː u uː kə kiː k",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native itrans vowel and consonant readings",
+    "script": "itrans",
+    "text": "a aa i ee u uu ka kee k",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native titus vowel and consonant readings",
+    "script": "titus",
+    "text": "a ā i ī u ū ka kī k",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native slp1 vowel and consonant readings",
+    "script": "slp1",
+    "text": "a A i I u U ka kI k",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native velthuis vowel and consonant readings",
+    "script": "velthuis",
+    "text": "a aa i ii u uu ka kii k",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "a ā i ī u ū ka kī k"
+      }
+    ]
+  },
+  {
+    "description": "Native Nastaliq source alias",
+    "script": "nastaliq",
+    "text": "کَ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ka"
+      }
+    ]
+  },
+  {
+    "description": "Expansion benchmark notation change has a forward expectation",
+    "script": "devanagari",
+    "text": "अॅॐऍ",
+    "targets": [
+      {
+        "script": "telugu",
+        "text": "ఎఓంఎ"
+      }
+    ]
+  },
+  {
+    "description": "Tippi keeps nasal assimilation and inference opt-out",
+    "script": "gurmukhi",
+    "text": "ਗੰਕ",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "கங்க"
+      },
+      {
+        "script": "tamil",
+        "text": "கம்க",
+        "options": "DisableInference"
+      },
+      {
+        "script": "indlish",
+        "text": "ganka"
+      }
+    ]
+  },
+  {
+    "description": "Real candra below is an accent on the native Telugu vowel",
+    "script": "telugu",
+    "text": "ఎ᳴",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "ऎ᳴"
+      },
+      {
+        "script": "devanagari",
+        "text": "ऎ",
+        "options": "IgnoreVedicAccents"
+      }
+    ]
+  },
+  {
+    "description": "Visarga allophones survive the pitch-accent ignore option",
+    "script": "devanagari",
+    "text": "ᳵ ᳶ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ẖ ḫ",
+        "options": "IgnoreVedicAccents"
+      }
+    ]
+  },
+  {
+    "description": "ISO loan notation and genuine vocalic accent stay distinct",
+    "script": "iso",
+    "text": "s̱a sa̱",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "स स॒"
+      }
+    ]
+  },
+  {
+    "description": "Tamil written final stop survives before the next word",
+    "script": "tamil",
+    "text": "தங்கப் பதக்கம்",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "taṅgap padakkam"
+      }
+    ]
+  },
+  {
+    "description": "Urdu e hiatus uses and reads its hamza carrier",
+    "script": "iso",
+    "text": "āē",
+    "targets": [
+      {
+        "script": "urdu",
+        "text": "آئے"
+      }
+    ]
+  },
+  {
+    "description": "Urdu hamza e carrier reads forward",
+    "script": "urdu",
+    "text": "آئے",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "āē"
+      }
+    ]
+  },
+  {
+    "description": "Real candra below plus tone keeps a native vowel identity",
+    "script": "telugu",
+    "text": "కె᳴॑",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "कॆ᳴॑"
+      },
+      {
+        "script": "iso",
+        "text": "ke̍"
+      },
+      {
+        "script": "devanagari",
+        "text": "कॆ",
+        "options": "IgnoreVedicAccents"
+      }
+    ]
+  },
+  {
+    "description": "Thai open e and Sinhala ae have distinct phonetic identities",
+    "script": "thai",
+    "text": "แอะ แอ แกะ แก",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ê ê̄ kê kê̄"
+      },
+      {
+        "script": "ipa",
+        "text": "ɛ ɛː kɛ kɛː"
+      }
+    ]
+  },
+  {
+    "description": "Thai target handles every open front vowel in native order",
+    "script": "iso",
+    "text": "æ ǣ ê ê̄",
+    "targets": [
+      {
+        "script": "thai",
+        "text": "แอะ แอ แอะ แอ"
+      }
+    ]
+  },
+  {
+    "description": "Long candra e is distinct from Sinhala long ae",
+    "script": "devanagari",
+    "text": "एॕ कॕ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ê̄ kê̄"
+      }
+    ]
+  },
+  {
+    "description": "Native IPA alveolar stop has a reader",
+    "script": "ipa",
+    "text": "tə",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ṯa"
+      }
+    ]
+  },
+  {
+    "description": "Urdu long matres remain valid when a point precedes aspiration",
+    "script": "urdu",
+    "text": "کِھی کُھو بِھی",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "khī khū bhī"
+      }
+    ]
+  },
+  {
+    "description": "Thai visarga uses sara a rather than a cancelled h",
+    "script": "iso",
+    "text": "kaḥ kāḥ kīḥ",
+    "targets": [
+      {
+        "script": "thai",
+        "text": "กะ กาะ กีะ"
+      }
+    ]
+  },
+  {
+    "description": "Thai native visarga is read with dependent vowels",
+    "script": "thai",
+    "text": "กะ กาะ กีะ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kaḥ kāḥ kīḥ"
+      }
+    ]
+  },
+  {
+    "description": "Malayalam au accepts composed and decomposed source aliases",
+    "script": "malayalam",
+    "text": "കൌ കൌ കൗ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kau kau kau"
+      }
+    ]
+  },
+  {
+    "description": "Urdu hamza carrier keeps short and long u distinct",
+    "script": "urdu",
+    "text": "ؤُ ؤُو",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "u ū"
+      }
+    ]
+  },
+  {
+    "description": "Mixed Indic accepts native aliases and canonical forms but keeps ASCII literal",
+    "script": "indic",
+    "text": "কো কো കൌ കൌ ൻ () {}",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kō kō kau kau n () {}"
+      }
+    ]
+  },
+  {
+    "description": "Literal protected and XML spans bypass writer marker filtering",
+    "script": "devanagari",
+    "text": "##ʽʼˮˇ## <span title=\"ʽʼˮˇ\">क</span>",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ʽʼˮˇ <span title=\"ʽʼˮˇ\">ka</span>"
+      },
+      {
+        "script": "urdu",
+        "text": "ʽʼˮˇ <span title=\"ʽʼˮˇ\">کَ</span>"
+      }
+    ]
+  },
+  {
+    "description": "ITRANS anusvara aliases do not become punctuation plus n",
+    "script": "itrans",
+    "text": "sa.nskR^itam sa.mskR^itam saMskR^itam",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "संस्कृतम् संस्कृतम् संस्कृतम्"
+      }
+    ]
+  },
+  {
+    "description": "Bengali extended letters retain zh and w",
+    "script": "bengali",
+    "text": "ঝ় ৱ়",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ža wa"
+      }
+    ]
+  },
+  {
+    "description": "Gurmukhi extended zh letter",
+    "script": "gurmukhi",
+    "text": "ਝ਼",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ža"
+      }
+    ]
+  },
+  {
+    "description": "Bengali open e uses native ya-phala approximation",
+    "script": "iso",
+    "text": "ê kê ža wa",
+    "targets": [
+      {
+        "script": "bengali",
+        "text": "অ্যা ক্যা ঝ় ৱ়"
+      }
+    ]
+  },
+  {
+    "description": "Tamil native anusvara sign is accepted",
+    "script": "tamil",
+    "text": "அஂ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "aṁ"
+      }
+    ]
+  },
+  {
+    "description": "Tibetan Balti extensions use native letters",
+    "script": "iso",
+    "text": "qa ṛa ṛha kqa",
+    "targets": [
+      {
+        "script": "tibetan",
+        "text": "ཫ ཬ ཬྷ ཀ྄ཫ"
+      }
+    ]
+  },
+  {
+    "description": "Tibetan Balti native input and unstackable extension",
+    "script": "tibetan",
+    "text": "ཫ ཬ ཬྷ ཀ྄ཫ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "qa ṛa ṛha kqa"
+      }
+    ]
+  },
+  {
+    "description": "Tibetan fixed subjoined forms read as native consonants",
+    "script": "tibetan",
+    "text": "ཀྺ ཀྻ ཀྼ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kva kya kra"
+      }
+    ]
+  },
+  {
+    "description": "Odia native va and wa remain distinct, including the dotted-ba alias",
+    "script": "oriya",
+    "text": "ଵ ୱ ବ଼ ଵୀ ୱୀ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "va wa va vī wī"
+      },
+      {
+        "script": "ipa",
+        "text": "ʋə wə ʋə ʋiː wiː"
+      }
+    ]
+  },
+  {
+    "description": "Odia writer uses native va and wa letters",
+    "script": "iso",
+    "text": "va wa vī wī",
+    "targets": [
+      {
+        "script": "oriya",
+        "text": "ଵ ୱ ଵୀ ୱୀ"
+      }
+    ]
+  },
+  {
+    "description": "Mixed Indic reads Odia va and wa with their native identities",
+    "script": "indic",
+    "text": "ଵ ୱ",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "va wa"
+      }
+    ]
+  },
+  {
+    "description": "Gurmukhi writer emits addak for simple and aspirated geminates",
+    "script": "iso",
+    "text": "akka akkha makkhaṇa labbha hattha lacchamī",
+    "targets": [
+      {
+        "script": "gurmukhi",
+        "text": "ਅੱਕ ਅੱਖ ਮੱਖਣ ਲੱਭ ਹੱਥ ਲੱਛਮੀ"
+      },
+      {
+        "script": "gurmukhi",
+        "text": "ਅੱਕ ਅੱਖ ਮੱਖਣ ਲੱਭ ਹੱਥ ਲੱਛਮੀ",
+        "options": "DisableInference"
+      }
+    ]
+  },
+  {
+    "description": "Gurmukhi addak writing also accepts native Indic geminates",
+    "script": "devanagari",
+    "text": "अक्क अक्ख मक्की लब्भ हत्थ",
+    "targets": [
+      {
+        "script": "gurmukhi",
+        "text": "ਅੱਕ ਅੱਖ ਮੱਕੀ ਲੱਭ ਹੱਥ"
+      }
+    ]
+  },
+  {
+    "description": "Gurmukhi writer retains initial, longer, final and aspirated-first clusters",
+    "script": "iso",
+    "text": "kka akkka akk akhkha akta a##raw##kka",
+    "targets": [
+      {
+        "script": "gurmukhi",
+        "text": "ਕ੍ਕ ਅਕ੍ਕ੍ਕ ਅਕ੍ਕ੍ ਅਖ੍ਖ ਅਕ੍ਤ ਅrawਕ੍ਕ"
+      }
+    ]
+  },
+  {
+    "description": "Gurmukhi gemination keeps marks on the first consonant",
+    "script": "iso",
+    "text": "ak̍ka akṁka",
+    "targets": [
+      {
+        "script": "gurmukhi",
+        "text": "ਅਕ੍॑ਕ ਅਕ੍ਂਕ"
       }
     ]
   }

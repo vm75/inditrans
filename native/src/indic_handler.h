@@ -24,12 +24,15 @@ public:
         const auto nextToken = GetScriptToken(stream.buffer[stream.head]);
         switch (nextToken.tokenType) {
           case TokenType::OtherDiacritic:
+            if (tokenUnit.otherDiacritic.idx != InvalidToken) return tokenUnit;
             tokenUnit.otherDiacritic = nextToken;
             break;
           case TokenType::VowelMark:
+            if (tokenUnit.vowelMark.idx != InvalidToken) return tokenUnit;
             tokenUnit.vowelMark = nextToken;
             break;
           case TokenType::Accent:
+            if (tokenUnit.accent.idx != InvalidToken) return tokenUnit;
             tokenUnit.accent = nextToken;
             break;
           default:
@@ -45,9 +48,11 @@ public:
         const auto nextToken = GetScriptToken(stream.buffer[stream.head]);
         switch (nextToken.tokenType) {
           case TokenType::OtherDiacritic:
+            if (tokenUnit.otherDiacritic.idx != InvalidToken) return tokenUnit;
             tokenUnit.otherDiacritic = nextToken;
             break;
           case TokenType::Accent:
+            if (tokenUnit.accent.idx != InvalidToken) return tokenUnit;
             tokenUnit.accent = nextToken;
             break;
           default:

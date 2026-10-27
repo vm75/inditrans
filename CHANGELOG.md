@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.15.0]
+- Specialize common readers once per call to omit Thai and Urdu checks from Vedic, Tamil and Roman conversion loops.
+- Focus native performance comparisons on Vedic scripts, Tamil and ISO; promote this engine to the main performance baseline.
+- Keep MinGW support runtimes static when rebuilding the Windows example DLL.
+- Add Urdu/Perso-Arabic transliteration (`urdu`, alias `nastaliq`), with explicit vowels, aspirates, shadda and limited hamza handling; configure Nastaliq fonts and RTL panes in the demo.
+- Add missing ISO-profile notation inputs and native affricate, alveolar-stop, nasal and visarga-allophone identities; keep Sinhala ae distinct from candra e.
+- Replace synthetic vowel/separator and consonant-marker approximations with native forms; make native reader choices explicit and reject unexplained generator collisions.
+- Preserve Tamil written word-final stops with pulli instead of deleting them.
+- Distinguish Odia ଵ (v) and ୱ (w), and emit Gurmukhi adhak for simple geminates after vowels.
+- Correct Thai vowel order and Tibetan/Burmese/Khmer stacking; preserve additional real accents and diacritics rather than overwriting them.
+- Preserve literal/protected/XML spans without applying writer-marker filtering.
+- Display, copy and save raw engine output, deploy matching demo engine assets, and run actual Flutter tests from `make testall`.
+
 ## [0.14.1]
 - **Indlish Romanization**:
   - Rename `readableLatin` to `indlish` across native C++ engine, Flutter/Dart (`Script.indlish`), and TypeScript/JavaScript packages (`Script.indlish`).

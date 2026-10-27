@@ -173,7 +173,7 @@ jobs:
           check_probe() {
             label="$1"
             dir="$2"
-            for mode in devanagari latin virtual-indic expansion protected mixed-protected tamil-to-iso tamil-to-devanagari tamil-superscript-output; do
+            for mode in devanagari latin iso-to-tamil expansion protected mixed-protected tamil-to-iso tamil-to-devanagari tamil-superscript-output; do
               raw=$(LD_PRELOAD="$dir/out/libinditrans_alloc_probe.so" \
                 "$dir/out/inditrans_alloc_bench" "$mode" 1048576 1 0 2>&1 1>/dev/null)
               echo "$label $mode: $raw"

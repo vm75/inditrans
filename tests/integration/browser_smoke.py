@@ -14,15 +14,16 @@ from pathlib import Path
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--browser", default="chromium")
+    parser.add_argument("--fixture", default="browser.html", help="Fixture filename beside this runner")
+    parser.add_argument("--screenshot", help="Optional screenshot output path")
     args = parser.parse_args()
     browser = shutil.which(args.browser)
     if not browser:
         raise SystemExit(f"Browser executable not found: {args.browser}")
 
-    fixture = Path(__file__).resolve().with_name("browser.html").as_uri()
+    fixture = Path(__file__).resolve().with_name(args.fixture).as_uri()
     with tempfile.TemporaryDirectory(prefix="inditrans-chrome-") as profile:
-        result = subprocess.run(
-            [
+        command = [
                 browser,
                 "--headless=new",
                 "--no-sandbox",
@@ -33,8 +34,13 @@ def main() -> int:
                 "--allow-file-access-from-files",
                 "--virtual-time-budget=10000",
                 "--dump-dom",
-                fixture,
-            ],
+                "--window-size=1440,1100",
+            ]
+        if args.screenshot:
+            command.append(f"--screenshot={Path(args.screenshot).resolve()}")
+        command.append(fixture)
+        result = subprocess.run(
+            command,
             capture_output=True,
             text=True,
             timeout=45,
@@ -53,7 +59,7 @@ def main() -> int:
         raise SystemExit(f"Browser tests did not pass. Result: {attrs}\n{result.stderr[-2000:]}")
     if int(count.group(1)) == 0 or int(failures.group(1)) != 0:
         raise SystemExit(f"Invalid browser test counts: {attrs}")
-    print(f"Browser shared suite passed: {count.group(1)} conversions, each repeated twice")
+    print(f"Browser fixture {args.fixture} passed: {count.group(1)} checks")
     return 0
 
 

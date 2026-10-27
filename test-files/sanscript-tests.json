@@ -477,7 +477,7 @@
       },
       {
         "script": "oriya",
-        "text": "ଅସଯ ଔଷଧିଃ ଗ୍ରନ୍ଥଃ! ୡକାରୋ ନାସ୍ତି ଲେଶୋଽପି ସଂଶଯଃ। କୀଲକମ୍? କୂପିଃ?  କଷ୍ଠଂ ଭୋଃ। ଶଙ୍କର! ଜ୍ଞାନମ୍।  ସଞ୍ଜୀୱଯ। ୧୨୩୪୫॥ ଓଁ ତତ୍।"
+        "text": "ଅସଯ ଔଷଧିଃ ଗ୍ରନ୍ଥଃ! ୡକାରୋ ନାସ୍ତି ଲେଶୋଽପି ସଂଶଯଃ। କୀଲକମ୍? କୂପିଃ?  କଷ୍ଠଂ ଭୋଃ। ଶଙ୍କର! ଜ୍ଞାନମ୍।  ସଞ୍ଜୀଵଯ। ୧୨୩୪୫॥ ଓଁ ତତ୍।"
       },
       {
         "script": "titus",
@@ -525,11 +525,7 @@
       },
       {
         "script": "oriya",
-        "text": "ଅଗ୍ନିମୀଳେ ପୁରୋହିତଂ ଯଜ୍ଞସ୍ଯ ଦେୱମୃତ୍ୱିଜମ୍"
-      },
-      {
-        "script": "gurmukhi",
-        "text": "ਅਗ੍ਨਿਮੀਲ਼ੇ ਪੁਰੋਹਿਤਂ ਯਜ੍ਞਸ੍ਯ ਦੇਵਮ੍ਰੁਤ੍ਵਿਜਮ੍"
+        "text": "ଅଗ୍ନିମୀଳେ ପୁରୋହିତଂ ଯଜ୍ଞସ୍ଯ ଦେଵମୃତ୍ଵିଜମ୍"
       },
       {
         "script": "gujarati",
@@ -744,6 +740,28 @@
       {
         "script": "optitrans",
         "text": "koaphI eaka oaka"
+      }
+    ]
+  },
+  {
+    "description": "Gurmukhi vocalic-r target approximation is directional",
+    "script": "devanagari",
+    "text": "अग्निमीळे पुरोहितं यज्ञस्य देवमृत्विजम्",
+    "targets": [
+      {
+        "script": "gurmukhi",
+        "text": "ਅਗ੍ਨਿਮੀਲ਼ੇ ਪੁਰੋਹਿਤਂ ਯਜ੍ਞਸ੍ਯ ਦੇਵਮ੍ਰੁਤ੍ਵਿਜਮ੍"
+      }
+    ]
+  },
+  {
+    "description": "Native Gurmukhi ru is read as consonant plus u",
+    "script": "gurmukhi",
+    "text": "ਅਗ੍ਨਿਮੀਲ਼ੇ ਪੁਰੋਹਿਤਂ ਯਜ੍ਞਸ੍ਯ ਦੇਵਮ੍ਰੁਤ੍ਵਿਜਮ੍",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "अग्निमीळे पुरोहितं यज्ञस्य देवम्रुत्विजम्"
       }
     ]
   }

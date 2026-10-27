@@ -3224,168 +3224,178 @@
       // Keyboard symbols come from Inditrans script/reader tables; unavailable scripts are disabled.
       const KEYBOARD_MAPS = {
         sinhala: {
-          vowels: ["අ", "ආ", "ඉ", "ඊ", "උ", "ඌ", "ඍ", "ඎ", "ඏ", "ඐ", "එ", "ඒ", "ඓ", "ඔ", "ඕ", "ඖ", "ඇ", "ඈ", "ආ᳴"],
-          consonants: ["ක", "ඛ", "ග", "ඝ", "ඞ", "ච", "ඡ", "ජ", "ඣ", "ඤ", "ට", "ඨ", "ඩ", "ඪ", "ණ", "ත", "ථ", "ද", "ධ", "න", "ප", "ඵ", "බ", "භ", "ම", "ය", "ර", "ල", "ව", "ශ", "ෂ", "ස", "හ", "ළ", "ළ·", "ර·", "න·", "ක·", "ඛ·", "ග·", "ජ·", "ඩ·", "ඪ·", "ෆ", "ය·", "ඟ", "ඦ", "ඬ", "ඳ", "ඹ"],
-          vowelMarks: ["්", "ා", "ි", "ී", "ු", "ූ", "ෘ", "ෲ", "ෟ", "ෳ", "ෙ", "ේ", "ෛ", "ො", "ෝ", "ෞ", "ැ", "ෑ", "ා᳴"],
-          otherDiacritics: ["ංʼ", "ං", "ඃ", "ඃʼ"],
+          vowels: ["අ", "ආ", "ඉ", "ඊ", "උ", "ඌ", "ඍ", "ඎ", "ඏ", "ඐ", "එ", "ඒ", "ඓ", "ඔ", "ඕ", "ඖ", "ඇ", "ඈ", "ඔ", "එ", "උ", "ඈ"],
+          consonants: ["ක", "ඛ", "ග", "ඝ", "ඞ", "ච", "ඡ", "ජ", "ඣ", "ඤ", "ට", "ඨ", "ඩ", "ඪ", "ණ", "ත", "ථ", "ද", "ධ", "න", "ප", "ඵ", "බ", "භ", "ම", "ය", "ර", "ල", "ව", "ශ", "ෂ", "ස", "හ", "ළ", "ළ", "ර", "න", "ක", "ඛ", "ග", "ජ", "ඩ", "ඪ", "ෆ", "ය", "ඟ", "ඦ", "ඬ", "ඳ", "ඹ", "ච", "ඡ", "ත", "ජ", "ව", "ස", "ස", "හ", "ත", "හ", "ජ", "ජ", "ජ", "ජ"],
+          vowelMarks: ["්", "ා", "ි", "ී", "ු", "ූ", "ෘ", "ෲ", "ෟ", "ෳ", "ෙ", "ේ", "ෛ", "ො", "ෝ", "ෞ", "ැ", "ෑ", "ො", "ෙ", "ු", "ෑ"],
+          otherDiacritics: ["ං", "ං", "ඃ", "ඃ", "ඃ", "ඃ", "ං", "ං"],
           symbols: ["෦", "෧", "෨", "෩", "෪", "෫", "෬", "෭", "෮", "෯", "ඕං", "।", "॥"],
           vedicSymbols: ["(අ)", "ꣳ", "ꣴ"],
         },
         devanagari: {
-          vowels: ["अ", "आ", "इ", "ई", "उ", "ऊ", "ऋ", "ॠ", "ऌ", "ॡ", "ऎ", "ए", "ऐ", "ऒ", "ओ", "औ", "ऍ", "एॕ", "ऑ"],
-          consonants: ["क", "ख", "ग", "घ", "ङ", "च", "छ", "ज", "झ", "ञ", "ट", "ठ", "ड", "ढ", "ण", "त", "थ", "द", "ध", "न", "प", "फ", "ब", "भ", "म", "य", "र", "ल", "व", "श", "ष", "स", "ह", "ळ", "ऴ", "ऱ", "ऩ", "क़", "ख़", "ग़", "ज़", "ड़", "ढ़", "फ़", "य़", "ँˆग", "ँˆज", "ँˆड", "ँˆद", "ँˆब"],
-          vowelMarks: ["्", "ा", "ि", "ी", "ु", "ू", "ृ", "ॄ", "ॢ", "ॣ", "ॆ", "े", "ै", "ॊ", "ो", "ौ", "ॅ", "ॕ", "ॉ"],
-          otherDiacritics: ["ँ", "ं", "ः", "ःʼ"],
+          vowels: ["अ", "आ", "इ", "ई", "उ", "ऊ", "ऋ", "ॠ", "ऌ", "ॡ", "ऎ", "ए", "ऐ", "ऒ", "ओ", "औ", "ऍ", "एॕ", "ऑ", "ऍ", "उ", "एॕ"],
+          consonants: ["क", "ख", "ग", "घ", "ङ", "च", "छ", "ज", "झ", "ञ", "ट", "ठ", "ड", "ढ", "ण", "त", "थ", "द", "ध", "न", "प", "फ", "ब", "भ", "म", "य", "र", "ल", "व", "श", "ष", "स", "ह", "ळ", "ऴ", "ऱ", "ऩ", "क़", "ख़", "ग़", "ज़", "ड़", "ढ़", "फ़", "य़", "ँˆग", "ँˆज", "ँˆड", "ँˆद", "ँˆब", "च़", "छ़", "त़", "झ़", "व़", "स", "स", "ह", "त", "ह", "ज़", "ज़", "ज़", "ज"],
+          vowelMarks: ["्", "ा", "ि", "ी", "ु", "ू", "ृ", "ॄ", "ॢ", "ॣ", "ॆ", "े", "ै", "ॊ", "ो", "ौ", "ॅ", "ॕ", "ॉ", "ॅ", "ु", "ॕ"],
+          otherDiacritics: ["ँ", "ं", "ः", "ः", "ᳵ", "ᳶ", "ँ", "ं"],
           symbols: ["०", "१", "२", "३", "४", "५", "६", "७", "८", "९", "ॐ", "।", "॥"],
           vedicSymbols: ["ऽ", "ꣳ", "ꣴ"],
         },
         telugu: {
-          vowels: ["అ", "ఆ", "ఇ", "ఈ", "ఉ", "ఊ", "ఋ", "ౠ", "ఌ", "ౡ", "ఎ", "ఏ", "ఐ", "ఒ", "ఓ", "ఔ", "ఎ᳴​", "ఏ᳴", "ఒ᳴​"],
-          consonants: ["క", "ఖ", "గ", "ఘ", "ఙ", "చ", "ఛ", "జ", "ఝ", "ఞ", "ట", "ఠ", "డ", "ఢ", "ణ", "త", "థ", "ద", "ధ", "న", "ప", "ఫ", "బ", "భ", "మ", "య", "ర", "ల", "వ", "శ", "ష", "స", "హ", "ళ", "ఴ", "ఱ", "న·", "క·", "ఖ·", "గ·", "జ·", "డ·", "ఢ·", "ఫ·", "య·", "ఁˆగ", "ఁˆజ", "ఁˆడ", "ఁˆద", "ఁˆబ"],
-          vowelMarks: ["్", "ా", "ి", "ీ", "ు", "ూ", "ృ", "ౄ", "ౢ", "ౣ", "ె", "ే", "ై", "ొ", "ో", "ౌ", "ె॒​", "ే॒​", "ొ॒​"],
-          otherDiacritics: ["ఀ", "ం", "ః", "ఃʼ"],
+          vowels: ["అ", "ఆ", "ఇ", "ఈ", "ఉ", "ఊ", "ఋ", "ౠ", "ఌ", "ౡ", "ఎ", "ఏ", "ఐ", "ఒ", "ఓ", "ఔ", "ఎ", "ఏ", "ఒ", "ఎ", "ఉ", "ఏ"],
+          consonants: ["క", "ఖ", "గ", "ఘ", "ఙ", "చ", "ఛ", "జ", "ఝ", "ఞ", "ట", "ఠ", "డ", "ఢ", "ణ", "త", "థ", "ద", "ధ", "న", "ప", "ఫ", "బ", "భ", "మ", "య", "ర", "ల", "వ", "శ", "ష", "స", "హ", "ళ", "ఴ", "ఱ", "న", "క", "ఖ", "గ", "జ", "డ", "ఢ", "ఫ", "య", "ఁˆగ", "ఁˆజ", "ఁˆడ", "ఁˆద", "ఁˆబ", "ౘ", "ఛ", "త", "జ", "వ", "స", "స", "హ", "త", "హ", "జ", "జ", "జ", "ౙ"],
+          vowelMarks: ["్", "ా", "ి", "ీ", "ు", "ూ", "ృ", "ౄ", "ౢ", "ౣ", "ె", "ే", "ై", "ొ", "ో", "ౌ", "ె", "ే", "ొ", "ె", "ు", "ే"],
+          otherDiacritics: ["ఀ", "ం", "ః", "ః", "ః", "ః", "ఁ", "ం"],
           symbols: ["౦", "౧", "౨", "౩", "౪", "౫", "౬", "౭", "౮", "౯", "ఓం", "।", "॥"],
           vedicSymbols: ["ఽ", "ꣳ", "ꣴ"],
         },
         kannada: {
-          vowels: ["ಅ", "ಆ", "ಇ", "ಈ", "ಉ", "ಊ", "ಋ", "ೠ", "ಌ", "ೡ", "ಎ", "ಏ", "ಐ", "ಒ", "ಓ", "ಔ", "ಎ᳴", "ಏˇ", "ಆ᳴"],
-          consonants: ["ಕ", "ಖ", "ಗ", "ಘ", "ಙ", "ಚ", "ಛ", "ಜ", "ಝ", "ಞ", "ಟ", "ಠ", "ಡ", "ಢ", "ಣ", "ತ", "ಥ", "ದ", "ಧ", "ನ", "ಪ", "ಫ", "ಬ", "ಭ", "ಮ", "ಯ", "ರ", "ಲ", "ವ", "ಶ", "ಷ", "ಸ", "ಹ", "ಳ", "ೞ", "ಱ", "ನ಼", "ಕ಼", "ಖ಼", "ಗ಼", "ಜ಼", "ಡ಼", "ಢ಼", "ಫ಼", "ಯ಼", "ಂˆಗ", "ಂˆಜ", "ಂˆಡ", "ಂˆದ", "ಂˆಬ"],
-          vowelMarks: ["್", "ಾ", "ಿ", "ೀ", "ು", "ೂ", "ೃ", "ೄ", "ೢ", "ೣ", "ೆ", "ೇ", "ೈ", "ೊ", "ೋ", "ೌ", "ೆ᳴", "ೇˇ", "ಾ᳴"],
-          otherDiacritics: ["ಁ", "ಂ", "ಃ", "ಃʼ"],
+          vowels: ["ಅ", "ಆ", "ಇ", "ಈ", "ಉ", "ಊ", "ಋ", "ೠ", "ಌ", "ೡ", "ಎ", "ಏ", "ಐ", "ಒ", "ಓ", "ಔ", "ಎ", "ಏ", "ಒ", "ಎ", "ಉ", "ಏ"],
+          consonants: ["ಕ", "ಖ", "ಗ", "ಘ", "ಙ", "ಚ", "ಛ", "ಜ", "ಝ", "ಞ", "ಟ", "ಠ", "ಡ", "ಢ", "ಣ", "ತ", "ಥ", "ದ", "ಧ", "ನ", "ಪ", "ಫ", "ಬ", "ಭ", "ಮ", "ಯ", "ರ", "ಲ", "ವ", "ಶ", "ಷ", "ಸ", "ಹ", "ಳ", "ೞ", "ಱ", "ನ಼", "ಕ಼", "ಖ಼", "ಗ಼", "ಜ಼", "ಡ಼", "ಢ಼", "ಫ಼", "ಯ಼", "ಂˆಗ", "ಂˆಜ", "ಂˆಡ", "ಂˆದ", "ಂˆಬ", "ಚ", "ಛ", "ತ", "ಜ", "ವ", "ಸ", "ಸ", "ಹ", "ತ", "ಹ", "ಜ಼", "ಜ಼", "ಜ಼", "ಜ"],
+          vowelMarks: ["್", "ಾ", "ಿ", "ೀ", "ು", "ೂ", "ೃ", "ೄ", "ೢ", "ೣ", "ೆ", "ೇ", "ೈ", "ೊ", "ೋ", "ೌ", "ೆ", "ೇ", "ೊ", "ೆ", "ು", "ೇ"],
+          otherDiacritics: ["ಁ", "ಂ", "ಃ", "ಃ", "ೱ", "ೲ", "ಁ", "ಂ"],
           symbols: ["೦", "೧", "೨", "೩", "೪", "೫", "೬", "೭", "೮", "೯", "ಓಂ", "।", "॥"],
           vedicSymbols: ["ಽ", "ꣳ", "ꣴ"],
         },
         tamil: {
-          vowels: ["அ", "ஆ", "இ", "ஈ", "உ", "ஊ", "ருʼ", "ரூʼ", "லுʼ", "லூʼ", "எ", "ஏ", "ஐ", "ஒ", "ஓ", "ஔ", "எʼ", "ஏʼ", "ஆʼ"],
-          consonants: ["க", "க²", "க³", "க⁴", "ங", "ச", "ச²", "ஜ", "ஜ²", "ஞ", "ட", "ட²", "ட³", "ட⁴", "ண", "த", "த²", "த³", "த⁴", "ந", "ப", "ப²", "ப³", "ப⁴", "ம", "ய", "ர", "ல", "வ", "ஶ", "ஷ", "ஸ", "ஹ", "ள", "ழ", "ற", "ன", "ஃக", "ஃக²", "ஃக³", "ஃஜ", "ஃட²", "ஃட³", "ஃப", "ஃய", "ங்ˆக³", "ஞ்ˆஜ³", "ண்ˆட³", "ந்ˆத³", "ம்ˆப³"],
-          vowelMarks: ["்", "ா", "ி", "ீ", "ு", "ூ", "்ருʼ", "்ரூʼ", "்லுʼ", "்லூʼ", "ெ", "ே", "ை", "ொ", "ோ", "ௌ", "ெ᳴", "ே᳴", "ா᳴"],
-          otherDiacritics: ["ம்ˮ", "ம்ʼ", "꞉", "ஃ"],
+          vowels: ["அ", "ஆ", "இ", "ஈ", "உ", "ஊ", "ரு", "ரூ", "லு", "லூ", "எ", "ஏ", "ஐ", "ஒ", "ஓ", "ஔ", "எ", "ஏ", "ஒ", "எ", "உ", "ஏ"],
+          consonants: ["க", "க²", "க³", "க⁴", "ங", "ச", "ச²", "ஜ", "ஜ²", "ஞ", "ட", "ட²", "ட³", "ட⁴", "ண", "த", "த²", "த³", "த⁴", "ந", "ப", "ப²", "ப³", "ப⁴", "ம", "ய", "ர", "ல", "வ", "ஶ", "ஷ", "ஸ", "ஹ", "ள", "ழ", "ற", "ன", "ஃக", "ஃக²", "ஃக³", "ஃஜ", "ஃட²", "ஃட³", "ஃப", "ஃய", "ங்ˆக³", "ஞ்ˆஜ³", "ண்ˆட³", "ந்ˆத³", "ம்ˆப³", "ச", "ச²", "த", "ஜ", "வ", "ஸ", "ஸ", "ஹ", "த", "ஹ", "ஃஜ", "ஃஜ", "ஃஜ", "ஜ"],
+          vowelMarks: ["்", "ா", "ி", "ீ", "ு", "ூ", "்ரு", "்ரூ", "்லு", "்லூ", "ெ", "ே", "ை", "ொ", "ோ", "ௌ", "ெ", "ே", "ொ", "ெ", "ு", "ே"],
+          otherDiacritics: ["ம்ˮ", "ம்ʼ", "꞉", "ஃ", "꞉", "꞉", "ம்ˮ", "ம்ʼ"],
           symbols: ["௦", "௧", "௨", "௩", "௪", "௫", "௬", "௭", "௮", "௯", "ௐ", "।", "॥"],
           vedicSymbols: ["(அ)", "ꣳ", "ꣴ"],
         },
         malayalam: {
-          vowels: ["അ", "ആ", "ഇ", "ഈ", "ഉ", "ഊ", "ഋ", "ൠ", "ഌ", "ൡ", "എ", "ഏ", "ഐ", "ഒ", "ഓ", "ഔ", "എ᳴", "ഏˇ", "ആ᳴"],
-          consonants: ["ക", "ഖ", "ഗ", "ഘ", "ങ", "ച", "ഛ", "ജ", "ഝ", "ഞ", "ട", "ഠ", "ഡ", "ഢ", "ണ", "ത", "ഥ", "ദ", "ധ", "ന", "പ", "ഫ", "ബ", "ഭ", "മ", "യ", "ര", "ല", "വ", "ശ", "ഷ", "സ", "ഹ", "ള", "ഴ", "റ", "ഩ", "ക·", "ഖ·", "ഗ·", "ജ·", "ഡ·", "ഢ·", "ഫ·", "യ·", "ംˆഗ", "ംˆജ", "ംˆഡ", "ംˆദ", "ംˆബ"],
-          vowelMarks: ["്", "ാ", "ി", "ീ", "ു", "ൂ", "ൃ", "ൄ", "ൢ", "ൣ", "െ", "േ", "ൈ", "ൊ", "ോ", "ൗ", "െ᳴", "േˇ", "ാ᳴"],
-          otherDiacritics: ["ഁ", "ം", "ഃ", "ഃʼ"],
+          vowels: ["അ", "ആ", "ഇ", "ഈ", "ഉ", "ഊ", "ഋ", "ൠ", "ഌ", "ൡ", "എ", "ഏ", "ഐ", "ഒ", "ഓ", "ഔ", "എ", "ഏ", "ഒ", "എ", "ഉ്", "ഏ"],
+          consonants: ["ക", "ഖ", "ഗ", "ഘ", "ങ", "ച", "ഛ", "ജ", "ഝ", "ഞ", "ട", "ഠ", "ഡ", "ഢ", "ണ", "ത", "ഥ", "ദ", "ധ", "ന", "പ", "ഫ", "ബ", "ഭ", "മ", "യ", "ര", "ല", "വ", "ശ", "ഷ", "സ", "ഹ", "ള", "ഴ", "റ", "ഩ", "ക", "ഖ", "ഗ", "ജ", "ഡ", "ഢ", "ഫ", "യ", "ംˆഗ", "ംˆജ", "ംˆഡ", "ംˆദ", "ംˆബ", "ച", "ഛ", "ഺ", "ജ", "വ", "സ", "സ", "ഹ", "ത", "ഹ", "ജ", "ജ", "ജ", "ജ"],
+          vowelMarks: ["്", "ാ", "ി", "ീ", "ു", "ൂ", "ൃ", "ൄ", "ൢ", "ൣ", "െ", "േ", "ൈ", "ൊ", "ോ", "ൗ", "െ", "േ", "ൊ", "െ", "ു്", "േ"],
+          otherDiacritics: ["ഁ", "ം", "ഃ", "ഃ", "ഃ", "ഃ", "ഁ", "ം"],
           symbols: ["൦", "൧", "൨", "൩", "൪", "൫", "൬", "൭", "൮", "൯", "ഓം", "।", "॥"],
           vedicSymbols: ["ഽ", "ꣳ", "ꣴ"],
         },
         bengali: {
-          vowels: ["অ", "আ", "ই", "ঈ", "উ", "ঊ", "ঋ", "ৠ", "ঌ", "ৡ", "এ᳴", "এ", "ঐ", "ও᳴", "ও", "ঔ", "এ᳴", "এˇ", "আ᳴"],
-          consonants: ["ক", "খ", "গ", "ঘ", "ঙ", "চ", "ছ", "জ", "ঝ", "ঞ", "ট", "ঠ", "ড", "ঢ", "ণ", "ত", "থ", "দ", "ধ", "ন", "প", "ফ", "ব", "ভ", "ম", "য", "র", "ল", "ভ়", "শ", "ষ", "স", "হ", "ল়", "ষ়", "র়", "ন়", "ক়", "খ়", "গ়", "জ়", "ড়", "ঢ়", "ফ়", "য়", "ঁˆগ", "ঁˆজ", "ঁˆড", "ঁˆদ", "ঁˆব"],
-          vowelMarks: ["্", "া", "ি", "ী", "ু", "ূ", "ৃ", "ৄ", "ৢ", "ৣ", "ে᳴", "ে", "ৈ", "ো᳴", "ো", "ৌ", "ে᳴", "েˇ", "া᳴"],
-          otherDiacritics: ["ঁ", "ং", "ঃ", "ঃʼ"],
+          vowels: ["অ", "আ", "ই", "ঈ", "উ", "ঊ", "ঋ", "ৠ", "ঌ", "ৡ", "এ", "এ", "ঐ", "ও", "ও", "ঔ", "অ্যা", "অ্যা", "অ", "অ্যা", "উ", "অ্যা"],
+          consonants: ["ক", "খ", "গ", "ঘ", "ঙ", "চ", "ছ", "জ", "ঝ", "ঞ", "ট", "ঠ", "ড", "ঢ", "ণ", "ত", "থ", "দ", "ধ", "ন", "প", "ফ", "ব", "ভ", "ম", "য", "র", "ল", "ভ়", "শ", "ষ", "স", "হ", "ল়", "ষ়", "র়", "ন়", "ক়", "খ়", "গ়", "জ়", "ড়", "ঢ়", "ফ়", "য়", "ঁˆগ", "ঁˆজ", "ঁˆড", "ঁˆদ", "ঁˆব", "চ", "ছ", "ত", "ঝ়", "ৱ়", "স", "স", "হ", "ত", "হ", "জ়", "জ়", "জ়", "জ"],
+          vowelMarks: ["্", "া", "ি", "ী", "ু", "ূ", "ৃ", "ৄ", "ৢ", "ৣ", "ে", "ে", "ৈ", "ো", "ো", "ৌ", "্যা", "্যা", "", "্যা", "ু", "্যা"],
+          otherDiacritics: ["ঁ", "ং", "ঃ", "ঃ", "ঃ", "ঃ", "ঁ", "ং"],
           symbols: ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "ওঁ", "।", "॥"],
           vedicSymbols: ["ঽ", "ꣳ", "ꣴ"],
         },
         gujarati: {
-          vowels: ["અ", "આ", "ઇ", "ઈ", "ઉ", "ઊ", "ઋ", "ૠ", "ઌ", "ૡ", "એ᳴", "એ", "ઐ", "ઓ᳴", "ઓ", "ઔ", "ઍ", "ઍˇ", "ઑ"],
-          consonants: ["ક", "ખ", "ગ", "ઘ", "ઙ", "ચ", "છ", "જ", "ઝ", "ઞ", "ટ", "ઠ", "ડ", "ઢ", "ણ", "ત", "થ", "દ", "ધ", "ન", "પ", "ફ", "બ", "ભ", "મ", "ય", "ર", "લ", "વ", "શ", "ષ", "સ", "હ", "ળ", "ળ઼", "ર઼", "ન઼", "ક઼", "ખ઼", "ગ઼", "જ઼", "ડ઼", "ઢ઼", "ફ઼", "ય઼", "ઁˆગ", "ઁˆજ", "ઁˆડ", "ઁˆદ", "ઁˆબ"],
-          vowelMarks: ["્", "ા", "િ", "ી", "ુ", "ૂ", "ૃ", "ૄ", "ૢ", "ૣ", "ે᳴", "ે", "ૈ", "ો᳴", "ો", "ૌ", "ૅ", "ૅˇ", "ૉ"],
-          otherDiacritics: ["ઁ", "ં", "ઃ", "ઃʼ"],
+          vowels: ["અ", "આ", "ઇ", "ઈ", "ઉ", "ઊ", "ઋ", "ૠ", "ઌ", "ૡ", "એ", "એ", "ઐ", "ઓ", "ઓ", "ઔ", "ઍ", "એ", "ઑ", "ઍ", "ઉ", "એ"],
+          consonants: ["ક", "ખ", "ગ", "ઘ", "ઙ", "ચ", "છ", "જ", "ઝ", "ઞ", "ટ", "ઠ", "ડ", "ઢ", "ણ", "ત", "થ", "દ", "ધ", "ન", "પ", "ફ", "બ", "ભ", "મ", "ય", "ર", "લ", "વ", "શ", "ષ", "સ", "હ", "ળ", "ળ઼", "ર઼", "ન઼", "ક઼", "ખ઼", "ગ઼", "જ઼", "ડ઼", "ઢ઼", "ફ઼", "ય઼", "ઁˆગ", "ઁˆજ", "ઁˆડ", "ઁˆદ", "ઁˆબ", "ચ", "છ", "ત", "જ", "વ", "સ", "સ", "હ", "ત", "હ", "જ઼", "જ઼", "જ઼", "જ"],
+          vowelMarks: ["્", "ા", "િ", "ી", "ુ", "ૂ", "ૃ", "ૄ", "ૢ", "ૣ", "ે", "ે", "ૈ", "ો", "ો", "ૌ", "ૅ", "ે", "ૉ", "ૅ", "ુ", "ે"],
+          otherDiacritics: ["ઁ", "ં", "ઃ", "ઃ", "ઃ", "ઃ", "ઁ", "ં"],
           symbols: ["૦", "૧", "૨", "૩", "૪", "૫", "૬", "૭", "૮", "૯", "ૐ", "।", "॥"],
           vedicSymbols: ["ઽ", "ꣳ", "ꣴ"],
         },
         gurmukhi: {
-          vowels: ["ਅ", "ਆ", "ਇ", "ਈ", "ਉ", "ਊ", "ਰੁʼ", "ਰੂʼ", "ਲੁʼ", "ਲੂʼ", "ਏ᳴", "ਏ", "ਐ", "ਓ᳴", "ਓ", "ਔ", "ਏ᳴", "ਏˇ", "ਆ᳴"],
-          consonants: ["ਕ", "ਖ", "ਗ", "ਘ", "ਙ", "ਚ", "ਛ", "ਜ", "ਝ", "ਞ", "ਟ", "ਠ", "ਡ", "ਢ", "ਣ", "ਤ", "ਥ", "ਦ", "ਧ", "ਨ", "ਪ", "ਫ", "ਬ", "ਭ", "ਮ", "ਯ", "ਰ", "ਲ", "ਵ", "ਸ਼", "ਸ਼਼", "ਸ", "ਹ", "ਲ਼", "ਲ਼਼", "ਰ਼", "ਨ਼", "ਕ਼", "ਖ਼", "ਗ਼", "ਜ਼", "ੜ", "ਢ਼", "ਫ਼", "ਯ਼", "ਁˆਗ", "ਁˆਜ", "ਁˆਡ", "ਁˆਦ", "ਁˆਬ"],
-          vowelMarks: ["੍", "ਾ", "ਿ", "ੀ", "ੁ", "ੂ", "੍ਰੁʼ", "੍ਰੂʼ", "੍ਲੁʼ", "੍ਲੂʼ", "ੇ᳴", "ੇ", "ੈ", "ੋ᳴", "ੋ", "ੌ", "ੇ᳴", "ੇˇ", "ਾ᳴"],
-          otherDiacritics: ["ਁ", "ਂ", "ਃ", "ਃʼ"],
+          vowels: ["ਅ", "ਆ", "ਇ", "ਈ", "ਉ", "ਊ", "ਰੁ", "ਰੂ", "ਲੁ", "ਲੂ", "ਏ", "ਏ", "ਐ", "ਓ", "ਓ", "ਔ", "ਐ", "ਐ", "ਔ", "ਏ", "ਉ", "ਐ"],
+          consonants: ["ਕ", "ਖ", "ਗ", "ਘ", "ਙ", "ਚ", "ਛ", "ਜ", "ਝ", "ਞ", "ਟ", "ਠ", "ਡ", "ਢ", "ਣ", "ਤ", "ਥ", "ਦ", "ਧ", "ਨ", "ਪ", "ਫ", "ਬ", "ਭ", "ਮ", "ਯ", "ਰ", "ਲ", "ਵ", "ਸ਼", "ਸ਼਼", "ਸ", "ਹ", "ਲ਼", "ਲ਼਼", "ਰ਼", "ਨ਼", "ਕ਼", "ਖ਼", "ਗ਼", "ਜ਼", "ੜ", "ਢ਼", "ਫ਼", "ਯ਼", "ਁˆਗ", "ਁˆਜ", "ਁˆਡ", "ਁˆਦ", "ਁˆਬ", "ਚ", "ਛ", "ਤ", "ਝ਼", "ਵ", "ਸ", "ਸ", "ਹ", "ਤ", "ਹ", "ਜ਼", "ਜ਼", "ਜ਼", "ਜ"],
+          vowelMarks: ["੍", "ਾ", "ਿ", "ੀ", "ੁ", "ੂ", "੍ਰੁ", "੍ਰੂ", "੍ਲੁ", "੍ਲੂ", "ੇ", "ੇ", "ੈ", "ੋ", "ੋ", "ੌ", "ੈ", "ੈ", "ੌ", "ੇ", "ੁ", "ੈ"],
+          otherDiacritics: ["ਁ", "ਂ", "ਃ", "ਃ", "ਃ", "ਃ", "ਁ", "ੰ"],
           symbols: ["੦", "੧", "੨", "੩", "੪", "੫", "੬", "੭", "੮", "੯", "ੴ", "।", "॥"],
           vedicSymbols: ["(ਅ)", "ꣳ", "ꣴ"],
         },
         oriya: {
-          vowels: ["ଅ", "ଆ", "ଇ", "ଈ", "ଉ", "ଊ", "ଋ", "ୠ", "ଌ", "ୡ", "ଏ᳴", "ଏ", "ଐ", "ଓ᳴", "ଓ", "ଔ", "ଏ᳴", "ଏˇ", "ଆ᳴"],
-          consonants: ["କ", "ଖ", "ଗ", "ଘ", "ଙ", "ଚ", "ଛ", "ଜ", "ଝ", "ଞ", "ଟ", "ଠ", "ଡ", "ଢ", "ଣ", "ତ", "ଥ", "ଦ", "ଧ", "ନ", "ପ", "ଫ", "ବ", "ଭ", "ମ", "ଯ", "ର", "ଲ", "ୱ", "ଶ", "ଷ", "ସ", "ହ", "ଳ", "ଳ଼", "ର଼", "ନ଼", "କ଼", "ଖ଼", "ଗ଼", "ଜ଼", "ଡ଼", "ଢ଼", "ଫ଼", "ୟ", "ଁˆଗ", "ଁˆଜ", "ଁˆଡ", "ଁˆଦ", "ଁˆବ"],
-          vowelMarks: ["୍", "ା", "ି", "ੀ", "ୁ", "ୂ", "ୃ", "ୄ", "ୢ", "ୣ", "େ᳴", "େ", "ୈ", "ୋ᳴", "ୋ", "ୌ", "େ᳴", "େˇ", "ଆ᳴"],
-          otherDiacritics: ["ଁ", "ଂ", "ଃ", "ଃʼ"],
+          vowels: ["ଅ", "ଆ", "ଇ", "ଈ", "ଉ", "ଊ", "ଋ", "ୠ", "ଌ", "ୡ", "ଏ", "ଏ", "ଐ", "ଓ", "ଓ", "ଔ", "ଏ", "ଏ", "ଓ", "ଏ", "ଉ", "ଏ"],
+          consonants: ["କ", "ଖ", "ଗ", "ଘ", "ଙ", "ଚ", "ଛ", "ଜ", "ଝ", "ଞ", "ଟ", "ଠ", "ଡ", "ଢ", "ଣ", "ତ", "ଥ", "ଦ", "ଧ", "ନ", "ପ", "ଫ", "ବ", "ଭ", "ମ", "ଯ", "ର", "ଲ", "ଵ", "ଶ", "ଷ", "ସ", "ହ", "ଳ", "ଳ଼", "ର଼", "ନ଼", "କ଼", "ଖ଼", "ଗ଼", "ଜ଼", "ଡ଼", "ଢ଼", "ଫ଼", "ୟ", "ଁˆଗ", "ଁˆଜ", "ଁˆଡ", "ଁˆଦ", "ଁˆବ", "ଚ", "ଛ", "ତ", "ଜ", "ୱ", "ସ", "ସ", "ହ", "ତ", "ହ", "ଜ଼", "ଜ଼", "ଜ଼", "ଜ"],
+          vowelMarks: ["୍", "ା", "ି", "ୀ", "ୁ", "ୂ", "ୃ", "ୄ", "ୢ", "ୣ", "େ", "େ", "ୈ", "ୋ", "ୋ", "ୌ", "େ", "େ", "ୋ", "େ", "ୁ", "େ"],
+          otherDiacritics: ["ଁ", "ଂ", "ଃ", "ଃ", "ଃ", "ଃ", "ଁ", "ଂ"],
           symbols: ["୦", "୧", "୨", "୩", "୪", "୫", "୬", "୭", "୮", "୯", "ଓଁ", "।", "॥"],
           vedicSymbols: ["ଽ", "ꣳ", "ꣴ"],
         },
         iast: {
-          vowels: ["a", "ā", "i", "ī", "u", "ū", "ṛ", "ṝ", "ḷ", "ḹ", "ĕ", "e", "ai", "ŏ", "o", "au", "æ", "ǣ", "ô"],
-          consonants: ["k", "kh", "g", "gh", "ṅ", "c", "ch", "j", "jh", "ñ", "ṭ", "ṭh", "ḍ", "ḍh", "ṇ", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "ś", "ṣ", "s", "h", "l̤", "ḻ", "ṟ", "ṉ", "q", "k͟h", "ġ", "z", "r̤", "r̤h", "f", "ẏ", "n̆g", "n̆j", "n̆ḍ", "n̆d", "m̆b"],
-          vowelMarks: ["", "ā", "i", "ī", "u", "ū", "ṛ", "ṝ", "ḷ", "ḹ", "ĕ", "e", "ai", "ŏ", "o", "au", "æ", "ǣ", "ô"],
-          otherDiacritics: ["m̐", "ṃ", "ḥ", "ḵ"],
+          vowels: ["a", "ā", "i", "ī", "u", "ū", "ṛ", "ṝ", "ḷ", "ḹ", "ĕ", "e", "ai", "ŏ", "o", "au", "æ", "ǣ", "ô", "ĕ", "u", "ǣ"],
+          consonants: ["k", "kh", "g", "gh", "ṅ", "c", "ch", "j", "jh", "ñ", "ṭ", "ṭh", "ḍ", "ḍh", "ṇ", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "ś", "ṣ", "s", "h", "l̤", "ḻ", "ṟ", "ṉ", "q", "k͟h", "ġ", "z", "r̤", "r̤h", "f", "ẏ", "n̆g", "n̆j", "n̆ḍ", "n̆d", "m̆b", "c", "ch", "t", "j", "v", "s", "s", "h", "t", "h", "z", "z", "z", "j"],
+          vowelMarks: ["", "ā", "i", "ī", "u", "ū", "ṛ", "ṝ", "ḷ", "ḹ", "ĕ", "e", "ai", "ŏ", "o", "au", "æ", "ǣ", "ô", "ĕ", "u", "ǣ"],
+          otherDiacritics: ["m̐", "ṃ", "ḥ", "ḵ", "ḥ", "ḥ", "m̐", "ṃ"],
           symbols: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "oṃ", ".", ".."],
           vedicSymbols: ["'", "gͫ", "gͫ̄"],
         },
         itrans: {
-          vowels: ["a", "aa", "i", "ee", "u", "uu", "R^i", "R^I", "L^i", "L^I", "e", "E", "ai", "o", "O", "au", "e.c", "a.C", "A.c"],
-          consonants: ["k", "kh", "g", "gh", "~N", "ch", "chh", "j", "jh", "~n", "T", "Th", "D", "Dh", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "sh", "Sh", "s", "h", "L", "zh", "R", "^n", "q", "K", "G", "z", ".D", ".Dh", "f", "Y", "n*g", "n*j", "n*D", "n*d", "m*b"],
-          vowelMarks: ["", "aa", "i", "ee", "u", "uu", "R^i", "R^I", "L^i", "L^I", "e", "E", "ai", "o", "O", "au", "e.c", "a.C", "A.c"],
-          otherDiacritics: [".N", "M", "H", "K^"],
+          vowels: ["a", "aa", "i", "ee", "u", "uu", "R^i", "R^I", "L^i", "L^I", "e", "E", "ai", "o", "O", "au", "e.c", "a.C", "A.c", "e", "u", "a.C"],
+          consonants: ["k", "kh", "g", "gh", "~N", "ch", "chh", "j", "jh", "~n", "T", "Th", "D", "Dh", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "sh", "Sh", "s", "h", "L", "zh", "R", "^n", "q", "K", "G", "z", ".D", ".Dh", "f", "Y", "n*g", "n*j", "n*D", "n*d", "m*b", "ch", "chh", "t", "j", "v", "s", "s", "h", "t", "h", "z", "z", "z", "j"],
+          vowelMarks: ["", "aa", "i", "ee", "u", "uu", "R^i", "R^I", "L^i", "L^I", "e", "E", "ai", "o", "O", "au", "e.c", "a.C", "A.c", "e", "u", "a.C"],
+          otherDiacritics: [".N", "M", "H", "K^", "H", "H", ".N", "M"],
           symbols: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "OM", ".", ".."],
           vedicSymbols: [".a", "gum", "ggum"],
         },
         hk: {
-          vowels: ["a", "A", "i", "I", "u", "U", "R", "RR", "lR", "lRR", "E", "e", "ai", "O", "o", "au", "aE", "AE", "aO"],
-          consonants: ["k", "kh", "g", "gh", "G", "c", "ch", "j", "jh", "J", "T", "Th", "D", "Dh", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "z", "S", "s", "h", "L", "Z", "r2", "n2", "q", "qh", "g2", "z2", "r3", "r3h", "f", "Y", "n*g", "n*j", "n*D", "n*d", "m*b"],
-          vowelMarks: ["", "A", "i", "I", "u", "U", "R", "RR", "lR", "lRR", "E", "e", "ai", "O", "o", "au", "aE", "AE", "aO"],
-          otherDiacritics: ["~", "M", "H", "K"],
+          vowels: ["a", "A", "i", "I", "u", "U", "R", "RR", "lR", "lRR", "E", "e", "ai", "O", "o", "au", "aE", "AE", "aO", "E", "u", "AE"],
+          consonants: ["k", "kh", "g", "gh", "G", "c", "ch", "j", "jh", "J", "T", "Th", "D", "Dh", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "z", "S", "s", "h", "L", "Z", "r2", "n2", "q", "qh", "g2", "z2", "r3", "r3h", "f", "Y", "n*g", "n*j", "n*D", "n*d", "m*b", "c", "ch", "t", "j", "v", "s", "s", "h", "t", "h", "z2", "z2", "z2", "j"],
+          vowelMarks: ["", "A", "i", "I", "u", "U", "R", "RR", "lR", "lRR", "E", "e", "ai", "O", "o", "au", "aE", "AE", "aO", "E", "u", "AE"],
+          otherDiacritics: ["~", "M", "H", "K", "H", "H", "~", "M"],
           symbols: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "oM", ".", ".."],
           vedicSymbols: ["'", "gͫ", "gͫ̄"],
         },
         iso: {
-          vowels: ["a", "ā", "i", "ī", "u", "ū", "r̥", "r̥̄", "l̥", "l̥̄", "e", "ē", "ai", "o", "ō", "au", "æ", "ǣ", "ô"],
-          consonants: ["k", "kh", "g", "gh", "ṅ", "c", "ch", "j", "jh", "ñ", "ṭ", "ṭh", "ḍ", "ḍh", "ṇ", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "ś", "ṣ", "s", "h", "ḷ", "ḻ", "ṟ", "ṉ", "q", "k͟h", "ġ", "z", "ṛ", "ṛh", "f", "ẏ", "n̆g", "n̆j", "n̆ḍ", "n̆d", "m̆b"],
-          vowelMarks: ["", "ā", "i", "ī", "u", "ū", "r̥", "r̥̄", "l̥", "l̥̄", "e", "ē", "ai", "o", "ō", "au", "æ", "ǣ", "ô"],
-          otherDiacritics: ["m̐", "ṁ", "ḥ", "ḵ"],
+          vowels: ["a", "ā", "i", "ī", "u", "ū", "r̥", "r̥̄", "l̥", "l̥̄", "e", "ē", "ai", "o", "ō", "au", "æ", "ǣ", "ô", "ê", "ŭ", "ê̄"],
+          consonants: ["k", "kh", "g", "gh", "ṅ", "c", "ch", "j", "jh", "ñ", "ṭ", "ṭh", "ḍ", "ḍh", "ṇ", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "ś", "ṣ", "s", "h", "ḷ", "ḻ", "ṟ", "ṉ", "q", "k͟h", "ġ", "z", "ṛ", "ṛh", "f", "ẏ", "n̆g", "n̆j", "n̆ḍ", "n̆d", "m̆b", "ĉ", "ĉh", "ṯ", "ž", "w", "s̱", "s̤", "h̤", "t̤", "ʻ", "ẕ", "ż", "ẓ", "dz"],
+          vowelMarks: ["", "ā", "i", "ī", "u", "ū", "r̥", "r̥̄", "l̥", "l̥̄", "e", "ē", "ai", "o", "ō", "au", "æ", "ǣ", "ô", "ê", "ŭ", "ê̄"],
+          otherDiacritics: ["m̐", "ṁ", "ḥ", "ḵ", "ẖ", "ḫ", "n̆", "ṃ"],
           symbols: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "ōṁ", ".", ".."],
           vedicSymbols: ["’", "gͫ", "gͫ̄"],
         },
         slp1: {
-          vowels: ["a", "A", "i", "I", "u", "U", "f", "F", "x", "X", "e1", "e", "E", "o1", "o", "O", "e2", "e4", "o2"],
-          consonants: ["k", "K", "g", "G", "N", "c", "C", "j", "J", "Y", "w", "W", "q", "Q", "R", "t", "T", "d", "D", "n", "p", "P", "b", "B", "m", "y", "r", "l", "v", "S", "z", "s", "h", "L", "L0", "r2", "n2", "k0", "K0", "g0", "j0", "q0", "Q0", "P0", "Y0", "n*g", "n*j", "n*q", "n*d", "m*b"],
-          vowelMarks: ["", "A", "i", "I", "u", "U", "f", "F", "x", "X", "e1", "e", "E", "o1", "o", "O", "e2", "e4", "o2"],
-          otherDiacritics: ["~", "M", "H", "K"],
+          vowels: ["a", "A", "i", "I", "u", "U", "f", "F", "x", "X", "e1", "e", "E", "o1", "o", "O", "e2", "e4", "o2", "e1", "u", "e4"],
+          consonants: ["k", "K", "g", "G", "N", "c", "C", "j", "J", "Y", "w", "W", "q", "Q", "R", "t", "T", "d", "D", "n", "p", "P", "b", "B", "m", "y", "r", "l", "v", "S", "z", "s", "h", "L", "L0", "r2", "n2", "k0", "K0", "g0", "j0", "q0", "Q0", "P0", "Y0", "n*g", "n*j", "n*q", "n*d", "m*b", "c", "C", "t", "j", "v", "s", "s", "h", "t", "h", "j0", "j0", "j0", "j"],
+          vowelMarks: ["", "A", "i", "I", "u", "U", "f", "F", "x", "X", "e1", "e", "E", "o1", "o", "O", "e2", "e4", "o2", "e1", "u", "e4"],
+          otherDiacritics: ["~", "M", "H", "K", "H", "H", "~", "M"],
           symbols: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "oM", ".", ".."],
           vedicSymbols: ["'", "gͫ", "gͫ̄"],
         },
         indlish: {
-          vowels: ["a", "A", "i", "I", "u", "U", "r̥", "r̥", "l̥", "l̥", "e", "E", "ai", "o", "O", "au", "ă", "̆e", "̆o"],
-          consonants: ["k", "kh", "g", "gh", "n", "ch", "CH", "j", "jh", "n", "T", "TH", "D", "DH", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "sh", "sh", "s", "h", "L", "zh", "R", "n", "q", "qh", "gh", "z", "D", "Dh", "f", "y", "ng", "nj", "nD", "nd", "mb"],
-          vowelMarks: ["", "A", "i", "I", "u", "U", "r̥", "r̥", "l̥", "l̥", "e", "E", "ai", "o", "O", "au", "ă", "̆e", "̆o"],
-          otherDiacritics: ["m̐", "ṁ", "ḥ", "ḵ"],
+          vowels: ["a", "A", "i", "I", "u", "U", "r̥", "r̥", "l̥", "l̥", "e", "E", "ai", "o", "O", "au", "ă", "̆e", "̆o", "e", "u", "̆e"],
+          consonants: ["k", "kh", "g", "gh", "n", "ch", "CH", "j", "jh", "n", "T", "TH", "D", "DH", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "sh", "sh", "s", "h", "L", "zh", "R", "n", "q", "qh", "gh", "z", "D", "Dh", "f", "y", "ng", "nj", "nD", "nd", "mb", "ch", "CH", "t", "j", "v", "s", "s", "h", "t", "h", "z", "z", "z", "j"],
+          vowelMarks: ["", "A", "i", "I", "u", "U", "r̥", "r̥", "l̥", "l̥", "e", "E", "ai", "o", "O", "au", "ă", "̆e", "̆o", "e", "u", "̆e"],
+          otherDiacritics: ["m̐", "ṁ", "ḥ", "ḵ", "ḥ", "ḥ", "m̐", "ṁ"],
           symbols: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "OM", "!", "!!"],
           vedicSymbols: ["~", "gum", "gum"],
         },
         velthuis: {
-          vowels: ["a", "aa", "i", "ii", "u", "uu", ".r", ".rr", ".l", ".ll", "E", "e", "ai", ".O", "o", "au", "aE", "AE", "aO"],
-          consonants: ["k", "kh", "g", "gh", "\"n", "c", "ch", "j", "jh", "~n", ".t", ".th", ".d", ".dh", ".n", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "\"s", ".s", "s", "h", "L", "_l", "_r", "_n", "q", "_kh", ".g", "z", "..r", "..rh", "f", ".y", "n*g", "n*j", "n*.d", "n*d", "m*b"],
-          vowelMarks: ["", "aa", "i", "ii", "u", "uu", ".r", ".rr", ".l", ".ll", "E", "e", "ai", ".O", "o", "au", "aE", "AE", "aO"],
-          otherDiacritics: ["~m", ".m", ".h", "_k"],
+          vowels: ["a", "aa", "i", "ii", "u", "uu", ".r", ".rr", ".l", ".ll", "E", "e", "ai", ".O", "o", "au", "aE", "AE", "aO", "E", "u", "AE"],
+          consonants: ["k", "kh", "g", "gh", "\"n", "c", "ch", "j", "jh", "~n", ".t", ".th", ".d", ".dh", ".n", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "\"s", ".s", "s", "h", "L", "_l", "_r", "_n", "q", "_kh", ".g", "z", "..r", "..rh", "f", ".y", "n*g", "n*j", "n*.d", "n*d", "m*b", "c", "ch", "t", "j", "v", "s", "s", "h", "t", "h", "z", "z", "z", "j"],
+          vowelMarks: ["", "aa", "i", "ii", "u", "uu", ".r", ".rr", ".l", ".ll", "E", "e", "ai", ".O", "o", "au", "aE", "AE", "aO", "E", "u", "AE"],
+          otherDiacritics: ["~m", ".m", ".h", "_k", ".h", ".h", "~m", ".m"],
           symbols: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "O", ".", ".."],
           vedicSymbols: [".a", "gͫ", "gͫ̄"],
         },
         wx: {
-          vowels: ["a", "A", "i", "I", "u", "U", "q", "qV", "L", "LV", "eV", "e", "E", "oV", "o", "O", "aEV", "AEV", "aOV"],
-          consonants: ["k", "K", "g", "G", "f", "c", "C", "j", "J", "F", "t", "T", "d", "D", "N", "w", "W", "x", "X", "n", "p", "P", "b", "B", "m", "y", "r", "l", "v", "S", "R", "s", "h", "lY", "lYY", "rY", "nY", "kY", "KY", "GY", "zY", "dY", "DY", "PY", "yY", "nYYg", "nYYj", "nYYd", "nYYx", "mYYb"],
-          vowelMarks: ["", "A", "i", "I", "u", "U", "q", "qV", "L", "LV", "eV", "e", "E", "oV", "o", "O", "aEV", "AEV", "aOV"],
-          otherDiacritics: ["z", "M", "H", "kYY"],
+          vowels: ["a", "A", "i", "I", "u", "U", "q", "qV", "L", "LV", "eV", "e", "E", "oV", "o", "O", "aEV", "AEV", "aOV", "eV", "u", "AEV"],
+          consonants: ["k", "K", "g", "G", "f", "c", "C", "j", "J", "F", "t", "T", "d", "D", "N", "w", "W", "x", "X", "n", "p", "P", "b", "B", "m", "y", "r", "l", "v", "S", "R", "s", "h", "lY", "lYY", "rY", "nY", "kY", "KY", "GY", "zY", "dY", "DY", "PY", "yY", "nYYg", "nYYj", "nYYd", "nYYx", "mYYb", "c", "C", "w", "j", "v", "s", "s", "h", "w", "h", "zY", "zY", "zY", "j"],
+          vowelMarks: ["", "A", "i", "I", "u", "U", "q", "qV", "L", "LV", "eV", "e", "E", "oV", "o", "O", "aEV", "AEV", "aOV", "eV", "u", "AEV"],
+          otherDiacritics: ["z", "M", "H", "kYY", "H", "H", "z", "M"],
           symbols: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "oM", ".", ".."],
           vedicSymbols: ["Z", "gͫ", "gͫ̄"],
         },
         titus: {
-          vowels: ["a", "ā", "i", "ī", "u", "ū", "r̥", "r̥̄", "l̥", "l̥̄", "ĕ", "e", "ai", "ŏ", "o", "au", "æ", "ǣ", "ô"],
-          consonants: ["k", "kʰ", "g", "gʰ", "ṅ", "c", "cʰ", "j", "jʰ", "ñ", "ṭ", "ṭʰ", "ḍ", "ḍʰ", "ṇ", "t", "tʰ", "d", "dʰ", "n", "p", "pʰ", "b", "bʰ", "m", "y", "r", "l", "v", "ś", "ṣ", "s", "h", "ḷ", "ḻ", "ṟ", "ṉ", "q", "k͟ʰ", "ġ", "z", "ṛ", "ṛʰ", "f", "ẏ", "n̆g", "n̆j", "n̆ḍ", "n̆d", "m̆b"],
-          vowelMarks: ["", "ā", "i", "ī", "u", "ū", "r̥", "r̥̄", "l̥", "l̥̄", "ĕ", "e", "ai", "ŏ", "o", "au", "æ", "ǣ", "ô"],
-          otherDiacritics: ["m̐", "ṃ", "ḥ", "ḵ"],
+          vowels: ["a", "ā", "i", "ī", "u", "ū", "r̥", "r̥̄", "l̥", "l̥̄", "ĕ", "e", "ai", "ŏ", "o", "au", "æ", "ǣ", "ô", "ĕ", "u", "ǣ"],
+          consonants: ["k", "kʰ", "g", "gʰ", "ṅ", "c", "cʰ", "j", "jʰ", "ñ", "ṭ", "ṭʰ", "ḍ", "ḍʰ", "ṇ", "t", "tʰ", "d", "dʰ", "n", "p", "pʰ", "b", "bʰ", "m", "y", "r", "l", "v", "ś", "ṣ", "s", "h", "ḷ", "ḻ", "ṟ", "ṉ", "q", "k͟ʰ", "ġ", "z", "ṛ", "ṛʰ", "f", "ẏ", "n̆g", "n̆j", "n̆ḍ", "n̆d", "m̆b", "c", "cʰ", "t", "j", "v", "s", "s", "h", "t", "h", "z", "z", "z", "j"],
+          vowelMarks: ["", "ā", "i", "ī", "u", "ū", "r̥", "r̥̄", "l̥", "l̥̄", "ĕ", "e", "ai", "ŏ", "o", "au", "æ", "ǣ", "ô", "ĕ", "u", "ǣ"],
+          otherDiacritics: ["m̐", "ṃ", "ḥ", "ḵ", "ḥ", "ḥ", "m̐", "ṃ"],
           symbols: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "oṃ", ".", ".."],
           vedicSymbols: ["'", "gͫ", "gͫ̄"],
         },
+        urdu: {
+          vowels: ["اَ", "آ", "اِ", "اِی", "اُ", "اُو", "رِ", "رِی", "لِ", "لِی", "اے", "اے", "اَے", "او", "او", "اَو", "اَے", "اَے", "اَو", "اَے", "اُ", "اَے"],
+          consonants: ["ک", "کھ", "گ", "گھ", "ن٘", "چ", "چھ", "ج", "جھ", "ڃ", "ٹ", "ٹھ", "ڈ", "ڈھ", "ݨ", "ت", "تھ", "د", "دھ", "ن", "پ", "پھ", "ب", "بھ", "م", "ی", "ر", "ل", "و", "ش", "ش", "س", "ہ", "لؕ", "ل", "ر", "ن", "ق", "خ", "غ", "ز", "ڑ", "ڑھ", "ف", "ی", "نگ", "نج", "نڈ", "ند", "مب", "تس", "تسھ", "ت", "ژ", "و", "ث", "ص", "ح", "ط", "ع", "ذ", "ض", "ظ", "دز"],
+          vowelMarks: ["ْ", "ا", "ِ", "ِی", "ُ", "ُو", "رِ", "رِی", "لِ", "لِی", "ے", "ے", "َے", "و", "و", "َو", "َے", "َے", "َو", "َے", "ُ", "َے"],
+          otherDiacritics: ["ں", "ں", "ہ", "ہ", "ہ", "ہ", "ں", "ں"],
+          symbols: ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "اوم", "۔", "۔۔"],
+          vedicSymbols: ["’", "گم", "گم"],
+          inherentVowel: 'َ',
+        },
       };
+
       const VEDIC_KEYBOARD_ACCENTS = ["॒", "॑", "᳚"];
       const LATIN_KEYBOARD_ACCENTS = ["̱", "̍", "̎"];
 
       // ASCII input tokens follow the same character order as KEYBOARD_MAPS.
       // Indlish-inspired spellings with distinct tokens for every keyboard slot.
       const ASCII_KEYBOARD_TOKENS = {
-        vowels: ['a', 'A', 'i', 'I', 'u', 'U', 'R^i', 'R^I', 'L^i', 'L^I', 'e', 'E', 'ai', 'o', 'O', 'au', 'ae', 'aE', 'ao'],
-        vowelMarks: ['`', '.A', '.i', '.I', '.u', '.U', '.R^i', '.R^I', '.L^i', '.L^I', '.e', '.E', '.ai', '.o', '.O', '.au', '.ae', '.aE', '.ao'],
-        consonants: ['k', 'kh', 'g', 'gh', 'ng', 'ch', 'CH', 'j', 'jh', 'ny', 'T', 'TH', 'D', 'DH', 'N', 't', 'th', 'd', 'dh', 'n', 'p', 'ph', 'b', 'bh', 'm', 'y', 'r', 'l', 'v', 'sh', 'Sh', 's', 'h', 'L', 'zh', 'R', 'nh', 'q', 'qh', 'G', 'z', 'Rd', 'Rdh', 'f', 'Y', '~ng', '~nj', '~nD', '~nd', '~mb'],
-        otherDiacritics: ['~M', 'M', 'H', '.H'],
+        vowels: ['a', 'A', 'i', 'I', 'u', 'U', 'R^i', 'R^I', 'L^i', 'L^I', 'e', 'E', 'ai', 'o', 'O', 'au', 'ae', 'aE', 'ao', 'e^', 'u^', 'e^^'],
+        vowelMarks: ['`', '.A', '.i', '.I', '.u', '.U', '.R^i', '.R^I', '.L^i', '.L^I', '.e', '.E', '.ai', '.o', '.O', '.au', '.ae', '.aE', '.ao', '.e^', '.u^', '.e^^'],
+        consonants: ['k', 'kh', 'g', 'gh', 'ng', 'ch', 'CH', 'j', 'jh', 'ny', 'T', 'TH', 'D', 'DH', 'N', 't', 'th', 'd', 'dh', 'n', 'p', 'ph', 'b', 'bh', 'm', 'y', 'r', 'l', 'v', 'sh', 'Sh', 's', 'h', 'L', 'zh', 'R', 'nh', 'q', 'qh', 'G', 'z', 'Rd', 'Rdh', 'f', 'Y', '~ng', '~nj', '~nD', '~nd', '~mb', 'ts', 'tsh', 't_', 'jz', 'w', 's_', 's:', 'h:', 't:', 'ayn', 'z_', 'z.', 'z:', 'dz'],
+        otherDiacritics: ['~M', 'M', 'H', '.H', 'Hk', 'Hp', 'n^', 'M^'],
         symbols: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'OM', '!', '!!', "'", '~g', '~G'],
         accents: ['^1', '^2', '^3']
       };
@@ -3455,6 +3465,12 @@
       //   fonts: ['Noto Serif Bengali'], keyboard: KEYBOARD_MAPS.bengali }.
       // The active engine must support the ID; unavailable entries remain disabled.
       const SCRIPT_CATALOG = {
+        urdu: {
+          label: 'Urdu (Nastaliq)', kind: 'persoArabic', lang: 'ur', dir: 'rtl',
+          fonts: ['Noto Nastaliq Urdu', 'Noto Naskh Arabic'],
+          sample: 'اَ آ اِ اِی اُ اُو کَ کِ کُ کا کِی کُو',
+          keyboard: KEYBOARD_MAPS.urdu,
+        },
         indlish: {
           "label": "Indlish",
           "source": false,
@@ -3588,11 +3604,11 @@
       const SCRIPT_FONT_PROBES = {
         devanagari: 'कमा', tamil: 'கமா', telugu: 'కమా', kannada: 'ಕಮಾ',
         malayalam: 'കമാ', bengali: 'কমা', gujarati: 'કમા', gurmukhi: 'ਕਮਾ',
-        sinhala: 'කමා', oriya: 'କମା', latin: 'Aa'
+        sinhala: 'කමා', oriya: 'କମା', arabic: 'کَما', latin: 'Aa'
       };
 
       function fontSubset(script) {
-        return script === 'indic' ? null : (SCRIPT_CATALOG[script].kind === 'indic' ? script : 'latin');
+        return script === 'indic' ? null : SCRIPT_CATALOG[script].kind === 'persoArabic' ? 'arabic' : (SCRIPT_CATALOG[script].kind === 'indic' ? script : 'latin');
       }
 
       async function loadFontStylesheet(family, href, sample = ' ') {
@@ -3680,6 +3696,8 @@
       // Add hosted families here, then list them in a script's fonts (or LATIN_FONTS).
       // Unlisted fonts use an installed family; the custom-font prompt remains available.
       const FONT_RESOURCES = {
+        "Noto Nastaliq Urdu": "wght@400;700",
+        "Noto Naskh Arabic": "wght@400;700",
         "Andika": "wght@400;700",
         "Gentium Plus": "wght@400;700",
         "Inter": "wght@400;700",
@@ -3730,7 +3748,7 @@
       ];
 
       const DEMO_DEFAULTS = { sourceScript: 'indic', targetScript: 'indlish', skipStart: '##', skipEnd: '##' };
-      const ENGINE_VERSION = 'v0.14.1';
+      const ENGINE_VERSION = 'v0.15.0';
       const DEMO_STORAGE_KEY = 'inditrans-demo-state-v1';
       function readDemoState() {
         try {
@@ -3744,8 +3762,8 @@
       const SAVED_DEMO_STATE = readDemoState();
       function createEngineProfile() {
         return {
-          baseUrl: 'https://cdn.jsdelivr.net/gh/vm75/inditrans@' + ENGINE_VERSION + '/',
-          assets: ['js/public/inditrans.js', 'js/inditrans-standalone.js'],
+          baseUrl: new URL('../', document.baseURI).href,
+          assets: [`js/public/inditrans.js?v=${ENGINE_VERSION}`, `js/inditrans-standalone.js?v=${ENGINE_VERSION}`],
           keyboardMaps: KEYBOARD_MAPS,
           adapt: api => ({
             ready: () => api.ready(),
@@ -3796,7 +3814,7 @@
       function createAppearance({ sourceScript, targetScript, sourceFont, targetFont, sourceText, targetText, onDiscoverFonts }) {
         const textSize = element('text-size');
         const textSizeValue = element('text-size-value');
-        function isLatin(script) { return SCRIPT_CATALOG[script].kind !== 'indic'; }
+        function isLatin(script) { return !['indic', 'persoArabic'].includes(SCRIPT_CATALOG[script].kind); }
         function fontName(value) { return value === 'Charis SIL (installed)' ? 'Charis SIL' : value; }
         function cssFont(name) { return ['serif', 'sans-serif', 'system-ui'].includes(name) ? name : JSON.stringify(name); }
         function fontStack(name, script) {
@@ -3877,53 +3895,14 @@
           targetText.style.fontSize = size + 'px';
         }
         function updateLanguage() {
-          sourceText.lang = SCRIPT_CATALOG[sourceScript.value].lang || 'sa-Latn';
-          targetText.lang = SCRIPT_CATALOG[targetScript.value].lang || 'sa-Latn';
+          for (const [text, script] of [[sourceText, sourceScript.value], [targetText, targetScript.value]]) {
+            const entry = SCRIPT_CATALOG[script];
+            text.lang = entry.lang || 'sa-Latn';
+            text.dir = entry.dir || 'auto';
+            text.style.lineHeight = entry.dir === 'rtl' ? '2.4' : '';
+          }
         }
         return { populateScripts, populateFonts, applyFont, applyTextSize, updateLanguage, isLatin, fontStack };
-      }
-
-      function displayIndicText(text) {
-        // Telugu's extended vowel markers end in ZWSP. Before a Vedic accent
-        // that boundary creates a broken syllable (and often a dotted circle).
-        return text.replace(/([ెేొ]॒|[ఎఒ]᳴)([॒॑᳚]*)\u200b([॒॑᳚]+)/g, '$1$2$3\u200b');
-      }
-
-      function canonicalIndicText(text) {
-        return text.replace(/([ెేొ]॒|[ఎఒ]᳴)([॒॑᳚]+)\u200b/g, '$1\u200b$2');
-      }
-
-      function canonicalIndicSelection(textarea) {
-        const start = textarea.selectionStart;
-        let end = textarea.selectionEnd;
-        // Word selection can end just before the invisible separator. Include
-        // that marker when exporting a whole vowel/accent sequence.
-        for (const match of textarea.value.matchAll(/([ెేొ]॒|[ఎఒ]᳴)[॒॑᳚]+\u200b/g)) {
-          if (start <= match.index && end === match.index + match[0].length - 1) end++;
-        }
-        return { start, end, value: canonicalIndicText(textarea.value.slice(start, end)) };
-      }
-
-      function applyIndicTextDisplay(textarea) {
-        const original = textarea.value;
-        const displayed = displayIndicText(original);
-        if (displayed === original) return;
-        const mapCaret = position => {
-          for (const match of original.matchAll(/([ెేొ]॒|[ఎఒ]᳴)([॒॑᳚]*)\u200b([॒॑᳚]+)/g)) {
-            const separator = match.index + match[1].length + match[2].length;
-            const end = match.index + match[0].length;
-            if (position > separator && position < end) return position - 1;
-          }
-          return position;
-        };
-        const start = mapCaret(textarea.selectionStart);
-        const end = mapCaret(textarea.selectionEnd);
-        const direction = textarea.selectionDirection;
-        const { scrollTop, scrollLeft } = textarea;
-        textarea.value = displayed;
-        textarea.setSelectionRange(start, end, direction);
-        textarea.scrollTop = scrollTop;
-        textarea.scrollLeft = scrollLeft;
       }
 
       function createEditHistory(limit = 100) {
@@ -4055,7 +4034,6 @@
         function replaceInputRange(start, end, replacement) {
           const before = snapshot();
           sourceText.setRangeText(replacement, start, end, 'end');
-          applyIndicTextDisplay(sourceText);
           focusInputAt(sourceText.selectionEnd);
           history.record(before, snapshot());
           notifyInput();
@@ -4128,7 +4106,7 @@
             }
             // The inherent 'a' needs no sign; the other vowel slots align with vowelMarks.
             result += entry.group === 'vowels' && afterConsonant
-              ? (entry.index === 0 ? '' : layout.vowelMarks[entry.index]) : entry.value;
+              ? (entry.index === 0 ? (layout.inherentVowel || '') : layout.vowelMarks[entry.index]) : entry.value;
             afterConsonant = entry.group === 'consonants';
             position += entry.token.length;
           }
@@ -4266,7 +4244,8 @@
           { end: 25, color: 'varga-5', label: 'Pa-varga (Labial)' },
           { end: 34, color: 'semivowel', label: 'Antastha/Ushman' },
           { end: 45, color: 'zha-yya', label: 'ऴ-य़ Group' },
-          { end: Infinity, color: 'prenasal', label: 'Prenasalized Consonant' }
+          { end: 50, color: 'prenasal', label: 'Prenasalized Consonant' },
+          { end: Infinity, color: 'prenasal', label: 'Additional consonants' }
         ];
         function keyCategory(group, index) {
           if (group.id === 'consonants') return CONSONANT_CATEGORIES.find(category => index < category.end);
@@ -4282,7 +4261,7 @@
           return keyboardMaps[script] || SCRIPT_CATALOG[script].keyboard || keyboardMaps.devanagari;
         }
         function keyboardGroupKeys(group) {
-          if (group.id === 'accents') return keyboardIsRoman() ? LATIN_KEYBOARD_ACCENTS : VEDIC_KEYBOARD_ACCENTS;
+          if (group.id === 'accents') return SCRIPT_CATALOG[activeKeyboardScript()].kind === 'persoArabic' ? [] : keyboardIsRoman() ? LATIN_KEYBOARD_ACCENTS : VEDIC_KEYBOARD_ACCENTS;
           if (group.id === 'symbols') return [...keyboardLayout().symbols, ...keyboardLayout().vedicSymbols];
           return keyboardLayout()[group.property];
         }
@@ -5245,10 +5224,6 @@
         const profile = createEngineProfile();
         element('engine-version').textContent = ENGINE_VERSION;
         const engine = createEngine(profile);
-        sourceText.addEventListener('input', event => {
-          if (!event.isComposing) applyIndicTextDisplay(sourceText);
-        }, { capture: true });
-        sourceText.addEventListener('compositionend', () => applyIndicTextDisplay(sourceText));
         const editor = createEditor(sourceText, targetText);
         const appearance = createAppearance({
           sourceScript, targetScript, sourceFont, targetFont, sourceText, targetText,
@@ -5293,7 +5268,7 @@
             sourceScript: sourceScript.value, targetScript: targetScript.value,
             sourceFont: sourceFont.value, targetFont: targetFont.value,
             sourceCustomFont: sourceText.dataset.customFont || '', targetCustomFont: targetText.dataset.customFont || '',
-            textSize: textSize.value, sourceText: canonicalIndicText(sourceText.value), targetText: canonicalIndicText(targetText.value),
+            textSize: textSize.value, sourceText: sourceText.value, targetText: targetText.value,
             inputMode: element('keyboard-mode').value, keyboard: keyboard.getState(),
             keyboardCollapsed: element('keyboard-content').hidden,
             keyboardGroupColors: element('keyboard-group-colors').checked,
@@ -5321,9 +5296,9 @@
           if (!engine.isReady()) return;
           try {
             const { skipStart, skipEnd } = selectedSkipDelimiters();
-            targetText.value = displayIndicText(engine.transliterate(
-              canonicalIndicText(sourceText.value), sourceScript.value, targetScript.value, selectedTargetOptions(), skipStart, skipEnd
-            ));
+            targetText.value = engine.transliterate(
+              sourceText.value, sourceScript.value, targetScript.value, selectedTargetOptions(), skipStart, skipEnd
+            );
             setStatus('Inditrans ' + ENGINE_VERSION + ' ready');
           } catch (error) {
             targetText.value = '';
@@ -5356,8 +5331,6 @@
         keyboardResize.setSize(SAVED_DEMO_STATE.keyboardSize);
         if (typeof SAVED_DEMO_STATE.sourceText === 'string') sourceText.value = SAVED_DEMO_STATE.sourceText;
         if (typeof SAVED_DEMO_STATE.targetText === 'string') targetText.value = SAVED_DEMO_STATE.targetText;
-        applyIndicTextDisplay(sourceText);
-        targetText.value = displayIndicText(targetText.value);
         editor.resetHistory();
         element('copy-button').disabled = !targetText.value;
         element('copy-source-button').disabled = !sourceText.value;
@@ -5405,22 +5378,12 @@
         ]) {
           element(id).addEventListener('click', async () => {
             try {
-              await navigator.clipboard.writeText(canonicalIndicText(text.value));
+              await navigator.clipboard.writeText(text.value);
             } catch {
               text.focus();
               text.select();
               setStatus('Select and copy the highlighted ' + label, false, 'info');
             }
-          });
-        }
-        // Native selection-copy and cut must export the engine's separator order too.
-        for (const text of [sourceText, targetText]) {
-          for (const type of ['copy', 'cut']) text.addEventListener(type, event => {
-            if (!event.clipboardData || text.selectionStart === text.selectionEnd) return;
-            const selection = canonicalIndicSelection(text);
-            event.clipboardData.setData('text/plain', selection.value);
-            event.preventDefault();
-            if (type === 'cut' && text === sourceText) editor.replaceInputRange(selection.start, selection.end, '');
           });
         }
         let saveTimer;

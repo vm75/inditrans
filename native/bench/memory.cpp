@@ -41,10 +41,10 @@ int main(int argc, char** argv) {
     seed = "नमस्ते ##a long protected raw span with text नमस्ते and symbols 🙂## भारतम् । ";
     from = "devanagari";
     to = "telugu";
-  } else if (mode == "virtual-indic") {
-    seed = "श्री॒ गुरुभ्यो नमः । नमस्ते भारतम् । ";
-    from = "indic";
-    to = "iso";
+  } else if (mode == "iso-to-tamil") {
+    seed = "śrī gurubhyo namaḥ, namaste bhāratam. ";
+    from = "iso";
+    to = "tamil";
   } else if (mode == "tamil-to-iso") {
     seed = "தங்கப் பதக்கம் சர்ச்சைக்குரிய செய்திகள் பாப்பா பம்பா அம்பா க்ருபை தந்து ரக்ஷியம்ப । ";
     from = "tamil";

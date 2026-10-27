@@ -81,7 +81,8 @@ make bench-compare BENCH_BASELINE=out/bench-before-pr42
 The `out/bench-baseline-*.csv` files should not be committed; they are local measurement artefacts.
 
 The PR performance gate compares against `perf-00-baseline` with the current
-benchmark harness and unchanged tagged engine sources. Use that tag for
+benchmark harness and unchanged tagged engine sources. The previous baseline
+is archived as `perf-00-baseline-pre-0.15.0`. Use the main tag for
 architecture comparisons; see `docs/performance-reassessment.md` for local evidence.
 
 For cumulative tuning progress, use numbered snapshots under `out/perf/`:
@@ -122,8 +123,8 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - The public DLL ABI is strictly a C interface (`extern "C"`) exporting `transliterate`,
   `isScriptSupported`, and `releaseBuffer`. No C++ ABI types (`std::string`, STL containers, exceptions)
   cross the boundary, guaranteeing compatibility across compilers (MinGW, MSVC) and Dart FFI.
-- The Windows DLL is linked with `-static-libgcc -static-libstdc++` to eliminate MinGW C++ runtime
-  DLL dependencies (`libstdc++-6.dll`, `libgcc_s_seh-1.dll`).
+- The Windows DLL is linked with `-static -static-libgcc -static-libstdc++` to eliminate MinGW
+  support-runtime DLL dependencies (`libstdc++-6.dll`, `libgcc_s_seh-1.dll`, `libwinpthread-1.dll`).
 - `flutter/lib/src/bindings.dart` is generated from `native/src/exports.h` by
   `scripts/generate_bindings.py` — edit the header, then regenerate; never hand-edit the bindings file.
 - `flutter/assets/inditrans.wasm` and `js/public/inditrans.js` must be rebuilt from C++
@@ -151,6 +152,8 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
   multi-platform acceptance (macOS, Windows MSVC, Android) is isolated in
   `.github/workflows/platform.yml` on `platform-*` tags or manual dispatch;
   release tags are handled by the separate release workflow.
+- Pages stages `demo/` with the matching checkout's `js/` engine assets. Rebuild
+  them together when output conventions change; see `demo/README.md`.
 - The shared test-case suite is at `test-files/test-cases.json`; changes to the engine that
   affect expected output must be reflected there.
 - Follow KISS and YAGNI: prefer the smallest change that satisfies the request.

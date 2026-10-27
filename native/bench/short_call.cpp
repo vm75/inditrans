@@ -28,31 +28,33 @@ constexpr std::string_view tamilSuperscriptSeed = "ஶ்ரீ கு³ரு�
 constexpr std::string_view tamilPrefixSeed = "அதுபோல ";
 constexpr std::string_view tamilCompoundVowelsSeed = "கொ கோ கௌ ";
 constexpr std::string_view gurmukhiAdhakSeed = "ਹੱਦ ਬੱਚਿਓ ਕੱਦ । ";
-constexpr std::string_view itransPhonemicSeed = "e E o O ^e ^o ";
 
+// Explicit Vedic scripts, Tamil, and ISO only; no virtual Indic reader.
 constexpr std::array cases {
-  Case { "devanagari", "telugu", "indic-to-indic", devanagariSeed },
+  Case { "devanagari", "telugu", "devanagari-to-telugu", devanagariSeed },
   Case { "devanagari", "tamil", "tamil-output", devanagariSeed },
-  Case { "iso", "devanagari", "latin-input", latinSeed },
-  Case { "indic", "iso", "virtual-indic-to-latin", devanagariSeed },
-  Case { "indic", "devanagari", "virtual-indic-to-indic", devanagariSeed },
-  Case { "indic", "tamil", "virtual-indic-to-tamil", devanagariSeed },
-  Case { "devanagari", "iso", "latin-output", devanagariSeed },
+  Case { "iso", "devanagari", "iso-to-devanagari", latinSeed },
+  Case { "devanagari", "iso", "devanagari-to-iso", devanagariSeed },
   Case { "devanagari", "telugu", "expansion-heavy", expansionSeed },
   Case { "devanagari", "telugu", "protected-spans", protectedSeed },
   Case { "devanagari", "telugu", "mixed-protected-spans", mixedProtectedSeed },
-  Case { "tamil", "devanagari", "tamil-to-indic", tamilSeed },
-  Case { "tamil", "iso", "tamil-to-latin", tamilSeed },
-  Case { "indic", "devanagari", "virtual-tamil-to-indic", tamilSeed },
-  Case { "indic", "iso", "virtual-tamil-to-latin", tamilSeed },
+  Case { "tamil", "devanagari", "tamil-to-devanagari", tamilSeed },
+  Case { "tamil", "iso", "tamil-to-iso", tamilSeed },
   Case { "tamil", "devanagari", "tamil-superscript-input", tamilSuperscriptSeed, TranslitOptions::TamilSuperscripted },
   Case { "devanagari", "tamil", "tamil-superscript-output", devanagariSeed, TranslitOptions::TamilSuperscripted },
   Case { "devanagari", "tamil", "tamil-traditional-output", devanagariSeed, TranslitOptions::TamilTraditional },
   Case { "tamil", "iso", "tamil-prefix", tamilPrefixSeed },
   Case { "tamil", "iso", "tamil-compound-vowels", tamilCompoundVowelsSeed },
-  Case { "iast", "tamil", "latin-to-tamil", latinSeed },
+  Case { "iso", "tamil", "iso-to-tamil", latinSeed },
   Case { "gurmukhi", "devanagari", "gurmukhi-adhak", gurmukhiAdhakSeed },
-  Case { "itrans", "devanagari", "itrans-phonemic-vowels", itransPhonemicSeed },
+  Case { "assamese", "devanagari", "assamese-to-devanagari", "নম॒স্তে॑ ভা॒ৰতম্ । " },
+  Case { "bengali", "devanagari", "bengali-to-devanagari", "নম॒স্তে॑ ভা॒রতম্ । " },
+  Case { "gujarati", "devanagari", "gujarati-to-devanagari", "નમ॒સ્તે॑ ભા॒રતમ્ । " },
+  Case { "kannada", "devanagari", "kannada-to-devanagari", "ನಮ॒ಸ್ತೇ॑ ಭಾ॒ರತಮ್ । " },
+  Case { "malayalam", "devanagari", "malayalam-to-devanagari", "നമ॒സ്തേ॑ ഭാ॒രതമ് । " },
+  Case { "oriya", "devanagari", "oriya-to-devanagari", "ନମ॒ସ୍ତେ॑ ଭା॒ରତମ୍ । " },
+  Case { "telugu", "devanagari", "telugu-to-devanagari", "నమ॒స్తే॑ భా॒రతమ్ । " },
+  Case { "tamilExtended", "devanagari", "tamilExtended-to-devanagari", "നമ॒സ്‌തേ॑ ഭാ॒രതമ്‌ । " },
 };
 
 void measure(const Case& testCase) {

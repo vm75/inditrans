@@ -103,6 +103,10 @@ To verify the release pipeline safely without creating a real release or publish
   Its PR performance gate compares timing, output hashes, and allocation metrics
   against `perf-00-baseline`, using the current harness with unchanged tagged engine sources.
   Multi-platform acceptance (macOS, Windows MSVC, and Android arm64) is maintained in a separate workflow (`.github/workflows/platform.yml`), triggered explicitly on `platform-*` tags or manual `workflow_dispatch`.
+- **Demo deployment**: `.github/workflows/pages.yml` stages `demo/` and the matching
+  checkout's `js/` engine assets together, with the site root redirecting to `demo/`.
+  Rebuild the engine before shipping mapping changes; the demo no longer loads an
+  independently pinned release from a CDN.
 
 ## Security and registry configuration
 

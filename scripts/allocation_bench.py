@@ -15,7 +15,7 @@ from pathlib import Path
 MODES = (
     "devanagari",
     "latin",
-    "virtual-indic",
+    "iso-to-tamil",
     "expansion",
     "protected",
     "mixed-protected",

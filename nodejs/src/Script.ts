@@ -20,6 +20,7 @@ export enum Script {
   kannada = 'kannada',
   khmer = 'khmer',
   malayalam = 'malayalam',
+  nastaliq = 'nastaliq',
   odia = 'odia',
   oriya = 'oriya',
   punjabi = 'punjabi',
@@ -32,6 +33,7 @@ export enum Script {
   thai = 'thai',
   tibetan = 'tibetan',
   titus = 'titus',
+  urdu = 'urdu',
   velthuis = 'velthuis',
   wx = 'wx',
 }

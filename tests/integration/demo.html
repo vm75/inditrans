@@ -1,0 +1,90 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Inditrans raw-output demo regression</title>
+<style>body{font-family:sans-serif;margin:12px}iframe{width:100%;height:850px;border:1px solid #888}#ordinary{font-size:40px;line-height:2.4;margin:0}</style>
+<div id="test-results" data-status="running">Loading demo…</div>
+<p id="ordinary" dir="rtl" lang="ur"></p>
+<iframe id="demo" src="../../demo/index.html"></iframe>
+<script>
+(async () => {
+  const result = document.getElementById('test-results');
+  const iframe = document.getElementById('demo');
+  let count = 0;
+  const check = (condition, label) => { count++; if (!condition) throw new Error(label); };
+  const wait = async test => {
+    for (let i = 0; i < 800; i++) { if (test()) return; await new Promise(resolve => setTimeout(resolve, 10)); }
+    throw new Error('Demo initialization timed out');
+  };
+  const ready = async () => {
+    await wait(() => iframe.contentWindow.Inditrans);
+    await iframe.contentWindow.Inditrans.ready();
+    await wait(() => iframe.contentDocument.querySelector('#source-script')?.options.length > 0);
+    return { w: iframe.contentWindow, d: iframe.contentDocument };
+  };
+  try {
+    let {w,d} = await ready();
+    const field = id => d.getElementById(id);
+    const change = (id,value) => { const e=field(id); e.value=value; e.dispatchEvent(new w.Event('change',{bubbles:true})); };
+    const input = value => {
+      const e=field('source-text');
+      e.dispatchEvent(new w.InputEvent('beforeinput',{bubbles:true,inputType:'insertText'}));
+      e.value=value; e.setSelectionRange(value.length,value.length);
+      e.dispatchEvent(new w.InputEvent('input',{bubbles:true,inputType:'insertText'}));
+    };
+    change('source-script','devanagari'); change('target-script','telugu');
+    input('के॒॑ ##text\u200b##');
+    check(field('target-text').value==='కే॒॑ text\u200b','raw Telugu accents and protected separator');
+    change('source-script','iso'); change('target-script','urdu');
+    input('kaī');
+    check(field('target-text').value==='کَئِی','Urdu raw Unicode output');
+    check(field('target-text').dir==='rtl' && field('target-text').lang==='ur','Urdu direction and language');
+    check(field('source-text').dir!=='rtl','Roman source keeps its own direction');
+    const before=field('source-text').value;
+    field('source-text').dispatchEvent(new w.CompositionEvent('compositionstart',{bubbles:true}));
+    field('source-text').value='kī';
+    field('source-text').dispatchEvent(new w.InputEvent('input',{bubbles:true,isComposing:true}));
+    field('source-text').dispatchEvent(new w.CompositionEvent('compositionend',{bubbles:true,data:'kī'}));
+    check(field('source-text').value==='kī','composition text is unchanged');
+    field('undo-button').click();
+    check(field('source-text').value===before,'composition undo restores exact text');
+    field('redo-button').click();
+    check(field('source-text').value==='kī','composition redo restores exact text');
+    let copied;
+    Object.defineProperty(w.navigator,'clipboard',{value:{writeText:async text=>{copied=text;}},configurable:true});
+    field('copy-button').click();
+    check(copied===field('target-text').value,'copy button forwards exact raw text');
+    const source=field('source-text');
+    source.setSelectionRange(0,source.value.length);
+    check(source.value.slice(source.selectionStart,source.selectionEnd)==='kī','native selection uses logical text');
+    source.dispatchEvent(new w.InputEvent('beforeinput',{bubbles:true,inputType:'deleteByCut'}));
+    source.setRangeText('',source.selectionStart,source.selectionEnd,'end');
+    source.dispatchEvent(new w.InputEvent('input',{bubbles:true,inputType:'deleteByCut'}));
+    check(source.value==='','cut deletion path uses ordinary text');
+    field('undo-button').click();
+    check(source.value==='kī','cut undo preserves exact text');
+    const expected=field('target-text').value;
+    w.dispatchEvent(new w.Event('pagehide'));
+    const saved=JSON.parse(w.localStorage.getItem('inditrans-demo-state-v1'));
+    check(saved.sourceText==='kī' && saved.targetText===expected,'saved state equals both panes');
+    iframe.contentWindow.location.reload();
+    await new Promise(resolve=>setTimeout(resolve,100));
+    ({w,d}=await ready());
+    check(field('source-text').value==='kī' && field('target-text').value===expected,'restored state equals raw text');
+    const fontURL=new URL('../../out/demo-font-sources/NotoNastaliqUrdu-Regular.ttf',location.href).href;
+    const face=await new w.FontFace('Reference Nastaliq',`url("${fontURL}")`).load();
+    d.fonts.add(face); document.fonts.add(face);
+    field('target-text').style.fontFamily='Reference Nastaliq';
+    document.getElementById('ordinary').style.fontFamily='Reference Nastaliq';
+    document.getElementById('ordinary').textContent=expected+' ABC 123';
+    check(d.fonts.check('40px "Reference Nastaliq"'),'pinned Nastaliq font loaded');
+    const style=w.getComputedStyle(field('target-text'));
+    const canvas=d.createElement('canvas');const ctx=canvas.getContext('2d');ctx.font=style.fontSize+' "Reference Nastaliq"';
+    const metrics=ctx.measureText(expected);
+    check(metrics.actualBoundingBoxAscent+metrics.actualBoundingBoxDescent<=parseFloat(style.lineHeight),'Nastaliq sample fits pane line height: '+(metrics.actualBoundingBoxAscent+metrics.actualBoundingBoxDescent)+' <= '+style.lineHeight);
+    result.dataset.status='passed';result.dataset.count=String(count);result.dataset.failures='0';
+    result.textContent=count+' demo checks passed; clipboard button uses a stub, composition/cut use dispatched DOM events.';
+  } catch(error) {
+    result.dataset.status='failed';result.dataset.count=String(count);result.dataset.failures='1';result.textContent=String(error.stack||error);
+  }
+})();
+</script>

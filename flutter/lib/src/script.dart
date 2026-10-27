@@ -18,6 +18,7 @@ enum Script {
   kannada,
   khmer,
   malayalam,
+  nastaliq,
   odia,
   oriya,
   punjabi,
@@ -30,6 +31,7 @@ enum Script {
   thai,
   tibetan,
   titus,
+  urdu,
   velthuis,
   wx,
 }

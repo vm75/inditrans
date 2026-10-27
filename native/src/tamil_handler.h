@@ -125,15 +125,18 @@ public:
           const auto nextToken = GetScriptToken(*peek);
           switch (nextToken.tokenType) {
             case TokenType::OtherDiacritic:
+              if (tokenUnit.otherDiacritic.idx != InvalidToken) goto done;
               stream.advance();
               tokenUnit.otherDiacritic = nextToken;
               break;
             case TokenType::VowelMark:
+              if (tokenUnit.vowelMark.idx != InvalidToken) goto done;
               stream.advance();
               tokenUnit.vowelMark = nextToken;
               hasVirama = tokenUnit.vowelMark == Virama;
               break;
             case TokenType::Accent:
+              if (tokenUnit.accent.idx != InvalidToken) goto done;
               stream.advance();
               tokenUnit.accent = nextToken;
               break;
@@ -168,9 +171,9 @@ public:
       prefixLookup.lookup(tokenUnit, prefixLookupState);
 
       if (hasVirama) {
-        // The legacy pronunciation rule drops a word-final primary stop with
-        // pulli as a whole unit, including any attached modifiers.
-        return (isPrimary && stream.isEndOfWord()) ? invalidTokenUnit : tokenUnit;
+        // Pulli suppresses the vowel, not the written consonant. A word boundary
+        // alone cannot establish that a final stop is silent (loans and sandhi).
+        return tokenUnit;
       }
       if (isPrimary) {
         if (wordStart || endOfPrefix) {
@@ -205,8 +208,10 @@ public:
           break;
         const auto nextToken = GetScriptToken(*peek);
         if (nextToken.tokenType == TokenType::OtherDiacritic) {
+          if (tokenUnit.otherDiacritic.idx != InvalidToken) break;
           tokenUnit.otherDiacritic = nextToken;
         } else if (nextToken.tokenType == TokenType::Accent) {
+          if (tokenUnit.accent.idx != InvalidToken) break;
           tokenUnit.accent = nextToken;
         } else {
           break;
@@ -286,7 +291,7 @@ public:
       }
 
       if (tokenUnit.otherDiacritic.idx != InvalidToken) {
-        if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara
+        if (isAnuswara(tokenUnit.otherDiacritic)
               && options / TranslitOptions::DisableInference) {
           AnuswaraAssimilator::emit<ScriptType::Tamil>(next, map, writer);
         } else {
@@ -298,7 +303,7 @@ public:
         writer.push(leadText);
 
         if (tokenUnit.otherDiacritic.idx != InvalidToken) {
-          if (tokenUnit.otherDiacritic.idx == Diacritic_Anuswara
+          if (isAnuswara(tokenUnit.otherDiacritic)
               && options / TranslitOptions::DisableInference) {
             AnuswaraAssimilator::emit<ScriptType::Tamil>(next, map, writer);
           } else {

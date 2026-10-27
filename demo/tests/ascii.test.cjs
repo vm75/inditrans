@@ -14,7 +14,7 @@ const { KEYBOARD_MAPS, ASCII_KEYBOARD_TOKENS, createAsciiComposer, VEDIC_KEYBOAR
 );
 function layoutFor(script) {
   const layout = KEYBOARD_MAPS[script];
-  return { ...layout, symbols: [...layout.symbols, ...layout.vedicSymbols], accents: VEDIC_KEYBOARD_ACCENTS };
+  return { ...layout, symbols: [...layout.symbols, ...layout.vedicSymbols], accents: script === 'urdu' ? [] : VEDIC_KEYBOARD_ACCENTS };
 }
 const compose = createAsciiComposer(layoutFor('devanagari'));
 
@@ -26,6 +26,7 @@ test('every character slot has a unique ASCII shortcut', () => {
     const layout = layoutFor(script);
     const convert = createAsciiComposer(layout);
     for (const [group, shortcuts] of Object.entries(ASCII_KEYBOARD_TOKENS)) {
+      if (script === 'urdu' && group === 'accents') { assert.equal(layout.accents.length, 0); continue; }
       assert.equal(shortcuts.length, layout[group].length, script + ': ' + group);
       shortcuts.forEach((token, index) => {
         if (layout[group][index]) assert.equal(convert(token), layout[group][index], script + ': ' + token);
@@ -135,4 +136,12 @@ test('native-script composition and paste bypass ASCII conversion', () => {
   input.dispatch('paste');
   input.replace(0, input.sourceText.value.length, 'ki');
   assert.equal(input.sourceText.value, 'ki');
+});
+
+test('Urdu ASCII vowels use explicit points and separate independent carriers', () => {
+  const convert = createAsciiComposer(layoutFor('urdu'));
+  assert.equal(convert('ka'), 'کَ');
+  assert.equal(convert('ki'), 'کِ');
+  assert.equal(convert('kI'), 'کِی');
+  assert.equal(convert('i'), 'اِ');
 });

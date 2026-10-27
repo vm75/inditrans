@@ -40,7 +40,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--dir", type=Path, default=Path("out/perf"), help="snapshot directory")
     parser.add_argument("--baseline", default="00-baseline", help="baseline snapshot prefix")
-    parser.add_argument("--latency-case", default="indic-to-indic", help="short-call case for the summary")
+    parser.add_argument("--latency-case", default="devanagari-to-telugu", help="short-call case for the summary")
     parser.add_argument("--alloc-case", default="devanagari", help="allocation-probe mode for the summary")
     parser.add_argument(
         "--cold-case",

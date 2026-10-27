@@ -15,7 +15,7 @@ CASES = (
     "cold-devanagari-to-telugu",
     "cold-iso-to-devanagari",
     "cold-devanagari-to-tamil",
-    "cold-indic-to-iso",
+    "cold-iso-to-tamil",
     "cold-tamil-to-iso",
     "cold-tamil-to-devanagari",
 )

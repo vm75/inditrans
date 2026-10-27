@@ -4,7 +4,8 @@ The original performance milestones are complete. The current implementation and
 reproduction procedure are described in [Architecture](../ARCHITECTURE.md) and
 the [performance guide](performance.md). The original experiment chronology is
 preserved in Git history. The subsequent [local reassessment](performance-reassessment.md)
-compares against `perf-00-baseline`; it has not been submitted to hosted CI.
+compares against the historical baseline now archived as
+`perf-00-baseline-pre-0.15.0`; it has not been submitted to hosted CI.
 
 ## Milestone status
 

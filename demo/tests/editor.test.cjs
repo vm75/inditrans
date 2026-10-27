@@ -50,53 +50,8 @@ test('history is bounded and reset clears both directions', () => {
   assert.equal(history.canRedo(), false);
 });
 
-const displayCode = html.slice(html.indexOf('function displayIndicText'), html.indexOf('function createEditHistory'));
-const { displayIndicText, canonicalIndicText, canonicalIndicSelection, applyIndicTextDisplay } = runInNewContext(
-  displayCode + ';({displayIndicText, canonicalIndicText, canonicalIndicSelection, applyIndicTextDisplay})'
-);
-
-test('Telugu separator follows accents only in display, with exact canonical round-trip', () => {
-  for (const vowel of ['ె॒', 'ే॒', 'ొ॒', 'ఎ᳴', 'ఒ᳴']) {
-    for (const accent of ['॑', '॒', '᳚', '॒॑']) {
-      const original = 'ధ్య' + vowel + '\u200b' + accent;
-      const display = 'ధ్య' + vowel + accent + '\u200b';
-      assert.equal(displayIndicText(original), display);
-      assert.equal(canonicalIndicText(display), original);
-      assert.equal(displayIndicText(display), display);
-      assert.equal(display.length, original.length);
-    }
-  }
-  const unchanged = 'ధ్య॑ ध्य॒ ధ్యె॒\u200b text\u200b॑';
-  assert.equal(displayIndicText(unchanged), unchanged);
-  assert.equal(canonicalIndicText(unchanged), unchanged);
-});
-
-test('Telugu display adjustment preserves editing selection and scroll position', () => {
-  const original = 'ధ్యె॒\u200b॑';
-  const text = {
-    value: original, selectionStart: original.indexOf('॑'), selectionEnd: original.length,
-    selectionDirection: 'forward', scrollTop: 100, scrollLeft: 12,
-    setSelectionRange(start, end, direction) {
-      this.selectionStart = start; this.selectionEnd = end; this.selectionDirection = direction;
-    }
-  };
-  applyIndicTextDisplay(text);
-  assert.equal(text.value, 'ధ్యె॒॑\u200b');
-  assert.equal(text.selectionStart, original.indexOf('॑') - 1);
-  assert.equal(text.selectionEnd, original.length);
-  assert.equal(text.scrollTop, 100);
-  assert.equal(text.scrollLeft, 12);
-});
-
-
-test('additional typed accents join an already adjusted Telugu marker', () => {
-  assert.equal(displayIndicText('ధ్యె॒॑\u200b॒'), 'ధ్యె॒॒॑\u200b');
-  assert.equal(canonicalIndicText(displayIndicText('ధ్యె॒॑\u200b॒')), 'ధ్యె॒\u200b॒॑');
-});
-
-test('word selection includes the invisible Telugu vowel marker when copying', () => {
-  const value = 'ధ్యె॒॑\u200b';
-  const selection = canonicalIndicSelection({ value, selectionStart: 0, selectionEnd: value.length - 1 });
-  assert.equal(selection.value, 'ధ్యె॒\u200b॑');
-  assert.equal(selection.end, value.length);
+test('editor has no display/canonical text adapter', () => {
+  assert.doesNotMatch(html, /displayIndicText|canonicalIndicText|canonicalIndicSelection|applyIndicTextDisplay/);
+  assert.match(html, /navigator\.clipboard\.writeText\(text\.value\)/);
+  assert.match(html, /sourceText: sourceText\.value, targetText: targetText\.value/);
 });

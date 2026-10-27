@@ -194,13 +194,11 @@ template <typename... Seqs> consteval bool sequenceLengthsFit() {
   return true;
 }
 
-template <typename F> constexpr void forEachSequence(F&) { }
-
-template <typename F, typename First, typename... Rest>
-constexpr void forEachSequence(F& f, const First& first, const Rest&... rest) {
-  f(first);
-  if constexpr (sizeof...(Rest) > 0)
-    forEachSequence(f, rest...);
+template <typename F, typename... Sequences>
+constexpr void forEachSequence(F& f, const Sequences&... sequences) {
+  // A flat expansion avoids the constexpr recursion-depth limit as scripts grow.
+  const int applied[] { 0, (f(sequences), 0)... };
+  (void)applied;
 }
 
 template <typename... Seqs> consteval auto makeSequencePool(const Seqs&... seqs) {
@@ -469,14 +467,17 @@ consteval auto deriveTamilEntries(const Trie& trie, const Terminals& terminals, 
 
 } // namespace inditrans::static_data
 
+enum class IndicOrthography : uint8_t { Plain, Thai, Tibetan, Burmese, Khmer, Gurmukhi };
+
 /// Target script descriptor defining output character mappings, script family, and Vedic capability.
 ///
 /// Contains compile-time spans into the shared UTF-8 writer text pool for each TokenType category.
 /// The 9th slot is empty, allowing TokenType::Ignore lookups to safely return empty views without branching.
 struct ScriptWriterMap {
-  ScriptType scriptType; ///< Script family (Indic, Tamil, Latin, Others)
+  ScriptType scriptType; ///< Script family (Indic, Tamil, Latin, Perso-Arabic)
   bool vedic; ///< True if this script natively supports Vedic accent marks
   std::array<std::span<const inditrans::static_data::WriterChar>, 9> charMaps; ///< Grapheme spans indexed by TokenType
+  IndicOrthography orthography { IndicOrthography::Plain };
 
   constexpr ScriptType getType() const noexcept { return scriptType; }
   constexpr bool isVedic() const noexcept { return vedic; }

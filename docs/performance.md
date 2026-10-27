@@ -7,7 +7,11 @@ the same toolchain and machine.
 
 ## Reproduce
 
-The comparison reference is the `perf-00-baseline` tag. Build its engine with
+The comparison reference is the `perf-00-baseline` tag, now the 0.15.0 engine
+with the common-reader specialization and Urdu support. The previous baseline
+(`fa145f3`) is preserved as `perf-00-baseline-pre-0.15.0`;
+`perf-00-baseline-original` retains the earlier original reference.
+Build the main baseline engine with
 the current benchmark harness, keeping the tagged engine sources unchanged:
 
 ```sh
@@ -70,8 +74,12 @@ make perf-snapshot PERF_NAME=00-baseline BENCH_RUNS=5 BENCH_CPU="$CPU" PERF_CPU=
 
 Raw CSVs and metadata are written under ignored `out/perf/`. They remain local
 artifacts and are not committed. The
-throughput matrix has ten cases at short, approximately 4 KiB, and 1 MiB input
-sizes. Every case/size output hash must match when comparing revisions. Short
+throughput matrix focuses on explicit scripts in the canonical `vedic` group,
+Tamil, and ISO Romanization, at short, approximately 4 KiB, and 1 MiB input
+sizes. It includes every Vedic source profile, Vedic accents, Tamil variants,
+and protected spans. Virtual `indic`, the `indic` script group, Perso-Arabic,
+and other Roman schemes are outside this performance matrix. Every case/size
+output hash must match when comparing revisions. Short
 call measurements include returned-string destruction. Cold measurements
 sample the first transliteration in fresh processes and exclude process launch.
 Allocation figures are requested allocator bytes, not RSS or Wasm linear-memory
