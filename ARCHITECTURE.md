@@ -231,6 +231,27 @@ name order. Other scripts' equivalents are not automatically imported. For
 example, Malayalam chillu `ൻ` expands in an explicit Malayalam reader but
 is absent from `indic`. Shared spellings retain historical insertion precedence.
 
+Mixed-script text is supported when words are separated by whitespace or
+punctuation. Within a single word, mixing source scripts has unspecified
+transliteration output; a script change is not a promised phonetic boundary.
+This means unspecified linguistic output, not C++ undefined behavior. For
+example, adjacent `अக` currently produces `aga`, while `அक` produces `aka`;
+with spaces, `अ க` and `அ क` both produce `a ka`. Tamil pronunciation rules
+remain specific to Tamil tokens; Devanagari tokens do not acquire Tamil voicing.
+
+The decision in [#58](https://github.com/vm75/inditrans/issues/58) is to retain
+the engine's current behavior. Tamil prefix state surviving an intervening
+script inside the same word (for example, `மாकக` → `mākaka`) does not require
+a fix under this contract. No engine change or performance cost is introduced.
+
+There is a separate known word-boundary inconsistency: whitespace and preserved
+ASCII punctuation set `wordStart` but retain `lastToken`, which the Tamil `ச`
+rule can still inspect. Thus `ச` produces `ca`, but both mixed `मा ச` and
+pure Tamil `மா ச` produce `mā sa`; `मा।ச` produces `mā.ca` because the
+recognized danda symbol clears previous-token context. This also occurs in the
+explicit Tamil reader and is independent of the within-word mixed-script
+contract; resolving it requires a separate pronunciation decision.
+
 ### Tamil prefixes
 
 The six canonical prefix strings are emitted by the generator and
