@@ -27,10 +27,14 @@ Conversion options include **Skip-start** and **Skip-end**, both defaulting to
 `##`. Text between them is preserved exactly, and the delimiters are removed from
 the output. Empty delimiter fields use `##`. Delimiters are saved with the session.
 
-The selected font is tried first, followed by other fonts for that script and a
-[bundled Indic fallback](fonts/README.md). The fallback includes ten Indic
-scripts and shared Vedic marks in one face, so complete
-accented syllables can render even when individual script fonts lack a mark.
+In the normal **Full fallback** mode, a restricted registration of the
+[bundled Indic fallback](fonts/README.md) is prioritized for covered Indic
+characters, shared Vedic marks, and Tamil superscript annotations. Keeping
+these characters in one face lets complete accented syllables render even
+when individual script fonts lack a mark. Its Unicode range leaves ordinary
+Latin text to the selected font. The unrestricted registration remains later
+in the stack for its additional fallback coverage. **Script fonts only**,
+**Selected font only**, and **Custom stack** remain diagnostic overrides.
 It covers those same scripts in Mixed Indic without depending on device fonts;
 Grantha and the other script families use their hosted fonts. Other downloaded
 Indic and Roman fonts remain available as further fallbacks. Custom

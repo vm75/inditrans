@@ -7,14 +7,19 @@ Telugu, Kannada, Malayalam and Sinhala families. It is distributed under the
 and license file. The subset includes the four IPA prenasalization modifiers
 used by the engine, so Roman output also has complete glyph coverage.
 
-Mobile browsers can keep a base letter and its combining marks in one font run.
+Browsers can keep a base letter and its combining marks in one font run.
 A fallback list of separate script and accent fonts therefore still produces
-missing-glyph boxes when no single face supports the whole cluster. This font
-provides both, retaining the source fonts' shaping tables and adding attachment
+missing-glyph boxes when no single face supports the whole cluster. Normal
+demo mode prioritizes a restricted family registration of this face across its
+covered Indic scripts, shared Vedic marks, and Tamil superscript annotation
+digits. Unicode-range restrictions leave ordinary Latin text with the selected
+font. The original unrestricted family remains later in the stack for extra
+fallback coverage. This font provides both, retaining the source fonts' shaping tables and adding attachment
 anchors for borrowed combining marks absent from each original script font.
 This also avoids leaving a Telugu or other script's accent at the Devanagari
-font's unadjusted position. Native mark positioning is preserved. The user's selected
-font is still preferred; unsupported clusters may use this fallback's serif style.
+font's unadjusted position. Native mark positioning is preserved. Diagnostic
+font modes can still select a script font, one font, or a custom stack explicitly;
+normal mode may use this fallback's serif style for covered Indic characters.
 
 Sources are pinned to the archived `notofonts/noto-fonts` revision
 [`ffebf8c`](https://github.com/notofonts/noto-fonts/tree/ffebf8c1ee449e544955a7e813c54f9b73848eac).

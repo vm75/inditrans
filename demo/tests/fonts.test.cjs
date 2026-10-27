@@ -70,6 +70,27 @@ test('custom mode applies the visible effective stack immediately', () => {
   assert.equal(h.nodes['font-devtools'].open, true);
 });
 
+test('full mode prioritizes the restricted combined face while diagnostic modes override it', () => {
+  const h = harness();
+  const full = h.api.fontStack('Tamil Base', 'tamil');
+  assert.match(full, /^"Inditrans Indic Vedic", "Tamil Base"/);
+  assert.match(full, /"Inditrans Indic Fallback"/);
+  assert.match(html, /font-family: 'Inditrans Indic Vedic'[\s\S]*?unicode-range:[^;]*U\+0900-0DFF/s);
+  assert.match(html, /U\+00B2-00B3, U\+00B9/);
+  assert.match(html, /U\+2070-2079/);
+  assert.match(html.match(/unicode-range:[^;]+/)[0], /0DFF/);
+
+  h.api.devFontSettings.mode = 'script';
+  assert.doesNotMatch(h.api.fontStack('Tamil Base', 'tamil'), /Inditrans Indic Vedic/);
+  h.api.devFontSettings.mode = 'solo';
+  assert.equal(h.api.fontStack('Tamil Base', 'tamil'), '"Tamil Base"');
+  h.api.devFontSettings.mode = 'custom';
+  h.api.devFontSettings.customStack = '"Custom", serif';
+  assert.equal(h.api.fontStack('Tamil Base', 'tamil'), '"Custom", serif');
+  h.api.devFontSettings.mode = 'full';
+  assert.match(h.api.fontStack('Inter', 'iast'), /^"Inditrans Indic Vedic", "Inter"/);
+});
+
 test('manual loading waits for CSS and font bytes, survives script switches, and removal reapplies panes', async () => {
   const h = harness();
   h.nodes['devfont-family'].value = 'Test Family';
@@ -93,8 +114,8 @@ test('manual loading waits for CSS and font bytes, survives script switches, and
   assert.equal(h.tags[0].removed, true);
   assert.equal(h.sourceFont.value, 'Inter');
   assert.equal(h.targetFont.value, 'Devanagari Base');
-  assert.match(h.sourceText.style.fontFamily, /^"Inter"/);
-  assert.match(h.targetText.style.fontFamily, /^"Devanagari Base"/);
+  assert.match(h.sourceText.style.fontFamily, /^"Inditrans Indic Vedic", "Inter"/);
+  assert.match(h.targetText.style.fontFamily, /^"Inditrans Indic Vedic", "Devanagari Base"/);
   assert.ok(h.keyboardUpdates() > before);
 });
 

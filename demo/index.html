@@ -50,6 +50,18 @@
       src: url('fonts/inditrans-indic-fallback.woff2') format('woff2');
     }
 
+    /* Keep covered Indic syllables, shared Vedic marks and Tamil superscript
+       annotations in one font run. Latin characters still use the selection. */
+    @font-face {
+      font-family: 'Inditrans Indic Vedic';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('fonts/inditrans-indic-fallback.woff2') format('woff2');
+      unicode-range: U+00B2-00B3, U+00B9, U+0900-0DFF, U+1CD0-1CFF,
+        U+2070-2079, U+A8E0-A8F1;
+    }
+
     /* Full Gentium faces retain combining accents omitted by Google's default
        web subsets. A separate family lets Chrome fall back for a whole cluster. */
     @font-face {
@@ -3129,7 +3141,7 @@
           <p class="devfont-desc">Controls how the font-family stack is built for both text panes.</p>
           <div class="devfont-radios" role="radiogroup" aria-label="Font fallback mode">
             <label class="devfont-radio-label"><input type="radio" name="devfont-mode" value="full" checked> Full
-              fallback <span class="devfont-hint">— default: all Indic fallbacks + Vedic font</span></label>
+              fallback <span class="devfont-hint">— default: combined face first for covered Indic characters, then other fallbacks</span></label>
             <label class="devfont-radio-label"><input type="radio" name="devfont-mode" value="script"> Script fonts only
               <span class="devfont-hint">— selected font + this script's catalog fonts, no cross-script
                 fallback</span></label>
@@ -3978,11 +3990,11 @@
           }
           if (devFontSettings.mode === 'custom' && devFontSettings.customStack.trim())
             return devFontSettings.customStack.trim();
-          // 'full' (default): Keep the selected face first. The bundled face can render an entire
-          // cluster when a script font lacks one of its combining marks.
+          // 'full' (default): prioritize one face for covered Indic clusters; unicode-range
+          // leaves Latin and other uncovered text to the selected face and later fallbacks.
           const fallbacks = Object.values(SCRIPT_CATALOG)
             .filter(entry => entry.kind === 'indic').flatMap(entry => entry.fonts.slice(0, 2));
-          const families = [resolved, ...(SCRIPT_CATALOG[script].fonts || []),
+          const families = ['Inditrans Indic Vedic', resolved, ...(SCRIPT_CATALOG[script].fonts || []),
             'Inditrans Indic Fallback', ...fallbacks, 'Gentium Plus Vedic', 'sans-serif'];
           return [...new Set(families)].map(cssFont).join(', ');
         }
