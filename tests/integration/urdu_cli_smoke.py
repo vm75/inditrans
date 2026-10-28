@@ -42,8 +42,8 @@ def main():
     assert corpus.stat().st_size < 3_000_000
     corpus_run = run("-f", "urdu", "-t", "indlish", "-l", str(corpus), source)
     assert corpus_run.returncode == 0 and corpus_run.stdout == phonetic.stdout, corpus_run.stderr
-    unknown = run("-f", "urdu", "-t", "indlish", "-l", str(corpus), "قلم")
-    unknown_legacy = run("-f", "urdu", "-t", "indlish", "قلم")
+    unknown = run("-f", "urdu", "-t", "indlish", "-l", str(corpus), "زززززززززززز")
+    unknown_legacy = run("-f", "urdu", "-t", "indlish", "زززززززززززز")
     assert unknown.stdout == unknown_legacy.stdout
     print("Urdu demo lexicon, CLI opt-in, strict mode, punctuation and protected spans: passed")
 
