@@ -58,3 +58,20 @@ test('example Urdu proverb receives lexical vowels only with the optional pack',
     assert.equal(assisted('##جیسی## جیسی', 'indlish', handle), 'جیسی jaisI');
   } finally { wasm.releaseUrduLexiconHandle(handle); }
 });
+
+test('full experimental Urdu lexicon loads through the runtime and retains conservative fallback', () => {
+  const pack = readFileSync(join(root, 'demo/urdu-pronunciation.iul'));
+  const report = JSON.parse(readFileSync(join(root, 'scripts/urdu/concordant-report.json'), 'utf8'));
+  assert.ok(pack.length <= 3000000);
+  assert.equal(report.packed_entries, 4252);
+  assert.equal(pack.length, report.pack_bytes);
+  const raw = alloc(pack);
+  const handle = wasm.createUrduLexiconHandle(raw, pack.length);
+  wasm.free(raw);
+  assert.ok(handle, 'full experimental Urdu pack must be accepted by native binary parser');
+  try {
+    assert.equal(assisted('جیسی کرنی ویسی بھرنی', 'indlish', handle), 'jaisI karnI vaisI bharnI');
+    assert.equal(assisted('قلم', 'indlish', handle), ordinary('قلم', 'urdu', 'indlish'));
+    assert.equal(assisted('##جیسی## جیسی', 'indlish', handle), 'جیسی jaisI');
+  } finally { wasm.releaseUrduLexiconHandle(handle); }
+});
