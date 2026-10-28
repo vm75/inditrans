@@ -1,0 +1,66 @@
+name: Build pinned experimental Urdu lexicon
+
+on:
+  push:
+    branches: [urdu]
+    paths:
+      - 'scripts/urdu/build_concordant.py'
+      - 'scripts/urdu/import_wikipron.py'
+      - 'scripts/urdu/import_wiktextract.py'
+      - 'scripts/urdu/build_lexicon.py'
+      - 'scripts/urdu/demo-lexicon.json'
+      - '.github/workflows/urdu-lexicon-build.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: urdu
+          persist-credentials: true
+      - name: Download pinned WikiPron and Wiktextract samples
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/urdu-sources"
+          curl --fail --location --retry 4 --retry-all-errors --max-time 120 \
+            'https://raw.githubusercontent.com/CUNY-CL/wikipron/1b6fce9d894e38eb65431676e4b2fcfc3db19db8/data/scrape/tsv/urd_arab_broad.tsv' \
+            -o "$RUNNER_TEMP/urdu-sources/wikipron.tsv"
+          printf '%s  %s\n' '5530b71670423fc810e245680a9077ca3c72c79de0cdf6d2df21bbec5130d1e5' "$RUNNER_TEMP/urdu-sources/wikipron.tsv" | sha256sum -c -
+          curl --fail --location --retry 4 --retry-all-errors --max-time 180 \
+            'https://kaikki.org/dictionary/Urdu/kaikki.org-dictionary-Urdu.jsonl' \
+            -o "$RUNNER_TEMP/urdu-sources/wiktextract.jsonl"
+          printf '%s  %s\n' '6fef1d227ce1cbc309d38f7475e502bc0f6335dc63f4133c7757c44ed2271ec9' "$RUNNER_TEMP/urdu-sources/wiktextract.jsonl" | sha256sum -c -
+      - name: Build compact IUL1 and provenance report
+        run: |
+          python3 scripts/urdu/build_concordant.py \
+            --wikipron "$RUNNER_TEMP/urdu-sources/wikipron.tsv" \
+            --wiktextract "$RUNNER_TEMP/urdu-sources/wiktextract.jsonl" \
+            --out demo/urdu-pronunciation.iul \
+            --report scripts/urdu/concordant-report.json
+          python3 -m unittest discover -s scripts/tests -p 'test_urdu*.py'
+      - name: Upload lexicon and provenance for inspection
+        uses: actions/upload-artifact@v4
+        with:
+          name: experimental-urdu-lexicon
+          path: |
+            demo/urdu-pronunciation.iul
+            scripts/urdu/concordant-report.json
+          retention-days: 14
+      - name: Commit deterministic lexicon to urdu branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add demo/urdu-pronunciation.iul scripts/urdu/concordant-report.json
+          if git diff --cached --quiet; then
+            echo 'Pinned assets already current'
+            exit 0
+          fi
+          git commit -m 'Build experimental 4k-word Urdu concordant pronunciation pack (#70)'
+          git push origin HEAD:urdu
