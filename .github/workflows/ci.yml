@@ -242,6 +242,8 @@ jobs:
 
   nodejs:
     name: Node.js Package & WASM
+    permissions:
+      contents: write # TEMPORARY for syncing regenerated urdu artifacts
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
@@ -264,6 +266,25 @@ jobs:
 
       - name: Build WASM artifacts
         run: make wasm
+
+      # TEMPORARY: resynchronize compiled binaries on the same-repository urdu
+      # draft PR branch. Remove this after the generated files are committed.
+      - name: Sync Urdu generated WASM artifacts (temporary)
+        if: github.event_name == 'pull_request' && github.head_ref == 'urdu' && github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          cp flutter/assets/inditrans.wasm "$RUNNER_TEMP/urdu-standalone.wasm"
+          cp js/public/inditrans.js "$RUNNER_TEMP/urdu-embedded.js"
+          git reset --hard HEAD
+          git fetch origin urdu
+          git checkout -B urdu origin/urdu
+          cp "$RUNNER_TEMP/urdu-standalone.wasm" flutter/assets/inditrans.wasm
+          cp "$RUNNER_TEMP/urdu-embedded.js" js/public/inditrans.js
+          cp "$RUNNER_TEMP/urdu-embedded.js" nodejs/src/inditrans.js
+          git add flutter/assets/inditrans.wasm js/public/inditrans.js nodejs/src/inditrans.js
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com'               commit -m 'Regenerate Urdu branch WASM and JS artifacts (#70)'
+            git push origin HEAD:urdu
+          fi
 
       - name: Verify checked-in WASM artifacts are up to date
         run: |
