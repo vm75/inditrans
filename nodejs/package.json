@@ -1,6 +1,6 @@
 {
   "name": "@vm75/inditrans",
-  "version": "0.16.2",
+  "version": "0.16.3",
   "description": "A functional transliterator library for the most common Indic/Brahmic scripts.",
   "main": "./dist/src/index.js",
   "author": "VM75",

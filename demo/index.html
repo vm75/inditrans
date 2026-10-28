@@ -2501,8 +2501,8 @@
         <select id="source-script" aria-label="Input script" title="Input script"></select>
         <select id="source-font" aria-label="Input font" title="Input font"></select>
         <button id="sample-button" class="btn btn--subtle btn--icon" type="button"
-          title="Reset text, scripts, and conversion options"
-          aria-label="Reset text, scripts, and conversion options"><svg width="17" height="17" viewBox="0 0 24 24"
+          title="Reset text for this input script"
+          aria-label="Reset text for this input script"><svg width="17" height="17" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
             aria-hidden="true">
             <path d="M3 10a9 9 0 1 1 2.4 8.4" />
@@ -2972,7 +2972,7 @@
         document.getElementById('demo-fonts').href = 'https://fonts.googleapis.com/css2?' + query + '&display=swap';
       }
 
-      const ENGINE_VERSION = 'v0.16.2';
+      const ENGINE_VERSION = 'v0.16.3';
       const DEMO_STORAGE_KEY = 'inditrans-demo-state-v1';
       function readDemoState() {
         try {
@@ -2984,6 +2984,25 @@
         try { localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(state)); } catch { /* Storage may be unavailable. */ }
       }
       const SAVED_DEMO_STATE = readDemoState();
+      function createScriptTexts(state) {
+        const texts = Object.create(null);
+        if (state.sourceTexts && typeof state.sourceTexts === 'object' && !Array.isArray(state.sourceTexts)) {
+          for (const [script, value] of Object.entries(state.sourceTexts)) {
+            if (Object.hasOwn(SCRIPT_CATALOG, script) && typeof value === 'string') texts[script] = value;
+          }
+        }
+        if (typeof state.sourceText === 'string' && typeof state.sourceScript === 'string'
+            && Object.hasOwn(SCRIPT_CATALOG, state.sourceScript) && !Object.hasOwn(texts, state.sourceScript)) {
+          texts[state.sourceScript] = state.sourceText;
+        }
+        function sample(script) { return SCRIPT_CATALOG[script]?.sample || ''; }
+        return {
+          texts,
+          get(script) { return Object.hasOwn(texts, script) ? texts[script] : sample(script); },
+          set(script, value) { texts[script] = value; },
+          reset(script) { texts[script] = sample(script); return texts[script]; }
+        };
+      }
       function createEngineProfile() {
         return {
           baseUrl: new URL('../', document.baseURI).href,
@@ -4432,8 +4451,10 @@
         const sourceFont = element('source-font');
         const targetFont = element('target-font');
         const sourceText = element('source-text');
-        sourceText.defaultValue = DEMO_SAMPLE;
-        sourceText.value = DEMO_SAMPLE;
+        const scriptTexts = createScriptTexts(SAVED_DEMO_STATE);
+        let currentSourceScript;
+        sourceText.defaultValue = SCRIPT_CATALOG.indic.sample;
+        sourceText.value = SCRIPT_CATALOG.indic.sample;
         const targetText = element('target-text');
         const textSize = element('text-size');
         const optionsButton = element('options-button');
@@ -4488,11 +4509,12 @@
           element('keyboard-shell').classList.toggle('no-group-colors', !enabled);
         }
         function saveSession() {
+          scriptTexts.set(sourceScript.value, sourceText.value);
           writeDemoState({
             sourceScript: sourceScript.value, targetScript: targetScript.value,
             sourceFont: sourceFont.value, targetFont: targetFont.value,
             sourceCustomFont: sourceText.dataset.customFont || '', targetCustomFont: targetText.dataset.customFont || '',
-            textSize: textSize.value, sourceText: sourceText.value, targetText: targetText.value,
+            textSize: textSize.value, sourceText: sourceText.value, targetText: targetText.value, sourceTexts: scriptTexts.texts,
             inputMode: element('keyboard-mode').value, keyboard: keyboard.getState(),
             keyboardCollapsed: element('keyboard-content').hidden,
             keyboardGroupColors: element('keyboard-group-colors').checked,
@@ -4503,14 +4525,7 @@
         }
 
         function resetDemo() {
-          sourceScript.value = DEMO_DEFAULTS.sourceScript;
-          targetScript.value = DEMO_DEFAULTS.targetScript;
-          populateFonts(sourceFont, sourceScript.value);
-          populateFonts(targetFont, targetScript.value);
-          updateLanguage();
-          keyboard.sourceChanged();
-          restoreTargetOptions();
-          editor.replaceInputRange(0, sourceText.value.length, sourceText.defaultValue);
+          editor.replaceInputRange(0, sourceText.value.length, scriptTexts.reset(sourceScript.value));
           saveSession();
         }
 
@@ -4556,7 +4571,8 @@
         populateKeyboardControls();
         setKeyboardCollapsed(SAVED_DEMO_STATE.keyboardCollapsed === true);
         keyboardResize.setSize(SAVED_DEMO_STATE.keyboardSize);
-        if (typeof SAVED_DEMO_STATE.sourceText === 'string') sourceText.value = SAVED_DEMO_STATE.sourceText;
+        currentSourceScript = sourceScript.value;
+        sourceText.value = scriptTexts.get(currentSourceScript);
         if (typeof SAVED_DEMO_STATE.targetText === 'string') targetText.value = SAVED_DEMO_STATE.targetText;
         editor.resetHistory();
         element('copy-button').disabled = !targetText.value;
@@ -4573,6 +4589,11 @@
         sourceText.addEventListener('input', () => { rememberCursor(); transliterate(); });
         for (const event of ['keyup', 'mouseup', 'select', 'click']) sourceText.addEventListener(event, rememberCursor);
         sourceScript.addEventListener('change', () => {
+          scriptTexts.set(currentSourceScript, sourceText.value);
+          currentSourceScript = sourceScript.value;
+          editor.replaceInputRange(0, sourceText.value.length, scriptTexts.get(currentSourceScript));
+          editor.resetHistory();
+          saveSession();
           populateFonts(sourceFont, sourceScript.value);
           updateLanguage();
           keyboard.sourceChanged();

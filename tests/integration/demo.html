@@ -34,6 +34,7 @@
     const keys = () => [...d.querySelectorAll('.keyboard-key-source')].map(key => key.textContent);
     check(field('source-text').value === field('source-text').defaultValue && field('source-text').value.includes('မြန်မာ'), 'sample text loads from demo configuration');
     change('source-script', 'burmese'); change('target-script', 'iso');
+    const burmeseSample = field('source-text').value;
     check(['◌ျ','◌ြ','◌ွ','◌ှ'].every(key => keys().includes(key)), 'Burmese medials have keys');
     const coloredKey = d.querySelector('.keyboard-key[data-palette]');
     coloredKey.style.transition = 'none';
@@ -48,7 +49,7 @@
     check(field('source-text').value === 'မြ' && field('target-text').value === 'mra', 'Burmese medial key inserts and transliterates');
     check(d.activeElement === field('source-text'), 'typing focus returns after a key');
     field('sample-button').click();
-    check(field('source-text').value === field('source-text').defaultValue, 'reset restores configured sample');
+    check(field('source-text').value === burmeseSample, 'reset restores the current script sample');
     change('source-script', 'tamil');
     check(['க²','க³','க⁴','ச³','ச⁴','ட²','த³','ப⁴'].every(key => keys().includes(key)), 'Tamil vargas use superscripted consonants');
     check(!keys().includes('ங்ˆக³'), 'Tamil hides non-native prenasalized equivalent');

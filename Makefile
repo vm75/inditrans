@@ -125,7 +125,7 @@ test_scripts:
 	python3 -m unittest discover -s scripts/tests
 
 test_demo:
-	node --test demo/tests/ascii.test.cjs demo/tests/state.test.cjs demo/tests/editor.test.cjs demo/tests/fonts.test.cjs
+	node --test demo/tests/*.test.cjs
 
 test: $(NATIVE_TEST) test-files/test-cases.json
 	$(NATIVE_TEST)

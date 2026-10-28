@@ -1,7 +1,7 @@
 // The Android Gradle Plugin builds the native code with the Android NDK.
 
 group = "org.duckdns.vm75.inditrans"
-version = "0.16.2"
+version = "0.16.3"
 
 buildscript {
     repositories {

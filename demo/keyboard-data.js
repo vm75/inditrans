@@ -302,6 +302,18 @@ const KEYBOARD_COLORS = {
 const SCRIPT_CATALOG = {
   indic: {
     "label": "Mixed Indic",
+    sample: `<अஅa-xml-tag>
+१ - श्री॒ गु॒रु॒भ्यो नमः॒ । ॐ ग॒णानां᳚ त्वा ग॒णप॑तिꣳ हवामहे ॥
+२ - संगीत और संस्कृत — अनेक भाषाएँ, एक संवाद।
+৩ - কষ্ট না করলে কেষ্ট মেলে না।
+૪ - ધીરજના ફળ મીઠા।
+੫ - ਅੰਤ ਭਲੇ ਦਾ ਭਲਾ।
+௬ - ப⁴க³வான் அருளால் உழவனின் களஞ்சியம் நிறையும்।
+೭ - ಕೈ ಕೆಸರಾದರೆ ಬಾಯಿ ಮೊಸರು।
+౮ - దీపం ఉన్నప్పుడే ఇల్లు చక్కదిద్దుకోవాలి।
+൯ - മിന്നുന്നതെല്ലാം പൊന്നല്ല।
+##অসমীয়া বাংলা မြန်မာ देवनागरी 𑌗𑍍𑌰𑌨𑍍𑌥 ગુજરાતી ਗੁਰਮੁਖੀ ಕನ್ನಡ ខ្មែរ മലയാളം ଓଡ଼ିଆ සිංහල தமிழ் తెలుగు ไทย བོད་ཡིག##
+</अஅa-xml-tag>`,
     "target": false,
   },
   separatorIndic: {
@@ -312,7 +324,7 @@ const SCRIPT_CATALOG = {
     "label": "Assamese", "kind": "indic",
     "keyboard": KEYBOARD_MAPS.assamese,
     "fonts": ["Noto Serif Bengali", "Noto Sans Bengali"], "lang": "as",
-    "sample": "অগ্নিমীळে নমঃ",
+    "sample": "যি মূলা বাঢ়ে তাৰ দুপাততে চিন।\nভুকুতে কল নপকে।",
   },
   bengali: {
     supportsVedicAccents: true,
@@ -320,7 +332,7 @@ const SCRIPT_CATALOG = {
     "kind": "indic",
     "fonts": ["Noto Serif Bengali", "Noto Sans Bengali", "Tiro Bangla"],
     "lang": "sa-Beng",
-    "sample": "অ॒গ্নিমী॑ळে নমঃ",
+    "sample": "অতি লোভে তাতি নষ্ট।\nনাচতে না জানলে উঠান বাঁকা।",
     "keyboard": KEYBOARD_MAPS.bengali,
   },
   burmese: {
@@ -328,7 +340,7 @@ const SCRIPT_CATALOG = {
     "label": "Burmese", "kind": "indic",
     "keyboard": KEYBOARD_MAPS.burmese,
     "fonts": ["Noto Serif Myanmar", "Noto Sans Myanmar"], "lang": "my",
-    "sample": "အဂ္နိမီဠေ နမಃ",
+    "sample": "ဗုဒ္ဓံ သရဏံ ဂစ္ဆာမိ။\nဓမ္မံ သရဏံ ဂစ္ဆာမိ။",
   },
   devanagari: {
     supportsVedicAccents: true,
@@ -336,6 +348,7 @@ const SCRIPT_CATALOG = {
     "kind": "indic",
     "fonts": ["Noto Serif Devanagari", "Noto Sans Devanagari", "Tiro Devanagari Sanskrit"],
     "lang": "sa-Deva",
+    "sample": "जहाँ चाह, वहाँ राह।\nदेर आए, दुरुस्त आए।",
     "keyboard": KEYBOARD_MAPS.devanagari,
   },
   grantha: {
@@ -343,7 +356,7 @@ const SCRIPT_CATALOG = {
     "label": "Grantha", "kind": "indic",
     "keyboard": KEYBOARD_MAPS.grantha,
     "fonts": ["Noto Sans Grantha"], "lang": "sa-Gran",
-    "sample": "𑍐 𑌨𑌮𑌃 𑌶𑌿𑌵𑌾𑌯",
+    "sample": "𑌮𑍁𑌯𑌰𑍍𑌚𑌿 𑌤𑌿𑌰𑍁𑌵𑌿𑌨𑍈𑌯𑌾𑌕𑍍𑌕𑍁𑌮𑍍.\n𑌪𑍋𑌰𑍁𑌤𑍍𑌤𑌾𑌰𑍍 𑌪𑍂𑌮𑌿 𑌆𑌳𑍍𑌵𑌾𑌰𑍍.",
   },
   gujarati: {
     supportsVedicAccents: true,
@@ -351,7 +364,7 @@ const SCRIPT_CATALOG = {
     "kind": "indic",
     "fonts": ["Noto Serif Gujarati", "Noto Sans Gujarati"],
     "lang": "sa-Gujr",
-    "sample": "ૐ નમઃ શિવાય",
+    "sample": "ઉતાવળે આંબા ન પાકે.\nખાડો ખોદે તે પડે.",
     "keyboard": KEYBOARD_MAPS.gujarati,
   },
   gurmukhi: {
@@ -360,7 +373,7 @@ const SCRIPT_CATALOG = {
     "kind": "indic",
     "fonts": ["Noto Serif Gurmukhi", "Noto Sans Gurmukhi"],
     "lang": "sa-Guru",
-    "sample": "ੴ ਸਤਿ ਨਾਮੁ",
+    "sample": "ਜਿੱਥੇ ਚਾਹ ਉੱਥੇ ਰਾਹ।\nਘਰ ਸਭ ਤੋਂ ਉੱਤਮ ਪੂਰਬ ਭਾਵੇਂ ਪੱਛਮ।",
     "keyboard": KEYBOARD_MAPS.gurmukhi,
   },
   kannada: {
@@ -369,7 +382,7 @@ const SCRIPT_CATALOG = {
     "kind": "indic",
     "fonts": ["Noto Serif Kannada", "Noto Sans Kannada", "Tiro Kannada"],
     "lang": "sa-Knda",
-    "sample": "ಅ॒ಗ್ನಿಮೀ॑ಳೇ । ತ್ವ॒ ತ್ಯ॒ ತ್ವೋ॒ ತ್ಯೋ॒ ತ್ವಂ᳚",
+    "sample": "ಕೈ ಕೆಸರಾದರೆ ಬಾಯಿ ಮೊಸರು.\nಹನಿ ಹನಿ ಕೂಡಿದರೆ ಹಳ್ಳ.",
     "keyboard": KEYBOARD_MAPS.kannada,
   },
   khmer: {
@@ -377,7 +390,7 @@ const SCRIPT_CATALOG = {
     "label": "Khmer", "kind": "indic",
     "keyboard": KEYBOARD_MAPS.khmer,
     "fonts": ["Noto Serif Khmer", "Noto Sans Khmer"], "lang": "km",
-    "sample": "អគ្និមីឡេ នមៈ",
+    "sample": "ពុទ្ធំ សរណំ គច្ឆាមិ។\nធម្មំ សរណំ គច្ឆាមិ។",
   },
   malayalam: {
     supportsVedicAccents: true,
@@ -385,7 +398,7 @@ const SCRIPT_CATALOG = {
     "kind": "indic",
     "fonts": ["Noto Serif Malayalam", "Noto Sans Malayalam"],
     "lang": "sa-Mlym",
-    "sample": "ഓം നമഃ ശിവായ",
+    "sample": "മിന്നുന്നതെല്ലാം പൊന്നല്ല.\nമുറ്റത്തെ മുല്ലയ്ക്ക് മണമില്ല.",
     "keyboard": KEYBOARD_MAPS.malayalam,
   },
   oriya: {
@@ -394,7 +407,7 @@ const SCRIPT_CATALOG = {
     "kind": "indic",
     "fonts": ["Noto Serif Oriya", "Noto Sans Oriya"],
     "lang": "sa-Orya",
-    "sample": "ଓଁ ନମଃ ଶିବାୟ",
+    "sample": "ଅତି ଲୋଭେ ତନ୍ତୀ ନଷ୍ଟ।\nନାଚ ନ ଜାଣି ଅଗଣା ବଙ୍କା।",
     "keyboard": KEYBOARD_MAPS.oriya,
   },
   sinhala: {
@@ -403,7 +416,7 @@ const SCRIPT_CATALOG = {
     "kind": "indic",
     "fonts": ["Noto Serif Sinhala", "Noto Sans Sinhala"],
     "lang": "sa-Sinh",
-    "sample": "ඕං නමඃ ශිවාය",
+    "sample": "උනහපුළුවගෙ පැටියා ඌට මැණිකක්ලූ.\nරැවුලයි කැඳයි දෙකම බේරගන්න බෑ.",
     "keyboard": KEYBOARD_MAPS.sinhala,
   },
   tamil: {
@@ -412,7 +425,7 @@ const SCRIPT_CATALOG = {
     "kind": "indic",
     "fonts": ["Noto Serif Tamil", "Noto Sans Tamil", "Tiro Tamil"],
     "lang": "sa-Taml",
-    "sample": "ஓம் நமஃ ஶிவாய",
+    "sample": "அளவுக்கு மீறினால் அமுதமும் நஞ்சு.\nகற்றது கைமண் அளவு, கல்லாதது உலகளவு.",
     "keyboard": KEYBOARD_MAPS.tamil,
   },
   telugu: {
@@ -421,7 +434,7 @@ const SCRIPT_CATALOG = {
     "kind": "indic",
     "fonts": ["Noto Serif Telugu", "Noto Sans Telugu", "Tiro Telugu"],
     "lang": "sa-Telu",
-    "sample": "అ॒గ్నిమీ॑ళే । త్వ॒ త్య॒ త్వో॒ త్యో॒ త్వం᳚",
+    "sample": "దీపం ఉండగానే ఇల్లు చక్కదిద్దుకోవాలి.\nఆలస్యం అమృతం విషం.",
     "keyboard": KEYBOARD_MAPS.telugu,
   },
   thai: {
@@ -429,14 +442,14 @@ const SCRIPT_CATALOG = {
     "label": "Thai", "kind": "indic",
     "keyboard": KEYBOARD_MAPS.thai,
     "fonts": ["Noto Serif Thai", "Noto Sans Thai"], "lang": "th",
-    "sample": "อัคนิมีเฬ นมะ",
+    "sample": "พุทฺธํ สรณํ คจฺฉามิฯ\nธมฺมํ สรณํ คจฺฉามิฯ",
   },
   tibetan: {
     supportsVedicAccents: false,
     "label": "Tibetan", "kind": "indic",
     "keyboard": KEYBOARD_MAPS.tibetan,
     "fonts": ["Noto Serif Tibetan", "Noto Sans Tibetan"], "lang": "bo",
-    "sample": "ཨགྣིམཱིལེ ནམཿ",
+    "sample": "པད་མ་མེ་ཏོག་མཛེས་ཀྱང་། ལོ་མ་སྔོན་པོས་རྒྱན་དགོས།\nདཔེ་རེ་བཤད་ན་དོན་རེ་ཡོད།",
   },
   separatorRoman: {
     label: '── Roman ──', separator: true,
@@ -445,14 +458,14 @@ const SCRIPT_CATALOG = {
     supportsVedicAccents: true,
     kind: 'roman',
     "label": "Harvard-Kyoto",
-    "sample": "zrI gurubhyo namaH . hariH oM",
+    "sample": "",
     "keyboard": KEYBOARD_MAPS.hk,
   },
   iast: {
     supportsVedicAccents: true,
     kind: 'roman',
     "label": "IAST",
-    "sample": "śrī̍ gurubhyo̱ namaḥ̎ । agnim īḷe purohitaṃ",
+    "sample": "",
     "keyboard": KEYBOARD_MAPS.iast,
   },
   indlish: {
@@ -467,43 +480,48 @@ const SCRIPT_CATALOG = {
     kind: 'roman',
     "label": "IPA",
     "keyboard": KEYBOARD_MAPS.ipa,
-    "sample": "ɐɡnɪm iːɭeː puroːɦɪtɐm",
+    "sample": "",
   },
   iso: {
     supportsVedicAccents: true,
     kind: 'roman',
     "label": "ISO 15919",
+    "sample": "",
     "keyboard": KEYBOARD_MAPS.iso,
   },
   itrans: {
     supportsVedicAccents: true,
     kind: 'roman',
     "label": "ITRANS",
-    "sample": "shrI gurubhyo namaH . hariH OM",
+    "sample": "",
     "keyboard": KEYBOARD_MAPS.itrans,
   },
   slp1: {
     supportsVedicAccents: false,
     kind: 'roman',
     "label": "SLP1",
+    "sample": "",
     "keyboard": KEYBOARD_MAPS.slp1,
   },
   titus: {
     supportsVedicAccents: true,
     kind: 'roman',
     "label": "TITUS",
+    "sample": "",
     "keyboard": KEYBOARD_MAPS.titus,
   },
   velthuis: {
     supportsVedicAccents: true,
     kind: 'roman',
     "label": "Velthuis",
+    "sample": "",
     "keyboard": KEYBOARD_MAPS.velthuis,
   },
   wx: {
     supportsVedicAccents: false,
     kind: 'roman',
     "label": "WX",
+    "sample": "",
     "keyboard": KEYBOARD_MAPS.wx,
   },
   separatorPersoArabic: {
@@ -513,7 +531,7 @@ const SCRIPT_CATALOG = {
     supportsVedicAccents: false,
     label: 'Urdu (Nastaliq)', kind: 'persoArabic', lang: 'ur', dir: 'rtl',
     fonts: ['Noto Nastaliq Urdu', 'Noto Naskh Arabic'],
-    sample: 'اَ آ اِ اِی اُ اُو کَ کِ کُ کا کِی کُو',
+    sample: "جیسی کرنی ویسی بھرنی۔\nدیر آید درست آید۔",
     keyboard: KEYBOARD_MAPS.urdu,
   },
 };

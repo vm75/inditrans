@@ -14,8 +14,9 @@ from this checkout. Pages deploys the demo and matching checked-in JS/Wasm
 bundle together, with the site root redirecting to `demo/`.
 
 The default input is the mixed-script sample, with **Mixed Indic** as the source
-and **Indlish** as the output. The **reset icon** restores that text, both default
-scripts, and all conversion options. Appearance and keyboard preferences are retained.
+and **Indlish** as the output. The **reset icon** restores the current input
+script's bundled sample. Each input script retains its own edits when switching
+scripts; appearance and conversion preferences are retained.
 
 Script choices are grouped as **Indic**, **Roman**, and **Perso-Arabic**, with
 **Mixed Indic** remaining a separate input choice. Tamil is in Indic and retains
@@ -105,6 +106,14 @@ typing, on-screen keys, and resetting the input text. Shortcuts: **Ctrl/Cmd+Z** 
 **Ctrl/Cmd+Shift+Z** or **Ctrl+Y** to redo. History retains up to 100 edits in the
 current page session; reloading starts a fresh history with the saved text.
 
+Bundled samples and visible native keyboard keys are checked against the shipped
+standalone WASM engine by `demo/tests/coverage.test.cjs`. Burmese, Khmer and Thai
+samples use supported Pali spellings; unsupported native-language marks are not
+removed from proverbs to manufacture readable examples. Protected spans in the
+mixed sample intentionally remain unchanged. See the root README's
+[symbol coverage and limitations](../README.md#symbol-coverage-and-limitations)
+for deferred characters and tracking issues.
+
 ## Mobile
 
 On screens up to 600px wide and short touch screens in landscape, each pane has
@@ -119,8 +128,8 @@ vowels, consonants, signs, and symbols. Mixed Indic has a typing-layout selector
 in the reference, and typing notes appear after the shortcut tables. Closing the
 reference preserves the input selection.
 Each pane has a copy control for its complete text. The **reset icon** in the
-source toolbar restores the default mixed-script text, source and output scripts,
-and conversion options; the conversion-options icon is in the target toolbar.
+source toolbar restores the current input script's sample;
+the conversion-options icon is in the target toolbar.
 Desktop uses the same reset behavior.
 The text-size slider in the top toolbar adjusts both panes and stays visible while typing.
 The **settings icon** opens fonts, theme, and help. All mobile dialogs fill the screen, with scrollable
@@ -128,7 +137,7 @@ content and a visible close button. The desktop script keyboard stays hidden on 
 
 ## Engine version
 
-The version badge shows `v0.15.0`. The page loads the matching engine assets
+The version badge shows `v0.16.3`. The page loads the matching engine assets
 shipped with its checkout/site, with the version in asset URLs to refresh browser
 caches. Rebuild with `make wasm` after changing mappings or native code. Pages stages `demo/` and the
 matching `js/` assets together; deploy both when updating output conventions.
@@ -168,10 +177,12 @@ make test_demo
 ```
 
 This runs `demo/tests/ascii.test.cjs`, `demo/tests/state.test.cjs`,
-`demo/tests/editor.test.cjs`, and `demo/tests/fonts.test.cjs` against the page's
+`demo/tests/editor.test.cjs`, `demo/tests/fonts.test.cjs`, and
+`demo/tests/coverage.test.cjs` against the page's
 actual code, checking shortcuts,
 contextual vowels, escaping, session storage, undo/redo history, glyph spacing,
-keyboard resize controls, and font discovery and loading.
+keyboard resize controls, font discovery and loading, and sample/key coverage
+in the checked-in WASM engine. Rebuild with `make wasm` after engine changes.
 It needs no browser, dependencies, or network. It also runs in `make testall` and
 the Node.js job in CI for pushes to `main` and pull requests targeting `main`
 (documentation-only changes are skipped). It does not test browser interactions.

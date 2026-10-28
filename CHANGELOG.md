@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.3]
+* Support native punctuation, Tibetan syllable separators and abbreviation signs across scripts.
+* Use supported demo samples, verify sample and keyboard coverage against WASM, and document remaining symbol limitations.
+* Preserve separate edits for each demo input script and restore its sample independently.
+
 ## [0.16.2]
 * Improve the demo keyboard with curated script keys and preserve existing ASCII shortcuts.
 * Support Burmese medial signs and fix Tamil superscript Vedic accent attachment.

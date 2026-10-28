@@ -42,6 +42,43 @@ Vedic accent support is a per-script capability, independent of these groups.
 Tamil belongs to Indic and retains its specialized transliteration rules.
 The [demo](demo/README.md) labels choices that support Vedic accent output.
 
+### Symbol coverage and limitations
+
+Digits 0–9, Om and danda punctuation have script mappings. Additional native
+punctuation is normalized when converting between scripts:
+
+| Input | Output convention |
+|---|---|
+| Tibetan `་`, `༌` | Space in other scripts; the nonbreaking distinction is lost |
+| Tibetan `༏`, `༑` / `༐`, `༒` | Single / double danda equivalents |
+| Sinhala `෴`, Thai `๛`, Khmer `៚` | Double danda equivalent |
+| Devanagari `॰`, Gujarati `૰`, Gurmukhi `੶`, Bengali/Assamese `৽` | Native abbreviation sign where available, otherwise ASCII `.` |
+| Khmer `៖` | ASCII `:` in other scripts |
+| Tibetan `༔`, Urdu `،` | Native comma-like sign where available, otherwise ASCII `,` |
+
+Roman danda output retains each scheme's existing punctuation (`.`/`..` in
+IAST). These are deliberately lossy punctuation conventions, not reversible
+scholarly encodings. ASCII spaces, commas and colons retain their existing
+pass-through behavior; they are not automatically converted to native signs.
+Same-script conversion keeps the original punctuation. Symbol tables do not
+imply complete Unicode or native-language coverage.
+
+Unmapped characters are preserved, so output can contain source-script signs.
+The remaining work is tracked here:
+
+- [Contextual symbols and repetition (#66)](https://github.com/vm75/inditrans/issues/66):
+  Burmese `၌ ၍ ၎ ၏`, Khmer `ៗ ៘`, and Thai `ๆ` need word/phrase expansion conventions.
+- [Traditional numbers and fractions (#67)](https://github.com/vm75/inditrans/issues/67):
+  Tamil `௰–௲`, Malayalam/Odia/Telugu fractions, Tibetan half digits, Khmer
+  divination numerals and Shan digits need numeric-system-specific treatment.
+- [Specialist signs (#68)](https://github.com/vm75/inditrans/issues/68): currency,
+  calendar/accounting, siddham/isshar, opening, ritual and astrological signs,
+  plus remaining Urdu punctuation, need preservation or conversion policies.
+- [Native-language reading coverage (#69)](https://github.com/vm75/inditrans/issues/69):
+  ordinary Burmese, Khmer and Thai text uses letters and marks beyond the
+  Sanskrit/Pali-oriented readers. Demo samples use supported spellings; that
+  does not establish full language coverage.
+
 ### ITRANS notation notes
 
 `inditrans` implements uniform phonemic vowel mapping adhering to the [ITRANS specification](https://www.aczoom.com/itrans/):

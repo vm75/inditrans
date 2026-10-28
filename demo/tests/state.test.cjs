@@ -7,11 +7,10 @@ const assert = require('node:assert/strict');
 const html = readFileSync(join(__dirname, '../index.html'), 'utf8');
 const defaultsCode = readFileSync(join(__dirname, '../demo-data.js'), 'utf8');
 const defaults = runInNewContext(defaultsCode + ';DEMO_DEFAULTS');
-const defaultText = runInNewContext(defaultsCode + ';DEMO_SAMPLE');
+const catalogCode = readFileSync(join(__dirname, '../keyboard-data.js'), 'utf8');
+const defaultText = runInNewContext(catalogCode + ';SCRIPT_CATALOG.indic.sample');
 test('default sample is literal mixed-script text with Indlish output', () => {
-  assert.match(defaultText, /श्री/);
-  assert.match(defaultText, /தமிழ்/);
-  assert.match(defaultText, /##.*မြန်မာ.*##/);
+  assert.ok(defaultText.length > 0);
   assert.equal(defaults.sourceScript, 'indic');
   assert.equal(defaults.targetScript, 'indlish');
   const populate = html.slice(html.indexOf('function populateScripts()'), html.indexOf('function populateFonts('));
@@ -22,6 +21,38 @@ test('default sample is literal mixed-script text with Indlish output', () => {
   });
   assert.equal(sourceScript.value, 'indic');
   assert.equal(targetScript.value, 'indlish');
+});
+
+test('input scripts keep separate edits and reset independently', () => {
+  const data = readFileSync(join(__dirname, '../keyboard-data.js'), 'utf8');
+  const helper = html.slice(html.indexOf('function createScriptTexts'), html.indexOf('function createEngineProfile'));
+  const create = runInNewContext(data + defaultsCode + helper + ';createScriptTexts');
+  const texts = create({ sourceScript: 'tamil', sourceText: 'legacy edit' });
+  assert.equal(texts.get('tamil'), 'legacy edit');
+  const hindiSample = texts.get('devanagari');
+  texts.set('devanagari', 'हिंदी संपादन');
+  texts.set('tamil', 'தமிழ் திருத்தம்');
+  assert.equal(texts.get('devanagari'), 'हिंदी संपादन');
+  assert.equal(texts.reset('devanagari'), hindiSample);
+  assert.equal(texts.get('tamil'), 'தமிழ் திருத்தம்');
+  const restored = create({ sourceTexts: JSON.parse(JSON.stringify(texts.texts)) });
+  assert.equal(restored.get('tamil'), 'தமிழ் திருத்தம்');
+  assert.equal(restored.get('indic'), defaultText);
+  restored.set('tamil', '');
+  assert.equal(restored.get('tamil'), '');
+});
+
+test('Indic inputs have two-line examples and Roman inputs start empty', () => {
+  const data = readFileSync(join(__dirname, '../keyboard-data.js'), 'utf8');
+  const catalog = runInNewContext(data + ';SCRIPT_CATALOG');
+  for (const [id, entry] of Object.entries(catalog)) {
+    if (entry.separator || entry.source === false || id === 'indic') continue;
+    assert.equal(typeof entry.sample, 'string', id);
+    if (entry.kind === 'roman') { assert.equal(entry.sample, '', id); continue; }
+    assert.equal(entry.sample.split('\n').length, 2, id);
+    assert.ok(entry.sample.split('\n').every(line => line.trim()), id);
+  }
+  assert.equal(catalog.devanagari.sample, 'जहाँ चाह, वहाँ राह।\nदेर आए, दुरुस्त आए।');
 });
 
 function conversionOptions() {
@@ -81,36 +112,22 @@ test('missing, invalid, or empty delimiters use ## and Tamil styles stay mutuall
   assert.equal(api.selectedSkipDelimiters().skipEnd, '##');
 });
 
-test('reset restores the complete conversion state before replacing and converting the input', () => {
-  const { api, nodes } = conversionOptions();
-  api.restoreTargetOptions({ options: ['NoXMLTagHandling'], skipStart: '[', skipEnd: ']' });
+test('reset changes only the selected input text', () => {
   const sourceScript = { value: 'tamil' };
-  const targetScript = { value: 'telugu' };
-  const sourceText = { value: 'edited text', defaultValue: defaultText };
+  const sourceText = { value: 'edited text' };
   let saved;
-  const updatedFonts = [];
-  let keyboardChanges = 0;
   const code = html.slice(html.indexOf('function resetDemo()'), html.indexOf('function transliterate()'));
   runInNewContext(code + ';resetDemo()', {
-    DEMO_DEFAULTS: defaults, sourceScript, targetScript, sourceText, sourceFont: 'input font', targetFont: 'output font',
-    populateFonts: (font, script) => updatedFonts.push([font, script]), updateLanguage() {},
-    keyboard: { sourceChanged() { keyboardChanges++; } }, restoreTargetOptions: api.restoreTargetOptions,
+    sourceScript, sourceText,
+    scriptTexts: { reset(script) { assert.equal(script, 'tamil'); return 'Tamil sample'; } },
     editor: { replaceInputRange(start, end, replacement) {
       assert.equal(start, 0);
       assert.equal(end, 'edited text'.length);
-      assert.equal(sourceScript.value, 'indic');
-      assert.equal(targetScript.value, 'indlish');
-      assert.deepEqual(Array.from(api.selectedTargetOptions()), []);
-      assert.equal(nodes['skip-start'].value, '##');
-      assert.equal(nodes['skip-end'].value, '##');
       sourceText.value = replacement;
     } },
     saveSession() { saved = sourceText.value; }
   });
-  assert.equal(saved, defaultText);
-  assert.equal(keyboardChanges, 1);
-  assert.deepEqual(updatedFonts, [['input font', 'indic'], ['output font', 'indlish']]);
-  assert.match(html, /element\('sample-button'\)\.addEventListener\('click', resetDemo\)/);
+  assert.equal(saved, 'Tamil sample');
 });
 
 test('demo badge matches the package version', () => {

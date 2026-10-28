@@ -2277,5 +2277,263 @@
         "options": ""
       }
     ]
+  },
+  {
+    "description": "Native punctuation and separator readings: tibetan",
+    "script": "tibetan",
+    "text": "ཀ་ཀ༌ཀ༔ཀ༏ཀ༐ཀ༑ཀ༒",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "ka ka ka,ka.ka..ka.ka.."
+      },
+      {
+        "script": "tibetan",
+        "text": "ཀ་ཀ༌ཀ༔ཀ༏ཀ༐ཀ༑ཀ༒"
+      }
+    ]
+  },
+  {
+    "description": "Native punctuation and separator readings: khmer",
+    "script": "khmer",
+    "text": "ក៖ក៚",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "ka:ka.."
+      },
+      {
+        "script": "khmer",
+        "text": "ក៖ក៚"
+      }
+    ]
+  },
+  {
+    "description": "Native punctuation and separator readings: sinhala",
+    "script": "sinhala",
+    "text": "ක෴",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "ka.."
+      },
+      {
+        "script": "sinhala",
+        "text": "ක෴"
+      }
+    ]
+  },
+  {
+    "description": "Native punctuation and separator readings: thai",
+    "script": "thai",
+    "text": "ก๛",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "ka.."
+      },
+      {
+        "script": "thai",
+        "text": "ก๛"
+      }
+    ]
+  },
+  {
+    "description": "Native punctuation and separator readings: devanagari",
+    "script": "devanagari",
+    "text": "क॰",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "ka."
+      },
+      {
+        "script": "devanagari",
+        "text": "क॰"
+      }
+    ]
+  },
+  {
+    "description": "Native punctuation and separator readings: gujarati",
+    "script": "gujarati",
+    "text": "ક૰",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "ka."
+      },
+      {
+        "script": "gujarati",
+        "text": "ક૰"
+      }
+    ]
+  },
+  {
+    "description": "Native punctuation and separator readings: gurmukhi",
+    "script": "gurmukhi",
+    "text": "ਕ੶",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "ka."
+      },
+      {
+        "script": "gurmukhi",
+        "text": "ਕ੶"
+      }
+    ]
+  },
+  {
+    "description": "Native punctuation and separator readings: bengali",
+    "script": "bengali",
+    "text": "ক৽",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "ka."
+      },
+      {
+        "script": "bengali",
+        "text": "ক৽"
+      }
+    ]
+  },
+  {
+    "description": "Native punctuation and separator readings: assamese",
+    "script": "assamese",
+    "text": "ক৽",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "ka."
+      },
+      {
+        "script": "assamese",
+        "text": "ক৽"
+      }
+    ]
+  },
+  {
+    "description": "Native punctuation and separator readings: urdu",
+    "script": "urdu",
+    "text": "ک،ک",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "k,k"
+      },
+      {
+        "script": "urdu",
+        "text": "ک،ک"
+      }
+    ]
+  },
+  {
+    "description": "Mixed Indic recognizes native punctuation aliases",
+    "script": "indic",
+    "text": "ཀ་ཀ༌ཀ༔ ក៖ ක෴ क॰",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "ka ka ka, ka: ka.. ka."
+      }
+    ]
+  },
+  {
+    "description": "Abbreviation signs retain target identity",
+    "script": "devanagari",
+    "text": "क॰",
+    "targets": [
+      {
+        "script": "gujarati",
+        "text": "ક૰"
+      },
+      {
+        "script": "gurmukhi",
+        "text": "ਕ੶"
+      },
+      {
+        "script": "bengali",
+        "text": "ক৽"
+      },
+      {
+        "script": "tamil",
+        "text": "க."
+      }
+    ]
+  },
+  {
+    "description": "Native separators use portable punctuation fallbacks",
+    "script": "tibetan",
+    "text": "ཀ་ཀ༔",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "क क,"
+      },
+      {
+        "script": "urdu",
+        "text": "کَ کَ،"
+      }
+    ]
+  },
+  {
+    "description": "ASCII punctuation and whitespace retain existing behavior",
+    "script": "iast",
+    "text": "ka ka,ka:ka.",
+    "targets": [
+      {
+        "script": "tibetan",
+        "text": "ཀ ཀ,ཀ:ཀ།"
+      },
+      {
+        "script": "devanagari",
+        "text": "क क,क:क।"
+      }
+    ]
+  },
+  {
+    "description": "Deferred symbols remain preserved: burmese",
+    "script": "burmese",
+    "text": "က၌ က၍ က၎ က၏",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "ka၌ ka၍ ka၎ ka၏"
+      }
+    ]
+  },
+  {
+    "description": "Deferred symbols remain preserved: khmer",
+    "script": "khmer",
+    "text": "កៗ ក៘",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "kaៗ ka៘"
+      }
+    ]
+  },
+  {
+    "description": "Deferred symbols remain preserved: thai",
+    "script": "thai",
+    "text": "กๆ",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "kaๆ"
+      }
+    ]
+  },
+  {
+    "description": "Deferred symbols remain preserved: tamil",
+    "script": "tamil",
+    "text": "௰௱௲",
+    "targets": [
+      {
+        "script": "iast",
+        "text": "௰௱௲"
+      }
+    ]
   }
 ]

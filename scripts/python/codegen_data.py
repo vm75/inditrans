@@ -87,7 +87,7 @@ ARRAY_TYPES = {
     "vowelMarks": 22,
     "consonants": 64,
     "otherDiacritics": 8,
-    "symbols": 13,
+    "symbols": 17,
     "vedicSymbols": 3,
 }
 

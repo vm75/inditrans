@@ -117,6 +117,14 @@ compile-time spans of compact offset/length entries, an empty `Ignore` slot, its
 processing type, explicit Vedic accent output capability, and a small Indic orthography selector. Accent/exclusive-symbol tables and identical class arrays
 are shared.
 
+The aligned `symbols` arrays reserve indices 0–9 for digits, 10 for Om,
+11–12 for danda punctuation, 13 for a syllable separator, 14 for abbreviation,
+15 for colon and 16 for comma-like punctuation. Unsupported target forms use
+space or ASCII punctuation. Fallback spellings are excluded from source reading
+where they would change existing whitespace/punctuation behavior or collide with
+another token. Native aliases are resolved during generation. Cross-script
+punctuation normalization is lossy; same-script copying preserves the input.
+
 ### Token model
 
 ```text
