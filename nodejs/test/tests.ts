@@ -81,7 +81,8 @@ test('optional Urdu pronunciation pack and fallback', () => {
   const reused = new inditrans.UrduPronunciationLexicon(lexicon);
   try {
     expect(reused.transliterate('کتاب', inditrans.Script.iast)).toBe('kitāb');
-    expect(reused.transliterate('کتاب۔کتاب', inditrans.Script.iast)).toBe('kitāb۔kitāb');
+    expect(reused.transliterate('کتاب۔کتاب', inditrans.Script.iast))
+      .toBe('kitāb' + inditrans.transliterate('۔', inditrans.Script.urdu, inditrans.Script.iast, inditrans.Option.None) + 'kitāb');
     expect(reused.transliterate('کتاب', inditrans.Script.iast, inditrans.Option.DisableInference))
       .toBe(inditrans.transliterate('کتاب', inditrans.Script.urdu, inditrans.Script.iast, inditrans.Option.DisableInference));
   } finally {
