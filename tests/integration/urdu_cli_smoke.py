@@ -38,6 +38,13 @@ def main():
     assert interactive.returncode == 0 and "jaisI karnI vaisI bharnI" in interactive.stdout, interactive.stdout
     invalid = run("-f", "urdu", "-t", "indlish", "-l", str(SOURCE), source)
     assert invalid.returncode != 0 and "Invalid IUL1" in invalid.stderr, invalid.stderr
+    corpus = ROOT / "demo/urdu-pronunciation.iul"
+    assert corpus.stat().st_size < 3_000_000
+    corpus_run = run("-f", "urdu", "-t", "indlish", "-l", str(corpus), source)
+    assert corpus_run.returncode == 0 and corpus_run.stdout == phonetic.stdout, corpus_run.stderr
+    unknown = run("-f", "urdu", "-t", "indlish", "-l", str(corpus), "قلم")
+    unknown_legacy = run("-f", "urdu", "-t", "indlish", "قلم")
+    assert unknown.stdout == unknown_legacy.stdout
     print("Urdu demo lexicon, CLI opt-in, strict mode, punctuation and protected spans: passed")
 
 if __name__ == "__main__":
