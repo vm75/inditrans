@@ -158,7 +158,7 @@ test('engine adapter and wrapper forward custom skip delimiters with conversion 
 });
 
 test('demo uses pronunciation only with a loaded Urdu lexicon and the opt-in checkbox', async () => {
-  const sample = readFileSync(join(__dirname, '../urdu-example.iul'));
+  const sample = readFileSync(join(__dirname, '../urdu-pronunciation.iul'));
   let calls = [];
   const api = {
     Option: { None: 0, DisableInference: 64 },
@@ -172,7 +172,7 @@ test('demo uses pronunciation only with a loaded Urdu lexicon and the opt-in che
   const { createEngine, createEngineProfile } = runInNewContext(code + ';({createEngine, createEngineProfile})', {
     ENGINE_VERSION: 'v0.16.3', KEYBOARD_MAPS: {}, window: { Inditrans: api }, URL,
     fetch: async url => {
-      assert.equal(url.pathname, '/inditrans/scripts/urdu/demo-lexicon.iul'.replace('/scripts/urdu/demo-lexicon.iul', '/demo/urdu-example.iul'));
+      assert.equal(url.pathname, '/inditrans/demo/urdu-pronunciation.iul');
       return { ok: true, arrayBuffer: async () => Uint8Array.from(sample).buffer };
     },
     document: { baseURI: 'https://example.test/inditrans/demo/',
