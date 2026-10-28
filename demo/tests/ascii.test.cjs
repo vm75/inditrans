@@ -7,17 +7,50 @@ const assert = require('node:assert/strict');
 
 // Exercise the buildless demo's actual tables and composer without a browser dependency.
 const html = readFileSync(join(__dirname, '../index.html'), 'utf8');
-const tables = html.slice(html.indexOf('const KEYBOARD_MAPS'), html.indexOf('const KEYBOARD_REFERENCE_MAP'));
-const catalog = html.slice(html.indexOf('const SCRIPT_CATALOG'), html.indexOf('const ROMAN_FONTS'));
+const data = readFileSync(join(__dirname, '../keyboard-data.js'), 'utf8');
+const catalog = html.slice(html.indexOf('function keyboardAccents'), html.indexOf('// Font dev tools:'));
 const composer = html.slice(html.indexOf('function createAsciiComposer'), html.indexOf('function createKeyboard'));
-const { KEYBOARD_MAPS, ASCII_KEYBOARD_TOKENS, createAsciiComposer, keyboardAccents, SCRIPT_CATALOG } = runInNewContext(
-  tables + '\n' + catalog + '\n' + composer + ';({ KEYBOARD_MAPS, ASCII_KEYBOARD_TOKENS, createAsciiComposer, keyboardAccents, SCRIPT_CATALOG })'
+const { KEYBOARD_MAPS, ASCII_KEYBOARD_TOKENS, createAsciiComposer, keyboardAccents, SCRIPT_CATALOG,
+  NATIVE_KEYBOARD_LAYOUTS, nativeKeyboardValues, nativeKeyboardExtras } = runInNewContext(
+  data + '\n' + catalog + '\n' + composer + ';({ KEYBOARD_MAPS, ASCII_KEYBOARD_TOKENS, createAsciiComposer, keyboardAccents, SCRIPT_CATALOG, NATIVE_KEYBOARD_LAYOUTS, nativeKeyboardValues, nativeKeyboardExtras })'
 );
 function layoutFor(script) {
   const layout = KEYBOARD_MAPS[script];
   return { ...layout, symbols: [...layout.symbols, ...layout.vedicSymbols], accents: keyboardAccents(script) };
 }
 const compose = createAsciiComposer(layoutFor('devanagari'));
+
+test('native layouts retain original positions and hide foreign equivalents and duplicates', () => {
+  for (const [script, entry] of Object.entries(SCRIPT_CATALOG)) {
+    if (entry.kind !== 'indic' && entry.kind !== 'persoArabic') continue;
+    assert.ok(NATIVE_KEYBOARD_LAYOUTS[script], script);
+    const layout = KEYBOARD_MAPS[script];
+    for (const group of ['vowels', 'vowelMarks', 'consonants', 'otherDiacritics', 'symbols']) {
+      const values = group === 'symbols' ? [...layout.symbols, ...layout.vedicSymbols] : layout[group];
+      const visible = nativeKeyboardValues(script, group, values);
+      assert.equal(visible.length, values.length, script + ': ' + group);
+      const keys = Array.from(visible).filter(Boolean);
+      assert.equal(new Set(keys).size, keys.length, script + ': duplicate ' + group);
+    }
+  }
+  const values = script => nativeKeyboardValues(script, 'consonants', KEYBOARD_MAPS[script].consonants);
+  assert.equal(values('devanagari')[45], '');
+  assert.equal(values('sinhala')[45], 'ඟ');
+  assert.equal(values('tamil')[1], 'க²');
+  assert.equal(values('tamil')[7], 'ச³');
+  assert.equal(values('tamil')[8], 'ச⁴');
+  assert.equal(values('tamil')[45], '');
+});
+
+test('script-specific shortcuts compose their displayed keys without changing existing mappings', () => {
+  const extras = nativeKeyboardExtras('burmese');
+  assert.deepEqual(Array.from(extras, entry => entry.value), ['ျ', 'ြ', 'ွ', 'ှ', '္']);
+  const convert = createAsciiComposer({ ...layoutFor('burmese'), nativeExtras: extras });
+  assert.equal(convert('m.x1'), 'မြ');
+  assert.equal(convert('m.x1i'), 'မြိ');
+  assert.equal(convert('k'), 'က');
+  assert.equal(createAsciiComposer({ ...layoutFor('malayalam'), nativeExtras: nativeKeyboardExtras('malayalam') })('.x0'), 'ൺ');
+});
 
 test('every character slot has a unique ASCII shortcut', () => {
   const tokens = Object.values(ASCII_KEYBOARD_TOKENS).flat();
@@ -98,7 +131,7 @@ function inputHarness({ mobile = true, mode = 'direct', disabled = false } = {})
     sourceText.selectionStart = sourceText.selectionEnd = start + text.length;
     dispatch('input');
   };
-  const code = html.slice(html.indexOf("const inputMode = element('keyboard-mode')"), html.indexOf('// Groups mapped to keyboard rows:'));
+  const code = html.slice(html.indexOf("const inputMode = element('keyboard-mode')"), html.indexOf('// All groups checked by default'));
   runInNewContext(code + ';composeAscii = convert;', {
     sourceText, element: () => ({ value: mode, disabled, addEventListener() {} }),
     window: { matchMedia: () => ({ matches: mobile }) },

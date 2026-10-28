@@ -1414,6 +1414,25 @@
     ]
   },
   {
+    "description": "Burmese medial consonants",
+    "script": "burmese",
+    "text": "မြန်မာ ကျ ကြ ကွ ကှ",
+    "targets": [
+      { "script": "iso", "text": "mranmā kya kra kva kha" },
+      { "script": "devanagari", "text": "म्रन्मा क्य क्र क्व क्ह" }
+    ]
+  },
+  {
+    "description": "Mixed Indic reads Burmese medial ra",
+    "script": "indic",
+    "text": "မြန်မာ",
+    "targets": [
+      { "script": "iso", "text": "mranmā" },
+      { "script": "indlish", "text": "mranmA" },
+      { "script": "devanagari", "text": "म्रन्मा" }
+    ]
+  },
+  {
     "description": "Native devanagari vowel and consonant readings",
     "script": "devanagari",
     "text": "अ आ इ ई उ ऊ क की क्",

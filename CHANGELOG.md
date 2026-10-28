@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.2]
+* Improve the demo keyboard with curated script keys and preserve existing ASCII shortcuts.
+* Support Burmese medial signs and fix Tamil superscript Vedic accent attachment.
+* Improve Indic Vedic accent font fallback in the demo.
+
 ## [0.16.1]
 - Bundle native engine sources in the Flutter package so Android and desktop/Apple plugin builds work outside the monorepo (fixes #64).
 

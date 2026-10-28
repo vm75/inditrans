@@ -8,7 +8,7 @@
 <script>
 (async () => {
   const result = document.getElementById('test-results');
-  const iframe = document.getElementById('demo');
+  let iframe = document.getElementById('demo');
   let count = 0;
   const check = (condition, label) => { count++; if (!condition) throw new Error(label); };
   const wait = async test => {
@@ -31,6 +31,31 @@
       e.value=value; e.setSelectionRange(value.length,value.length);
       e.dispatchEvent(new w.InputEvent('input',{bubbles:true,inputType:'insertText'}));
     };
+    const keys = () => [...d.querySelectorAll('.keyboard-key-source')].map(key => key.textContent);
+    check(field('source-text').value === field('source-text').defaultValue && field('source-text').value.includes('မြန်မာ'), 'sample text loads from demo configuration');
+    change('source-script', 'burmese'); change('target-script', 'iso');
+    check(['◌ျ','◌ြ','◌ွ','◌ှ'].every(key => keys().includes(key)), 'Burmese medials have keys');
+    const coloredKey = d.querySelector('.keyboard-key[data-palette]');
+    coloredKey.style.transition = 'none';
+    check(w.getComputedStyle(coloredKey).backgroundColor === 'rgb(240, 253, 250)', 'light keyboard palette is applied');
+    d.documentElement.dataset.theme = 'dark';
+    check(w.getComputedStyle(coloredKey).backgroundColor === 'rgb(15, 40, 36)', 'dark keyboard palette is applied: ' + w.getComputedStyle(coloredKey).backgroundColor);
+    d.documentElement.dataset.theme = 'light';
+    check([...d.querySelectorAll('.reference-entry')].some(entry => entry.querySelector('.reference-glyph')?.textContent === '◌ြ' && entry.querySelector('code')?.textContent === '.x1'), 'mobile reference includes Burmese medial shortcut');
+    check(!keys().includes('ံဂ'), 'Burmese hides non-native Sinhala prenasalized equivalent');
+    input('မ');
+    [...d.querySelectorAll('.keyboard-key')].find(key => key.querySelector('.keyboard-key-source')?.textContent === '◌ြ').click();
+    check(field('source-text').value === 'မြ' && field('target-text').value === 'mra', 'Burmese medial key inserts and transliterates');
+    check(d.activeElement === field('source-text'), 'typing focus returns after a key');
+    field('sample-button').click();
+    check(field('source-text').value === field('source-text').defaultValue, 'reset restores configured sample');
+    change('source-script', 'tamil');
+    check(['க²','க³','க⁴','ச³','ச⁴','ட²','த³','ப⁴'].every(key => keys().includes(key)), 'Tamil vargas use superscripted consonants');
+    check(!keys().includes('ங்ˆக³'), 'Tamil hides non-native prenasalized equivalent');
+    change('source-script', 'sinhala');
+    check(['ඟ','ඦ','ඬ','ඳ','ඹ'].every(key => keys().includes(key)), 'Sinhala retains native prenasalized letters');
+    change('source-script', 'indic'); change('keyboard-script', 'burmese');
+    check(keys().includes('◌ြ'), 'Mixed Indic selects Burmese native keyboard');
     for (const id of ['source-script','target-script']) {
       const options=[...field(id).options];
       check(options.filter(option=>option.disabled && option.value==='').map(option=>option.textContent).join('|')===
@@ -50,7 +75,7 @@
     change('source-script','tamil');
     check(field('toggle-group-accents').parentElement.title.includes('(3)'),'Tamil keyboard offers accents');
     change('source-script','sinhala');
-    check(field('toggle-group-accents').parentElement.title.includes('(0)'),'Sinhala keyboard has no accent keys');
+    check(!field('toggle-group-accents'),'Sinhala keyboard has no accent keys');
     for (const script of ['wx','slp1']) {
       const option=[...field('target-script').options].find(option=>option.value===script);
       check(!option.textContent.endsWith('*'),script+' has no accent support marker');
@@ -58,7 +83,7 @@
       check(field('target-text').value==='ka ka ka',script+' omits Vedic accent output');
     }
     change('source-script','slp1');
-    check(field('toggle-group-accents').parentElement.title.includes('(0)'),'SLP1 keyboard has no accent keys');
+    check(!field('toggle-group-accents'),'SLP1 keyboard has no accent keys');
     change('source-script','devanagari'); change('target-script','telugu');
     input('के॒॑ ##text\u200b##');
     check(field('target-text').value==='కే॒॑ text\u200b','raw Telugu accents and protected separator');
@@ -77,7 +102,7 @@
     change('source-script','grantha'); change('target-script','devanagari'); input('𑌕𑍍𑌷');
     check(field('target-text').value==='क्ष','Grantha input reads conjuncts');
     check([...d.querySelectorAll('.keyboard-key-source')].some(key=>key.textContent==='𑌕'),'Grantha keyboard uses its own letters');
-    check(field('toggle-group-accents').parentElement.title.includes('(0)'),'Grantha keyboard has no accent keys');
+    check(!field('toggle-group-accents'),'Grantha keyboard has no accent keys');
     check(w.Inditrans.Script.grantha==='grantha','standalone wrapper exposes Grantha');
     change('source-script','iso'); change('target-script','urdu');
     input('kaī');
@@ -126,6 +151,24 @@
     const canvas=d.createElement('canvas');const ctx=canvas.getContext('2d');ctx.font=style.fontSize+' "Reference Nastaliq"';
     const metrics=ctx.measureText(expected);
     check(metrics.actualBoundingBoxAscent+metrics.actualBoundingBoxDescent<=parseFloat(style.lineHeight),'Nastaliq sample fits pane line height: '+(metrics.actualBoundingBoxAscent+metrics.actualBoundingBoxDescent)+' <= '+style.lineHeight);
+    await new Promise(resolve=>setTimeout(resolve,250));
+    const legacy = JSON.parse(w.localStorage.getItem('inditrans-demo-state-v1'));
+    legacy.sourceScript = 'burmese';
+    legacy.keyboard.groups = ['consonants'];
+    delete legacy.keyboard.layoutVersion;
+    w.localStorage.setItem('inditrans-demo-state-v1', JSON.stringify(legacy));
+    const legacyFrame = document.createElement('iframe');
+    legacyFrame.src = '../../demo/index.html';
+    document.body.append(legacyFrame);
+    iframe = legacyFrame;
+    ({w,d}=await ready());
+    check(keys().includes('◌ြ'), 'new script keys are enabled for existing saved sessions: ' + field('source-script').value + ' ' + field('toggle-group-nativeSigns')?.checked + ' ' + keys().join(','));
+    field('toggle-group-nativeSigns').click();
+    w.dispatchEvent(new w.Event('pagehide'));
+    iframe.contentWindow.location.reload();
+    await new Promise(resolve=>setTimeout(resolve,100));
+    ({w,d}=await ready());
+    check(!keys().includes('◌ြ'), 'script key visibility survives reload');
     result.dataset.status='passed';result.dataset.count=String(count);result.dataset.failures='0';
     result.textContent=count+' demo checks passed; clipboard button uses a stub, composition/cut use dispatched DOM events.';
   } catch(error) {

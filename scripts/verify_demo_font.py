@@ -90,8 +90,7 @@ def main():
     extract = r"""
 const fs = require('node:fs');
 const vm = require('node:vm');
-const html = fs.readFileSync('demo/index.html', 'utf8');
-const code = html.slice(html.indexOf('const KEYBOARD_MAPS'), html.indexOf('const FONT_RESOURCES'));
+const code = fs.readFileSync('demo/keyboard-data.js', 'utf8');
 const data = vm.runInNewContext(code + ';({ maps: KEYBOARD_MAPS, scripts: SCRIPT_CATALOG })');
 const rawCases = [];
 const telugu = data.maps.telugu;

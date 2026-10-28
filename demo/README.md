@@ -86,6 +86,14 @@ Reloading restores scripts, fonts, size, options, keyboard mode/layout, group co
 and text. Turn off **Group colors** in the keyboard controls for uniform keys and
 no group color dots in either theme.
 
+The on-screen keyboard shows a curated set of keys for the selected script,
+grouped by vowels, signs, consonants, and symbols. Script-specific keys appear
+in **Script keys**; for example, Burmese includes its medial signs and
+Malayalam includes chillu letters. Tamil vargas use superscripted consonants.
+Mixed Indic uses the script selected in the keyboard layout control. Roman
+schemes show their distinct spellings. The keyboard is a typing aid rather
+than an exhaustive inventory of every character accepted by the engine.
+
 The desktop layout can use the full browser width, including wide monitors.
 Drag the grip above the keyboard to change its height, or the bottom-right corner
 for width and height. Keys scale with the available space; the text panes match
@@ -140,6 +148,16 @@ key and use the selected Indic input script (or keyboard layout for Mixed Indic)
 
 Paste and system input methods bypass ASCII conversion. Direct input remains
 available; ASCII mode is disabled for Roman input scripts.
+The shortcut reference shows the keys in the selected layout. Other existing
+ASCII shortcuts continue to work even when their mapping is not shown. Extra
+script keys have shortcuts beginning with `.x`, shown on the key and in the
+mobile reference.
+
+The buildless page loads its keyboard tables, script catalog, and curated
+layout definitions from `keyboard-data.js`, its group palettes from
+`keyboard-colors.js`, and its sample text, fonts, and options from
+`demo-data.js`. Ship all three files with the page. Layouts select indices from the aligned mapping tables so
+that groups and existing shortcuts retain their positions.
 
 ## Regression tests
 

@@ -5373,6 +5373,10 @@ inline constexpr auto sequencePool = makeSequencePool(
     seq(exclusiveSymbol(30, ScriptType::Indic)),
     seq(exclusiveSymbol(31, ScriptType::Indic)),
     seq(exclusiveSymbol(32, ScriptType::Indic)),
+    seq(vowelMark(0, ScriptType::Indic), consonant(25, ScriptType::Indic)),
+    seq(vowelMark(0, ScriptType::Indic), consonant(26, ScriptType::Indic)),
+    seq(vowelMark(0, ScriptType::Indic), consonant(28, ScriptType::Indic)),
+    seq(vowelMark(0, ScriptType::Indic), consonant(32, ScriptType::Indic)),
     seq(vowel(19, ScriptType::Indic)),
     seq(vowelMark(19, ScriptType::Indic)),
     seq(vowel(21, ScriptType::Indic)),
@@ -5595,14 +5599,10 @@ inline constexpr auto sequencePool = makeSequencePool(
     seq(vowelMark(0, ScriptType::Indic), consonant(22, ScriptType::Indic)),
     seq(vowelMark(0, ScriptType::Indic), consonant(23, ScriptType::Indic)),
     seq(vowelMark(0, ScriptType::Indic), consonant(24, ScriptType::Indic)),
-    seq(vowelMark(0, ScriptType::Indic), consonant(25, ScriptType::Indic)),
-    seq(vowelMark(0, ScriptType::Indic), consonant(26, ScriptType::Indic)),
     seq(vowelMark(0, ScriptType::Indic), consonant(27, ScriptType::Indic)),
-    seq(vowelMark(0, ScriptType::Indic), consonant(28, ScriptType::Indic)),
     seq(vowelMark(0, ScriptType::Indic), consonant(29, ScriptType::Indic)),
     seq(vowelMark(0, ScriptType::Indic), consonant(30, ScriptType::Indic)),
     seq(vowelMark(0, ScriptType::Indic), consonant(31, ScriptType::Indic)),
-    seq(vowelMark(0, ScriptType::Indic), consonant(32, ScriptType::Indic)),
     seq(vowelMark(0, ScriptType::Indic), consonant(40, ScriptType::Indic)),
     seq(vowelMark(0, ScriptType::Indic), consonant(50, ScriptType::Indic)),
     seq(vowelMark(0, ScriptType::Indic), consonant(51, ScriptType::Indic)),
@@ -5836,7 +5836,7 @@ template <size_t N> consteval uint16_t sequenceId(const TokenSequence<N>& sequen
     std::abort();
 }
 
-inline constexpr std::array<SourceEntry, 1704> sourceMappings {{
+inline constexpr std::array<SourceEntry, 1708> sourceMappings {{
     {u8"'", {scriptMask(ScriptId::Burmese, ScriptId::Thai), sequenceId(seq(vedicSymbol(0, ScriptType::Indic))), sequenceId(seq()), {0, 0}}},
     {u8"()", {scriptMask(ScriptId::Burmese), sequenceId(seq(exclusiveSymbol(1, ScriptType::Indic))), sequenceId(seq()), {0, 0}}},
     {u8"(ਅ)", {scriptMask(ScriptId::Gurmukhi), sequenceId(seq(vedicSymbol(0, ScriptType::Indic))), sequenceId(seq(vedicSymbol(0, ScriptType::Indic))), {0, 0}}},
@@ -7279,6 +7279,10 @@ inline constexpr std::array<SourceEntry, 1704> sourceMappings {{
     {u8"း", {scriptMask(ScriptId::Burmese), sequenceId(seq(otherDiacritic(2, ScriptType::Indic))), sequenceId(seq(otherDiacritic(2, ScriptType::Indic))), {15, 0}}},
     {u8"္", {scriptMask(ScriptId::Burmese), sequenceId(seq(vowelMark(0, ScriptType::Indic))), sequenceId(seq(vowelMark(0, ScriptType::Indic))), {15, 0}}},
     {u8"်", {scriptMask(ScriptId::Burmese), sequenceId(seq(vowelMark(0, ScriptType::Indic))), sequenceId(seq(vowelMark(0, ScriptType::Indic))), {15, 0}}},
+    {u8"ျ", {scriptMask(ScriptId::Burmese), sequenceId(seq(vowelMark(0, ScriptType::Indic), consonant(25, ScriptType::Indic))), sequenceId(seq(vowelMark(0, ScriptType::Indic), consonant(25, ScriptType::Indic))), {15, 0}}},
+    {u8"ြ", {scriptMask(ScriptId::Burmese), sequenceId(seq(vowelMark(0, ScriptType::Indic), consonant(26, ScriptType::Indic))), sequenceId(seq(vowelMark(0, ScriptType::Indic), consonant(26, ScriptType::Indic))), {15, 0}}},
+    {u8"ွ", {scriptMask(ScriptId::Burmese), sequenceId(seq(vowelMark(0, ScriptType::Indic), consonant(28, ScriptType::Indic))), sequenceId(seq(vowelMark(0, ScriptType::Indic), consonant(28, ScriptType::Indic))), {15, 0}}},
+    {u8"ှ", {scriptMask(ScriptId::Burmese), sequenceId(seq(vowelMark(0, ScriptType::Indic), consonant(32, ScriptType::Indic))), sequenceId(seq(vowelMark(0, ScriptType::Indic), consonant(32, ScriptType::Indic))), {15, 0}}},
     {u8"၀", {scriptMask(ScriptId::Burmese), sequenceId(seq(symbol(0, ScriptType::Indic))), sequenceId(seq(symbol(0, ScriptType::Indic))), {15, 0}}},
     {u8"၁", {scriptMask(ScriptId::Burmese), sequenceId(seq(symbol(1, ScriptType::Indic))), sequenceId(seq(symbol(1, ScriptType::Indic))), {15, 0}}},
     {u8"၂", {scriptMask(ScriptId::Burmese), sequenceId(seq(symbol(2, ScriptType::Indic))), sequenceId(seq(symbol(2, ScriptType::Indic))), {15, 0}}},
@@ -7638,7 +7642,7 @@ inline constexpr std::array<SourceVariant, 90> sourceAlternatives {{
     /* u8"ꣽ" */ {scriptMask(ScriptId::Tamil), sequenceId(seq(exclusiveSymbol(32, ScriptType::Tamil)))},
 }};
 
-using ReaderIndex = SmallestIndex<12602>;
+using ReaderIndex = SmallestIndex<12626>;
 
 inline constexpr auto readerEntries0 = sourceEntries(sourceMappings);
 

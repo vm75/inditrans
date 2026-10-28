@@ -4,7 +4,8 @@ const { runInNewContext } = require('node:vm');
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const html = readFileSync(join(__dirname, '../index.html'), 'utf8');
-const library = html.slice(html.indexOf('let devFontSettings'), html.indexOf('// Add hosted families'));
+const demoData = readFileSync(join(__dirname, '../demo-data.js'), 'utf8');
+const library = demoData + html.slice(html.indexOf('let devFontSettings'), html.indexOf('function loadFonts()'));
 const appearanceCode = html.slice(html.indexOf('function createAppearance('), html.indexOf('function createTargetOptions('));
 const toolsCode = html.slice(html.indexOf('function createFontDevTools('), html.indexOf('function startApp()'));
 

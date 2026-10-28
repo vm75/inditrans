@@ -5,20 +5,13 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 
 const html = readFileSync(join(__dirname, '../index.html'), 'utf8');
-const defaultsCode = html.slice(html.indexOf('const DEMO_DEFAULTS'), html.indexOf('const ENGINE_VERSION'));
+const defaultsCode = readFileSync(join(__dirname, '../demo-data.js'), 'utf8');
 const defaults = runInNewContext(defaultsCode + ';DEMO_DEFAULTS');
-const defaultText = `
-<vedic>ॐ ग॒णानां᳚ त्वा ग॒णप॑तिꣳ हवामहे ।</vedic>
-<hindi>शंकर ने पंचांग देखकर पंडितों, संतों और संपन्न परिवारों को संस्कृत सम्मेलन में बुलाया।</hindi>
-<tamil>தங்கம் தமிழ் மொழியின் அழகை ஒரு படமாக வரைந்தாள்; அவள் அகம் மகிழ்ந்தது.</tamil>
-<tamil>அக்கம் பக்கத்து எஃகுக் கதவின் அருகே பத்து குழந்தைகள் பந்து விளையாடினர்; வண்டு பறக்க, பட்டம் காற்றில் உயர்ந்தது.</tamil>
-<telugu>తెలుగు భాషలో జ్ఞానం, క్షమ, ప్రేమకు విలువ ఉంది.</telugu>
-<malayalam>ഞാൻ മലയാളം പഠിക്കുന്നു; ലക്ഷ്യം நல்ல നാളെയാണ്.</malayalam>
-##Preserve exactly: अ॒ग्नि | தமிழ் | ABC-123##
-        `;
-
+const defaultText = runInNewContext(defaultsCode + ';DEMO_SAMPLE');
 test('default sample is literal mixed-script text with Indlish output', () => {
-  assert.equal(html.match(/aria-label="Original input text">([\s\S]*?)<\/textarea>/)[1], defaultText);
+  assert.match(defaultText, /श्री/);
+  assert.match(defaultText, /தமிழ்/);
+  assert.match(defaultText, /##.*မြန်မာ.*##/);
   assert.equal(defaults.sourceScript, 'indic');
   assert.equal(defaults.targetScript, 'indlish');
   const populate = html.slice(html.indexOf('function populateScripts()'), html.indexOf('function populateFonts('));
@@ -47,7 +40,7 @@ function conversionOptions() {
   const targetScript = { value: 'tamil' };
   let conversions = 0;
   const create = runInNewContext(
-    html.slice(html.indexOf('const OPTION_DEFINITIONS'), html.indexOf('const ENGINE_VERSION'))
+    defaultsCode
     + html.slice(html.indexOf('function createTargetOptions'), html.indexOf('function bindScrollSync'))
     + ';createTargetOptions', {
       element: id => nodes[id], document: { createElement: node, createTextNode: text => ({ textContent: text }) }
