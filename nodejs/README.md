@@ -148,3 +148,11 @@ Real supported accents remain separate marks. There is no round-trip guarantee.
 The script profiles implement transliteration, not complete language-specific
 pronunciation. See the repository's [mapping review](https://github.com/vm75/inditrans/blob/main/docs/phonetic-mappings.md)
 for exact notation behavior and limitations.
+
+### Reusable Urdu pronunciation lexicon (experimental)
+
+For repeated Urdu conversions, create `new UrduPronunciationLexicon(iulBytes)`
+and call `lexicon.transliterate(text, Script.iast)` as often as needed.
+Always call `lexicon.dispose()` in a `finally` block; do not use a disposed
+lexicon. Invalid IUL1 bytes throw at construction. The original one-shot
+`transliterateUrduWithLexicon()` remains available.

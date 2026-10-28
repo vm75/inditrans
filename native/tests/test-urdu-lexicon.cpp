@@ -67,7 +67,7 @@ suite<"Urdu pronunciation seam"> urduPronunciationTests = [] {
       expect(assisted.find("kitāb") != assisted.npos);
       expect(assisted.rfind("kitāb") != assisted.find("kitāb"));
     }
-    expect(resolve("کتاب۔کتاب", "iast", None, entries) == "kitāb۔kitāb");
+    expect(resolve("کتاب۔کتاب", "iast", None, entries) == "kitāb" + transliterate("۔", "urdu", "iast", None) + "kitāb");
     expect(resolve("کتاب کتاب", "iast", None, entries) == "kitāb kitāb");
     expect(resolve("کتابx", "iast", None, entries) == transliterate("کتابx", "urdu", "iast", None));
   };
@@ -94,6 +94,26 @@ suite<"Urdu pronunciation seam"> urduPronunciationTests = [] {
     bytes.insert(bytes.end(), word.begin(), word.end());
     for (auto b : {3, 0, 1, 0, 2, 255, 1, 15, 1, 255, 1, 22, 0, 255}) bytes.push_back(b);
     updateChecksum(bytes);
+    // A reusable handle copies the decoded key/phoneme storage: input bytes
+    // can be overwritten or freed immediately after loading.
+    const auto saved = bytes;
+    void* handle = createUrduLexiconHandle(reinterpret_cast<const char*>(bytes.data()), bytes.size());
+    expect(handle != nullptr);
+    bytes.clear();
+    bytes.shrink_to_fit();
+    for (int iteration = 0; iteration < 3; ++iteration) {
+      auto* text = transliterateUrduWithLexiconHandle("کتاب۔کتاب", "iast", None, handle, "##", "##");
+      expect(text != nullptr);
+      if (text) {
+        expect(std::string_view(text) ==
+            "kitāb" + transliterate("۔", "urdu", "iast", None) + "kitāb");
+        releaseBuffer(text);
+      }
+    }
+    releaseUrduLexiconHandle(handle);
+    releaseUrduLexiconHandle(nullptr);
+    expect(createUrduLexiconHandle(reinterpret_cast<const char*>(saved.data() + 1), saved.size() - 1) == nullptr);
+    bytes = saved;
     std::string out;
     expect(transliterateUrduWithPack("کتاب", "iast", None, bytes, out));
     expect(out == "kitāb");

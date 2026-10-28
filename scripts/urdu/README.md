@@ -207,3 +207,27 @@ mapping consistency, not independent pronunciation accuracy or complete
 homograph coverage. Both hashes are recorded in the candidate provenance. A
 reviewed reference set and redistribution review are still needed before a
 production pack is shipped.
+
+## Reusable lexicon lifecycle (development branch)
+
+The native C ABI now supports `createUrduLexiconHandle(data, length)`,
+`transliterateUrduWithLexiconHandle(text, to, options, handle, skipStart, skipEnd)`,
+and `releaseUrduLexiconHandle(handle)`. A loaded handle owns its compact key
+and phoneme tables; callers may discard the original IUL1 buffer after loading.
+The old `transliterateUrduWithLexiconData` remains for one-shot calls and
+preserves legacy fallback behavior for invalid assets. The new API avoids
+rechecking CRC, decoding tokens, or validating the entire vocabulary on every
+conversion. Handles are immutable after loading and must not be released while
+a conversion is running. The caller owns and releases every result buffer.
+
+Words are looked up via binary search of strictly sorted NFC/alias-normalized
+keys. The current pack preserves only the default pronunciation; alternative
+readings are parsed/validated but not surfaced. No language-model-based
+contextual disambiguation is included. The native C++ span API likewise requires
+strictly sorted canonical lexicon keys.
+
+Build the native library and WASM artifacts after changing exports; the checked-in
+binaries must be regenerated before platform integration tests can pass.
+The 3 MB optional data budget and 4 MiB incremental runtime-memory target
+still require representative full-size benchmarks and a legally distributable
+production lexicon. The current pack is only a regression fixture.

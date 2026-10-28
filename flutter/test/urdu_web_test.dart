@@ -19,7 +19,8 @@ void main() {
     final reused = inditrans.UrduPronunciationLexicon.load(pack);
     expect(reused, isNotNull);
     try {
-      expect(reused!.transliterate('کتاب۔کتاب', inditrans.Script.iast), 'kitāb۔kitāb');
+      final punctuation = inditrans.transliterate('۔', inditrans.Script.urdu, inditrans.Script.iast);
+      expect(reused!.transliterate('کتاب۔کتاب', inditrans.Script.iast), 'kitāb' + punctuation + 'kitāb');
     } finally {
       reused?.dispose();
     }

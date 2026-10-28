@@ -51,6 +51,9 @@ const requiredExports = [
   'free',
   'transliterate',
   'transliterateUrduWithLexiconData',
+  'createUrduLexiconHandle',
+  'transliterateUrduWithLexiconHandle',
+  'releaseUrduLexiconHandle',
   'isScriptSupported',
   'releaseBuffer',
 ];
@@ -142,6 +145,23 @@ if (readUtf8(urduResult) !== 'kitāb') throw new Error('Urdu pronunciation pack 
 wasmExports.releaseBuffer(urduResult);
 wasmExports.free(lexiconPtr);
 urduArgs.forEach(ptr => wasmExports.free(ptr));
+
+// Reuse a decoded IUL1 pack across conversions, then explicitly destroy it.
+const saved = fs.readFileSync(path.resolve(__dirname, '../../test-files/urdu-test-lexicon.iul'));
+const rawPack = wasmExports.malloc(saved.length);
+new Uint8Array(wasmExports.memory.buffer, rawPack, saved.length).set(saved);
+const handle = wasmExports.createUrduLexiconHandle(rawPack, saved.length);
+wasmExports.free(rawPack);
+if (!handle) throw new Error('Could not create Urdu lexicon handle');
+const args = ['کتاب', 'iast', '##', '##'].map(writeUtf8);
+for (let n = 0; n < 3; n++) {
+  const converted = wasmExports.transliterateUrduWithLexiconHandle(
+    args[0], args[1], 0, handle, args[2], args[3]);
+  if (readUtf8(converted) !== 'kitāb') throw new Error('Reusable Urdu handle conversion failed');
+  wasmExports.releaseBuffer(converted);
+}
+wasmExports.releaseUrduLexiconHandle(handle);
+args.forEach(ptr => wasmExports.free(ptr));
 
 // Exercise flags and supplementary-plane script text against the bundled engine.
 for (const [text, from, to, options, expected] of [
