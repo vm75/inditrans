@@ -71,7 +71,7 @@ test('full experimental Urdu lexicon loads through the runtime and retains conse
   assert.ok(handle, 'full experimental Urdu pack must be accepted by native binary parser');
   try {
     assert.equal(assisted('جیسی کرنی ویسی بھرنی', 'indlish', handle), 'jaisI karnI vaisI bharnI');
-    assert.equal(assisted('قلم', 'indlish', handle), ordinary('قلم', 'urdu', 'indlish'));
+    assert.equal(assisted('زززززززززززز', 'indlish', handle), ordinary('زززززززززززز', 'urdu', 'indlish'));
     assert.equal(assisted('##جیسی## جیسی', 'indlish', handle), 'جیسی jaisI');
   } finally { wasm.releaseUrduLexiconHandle(handle); }
 });
