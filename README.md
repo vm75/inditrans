@@ -188,7 +188,7 @@ orthographic. To try the optional five-word demo lexicon in the native CLI:
 
 ```sh
 make out/inditrans
-out/inditrans -f urdu -t indlish --urdu-lexicon demo/urdu-example.iul 'جیسی کرنی ویسی بھرنی۔'
+out/inditrans -f urdu -t indlish --urdu-lexicon demo/urdu-pronunciation.iul 'جیسی کرنی ویسی بھرنی۔'
 ```
 
 The browser demo offers **Urdu pronunciation (sample words)** in Conversion
