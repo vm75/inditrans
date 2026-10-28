@@ -123,6 +123,91 @@ class InditransBindings {
           ffi.Pointer<ffi.Uint8>
         )>();
 
+  /// Loads a caller-provided IUL1 Urdu pronunciation pack into a reusable, opaque
+  /// handle. Data is copied into compact owned storage during loading; callers
+  /// can release the input bytes after this call. Returns null for invalid packs.
+  /// Release every non-null handle with releaseUrduLexiconHandle().
+  ffi.Pointer<ffi.Void> createUrduLexiconHandle(
+    ffi.Pointer<ffi.Uint8> data,
+    int length,
+  ) {
+    return _createUrduLexiconHandle(data, length);
+  }
+
+  late final _createUrduLexiconHandlePtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+            ffi.Pointer<ffi.Uint8>,
+            ffi.UnsignedLong,
+          )
+        >
+      >(
+        'createUrduLexiconHandle',
+      );
+  late final _createUrduLexiconHandle = _createUrduLexiconHandlePtr
+      .asFunction<ffi.Pointer<ffi.Void> Function(
+          ffi.Pointer<ffi.Uint8>,
+          int
+        )>();
+
+  /// Transliterates with a previously loaded handle (or nullptr for the legacy
+  /// orthographic reader). The handle must remain valid through this call.
+  /// Return buffer ownership is identical to transliterate().
+  ffi.Pointer<ffi.Uint8> transliterateUrduWithLexiconHandle(
+    ffi.Pointer<ffi.Uint8> text,
+    ffi.Pointer<ffi.Uint8> to,
+    int options,
+    ffi.Pointer<ffi.Void> handle,
+    ffi.Pointer<ffi.Uint8> skipStart,
+    ffi.Pointer<ffi.Uint8> skipEnd,
+  ) {
+    return _transliterateUrduWithLexiconHandle(text, to, options, handle, skipStart, skipEnd);
+  }
+
+  late final _transliterateUrduWithLexiconHandlePtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+            ffi.Pointer<ffi.Uint8>,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.UnsignedLong,
+            ffi.Pointer<ffi.Void>,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.Pointer<ffi.Uint8>,
+          )
+        >
+      >(
+        'transliterateUrduWithLexiconHandle',
+      );
+  late final _transliterateUrduWithLexiconHandle = _transliterateUrduWithLexiconHandlePtr
+      .asFunction<ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<ffi.Uint8>,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Uint8>,
+          ffi.Pointer<ffi.Uint8>
+        )>();
+
+  /// Destroys an optional Urdu lexicon handle. Null is accepted.
+  void releaseUrduLexiconHandle(
+    ffi.Pointer<ffi.Void> handle,
+  ) {
+    return _releaseUrduLexiconHandle(handle);
+  }
+
+  late final _releaseUrduLexiconHandlePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(
+            ffi.Pointer<ffi.Void>
+          )>>(
+        'releaseUrduLexiconHandle',
+      );
+  late final _releaseUrduLexiconHandle = _releaseUrduLexiconHandlePtr
+      .asFunction<void Function(
+          ffi.Pointer<ffi.Void>
+        )>();
+
   /// Checks whether a script identifier or alias is physically supported by the engine.
   ///
   /// Note: Virtual sources such as "indic" are handled dynamically by wrapper layers;

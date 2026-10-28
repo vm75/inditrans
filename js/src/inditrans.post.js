@@ -85,6 +85,35 @@ Module['onRuntimeInitialized'] = function () {
                 if (ptr) Module['_free'](ptr);
             }
         },
+
+        'loadUrduLexicon': (data) => {
+            const bytes = data || new Uint8Array();
+            if (!bytes.length) return 0;
+            const create = Module['cwrap']('createUrduLexiconHandle', 'number', ['number', 'number']);
+            const ptr = Module['_malloc'](bytes.length);
+            if (!ptr) return 0;
+            try {
+                HEAPU8.set(bytes, ptr);
+                return create(ptr, bytes.length);
+            } finally {
+                Module['_free'](ptr);
+            }
+        },
+        'transliterateUrduWithLoadedLexicon': (text, to, options, handle, skipStart = "##", skipEnd = "##") => {
+            const convert = Module['cwrap']('transliterateUrduWithLexiconHandle', 'number',
+                ['string', 'string', 'number', 'number', 'string', 'string']);
+            const release = Module['cwrap']('releaseBuffer', 'void', ['number']);
+            const resultPtr = convert(text, to, options, handle, skipStart, skipEnd);
+            if (!resultPtr) return '';
+            try {
+                return Module['UTF8ToString'](resultPtr);
+            } finally {
+                release(resultPtr);
+            }
+        },
+        'releaseUrduLexicon': (handle) => {
+            if (handle) Module['cwrap']('releaseUrduLexiconHandle', 'void', ['number'])(handle);
+        },
         'isScriptSupported': (script) => {
             const cwrap = Module['cwrap'] || (typeof cwrap !== 'undefined' ? cwrap : null);
             const isScriptSupported = cwrap('isScriptSupported', 'number', ['string']);
