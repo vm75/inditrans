@@ -31,7 +31,7 @@ REQUIRED = {
         "ALLOW_MEMORY_GROWTH=1",
         "EXIT_RUNTIME=0",
         "FILESYSTEM=0",
-        'EXPORTED_FUNCTIONS=["_malloc", "_free", "_transliterate", "_transliterateUrduWithLexiconData", "_isScriptSupported", "_releaseBuffer"]',
+        'EXPORTED_FUNCTIONS=["_malloc", "_free", "_transliterate", "_transliterateUrduWithLexiconData", "_createUrduLexiconHandle", "_transliterateUrduWithLexiconHandle", "_releaseUrduLexiconHandle", "_isScriptSupported", "_releaseBuffer"]',
         'EXPORTED_RUNTIME_METHODS=["cwrap", "UTF8ToString"]',
         "--post-js",
         "./js/src/inditrans.post.js",

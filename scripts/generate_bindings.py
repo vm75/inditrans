@@ -17,6 +17,7 @@ HEADER = REPOSITORY_ROOT / "native/src/exports.h"
 OUTPUT = REPOSITORY_ROOT / "flutter/lib/src/bindings.dart"
 
 TYPE_MAP = {
+    "void*": ("ffi.Pointer<ffi.Void>", "ffi.Pointer<ffi.Void>"),
     "char*": ("ffi.Pointer<ffi.Uint8>", "ffi.Pointer<ffi.Uint8>"),
     "int": ("ffi.Int", "int"),
     "void": ("ffi.Void", "void"),

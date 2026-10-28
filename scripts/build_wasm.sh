@@ -54,7 +54,7 @@ init_emcc() {
 
 # create a function
 build_wasm_standalone() {
-  exportedFunctions='["_malloc", "_free", "_transliterate", "_transliterateUrduWithLexiconData", "_isScriptSupported", "_releaseBuffer"]'
+  exportedFunctions='["_malloc", "_free", "_transliterate", "_transliterateUrduWithLexiconData", "_createUrduLexiconHandle", "_transliterateUrduWithLexiconHandle", "_releaseUrduLexiconHandle", "_isScriptSupported", "_releaseBuffer"]'
 
   # get the path to the output directory
   outDir='./flutter/assets'
@@ -91,7 +91,7 @@ build_wasm_standalone() {
 
 build_wasm_js() {
   exportedRuntimeMethods='["cwrap", "UTF8ToString"]'
-  exportedFunctions='["_malloc", "_free", "_transliterate", "_transliterateUrduWithLexiconData", "_isScriptSupported", "_releaseBuffer"]'
+  exportedFunctions='["_malloc", "_free", "_transliterate", "_transliterateUrduWithLexiconData", "_createUrduLexiconHandle", "_transliterateUrduWithLexiconHandle", "_releaseUrduLexiconHandle", "_isScriptSupported", "_releaseBuffer"]'
 
   # get the path to the output directory
   outDir='./js/public'
