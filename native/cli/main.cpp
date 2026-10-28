@@ -90,7 +90,10 @@ static void printUsage(const char* prog) {
             << "  -f <script>   Source script (default: itrans)\n"
             << "  -t <script>   Target script (default: devanagari)\n"
             << "  -o <options>  Transliteration options\n"
+            << "  -l, --urdu-lexicon <file>  Optional IUL1 Urdu pronunciation pack\n"
             << "  -h, --help    Show this help message\n\n"
+            << "Urdu pronunciation is opt-in; otherwise the output is literal.\n"
+            << "Example: -f urdu -t indlish -l scripts/urdu/demo-lexicon.iul \"جیسی کرنی ویسی بھرنی۔\"\n\n"
             << "If text is provided, transliterates and exits.\n"
             << "Otherwise, enters interactive shell (type 'exit' or 'quit' to exit).\n";
 }
@@ -130,17 +133,17 @@ int main(int argc, char** argv) {
   auto loadLexicon = [&](const std::string& file) -> bool {
     std::ifstream stream(file, std::ios::binary);
     if (!stream) {
-      std::cerr << "Cannot open Urdu pronunciation pack: " << file << "\\n";
+      std::cerr << "Cannot open Urdu pronunciation pack: " << file << "\n";
       return false;
     }
     const std::vector<char> bytes(std::istreambuf_iterator<char>{stream}, std::istreambuf_iterator<char>{});
     if (bytes.empty() || bytes.size() > 3'000'000) {
-      std::cerr << "Invalid Urdu pronunciation pack size (limit: 3 MB): " << file << "\\n";
+      std::cerr << "Invalid Urdu pronunciation pack size (limit: 3 MB): " << file << "\n";
       return false;
     }
     void* handle = createUrduLexiconHandle(bytes.data(), static_cast<unsigned long>(bytes.size()));
     if (!handle) {
-      std::cerr << "Invalid IUL1 Urdu pronunciation pack: " << file << "\\n";
+      std::cerr << "Invalid IUL1 Urdu pronunciation pack: " << file << "\n";
       return false;
     }
     lexicon.reset(handle);
@@ -148,7 +151,7 @@ int main(int argc, char** argv) {
   };
   if (!lexiconFile.empty()) {
     if (fromScript != "urdu" && fromScript != "nastaliq") {
-      std::cerr << "The Urdu lexicon requires -f urdu (or nastaliq)\\n";
+      std::cerr << "The Urdu lexicon requires -f urdu (or nastaliq)\n";
       return 2;
     }
     if (!loadLexicon(lexiconFile)) return 2;
@@ -200,11 +203,11 @@ int main(int argc, char** argv) {
       options = getTranslitOptions(input.substr(3));
     } else if (input.starts_with("-l ")) {
       if (fromScript != "urdu" && fromScript != "nastaliq")
-        std::cerr << "Select Urdu using -f urdu before loading a lexicon\\n";
+        std::cerr << "Select Urdu using -f urdu before loading a lexicon\n";
       else
         loadLexicon(input.substr(3));
     } else {
-      std::string output = transliterate(input, fromScript, toScript, options);
+      std::string output = convert(input);
       std::cout << output << std::endl;
     }
   }
