@@ -1,5 +1,63 @@
 # Urdu lexicon preparation
 
+## Experimental 4,252-entry lexicon (CC BY-SA 4.0)
+
+The branch now ships a separate, **122,869-byte** pronunciation pack:
+`demo/urdu-pronunciation.iul`. It contains **4,248** word readings
+concordant between WikiPron and Wiktextract (both ultimately Wiktionary-derived),
+plus four unique Inditrans-authored demo words. This is a *first reproducible,
+unreviewed candidate*, not a complete or independently reviewed Urdu lexicon.
+The normal native, Node, Flutter and WASM engine binaries contain **no pack
+bytes**. The browser demo loads the separate asset, and the CLI loads any
+supplied IUL1 file only when `--urdu-lexicon` is provided.
+
+To reproduce the asset, download the two pinned files referenced in
+`scripts/urdu/concordant-report.json` and run:
+
+```sh
+python3 scripts/urdu/build_concordant.py \\
+  --wikipron urd_arab_broad.tsv \\
+  --wiktextract kaikki.org-dictionary-Urdu.jsonl \\
+  --out demo/urdu-pronunciation.iul \\
+  --report scripts/urdu/concordant-report.json
+```
+
+Both full-file SHA-256 hashes are enforced; changes to the source snapshots
+cause a hard error. The build rejects spelling and pronunciation conflicts
+and unsupported IPA, requires 4k–5k concordant entries, validates canonical
+tokens, and fails if the binary exceeds 3,000,000 bytes. The report records
+the resulting pack SHA-256 and rejection statistics. The builder works from
+local pinned inputs: no network requests are needed at runtime or at build
+time once those source files are available.
+
+**Copyright and licensing:** pronunciation entries are adapted from
+contributors to English Wiktionary via
+[WikiPron](https://github.com/CUNY-CL/wikipron) (Lee et al.,
+*Massively Multilingual Pronunciation Mining with WikiPron*, LREC 2020) and
+[Wiktextract](https://github.com/tatuylonen/wiktextract) (Tatu Ylonen,
+*Wiktextract: Wiktionary as Machine-Readable Structured Data*, LREC 2022).
+The derived data is offered under [Creative Commons Attribution-ShareAlike
+4.0](https://creativecommons.org/licenses/by-sa/4.0/), separately from the
+Inditrans code license. Changes: restrict to Urdu, convert IPA into canonical
+Inditrans tokens, reject conflicting/unsupported readings, merge five
+project-authored demo examples, sort and binary-pack. Source snapshots,
+attribution and hashes are in `concordant-report.json`. Keep attribution,
+the CC BY-SA notice and the share-alike requirements when redistributing the
+asset. This does **not** certify accuracy. Neither extractor provides
+independent gold labels; homographs and unknown words remain open work.
+
+For the CLI:
+
+```sh
+make out/inditrans
+out/inditrans -f urdu -t indlish \\
+  --urdu-lexicon demo/urdu-pronunciation.iul 'جیسی کرنی ویسی بھرنی۔'
+```
+
+The five-word `demo/urdu-example.iul` (452 bytes) remains available for
+isolated regression tests of the IUL1 format.
+
+
 `build_lexicon.py SOURCE OUTPUT` validates and sorts a version 1 JSON source
 into a deterministic UTF-8 JSON artifact. The artifact records the SHA-256 of
 the exact source. With `--binary`, it instead emits a portable `IUL1` pack,
