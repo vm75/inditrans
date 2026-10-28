@@ -57,7 +57,9 @@
     tibetan: 'tibetan',
     titus: 'titus',
     velthuis: 'velthuis',
-    wx: 'wx'
+    wx: 'wx',
+    urdu: 'urdu',
+    nastaliq: 'nastaliq'
   };
 
   // Transliteration options (flags that can be combined)
@@ -141,6 +143,27 @@
   }
 
   /**
+   * Load a caller-provided IUL1 Urdu pronunciation pack once. Returns an opaque
+   * pointer (0 for invalid packs), and does not bundle a production dictionary.
+   */
+  function loadUrduLexicon(bytes) {
+    if (!moduleReady || !Module.inditrans) throw new Error('Inditrans not initialized.');
+    return Module.inditrans.loadUrduLexicon(bytes);
+  }
+
+  /** Convert Urdu text using a reusable lexicon handle. */
+  function transliterateUrduWithLoadedLexicon(text, to, options, handle, skipStart = '##', skipEnd = '##') {
+    if (!moduleReady || !Module.inditrans) throw new Error('Inditrans not initialized.');
+    return Module.inditrans.transliterateUrduWithLoadedLexicon(text, to, options, handle, skipStart, skipEnd);
+  }
+
+  /** Release a caller-owned Urdu lexicon handle. */
+  function releaseUrduLexicon(handle) {
+    if (!moduleReady || !Module.inditrans) throw new Error('Inditrans not initialized.');
+    Module.inditrans.releaseUrduLexicon(handle);
+  }
+
+  /**
    * Check if a script is supported
    * @param {string} script - The script name to check
    * @returns {boolean} True if the script is supported
@@ -169,6 +192,9 @@
     Option,
     ready,
     transliterate,
+    loadUrduLexicon,
+    transliterateUrduWithLoadedLexicon,
+    releaseUrduLexicon,
     isScriptSupported,
     getSupportedScripts
   };
