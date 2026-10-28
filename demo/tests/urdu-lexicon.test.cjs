@@ -49,7 +49,7 @@ test('example Urdu proverb receives lexical vowels only with the optional pack',
   try {
     const source = 'جیسی کرنی ویسی بھرنی';
     const expected = 'jaisI karnI vaisI bharnI';
-    assert.equal(ordinary('जैसी करनी वैसी भरनी', 'devanagari', 'indlish'), expected);
+    assert.equal(ordinary('जैसी कर्नी वैसी भर्नी', 'devanagari', 'indlish'), expected);
     assert.equal(assisted(source, 'indlish', handle), expected);
     assert.notEqual(ordinary(source, 'urdu', 'indlish'), expected);
     assert.equal(assisted(source + '۔', 'indlish', handle), expected + ordinary('۔', 'urdu', 'indlish'));
