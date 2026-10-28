@@ -54,7 +54,7 @@ test('example Urdu proverb receives lexical vowels only with the optional pack',
     assert.notEqual(ordinary(source, 'urdu', 'indlish'), expected);
     assert.equal(assisted(source + '۔', 'indlish', handle), expected + ordinary('۔', 'urdu', 'indlish'));
     assert.equal(assisted(source, 'indlish', handle, 64), ordinary(source, 'urdu', 'indlish', 64));
-    assert.equal(assisted('قلم', 'indlish', handle), ordinary('قلم', 'urdu', 'indlish'));
+    assert.equal(assisted('زززززززززززز', 'indlish', handle), ordinary('زززززززززززز', 'urdu', 'indlish'));
     assert.equal(assisted('##جیسی## جیسی', 'indlish', handle), 'جیسی jaisI');
   } finally { wasm.releaseUrduLexiconHandle(handle); }
 });
