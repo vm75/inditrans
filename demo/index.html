@@ -3008,11 +3008,19 @@
           baseUrl: new URL('../', document.baseURI).href,
           assets: [`js/public/inditrans.js?v=${ENGINE_VERSION}`, `js/inditrans-standalone.js?v=${ENGINE_VERSION}`],
           keyboardMaps: KEYBOARD_MAPS,
+          urduLexiconUrl: 'scripts/urdu/demo-lexicon.iul',
           adapt: api => ({
             ready: () => api.ready(),
             supportedScripts: () => api.getSupportedScripts(),
+            loadUrduLexicon: bytes => api.loadUrduLexicon?.(bytes) || 0,
+            transliterateUrdu: (text, to, names, handle, skipStart, skipEnd) =>
+              api.transliterateUrduWithLoadedLexicon(text, to,
+                names.filter(name => name !== 'UrduPronunciation')
+                  .reduce((flags, name) => flags | api.Option[name], api.Option.None), handle, skipStart, skipEnd),
+            releaseUrduLexicon: handle => api.releaseUrduLexicon?.(handle),
             transliterate: (text, from, to, names, skipStart, skipEnd) => api.transliterate(text, from, to,
-              names.reduce((flags, name) => flags | api.Option[name], api.Option.None), skipStart, skipEnd)
+              names.filter(name => name !== 'UrduPronunciation')
+                .reduce((flags, name) => flags | api.Option[name], api.Option.None), skipStart, skipEnd)
           })
         };
       }
@@ -3020,6 +3028,7 @@
       function createEngine(profile) {
         let adapter;
         let ready = false;
+        let urduHandle = 0;
         function loadScript(src) {
           return new Promise(resolve => {
             const script = document.createElement('script');
@@ -3037,11 +3046,24 @@
             if (!window.Inditrans) throw new Error('Could not load Inditrans. Check the release tag and your internet connection.');
             adapter = profile.adapt(window.Inditrans);
             await adapter.ready();
+            // Example-only vocabulary is separate from the core engine. A failed
+            // load leaves Urdu's existing deterministic/literal path intact.
+            if (typeof fetch === 'function' && profile.urduLexiconUrl) {
+              try {
+                const response = await fetch(new URL(profile.urduLexiconUrl, profile.baseUrl));
+                if (response.ok) urduHandle = adapter.loadUrduLexicon(new Uint8Array(await response.arrayBuffer()));
+              } catch { /* A missing sample pack must never break the demo. */ }
+            }
             ready = true;
           },
           supportedScripts: () => adapter.supportedScripts(),
-          transliterate: (text, from, to, options, skipStart, skipEnd) =>
-            adapter.transliterate(text, from, to, options, skipStart, skipEnd)
+          hasUrduLexicon: () => !!urduHandle,
+          transliterate: (text, from, to, options, skipStart, skipEnd) => {
+            if ((from === 'urdu' || from === 'nastaliq') && to !== 'urdu' && to !== 'nastaliq'
+                && options.includes('UrduPronunciation') && !options.includes('DisableInference') && urduHandle)
+              return adapter.transliterateUrdu(text, to, options, urduHandle, skipStart, skipEnd);
+            return adapter.transliterate(text, from, to, options, skipStart, skipEnd);
+          }
         };
       }
 
@@ -3957,7 +3979,7 @@
         return { setSize, getSize: () => size };
       }
 
-      function createTargetOptions(targetScript, transliterate) {
+      function createTargetOptions(targetScript, transliterate, sourceScript, engine) {
         const optionBadge = element('option-badge');
         const skipStart = element('skip-start');
         const skipEnd = element('skip-end');
@@ -3994,7 +4016,8 @@
             + Number(delimiters.skipEnd !== DEMO_DEFAULTS.skipEnd);
           for (const definition of OPTION_DEFINITIONS) {
             const checkbox = element('option-' + definition.name);
-            checkbox.disabled = !!definition.tamilOnly && targetScript.value !== 'tamil';
+            checkbox.disabled = (!!definition.tamilOnly && targetScript.value !== 'tamil')
+              || (!!definition.urduOnly && (sourceScript?.value !== 'urdu' || !engine?.hasUrduLexicon?.()));
             checkbox.parentElement.setAttribute('aria-disabled', String(checkbox.disabled));
             if (checkbox.checked && !checkbox.disabled) activeCount++;
           }
@@ -4476,7 +4499,7 @@
         });
         const keyboard = createKeyboard({ sourceScript, sourceText, appearance, editor, keyboardMaps: profile.keyboardMaps });
         const keyboardResize = createKeyboardResize(() => saveSession());
-        const options = createTargetOptions(targetScript, transliterate);
+        const options = createTargetOptions(targetScript, transliterate, sourceScript, engine);
         const { count, rememberCursor } = editor;
         const { populateScripts, populateFonts, applyFont, applyTextSize, updateLanguage } = appearance;
         const { renderKeyboard, populateKeyboardControls, updateKeyboardFont, hideKeyTooltip } = keyboard;
@@ -4597,6 +4620,7 @@
           populateFonts(sourceFont, sourceScript.value);
           updateLanguage();
           keyboard.sourceChanged();
+          updateTargetOptions();
           transliterate();
         });
         element('keyboard-script').addEventListener('change', (e) => {
@@ -4663,6 +4687,7 @@
             setStatus('Selected script is not available in this Inditrans build', true);
             return;
           }
+          updateTargetOptions();
           transliterate();
           saveSession();
         }).catch(error => setStatus(error.message.startsWith('Could not load Inditrans.')
