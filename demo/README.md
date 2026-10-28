@@ -75,8 +75,15 @@ Noto Sans Grantha font. It replaces the former Tamil Extended option.
 **Urdu (Nastaliq)** uses `lang="ur"`, RTL direction, additional line spacing, and
 Noto Nastaliq Urdu with Noto Naskh Arabic fallback. Its font is downloaded rather
 than included in the ten-script Indic fallback. Mixed Indic excludes Urdu;
-select Urdu explicitly when converting it. Explicit vowels are reliable inputs;
-bare consonants do not acquire guessed vowels. See the
+select Urdu explicitly when converting it. The **Urdu pronunciation
+(sample words)** option in Conversion Options enables a 452-byte example
+lexicon for `جیسی کرنی ویسی بھرنی۔` and `کتاب`, loaded separately
+from the engine at `demo/urdu-example.iul`. This is a small integration
+demonstration, **not** an Urdu pronunciation model: other words retain literal
+transliteration. The option is off by default; `DisableInference` always
+forces the literal path. Unavailable/invalid packs also fall back safely.
+Explicit vowels are reliable inputs, but arbitrary unvocalized consonants do
+not acquire guessed vowels. See the
 [mapping review](../docs/phonetic-mappings.md) for source limitations.
 
 **Theme** offers System, Light, and Dark. System follows your device’s appearance

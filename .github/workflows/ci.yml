@@ -63,6 +63,10 @@ jobs:
 
       - name: Run C++ test suite
         run: make test
+      - name: Build CLI and test opt-in Urdu pronunciation
+        run: |
+          make out/inditrans
+          python3 tests/integration/urdu_cli_smoke.py
 
   sanitizers:
     name: Native Sanitizers & Leak Check

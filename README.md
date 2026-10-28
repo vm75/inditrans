@@ -180,3 +180,19 @@ make dll
 ## License
 
 [MIT](LICENSE)
+
+### Urdu pronunciation example (opt-in)
+
+Unvocalized Urdu omits vowels, so normal Urdu → Indlish conversion remains
+orthographic. To try the optional five-word demo lexicon in the native CLI:
+
+```sh
+make out/inditrans
+out/inditrans -f urdu -t indlish --urdu-lexicon demo/urdu-example.iul 'جیسی کرنی ویسی بھرنی۔'
+```
+
+The browser demo offers **Urdu pronunciation (sample words)** in Conversion
+Options when Urdu is the source. The 452-byte pack is illustrative only; for
+other words the engine deliberately falls back to literal transliteration.
+The normal C++/WASM conversion API is unchanged, and `DisableInference`
+suppresses lexical substitutions even when a pack is loaded.

@@ -231,3 +231,33 @@ binaries must be regenerated before platform integration tests can pass.
 The 3 MB optional data budget and 4 MiB incremental runtime-memory target
 still require representative full-size benchmarks and a legally distributable
 production lexicon. The current pack is only a regression fixture.
+
+## Example-only proverb pack
+
+`demo/urdu-example.iul` is a **452-byte, project-authored demonstration
+asset** generated reproducibly from `scripts/urdu/demo-lexicon.json`:
+
+```sh
+python3 scripts/urdu/build_lexicon.py scripts/urdu/demo-lexicon.json demo/urdu-example.iul --binary
+```
+
+It recognizes exactly five spellings: `جیسی`, `کرنی`, `ویسی`,
+`بھرنی`, and `کتاب`. It is provided to test integration of the new
+opt-in reader in the demo and native CLI, not as a general Urdu lexicon.
+For example, enable **Urdu pronunciation (sample words)** in the hosted
+demo conversion options, or use:
+
+```sh
+make out/inditrans
+out/inditrans -f urdu -t indlish -l demo/urdu-example.iul 'جیسی کرنی ویسی بھرنی۔'
+```
+
+For the words in this pack, the output is `jaisI karnI vaisI bharnI`
+followed by Inditrans's existing full-stop mapping. The core
+`transliterate()` API and CLI invocation **without** `-l` retain their
+legacy orthographic behavior. Caller-provided larger packs can reuse the same
+CLI option and C API; no external runtime dependency is needed.
+
+The demo pack is illustrative and has no corpus-wide accuracy, coverage, or
+licensing claims for imported datasets. It does **not** satisfy issue #70's
+requirement for a reviewed, redistributable production pronunciation lexicon.
