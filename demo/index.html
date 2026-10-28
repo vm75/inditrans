@@ -884,9 +884,12 @@
     .keyboard-keys {
       --key-gap: 3px;
       --key-cols: 25;
-      --key-width: calc((100% - ((var(--key-cols) - 1) * var(--key-gap))) / var(--key-cols));
+      --key-width: calc((100cqw - ((var(--key-cols) - 1) * var(--key-gap))) / var(--key-cols));
+      container-type: inline-size;
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-content: start;
       gap: var(--key-gap);
       max-height: calc(100vh - 220px);
       overflow-y: auto;
@@ -897,16 +900,14 @@
       background: #edf3fc;
     }
 
-    .keyboard-row {
-      flex-shrink: 0;
+    .keyboard-group {
+      flex: 0 0 auto;
       display: flex;
       gap: var(--key-gap);
-      justify-content: center;
       align-items: stretch;
-      width: 100%;
     }
 
-    .keyboard-row .keyboard-key {
+    .keyboard-group .keyboard-key {
       flex: 0 0 var(--key-width);
       width: var(--key-width);
       max-width: none;
@@ -1288,7 +1289,7 @@
         display: none;
       }
 
-      .keyboard-row .keyboard-key {
+      .keyboard-group .keyboard-key {
         min-height: calc(36px * var(--key-scale));
       }
 
@@ -3306,7 +3307,7 @@
           for (let index = 0; index < tokens.length; index++) {
             const value = layout[group]?.[index];
             if (!value) continue;
-            entries.push({ token: tokens[index], value, group, index });
+            entries.push({ token: layout.asciiTokens?.[group]?.[index] || tokens[index], value, group, index });
             if (group === 'vowels') entries.push({ token: ':' + tokens[index], value, group: 'independent' });
           }
         }
@@ -3470,6 +3471,7 @@
           return group.property === 'consonants' ? visible.slice(group.start, group.end) : visible;
         }
         function keyboardShortcut(group, index) {
+          if (activeKeyboardScript() === 'tamil' && group.property === 'consonants' && index === 37) return 'J';
           return group.id === 'nativeSigns' ? nativeKeyboardExtras(activeKeyboardScript())[index]?.token
             : ASCII_KEYBOARD_TOKENS[group.tokenGroup || group.id]?.[index];
         }
@@ -3631,20 +3633,16 @@
             return;
           }
 
-          for (const definition of KEYBOARD_ROWS) {
-            const groups = definition.groups.filter(id => activeKeyboardGroups.has(id));
-            if (!groups.length) continue;
+          for (const group of KEYBOARD_GROUPS) {
+            if (!activeKeyboardGroups.has(group.id)) continue;
             const row = document.createElement('div');
-            row.className = 'keyboard-row keyboard-row--' + definition.row;
-            for (const id of groups) {
-              const group = KEYBOARD_GROUPS.find(group => group.id === id);
-              const values = keyboardGroupKeys(group);
-              for (let i = definition.start || 0; i < Math.min(definition.end ?? values.length, values.length); i++) {
-                if (!values[i]) continue;
-                const keyIndex = (group.start || 0) + i;
-                const keyGroup = group.property === 'consonants' ? { ...group, tokenGroup: 'consonants' } : group;
-                row.append(createKeyButton(values[i], keyboardReference(keyGroup, keyIndex), keyGroup, keyIndex));
-              }
+            row.className = 'keyboard-group';
+            const values = keyboardGroupKeys(group);
+            for (let i = 0; i < values.length; i++) {
+              if (!values[i]) continue;
+              const keyIndex = (group.start || 0) + i;
+              const keyGroup = group.property === 'consonants' ? { ...group, tokenGroup: 'consonants' } : group;
+              row.append(createKeyButton(values[i], keyboardReference(keyGroup, keyIndex), keyGroup, keyIndex));
             }
             if (row.childElementCount) keysContainer.append(row);
           }
@@ -3686,8 +3684,9 @@
             if (category) {
               dotSpan.classList.add('keyboard-palette--' + KEYBOARD_COLORS[category]);
             } else {
-              const stops = CONSONANT_CATEGORIES.slice(0, 5).map((category, index) =>
-                'var(--' + KEYBOARD_COLORS[category.color] + '-dot) ' + index * 25 + '%');
+              const categories = group.id === 'additionalConsonants' ? CONSONANT_CATEGORIES.slice(6) : CONSONANT_CATEGORIES.slice(0, 5);
+              const stops = categories.map((category, index) =>
+                'var(--' + KEYBOARD_COLORS[category.color] + '-dot) ' + index * 100 / (categories.length - 1) + '%');
               dotSpan.style.background = 'linear-gradient(90deg, ' + stops.join(', ') + ')';
             }
 
@@ -3717,7 +3716,7 @@
             container.append(note);
             return;
           }
-          for (const id of ['vowels', 'consonants', 'prenasalizedConsonants', 'additionalConsonants', 'vowelMarks', 'otherDiacritics', 'nativeSigns', 'symbols', 'accents']) {
+          for (const id of ['vowels', 'consonants', 'additionalConsonants', 'vowelMarks', 'otherDiacritics', 'nativeSigns', 'symbols', 'accents']) {
             const group = KEYBOARD_GROUPS.find(group => group.id === id);
             const section = document.createElement('section');
             section.className = 'reference-group';
@@ -3754,8 +3753,9 @@
           composeAscii = createAsciiComposer({
             ...layout,
             consonants: activeKeyboardScript() === 'tamil'
-              ? layout.consonants.map((value, index) => index === 7 ? 'ச³' : index === 8 ? 'ச⁴' : value)
+              ? layout.consonants.map((value, index) => index === 7 ? 'ச³' : index === 8 ? 'ச⁴' : index === 37 ? 'ஜ' : value)
               : layout.consonants,
+            asciiTokens: activeKeyboardScript() === 'tamil' ? { consonants: { 37: 'J' } } : {},
             symbols: [...layout.symbols, ...layout.vedicSymbols],
             accents: keyboardAccents(activeKeyboardScript()),
             nativeExtras: nativeKeyboardExtras(activeKeyboardScript())
@@ -3825,7 +3825,7 @@
           renderKeyboard();
         }
         function getState() {
-          return { script: activeIndicKeyboardScript, groups: [...activeKeyboardGroups], layoutVersion: 1 };
+          return { script: activeIndicKeyboardScript, groups: [...activeKeyboardGroups], layoutVersion: 2 };
         }
         function restoreState(state) {
           if (!state || typeof state !== 'object') return;
@@ -3833,6 +3833,7 @@
           if (Array.isArray(state.groups)) {
             activeKeyboardGroups.clear();
             for (const group of KEYBOARD_GROUPS) if (state.groups.includes(group.id)) activeKeyboardGroups.add(group.id);
+            if ((state.layoutVersion || 0) < 2 && (state.groups.includes('consonants') || state.groups.includes('prenasalizedConsonants'))) activeKeyboardGroups.add('additionalConsonants');
             if (!state.layoutVersion && state.groups.length) activeKeyboardGroups.add('nativeSigns');
           }
         }
@@ -3848,7 +3849,8 @@
         function scaleKeys() {
           if (keyboard.classList.contains('is-collapsed')) return;
           measureKeyboardGlyphs(keys);
-          const rows = [...keys.querySelectorAll('.keyboard-row')];
+          const groups = [...keys.querySelectorAll('.keyboard-group')];
+          const rowCount = new Set(groups.map(group => group.offsetTop)).size;
           const buttons = [...keys.querySelectorAll('.keyboard-key')];
           if (!buttons.length) return;
           const scale = parseFloat(keyboard.style.getPropertyValue('--key-scale')) || 1;
@@ -3858,9 +3860,9 @@
           const columns = parseInt(getComputedStyle(keys).getPropertyValue('--key-cols'), 10) || 25;
           const gap = parseFloat(getComputedStyle(keys).getPropertyValue('--key-gap')) || 3;
           const availableWidth = Math.max(1, (keys.clientWidth - 14 - (columns - 1) * gap) / columns);
-          const availableHeight = Math.max(40, keys.clientHeight - 10 - (rows.length - 1) * 3);
+          const availableHeight = Math.max(40, keys.clientHeight - 10 - (rowCount - 1) * 3);
           const next = Math.max(.35, Math.min(size ? 2 : 1, availableWidth / (glyphWidth + 6),
-            size ? availableHeight / (rows.length * rowHeight) : 1));
+            size ? availableHeight / (rowCount * rowHeight) : 1));
           if (Math.abs(next - scale) > .02) {
             keyboard.style.setProperty('--key-scale', next.toFixed(2));
             measureKeyboardGlyphs(keys);

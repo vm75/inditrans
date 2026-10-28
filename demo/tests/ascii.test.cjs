@@ -39,7 +39,19 @@ test('native layouts retain original positions and hide foreign equivalents and 
   assert.equal(values('tamil')[1], 'க²');
   assert.equal(values('tamil')[7], 'ச³');
   assert.equal(values('tamil')[8], 'ச⁴');
+  assert.equal(values('tamil')[37], 'ஜ');
+  assert.equal(nativeKeyboardExtras('tamil').length, 0);
   assert.equal(values('tamil')[45], '');
+});
+
+test('Tamil J composes as a consonant', () => {
+  const layout = layoutFor('tamil');
+  const consonants = Array.from(layout.consonants, (value, index) =>
+    index === 7 ? 'ச³' : index === 8 ? 'ச⁴' : index === 37 ? 'ஜ' : value);
+  const convert = createAsciiComposer({ ...layout, consonants, asciiTokens: { consonants: { 37: 'J' } } });
+  assert.equal(convert('J'), 'ஜ');
+  assert.equal(convert('Ji'), 'ஜி');
+  assert.equal(convert('i', 'ஜ'), 'ி');
 });
 
 test('script-specific shortcuts compose their displayed keys without changing existing mappings', () => {

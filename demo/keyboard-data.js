@@ -290,7 +290,8 @@ const KEYBOARD_COLORS = {
   "varga": "green",
   "semivowel": "amber",
   "zha-yya": "slate",
-  "prenasal": "emerald"
+  "prenasal": "emerald",
+  "additional": "green"
 };
 
 // Add a script here; source/target default to true. Fonts default to ROMAN_FONTS.
@@ -534,7 +535,7 @@ const NATIVE_KEYBOARD_LAYOUTS = {
   malayalam: { vowels: '0-15 20', consonants: '0-36 52', otherDiacritics: '0-2', symbols: '0-15', extra: ['ൺ', 'ൻ', 'ർ', 'ൽ', 'ൾ', 'ൿ', 'ൔ', 'ൕ', 'ൖ', 'ൌ'] },
   oriya:     { vowels: '0-9 11-12 14-15', consonants: '0-33 41-42 44 54', otherDiacritics: '0-2', symbols: '0-13' },
   sinhala:   { vowels: '0-17', consonants: '0-33 43 45-49', otherDiacritics: '1-2', symbols: '0-9' },
-  tamil:     { vowels: '0-5 10-15', consonants: '0-36', otherDiacritics: '3', symbols: '0-10', extra: ['ஜ'] },
+  tamil:     { vowels: '0-5 10-15', consonants: '0-37', otherDiacritics: '3', symbols: '0-10' },
   telugu:    { vowels: '0-15', consonants: '0-35 50 63', otherDiacritics: '0-2 6', symbols: '0-15' },
   thai:      { vowels: '0-18', vowelMarks: '0-5 10-18', consonants: '0-33 38-40 43', otherDiacritics: '1-2', symbols: '0-9 11-12' },
   tibetan:   { vowels: '0-5 11-12 14-15', consonants: '0-7 9-32 37 40-42 50-51 53 63', otherDiacritics: '0-2 4-5', symbols: '0-13', extra: ['ྐ', 'ྑ', 'ྒ', 'ྒྷ', 'ྔ', 'ྕ', 'ྖ', 'ྗ', 'ྙ', 'ྚ', 'ྛ', 'ྜ', 'ྜྷ', 'ྞ', 'ྟ', 'ྠ', 'ྡ', 'ྡྷ', 'ྣ', 'ྤ', 'ྥ', 'ྦ', 'ྦྷ', 'ྨ', 'ྱ', 'ྲ', 'ླ', 'ྭ', 'ྴ', 'ྵ', 'ྶ', 'ྷ', 'ྯ', 'ྩ', 'ྪ', 'ྮ', 'ྫ', 'ྺ', 'ྻ', 'ྼ'] },
@@ -546,6 +547,7 @@ function nativeKeyboardValues(script, group, values) {
     values = values.slice();
     values[7] = 'ச³';
     values[8] = 'ச⁴';
+    values[37] = 'ஜ';
   }
   const layout = NATIVE_KEYBOARD_LAYOUTS[script];
   if (!layout) {
@@ -573,37 +575,21 @@ function nativeKeyboardValues(script, group, values) {
 function nativeKeyboardExtras(script) {
   return (NATIVE_KEYBOARD_LAYOUTS[script]?.extra || []).map((value, index) => ({
     value, token: '.x' + index,
-    consonant: (script === 'burmese' && index < 4) || script === 'tamil'
+    consonant: script === 'burmese' && index < 4
   }));
 }
 
-// Groups mapped to keyboard rows:
-// Row 1: symbols + diacritics + accents
-// Row 2: vowels
-// Row 3: signs (vowelMarks)
-// Rows 4-7: base, prenasalized, and additional consonants
 const KEYBOARD_GROUPS = [
   { id: 'symbols', label: 'Symbols', property: 'symbols', color: 'number' },
   { id: 'otherDiacritics', label: 'Diacritics', property: 'otherDiacritics', color: 'diacritic' },
   { id: 'accents', label: 'Accents', property: 'accents', color: 'accent' },
   { id: 'vowels', label: 'Vowels', property: 'vowels', color: 'vowel' },
   { id: 'vowelMarks', label: 'Signs', property: 'vowelMarks', color: 'vowelmark' },
-  { id: 'consonants', label: 'Consonants', property: 'consonants', start: 0, end: 45 },
-  { id: 'prenasalizedConsonants', label: 'Prenasalized', property: 'consonants', start: 45, end: 50, color: 'prenasal' },
-  { id: 'additionalConsonants', label: 'Extended', property: 'consonants', start: 50, end: 64, color: 'prenasal' },
+  { id: 'consonants', label: 'Consonants', property: 'consonants', start: 0, end: 34 },
+  { id: 'additionalConsonants', label: 'Extended', property: 'consonants', start: 34, end: 64 },
   { id: 'nativeSigns', label: 'Script keys', property: 'nativeSigns', color: 'vowelmark' }
 ];
 
-const KEYBOARD_ROWS = [
-  { row: 1, groups: ['symbols', 'otherDiacritics', 'accents'] },
-  { row: 2, groups: ['vowels'] },
-  { row: 3, groups: ['vowelMarks'] },
-  { row: 4, groups: ['consonants'], end: 25 },
-  { row: 5, groups: ['consonants'], start: 25 },
-  { row: 6, groups: ['prenasalizedConsonants', 'additionalConsonants'] },
-  { row: 7, groups: ['nativeSigns'], end: 25 },
-  { row: 8, groups: ['nativeSigns'], start: 25 }
-];
 const CONSONANT_CATEGORIES = [
   { end: 5, color: 'varga-1', label: 'Ka-varga (Velar)' },
   { end: 10, color: 'varga-2', label: 'Cha-varga (Palatal)' },
@@ -613,5 +599,5 @@ const CONSONANT_CATEGORIES = [
   { end: 34, color: 'semivowel', label: 'Antastha/Ushman' },
   { end: 45, color: 'zha-yya', label: 'ऴ-य़ Group' },
   { end: 50, color: 'prenasal', label: 'Prenasalized Consonant' },
-  { end: Infinity, color: 'prenasal', label: 'Additional consonants' }
+  { end: Infinity, color: 'additional', label: 'Additional consonants' }
 ];
