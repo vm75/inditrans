@@ -15,6 +15,16 @@ void main() async {
     final lexicon = File('../test-files/urdu-test-lexicon.iul').readAsBytesSync();
     expect(inditrans.transliterateUrduWithLexicon('کتاب', Script.iast, lexicon), 'kitāb');
     expect(inditrans.transliterateUrduWithLexicon('##کتاب## کتاب', Script.iast, lexicon), 'کتاب kitāb');
+    final reused = inditrans.UrduPronunciationLexicon.load(lexicon);
+    expect(reused, isNotNull);
+    try {
+      expect(reused!.transliterate('کتاب', Script.iast), 'kitāb');
+      expect(reused.transliterate('کتاب۔کتاب', Script.iast), 'kitāb۔kitāb');
+    } finally {
+      reused?.dispose();
+    }
+    expect(() => reused!.transliterate('کتاب', Script.iast), throwsStateError);
+    expect(inditrans.UrduPronunciationLexicon.load(lexicon.sublist(1)), isNull);
     final fallback = inditrans.transliterate('کتاب', Script.urdu, Script.iast);
     expect(inditrans.transliterateUrduWithLexicon('کتاب', Script.iast, lexicon.sublist(1)), fallback);
   });

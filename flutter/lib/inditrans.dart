@@ -116,6 +116,68 @@ String transliterateUrduWithLexicon(
   });
 }
 
+
+/// Reusable, caller-owned Urdu pronunciation lexicon.
+///
+/// Load the IUL1 pack once and reuse it across calls. The decoded lexicon is
+/// owned by the engine; the source bytes can be discarded after [load].
+/// Call [dispose] when finished. A disposed lexicon cannot be used again.
+class UrduPronunciationLexicon {
+  Pointer<Void> _handle;
+
+  UrduPronunciationLexicon._(this._handle);
+
+  /// Returns null for an invalid IUL1 pack.
+  static UrduPronunciationLexicon? load(Uint8List bytes) {
+    if (bytes.isEmpty) return null;
+    return _ffiHelper.safeUsing((Arena arena) {
+      final data = arena.allocate<Uint8>(bytes.length);
+      data.asTypedList(bytes.length).setAll(0, bytes);
+      final handle = _bindings.createUrduLexiconHandle(data, bytes.length);
+      return handle == nullptr ? null : UrduPronunciationLexicon._(handle);
+    });
+  }
+
+  String transliterate(
+    String text,
+    Script to, [
+    Option? options,
+    String skipStart = '##',
+    String skipEnd = '##',
+  ]) {
+    if (_handle == nullptr) {
+      throw StateError('Urdu pronunciation lexicon has been disposed');
+    }
+    if (text.isEmpty || _writeNotSupported.contains(to)) return text;
+    return _ffiHelper.safeUsing((Arena arena) {
+      final nativeText = text.toNativeUtf8(allocator: arena);
+      final nativeTo = to.name.toNativeUtf8(allocator: arena);
+      final nativeSkipStart = skipStart.toNativeUtf8(allocator: arena);
+      final nativeSkipEnd = skipEnd.toNativeUtf8(allocator: arena);
+      final buffer = _bindings.transliterateUrduWithLexiconHandle(
+        nativeText.cast<Uint8>(),
+        nativeTo.cast<Uint8>(),
+        options?.value ?? 0,
+        _handle,
+        nativeSkipStart.cast<Uint8>(),
+        nativeSkipEnd.cast<Uint8>(),
+      );
+      if (buffer == nullptr) return '';
+      try {
+        return buffer.cast<Utf8>().toDartString();
+      } finally {
+        _bindings.releaseBuffer(buffer);
+      }
+    });
+  }
+
+  void dispose() {
+    if (_handle == nullptr) return;
+    _bindings.releaseUrduLexiconHandle(_handle);
+    _handle = nullptr;
+  }
+}
+
 /// Checks if [script] is supported by the library.
 bool isScriptSupported(String script) {
   return _ffiHelper.safeUsing((Arena arena) {

@@ -16,6 +16,13 @@ void main() {
   test('Urdu pronunciation pack and fallback on web', () {
     final pack = base64Decode(_pack);
     expect(inditrans.transliterateUrduWithLexicon('کتاب', inditrans.Script.iast, pack), 'kitāb');
+    final reused = inditrans.UrduPronunciationLexicon.load(pack);
+    expect(reused, isNotNull);
+    try {
+      expect(reused!.transliterate('کتاب۔کتاب', inditrans.Script.iast), 'kitāb۔kitāb');
+    } finally {
+      reused?.dispose();
+    }
     expect(inditrans.transliterateUrduWithLexicon('##کتاب## کتاب', inditrans.Script.iast, pack), 'کتاب kitāb');
     expect(inditrans.transliterateUrduWithLexicon('کتاب', inditrans.Script.iast, pack.sublist(1)),
         inditrans.transliterate('کتاب', inditrans.Script.urdu, inditrans.Script.iast));
