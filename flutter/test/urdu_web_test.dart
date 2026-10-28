@@ -20,7 +20,7 @@ void main() {
     expect(reused, isNotNull);
     try {
       final punctuation = inditrans.transliterate('۔', inditrans.Script.urdu, inditrans.Script.iast);
-      expect(reused!.transliterate('کتاب۔کتاب', inditrans.Script.iast), 'kitāb' + punctuation + 'kitāb');
+      expect(reused!.transliterate('کتاب۔کتاب', inditrans.Script.iast), 'kitāb${punctuation}kitāb');
     } finally {
       reused?.dispose();
     }

@@ -21,11 +21,11 @@ void main() async {
       final loaded = reused!;
       expect(loaded.transliterate('کتاب', Script.iast), 'kitāb');
       final punctuation = inditrans.transliterate('۔', Script.urdu, Script.iast);
-      expect(loaded.transliterate('کتاب۔کتاب', Script.iast), 'kitāb' + punctuation + 'kitāb');
+      expect(loaded.transliterate('کتاب۔کتاب', Script.iast), 'kitāb${punctuation}kitāb');
     } finally {
       reused?.dispose();
     }
-    expect(() => reused!.transliterate('کتاب', Script.iast), throwsStateError);
+    expect(() => reused.transliterate('کتاب', Script.iast), throwsStateError);
     expect(inditrans.UrduPronunciationLexicon.load(lexicon.sublist(1)), isNull);
     final fallback = inditrans.transliterate('کتاب', Script.urdu, Script.iast);
     expect(inditrans.transliterateUrduWithLexicon('کتاب', Script.iast, lexicon.sublist(1)), fallback);
