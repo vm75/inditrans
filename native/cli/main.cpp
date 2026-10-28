@@ -93,7 +93,7 @@ static void printUsage(const char* prog) {
             << "  -l, --urdu-lexicon <file>  Optional IUL1 Urdu pronunciation pack\n"
             << "  -h, --help    Show this help message\n\n"
             << "Urdu pronunciation is opt-in; otherwise the output is literal.\n"
-            << "Example: -f urdu -t indlish -l scripts/urdu/demo-lexicon.iul \"جیسی کرنی ویسی بھرنی۔\"\n\n"
+            << "Example: -f urdu -t indlish -l demo/urdu-example.iul \"جیسی کرنی ویسی بھرنی۔\"\n\n"
             << "If text is provided, transliterates and exits.\n"
             << "Otherwise, enters interactive shell (type 'exit' or 'quit' to exit).\n";
 }
