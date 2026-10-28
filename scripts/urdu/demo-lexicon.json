@@ -1,0 +1,12 @@
+{
+  "format": 1,
+  "version": "demo-proverbs-1",
+  "provenance": "Inditrans project-authored pronunciation annotations for an illustrative Urdu proverb and the existing kitab fixture; example-only vocabulary, no accuracy claims or production coverage",
+  "entries": [
+    {"word":"جیسی", "readings":[[{"c":7,"m":12},{"c":31,"m":3}]]},
+    {"word":"کرنی", "readings":[[{"c":0},{"c":26,"m":0},{"c":19,"m":3}]]},
+    {"word":"ویسی", "readings":[[{"c":28,"m":12},{"c":31,"m":3}]]},
+    {"word":"بھرنی", "readings":[[{"c":23},{"c":26,"m":0},{"c":19,"m":3}]]},
+    {"word":"کتاب", "readings":[[{"c":0,"m":2},{"c":15,"m":1},{"c":22,"m":0}]]}
+  ]
+}
