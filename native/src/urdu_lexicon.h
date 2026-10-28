@@ -6,8 +6,9 @@
 #include <string>
 #include <string_view>
 
-/// Borrowed, immutable pronunciation data. Entries contain whole Urdu words and
-/// canonical token units, not target-script strings. Storage must outlive a call.
+/// Immutable pronunciation data. Entries contain strictly sorted, canonical
+/// UTF-8 Urdu words and canonical token units, not target-script strings.
+/// Both word and pronunciation spans must outlive the conversion call.
 struct UrduLexiconEntry {
   std::string_view word;
   std::span<const TokenUnit> pronunciation;

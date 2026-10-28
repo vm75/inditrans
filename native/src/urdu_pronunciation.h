@@ -29,34 +29,54 @@ private:
   std::span<const TokenUnit> pronunciation;
   size_t pronunciationIndex = 0;
 
-  // Be conservative around non-ASCII text: only ordinary ASCII punctuation,
-  // whitespace and explicit Arabic punctuation are known word boundaries.
+  // Treat common Unicode Urdu punctuation and spaces as word boundaries.
+  // Keep ZWNJ/ZWJ and bidi controls conservative: words containing them fall
+  // through to the existing orthographic reader.
   static size_t boundaryLength(const char* p, const char* end) noexcept {
     if (p == end) return 0;
-    const auto c = static_cast<unsigned char>(*p);
-    if (c < 128) {
-      if (c <= 32 || (c >= 33 && c <= 47) || (c >= 58 && c <= 64)
-          || (c >= 91 && c <= 96) || (c >= 123 && c <= 126)) return 1;
-      return 0;
+    const auto a = static_cast<uint8_t>(p[0]);
+    if (a < 128)
+      return a <= 32 || (a >= 33 && a <= 47) || (a >= 58 && a <= 64)
+          || (a >= 91 && a <= 96) || (a >= 123 && a <= 126) ? 1 : 0;
+    if (end - p >= 2) {
+      const auto b = static_cast<uint8_t>(p[1]);
+      if (a == 0xc2 && (b == 0xa0 || b == 0xab || b == 0xbb)) return 2;
+      if (a == 0xd8 && (b == 0x8c || b == 0x9b || b == 0x9f)) return 2;
+      if (a == 0xd9 && b >= 0xa0 && b <= 0xa9) return 2;
+      if (a == 0xdb && (b == 0x94 || (b >= 0xb0 && b <= 0xb9))) return 2;
     }
-    if (end - p >= 2 && static_cast<unsigned char>(p[0]) == 0xd8
-        && (static_cast<unsigned char>(p[1]) == 0x8c || static_cast<unsigned char>(p[1]) == 0x9b
-            || static_cast<unsigned char>(p[1]) == 0x9f)) return 2;
+    if (end - p >= 3) {
+      const auto b = static_cast<uint8_t>(p[1]), c = static_cast<uint8_t>(p[2]);
+      if (a == 0xe2 && b == 0x80
+          && ((c >= 0x80 && c <= 0x8a) || (c >= 0x90 && c <= 0x95)
+              || (c >= 0x98 && c <= 0x9f) || (c >= 0xa8 && c <= 0xa9)
+              || c == 0xa6 || c == 0xaf)) return 3;
+      if (a == 0xe2 && b == 0x81 && c == 0x9f) return 3;
+      if (a == 0xe3 && b == 0x80 && c == 0x80) return 3;
+      if (a == 0xe0 && b == 0xa5 && (c == 0xa4 || c == 0xa5)) return 3;
+    }
     return 0;
   }
 
-  static bool equalUrduWord(std::string_view source, std::string_view key) noexcept {
-    auto canonical = [](std::string_view& s) -> std::string_view {
-      if (s.starts_with("ك")) { s.remove_prefix(2); return "ک"; }
-      if (s.starts_with("ي") || s.starts_with("ى")) { s.remove_prefix(2); return "ی"; }
-      if (s.starts_with("ه")) { s.remove_prefix(2); return "ہ"; }
-      auto n = UtfUtils::nextCharLen(s.data());
-      if (n > s.size()) n = 1;
-      auto result = s.substr(0, n); s.remove_prefix(n); return result;
-    };
-    while (!source.empty() && !key.empty())
-      if (canonical(source) != canonical(key)) return false;
-    return source.empty() && key.empty();
+  // Compare alias-normalized UTF-8 words directly, without allocating.
+  static std::string_view canonicalChar(std::string_view& s) noexcept {
+    if (s.starts_with("ك")) { s.remove_prefix(2); return "ک"; }
+    if (s.starts_with("ي") || s.starts_with("ى")) { s.remove_prefix(2); return "ی"; }
+    if (s.starts_with("ه")) { s.remove_prefix(2); return "ہ"; }
+    auto n = UtfUtils::nextCharLen(s.data());
+    if (n > s.size()) n = 1;
+    auto result = s.substr(0, n);
+    s.remove_prefix(n);
+    return result;
+  }
+
+  static int compareUrduWord(std::string_view a, std::string_view b) noexcept {
+    while (!a.empty() && !b.empty()) {
+      const int comparison = canonicalChar(a).compare(canonicalChar(b));
+      if (comparison) return comparison;
+    }
+    if (a.empty()) return b.empty() ? 0 : -1;
+    return 1;
   }
 
   static bool unmarkedUrduWord(std::string_view word) noexcept {
@@ -93,13 +113,20 @@ private:
     while (wordEnd < end && !boundaryLength(wordEnd, end)) ++wordEnd;
     const std::string_view word(ptr, wordEnd - ptr);
     if (!unmarkedUrduWord(word) || word.find(skipStart) != word.npos || word.find(skipEnd) != word.npos) return false;
-    for (const auto& entry : lexicon) {
-      if (!entry.pronunciation.empty() && equalUrduWord(word, entry.word)) {
-        pronunciation = entry.pronunciation;
-        pronunciationIndex = 0;
-        ptr = wordEnd;
-        return true;
-      }
+    // Canonical keys are strictly sorted; lookup is O(log vocabulary).
+    size_t low = 0, high = lexicon.size();
+    while (low < high) {
+      const auto middle = low + (high - low) / 2;
+      if (compareUrduWord(lexicon[middle].word, word) < 0)
+        low = middle + 1;
+      else
+        high = middle;
+    }
+    if (low < lexicon.size() && compareUrduWord(lexicon[low].word, word) == 0) {
+      pronunciation = lexicon[low].pronunciation;
+      pronunciationIndex = 0;
+      ptr = wordEnd;
+      return true;
     }
     return false;
   }
@@ -117,8 +144,13 @@ private:
 
 /// Reject invalid canonical units as a whole, so callers get legacy fallback.
 inline bool validUrduLexicon(UrduLexicon lexicon) noexcept {
+  std::string_view previous;
   for (const auto& entry : lexicon) {
-    if (entry.word.empty() || entry.pronunciation.empty()) return false;
+    if (entry.word.empty() || entry.pronunciation.empty() || (!previous.empty() && entry.word <= previous)
+        || entry.word.find("ك") != entry.word.npos || entry.word.find("ي") != entry.word.npos
+        || entry.word.find("ى") != entry.word.npos || entry.word.find("ه") != entry.word.npos)
+      return false;
+    previous = entry.word;
     for (const auto& unit : entry.pronunciation) {
       const bool consonant = unit.leadToken.tokenType == TokenType::Consonant;
       if ((!consonant && unit.leadToken.tokenType != TokenType::Vowel)

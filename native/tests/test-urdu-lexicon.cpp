@@ -58,6 +58,27 @@ suite<"Urdu pronunciation seam"> urduPronunciationTests = [] {
     expect(resolve("میں", "iast", None, lexicon) == transliterate("मेँ", "devanagari", "iast", None));
     expect(resolve("کھل", "devanagari", None, lexicon) == "खल्");
   };
+  "Unicode punctuation and boundaries preserve unrecognized text"_test = [&] {
+    for (const auto text : {
+             "کتاب۔کتاب", "کتاب،کتاب", "کتاب؛کتاب", "کتاب؟کتاب",
+             "کتاب کتاب", "کتاب کتاب", "کتاب—کتاب", "«کتاب» کتاب",
+             "کتاب…کتاب", "کتاب।کتاب"}) {
+      const auto assisted = resolve(text, "iast", None, entries);
+      expect(assisted.find("kitāb") != assisted.npos);
+      expect(assisted.rfind("kitāb") != assisted.find("kitāb"));
+    }
+    expect(resolve("کتاب۔کتاب", "iast", None, entries) == "kitāb۔kitāb");
+    expect(resolve("کتاب کتاب", "iast", None, entries) == "kitāb kitāb");
+    expect(resolve("کتابx", "iast", None, entries) == transliterate("کتابx", "urdu", "iast", None));
+  };
+  "sorted canonical lexicon rejects invalid and duplicate keys"_test = [&] {
+    const std::array duplicate {UrduLexiconEntry{"کتاب", reading}, UrduLexiconEntry{"کتاب", reading}};
+    const std::array unsorted {UrduLexiconEntry{"کتاب", reading}, UrduLexiconEntry{"اردو", reading}};
+    const std::array alias {UrduLexiconEntry{"كتاب", reading}};
+    expect(resolve("کتاب", "iast", None, duplicate) == transliterate("کتاب", "urdu", "iast", None));
+    expect(resolve("کتاب", "iast", None, unsorted) == transliterate("کتاب", "urdu", "iast", None));
+    expect(resolve("كتاب", "iast", None, alias) == transliterate("كتاب", "urdu", "iast", None));
+  };
   "invalid data falls back"_test = [&] {
     const std::array invalidReading {consonant(255, 2)};
     const std::array invalid {UrduLexiconEntry{"کتاب", invalidReading}};
