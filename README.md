@@ -165,7 +165,7 @@ make dll
 - **Target**: Windows x86-64 (`inditrans.dll`), copied to `flutter/example.dart/inditrans.dll`.
 - **Toolchain**: Cross-compiled using MinGW-w64 (`x86_64-w64-mingw32-g++`) with CMake toolchain `scripts/cmake/mingw64.cmake`.
 - **Language standard**: Enforces C++23 internally (GCC ≥ 13).
-- **Public ABI**: Plain C interface (`extern "C"`) exposing `transliterate`, `isScriptSupported`, and `releaseBuffer`. No C++ types (`std::string`, STL containers, exceptions) cross the boundary, ensuring full compatibility with MSVC callers, Dart FFI, and other runtimes.
+- **Public ABI**: Plain C interface (`extern "C"`) exposing `transliterate`, `transliterateUrduWithLexiconData`, `isScriptSupported`, and `releaseBuffer`. No C++ types (`std::string`, STL containers, exceptions) cross the boundary, ensuring full compatibility with MSVC callers, Dart FFI, and other runtimes.
 - **Runtime dependencies**: Linked with `-static-libgcc -static-libstdc++` to eliminate MinGW C++ runtime DLL dependencies (`libstdc++-6.dll`, `libgcc_s_seh-1.dll`).
 
 ## Documentation

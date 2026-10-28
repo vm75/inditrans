@@ -75,6 +75,20 @@ enum TranslitOptions {
 ext_def(char*) transliterate(const char* text, const char* from, const char* to, unsigned long options,
     const char* skipStart, const char* skipEnd);
 
+/// Transliterates Urdu using a caller-provided IUL1 pronunciation lexicon.
+/// Missing or invalid data falls back to the ordinary Urdu reader. The returned
+/// buffer must be released with releaseBuffer(). DisableInference bypasses the lexicon.
+/// @param text Null-terminated UTF-8 Urdu input.
+/// @param to Target script identifier.
+/// @param options Transliteration option flags.
+/// @param data Borrowed lexicon bytes, or nullptr for ordinary transliteration.
+/// @param length Number of bytes in data.
+/// @param skipStart Start delimiter for protected text.
+/// @param skipEnd End delimiter for protected text.
+/// @return Allocated UTF-8 output, or nullptr on failure.
+ext_def(char*) transliterateUrduWithLexiconData(const char* text, const char* to, unsigned long options,
+    const char* data, unsigned long length, const char* skipStart, const char* skipEnd);
+
 /// Checks whether a script identifier or alias is physically supported by the engine.
 ///
 /// Note: Virtual sources such as "indic" are handled dynamically by wrapper layers;

@@ -1,5 +1,7 @@
 library;
 
+import 'dart:typed_data';
+
 import 'package:universal_ffi/ffi.dart';
 import 'package:universal_ffi/ffi_helper.dart';
 import 'package:universal_ffi/ffi_utils.dart';
@@ -80,6 +82,37 @@ String transliterate(
     );
     final result = buffer.cast<Utf8>();
     return result == nullptr ? '' : result.toDartString();
+  });
+}
+
+/// Transliterates Urdu with a caller-provided IUL1 pronunciation lexicon.
+/// Invalid or empty lexicon bytes fall back to ordinary Urdu transliteration.
+String transliterateUrduWithLexicon(
+  String text,
+  Script to,
+  Uint8List lexicon, [
+  Option? options,
+  String skipStart = '##',
+  String skipEnd = '##',
+]) {
+  if (text.isEmpty || _writeNotSupported.contains(to)) return text;
+  return _ffiHelper.safeUsing((Arena arena) {
+    final nativeText = text.toNativeUtf8(allocator: arena);
+    final nativeTo = to.name.toNativeUtf8(allocator: arena);
+    final nativeSkipStart = skipStart.toNativeUtf8(allocator: arena);
+    final nativeSkipEnd = skipEnd.toNativeUtf8(allocator: arena);
+    final data = lexicon.isEmpty ? nullptr.cast<Uint8>() : arena.allocate<Uint8>(lexicon.length);
+    if (lexicon.isNotEmpty) data.asTypedList(lexicon.length).setAll(0, lexicon);
+    final result = _bindings.transliterateUrduWithLexiconData(
+      nativeText.cast<Uint8>(), nativeTo.cast<Uint8>(), options?.value ?? 0,
+      data, lexicon.length, nativeSkipStart.cast<Uint8>(), nativeSkipEnd.cast<Uint8>(),
+    );
+    if (result == nullptr) return '';
+    try {
+      return result.cast<Utf8>().toDartString();
+    } finally {
+      _bindings.releaseBuffer(result);
+    }
   });
 }
 

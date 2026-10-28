@@ -53,4 +53,17 @@ export function isScriptSupported(script: string): boolean {
   return Module.inditrans.isScriptSupported(script);
 }
 
-export default { Option, Script, init, transliterate, isScriptSupported };
+/** Pronunciation-assisted Urdu conversion using caller-supplied IUL1 bytes. */
+export function transliterateUrduWithLexicon(
+  text: string,
+  to: Script,
+  data: Uint8Array,
+  options: Option = Option.None
+): string {
+  if (!Module) {
+    throw new Error('Inditrans not initialized. Call init() first.');
+  }
+  return Module.inditrans.transliterateUrduWithLexicon(text, to, options, data);
+}
+
+export default { Option, Script, init, transliterate, transliterateUrduWithLexicon, isScriptSupported };

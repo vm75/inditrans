@@ -50,6 +50,7 @@ const requiredExports = [
   'malloc',
   'free',
   'transliterate',
+  'transliterateUrduWithLexiconData',
   'isScriptSupported',
   'releaseBuffer',
 ];
@@ -130,6 +131,17 @@ if (result !== expected) {
 }
 
 console.log(`✓ Standalone WASM smoke test passed (${wasmBuffer.length} bytes, ${imports.length} imports, result: '${result}')`);
+
+const lexicon = fs.readFileSync(path.resolve(__dirname, '../../test-files/urdu-test-lexicon.iul'));
+const lexiconPtr = wasmExports.malloc(lexicon.length);
+new Uint8Array(wasmExports.memory.buffer, lexiconPtr, lexicon.length).set(lexicon);
+const urduArgs = ['کتاب', 'iast', '##', '##'].map(writeUtf8);
+const urduResult = wasmExports.transliterateUrduWithLexiconData(
+  urduArgs[0], urduArgs[1], 0, lexiconPtr, lexicon.length, urduArgs[2], urduArgs[3]);
+if (readUtf8(urduResult) !== 'kitāb') throw new Error('Urdu pronunciation pack conversion failed');
+wasmExports.releaseBuffer(urduResult);
+wasmExports.free(lexiconPtr);
+urduArgs.forEach(ptr => wasmExports.free(ptr));
 
 // Exercise flags and supplementary-plane script text against the bundled engine.
 for (const [text, from, to, options, expected] of [

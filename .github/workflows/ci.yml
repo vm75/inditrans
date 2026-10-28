@@ -220,6 +220,17 @@ jobs:
       - name: Run Flutter tests
         run: cd flutter && LD_LIBRARY_PATH=../native/build_linux flutter test
 
+      - name: Set up Chrome for Dart web FFI
+        uses: browser-actions/setup-chrome@v1
+        id: dart-web-chrome
+        with:
+          chrome-version: stable
+
+      - name: Test Urdu lexicon FFI in Dart web
+        env:
+          CHROME_EXECUTABLE: ${{ steps.dart-web-chrome.outputs.chrome-path }}
+        run: python3 tests/integration/dart_web_smoke.py
+
       - name: Bundle native sources and changelog for pub packaging
         run: python3 scripts/prepare_flutter_package.py
 

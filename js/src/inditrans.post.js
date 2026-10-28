@@ -67,6 +67,24 @@ Module['onRuntimeInitialized'] = function () {
             releaseBuffer(stringPtr);
             return result;
         },
+        'transliterateUrduWithLexicon': (text, to, options, data, skipStart = "##", skipEnd = "##") => {
+            const cwrap = Module['cwrap'] || (typeof cwrap !== 'undefined' ? cwrap : null);
+            const utf8ToString = Module['UTF8ToString'] || (typeof UTF8ToString !== 'undefined' ? UTF8ToString : null);
+            const convert = cwrap('transliterateUrduWithLexiconData', 'number',
+                ['string', 'string', 'number', 'number', 'number', 'string', 'string']);
+            const releaseBuffer = cwrap('releaseBuffer', 'void', ['number']);
+            const bytes = data || new Uint8Array();
+            const ptr = bytes.length ? Module['_malloc'](bytes.length) : 0;
+            if (bytes.length && !ptr) return '';
+            try {
+                if (ptr) HEAPU8.set(bytes, ptr);
+                const resultPtr = convert(text, to, options, ptr, bytes.length, skipStart, skipEnd);
+                if (!resultPtr) return '';
+                try { return utf8ToString(resultPtr); } finally { releaseBuffer(resultPtr); }
+            } finally {
+                if (ptr) Module['_free'](ptr);
+            }
+        },
         'isScriptSupported': (script) => {
             const cwrap = Module['cwrap'] || (typeof cwrap !== 'undefined' ? cwrap : null);
             const isScriptSupported = cwrap('isScriptSupported', 'number', ['string']);

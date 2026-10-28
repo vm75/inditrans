@@ -29,7 +29,11 @@ Component tests stay with their components: `demo/tests/`, `native/tests/`,
 make test_demo
 make test_wasm
 python3 tests/integration/browser_smoke.py --browser chromium
+python3 tests/integration/dart_web_smoke.py
 ```
+
+The Linux Dart web smoke test serves the current Flutter WASM on local port 18773
+and uses Dart plus Chromium to exercise the Urdu lexicon FFI path in a browser.
 
 `scripts/verify_dll.sh` uses `tests/integration/windows_smoke.cpp` for its optional
 Wine runtime check. Maintenance and verification commands themselves stay here.

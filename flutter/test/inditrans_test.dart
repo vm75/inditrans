@@ -11,6 +11,14 @@ import 'package:test/test.dart';
 void main() async {
   await inditrans.init();
 
+  test('optional Urdu pronunciation pack and fallback', () {
+    final lexicon = File('../test-files/urdu-test-lexicon.iul').readAsBytesSync();
+    expect(inditrans.transliterateUrduWithLexicon('کتاب', Script.iast, lexicon), 'kitāb');
+    expect(inditrans.transliterateUrduWithLexicon('##کتاب## کتاب', Script.iast, lexicon), 'کتاب kitāb');
+    final fallback = inditrans.transliterate('کتاب', Script.urdu, Script.iast);
+    expect(inditrans.transliterateUrduWithLexicon('کتاب', Script.iast, lexicon.sublist(1)), fallback);
+  });
+
   // read json file
   final json = jsonDecode(File('../test-files/test-cases.json').readAsStringSync());
 

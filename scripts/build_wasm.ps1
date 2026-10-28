@@ -54,7 +54,7 @@ function init_emcc {
 
 # create a function
 function build_wasm_standalone([string]$mode, [string]$customSrcDir, [string]$customOutFile) {
-    $exportedFunctions = '["_malloc", "_free", "_transliterate", "_isScriptSupported", "_releaseBuffer"]'
+    $exportedFunctions = '["_malloc", "_free", "_transliterate", "_transliterateUrduWithLexiconData", "_isScriptSupported", "_releaseBuffer"]'
 
     # get the path to the output directory
     $outDir = ".\flutter\assets"
@@ -91,7 +91,7 @@ function build_wasm_standalone([string]$mode, [string]$customSrcDir, [string]$cu
 
 function build_wasm_js([string]$mode) {
     $exportedRuntimeMethods = '["cwrap", "UTF8ToString"]'
-    $exportedFunctions = '["_malloc", "_free", "_transliterate", "_isScriptSupported", "_releaseBuffer"]'
+    $exportedFunctions = '["_malloc", "_free", "_transliterate", "_transliterateUrduWithLexiconData", "_isScriptSupported", "_releaseBuffer"]'
 
     # get the path to the output directory
     $outDir = ".\js\public"

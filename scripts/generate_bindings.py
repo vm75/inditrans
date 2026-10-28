@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the small Dart FFI binding class from ``native/src/exports.h``.
 
-The C ABI deliberately exposes only three functions and four C types. A small
+The C ABI deliberately exposes a small set of functions and four C types. A small
 checked renderer is easier to audit than a general C parser and removes the
 ffigen/Dart dependency from repository maintenance tools. Extend the type map
 and add fixtures before expanding the exported ABI.

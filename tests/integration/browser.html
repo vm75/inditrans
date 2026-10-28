@@ -20,10 +20,11 @@
         poll();
       });
       waitForModule
-        .then((inditrans) => fetch("../../test-files/test-cases.json")
-          .then((response) => response.json())
-          .then((cases) => ({ inditrans, cases })))
-        .then(({ inditrans, cases }) => {
+        .then((inditrans) => Promise.all([
+          fetch("../../test-files/test-cases.json").then((response) => response.json()),
+          fetch("../../test-files/urdu-test-lexicon.iul").then((response) => response.arrayBuffer()),
+        ]).then(([cases, lexicon]) => ({ inditrans, cases, lexicon: new Uint8Array(lexicon) })))
+        .then(({ inditrans, cases, lexicon }) => {
           const results = document.getElementById("test-results");
           let count = 0;
           let failures = 0;
@@ -44,6 +45,23 @@
               results.appendChild(row);
             });
           });
+          const legacy = inditrans.transliterate("کتاب", "urdu", "iast", 0);
+          for (const [text, data, options, expected] of [
+            ["کتاب", lexicon, 0, "kitāb"],
+            ["##کتاب## کتاب", lexicon, 0, "کتاب kitāb"],
+            ["کتِاب", lexicon, 0, inditrans.transliterate("کتِاب", "urdu", "iast", 0)],
+            ["کتاب", lexicon.subarray(1), 0, legacy],
+            ["کتاب", lexicon, 64, inditrans.transliterate("کتاب", "urdu", "iast", 64)],
+          ]) {
+            const actual = inditrans.transliterateUrduWithLexicon(text, "iast", options, data);
+            count += 1;
+            if (actual !== expected) {
+              failures += 1;
+              const row = document.createElement("p");
+              row.innerText = `Urdu pronunciation FAILED: expected ${expected}, got ${actual}`;
+              results.appendChild(row);
+            }
+          }
           results.dataset.status = failures === 0 ? "passed" : "failed";
           results.dataset.count = String(count);
           results.dataset.failures = String(failures);

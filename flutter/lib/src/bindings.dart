@@ -73,6 +73,56 @@ class InditransBindings {
           ffi.Pointer<ffi.Uint8>
         )>();
 
+  /// Transliterates Urdu using a caller-provided IUL1 pronunciation lexicon.
+  /// Missing or invalid data falls back to the ordinary Urdu reader. The returned
+  /// buffer must be released with releaseBuffer(). DisableInference bypasses the lexicon.
+  /// @param text Null-terminated UTF-8 Urdu input.
+  /// @param to Target script identifier.
+  /// @param options Transliteration option flags.
+  /// @param data Borrowed lexicon bytes, or nullptr for ordinary transliteration.
+  /// @param length Number of bytes in data.
+  /// @param skipStart Start delimiter for protected text.
+  /// @param skipEnd End delimiter for protected text.
+  /// @return Allocated UTF-8 output, or nullptr on failure.
+  ffi.Pointer<ffi.Uint8> transliterateUrduWithLexiconData(
+    ffi.Pointer<ffi.Uint8> text,
+    ffi.Pointer<ffi.Uint8> to,
+    int options,
+    ffi.Pointer<ffi.Uint8> data,
+    int length,
+    ffi.Pointer<ffi.Uint8> skipStart,
+    ffi.Pointer<ffi.Uint8> skipEnd,
+  ) {
+    return _transliterateUrduWithLexiconData(text, to, options, data, length, skipStart, skipEnd);
+  }
+
+  late final _transliterateUrduWithLexiconDataPtr =
+      _lookup<
+        ffi.NativeFunction<
+          ffi.Pointer<ffi.Uint8> Function(
+            ffi.Pointer<ffi.Uint8>,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.UnsignedLong,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.UnsignedLong,
+            ffi.Pointer<ffi.Uint8>,
+            ffi.Pointer<ffi.Uint8>,
+          )
+        >
+      >(
+        'transliterateUrduWithLexiconData',
+      );
+  late final _transliterateUrduWithLexiconData = _transliterateUrduWithLexiconDataPtr
+      .asFunction<ffi.Pointer<ffi.Uint8> Function(
+          ffi.Pointer<ffi.Uint8>,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          int,
+          ffi.Pointer<ffi.Uint8>,
+          ffi.Pointer<ffi.Uint8>
+        )>();
+
   /// Checks whether a script identifier or alias is physically supported by the engine.
   ///
   /// Note: Virtual sources such as "indic" are handled dynamically by wrapper layers;

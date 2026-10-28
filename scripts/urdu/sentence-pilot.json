@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "version": "sentence-pilot-1",
+  "provenance": "Synthetic, unreviewed test contexts using the draft Wiktionary-derived token readings in reference-pilot.json; CC BY-SA 4.0. Not a human-reviewed gold corpus.",
+  "sentences": [
+    {
+      "text": "اردو، سلام",
+      "readings": [
+        {"word": "اردو", "readings": [[{"v": 4}, {"c": 26, "m": 0}, {"c": 17, "m": 5}]]},
+        {"word": "سلام", "readings": [[{"c": 31}, {"c": 27, "m": 1}, {"c": 24, "m": 0}]]}
+      ]
+    },
+    {
+      "text": "##کتاب## اردو",
+      "readings": [
+        {"word": "اردو", "readings": [[{"v": 4}, {"c": 26, "m": 0}, {"c": 17, "m": 5}]]}
+      ]
+    },
+    {
+      "text": "کل سلام",
+      "readings": [
+        {"word": "کل", "readings": [[{"c": 0}, {"c": 27, "m": 0}]]},
+        {"word": "سلام", "readings": [[{"c": 31}, {"c": 27, "m": 1}, {"c": 24, "m": 0}]]}
+      ]
+    }
+  ]
+}

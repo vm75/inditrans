@@ -121,7 +121,7 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - Windows `inditrans.dll` (x86-64) is cross-compiled from Linux using MinGW-w64 (`x86_64-w64-mingw32-g++`)
   via `scripts/cmake/mingw64.cmake` (`make dll`). Requires C++23 (MinGW GCC ≥ 13).
 - The public DLL ABI is strictly a C interface (`extern "C"`) exporting `transliterate`,
-  `isScriptSupported`, and `releaseBuffer`. No C++ ABI types (`std::string`, STL containers, exceptions)
+  `transliterateUrduWithLexiconData`, `isScriptSupported`, and `releaseBuffer`. No C++ ABI types (`std::string`, STL containers, exceptions)
   cross the boundary, guaranteeing compatibility across compilers (MinGW, MSVC) and Dart FFI.
 - The Windows DLL is linked with `-static -static-libgcc -static-libstdc++` to eliminate MinGW
   support-runtime DLL dependencies (`libstdc++-6.dll`, `libgcc_s_seh-1.dll`, `libwinpthread-1.dll`).

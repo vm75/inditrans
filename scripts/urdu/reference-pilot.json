@@ -1,0 +1,12 @@
+{
+  "format": 1,
+  "version": "pilot-1",
+  "provenance": "Draft token conversions of Wiktionary Urdu pronunciations, CC BY-SA 4.0; see scripts/urdu/README.md for attribution and limitations. Not human reviewed.",
+  "entries": [
+    {"word": "اردو", "readings": [[{"v": 4}, {"c": 26, "m": 0}, {"c": 17, "m": 5}]]},
+    {"word": "کتاب", "readings": [[{"c": 0, "m": 2}, {"c": 15, "m": 1}, {"c": 22, "m": 0}]]},
+    {"word": "حکومت", "readings": [[{"c": 32, "m": 4}, {"c": 0, "m": 5}, {"c": 24}, {"c": 15, "m": 0}]]},
+    {"word": "سلام", "readings": [[{"c": 31}, {"c": 27, "m": 1}, {"c": 24, "m": 0}]]},
+    {"word": "کل", "readings": [[{"c": 0}, {"c": 27, "m": 0}], [{"c": 0, "m": 4}, {"c": 27, "m": 0}]]}
+  ]
+}

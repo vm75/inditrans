@@ -15,6 +15,16 @@ near-native performance, with no server dependency.
 
 ## Supported scripts
 
+### Optional Urdu pronunciation
+
+`transliterateUrduWithLexicon(text, to, bytes, options)` accepts a caller-supplied
+IUL1 pack as `Uint8List`; no lexicon is bundled or downloaded. The first reading
+is selected without contextual disambiguation. Unknown, explicitly marked,
+mixed-script, and invalid-pack input falls back to literal Urdu transliteration.
+`DisableInference` bypasses the lexicon. See
+[`scripts/urdu/README.md`](../scripts/urdu/README.md) for the pack format and
+current limitations.
+
 **Indic/Brahmic:** Assamese, Bengali, Burmese, Devanagari, Grantha, Gujarati, Gurmukhi,
 Kannada, Khmer, Malayalam, Oriya, Sinhala, Tamil, Telugu, Thai, Tibetan
 
