@@ -186,19 +186,28 @@ def main():
     p.add_argument("--selection", type=Path, help="optional one-Urdu-word-per-line shortlist")
     p.add_argument("--limit", type=int, help="optional entry count cap for later curation; not a byte limit")
     p.add_argument("--strict", action="store_true", help="fail rather than skip an unsupported pronunciation")
+    p.add_argument("--check", action="store_true", help="fail if checked-in pack/report differ from source wordlists")
     args = p.parse_args()
     sources = [(str(path), path.read_bytes()) for path in args.wordlists]
     selection = args.selection.read_bytes() if args.selection else None
     pack, report, canonical = compile_wordlist(
         sources, version=args.version, provenance=args.provenance,
         license_name=args.license_name, selection=selection, limit=args.limit, strict=args.strict)
-    for path in (args.out, args.report, args.canonical_json):
-        if path:
-            path.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_bytes(pack)
-    args.report.write_text(json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
-    if args.canonical_json:
-        args.canonical_json.write_text(json.dumps(canonical, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    report_json = json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
+    canonical_json = json.dumps(canonical, ensure_ascii=False, separators=(",", ":")) + "\n"
+    if args.check:
+        if args.out.read_bytes() != pack or args.report.read_text(encoding="utf-8") != report_json:
+            p.error("generated Urdu pack/report are stale; rebuild from the current wordlists")
+        if args.canonical_json and args.canonical_json.read_text(encoding="utf-8") != canonical_json:
+            p.error("generated canonical Urdu source is stale")
+    else:
+        for path in (args.out, args.report, args.canonical_json):
+            if path:
+                path.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_bytes(pack)
+        args.report.write_text(report_json, encoding="utf-8")
+        if args.canonical_json:
+            args.canonical_json.write_text(canonical_json, encoding="utf-8")
     print(f"Urdu wordlist: {report['entries']} pronunciations, {report['ambiguities_with_alternatives']} ambiguous, "
           f"{report['pack_bytes']} packed bytes; SHA-256 {report['pack_sha256']}")
 
