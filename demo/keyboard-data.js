@@ -531,7 +531,7 @@ const SCRIPT_CATALOG = {
     supportsVedicAccents: false,
     label: 'Urdu (Nastaliq)', kind: 'persoArabic', lang: 'ur', dir: 'rtl',
     fonts: ['Noto Nastaliq Urdu', 'Noto Naskh Arabic'],
-    sample: "جیسی کرنی ویسی بھرنی۔\nدیر آید درست آید۔",
+    sample: "ناچ نہ جانے آنگن ٹیڑھا\nایک میان میں دو تلواریں نہیں رہ سکتیں",
     keyboard: KEYBOARD_MAPS.urdu,
   },
 };
