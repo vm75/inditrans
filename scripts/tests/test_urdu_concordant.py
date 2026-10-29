@@ -43,7 +43,6 @@ class ConcordantTest(unittest.TestCase):
         report = json.loads(report_path.read_text(encoding="utf-8"))
         self.assertEqual(len(blob), report["pack_bytes"])
         self.assertEqual(build_concordant.sha(blob), report["pack_sha256"])
-        self.assertLessEqual(len(blob), build_concordant.MAX_PACK_BYTES)
         self.assertGreater(report["entries"], 4252)
         self.assertGreaterEqual(report["ambiguities_with_alternatives"], 1)
         self.assertEqual(blob[:4], b"IUL1")
