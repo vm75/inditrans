@@ -570,8 +570,8 @@
     },
     "indlish": {
       "supportsVedicAccents": true,
-      "vowels": [ "a", "A", "i", "I", "u", "U", "r̥", "r̥", "l̥", "l̥", "e", "E", "ai", "o", "O", "au", "ă", "̆e", "̆o", "e", "u", "̆e" ],
-      "vowelMarks": [ "", "A", "i", "I", "u", "U", "r̥", "r̥", "l̥", "l̥", "e", "E", "ai", "o", "O", "au", "ă", "̆e", "̆o", "e", "u", "̆e" ],
+      "vowels": [ "a", "A", "i", "I", "u", "U", "r̥", "r̥", "l̥", "l̥", "e", "E", "ai", "o", "O", "au", "ae", "ae", "aw", "e", "u", "ae" ],
+      "vowelMarks": [ "", "A", "i", "I", "u", "U", "r̥", "r̥", "l̥", "l̥", "e", "E", "ai", "o", "O", "au", "ae", "ae", "aw", "e", "u", "ae" ],
       "consonants": [ "k", "kh", "g", "gh", "ng", "ch", "CH", "j", "jh", "ny", "T", "TH", "D", "DH", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "sh", "sh", "s", "h", "L", "zh", "R", "n", "q", "qh", "gh", "z", "D", "Dh", "f", "y", "ng", "nj", "nD", "nd", "mb", "ch", "CH", "t", "j", "v", "s", "s", "h", "t", "h", "z", "z", "z", "j" ],
       "otherDiacritics": [ "m̐", "ṁ", "ḥ", "ḵ", "ḥ", "ḥ", "m̐", "ṁ" ],
       "symbols": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "OM", "!", "!!", " ", ".", ":", "," ],

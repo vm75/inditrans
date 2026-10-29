@@ -1,5 +1,27 @@
 [
   {
+    "description": "Urdu open-e vowels use ae in Indlish",
+    "script": "urdu",
+    "text": "جیسی ویسی",
+    "targets": [
+      {
+        "script": "indlish",
+        "text": "jaesI vaesI"
+      }
+    ]
+  },
+  {
+    "description": "Indlish extended vowels use readable Roman combinations",
+    "script": "ipa",
+    "text": "æ æː ɔ ɛ ɯ ɛː kæ kæː kɔ kɛ kɯ kɛː",
+    "targets": [
+      {
+        "script": "indlish",
+        "text": "ae ae aw e u ae kae kae kaw ke ku kae"
+      }
+    ]
+  },
+  {
     "description": "Same-script copy filters markers and Tamil annotations",
     "script": "tamil",
     "text": "க² க்₃ ʽʼˮˇ ॒॑᳚ 123",
