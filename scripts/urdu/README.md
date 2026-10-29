@@ -7,9 +7,16 @@ The branch now ships a separate, **122,869-byte** pronunciation pack:
 concordant between WikiPron and Wiktextract (both ultimately Wiktionary-derived),
 plus four unique Inditrans-authored demo words. This is a *first reproducible,
 unreviewed candidate*, not a complete or independently reviewed Urdu lexicon.
-The normal native, Node, Flutter and WASM engine binaries contain **no pack
-bytes**. The browser demo loads the separate asset, and the CLI loads any
-supplied IUL1 file only when `--urdu-lexicon` is provided.
+The 122,869-byte packed dataset is now **compiled directly into native
+libraries, native CLI and both WASM builds** by generating
+`native/src/urdu_embedded_pack.h`. It is activated automatically for Urdu
+input, with no `--urdu-lexicon` flag or separate demo download. The compact
+lexicon index is initialized lazily on the first eligible Urdu conversion;
+other scripts do not load it. `DisableInference` disables all lexical Urdu
+substitution, restoring literal mapping. An explicit
+`--urdu-lexicon SOME.iul` in the CLI can still override the built-in corpus.
+Because it is bundled, **native/WASM binary redistribution must include the
+CC BY-SA 4.0 notice and attribution** in this document.
 
 To reproduce the asset, download the two pinned files referenced in
 `scripts/urdu/concordant-report.json` and run:
@@ -21,6 +28,20 @@ python3 scripts/urdu/build_concordant.py \\
   --out demo/urdu-pronunciation.iul \\
   --report scripts/urdu/concordant-report.json
 ```
+
+After building the pinned `.iul` file, generate the checked-in C++ header:
+
+```sh
+python3 scripts/urdu/embed_lexicon.py
+python3 scripts/urdu/embed_lexicon.py --check
+```
+
+The embedder checks the exact pinned IUL1 SHA-256 and CRC-32, and CI checks
+that the C++ header matches the asset byte-for-byte. `make` regenerates the
+header when the pack changes; WASM and native compile its read-only data.
+A different corpus requires reviewing the pronunciations and updating the
+expected digest in the embedder. Merely substituting an unverified file must
+not silently change all callers' default transliteration.
 
 Both full-file SHA-256 hashes are enforced; changes to the source snapshots
 cause a hard error. The build rejects spelling and pronunciation conflicts
@@ -50,11 +71,10 @@ For the CLI:
 
 ```sh
 make out/inditrans
-out/inditrans -f urdu -t indlish \\
-  --urdu-lexicon demo/urdu-pronunciation.iul 'جیسی کرنی ویسی بھرنی۔'
+out/inditrans -f urdu -t indlish 'جیسی کرنی ویسی بھرنی۔'
 ```
 
-The five-word `demo/urdu-example.iul` (452 bytes) remains available for
+For literal orthographic Urdu, use `-o DisableInference`; use `-l` only\nwhen overriding the embedded data.\n\nThe five-word `demo/urdu-example.iul` (452 bytes) remains available for
 isolated regression tests of the IUL1 format.
 
 
