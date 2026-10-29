@@ -179,20 +179,29 @@ make dll
 
 ## License
 
-[MIT](LICENSE)
+Inditrans source code is [MIT](LICENSE). The built-in **experimental Urdu
+pronunciation dictionary is separately licensed CC BY-SA 4.0** and attributed
+to Wiktionary contributors; see [Urdu data licensing and source hashes](scripts/urdu/README.md).
+Distributors of native/WASM binaries must preserve this data attribution and
+share-alike terms. The base engine license does not apply to this embedded data.
 
-### Urdu pronunciation example (opt-in)
+### Urdu pronunciation (on by default)
 
-Unvocalized Urdu omits vowels, so normal Urdu → Indlish conversion remains
-orthographic. To try the optional five-word demo lexicon in the native CLI:
+Urdu → Indlish now recovers vowels for **4,252 dictionary entries** without
+an extra flag or downloadable asset. The 122,869-byte IUL1 corpus is embedded
+in native libraries and WASM, with its index initialized lazily on the first
+Urdu conversion. Words absent from the dictionary fall back to literal
+transliteration; no sentence-level homograph disambiguation is claimed.
 
 ```sh
 make out/inditrans
-out/inditrans -f urdu -t indlish --urdu-lexicon demo/urdu-pronunciation.iul 'جیسی کرنی ویسی بھرنی۔'
+./out/inditrans -f urdu -t indlish 'جیسی کرنی ویسی بھرنی۔'
+# jaisI karnI vaisI bharnI!
 ```
 
-The browser demo offers **Urdu pronunciation (sample words)** in Conversion
-Options when Urdu is the source. The 452-byte pack is illustrative only; for
-other words the engine deliberately falls back to literal transliteration.
-The normal C++/WASM conversion API is unchanged, and `DisableInference`
-suppresses lexical substitutions even when a pack is loaded.
+Use `-o DisableInference` for deterministic literal Urdu letter mapping,
+or `--urdu-lexicon path/to/alternative.iul` to override the bundled
+dictionary for CLI conversions. In the browser demo, **Urdu pronunciation is
+on by default**, and the existing **Disable inference** option restores
+literal output. The experimental data is not independently human-reviewed:
+[see limitations](scripts/urdu/README.md).
