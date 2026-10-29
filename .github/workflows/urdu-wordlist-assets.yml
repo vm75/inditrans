@@ -1,5 +1,5 @@
 name: Build expanded Urdu wordlist assets (temporary)
-# Re-run after correcting deterministic row-order regression assertion.
+# Re-run after removing the historical 3 MB concordance test assertion.
 
 on:
   push:
