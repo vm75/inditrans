@@ -2,6 +2,7 @@
 """Always-on embedded Urdu pronunciation and explicit-override CLI regression."""
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -51,7 +52,32 @@ def main():
     assert pal.stdout.strip() == "pal", pal.stdout
     assert pal_strict.stdout.strip() == "pl", pal_strict.stdout
     assert pal_explicit_fixture.stdout.strip() == "pl", pal_explicit_fixture.stdout
-    print("Embedded Urdu wordlist default, ambiguous pal, CLI override, strict literal mode: passed")
+    # An IUL1 wordlist larger than the historical 3 MB limit must load via
+    # the native CLI. Synthetic words/readings make this redistribution-safe.
+    sys.path.insert(0, str(ROOT / "scripts/urdu"))
+    from build_lexicon import binary_pack
+    letters = "".join(sorted("ابپتثجچحخد"))
+    def synthetic_key(i):
+        digits = []
+        for _ in range(4):
+            digits.append(letters[i % len(letters)])
+            i //= len(letters)
+        return "ک" + "".join(reversed(digits))
+    synthetic = sorted(synthetic_key(i) for i in range(9000))
+    record = [{"c": 20, "m": 0}] * 100
+    large = binary_pack({
+        "version": "synthetic-large-1", "provenance": "project-generated test only",
+        "source_sha256": "0" * 64,
+        "entries": [{"word": word, "readings": [record]} for word in synthetic],
+    })
+    assert len(large) > 3_000_000
+    with tempfile.TemporaryDirectory(prefix="large-urdu-pack-") as directory:
+        large_path = Path(directory) / "large.iul"
+        large_path.write_bytes(large)
+        large_result = run("-f", "urdu", "-t", "indlish", "-l", str(large_path), "پل")
+        assert large_result.returncode == 0 and large_result.stdout.strip() == "pl", large_result.stderr
+
+    print("Embedded Urdu wordlist, fixed pal default, CLI override, literal mode, >3MB IUL1 load: passed")
 
 if __name__ == "__main__":
     main()
