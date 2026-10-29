@@ -36,9 +36,9 @@ class WordlistTest(unittest.TestCase):
         y = "پل\tpul\tiast\t10\nپل\tpal\tiast\t10\n"
         a, ar, _ = compile_sources(x)
         b, br, _ = compile_sources(y)
-        # Source SHA-256 is part of IUL1 provenance, so the binary differs,
-        # but the chosen canonical reading and word ordering do not.
-        self.assertNotEqual(a, b)
+        # The canonical source SHA-256 describes sorted, normalized entries;
+        # merely reordering TSV rows must not change any packed bytes.
+        self.assertEqual(a, b)
         self.assertEqual(
             compile_sources(x)[2]["entries"],
             compile_sources(y)[2]["entries"])
