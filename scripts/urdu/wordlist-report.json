@@ -1,0 +1,23 @@
+{
+  "ambiguities_with_alternatives": 485,
+  "candidate_words": 5448,
+  "entries": 5448,
+  "format": 1,
+  "license": "CC BY-SA 4.0 (Wiktionary-derived candidate data)",
+  "limitations": "Wordlist pronunciations may be unverified. Priority is not measured frequency. Words absent from pack fall back to literal transliteration.",
+  "pack_bytes": 164054,
+  "pack_sha256": "7d479daefe1066dc20da469edcd120d864805f6f51ae9ce1c18f9f030f9db9cf",
+  "provenance": "WikiPron Urdu 2026 candidate plus Inditrans editorial defaults; see scripts/urdu/README.md",
+  "rejected": {
+    "invalid spelling": 515,
+    "unsupported pronunciation": 873
+  },
+  "selection_policy": "Highest explicit editorial priority then lexicographically sorted canonical units; no context",
+  "selection_sha256": null,
+  "source_sha256": {
+    "scripts/urdu/wordlists/editorial-defaults.tsv": "22527b39ffa2d30875f79986b80aab8cf2d1208a0b23e24cf74f40b0e700c357",
+    "scripts/urdu/wordlists/wikipron-candidates.tsv": "5478e50527c47c49fbc567237c2e0008f104e57e971cb0c05f1008978727d814"
+  },
+  "unresolved_words": 416,
+  "version": "urdu-wordlist-experimental-2"
+}
