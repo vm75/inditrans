@@ -90,10 +90,10 @@ static void printUsage(const char* prog) {
             << "  -f <script>   Source script (default: itrans)\n"
             << "  -t <script>   Target script (default: devanagari)\n"
             << "  -o <options>  Transliteration options\n"
-            << "  -l, --urdu-lexicon <file>  Optional IUL1 Urdu pronunciation pack\n"
+            << "  -l, --urdu-lexicon <file>  Override the built-in Urdu pronunciation pack\n"
             << "  -h, --help    Show this help message\n\n"
-            << "Urdu pronunciation is opt-in; otherwise the output is literal.\n"
-            << "Example: -f urdu -t indlish -l demo/urdu-pronunciation.iul \"جیسی کرنی ویسی بھرنی۔\"\n\n"
+            << "Urdu pronunciation is automatic. -o DisableInference uses literal spelling.\n"
+            << "Example: -f urdu -t indlish \"جیسی کرنی ویسی بھرنی۔\"\n\n"
             << "If text is provided, transliterates and exits.\n"
             << "Otherwise, enters interactive shell (type 'exit' or 'quit' to exit).\n";
 }
