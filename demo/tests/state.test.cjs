@@ -157,37 +157,29 @@ test('engine adapter and wrapper forward custom skip delimiters with conversion 
   assert.deepEqual(received, [defaultText, 'indic', 'indlish', 32, '[', ']']);
 });
 
-test('demo uses pronunciation only with a loaded Urdu lexicon and the opt-in checkbox', async () => {
-  const sample = readFileSync(join(__dirname, '../urdu-pronunciation.iul'));
-  let calls = [];
+test('demo delegates Urdu to always-on core without a fetch or opt-in switch', async () => {
+  const calls = [];
   const api = {
     Option: { None: 0, DisableInference: 64 },
     ready: async () => {},
     getSupportedScripts: () => ['urdu', 'indlish'],
-    loadUrduLexicon: bytes => { assert.equal(bytes.length, sample.length); return 73; },
-    transliterateUrduWithLoadedLexicon(...args) { calls.push(['assisted', ...args]); return 'assisted'; },
-    transliterate(...args) { calls.push(['literal', ...args]); return 'literal'; }
+    transliterate(...args) { calls.push(args); return 'converted'; }
   };
   const code = html.slice(html.indexOf('function createEngineProfile()'), html.indexOf('const element ='));
   const { createEngine, createEngineProfile } = runInNewContext(code + ';({createEngine, createEngineProfile})', {
     ENGINE_VERSION: 'v0.16.3', KEYBOARD_MAPS: {}, window: { Inditrans: api }, URL,
-    fetch: async url => {
-      assert.equal(url.pathname, '/inditrans/demo/urdu-pronunciation.iul');
-      return { ok: true, arrayBuffer: async () => Uint8Array.from(sample).buffer };
-    },
+    fetch: () => { throw new Error('embedded Urdu must not be fetched'); },
     document: { baseURI: 'https://example.test/inditrans/demo/',
       createElement: () => ({}), head: { append: script => script.onload() } }
   });
   const engine = createEngine(createEngineProfile());
   await engine.load();
-  assert.equal(engine.hasUrduLexicon(), true);
-  assert.equal(engine.transliterate('جیسی', 'urdu', 'indlish', ['UrduPronunciation'], '##', '##'), 'assisted');
-  assert.deepEqual(calls.pop(), ['assisted', 'جیسی', 'indlish', 0, 73, '##', '##']);
-  assert.equal(engine.transliterate('جیسی', 'urdu', 'indlish', ['UrduPronunciation', 'DisableInference'], '##', '##'), 'literal');
-  assert.equal(engine.transliterate('جیسی', 'urdu', 'indlish', [], '##', '##'), 'literal');
-  assert.equal(engine.transliterate('जीसी', 'devanagari', 'indlish', ['UrduPronunciation'], '##', '##'), 'literal');
-  assert.equal(calls.pop()[0], 'literal');
+  assert.equal(engine.transliterate('جیسی', 'urdu', 'indlish', [], '##', '##'), 'converted');
+  assert.deepEqual(calls.pop(), ['جیسی', 'urdu', 'indlish', 0, '##', '##']);
+  assert.equal(engine.transliterate('جیسی', 'urdu', 'indlish', ['DisableInference'], '##', '##'), 'converted');
+  assert.deepEqual(calls.pop(), ['جیسی', 'urdu', 'indlish', 64, '##', '##']);
 });
+
 
 const storageCode = html.slice(html.indexOf('const DEMO_STORAGE_KEY'), html.indexOf('const SAVED_DEMO_STATE'));
 function storageApi(localStorage) {
