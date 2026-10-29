@@ -39,7 +39,7 @@ function assisted(text, to, handle, flags = 0) {
       handle, inputs[2], inputs[3]));
   } finally { inputs.forEach(wasm.free); }
 }
-test('example Urdu proverb receives lexical vowels only with the optional pack', () => {
+test('ordinary Urdu transliteration uses embedded pronunciation and explicit pack overrides remain supported', () => {
   const bytes = readFileSync(join(root, 'demo/urdu-example.iul'));
   assert.ok(bytes.length < 3000000);
   const raw = alloc(bytes);
@@ -51,7 +51,9 @@ test('example Urdu proverb receives lexical vowels only with the optional pack',
     const expected = 'jaisI karnI vaisI bharnI';
     assert.equal(ordinary('जैसी कर्नी वैसी भर्नी', 'devanagari', 'indlish'), expected);
     assert.equal(assisted(source, 'indlish', handle), expected);
-    assert.notEqual(ordinary(source, 'urdu', 'indlish'), expected);
+    assert.equal(ordinary(source, 'urdu', 'indlish'), expected);
+    assert.equal(ordinary(source + '۔', 'urdu', 'indlish'), expected + ordinary('۔', 'urdu', 'indlish'));
+    assert.notEqual(ordinary(source, 'urdu', 'indlish', 64), expected);
     assert.equal(assisted(source + '۔', 'indlish', handle), expected + ordinary('۔', 'urdu', 'indlish'));
     assert.equal(assisted(source, 'indlish', handle, 64), ordinary(source, 'urdu', 'indlish', 64));
     assert.equal(assisted('زززززززززززز', 'indlish', handle), ordinary('زززززززززززز', 'urdu', 'indlish'));
@@ -71,6 +73,7 @@ test('full experimental Urdu lexicon loads through the runtime and retains conse
   assert.ok(handle, 'full experimental Urdu pack must be accepted by native binary parser');
   try {
     assert.equal(assisted('جیسی کرنی ویسی بھرنی', 'indlish', handle), 'jaisI karnI vaisI bharnI');
+    assert.equal(ordinary('قلم', 'urdu', 'indlish'), 'qalam');
     assert.equal(assisted('زززززززززززز', 'indlish', handle), ordinary('زززززززززززز', 'urdu', 'indlish'));
     assert.equal(assisted('##جیسی## جیسی', 'indlish', handle), 'جیسی jaisI');
   } finally { wasm.releaseUrduLexiconHandle(handle); }
