@@ -53,4 +53,41 @@ export function isScriptSupported(script: string): boolean {
   return Module.inditrans.isScriptSupported(script);
 }
 
-export default { Option, Script, init, transliterate, isScriptSupported };
+/** Pronunciation-assisted Urdu conversion using caller-supplied IUL1/IUL2 bytes. */
+export function transliterateUrduWithLexicon(
+  text: string,
+  to: Script,
+  data: Uint8Array,
+  options: Option = Option.None
+): string {
+  if (!Module) {
+    throw new Error('Inditrans not initialized. Call init() first.');
+  }
+  return Module.inditrans.transliterateUrduWithLexicon(text, to, options, data);
+}
+
+
+/** Caller-owned reusable Urdu pronunciation lexicon. Call dispose() when finished. */
+export class UrduPronunciationLexicon {
+  private handle: number;
+
+  constructor(data: Uint8Array) {
+    if (!Module) throw new Error('Inditrans not initialized. Call init() first.');
+    this.handle = Module.inditrans.loadUrduLexicon(data);
+    if (!this.handle) throw new Error('Invalid Urdu IUL1 lexicon');
+  }
+
+  transliterate(text: string, to: Script, options: Option = Option.None): string {
+    if (!this.handle) throw new Error('Urdu pronunciation lexicon has been disposed');
+    return Module.inditrans.transliterateUrduWithLoadedLexicon(text, to, options, this.handle);
+  }
+
+  dispose(): void {
+    if (this.handle) {
+      Module.inditrans.releaseUrduLexicon(this.handle);
+      this.handle = 0;
+    }
+  }
+}
+
+export default { Option, Script, init, transliterate, transliterateUrduWithLexicon, UrduPronunciationLexicon, isScriptSupported };

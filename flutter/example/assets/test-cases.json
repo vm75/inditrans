@@ -1008,11 +1008,28 @@
     "targets": [
       {
         "script": "iso",
-        "text": "ktb"
+        "text": "ktb",
+        "options": "DisableInference"
       },
       {
         "script": "devanagari",
-        "text": "क्त्ब्"
+        "text": "क्त्ब्",
+        "options": "DisableInference"
+      }
+    ]
+  },
+  {
+    "description": "Urdu dictionary supplies vowels for an added corpus word",
+    "script": "urdu",
+    "text": "کتب",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "kutub"
+      },
+      {
+        "script": "devanagari",
+        "text": "कुतुब्"
       }
     ]
   },

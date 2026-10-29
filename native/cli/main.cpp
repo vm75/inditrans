@@ -1,6 +1,9 @@
 #include <fstream>
 #include <inditrans.h>
+#include "pronunciation_pack.h"
 #include <iostream>
+#include <iterator>
+#include <memory>
 #include <utilities.h>
 #include <vector>
 
@@ -88,7 +91,10 @@ static void printUsage(const char* prog) {
             << "  -f <script>   Source script (default: itrans)\n"
             << "  -t <script>   Target script (default: devanagari)\n"
             << "  -o <options>  Transliteration options\n"
+            << "  -l, --lexicon <file>       Use a pronunciation pack for the selected source\n"
             << "  -h, --help    Show this help message\n\n"
+            << "Urdu pronunciation is automatic. -o DisableInference uses literal spelling.\n"
+            << "Example: -f urdu -t indlish \"جیسی کرنی ویسی بھرنی۔\"\n\n"
             << "If text is provided, transliterates and exits.\n"
             << "Otherwise, enters interactive shell (type 'exit' or 'quit' to exit).\n";
 }
@@ -101,8 +107,10 @@ int main(int argc, char** argv) {
 
   std::string fromScript { "itrans" };
   std::string toScript { "devanagari" };
+  std::string lexiconFile;
+  bool urduOnlyLexicon = false;
   TranslitOptions options { TranslitOptions::None };
-  auto args = processArgs("-f:,-t:,-o:,-h,--help", argc, argv);
+  auto args = processArgs("-f:,-t:,-o:,-l:,--lexicon:,--urdu-lexicon:,-h,--help", argc, argv);
   int i = 0;
   for (; i < args.size(); i++) {
     if (args[i] == "--") {
@@ -118,8 +126,47 @@ int main(int argc, char** argv) {
       toScript = args[++i];
     } else if (args[i] == "-o" && i + 1 < args.size()) {
       options = getTranslitOptions(args[++i]);
+    } else if ((args[i] == "-l" || args[i] == "--lexicon" || args[i] == "--urdu-lexicon") && i + 1 < args.size()) {
+      urduOnlyLexicon = args[i] == "--urdu-lexicon";
+      lexiconFile = args[++i];
     }
   }
+
+  std::unique_ptr<PronunciationLexiconPack> lexicon;
+  auto loadLexicon = [&](const std::string& file) -> bool {
+    std::ifstream stream(file, std::ios::binary);
+    if (!stream) {
+      std::cerr << "Cannot open pronunciation pack: " << file << "\n";
+      return false;
+    }
+    const std::vector<char> bytes(std::istreambuf_iterator<char>{stream}, std::istreambuf_iterator<char>{});
+    if (bytes.empty()) {
+      std::cerr << "Empty pronunciation pack: " << file << "\n";
+      return false;
+    }
+    auto candidate = std::make_unique<PronunciationLexiconPack>();
+    if (!candidate->load(std::span(reinterpret_cast<const uint8_t*>(bytes.data()), bytes.size()))) {
+      std::cerr << "Invalid IUL1 or IUL2 pronunciation pack: " << file << "\n";
+      return false;
+    }
+    lexicon = std::move(candidate);
+    return true;
+  };
+  if (!lexiconFile.empty()) {
+    if (urduOnlyLexicon && fromScript != "urdu" && fromScript != "nastaliq") {
+      std::cerr << "The Urdu lexicon requires -f urdu (or nastaliq)\n";
+      return 2;
+    }
+    if (!loadLexicon(lexiconFile)) return 2;
+  }
+  auto convert = [&](const std::string& text) -> std::string {
+    if (!lexicon)
+      return transliterate(text, fromScript, toScript, options);
+    std::string result;
+    if (!transliterateWithLexicon(text, fromScript, toScript, options, *lexicon, result))
+      return {};
+    return result;
+  };
 
   std::string input;
   if (i < args.size()) {
@@ -129,7 +176,7 @@ int main(int argc, char** argv) {
       }
       input += args[i++];
     }
-    std::string output = transliterate(input, fromScript, toScript, options);
+    std::string output = convert(input);
     std::cout << output << std::endl;
     return 0;
   }
@@ -155,8 +202,10 @@ int main(int argc, char** argv) {
       toScript = input.substr(3);
     } else if (input.starts_with("-o ")) {
       options = getTranslitOptions(input.substr(3));
+    } else if (input.starts_with("-l ")) {
+      loadLexicon(input.substr(3));
     } else {
-      std::string output = transliterate(input, fromScript, toScript, options);
+      std::string output = convert(input);
       std::cout << output << std::endl;
     }
   }

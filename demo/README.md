@@ -47,7 +47,7 @@ remain boxes, check that `fonts.googleapis.com` and `fonts.gstatic.com` are
 accessible; no Android language or keyboard setting is required for web fonts.
 
 Choose **Find more fonts…** in either font dropdown to open Font Dev Tools (also
-available by clicking the version or pressing **Ctrl+Shift+D**). **Find online
+available by clicking **Font tools** or pressing **Ctrl+Shift+D**). **Find online
 fonts** queries the [Fontsource catalog](https://fontsource.org/docs/api/fonts)
 for Google Fonts and adds families by script subset; fonts download from Google
 only when selected. **Find installed fonts** asks for local-font permission in
@@ -75,9 +75,15 @@ Noto Sans Grantha font. It replaces the former Tamil Extended option.
 **Urdu (Nastaliq)** uses `lang="ur"`, RTL direction, additional line spacing, and
 Noto Nastaliq Urdu with Noto Naskh Arabic fallback. Its font is downloaded rather
 than included in the ten-script Indic fallback. Mixed Indic excludes Urdu;
-select Urdu explicitly when converting it. Explicit vowels are reliable inputs;
-bare consonants do not acquire guessed vowels. See the
-[mapping review](../docs/phonetic-mappings.md) for source limitations.
+select Urdu explicitly when converting it. Urdu pronunciation is **always
+enabled** for words covered by the experimental wordlist-driven dictionary, which is
+compiled directly into the native and WASM engine. The demo no longer fetches
+a separate `.iul` file or requires a pronunciation checkbox. For strict
+orthographic transliteration, check **Disable inference**.
+
+The bundled lexicon is compiled from one native→IPA wordlist. Unknown
+words retain ordinary fallback; each listed word has one selected reading and
+no sentence-context analysis is performed. See [lexicon behavior](../docs/lexicons.md).
 
 **Theme** offers System, Light, and Dark. System follows your device’s appearance
 and updates automatically when it changes. Your choice is saved in this browser.

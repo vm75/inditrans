@@ -15,6 +15,16 @@ for near-native performance, with no server dependency.
 
 ## Supported scripts
 
+### Optional Urdu pronunciation
+
+`transliterateUrduWithLexicon(text, to, bytes, options)` accepts an IUL1 or IUL2
+pack as a `Uint8Array` to override the bundled experimental dictionary. Ordinary
+Urdu conversion uses that dictionary without downloading data. A single reading
+is selected without contextual disambiguation. Unknown, explicitly marked and
+mixed-script words use the ordinary Urdu reader. `Option.DisableInference` bypasses the lexicon.
+The pack-generation format and its current limitations are described in
+[lexicon compilation and runtime behavior](../docs/lexicons.md).
+
 **Indic/Brahmic:** Assamese, Bengali, Burmese, Devanagari, Grantha, Gujarati, Gurmukhi,
 Kannada, Khmer, Malayalam, Oriya, Sinhala, Tamil, Telugu, Thai, Tibetan
 
@@ -138,3 +148,11 @@ Real supported accents remain separate marks. There is no round-trip guarantee.
 The script profiles implement transliteration, not complete language-specific
 pronunciation. See the repository's [mapping review](https://github.com/vm75/inditrans/blob/main/docs/phonetic-mappings.md)
 for exact notation behavior and limitations.
+
+### Reusable Urdu pronunciation lexicon (experimental)
+
+For repeated Urdu conversions, create `new UrduPronunciationLexicon(iulBytes)`
+and call `lexicon.transliterate(text, Script.iast)` as often as needed.
+Always call `lexicon.dispose()` in a `finally` block; do not use a disposed
+lexicon. Invalid lexicon bytes throw at construction. The original one-shot
+`transliterateUrduWithLexicon()` remains available.

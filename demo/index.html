@@ -2469,8 +2469,7 @@
           </select>
         </div>
         <div class="engine-version">
-          <span class="version-label">Version</span>
-          <span id="engine-version"></span>
+          <span id="engine-version">Font tools</span>
           <span id="status" class="status" data-state="loading" role="status" aria-live="polite" tabindex="0"
             title="Loading Inditrans…"><span id="status-message" class="sr-only">Loading Inditrans…</span></span>
         </div>
@@ -3011,8 +3010,9 @@
           adapt: api => ({
             ready: () => api.ready(),
             supportedScripts: () => api.getSupportedScripts(),
-            transliterate: (text, from, to, names, skipStart, skipEnd) => api.transliterate(text, from, to,
-              names.reduce((flags, name) => flags | api.Option[name], api.Option.None), skipStart, skipEnd)
+            transliterate: (text, from, to, names, skipStart, skipEnd) => api.transliterate(
+              text, from, to, names.reduce((flags, name) => flags | api.Option[name], api.Option.None),
+              skipStart, skipEnd)
           })
         };
       }
@@ -3025,7 +3025,6 @@
             const script = document.createElement('script');
             script.src = src;
             script.onload = resolve;
-            // Like parser-loaded scripts, attempt the wrapper even if the bundle fails.
             script.onerror = resolve;
             document.head.append(script);
           });
@@ -3037,6 +3036,7 @@
             if (!window.Inditrans) throw new Error('Could not load Inditrans. Check the release tag and your internet connection.');
             adapter = profile.adapt(window.Inditrans);
             await adapter.ready();
+            // Pronunciation dictionary is compiled into native/WASM, with no fetch or checkbox.
             ready = true;
           },
           supportedScripts: () => adapter.supportedScripts(),
@@ -3957,7 +3957,7 @@
         return { setSize, getSize: () => size };
       }
 
-      function createTargetOptions(targetScript, transliterate) {
+      function createTargetOptions(targetScript, transliterate, sourceScript, engine) {
         const optionBadge = element('option-badge');
         const skipStart = element('skip-start');
         const skipEnd = element('skip-end');
@@ -4429,7 +4429,7 @@
         element('font-devtools-done').addEventListener('click', () => dialog.close());
         dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
 
-        // Trigger: Ctrl+Shift+D or click on the version number span
+        // Trigger: Ctrl+Shift+D or click on the font tools label
         document.addEventListener('keydown', event => {
           if (event.ctrlKey && event.shiftKey && event.key === 'D') {
             event.preventDefault();
@@ -4476,7 +4476,7 @@
         });
         const keyboard = createKeyboard({ sourceScript, sourceText, appearance, editor, keyboardMaps: profile.keyboardMaps });
         const keyboardResize = createKeyboardResize(() => saveSession());
-        const options = createTargetOptions(targetScript, transliterate);
+        const options = createTargetOptions(targetScript, transliterate, sourceScript, engine);
         const { count, rememberCursor } = editor;
         const { populateScripts, populateFonts, applyFont, applyTextSize, updateLanguage } = appearance;
         const { renderKeyboard, populateKeyboardControls, updateKeyboardFont, hideKeyTooltip } = keyboard;
@@ -4597,6 +4597,7 @@
           populateFonts(sourceFont, sourceScript.value);
           updateLanguage();
           keyboard.sourceChanged();
+          updateTargetOptions();
           transliterate();
         });
         element('keyboard-script').addEventListener('change', (e) => {
@@ -4663,6 +4664,7 @@
             setStatus('Selected script is not available in this Inditrans build', true);
             return;
           }
+          updateTargetOptions();
           transliterate();
           saveSession();
         }).catch(error => setStatus(error.message.startsWith('Could not load Inditrans.')

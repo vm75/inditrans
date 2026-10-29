@@ -29,7 +29,11 @@ Component tests stay with their components: `demo/tests/`, `native/tests/`,
 make test_demo
 make test_wasm
 python3 tests/integration/browser_smoke.py --browser chromium
+python3 tests/integration/dart_web_smoke.py
 ```
+
+The Linux Dart web smoke test serves the current Flutter WASM on local port 18773
+and uses Dart plus Chromium to exercise the Urdu lexicon FFI path in a browser.
 
 `scripts/verify_dll.sh` uses `tests/integration/windows_smoke.cpp` for its optional
 Wine runtime check. Maintenance and verification commands themselves stay here.
@@ -40,6 +44,11 @@ isolated by `uv run`; see [font sources and reproduction](../demo/fonts/README.m
 They are not needed to serve the demo or run the standard-library script tests.
 
 ## Generation and validation
+
+`build_lexicon.py` compiles one native→IPA wordlist for any concrete source
+script. `embed_lexicon.py` emits a C++ data header from a compiled pack and its
+technical report. Use `make lexicons` and `make check-lexicons` for the bundled
+input. See [the expected wordlist format](../docs/lexicons.md).
 
 `prepare_flutter_package.py` refreshes `flutter/src/` from canonical `native/src/`
 and copies the root changelog before pub publishing. The source copy is ignored

@@ -12,6 +12,9 @@
 #include "token_stream.h"
 #include "type_defs.h"
 #include "utf.h"
+#include "reader_extension.h"
+#include "urdu_lexicon_pack.h"
+#include "urdu_embedded_pack.h"
 #include <array>
 #include <bit>
 #include <cassert>
@@ -28,16 +31,17 @@ InditransLogger* inditransLogger = nullptr;
 ///
 /// Operates with a bounded 16-element stack-allocated buffer (MaxSequence + Lookahead) without
 /// dynamic allocation, ring-buffer arithmetic, or array shifting.
-template <bool ExtendedReader> class InputReader {
+template <bool ExtendedReader, bool WithExtension = false> class InputReader {
 public:
   InputReader(const std::string_view& input, const ScriptReaderMap& map, const TranslitOptions& options,
-      const std::string_view& skipStart, const std::string_view& skipEnd) noexcept
+      const std::string_view& skipStart, const std::string_view& skipEnd, ReaderExtension* extension = nullptr) noexcept
       : ptr(input.data())
       , end(input.data() + input.length())
       , map(map)
       , skipStart(skipStart.empty() ? "##" : skipStart)
       , skipEnd(skipEnd.empty() ? "##" : skipEnd)
-      , options(options) {
+      , options(options)
+      , extension(extension) {
     if (map.nonRoman) {
       if (map.source)
         policyFn = [](InputReader& reader) { reader.template pull<ReaderPolicy::Explicit>(); };
@@ -58,12 +62,14 @@ private:
   const std::string_view skipStart;
   const std::string_view skipEnd;
   const TranslitOptions options;
+  ReaderExtension* extension;
   // Encoded sequences contain at most 15 tokens; the reader needs one
   // lookahead token. Leave room for a full sequence before each refill.
   static constexpr size_t MaxSequence = (1u << (16 - inditrans::static_data::sequenceOffsetBits)) - 1;
   static constexpr size_t Lookahead = 1;
   static constexpr size_t BufferCapacity = MaxSequence + Lookahead;
   static_assert(BufferCapacity >= MaxSequence + Lookahead);
+  static_assert(BufferCapacity >= ReaderExtension::MaxTokens);
   std::array<TokenOrString, BufferCapacity> buffer;
   size_t bufferSize = 0;
   size_t head = 0;
@@ -79,7 +85,11 @@ private:
     // current expansion, so no shifting or ring-buffer arithmetic is needed.
     bufferSize = 0;
     head = 0;
-    while (bufferSize - head < requiredSize && ptr < end) {
+    while (bufferSize - head < requiredSize && (ptr < end || (WithExtension && extension->hasPending(extension->state)))) {
+      if constexpr (WithExtension) {
+        if (extension->pull(extension->state, ptr, end, skipStart, skipEnd, options, buffer.data(), bufferSize))
+          continue;
+      }
       policyFn(*this);
     }
   }
@@ -341,11 +351,13 @@ size_t outputCapacity(size_t bytes, const ScriptReaderMap& reader, const ScriptW
 
 /// Typed transliteration driver: instantiates InputReader and OutputWriter specialized on Type,
 /// iterating through TokenUnits with 1-unit lookahead and passing them to the writer.
-template <typename Sink, ScriptType Type, bool ContextualIndic = false, bool ExtendedReader = true>
-bool transliterate_typed(const std::string_view& input, const ScriptReaderMap& readerMap,
+/// Align hot drivers so optional dictionary code growth does not shift their
+/// entry points within instruction-cache lines.
+template <typename Sink, ScriptType Type, bool ContextualIndic = false, bool ExtendedReader = true, bool WithExtension = false>
+[[gnu::aligned(64)]] bool transliterate_typed(const std::string_view& input, const ScriptReaderMap& readerMap,
     const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink, const std::string_view& skipStart,
-    const std::string_view& skipEnd) noexcept {
-  InputReader<ExtendedReader> reader(input, readerMap, options, skipStart, skipEnd);
+    const std::string_view& skipEnd, ReaderExtension* extension = nullptr) noexcept {
+  InputReader<ExtendedReader, WithExtension> reader(input, readerMap, options, skipStart, skipEnd, extension);
 
   if (!writerMap.supportsVedicAccents()) {
     // Keep source tokenization unchanged; only the writer suppresses accents
@@ -366,26 +378,26 @@ bool transliterate_typed(const std::string_view& input, const ScriptReaderMap& r
 
 /// Core transliteration dispatcher: routes execution to the appropriate OutputWriter specialization
 /// based on the target script's ScriptType (Indic, Tamil, or Roman).
-template <typename Sink, bool ExtendedReader>
+template <typename Sink, bool ExtendedReader, bool WithExtension = false>
 bool transliterate_dispatch(const std::string_view& input, const ScriptReaderMap& readerMap,
     const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink, const std::string_view& skipStart,
-    const std::string_view& skipEnd) noexcept {
+    const std::string_view& skipEnd, ReaderExtension* extension = nullptr) noexcept {
   switch (writerMap.getType()) {
     case ScriptType::Indic:
       if (writerMap.orthography != IndicOrthography::Plain)
-        return transliterate_typed<Sink, ScriptType::Indic, true, ExtendedReader>(
-            input, readerMap, writerMap, options, sink, skipStart, skipEnd);
-      return transliterate_typed<Sink, ScriptType::Indic, false, ExtendedReader>(
-          input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+        return transliterate_typed<Sink, ScriptType::Indic, true, ExtendedReader, WithExtension>(
+            input, readerMap, writerMap, options, sink, skipStart, skipEnd, extension);
+      return transliterate_typed<Sink, ScriptType::Indic, false, ExtendedReader, WithExtension>(
+          input, readerMap, writerMap, options, sink, skipStart, skipEnd, extension);
     case ScriptType::Tamil:
-      return transliterate_typed<Sink, ScriptType::Tamil, false, ExtendedReader>(
-          input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+      return transliterate_typed<Sink, ScriptType::Tamil, false, ExtendedReader, WithExtension>(
+          input, readerMap, writerMap, options, sink, skipStart, skipEnd, extension);
     case ScriptType::Roman:
-      return transliterate_typed<Sink, ScriptType::Roman, false, ExtendedReader>(
-          input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+      return transliterate_typed<Sink, ScriptType::Roman, false, ExtendedReader, WithExtension>(
+          input, readerMap, writerMap, options, sink, skipStart, skipEnd, extension);
     case ScriptType::PersoArabic:
-      return transliterate_typed<Sink, ScriptType::PersoArabic, false, ExtendedReader>(
-          input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+      return transliterate_typed<Sink, ScriptType::PersoArabic, false, ExtendedReader, WithExtension>(
+          input, readerMap, writerMap, options, sink, skipStart, skipEnd, extension);
     default:
       return false;
   }
@@ -393,15 +405,49 @@ bool transliterate_dispatch(const std::string_view& input, const ScriptReaderMap
 
 /// Select reader capabilities once per call. Explicit non-Thai/non-Urdu sources
 /// cannot produce preposed Thai vowels or pending Urdu shadda units.
-template <typename Sink>
+template <typename Sink, bool WithExtension = false>
 bool transliterate_core(const std::string_view& input, const ScriptReaderMap& readerMap,
     const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink, const std::string_view& skipStart,
-    const std::string_view& skipEnd) noexcept {
+    const std::string_view& skipEnd, ReaderExtension* extension = nullptr) noexcept {
   namespace data = inditrans::static_data;
   constexpr auto extendedSources = data::scriptMask(data::ScriptId::Thai, data::ScriptId::Urdu);
   if (readerMap.nonRoman && (!readerMap.source || (readerMap.source & extendedSources)))
-    return transliterate_dispatch<Sink, true>(input, readerMap, writerMap, options, sink, skipStart, skipEnd);
-  return transliterate_dispatch<Sink, false>(input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+    return transliterate_dispatch<Sink, true, WithExtension>(input, readerMap, writerMap, options, sink, skipStart, skipEnd, extension);
+  return transliterate_dispatch<Sink, false, WithExtension>(input, readerMap, writerMap, options, sink, skipStart, skipEnd, extension);
+}
+
+/// For explicit Urdu input, use the compiled-in pronunciation dictionary
+/// unless inference is explicitly disabled. The original literal parser is
+/// preserved for unknown words and for the DisableInference option.
+///
+/// The embedded asset remains immutable in the binary. Its packed index is
+/// initialized only on the first eligible Urdu conversion, once per process;
+/// non-Urdu scripts never allocate or parse it.
+/// A single immutable, lazy-loaded index shared by every output sink and API.
+static UrduLexiconLookup builtinUrduLexicon() noexcept {
+  static UrduLexiconPack pack;
+  static const bool valid = pack.load(std::span<const uint8_t>(
+      reinterpret_cast<const uint8_t*>(inditrans::embedded_urdu::pack),
+      static_cast<size_t>(inditrans::embedded_urdu::pack_size)));
+  return valid ? pack.lexicon() : UrduLexiconLookup {};
+}
+
+template <typename Sink>
+bool transliterateWithDefaultUrdu(std::string_view input, const ScriptReaderMap& readerMap,
+    const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink,
+    std::string_view skipStart, std::string_view skipEnd) noexcept {
+  if (options / TranslitOptions::DisableInference
+      && &readerMap == getScriptReaderMap("urdu")
+      && &writerMap != getScriptWriterMap("urdu")) {
+    const auto lexicon = builtinUrduLexicon();
+    if (!lexicon.empty()) {
+      inditrans::handlers::UrduPronunciationReader reader(input, lexicon);
+      auto extension = ReaderExtension::bind(reader);
+      return transliterate_core<Sink, true>(input, readerMap, writerMap,
+          options, sink, skipStart, skipEnd, &extension);
+    }
+  }
+  return transliterate_core(input, readerMap, writerMap, options, sink, skipStart, skipEnd);
 }
 
 /// When reading explicitly selected Tamil with superscripted disambiguation, do not
@@ -480,7 +526,7 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
     return false;
   Utf8StringBuilder sink;
   sink.reserve(outputCapacity(input.length(), *readerMap, *writerMap));
-  if (!transliterate_core(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd)) {
+  if (!transliterateWithDefaultUrdu(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd)) {
     return false;
   }
   output.reset(sink.release());
@@ -506,6 +552,19 @@ struct StdStringSink {
   }
 };
 
+bool transliterateWithReaderExtension(std::string_view input, std::string_view from, std::string_view to,
+    TranslitOptions options, std::string& output, ReaderExtension& extension,
+    std::string_view skipStart, std::string_view skipEnd) noexcept {
+  if (from == to) return transliterate(input, from, to, options, output, skipStart, skipEnd);
+  const auto* readerMap = getScriptReaderMap(from);
+  const auto* writerMap = getScriptWriterMap(to);
+  if (!readerMap || !writerMap) return false;
+  output.reserve(output.empty() ? outputCapacity(input.length(), *readerMap, *writerMap) : input.length() + 1);
+  StdStringSink sink(output);
+  return transliterate_core<StdStringSink, true>(input, *readerMap, *writerMap,
+      effectiveInferenceOptions(from, options), sink, skipStart, skipEnd, &extension);
+}
+
 /// Transliterates input directly into an existing std::string buffer.
 bool transliterate(const std::string_view& input, const std::string_view& from, const std::string_view& to,
     TranslitOptions options, std::string& output, const std::string_view& skipStart,
@@ -523,7 +582,7 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
   // capacity could invalidate a borrowed input view before the reader starts.
   output.reserve(output.empty() ? outputCapacity(input.length(), *readerMap, *writerMap) : input.length() + 1);
   StdStringSink sink(output);
-  return transliterate_core(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd);
+  return transliterateWithDefaultUrdu(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd);
 }
 
 /// Transliterates input and returns the result as a new std::string by value.
@@ -561,3 +620,6 @@ int CALL_CONV isScriptSupported(const char* script) { return inditrans::static_d
 void CALL_CONV releaseBuffer(char* buffer) { std::free(buffer); }
 
 } // extern "C"
+
+#include "pronunciation_api.h"
+#include "urdu_c_api.h"

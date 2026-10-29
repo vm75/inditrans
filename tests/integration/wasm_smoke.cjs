@@ -50,6 +50,10 @@ const requiredExports = [
   'malloc',
   'free',
   'transliterate',
+  'transliterateUrduWithLexiconData',
+  'createUrduLexiconHandle',
+  'transliterateUrduWithLexiconHandle',
+  'releaseUrduLexiconHandle',
   'isScriptSupported',
   'releaseBuffer',
 ];
@@ -130,6 +134,34 @@ if (result !== expected) {
 }
 
 console.log(`✓ Standalone WASM smoke test passed (${wasmBuffer.length} bytes, ${imports.length} imports, result: '${result}')`);
+
+const lexicon = fs.readFileSync(path.resolve(__dirname, '../../test-files/urdu-test-lexicon.iul'));
+const lexiconPtr = wasmExports.malloc(lexicon.length);
+new Uint8Array(wasmExports.memory.buffer, lexiconPtr, lexicon.length).set(lexicon);
+const urduArgs = ['کتاب', 'iast', '##', '##'].map(writeUtf8);
+const urduResult = wasmExports.transliterateUrduWithLexiconData(
+  urduArgs[0], urduArgs[1], 0, lexiconPtr, lexicon.length, urduArgs[2], urduArgs[3]);
+if (readUtf8(urduResult) !== 'kitāb') throw new Error('Urdu pronunciation pack conversion failed');
+wasmExports.releaseBuffer(urduResult);
+wasmExports.free(lexiconPtr);
+urduArgs.forEach(ptr => wasmExports.free(ptr));
+
+// Reuse a decoded IUL1 pack across conversions, then explicitly destroy it.
+const saved = fs.readFileSync(path.resolve(__dirname, '../../test-files/urdu-test-lexicon.iul'));
+const rawPack = wasmExports.malloc(saved.length);
+new Uint8Array(wasmExports.memory.buffer, rawPack, saved.length).set(saved);
+const handle = wasmExports.createUrduLexiconHandle(rawPack, saved.length);
+wasmExports.free(rawPack);
+if (!handle) throw new Error('Could not create Urdu lexicon handle');
+const args = ['کتاب', 'iast', '##', '##'].map(writeUtf8);
+for (let n = 0; n < 3; n++) {
+  const converted = wasmExports.transliterateUrduWithLexiconHandle(
+    args[0], args[1], 0, handle, args[2], args[3]);
+  if (readUtf8(converted) !== 'kitāb') throw new Error('Reusable Urdu handle conversion failed');
+  wasmExports.releaseBuffer(converted);
+}
+wasmExports.releaseUrduLexiconHandle(handle);
+args.forEach(ptr => wasmExports.free(ptr));
 
 // Exercise flags and supplementary-plane script text against the bundled engine.
 for (const [text, from, to, options, expected] of [

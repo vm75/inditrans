@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the small Dart FFI binding class from ``native/src/exports.h``.
 
-The C ABI deliberately exposes only three functions and four C types. A small
+The C ABI deliberately exposes a small set of functions and four C types. A small
 checked renderer is easier to audit than a general C parser and removes the
 ffigen/Dart dependency from repository maintenance tools. Extend the type map
 and add fixtures before expanding the exported ABI.
@@ -17,6 +17,7 @@ HEADER = REPOSITORY_ROOT / "native/src/exports.h"
 OUTPUT = REPOSITORY_ROOT / "flutter/lib/src/bindings.dart"
 
 TYPE_MAP = {
+    "void*": ("ffi.Pointer<ffi.Void>", "ffi.Pointer<ffi.Void>"),
     "char*": ("ffi.Pointer<ffi.Uint8>", "ffi.Pointer<ffi.Uint8>"),
     "int": ("ffi.Int", "int"),
     "void": ("ffi.Void", "void"),

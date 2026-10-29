@@ -130,11 +130,6 @@ test('reset changes only the selected input text', () => {
   assert.equal(saved, 'Tamil sample');
 });
 
-test('demo badge matches the package version', () => {
-  const { version } = JSON.parse(readFileSync(join(__dirname, '../../nodejs/package.json'), 'utf8'));
-  assert.equal(html.match(/const ENGINE_VERSION = '([^']+)'/)[1], `v${version}`);
-});
-
 test('engine adapter and wrapper forward custom skip delimiters with conversion flags', async () => {
   let received;
   const loadedScripts = [];
@@ -144,18 +139,42 @@ test('engine adapter and wrapper forward custom skip delimiters with conversion 
   };
   const code = html.slice(html.indexOf('function createEngineProfile()'), html.indexOf('const element ='));
   const { createEngine, createEngineProfile } = runInNewContext(code + ';({createEngine, createEngineProfile})', {
-    ENGINE_VERSION: 'v0.15.0', KEYBOARD_MAPS: {}, window: { Inditrans: api }, URL,
+    KEYBOARD_MAPS: {}, ENGINE_VERSION: 'test-version', window: { Inditrans: api }, URL,
     document: { baseURI: 'https://example.test/inditrans/demo/', createElement: () => ({}), head: { append: script => { loadedScripts.push(script.src); script.onload(); } } }
   });
   const engine = createEngine(createEngineProfile());
   await engine.load();
   assert.deepEqual(loadedScripts, [
-    'https://example.test/inditrans/js/public/inditrans.js?v=v0.15.0',
-    'https://example.test/inditrans/js/inditrans-standalone.js?v=v0.15.0'
+    'https://example.test/inditrans/js/public/inditrans.js?v=test-version',
+    'https://example.test/inditrans/js/inditrans-standalone.js?v=test-version'
   ]);
   assert.equal(engine.transliterate(defaultText, 'indic', 'indlish', ['NoXMLTagHandling'], '[', ']'), 'converted');
   assert.deepEqual(received, [defaultText, 'indic', 'indlish', 32, '[', ']']);
 });
+
+test('demo delegates Urdu to always-on core without a fetch or opt-in switch', async () => {
+  const calls = [];
+  const api = {
+    Option: { None: 0, DisableInference: 64 },
+    ready: async () => {},
+    getSupportedScripts: () => ['urdu', 'indlish'],
+    transliterate(...args) { calls.push(args); return 'converted'; }
+  };
+  const code = html.slice(html.indexOf('function createEngineProfile()'), html.indexOf('const element ='));
+  const { createEngine, createEngineProfile } = runInNewContext(code + ';({createEngine, createEngineProfile})', {
+    KEYBOARD_MAPS: {}, ENGINE_VERSION: 'test-version', window: { Inditrans: api }, URL,
+    fetch: () => { throw new Error('embedded Urdu must not be fetched'); },
+    document: { baseURI: 'https://example.test/inditrans/demo/',
+      createElement: () => ({}), head: { append: script => script.onload() } }
+  });
+  const engine = createEngine(createEngineProfile());
+  await engine.load();
+  assert.equal(engine.transliterate('جیسی', 'urdu', 'indlish', [], '##', '##'), 'converted');
+  assert.deepEqual(calls.pop(), ['جیسی', 'urdu', 'indlish', 0, '##', '##']);
+  assert.equal(engine.transliterate('جیسی', 'urdu', 'indlish', ['DisableInference'], '##', '##'), 'converted');
+  assert.deepEqual(calls.pop(), ['جیسی', 'urdu', 'indlish', 64, '##', '##']);
+});
+
 
 const storageCode = html.slice(html.indexOf('const DEMO_STORAGE_KEY'), html.indexOf('const SAVED_DEMO_STATE'));
 function storageApi(localStorage) {

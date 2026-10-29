@@ -95,6 +95,34 @@ $(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
 $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 	clang++ -std=c++23 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
+# Compile the ready-made native→IPA wordlist for the bundled script.
+URDU_WORDLIST = wordlists/urdu/wordlist.tsv
+URDU_LEXICON_ARGS = $(URDU_WORDLIST) --script urdu --out lexicons/urdu.iul --report lexicons/urdu.json
+URDU_EMBED_ARGS = --script urdu --source lexicons/urdu.iul --report lexicons/urdu.json --output native/src/urdu_embedded_pack.h
+LEXICON_COMPILER = scripts/build_lexicon.py scripts/lexicon_profiles.json scripts/python/lexicon_ipa.py scripts/python/packed_lexicon.py scripts/script_data.json
+
+.PHONY: lexicons check-lexicons urdu-lexicon check-urdu-lexicon
+lexicons: native/src/urdu_embedded_pack.h
+
+lexicons/urdu.iul: wordlists/urdu $(URDU_WORDLIST) $(LEXICON_COMPILER)
+	python3 scripts/build_lexicon.py $(URDU_LEXICON_ARGS)
+
+lexicons/urdu.json: lexicons/urdu.iul
+	@if [ ! -f "$@" ]; then python3 scripts/build_lexicon.py $(URDU_LEXICON_ARGS); fi
+
+native/src/urdu_embedded_pack.h: lexicons/urdu.iul lexicons/urdu.json scripts/embed_lexicon.py
+	python3 scripts/embed_lexicon.py $(URDU_EMBED_ARGS)
+
+check-lexicons:
+	python3 scripts/build_lexicon.py $(URDU_LEXICON_ARGS) --check
+	python3 scripts/embed_lexicon.py $(URDU_EMBED_ARGS) --check
+
+# Compatibility aliases for existing local automation.
+urdu-lexicon: lexicons
+	$(MAKE) wasm
+
+check-urdu-lexicon: check-lexicons
+
 ifeq ($(USE_CHECKED_IN_SCRIPT_DATA),0)
 $(NATIVE_SRC)/script_data.h: scripts/script_data.json scripts/reader_data.json scripts/options.json docs/extended-roman.txt scripts/generate_headers.py $(GENERATOR_UTILS)
 	python3 scripts/generate_headers.py

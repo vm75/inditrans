@@ -1,5 +1,7 @@
 library;
 
+import 'dart:typed_data';
+
 import 'package:universal_ffi/ffi.dart';
 import 'package:universal_ffi/ffi_helper.dart';
 import 'package:universal_ffi/ffi_utils.dart';
@@ -81,6 +83,99 @@ String transliterate(
     final result = buffer.cast<Utf8>();
     return result == nullptr ? '' : result.toDartString();
   });
+}
+
+/// Transliterates Urdu with a caller-provided IUL1/IUL2 pronunciation lexicon.
+/// Invalid or empty lexicon bytes fall back to ordinary Urdu transliteration.
+String transliterateUrduWithLexicon(
+  String text,
+  Script to,
+  Uint8List lexicon, [
+  Option? options,
+  String skipStart = '##',
+  String skipEnd = '##',
+]) {
+  if (text.isEmpty || _writeNotSupported.contains(to)) return text;
+  return _ffiHelper.safeUsing((Arena arena) {
+    final nativeText = text.toNativeUtf8(allocator: arena);
+    final nativeTo = to.name.toNativeUtf8(allocator: arena);
+    final nativeSkipStart = skipStart.toNativeUtf8(allocator: arena);
+    final nativeSkipEnd = skipEnd.toNativeUtf8(allocator: arena);
+    final data = lexicon.isEmpty ? nullptr.cast<Uint8>() : arena.allocate<Uint8>(lexicon.length);
+    if (lexicon.isNotEmpty) data.asTypedList(lexicon.length).setAll(0, lexicon);
+    final result = _bindings.transliterateUrduWithLexiconData(
+      nativeText.cast<Uint8>(), nativeTo.cast<Uint8>(), options?.value ?? 0,
+      data, lexicon.length, nativeSkipStart.cast<Uint8>(), nativeSkipEnd.cast<Uint8>(),
+    );
+    if (result == nullptr) return '';
+    try {
+      return result.cast<Utf8>().toDartString();
+    } finally {
+      _bindings.releaseBuffer(result);
+    }
+  });
+}
+
+
+/// Reusable, caller-owned Urdu pronunciation lexicon.
+///
+/// Load the IUL1/IUL2 pack once and reuse it across calls. The decoded lexicon is
+/// owned by the engine; the source bytes can be discarded after [load].
+/// Call [dispose] when finished. A disposed lexicon cannot be used again.
+class UrduPronunciationLexicon {
+  Pointer<Void> _handle;
+
+  UrduPronunciationLexicon._(this._handle);
+
+  /// Returns null for an invalid IUL1/IUL2 pack.
+  static UrduPronunciationLexicon? load(Uint8List bytes) {
+    if (bytes.isEmpty) return null;
+    return _ffiHelper.safeUsing((Arena arena) {
+      final data = arena.allocate<Uint8>(bytes.length);
+      data.asTypedList(bytes.length).setAll(0, bytes);
+      final handle = _bindings.createUrduLexiconHandle(data, bytes.length);
+      return handle == nullptr ? null : UrduPronunciationLexicon._(handle);
+    });
+  }
+
+  String transliterate(
+    String text,
+    Script to, [
+    Option? options,
+    String skipStart = '##',
+    String skipEnd = '##',
+  ]) {
+    if (_handle == nullptr) {
+      throw StateError('Urdu pronunciation lexicon has been disposed');
+    }
+    if (text.isEmpty || _writeNotSupported.contains(to)) return text;
+    return _ffiHelper.safeUsing((Arena arena) {
+      final nativeText = text.toNativeUtf8(allocator: arena);
+      final nativeTo = to.name.toNativeUtf8(allocator: arena);
+      final nativeSkipStart = skipStart.toNativeUtf8(allocator: arena);
+      final nativeSkipEnd = skipEnd.toNativeUtf8(allocator: arena);
+      final buffer = _bindings.transliterateUrduWithLexiconHandle(
+        nativeText.cast<Uint8>(),
+        nativeTo.cast<Uint8>(),
+        options?.value ?? 0,
+        _handle,
+        nativeSkipStart.cast<Uint8>(),
+        nativeSkipEnd.cast<Uint8>(),
+      );
+      if (buffer == nullptr) return '';
+      try {
+        return buffer.cast<Utf8>().toDartString();
+      } finally {
+        _bindings.releaseBuffer(buffer);
+      }
+    });
+  }
+
+  void dispose() {
+    if (_handle == nullptr) return;
+    _bindings.releaseUrduLexiconHandle(_handle);
+    _handle = nullptr;
+  }
 }
 
 /// Checks if [script] is supported by the library.

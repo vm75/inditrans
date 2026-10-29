@@ -34,7 +34,7 @@ returned `std::string`.
 
 | Component | Files | Responsibility |
 |---|---|---|
-| C export layer | `native/src/exports.h`, `inditrans.cpp` | `transliterate`, `isScriptSupported`, `releaseBuffer` |
+| C export layer | `native/src/exports.h`, `inditrans.cpp` | Transliteration, optional Urdu lexicon, script support, buffer release |
 | Generated data | `native/src/script_data.h` | Typed dictionaries, pooled text, token expansions, aliases, writer tables |
 | Trie builders | `native/src/static_trie.h`, `packed_trie.h` | C++23 `consteval` topology, packing, and bounded byte/token-key lookup |
 | Script descriptors | `native/src/static_script_types.h`, `static_scripts.h` | Static name resolution, source policies, writer views, Tamil prefix state |
@@ -179,6 +179,25 @@ one-token lookahead used by the writer.
    consonants receive no guessed vowel. Repeated marks are left in the stream
    instead of overwriting an attached mark. The Indic/Tamil/Roman handlers are `friend` classes to
    `InputReader`, eliminating abstraction overhead by accessing the token buffer directly.
+   An optional, caller-owned `ReaderExtension` can inject tokens into the same
+   window; the ordinary pipeline does not install an extension. The Urdu helper
+   uses this seam for exact, unmarked words and falls back to the ordinary reader
+   for marked, mixed or unknown text, invalid entries, and `DisableInference`.
+   Its adapter accepts caller-provided lexicon bytes without file I/O; a C entry
+   point and Flutter/Node wrappers expose this opt-in path. The generic
+   `PackedLexicon` stores Unicode keys as one-byte alphabet IDs in blocks of
+   32 prefix-compressed words and leaves payload bytes opaque. Its immutable
+   block index and per-call lookup scratch avoid expanding the vocabulary.
+   The Urdu adapter validates payloads and decodes matched 16-bit pronunciation
+   units into the existing reader stream. IUL2 loads this representation directly;
+   IUL1 is compacted on load, retaining expanded storage only for alphabets over
+   256 characters. The lookup view and Urdu reader retain their existing stack
+   sizes; the Indic reader never performs dictionary lookup.
+   Generic `PronunciationReader<Policy>` and `BasicPronunciationLexiconPack<Policy>`
+   provide the same explicit override path for other source scripts; Urdu's
+   legacy names are wrappers/aliases. `scripts/build_lexicon.py` consumes one native→IPA TSV per source script,
+   canonical engine data and optional script profiles. See
+   `docs/lexicons.md` for the consumer contract and format.
 4. One dispatch selects an Indic, Tamil, Roman, or Perso-Arabic `OutputWriter` specialization.
    The writer delegates to the corresponding family handler, with narrow Indic
    orthography rules for Thai preposed vowels, Tibetan subjoining, Burmese/Khmer stacking
@@ -288,8 +307,9 @@ transitions remain in `TamilPrefixLookup`.
 
 ### Native ABI and Windows cross-compilation
 
-The C boundary exports only `transliterate`, `isScriptSupported`, and
-`releaseBuffer`. MinGW and MSVC clients therefore do not share a C++ ABI.
+The C boundary exports `transliterate`, `transliterateUrduWithLexiconData`,
+`isScriptSupported`, and `releaseBuffer`. MinGW and MSVC clients therefore do
+not share a C++ ABI.
 Windows x86-64 cross-compilation uses `scripts/cmake/mingw64.cmake` with C++23 and
 MinGW GCC ≥ 13. Static libgcc/libstdc++ linkage avoids their runtime DLL dependencies.
 

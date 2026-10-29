@@ -1,0 +1,2673 @@
+{
+  "binary_format": "IUL2",
+  "entries": 14739,
+  "format": 2,
+  "pack_bytes": 301759,
+  "pack_sha256": "5dd1287b511ef8418c7e5ec6b1780fed39505dc3242b9c4152261671bae21643",
+  "rejected": {
+    "aspiration on unsupported consonant": 6,
+    "ineligible source spelling": 34734,
+    "unsupported IPA symbol 'ħ'": 60,
+    "unsupported IPA symbol 'ɚ'": 3,
+    "unsupported IPA symbol 'ɜː'": 1,
+    "unsupported IPA symbol 'ɫ'": 1,
+    "unsupported IPA symbol 'ʌ'": 21,
+    "unsupported IPA symbol 'ʕ'": 219,
+    "unsupported IPA symbol 'ʤ'": 1,
+    "unsupported IPA symbol 'ʧ'": 4,
+    "unsupported IPA symbol 'ʷ'": 2,
+    "unsupported IPA symbol 'ː'": 7,
+    "unsupported IPA symbol 'ː̃'": 3,
+    "unsupported IPA symbol 'ˤ'": 17,
+    "unsupported IPA symbol '̤'": 2,
+    "unsupported IPA symbol '̪'": 142,
+    "unsupported IPA symbol '̪ˤ'": 1,
+    "unsupported IPA symbol '̯'": 5,
+    "unsupported IPA symbol '͡ʃ'": 1,
+    "unsupported IPA symbol 'θ'": 1,
+    "unsupported IPA symbol 'ᵊ'": 30
+  },
+  "script": "urdu",
+  "skipped": [
+    {
+      "line": 181,
+      "reason": "unsupported IPA symbol 'ː̃'",
+      "word": "انہوں"
+    },
+    {
+      "line": 633,
+      "reason": "unsupported IPA symbol '̯'",
+      "word": "تیار"
+    },
+    {
+      "line": 838,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "عمر"
+    },
+    {
+      "line": 923,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "نمبر"
+    },
+    {
+      "line": 1019,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "وزیراعظم"
+    },
+    {
+      "line": 1029,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذریعے"
+    },
+    {
+      "line": 1440,
+      "reason": "unsupported IPA symbol 'ʷ'",
+      "word": "درخواست"
+    },
+    {
+      "line": 1644,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حالات"
+    },
+    {
+      "line": 1929,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "چھ"
+    },
+    {
+      "line": 2131,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "پوشیدہ"
+    },
+    {
+      "line": 2676,
+      "reason": "unsupported IPA symbol 'ʷ'",
+      "word": "خواب"
+    },
+    {
+      "line": 2685,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "گزشتہ"
+    },
+    {
+      "line": 2827,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "رضی"
+    },
+    {
+      "line": 3437,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معروف"
+    },
+    {
+      "line": 3531,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "متعدد"
+    },
+    {
+      "line": 4036,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "لحاظ"
+    },
+    {
+      "line": 4315,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "خارجہ"
+    },
+    {
+      "line": 4404,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "نصف"
+    },
+    {
+      "line": 4414,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الرحمن"
+    },
+    {
+      "line": 4956,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اعتبار"
+    },
+    {
+      "line": 5147,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "محض"
+    },
+    {
+      "line": 5471,
+      "reason": "unsupported IPA symbol '̯'",
+      "word": "تیاری"
+    },
+    {
+      "line": 5681,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "مسلح"
+    },
+    {
+      "line": 6712,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "سعد"
+    },
+    {
+      "line": 7417,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "جامع"
+    },
+    {
+      "line": 7861,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مسعود"
+    },
+    {
+      "line": 7915,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "رجوع"
+    },
+    {
+      "line": 7995,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "نافذ"
+    },
+    {
+      "line": 8132,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "عظمی"
+    },
+    {
+      "line": 8153,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مضامین"
+    },
+    {
+      "line": 8348,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "لمحہ"
+    },
+    {
+      "line": 8353,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "نمونہ"
+    },
+    {
+      "line": 8368,
+      "reason": "unsupported IPA symbol '̤'",
+      "word": "افضل"
+    },
+    {
+      "line": 8601,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "نظریات"
+    },
+    {
+      "line": 9253,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "گجرات"
+    },
+    {
+      "line": 9465,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اشعار"
+    },
+    {
+      "line": 9788,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "توسیع"
+    },
+    {
+      "line": 10083,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذوالفقار"
+    },
+    {
+      "line": 10237,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حتی"
+    },
+    {
+      "line": 10431,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "منافع"
+    },
+    {
+      "line": 10597,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مذاہب"
+    },
+    {
+      "line": 10861,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "افتتاح"
+    },
+    {
+      "line": 11060,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تعینات"
+    },
+    {
+      "line": 11123,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظاہری"
+    },
+    {
+      "line": 11147,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مظالم"
+    },
+    {
+      "line": 11148,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مظفر"
+    },
+    {
+      "line": 11304,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "صفحات"
+    },
+    {
+      "line": 11384,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "جذبہ"
+    },
+    {
+      "line": 11619,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "نعیم"
+    },
+    {
+      "line": 11692,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تعین"
+    },
+    {
+      "line": 11731,
+      "reason": "unsupported IPA symbol '̯'",
+      "word": "رویہ"
+    },
+    {
+      "line": 11774,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عدل"
+    },
+    {
+      "line": 11853,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اعوان"
+    },
+    {
+      "line": 12029,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اعجاز"
+    },
+    {
+      "line": 12065,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "حفظ"
+    },
+    {
+      "line": 12117,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضرب"
+    },
+    {
+      "line": 12153,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "مرحلے"
+    },
+    {
+      "line": 12184,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "نظریاتی"
+    },
+    {
+      "line": 12247,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "بشمول"
+    },
+    {
+      "line": 12349,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "فلسفہ"
+    },
+    {
+      "line": 12375,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "الٹ"
+    },
+    {
+      "line": 12383,
+      "reason": "unsupported IPA symbol 'ɜː'",
+      "word": "برڈ"
+    },
+    {
+      "line": 12399,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "اصحاب"
+    },
+    {
+      "line": 12449,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معین"
+    },
+    {
+      "line": 12517,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "تناظر"
+    },
+    {
+      "line": 12530,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الحسن"
+    },
+    {
+      "line": 12756,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ڈرتا"
+    },
+    {
+      "line": 12786,
+      "reason": "unsupported IPA symbol 'ː̃'",
+      "word": "بنیں"
+    },
+    {
+      "line": 12867,
+      "reason": "unsupported IPA symbol '̤'",
+      "word": "طیب"
+    },
+    {
+      "line": 12989,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "قطع"
+    },
+    {
+      "line": 13097,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "نذر"
+    },
+    {
+      "line": 13319,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "حفاظتی"
+    },
+    {
+      "line": 13545,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تعصب"
+    },
+    {
+      "line": 13608,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "متعین"
+    },
+    {
+      "line": 13777,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شعری"
+    },
+    {
+      "line": 13785,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "فرزند"
+    },
+    {
+      "line": 13937,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حنیف"
+    },
+    {
+      "line": 14030,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "نذیر"
+    },
+    {
+      "line": 14045,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "پختہ"
+    },
+    {
+      "line": 14175,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عاصم"
+    },
+    {
+      "line": 14276,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "تلخ"
+    },
+    {
+      "line": 14427,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اشتعال"
+    },
+    {
+      "line": 14440,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "باضابطہ"
+    },
+    {
+      "line": 14520,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضلعی"
+    },
+    {
+      "line": 14778,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "فاتحہ"
+    },
+    {
+      "line": 15074,
+      "reason": "unsupported IPA symbol 'ʧ'",
+      "word": "کھینچ"
+    },
+    {
+      "line": 15202,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "متنازع"
+    },
+    {
+      "line": 15205,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مظاہرے"
+    },
+    {
+      "line": 15305,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الحرام"
+    },
+    {
+      "line": 15372,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شجاعت"
+    },
+    {
+      "line": 15381,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "طبع"
+    },
+    {
+      "line": 15385,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "عبدالرحمن"
+    },
+    {
+      "line": 15389,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "قرضوں"
+    },
+    {
+      "line": 15393,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "محققین"
+    },
+    {
+      "line": 15399,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مراعات"
+    },
+    {
+      "line": 15436,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "نظریے"
+    },
+    {
+      "line": 15857,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "سمیع"
+    },
+    {
+      "line": 15874,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شجاع"
+    },
+    {
+      "line": 16023,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذی"
+    },
+    {
+      "line": 16253,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضیا"
+    },
+    {
+      "line": 16275,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "مصباح"
+    },
+    {
+      "line": 16500,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معبد"
+    },
+    {
+      "line": 16521,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "افعال"
+    },
+    {
+      "line": 16653,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "صاحبزادہ"
+    },
+    {
+      "line": 16768,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شعلے"
+    },
+    {
+      "line": 17029,
+      "reason": "aspiration on unsupported consonant",
+      "word": "تمھیں"
+    },
+    {
+      "line": 17089,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظہیر"
+    },
+    {
+      "line": 17327,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "متوجہ"
+    },
+    {
+      "line": 17432,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "گذشتہ"
+    },
+    {
+      "line": 17453,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظالمانہ"
+    },
+    {
+      "line": 17520,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "ربیع"
+    },
+    {
+      "line": 17862,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "جعل"
+    },
+    {
+      "line": 17876,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العزت"
+    },
+    {
+      "line": 18036,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "قحط"
+    },
+    {
+      "line": 18128,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اجتماعات"
+    },
+    {
+      "line": 18205,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "جذباتی"
+    },
+    {
+      "line": 18246,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شفیع"
+    },
+    {
+      "line": 18270,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "عوض"
+    },
+    {
+      "line": 18286,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مظاہروں"
+    },
+    {
+      "line": 18356,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "چندر"
+    },
+    {
+      "line": 18447,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تابع"
+    },
+    {
+      "line": 18452,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "تضاد"
+    },
+    {
+      "line": 18489,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حسینی"
+    },
+    {
+      "line": 18490,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حقانی"
+    },
+    {
+      "line": 18630,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "اسکندریہ"
+    },
+    {
+      "line": 18648,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العالمین"
+    },
+    {
+      "line": 18669,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "اڈیالہ"
+    },
+    {
+      "line": 18750,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظالموں"
+    },
+    {
+      "line": 18980,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مظاہر"
+    },
+    {
+      "line": 18981,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "معاوضہ"
+    },
+    {
+      "line": 19164,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شافعی"
+    },
+    {
+      "line": 19192,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "قذافی"
+    },
+    {
+      "line": 19269,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ہضم"
+    },
+    {
+      "line": 19736,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "پارہ"
+    },
+    {
+      "line": 20083,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "بغض"
+    },
+    {
+      "line": 20187,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معذور"
+    },
+    {
+      "line": 20311,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "استدعا"
+    },
+    {
+      "line": 20463,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عبدالقادر"
+    },
+    {
+      "line": 20501,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "متوسط"
+    },
+    {
+      "line": 20721,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شعبان"
+    },
+    {
+      "line": 20864,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العین"
+    },
+    {
+      "line": 20910,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "تعظیم"
+    },
+    {
+      "line": 20998,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "فریضہ"
+    },
+    {
+      "line": 21139,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "اعظمی"
+    },
+    {
+      "line": 21307,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "گزرتی"
+    },
+    {
+      "line": 21422,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عصری"
+    },
+    {
+      "line": 21499,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "واعظ"
+    },
+    {
+      "line": 21759,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عقلی"
+    },
+    {
+      "line": 21795,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معاذ"
+    },
+    {
+      "line": 21862,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اعشاریہ"
+    },
+    {
+      "line": 21894,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "بدعت"
+    },
+    {
+      "line": 21999,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "طلحہ"
+    },
+    {
+      "line": 22019,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "متضاد"
+    },
+    {
+      "line": 22142,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العزیز"
+    },
+    {
+      "line": 22188,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حرمین"
+    },
+    {
+      "line": 22189,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حماد"
+    },
+    {
+      "line": 22205,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذرات"
+    },
+    {
+      "line": 22272,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معارف"
+    },
+    {
+      "line": 22372,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "الرٹ"
+    },
+    {
+      "line": 22479,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضوابط"
+    },
+    {
+      "line": 22493,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مستعمل"
+    },
+    {
+      "line": 22680,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "ثم"
+    },
+    {
+      "line": 22722,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "روضہ"
+    },
+    {
+      "line": 22843,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "پرعزم"
+    },
+    {
+      "line": 23076,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضامن"
+    },
+    {
+      "line": 23102,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مشتعل"
+    },
+    {
+      "line": 23104,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "ممانعت"
+    },
+    {
+      "line": 23153,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "وعظ"
+    },
+    {
+      "line": 23251,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "بذات"
+    },
+    {
+      "line": 23353,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "صل"
+    },
+    {
+      "line": 23497,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "الفضل"
+    },
+    {
+      "line": 23607,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عضب"
+    },
+    {
+      "line": 23620,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "مصلح"
+    },
+    {
+      "line": 23916,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عشرہ"
+    },
+    {
+      "line": 23947,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "مرحومہ"
+    },
+    {
+      "line": 23998,
+      "reason": "aspiration on unsupported consonant",
+      "word": "ننھے"
+    },
+    {
+      "line": 24366,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العلوم"
+    },
+    {
+      "line": 24534,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معاشرت"
+    },
+    {
+      "line": 24634,
+      "reason": "unsupported IPA symbol 'ɚ'",
+      "word": "اسکالر"
+    },
+    {
+      "line": 24712,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظہر"
+    },
+    {
+      "line": 24746,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مدنظر"
+    },
+    {
+      "line": 25026,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شفاعت"
+    },
+    {
+      "line": 25082,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "متنبہ"
+    },
+    {
+      "line": 25095,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "موضع"
+    },
+    {
+      "line": 25582,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تنوع"
+    },
+    {
+      "line": 25830,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "حفظہ"
+    },
+    {
+      "line": 26226,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "الاضحی"
+    },
+    {
+      "line": 26278,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حلیف"
+    },
+    {
+      "line": 26290,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "دفعات"
+    },
+    {
+      "line": 26323,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "سعی"
+    },
+    {
+      "line": 26357,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شعلہ"
+    },
+    {
+      "line": 26396,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عقد"
+    },
+    {
+      "line": 26462,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معطلی"
+    },
+    {
+      "line": 26466,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "موعود"
+    },
+    {
+      "line": 26585,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "اکٹھی"
+    },
+    {
+      "line": 26611,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تعطیلات"
+    },
+    {
+      "line": 26637,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "دفع"
+    },
+    {
+      "line": 26806,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اعزازی"
+    },
+    {
+      "line": 26943,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضابطے"
+    },
+    {
+      "line": 26974,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معزول"
+    },
+    {
+      "line": 27088,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العباد"
+    },
+    {
+      "line": 27204,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "خضر"
+    },
+    {
+      "line": 27225,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "رحلت"
+    },
+    {
+      "line": 27280,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مضافات"
+    },
+    {
+      "line": 27411,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "امنگوں"
+    },
+    {
+      "line": 27450,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تعطل"
+    },
+    {
+      "line": 27534,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مطیع"
+    },
+    {
+      "line": 27623,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اعصاب"
+    },
+    {
+      "line": 27721,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تعزیرات"
+    },
+    {
+      "line": 28058,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "فصیح"
+    },
+    {
+      "line": 28084,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "مدح"
+    },
+    {
+      "line": 28087,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مناظرہ"
+    },
+    {
+      "line": 28197,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "الصلوۃ"
+    },
+    {
+      "line": 28376,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "زنانہ"
+    },
+    {
+      "line": 28413,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "طباعت"
+    },
+    {
+      "line": 28420,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عبدالحق"
+    },
+    {
+      "line": 28465,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معالج"
+    },
+    {
+      "line": 28589,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الرحمہ"
+    },
+    {
+      "line": 28590,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العمل"
+    },
+    {
+      "line": 28706,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "متعدی"
+    },
+    {
+      "line": 28717,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "ملعون"
+    },
+    {
+      "line": 28812,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "احمر"
+    },
+    {
+      "line": 28819,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العابدین"
+    },
+    {
+      "line": 28864,
+      "reason": "unsupported IPA symbol 'ː'",
+      "word": "براعظم"
+    },
+    {
+      "line": 29088,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "نافع"
+    },
+    {
+      "line": 29203,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "افسردہ"
+    },
+    {
+      "line": 29315,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "فعالیت"
+    },
+    {
+      "line": 29559,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مضافاتی"
+    },
+    {
+      "line": 29904,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "نعتیہ"
+    },
+    {
+      "line": 29962,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "الارض"
+    },
+    {
+      "line": 30152,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضیاع"
+    },
+    {
+      "line": 30153,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظریفی"
+    },
+    {
+      "line": 30186,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مدافعت"
+    },
+    {
+      "line": 30192,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معرکے"
+    },
+    {
+      "line": 30298,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "پیالہ"
+    },
+    {
+      "line": 30438,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "صریح"
+    },
+    {
+      "line": 30478,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معززین"
+    },
+    {
+      "line": 30689,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "عریض"
+    },
+    {
+      "line": 30725,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مرجع"
+    },
+    {
+      "line": 30835,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "استعارہ"
+    },
+    {
+      "line": 31043,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "قطعہ"
+    },
+    {
+      "line": 31060,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مانع"
+    },
+    {
+      "line": 31067,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مصرع"
+    },
+    {
+      "line": 31068,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "معاوضے"
+    },
+    {
+      "line": 31069,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معرض"
+    },
+    {
+      "line": 31265,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "حیض"
+    },
+    {
+      "line": 31307,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شرع"
+    },
+    {
+      "line": 31316,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظریف"
+    },
+    {
+      "line": 31319,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عظام"
+    },
+    {
+      "line": 31347,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "مصنفہ"
+    },
+    {
+      "line": 31452,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "المسیح"
+    },
+    {
+      "line": 31534,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "حذیفہ"
+    },
+    {
+      "line": 31607,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظلمت"
+    },
+    {
+      "line": 31627,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "قناعت"
+    },
+    {
+      "line": 31652,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "معظمہ"
+    },
+    {
+      "line": 31653,
+      "reason": "unsupported IPA symbol 'ː'",
+      "word": "معلوماتی"
+    },
+    {
+      "line": 31835,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العلم"
+    },
+    {
+      "line": 31881,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "تصحیح"
+    },
+    {
+      "line": 31914,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذرے"
+    },
+    {
+      "line": 32134,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "الٹنے"
+    },
+    {
+      "line": 32213,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضعف"
+    },
+    {
+      "line": 32289,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "نص"
+    },
+    {
+      "line": 32345,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "پہرہ"
+    },
+    {
+      "line": 32587,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "غلاظت"
+    },
+    {
+      "line": 32626,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معلی"
+    },
+    {
+      "line": 32912,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "سماع"
+    },
+    {
+      "line": 32992,
+      "reason": "unsupported IPA symbol 'ʧ'",
+      "word": "لنچ"
+    },
+    {
+      "line": 33004,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ملازمتیں"
+    },
+    {
+      "line": 33061,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "نعم"
+    },
+    {
+      "line": 33304,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شارع"
+    },
+    {
+      "line": 33321,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضخیم"
+    },
+    {
+      "line": 33323,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "عذر"
+    },
+    {
+      "line": 33326,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عم"
+    },
+    {
+      "line": 33371,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "متعہ"
+    },
+    {
+      "line": 33667,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عند"
+    },
+    {
+      "line": 33781,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "استعماری"
+    },
+    {
+      "line": 33824,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تعامل"
+    },
+    {
+      "line": 34096,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "اورنگی"
+    },
+    {
+      "line": 34412,
+      "reason": "aspiration on unsupported consonant",
+      "word": "ننھی"
+    },
+    {
+      "line": 34540,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العاص"
+    },
+    {
+      "line": 34572,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حنفیہ"
+    },
+    {
+      "line": 34669,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مضطرب"
+    },
+    {
+      "line": 34672,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معشوق"
+    },
+    {
+      "line": 34767,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العرب"
+    },
+    {
+      "line": 34838,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "زہد"
+    },
+    {
+      "line": 34888,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "مصحف"
+    },
+    {
+      "line": 34892,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معترف"
+    },
+    {
+      "line": 35088,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "جماع"
+    },
+    {
+      "line": 35183,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عز"
+    },
+    {
+      "line": 35308,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "ہدیہ"
+    },
+    {
+      "line": 35319,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الحفیظ"
+    },
+    {
+      "line": 35324,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العربیہ"
+    },
+    {
+      "line": 35325,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "المذاہب"
+    },
+    {
+      "line": 35463,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "زعم"
+    },
+    {
+      "line": 35768,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العظیم"
+    },
+    {
+      "line": 35788,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "بدعات"
+    },
+    {
+      "line": 35885,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عبدالمطلب"
+    },
+    {
+      "line": 35907,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معیت"
+    },
+    {
+      "line": 36121,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذو"
+    },
+    {
+      "line": 36326,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اشعری"
+    },
+    {
+      "line": 36329,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "افضال"
+    },
+    {
+      "line": 36331,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "الدعوۃ"
+    },
+    {
+      "line": 36339,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "انٹی"
+    },
+    {
+      "line": 36431,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "تواضع"
+    },
+    {
+      "line": 36471,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حا"
+    },
+    {
+      "line": 36563,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شعلوں"
+    },
+    {
+      "line": 36602,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "غذر"
+    },
+    {
+      "line": 36616,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "فیوض"
+    },
+    {
+      "line": 36827,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اعلامیے"
+    },
+    {
+      "line": 36843,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "اٹوٹ"
+    },
+    {
+      "line": 36901,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذوالحجہ"
+    },
+    {
+      "line": 36902,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذوالقرنین"
+    },
+    {
+      "line": 36912,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "ساعت"
+    },
+    {
+      "line": 37020,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "نحو"
+    },
+    {
+      "line": 37142,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "حضر"
+    },
+    {
+      "line": 37229,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظفراللہ"
+    },
+    {
+      "line": 37243,
+      "reason": "unsupported IPA symbol 'ʧ'",
+      "word": "فرنچ"
+    },
+    {
+      "line": 37490,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "صحاح"
+    },
+    {
+      "line": 37497,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "عارضہ"
+    },
+    {
+      "line": 37682,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "بادامی"
+    },
+    {
+      "line": 37800,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذکی"
+    },
+    {
+      "line": 37936,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "محظوظ"
+    },
+    {
+      "line": 38016,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "نظربند"
+    },
+    {
+      "line": 38250,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "زعیم"
+    },
+    {
+      "line": 38287,
+      "reason": "unsupported IPA symbol 'ʤ'",
+      "word": "مروج"
+    },
+    {
+      "line": 38376,
+      "reason": "unsupported IPA symbol 'θ'",
+      "word": "الزبتھ"
+    },
+    {
+      "line": 38483,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عذرا"
+    },
+    {
+      "line": 38671,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "البقیع"
+    },
+    {
+      "line": 38677,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "انٹرفیس"
+    },
+    {
+      "line": 38787,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "حفظان"
+    },
+    {
+      "line": 38852,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضرار"
+    },
+    {
+      "line": 38880,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معیشتوں"
+    },
+    {
+      "line": 38935,
+      "reason": "unsupported IPA symbol '̯'",
+      "word": "کوے"
+    },
+    {
+      "line": 39094,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حلیمہ"
+    },
+    {
+      "line": 39193,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عبدالملک"
+    },
+    {
+      "line": 39259,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مرقع"
+    },
+    {
+      "line": 39445,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "الصباح"
+    },
+    {
+      "line": 39483,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "بعینہ"
+    },
+    {
+      "line": 39504,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "تضادات"
+    },
+    {
+      "line": 39744,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الفتح"
+    },
+    {
+      "line": 39856,
+      "reason": "unsupported IPA symbol 'ː̃'",
+      "word": "صفیں"
+    },
+    {
+      "line": 39869,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "غوطہ"
+    },
+    {
+      "line": 39884,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معتزلہ"
+    },
+    {
+      "line": 39920,
+      "reason": "unsupported IPA symbol 'ʧ'",
+      "word": "پنچ"
+    },
+    {
+      "line": 39986,
+      "reason": "unsupported IPA symbol 'ː'",
+      "word": "الکبیر"
+    },
+    {
+      "line": 40066,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "رافع"
+    },
+    {
+      "line": 40072,
+      "reason": "unsupported IPA symbol 'ː'",
+      "word": "ریوڑ"
+    },
+    {
+      "line": 40134,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مبعوث"
+    },
+    {
+      "line": 40219,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اعراب"
+    },
+    {
+      "line": 40220,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العنان"
+    },
+    {
+      "line": 40221,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "المثل"
+    },
+    {
+      "line": 40287,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تعصبات"
+    },
+    {
+      "line": 40354,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظرافت"
+    },
+    {
+      "line": 40359,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "قمع"
+    },
+    {
+      "line": 40375,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "مسح"
+    },
+    {
+      "line": 40380,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مطبع"
+    },
+    {
+      "line": 40436,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "نعش"
+    },
+    {
+      "line": 40507,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "الذین"
+    },
+    {
+      "line": 40607,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تبع"
+    },
+    {
+      "line": 40781,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "لعاب"
+    },
+    {
+      "line": 40788,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "لگژری"
+    },
+    {
+      "line": 40791,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "متحمل"
+    },
+    {
+      "line": 40794,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مدعیت"
+    },
+    {
+      "line": 40894,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "نزد"
+    },
+    {
+      "line": 41170,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذوالجلال"
+    },
+    {
+      "line": 41182,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "سعیدہ"
+    },
+    {
+      "line": 41237,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مناظرے"
+    },
+    {
+      "line": 41363,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "انچیف"
+    },
+    {
+      "line": 41555,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ابوظہبی"
+    },
+    {
+      "line": 41567,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العقیدہ"
+    },
+    {
+      "line": 41640,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حنین"
+    },
+    {
+      "line": 41731,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظن"
+    },
+    {
+      "line": 41767,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مجتمع"
+    },
+    {
+      "line": 41768,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مستفیض"
+    },
+    {
+      "line": 41770,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "ممدوح"
+    },
+    {
+      "line": 41773,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "منعکس"
+    },
+    {
+      "line": 41798,
+      "reason": "aspiration on unsupported consonant",
+      "word": "ننھا"
+    },
+    {
+      "line": 41881,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "امنگ"
+    },
+    {
+      "line": 41952,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عود"
+    },
+    {
+      "line": 41961,
+      "reason": "unsupported IPA symbol 'ː'",
+      "word": "فرج"
+    },
+    {
+      "line": 42083,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "النظر"
+    },
+    {
+      "line": 42149,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "اٹ"
+    },
+    {
+      "line": 42223,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تعلم"
+    },
+    {
+      "line": 42286,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حبیبہ"
+    },
+    {
+      "line": 42287,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حریری"
+    },
+    {
+      "line": 42305,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "خشوع"
+    },
+    {
+      "line": 42362,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "سوریہ"
+    },
+    {
+      "line": 42441,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عبث"
+    },
+    {
+      "line": 42452,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عیوب"
+    },
+    {
+      "line": 42505,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "متعصبانہ"
+    },
+    {
+      "line": 42552,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مکعب"
+    },
+    {
+      "line": 42587,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "وضاحتی"
+    },
+    {
+      "line": 42787,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "جامعۃ"
+    },
+    {
+      "line": 42890,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "قطعات"
+    },
+    {
+      "line": 42900,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "متعلقین"
+    },
+    {
+      "line": 42901,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "مثلث"
+    },
+    {
+      "line": 42981,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الاحرار"
+    },
+    {
+      "line": 42984,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "العصر"
+    },
+    {
+      "line": 42987,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الفلاح"
+    },
+    {
+      "line": 43014,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "بغرض"
+    },
+    {
+      "line": 43057,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "زمرد"
+    },
+    {
+      "line": 43092,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عضلات"
+    },
+    {
+      "line": 43126,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مصعب"
+    },
+    {
+      "line": 43127,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معہ"
+    },
+    {
+      "line": 43237,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "استعارے"
+    },
+    {
+      "line": 43244,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الحمید"
+    },
+    {
+      "line": 43247,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "المعارف"
+    },
+    {
+      "line": 43371,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "زعفرانی"
+    },
+    {
+      "line": 43414,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضمانتیں"
+    },
+    {
+      "line": 43425,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "غزوات"
+    },
+    {
+      "line": 43456,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مرصع"
+    },
+    {
+      "line": 43459,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مضمرات"
+    },
+    {
+      "line": 43461,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معروضی"
+    },
+    {
+      "line": 43637,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حارثہ"
+    },
+    {
+      "line": 43728,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مفعول"
+    },
+    {
+      "line": 43867,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "النوع"
+    },
+    {
+      "line": 43927,
+      "reason": "unsupported IPA symbol 'ː'",
+      "word": "جگری"
+    },
+    {
+      "line": 44079,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "الجامع"
+    },
+    {
+      "line": 44102,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "انصر"
+    },
+    {
+      "line": 44359,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "شارح"
+    },
+    {
+      "line": 44388,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظرفی"
+    },
+    {
+      "line": 44389,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "عارضے"
+    },
+    {
+      "line": 44463,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "موضوعاتی"
+    },
+    {
+      "line": 44696,
+      "reason": "unsupported IPA symbol 'ɚ'",
+      "word": "اسکالرشپ"
+    },
+    {
+      "line": 44744,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "تودہ"
+    },
+    {
+      "line": 44887,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "ودیعت"
+    },
+    {
+      "line": 44958,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اعلام"
+    },
+    {
+      "line": 45034,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "ربع"
+    },
+    {
+      "line": 45093,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "فعلی"
+    },
+    {
+      "line": 45163,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "وقیع"
+    },
+    {
+      "line": 45239,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العالم"
+    },
+    {
+      "line": 45288,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تعزیر"
+    },
+    {
+      "line": 45301,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "جمعۃ"
+    },
+    {
+      "line": 45332,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "سبع"
+    },
+    {
+      "line": 45352,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضر"
+    },
+    {
+      "line": 45368,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "فاضلہ"
+    },
+    {
+      "line": 45401,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "نظاروں"
+    },
+    {
+      "line": 45402,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "نظربندی"
+    },
+    {
+      "line": 45459,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "استعارات"
+    },
+    {
+      "line": 45479,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "اڑتیس"
+    },
+    {
+      "line": 45558,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذبیح"
+    },
+    {
+      "line": 45608,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "غضبناک"
+    },
+    {
+      "line": 45798,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "تعدیل"
+    },
+    {
+      "line": 45880,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عبدالصمد"
+    },
+    {
+      "line": 45889,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "غیظ"
+    },
+    {
+      "line": 45908,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مستعدی"
+    },
+    {
+      "line": 45912,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "منفعت"
+    },
+    {
+      "line": 45913,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مواخذہ"
+    },
+    {
+      "line": 45953,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "وداع"
+    },
+    {
+      "line": 46049,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اسعد"
+    },
+    {
+      "line": 46062,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "المعانی"
+    },
+    {
+      "line": 46095,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "اکھٹی"
+    },
+    {
+      "line": 46113,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "بعل"
+    },
+    {
+      "line": 46231,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "خلع"
+    },
+    {
+      "line": 46274,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذمی"
+    },
+    {
+      "line": 46281,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "رعونت"
+    },
+    {
+      "line": 46309,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "سامع"
+    },
+    {
+      "line": 46493,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مراجع"
+    },
+    {
+      "line": 46495,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "مضطر"
+    },
+    {
+      "line": 46499,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "منافقانہ"
+    },
+    {
+      "line": 46554,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "نعوذ"
+    },
+    {
+      "line": 46814,
+      "reason": "unsupported IPA symbol 'ː'",
+      "word": "بھنڈی"
+    },
+    {
+      "line": 46909,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "قزح"
+    },
+    {
+      "line": 46945,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مطالعات"
+    },
+    {
+      "line": 47108,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العربی"
+    },
+    {
+      "line": 47128,
+      "reason": "unsupported IPA symbol 'ɚ'",
+      "word": "بالرز"
+    },
+    {
+      "line": 47193,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذاتیات"
+    },
+    {
+      "line": 47259,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظہرانے"
+    },
+    {
+      "line": 47403,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "الاوسط"
+    },
+    {
+      "line": 47404,
+      "reason": "unsupported IPA symbol 'ɫ'",
+      "word": "الحمداللہ"
+    },
+    {
+      "line": 47406,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الضحی"
+    },
+    {
+      "line": 47450,
+      "reason": "aspiration on unsupported consonant",
+      "word": "تیرھویں"
+    },
+    {
+      "line": 47495,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "ساہتیہ"
+    },
+    {
+      "line": 47562,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "ناصح"
+    },
+    {
+      "line": 47565,
+      "reason": "unsupported IPA symbol '̪ˤ'",
+      "word": "نضر"
+    },
+    {
+      "line": 47625,
+      "reason": "unsupported IPA symbol '̯'",
+      "word": "کنہیا"
+    },
+    {
+      "line": 47684,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "الجامعہ"
+    },
+    {
+      "line": 47687,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العارفین"
+    },
+    {
+      "line": 47733,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "تریسٹھ"
+    },
+    {
+      "line": 47764,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "خلعت"
+    },
+    {
+      "line": 47777,
+      "reason": "unsupported IPA symbol 'ᵊ'",
+      "word": "راشٹر"
+    },
+    {
+      "line": 47842,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضابطگی"
+    },
+    {
+      "line": 47847,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ظنی"
+    },
+    {
+      "line": 47876,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معجزانہ"
+    },
+    {
+      "line": 47997,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اشعر"
+    },
+    {
+      "line": 47998,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اعرابی"
+    },
+    {
+      "line": 48079,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "جمعتہ"
+    },
+    {
+      "line": 48080,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "جمیع"
+    },
+    {
+      "line": 48169,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضابطوں"
+    },
+    {
+      "line": 48170,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ضایع"
+    },
+    {
+      "line": 48203,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مرعوب"
+    },
+    {
+      "line": 48255,
+      "reason": "aspiration on unsupported consonant",
+      "word": "پندرھویں"
+    },
+    {
+      "line": 48325,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "البحر"
+    },
+    {
+      "line": 48327,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الحروف"
+    },
+    {
+      "line": 48328,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الحمرا"
+    },
+    {
+      "line": 48329,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العقل"
+    },
+    {
+      "line": 48406,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ذوی"
+    },
+    {
+      "line": 48407,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "رباعیات"
+    },
+    {
+      "line": 48584,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "اسمگل"
+    },
+    {
+      "line": 48585,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "الاعلان"
+    },
+    {
+      "line": 48697,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "شرعا"
+    },
+    {
+      "line": 48708,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "عد"
+    },
+    {
+      "line": 48736,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معاندانہ"
+    },
+    {
+      "line": 48737,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معتصم"
+    },
+    {
+      "line": 48815,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "کھٹے"
+    },
+    {
+      "line": 48869,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "الاعظم"
+    },
+    {
+      "line": 48873,
+      "reason": "unsupported IPA symbol 'ˤ'",
+      "word": "الصبح"
+    },
+    {
+      "line": 48874,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "العمر"
+    },
+    {
+      "line": 48881,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "المعجم"
+    },
+    {
+      "line": 48919,
+      "reason": "unsupported IPA symbol 'ʌ'",
+      "word": "اٹکا"
+    },
+    {
+      "line": 48940,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "بدظن"
+    },
+    {
+      "line": 49042,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حفص"
+    },
+    {
+      "line": 49043,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "حم"
+    },
+    {
+      "line": 49164,
+      "reason": "unsupported IPA symbol '͡ʃ'",
+      "word": "سٹرکچر"
+    },
+    {
+      "line": 49257,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "لعین"
+    },
+    {
+      "line": 49339,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "نضیر"
+    },
+    {
+      "line": 49401,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "ٹھہرتا"
+    },
+    {
+      "line": 49604,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الرحمۃ"
+    },
+    {
+      "line": 49746,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "رکعات"
+    },
+    {
+      "line": 49747,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "رکعتیں"
+    },
+    {
+      "line": 49751,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "زرخیزی"
+    },
+    {
+      "line": 49804,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "قانع"
+    },
+    {
+      "line": 49826,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "مراجعت"
+    },
+    {
+      "line": 49827,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "معالجین"
+    },
+    {
+      "line": 49831,
+      "reason": "unsupported IPA symbol '̪'",
+      "word": "موضوعی"
+    },
+    {
+      "line": 49951,
+      "reason": "unsupported IPA symbol 'ʕ'",
+      "word": "اعراف"
+    },
+    {
+      "line": 49957,
+      "reason": "unsupported IPA symbol 'ħ'",
+      "word": "الحدید"
+    }
+  ],
+  "source_words": 50000,
+  "wordlist": {
+    "name": "wordlist.tsv",
+    "sha256": "80664db5283cc398504e2d2ff5271fd7702b041b3e7f3813b10b137b96a7cd3a"
+  }
+}

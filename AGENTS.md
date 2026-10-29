@@ -23,6 +23,8 @@ nodejs/src/             TypeScript API (index.ts, Script.ts, Option.ts)
 nodejs/test/            Node.js/Jest test suite
 js/                     WASM JS build consumed by nodejs/
 scripts/                Build, release, and maintenance commands; JSON files are canonical inputs
+wordlists/<script>/     One native→IPA wordlist.tsv per source script
+lexicons/               Compiled pronunciation packs and technical reports
 scripts/python/         Shared code-generation logic for script, option, and trie tables
 scripts/reader_data.json Canonical accents, exclusive symbols, Tamil prefixes
 scripts/tests/          Regression tests for maintenance commands
@@ -41,6 +43,8 @@ Makefile                Top-level build, test, and publish targets
 - **Run native performance benchmark**: `make bench`
 - **Run isolated shared-reader lookup benchmark**: `make bench-lookup`
 - **Probe lookup metadata allocations (Linux/glibc)**: `make bench-lookup-alloc-linux`
+- **Compile pronunciation lexicons**: `make lexicons`
+- **Check lexicon reproducibility**: `make check-lexicons`
 - **Regenerate script/reader data and enums**: `python3 scripts/generate_headers.py`
 - **Run per-call latency benchmark**: `make bench-short` (includes returned-string destruction)
 - **Repeat short-call benchmark for stable latency claims**: `make bench-short-repeat` (5 full runs by default; override with `PERF_REPEATS`; optional Linux pinning with `PERF_CPU`)
@@ -121,7 +125,7 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - Windows `inditrans.dll` (x86-64) is cross-compiled from Linux using MinGW-w64 (`x86_64-w64-mingw32-g++`)
   via `scripts/cmake/mingw64.cmake` (`make dll`). Requires C++23 (MinGW GCC ≥ 13).
 - The public DLL ABI is strictly a C interface (`extern "C"`) exporting `transliterate`,
-  `isScriptSupported`, and `releaseBuffer`. No C++ ABI types (`std::string`, STL containers, exceptions)
+  `transliterateUrduWithLexiconData`, `isScriptSupported`, and `releaseBuffer`. No C++ ABI types (`std::string`, STL containers, exceptions)
   cross the boundary, guaranteeing compatibility across compilers (MinGW, MSVC) and Dart FFI.
 - The Windows DLL is linked with `-static -static-libgcc -static-libstdc++` to eliminate MinGW
   support-runtime DLL dependencies (`libstdc++-6.dll`, `libgcc_s_seh-1.dll`, `libwinpthread-1.dll`).
@@ -178,6 +182,7 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - Flutter package usage: [`flutter/README.md`](flutter/README.md)
 - Node.js package usage: [`nodejs/README.md`](nodejs/README.md)
 - Browser demo usage and tests: [`demo/README.md`](demo/README.md)
+- Lexicon input contract and runtime: [`docs/lexicons.md`](docs/lexicons.md)
 - Maintenance scripts and test organization: [`scripts/README.md`](scripts/README.md)
 - Engine internals, pipeline, data structures: [`ARCHITECTURE.md`](ARCHITECTURE.md)
 - Performance baseline and reproduction: [`docs/performance.md`](docs/performance.md)

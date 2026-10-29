@@ -183,7 +183,7 @@ make dll
 - **Target**: Windows x86-64 (`inditrans.dll`), copied to `flutter/example.dart/inditrans.dll`.
 - **Toolchain**: Cross-compiled using MinGW-w64 (`x86_64-w64-mingw32-g++`) with CMake toolchain `scripts/cmake/mingw64.cmake`.
 - **Language standard**: Enforces C++23 internally (GCC ≥ 13).
-- **Public ABI**: Plain C interface (`extern "C"`) exposing `transliterate`, `isScriptSupported`, and `releaseBuffer`. No C++ types (`std::string`, STL containers, exceptions) cross the boundary, ensuring full compatibility with MSVC callers, Dart FFI, and other runtimes.
+- **Public ABI**: Plain C interface (`extern "C"`) exposing `transliterate`, `transliterateUrduWithLexiconData`, `isScriptSupported`, and `releaseBuffer`. No C++ types (`std::string`, STL containers, exceptions) cross the boundary, ensuring full compatibility with MSVC callers, Dart FFI, and other runtimes.
 - **Runtime dependencies**: Linked with `-static-libgcc -static-libstdc++` to eliminate MinGW C++ runtime DLL dependencies (`libstdc++-6.dll`, `libgcc_s_seh-1.dll`).
 
 ## Documentation
@@ -197,4 +197,25 @@ make dll
 
 ## License
 
-[MIT](LICENSE)
+Inditrans source code is [MIT](LICENSE).
+
+### Urdu pronunciation (on by default; wordlist-driven)
+
+Urdu → Indlish now recovers vowels for **a configurable wordlist** without
+an extra flag or downloadable asset. The packed IUL2 corpus is embedded
+in native libraries and WASM, with its index initialized lazily on the first
+Urdu conversion. Words absent from the dictionary fall back to literal
+transliteration; no sentence-level homograph disambiguation is claimed.
+
+```sh
+make out/inditrans
+./out/inditrans -f urdu -t indlish 'کتاب قلم'
+# kitAb qalam
+```
+
+Use `-o DisableInference` for deterministic literal Urdu letter mapping,
+or `--urdu-lexicon path/to/alternative.iul` to override the bundled
+dictionary for CLI conversions. In the browser demo, **Urdu pronunciation is
+on by default**, and the existing **Disable inference** option restores
+literal output. The input is one native→IPA file at
+`wordlists/urdu/wordlist.tsv`. See [the generic lexicon interface](docs/lexicons.md).
