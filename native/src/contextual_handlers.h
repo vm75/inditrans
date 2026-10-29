@@ -39,7 +39,11 @@ public:
   /// If TargetScript is Tamil, appends a pulli (virama) to keep the nasal vowelless.
   template <ScriptType TargetScript, typename Writer>
   static void emit(const TokenUnitOrString& next, const ScriptWriterMap& map, Writer& writer) noexcept {
-    const size_t idx = inferNasalIndex(next);
+    size_t idx = inferNasalIndex(next);
+    if constexpr (TargetScript == ScriptType::Roman) {
+      if (map.isIndlish() && (idx == 4 || idx == 9) && canAssimilate(next))
+        idx = 19;
+    }
     writer.push(map.lookupChar(TokenType::Consonant, idx));
     if constexpr (TargetScript == ScriptType::Tamil) {
       writer.push(map.lookupChar(Virama));

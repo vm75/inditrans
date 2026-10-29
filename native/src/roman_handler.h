@@ -74,7 +74,12 @@ public:
   [[gnu::always_inline]] static inline void write(const TokenUnit& tokenUnit, const TokenUnitOrString& next,
       const ScriptWriterMap& map, TranslitOptions options, Writer& writer) noexcept {
     const auto& leadToken = tokenUnit.leadToken;
-    writer.push(map.lookupChar(leadToken.tokenType, leadToken.idx));
+    const bool shortenedNasal = map.isIndlish() && leadToken.tokenType == TokenType::Consonant
+        && (leadToken.idx == 4 || leadToken.idx == 9) && tokenUnit.vowelMark.idx == Diacritic_Virama
+        && tokenUnit.otherDiacritic.idx == InvalidToken && tokenUnit.accent.idx == InvalidToken
+        && next != endOfText && !HoldsString(next)
+        && GetTokenUnit(next).leadToken.tokenType == TokenType::Consonant;
+    writer.push(map.lookupChar(leadToken.tokenType, shortenedNasal ? 19 : leadToken.idx));
     if (leadToken.tokenType == TokenType::Consonant) {
       if (tokenUnit.vowelMark.idx == InvalidToken) {
         writer.push(map.lookupChar(TokenType::Vowel, Diacritic_Virama));

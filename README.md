@@ -64,13 +64,31 @@ Same-script conversion keeps the original punctuation. Symbol tables do not
 imply complete Unicode or native-language coverage.
 
 Unmapped characters are preserved, so output can contain source-script signs.
+Some readers use approximate equivalents when a character has no dedicated
+representation in the common transliteration tables:
+
+| Input | Reading used |
+|---|---|
+| Bengali/Assamese `ৎ` | Dead `ত` (`ত্`) |
+| Burmese `ည`, `ါ`, `ဿ`, `့` | `ဉ`, `ာ`, `သ္သ`, and `း` respectively; the tone distinction is lost |
+| Burmese `၌`, `၍`, `၎`, `၏` | Approximate expansions `နှိုက်`, `ရွေ`, `လည်း`, `ဧ`; context and pronunciation can differ |
+| Myanmar `ဢ ဨ ဳ ဴ ဵ` | Closest existing Burmese vowels and vowel marks; Mon and Shan distinctions may be lost |
+| Gurmukhi `ੲ`, `ੳ` and carrier-plus-vowel forms | Closest independent vowels; standalone carriers approximate `ਇ`, `ਉ` |
+| Telugu `ౚ`, `ౝ`; Kannada `ೝ` | `ఱ`, `న్`, `ನ್` respectively |
+| Khmer `ឣ ឤ ឨ ឪ ឲ` and `ឹ ឺ ួ ើ ឿ ៀ ឵` | Closest independent vowels, vowel sequences or signs; distinctions may be lost |
+| Thai `ฎ ด บ ฝ ฮ ใ ึ ื` | Closest consonants and vowel signs; vowel distinctions may be lost |
+
 The remaining work is tracked here:
 
+The [unmapped-character audit](docs/unmapped-characters.md) lists candidates,
+possible approximations, and implementation approaches for the audited blocks.
+
 - [Contextual symbols and repetition (#66)](https://github.com/vm75/inditrans/issues/66):
-  Burmese `၌ ၍ ၎ ၏`, Khmer `ៗ ៘`, and Thai `ๆ` need word/phrase expansion conventions.
+  Khmer `ៗ ៘` and Thai `ๆ` need word/phrase expansion conventions.
 - [Traditional numbers and fractions (#67)](https://github.com/vm75/inditrans/issues/67):
   Tamil `௰–௲`, Malayalam/Odia/Telugu fractions, Tibetan half digits, Khmer
-  divination numerals and Shan digits need numeric-system-specific treatment.
+  divination numerals need numeric-system-specific treatment. Shan digits map
+  to the corresponding 0–9 digit values.
 - [Specialist signs (#68)](https://github.com/vm75/inditrans/issues/68): currency,
   calendar/accounting, siddham/isshar, opening, ritual and astrological signs,
   plus remaining Urdu punctuation, need preservation or conversion policies.

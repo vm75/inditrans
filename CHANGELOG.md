@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.16.4]
+* Expand approximate script coverage, including Burmese, Thai, Khmer, Gurmukhi, Bengali, Assamese, Telugu and Kannada, and document remaining unmapped characters.
+* Render Indlish velar and palatal nasals as ng and ny outside consonant clusters.
+
 ## [0.16.3]
 * Support native punctuation, Tibetan syllable separators and abbreviation signs across scripts.
 * Use supported demo samples, verify sample and keyboard coverage against WASM, and document remaining symbol limitations.

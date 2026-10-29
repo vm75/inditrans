@@ -118,7 +118,7 @@
       },
       {
         "script": "indlish",
-        "text": "ksha tra jna shra"
+        "text": "ksha tra jnya shra"
       },
       {
         "script": "itrans",
@@ -1414,6 +1414,100 @@
     ]
   },
   {
+    "description": "Burmese alternate nya consonant",
+    "script": "burmese",
+    "text": "ဉ ည ညီ ည်",
+    "targets": [
+      { "script": "iso", "text": "ña ña ñī ñ" },
+      { "script": "indlish", "text": "nya nya nyI ny" }
+    ]
+  },
+  {
+    "description": "Burmese tall and regular aa vowel signs",
+    "script": "burmese",
+    "text": "ကာ ခါ",
+    "targets": [
+      { "script": "iso", "text": "kā khā" },
+      { "script": "indlish", "text": "kA khA" }
+    ]
+  },
+  {
+    "description": "Indlish distinguishes velar and palatal nasals",
+    "script": "devanagari",
+    "text": "ङ ञ ङि ञी ङ् ञ् न ङ्क ञ्च ङक ञच ङ् क ञ् च",
+    "targets": [
+      { "script": "indlish", "text": "nga nya ngi nyI ng ny na nka ncha ngaka nyacha ng ka ny cha" }
+    ]
+  },
+  {
+    "description": "Indlish shortens Burmese nasals before consonants",
+    "script": "burmese",
+    "text": "င်က ည်စ ငက ညစ",
+    "targets": [
+      { "script": "indlish", "text": "nka ncha ngaka nyacha" }
+    ]
+  },
+  {
+    "description": "Bengali khanda ta is read as dead ta",
+    "script": "bengali",
+    "text": "ৎ উৎ ত্",
+    "targets": [ { "script": "indlish", "text": "t ut t" }, { "script": "devanagari", "text": "त् उत् त्" } ]
+  },
+  {
+    "description": "Assamese khanda ta is read as dead ta",
+    "script": "assamese",
+    "text": "ৎ উৎ",
+    "targets": [ { "script": "indlish", "text": "t ut" } ]
+  },
+  {
+    "description": "Gurmukhi vowel carriers and sequences",
+    "script": "gurmukhi",
+    "text": "ੲ ੳ ੲਿ ੲੀ ੳੁ ੳੂ ੲੇ ਅੈ ੳੋ ਅੌ ਅਾ",
+    "targets": [ { "script": "indlish", "text": "i u i I u U E ai O au A" } ]
+  },
+  {
+    "description": "Telugu historical letters",
+    "script": "telugu",
+    "text": "ౚ ఱ ౝ న్",
+    "targets": [ { "script": "indlish", "text": "Ra Ra n n" } ]
+  },
+  {
+    "description": "Kannada nakaara pollu",
+    "script": "kannada",
+    "text": "ೝ ನ್",
+    "targets": [ { "script": "indlish", "text": "n n" } ]
+  },
+  {
+    "description": "Burmese great sa and tone mark approximations",
+    "script": "burmese",
+    "text": "ဿ သ္သ က့ ကး",
+    "targets": [ { "script": "indlish", "text": "ssa ssa kaḥ kaḥ" } ]
+  },
+  {
+    "description": "Thai additional letters and vowel approximations",
+    "script": "thai",
+    "text": "ฎ ด บ ฝ ฮ ใจ กึ กื",
+    "targets": [ { "script": "indlish", "text": "Da da ba fa ha chai ki kI" } ]
+  },
+  {
+    "description": "Khmer additional vowel approximations",
+    "script": "khmer",
+    "text": "ឣ ឤ ឨ ឪ ឲ កឹ កឺ កួ កើ កឿ កៀ ក឵",
+    "targets": [ { "script": "indlish", "text": "a A uka Uva O ki kI ku kE kA ki kA" } ]
+  },
+  {
+    "description": "Myanmar additional vowels",
+    "script": "burmese",
+    "text": "ဢ ဨ ကဳ ကဴ ကဵ",
+    "targets": [ { "script": "indlish", "text": "a E kI kO kE" } ]
+  },
+  {
+    "description": "Shan digits use the shared digit mappings",
+    "script": "burmese",
+    "text": "႐႑႒႓႔႕႖႗႘႙",
+    "targets": [ { "script": "indlish", "text": "0123456789" }, { "script": "devanagari", "text": "०१२३४५६७८९" } ]
+  },
+  {
     "description": "Burmese medial consonants",
     "script": "burmese",
     "text": "မြန်မာ ကျ ကြ ကွ ကှ",
@@ -2493,13 +2587,13 @@
     ]
   },
   {
-    "description": "Deferred symbols remain preserved: burmese",
+    "description": "Burmese contextual symbols use approximate expansions",
     "script": "burmese",
     "text": "က၌ က၍ က၎ က၏",
     "targets": [
       {
         "script": "iast",
-        "text": "ka၌ ka၍ ka၎ ka၏"
+        "text": "kanhiuk karve kalañḥ kae"
       }
     ]
   },
