@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
   <meta name="color-scheme" content="light dark">
+  <meta name="inditrans-version" content="development">
   <script id="demo-theme">
     (() => {
       const storageKey = 'inditrans-demo-theme';
@@ -2971,7 +2972,7 @@
         document.getElementById('demo-fonts').href = 'https://fonts.googleapis.com/css2?' + query + '&display=swap';
       }
 
-      const ENGINE_VERSION = 'v0.16.5';
+      const ENGINE_VERSION = document.querySelector('meta[name="inditrans-version"]').content;
       const DEMO_STORAGE_KEY = 'inditrans-demo-state-v1';
       function readDemoState() {
         try {

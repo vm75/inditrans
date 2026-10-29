@@ -143,10 +143,11 @@ content and a visible close button. The desktop script keyboard stays hidden on 
 
 ## Engine version
 
-The version badge shows `v0.16.4`. The page loads the matching engine assets
-shipped with its checkout/site, with the version in asset URLs to refresh browser
-caches. Rebuild with `make wasm` after changing mappings or native code. Pages stages `demo/` and the
-matching `js/` assets together; deploy both when updating output conventions.
+The version badge and engine asset URLs use the package version from
+`flutter/pubspec.yaml`, injected during the GitHub Pages deployment. A local
+checkout shows `development`. Rebuild with `make wasm` after changing mappings
+or native code. Pages stages `demo/` and the matching `js/` assets together;
+deploy both when updating output conventions.
 
 ## ASCII input
 

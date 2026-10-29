@@ -7,6 +7,7 @@ on:
       - 'demo/**'
       - 'js/public/inditrans.js'
       - 'js/inditrans-standalone.js'
+      - 'flutter/pubspec.yaml'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -33,6 +34,27 @@ jobs:
           cp -R demo "$RUNNER_TEMP/site/demo"
           cp js/public/inditrans.js "$RUNNER_TEMP/site/js/public/"
           cp js/inditrans-standalone.js "$RUNNER_TEMP/site/js/"
+          python3 - "$RUNNER_TEMP/site/demo/index.html" flutter/pubspec.yaml <<'PY'
+          import re
+          import sys
+          from pathlib import Path
+
+          page = Path(sys.argv[1])
+          manifest = Path(sys.argv[2])
+          version_match = re.search(r"(?m)^version:\s*(\d+\.\d+\.\d+)\s*$", manifest.read_text(encoding="utf-8"))
+          if not version_match:
+              raise SystemExit(f"Could not read package version from {manifest}")
+          html, replacements = re.subn(
+              r'(<meta name="inditrans-version" content=")[^"]+(">)',
+              rf"\g<1>v{version_match.group(1)}\2",
+              page.read_text(encoding="utf-8"),
+              count=1,
+          )
+          if replacements != 1:
+              raise SystemExit(f"Expected one inditrans-version meta tag in {page}")
+          page.write_text(html, encoding="utf-8")
+          print(f"Injected demo engine version v{version_match.group(1)}")
+          PY
           printf '<!doctype html><meta http-equiv="refresh" content="0;url=demo/"><a href="demo/">Inditrans demo</a>\n' > "$RUNNER_TEMP/site/index.html"
       - uses: actions/upload-pages-artifact@v3
         with:
