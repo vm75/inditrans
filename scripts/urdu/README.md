@@ -54,6 +54,11 @@ python3 scripts/urdu/embed_lexicon.py --check
 make wasm
 ```
 
+For the checked-in experimental wordlist, you can instead run
+`make urdu-lexicon` to rebuild both native-embedded source and WASM, or
+`make check-urdu-lexicon` to detect stale data without modifying files.
+CI performs the latter check on every change.
+
 For your later curated shortlist, pass `--selection PATH` (one Urdu word per
 line), or `--limit N` to choose a fixed number of entries using the declared
 editorial priority. You can **replace both wordlist TSVs entirely** with your

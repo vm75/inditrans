@@ -95,6 +95,20 @@ $(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
 $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 	clang++ -std=c++23 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
+# Rebuild the optional default Urdu corpus from editable pronunciation wordlists.
+# These are source-neutral TSV inputs. Source rights travel with the data.
+URDU_WORDLISTS = scripts/urdu/wordlists/wikipron-candidates.tsv scripts/urdu/wordlists/editorial-defaults.tsv
+URDU_WORDLIST_ARGS = $(URDU_WORDLISTS) --version urdu-wordlist-experimental-2 --provenance 'WikiPron Urdu 2026 candidate plus Inditrans editorial defaults; see scripts/urdu/README.md' --license 'CC BY-SA 4.0 (Wiktionary-derived candidate data)' --out demo/urdu-pronunciation.iul --report scripts/urdu/wordlist-report.json
+.PHONY: urdu-lexicon check-urdu-lexicon
+urdu-lexicon:
+	python3 scripts/urdu/build_wordlist.py $(URDU_WORDLIST_ARGS)
+	python3 scripts/urdu/embed_lexicon.py
+	$(MAKE) wasm
+
+check-urdu-lexicon:
+	python3 scripts/urdu/build_wordlist.py $(URDU_WORDLIST_ARGS) --check
+	python3 scripts/urdu/embed_lexicon.py --check
+
 # Keep the C++-embedded pronunciation data in sync with its pinned IUL1 pack.
 $(NATIVE_SRC)/urdu_embedded_pack.h: demo/urdu-pronunciation.iul scripts/urdu/embed_lexicon.py
 	python3 scripts/urdu/embed_lexicon.py
