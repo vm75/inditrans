@@ -95,6 +95,10 @@ $(NATIVE_TEST): $(NATIVE_CPP) $(NATIVE_H) $(NATIVETEST_CC) $(NATIVETEST_H)
 $(NATIVE_CLI): $(NATIVE_CPP) $(NATIVE_H) $(NATIVE_DIR)/cli/main.cpp
 	clang++ -std=c++23 -fdiagnostics-color=always -O0 -g -I $(NATIVE_SRC) $(NATIVE_CPP) $(NATIVE_DIR)/cli/main.cpp -o $@
 
+# Keep the C++-embedded pronunciation data in sync with its pinned IUL1 pack.
+$(NATIVE_SRC)/urdu_embedded_pack.h: demo/urdu-pronunciation.iul scripts/urdu/embed_lexicon.py
+	python3 scripts/urdu/embed_lexicon.py
+
 ifeq ($(USE_CHECKED_IN_SCRIPT_DATA),0)
 $(NATIVE_SRC)/script_data.h: scripts/script_data.json scripts/reader_data.json scripts/options.json docs/extended-roman.txt scripts/generate_headers.py $(GENERATOR_UTILS)
 	python3 scripts/generate_headers.py
