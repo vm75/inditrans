@@ -51,9 +51,7 @@ const OPTION_DEFINITIONS = [
   { name: 'IgnoreVedicAccents', label: 'Ignore Vedic accents', description: 'Remove Vedic accents during conversion' },
   { name: 'RetainSpecialMarkers', label: 'Retain special markers', description: 'Keep markers used for non-standard characters' },
   { name: 'NoXMLTagHandling', label: 'Treat HTML/XML as text', description: 'Transliterate inside markup instead of preserving tags' },
-  { name: 'UrduPronunciation', label: 'Urdu pronunciation (experimental)', urduOnly: true,
-    description: 'Optional 4,252-word experimental WikiPron/Wiktextract lexicon; other words fall back to literal transliteration. Ambiguous words are not context-resolved.' },
-  { name: 'DisableInference', label: 'Disable inference', description: 'Disable contextual Tamil pronunciation and anusvara assimilation rules' }
+  { name: 'DisableInference', label: 'Disable inference', description: 'Use literal Urdu letters instead of built-in pronunciation, and disable contextual Tamil pronunciation and anusvara assimilation' }
 ];
 
 const DEMO_DEFAULTS = { sourceScript: 'indic', targetScript: 'indlish', skipStart: '##', skipEnd: '##' };
