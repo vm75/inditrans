@@ -7,7 +7,7 @@ import 'package:inditrans/inditrans.dart' as inditrans;
 import 'package:test/test.dart';
 
 // The shared test pack, encoded here because browser tests cannot use dart:io.
-const _pack = 'SVVMMfBUn2i1AAAAeyJ2ZXJzaW9uIjoidGVzdC0xIiwicHJvdmVuYW5jZSI6IkluZGl0cmFucyBwcm9qZWN0IHJlZ3Jlc3Npb24gZml4dHVyZTsgbm90IGEgcHJvZHVjdGlvbiBsZXhpY29uIiwic291cmNlX3NoYTI1NiI6ImM1M2E4MzhlY2ZhOTY1NTg2ZjFiZDU3MDE4YzdkZmJhMWQxNjUwY2M4YzUzMzJhNmJlNzQ3OTQxMDY1ZDczNDUifQEAAAAIAAEA2qnYqtin2KgDAAEAAv8BDwH/ARYA/w==';
+const _pack = 'SVVMMr5SuFGUAAAAeyJmb3JtYXQiOjIsInNjcmlwdCI6InVyZHUiLCJ3b3JkbGlzdCI6eyJuYW1lIjoidXJkdS10ZXN0LWxleGljb24udHN2Iiwic2hhMjU2IjoiZDU2MGIzY2Y1ZTMzNzA0MTc0YjQ1MGFlMzVlNDRjYWJjOWZhZjU1MGM5NTdhZmZmYjY3ZjBhYTNjMTA4YTgyZiJ9fVBMWDEEAAEAAAAC2KcC2KgC2KoC2qkAAAQACgAAAAMCAAEBAAMAFoGlgCyA';
 
 void main() {
   // tests/integration/dart_web_smoke.py serves the current build with CORS.
