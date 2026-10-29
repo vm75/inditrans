@@ -75,17 +75,16 @@ Noto Sans Grantha font. It replaces the former Tamil Extended option.
 **Urdu (Nastaliq)** uses `lang="ur"`, RTL direction, additional line spacing, and
 Noto Nastaliq Urdu with Noto Naskh Arabic fallback. Its font is downloaded rather
 than included in the ten-script Indic fallback. Mixed Indic excludes Urdu;
-select Urdu explicitly when converting it. The **Urdu pronunciation (experimental)** option in Conversion Options
-enables a separately loaded, 122,869-byte **experimental 4,252-entry**
-pronunciation pack at `demo/urdu-pronunciation.iul`. The corpus contains
-4,248 concordant WikiPron/Wiktextract entries plus four additional demo
-spellings; it is **not independently reviewed** and does not resolve
-sentence-context ambiguity. Unlisted words retain legacy literal
-transliteration. The option is off by default; `DisableInference` always
-forces the literal path. A corrupt/unavailable pack also falls back safely.
-The 452-byte `demo/urdu-example.iul` remains as a standalone five-word
-fixture. See [the reproducible build and source attribution](../scripts/urdu/README.md)
-and the [mapping review](../docs/phonetic-mappings.md).
+select Urdu explicitly when converting it. Urdu pronunciation is **always
+enabled** for words covered by the experimental 4,252-entry dictionary, which is
+compiled directly into the native and WASM engine. The demo no longer fetches
+a separate `.iul` file or requires a pronunciation checkbox. For strict
+orthographic transliteration, check **Disable inference**.
+
+The compact embedded corpus is derived from WikiPron/Wiktextract (Wiktionary
+contributors, **CC BY-SA 4.0**); it has not been independently reviewed.
+Unknown words retain literal fallback and homographs are not disambiguated
+by sentence context. See [attribution and reproduction steps](../scripts/urdu/README.md).
 
 **Theme** offers System, Light, and Dark. System follows your device’s appearance
 and updates automatically when it changes. Your choice is saved in this browser.
