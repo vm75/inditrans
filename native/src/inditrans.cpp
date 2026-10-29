@@ -13,6 +13,8 @@
 #include "type_defs.h"
 #include "utf.h"
 #include "reader_extension.h"
+#include "urdu_lexicon_pack.h"
+#include "urdu_embedded_pack.h"
 #include <array>
 #include <bit>
 #include <cassert>
@@ -404,6 +406,34 @@ bool transliterate_core(const std::string_view& input, const ScriptReaderMap& re
   return transliterate_dispatch<Sink, false, WithExtension>(input, readerMap, writerMap, options, sink, skipStart, skipEnd, extension);
 }
 
+/// For explicit Urdu input, use the compiled-in pronunciation dictionary
+/// unless inference is explicitly disabled. The original literal parser is
+/// preserved for unknown words and for the DisableInference option.
+///
+/// The compact IUL1 asset remains immutable in the binary. Its index is
+/// initialized only on the first eligible Urdu conversion, once per process;
+/// non-Urdu scripts never allocate or parse it.
+template <typename Sink>
+bool transliterateWithDefaultUrdu(std::string_view input, const ScriptReaderMap& readerMap,
+    const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink,
+    std::string_view skipStart, std::string_view skipEnd) noexcept {
+  if (options / TranslitOptions::DisableInference
+      && &readerMap == getScriptReaderMap("urdu")
+      && &writerMap != getScriptWriterMap("urdu")) {
+    static UrduLexiconPack pack;
+    static const bool valid = pack.load(std::span<const uint8_t>(
+        reinterpret_cast<const uint8_t*>(inditrans::embedded_urdu::pack),
+        static_cast<size_t>(inditrans::embedded_urdu::pack_size)));
+    if (valid) {
+      inditrans::handlers::UrduPronunciationReader reader(input, pack.lexicon());
+      auto extension = ReaderExtension::bind(reader);
+      return transliterate_core<Sink, true>(input, readerMap, writerMap,
+          options, sink, skipStart, skipEnd, &extension);
+    }
+  }
+  return transliterate_core(input, readerMap, writerMap, options, sink, skipStart, skipEnd);
+}
+
 /// When reading explicitly selected Tamil with superscripted disambiguation, do not
 /// additionally infer pronunciation or contextual nasals. Do not apply this to an
 /// 'indic' virtual source (which may mix Tamil and other scripts), or to output-only
@@ -480,7 +510,7 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
     return false;
   Utf8StringBuilder sink;
   sink.reserve(outputCapacity(input.length(), *readerMap, *writerMap));
-  if (!transliterate_core(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd)) {
+  if (!transliterateWithDefaultUrdu(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd)) {
     return false;
   }
   output.reset(sink.release());
@@ -536,7 +566,7 @@ bool transliterate(const std::string_view& input, const std::string_view& from, 
   // capacity could invalidate a borrowed input view before the reader starts.
   output.reserve(output.empty() ? outputCapacity(input.length(), *readerMap, *writerMap) : input.length() + 1);
   StdStringSink sink(output);
-  return transliterate_core(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd);
+  return transliterateWithDefaultUrdu(input, *readerMap, *writerMap, effectiveInferenceOptions(from, options), sink, skipStart, skipEnd);
 }
 
 /// Transliterates input and returns the result as a new std::string by value.
