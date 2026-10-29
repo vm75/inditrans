@@ -1,4 +1,5 @@
 name: Build expanded Urdu wordlist assets (temporary)
+# Re-run after correcting deterministic row-order regression assertion.
 
 on:
   push:
