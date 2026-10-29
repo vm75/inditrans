@@ -38,6 +38,24 @@ class PhoneticDataTest(unittest.TestCase):
         for text in ['ŭ','ê','ṃ','n̆','ẖ','ḫ','ĉ','ĉh','ṯ','r̆',"'",'ž','w','s̱','s̤','h̤','t̤','ʻ','ẕ','ż','ẓ']:
             with self.subTest(text=text): self.reading('iso',text)
 
+    def test_ipa_aliases_and_notation_keep_existing_sound_identities(self):
+        for text, kind, index in [
+            ('ʊ', 0, 4), ('i', 0, 2), ('ɐ', 0, 0), ('ɡ', 2, 2),
+            ('ɡʱ', 2, 3), ('d̪ʱ', 2, 18), ('dʒʱ', 2, 8),
+            ('tʃ', 2, 5), ('ts', 2, 50), ('dz', 2, 63),
+            ('aʊ', 0, 15), ('r̩ː', 0, 7), ('ɨ', 0, 20),
+            ('ð', 2, 17), ('v', 2, 28), ('̃', 3, 0),
+            ('.', 7, 2), ('ˈ', 7, 2), ('ˌ', 7, 2),
+            # Existing distinctions must survive the input aliases.
+            ('t', 2, 52), ('t̪', 2, 15), ('ɛː', 0, 21),
+        ]:
+            with self.subTest(text=text):
+                self.assertEqual(self.reading('ipa', text), [(kind, index)])
+        self.assertEqual(self.reading('ipa', 'tʃː'), [(2, 5), (1, 0), (2, 5)])
+        self.assertEqual(self.reading('ipa', 'ãː'), [(0, 1), (3, 0)])
+        self.assertEqual(self.reading('ipa', 'ãː'), [(0, 1), (3, 0)])
+        self.assertEqual(self.reading('ipa', 'ũ'), [(0, 4), (3, 0)])
+
     def test_invalid_alias_does_not_wrap_or_partially_resolve(self):
         for target in ['c:256','c:-1','c:64','does-not-exist','क?']:
             with self.subTest(target=target):

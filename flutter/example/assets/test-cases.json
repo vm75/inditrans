@@ -2629,5 +2629,116 @@
         "text": "௰௱௲"
       }
     ]
+  },
+  {
+    "description": "IPA short-u and syllable boundaries in the reported phrase",
+    "script": "ipa",
+    "text": "d̪eːɾ aː.jəd̪ d̪ʊ.ɾʊst̪ aː.jəd̪",
+    "targets": [
+      {
+        "script": "indlish",
+        "text": "dEr Ayad durust Ayad"
+      }
+    ]
+  },
+  {
+    "description": "IPA vowel variants attach as vowels rather than literal Latin text",
+    "script": "ipa",
+    "text": "ka kɐ kɑ ki kʊ kɨ kʉ kaɪ kai kaʊ kau kəʊ kr̩ kr̩ː kl̩ kl̩ː",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ka ka ka ki ku kŭ kŭ kai kai kau kau kau kr̥ kr̥̄ kl̥ kl̥̄"
+      },
+      {
+        "script": "devanagari",
+        "text": "क क क कि कु कु कु कै कै कौ कौ कौ कृ कॄ कॢ कॣ"
+      }
+    ]
+  },
+  {
+    "description": "IPA voiced aspirates and untied affricates",
+    "script": "ipa",
+    "text": "ɡa ɡʰa ɡʱa gʱa bʱa d̪ʱa ɖʱa ɽʱa tʃa tʃʰa dʒa dʒʱa d͡ʒʱa tsa tsʰa dza",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ga gha gha gha bha dha ḍha ṛha ca cha ja jha jha ĉa ĉha dza"
+      }
+    ]
+  },
+  {
+    "description": "IPA palatal and weakened Tamil consonants use existing approximations",
+    "script": "ipa",
+    "text": "ca ɟa ɕa t͡ɕa d͡ʑa ça ða βa va ɹa",
+    "targets": [
+      {
+        "script": "tamil",
+        "text": "ச ஜ ச ச ஜ க த ப வ ர"
+      }
+    ]
+  },
+  {
+    "description": "IPA stress and syllable boundaries are transparent to vowel assembly",
+    "script": "ipa",
+    "text": "ˈkaˌla kˈa k.a aː.ja ˈ.ˌ",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "कल क क आय "
+      }
+    ]
+  },
+  {
+    "description": "IPA length marks expand consonant gemination including affricates",
+    "script": "ipa",
+    "text": "akːa anːa atʃːa aɡːa alːa",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "akka aṉṉa acca agga alla"
+      },
+      {
+        "script": "tamil",
+        "text": "அக்க அன்ன அச்ச அக்க அல்ல"
+      }
+    ]
+  },
+  {
+    "description": "IPA nasal vowels use chandrabindu with either long-vowel mark order",
+    "script": "ipa",
+    "text": "kə̃ kʊ̃ kaː̃ kãː kãː kiː̃ kĩː kũ",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "कँ कुँ काँ काँ काँ कीँ कीँ कुँ"
+      },
+      {
+        "script": "urdu",
+        "text": "کَں کُں کاں کاں کاں کِیں کِیں کُں"
+      }
+    ]
+  },
+  {
+    "description": "IPA existing vowel and dental-alveolar distinctions stay separate",
+    "script": "ipa",
+    "text": "t̪a ta ɛ ɛː ɔ ɔː",
+    "targets": [
+      {
+        "script": "iso",
+        "text": "ta ṯa ê ê̄ ô ô"
+      }
+    ]
+  },
+  {
+    "description": "IPA notation inside protected and XML spans is preserved",
+    "script": "ipa",
+    "text": "ka ##ʊ.ˈkː## <tag value=\"ʊ.ˈkː\">ka</tag>",
+    "targets": [
+      {
+        "script": "indlish",
+        "text": "ka ʊ.ˈkː <tag value=\"ʊ.ˈkː\">ka</tag>"
+      }
+    ]
   }
 ]

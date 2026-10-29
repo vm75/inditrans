@@ -154,6 +154,28 @@ reads as long aa plus visarga. Some Thai vowel/visarga sequences are inherently
 ambiguous across orthographic conventions; the profile does not infer a language
 or pronunciation from a dictionary.
 
+## IPA input conventions
+
+IPA input accepts short-a `a/ɐ/ɑ`, short-i `i`, short-u `ʊ`, IPA `ɡ`,
+breathy-release `ʱ` on voiced aspirates, untied or below-tied affricates,
+`aɪ/ai` and `aʊ/au/əʊ` diphthongs, and syllabic `r̩/l̩` with optional length.
+Existing canonical IPA output spellings remain unchanged.
+
+Syllable dots and primary/secondary stress marks (`. ˈ ˌ`) are ignored on
+input, including during vowel assembly. Other Roman schemes retain their
+punctuation conventions. Consonant `ː` expands to gemination. Vowel `̃` selects
+chandrabindu-style nasalization, with either `aː̃` or `ãː` mark order accepted.
+These notation expansions are generated into the immutable reader tables.
+
+The shared sound inventory still requires approximations: `v → ʋ`, `ɹ → ɾ`,
+`d/ð → d̪`, `β → b`, `ç → k`, palatal `c/ɕ/t͡ɕ → t͡ʃ` and `ɟ/d͡ʑ → d͡ʒ`,
+and reduced `ɨ/ʉ → ɯ`. Open-o `ɔː` uses the existing open-o identity, losing
+length. Existing `ɛ/ɛː` open-e identities are preserved; they do not automatically
+select Hindi ai. The IPA reader has no source-language parameter, so it cannot
+recover language-specific spelling from allophones or distinguish Urdu letters
+with identical pronunciations. These aliases improve input coverage without
+adding phoneme identities or a pronunciation engine.
+
 ## Urdu and Nastaliq
 
 `urdu` is the canonical profile and `nastaliq` its discoverability alias. The

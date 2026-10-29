@@ -90,6 +90,14 @@ private:
     auto match = map.lookupToken<Policy>(ptr, end);
     if (match.sequence) {
       const auto tokens = match.tokens();
+      // IPA syllable/stress separators must not interrupt Roman vowel assembly
+      // or consonant lookahead. Keep other families' joiner handling unchanged.
+      if constexpr (Policy == ReaderPolicy::Roman || Policy == ReaderPolicy::FoldedRoman) {
+        if (tokens.front() == Skip) {
+          ptr += match.matchLen;
+          return;
+        }
+      }
       if (tokens.front().tokenType != TokenType::Accent || options / TranslitOptions::IgnoreVedicAccents) {
         assert(bufferSize + tokens.size() <= BufferCapacity);
         auto lead = tokens.front();

@@ -275,10 +275,21 @@ struct TokenLookupTable {
   }
 };
 
-template <size_t M>
+template <size_t M, size_t PoolSize>
 consteval std::array<ReaderEntry, M> deriveReaderEntries(
-    const auto& seqTokens, unsigned seqBits, const std::array<SemanticMapping, M>& mappings) {
+    const std::array<ScriptToken, PoolSize>& seqTokens, unsigned seqBits,
+    const std::array<SemanticMapping, M>& mappings) {
   TokenLookupTable table(seqTokens, seqBits);
+  // Link occurrences of each lead token, avoiding a full pool scan for every
+  // alias of a multi-token IPA reading within the compiler's constexpr budget.
+  TokenLookupTable previous;
+  std::array<uint16_t, PoolSize> next {};
+  for (size_t i = 1; i < PoolSize; ++i) {
+    const auto& token = seqTokens[i];
+    auto& last = previous.single[size_t(token.scriptType)][size_t(token.tokenType)][token.idx];
+    if (last) next[last] = static_cast<uint16_t>(i);
+    last = static_cast<uint16_t>(i);
+  }
   std::array<ReaderEntry, M> entries { };
   for (size_t m = 0; m < M; ++m) {
     const auto& map = mappings[m];
@@ -290,9 +301,10 @@ consteval std::array<ReaderEntry, M> deriveReaderEntries(
     if (id == 0) {
       // A mapping may reuse any contiguous token span, including part of an
       // expansion; only canonical standalone IDs require sequence boundaries.
-      for (size_t i = 1; i + N <= seqTokens.size(); ++i) {
+      for (size_t i = table.lookup(map.tokens[0]) & ((1u << seqBits) - 1);
+           i && i + N <= PoolSize; i = next[i]) {
         bool match = true;
-        for (size_t j = 0; j < N; ++j) {
+        for (size_t j = 1; j < N; ++j) {
           if (seqTokens[i + j] != map.tokens[j]) {
             match = false;
             break;

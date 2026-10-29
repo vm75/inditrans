@@ -188,6 +188,8 @@ class StaticScripts:
                 self._add(table, alias, token, mode)
         # Normalize source spellings and aliases during generation, not per call.
         # For example Malayalam ൌ also accepts its canonical sequence ൌ.
+        if script.name == "ipa":
+            self._add_ipa_notation(table, script, mode)
         for spelling, token in tuple(table.items()):
             for form in ("NFC", "NFD"):
                 self._add(table, unicodedata.normalize(form, spelling), token, mode)
@@ -196,6 +198,23 @@ class StaticScripts:
                 if conflict["spelling"] not in overrides:
                     raise ValueError(f"{mode}: ambiguous reading {conflict['spelling']!r}; add readerOverrides")
         return table
+
+    def _add_ipa_notation(self, table: dict[str, ReaderToken], script: ScriptInfo, mode: str) -> None:
+        """Expand IPA length/nasalization notation into existing immutable tokens."""
+        virama = self._typed_token(script, "m:0")
+        nasal = self._typed_token(script, "o:0")
+        for spelling, reading in tuple(table.items()):
+            if reading.extra:
+                continue
+            if reading.lead.type == 2:  # Consonant length is gemination.
+                self._add(table, spelling + "ː",
+                          ReaderToken(reading.lead, (virama, reading.lead)), mode)
+            elif reading.lead.type == 0:
+                nasalized = ReaderToken(reading.lead, (nasal,))
+                self._add(table, spelling + "̃", nasalized, mode)
+                if spelling.endswith("ː"):
+                    # Both aː̃ and ãː describe the same long nasalized vowel.
+                    self._add(table, spelling[:-1] + "̃ː", nasalized, mode)
 
     def _typed_token(self, script: ScriptInfo, identity: str) -> Token:
         try:
