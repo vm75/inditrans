@@ -1,0 +1,42 @@
+name: Regenerate embedded Urdu WASM binaries (temporary)
+
+on:
+  push:
+    branches: [urdu]
+    paths:
+      - '.github/workflows/urdu-wasm-assets.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: urdu
+          persist-credentials: true
+      - name: Install pinned Emscripten
+        uses: emscripten-core/setup-emsdk@v16
+        with:
+          version: '6.0.10'
+      - name: Check embedded Urdu header and regenerate WASM with shared index
+        run: |
+          set -eu
+          python3 scripts/urdu/embed_lexicon.py --check
+          rm -f flutter/assets/inditrans.wasm js/public/inditrans.js
+          make wasm
+          make test_demo
+          node tests/integration/wasm_smoke.cjs
+      - name: Commit rebuilt WASM binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add flutter/assets/inditrans.wasm js/public/inditrans.js
+          if ! git diff --cached --quiet; then
+            git commit -m 'Rebuild embedded Urdu WASM assets with shared lazy index (#70)'
+            git push origin HEAD:urdu
+          fi
