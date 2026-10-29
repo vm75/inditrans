@@ -1,81 +1,86 @@
 # Urdu lexicon preparation
 
-## Experimental 4,252-entry lexicon (CC BY-SA 4.0)
+## Generic wordlist-driven pronunciation pipeline
 
-The branch now ships a separate, **122,869-byte** pronunciation pack:
-`demo/urdu-pronunciation.iul`. It contains **4,248** word readings
-concordant between WikiPron and Wiktextract (both ultimately Wiktionary-derived),
-plus four unique Inditrans-authored demo words. This is a *first reproducible,
-unreviewed candidate*, not a complete or independently reviewed Urdu lexicon.
-The 122,869-byte packed dataset is now **compiled directly into native
-libraries, native CLI and both WASM builds** by generating
-`native/src/urdu_embedded_pack.h`. It is activated automatically for Urdu
-input, with no `--urdu-lexicon` flag or separate demo download. The compact
-lexicon index is initialized lazily on the first eligible Urdu conversion;
-other scripts do not load it. `DisableInference` disables all lexical Urdu
-substitution, restoring literal mapping. An explicit
-`--urdu-lexicon SOME.iul` in the CLI can still override the built-in corpus.
-Because it is bundled, **native/WASM binary redistribution must include the
-CC BY-SA 4.0 notice and attribution** in this document.
+**The lexicon builder is source-neutral and no longer has a 3 MB size cap.**
+IUL1 retains a 32-bit entry count and 16-bit *per-word/per-reading* lengths.
+Runtime memory and the target platform's address space are the practical
+limits. The CLI accepts arbitrary valid IUL1 files with `--urdu-lexicon`,
+and the native/WASM default pack is regenerated from a wordlist at build time.
 
-To reproduce the asset, download the two pinned files referenced in
-`scripts/urdu/concordant-report.json` and run:
+Wordlists use UTF-8 tab-separated rows:
 
-```sh
-python3 scripts/urdu/build_concordant.py \\
-  --wikipron urd_arab_broad.tsv \\
-  --wiktextract kaikki.org-dictionary-Urdu.jsonl \\
-  --out demo/urdu-pronunciation.iul \\
-  --report scripts/urdu/concordant-report.json
+```text
+# word<TAB>pronunciation<TAB>notation<TAB>priority
+پل	pal	iast	100
+پل	pul	iast	20
+کتاب	kitāb	iast	100
 ```
 
-After building the pinned `.iul` file, generate the checked-in C++ header:
+Accepted notation is `iast` (canonical Inditrans Roman) or `ipa` (supported
+space-separated phonemes). A pronunciation is **required for an active entry**;
+a bare Urdu word without pronunciation can be retained as an unresolved
+candidate for later review but does not cause invented vowels. Rows with
+unrepresentable phonemes are rejected or, with `--strict`, fail the build.
+Duplicate spellings with different readings are *kept*. Highest explicit
+editorial priority determines the default, with deterministic token-order
+tie-breaking; all other supported readings remain in IUL1. Priority is NOT a
+statistically measured frequency unless you supply and document actual counts.
+No neighboring-word lookup, grammar analysis or trained language model runs
+at runtime.
+
+The current **expanded experimental candidate wordlist**, stored at
+`scripts/urdu/wordlists/wikipron-candidates.tsv`, derives from the complete
+7,709-row WikiPron Urdu snapshot (6,296 distinct raw spellings before phoneme
+validation), **not** a new independently authored dictionary.
+`scripts/urdu/wordlists/editorial-defaults.tsv` contains selected authored
+readings (including `پل → pal`, with `pul` retained) and the demo examples.
+The exact number of supported pronunciations, omissions, ambiguous spellings
+and packed bytes is recorded in `scripts/urdu/wordlist-report.json`.
+
+To rebuild the current branch's expanded pack:
 
 ```sh
+python3 scripts/urdu/build_wordlist.py \\
+  scripts/urdu/wordlists/wikipron-candidates.tsv \\
+  scripts/urdu/wordlists/editorial-defaults.tsv \\
+  --version urdu-wordlist-experimental-2 \\
+  --provenance 'WikiPron Urdu 2026 candidate + Inditrans editorial defaults' \\
+  --license 'CC BY-SA 4.0 (Wiktionary-derived candidate data)' \\
+  --out demo/urdu-pronunciation.iul \\
+  --report scripts/urdu/wordlist-report.json
 python3 scripts/urdu/embed_lexicon.py
 python3 scripts/urdu/embed_lexicon.py --check
+make wasm
 ```
 
-The embedder checks the exact pinned IUL1 SHA-256 and CRC-32, and CI checks
-that the C++ header matches the asset byte-for-byte. `make` regenerates the
-header when the pack changes; WASM and native compile its read-only data.
-A different corpus requires reviewing the pronunciations and updating the
-expected digest in the embedder. Merely substituting an unverified file must
-not silently change all callers' default transliteration.
+For your later curated shortlist, pass `--selection PATH` (one Urdu word per
+line), or `--limit N` to choose a fixed number of entries using the declared
+editorial priority. You can **replace both wordlist TSVs entirely** with your
+own independently collected dictionary and provide its actual license,
+version, and provenance. The build and runtime do not require WikiPron.
 
-Both full-file SHA-256 hashes are enforced; changes to the source snapshots
-cause a hard error. The build rejects spelling and pronunciation conflicts
-and unsupported IPA, requires 4k–5k concordant entries, validates canonical
-tokens, and fails if the binary exceeds 3,000,000 bytes. The report records
-the resulting pack SHA-256 and rejection statistics. The builder works from
-local pinned inputs: no network requests are needed at runtime or at build
-time once those source files are available.
+**Licensing is about the data, not the compiler:** the current branch's
+embedded corpus *still* derives from Wiktionary and is distributed as CC BY-SA
+4.0, with attribution to Wiktionary contributors and the WikiPron project
+(Lee et al., *Massively Multilingual Pronunciation Mining with WikiPron*,
+LREC 2020). It is not automatically relicensed MIT by passing it through
+Inditrans or changing the build format. An independently licensed distribution
+requires separately sourced and reviewed data, removal/replacement of the
+current derived asset and regenerated native/WASM binaries. The original
+Platts (1884) dictionary is a promising public-domain *print original*, but
+rights to any modern digital transcription must be checked before importing.
+The current corpus has **not** been independently pronunciation-reviewed.
 
-**Copyright and licensing:** pronunciation entries are adapted from
-contributors to English Wiktionary via
-[WikiPron](https://github.com/CUNY-CL/wikipron) (Lee et al.,
-*Massively Multilingual Pronunciation Mining with WikiPron*, LREC 2020) and
-[Wiktextract](https://github.com/tatuylonen/wiktextract) (Tatu Ylonen,
-*Wiktextract: Wiktionary as Machine-Readable Structured Data*, LREC 2022).
-The derived data is offered under [Creative Commons Attribution-ShareAlike
-4.0](https://creativecommons.org/licenses/by-sa/4.0/), separately from the
-Inditrans code license. Changes: restrict to Urdu, convert IPA into canonical
-Inditrans tokens, reject conflicting/unsupported readings, merge five
-project-authored demo examples, sort and binary-pack. Source snapshots,
-attribution and hashes are in `concordant-report.json`. Keep attribution,
-the CC BY-SA notice and the share-alike requirements when redistributing the
-asset. This does **not** certify accuracy. Neither extractor provides
-independent gold labels; homographs and unknown words remain open work.
+### Legacy concordance experiment
 
-For the CLI:
-
-```sh
-make out/inditrans
-out/inditrans -f urdu -t indlish 'جیسی کرنی ویسی بھرنی۔'
-```
-
-For literal orthographic Urdu, use `-o DisableInference`; use `-l` only\nwhen overriding the embedded data.\n\nThe five-word `demo/urdu-example.iul` (452 bytes) remains available for
-isolated regression tests of the IUL1 format.
+The earlier 4,252-entry `build_concordant.py` experiment and its historical
+`scripts/urdu/concordant-report.json` are kept for comparison. They are
+not the default embedded asset. The source SHA pinning and strict concordance
+rules remain useful as a more conservative comparison, but there is no longer
+a fixed total-byte limit. The old 452-byte `demo/urdu-example.iul` is retained
+as an isolated test fixture. To force orthographic output, pass
+`-o DisableInference` or check **Disable inference** in the demo.
 
 
 `build_lexicon.py SOURCE OUTPUT` validates and sorts a version 1 JSON source

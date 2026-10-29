@@ -76,15 +76,15 @@ Noto Sans Grantha font. It replaces the former Tamil Extended option.
 Noto Nastaliq Urdu with Noto Naskh Arabic fallback. Its font is downloaded rather
 than included in the ten-script Indic fallback. Mixed Indic excludes Urdu;
 select Urdu explicitly when converting it. Urdu pronunciation is **always
-enabled** for words covered by the experimental 4,252-entry dictionary, which is
+enabled** for words covered by the experimental wordlist-driven dictionary, which is
 compiled directly into the native and WASM engine. The demo no longer fetches
 a separate `.iul` file or requires a pronunciation checkbox. For strict
 orthographic transliteration, check **Disable inference**.
 
-The compact embedded corpus is derived from WikiPron/Wiktextract (Wiktionary
+The current experimental corpus is derived from WikiPron (Wiktionary
 contributors, **CC BY-SA 4.0**); it has not been independently reviewed.
-Unknown words retain literal fallback and homographs are not disambiguated
-by sentence context. See [attribution and reproduction steps](../scripts/urdu/README.md).
+Unknown words retain literal fallback and homographs use a deterministic
+editorial default; no sentence-context analysis is performed. See [attribution and reproduction steps](../scripts/urdu/README.md).
 
 **Theme** offers System, Light, and Dark. System follows your device’s appearance
 and updates automatically when it changes. Your choice is saved in this browser.

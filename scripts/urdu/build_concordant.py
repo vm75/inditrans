@@ -16,7 +16,6 @@ from import_wikipron import convert as wikipron_convert
 
 WIKIPRON_SHA256 = "5530b71670423fc810e245680a9077ca3c72c79de0cdf6d2df21bbec5130d1e5"
 WIKTEXTRACT_SHA256 = "6fef1d227ce1cbc309d38f7475e502bc0f6335dc63f4133c7757c44ed2271ec9"
-MAX_PACK_BYTES = 3_000_000
 MIN_CONCORDANT = 4_000
 MAX_CONCORDANT = 5_000
 
@@ -71,8 +70,6 @@ def compile_lexicon(wikipron, wiktextract, demo, *, verify_sources=True, min_con
                                separators=(",", ":")) + "\n").encode("utf-8")
     canonical["source_sha256"] = sha(source_bytes)
     pack = binary_pack(canonical)
-    if len(pack) > MAX_PACK_BYTES:
-        raise ValueError(f"Urdu pack exceeds {MAX_PACK_BYTES:,}-byte budget: {len(pack)}")
     report = {
         "format": 1,
         "status": "EXPERIMENTAL / NOT LINGUISTICALLY REVIEWED",

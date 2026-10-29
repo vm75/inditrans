@@ -1,0 +1,7713 @@
+# EXPERIMENTAL candidate pronunciations; NOT independently licensed.
+# Source: WikiPron urd_arab_broad.tsv at commit 1b6fce9d894e38eb65431676e4b2fcfc3db19db8
+# Underlying pronunciation data: English Wiktionary contributors, CC BY-SA 4.0.
+# Columns: Urdu spelling, IPA tokens, notation, editorial priority (0 = unranked)
+ء	j ɪ	ipa	0
+ء	ɡ ɑː õ	ipa	0
+ء	ɡ ɑː ʔ õ	ipa	0
+ء	ɦ ə m z ɑ	ipa	0
+ء	ɦ ə m z ɑː	ipa	0
+ء	ʔ	ipa	0
+آ	aː	ipa	0
+آئرلینڈ	ɑː ɪ ɾ l ɛː n ɖ	ipa	0
+آئی	ɑː iː	ipa	0
+آئین	ɑː iː n	ipa	0
+آئینہ	ɑː iː n ɑ	ipa	0
+آئینہ	ɑː iː n ɑː	ipa	0
+آب	ɑː b	ipa	0
+آباد	ɑː b ɑː d̪	ipa	0
+آبادانی	ɑː b ɑː d̪ ɑː n iː	ipa	0
+آبادی	ɑː b ɑː d̪ iː	ipa	0
+آبادیات	ɑː b ɑː d̪ ɪ j ɑː t̪	ipa	0
+آبدوز	ɑː b d̪ oː z	ipa	0
+آبشار	ɑː b ʃ ɑː ɾ	ipa	0
+آبنائے	ɑː b n ɑː eː	ipa	0
+آبچین	ɑː b t͡ʃ iː n	ipa	0
+آبی	ɑː b iː	ipa	0
+آتش	ɑː t̪ ə ʃ	ipa	0
+آتش	ɑː t̪ ɪ ʃ	ipa	0
+آتما	ɑː t̪ m ɑː	ipa	0
+آتنکوادی	ɑː t̪ ə ŋ k ʋ ɑː d̪ iː	ipa	0
+آج	ɑː d͡ʒ	ipa	0
+آخرت	ɑː x ɪ ɾ ə t̪	ipa	0
+آخری	ɑː x ɪ ɾ iː	ipa	0
+آخری	ɑː x ɾ iː	ipa	0
+آخن	ɑː x ə n	ipa	0
+آخور	ɑː x oː ɾ	ipa	0
+آدا	ɑː d̪ ɑː	ipa	0
+آداب	ɑː d̪ ɑː b	ipa	0
+آدر	ɑː d̪ ə ɾ	ipa	0
+آدرنیہ	ɑː d̪ ə ɾ n ɪ j ɑ	ipa	0
+آدرنیہ	ɑː d̪ ə ɾ n ɪ j ɑː	ipa	0
+آدم	ɑː d̪ ə m	ipa	0
+آدمی	ɑː d̪ m iː	ipa	0
+آدھا	ɑː d̪ʱ ɑː	ipa	0
+آدھنک	ɑː d̪ʱ ʊ n ɪ k	ipa	0
+آدھوں	ɑː d̪ʱ õː	ipa	0
+آدھی	ɑː d̪ʱ iː	ipa	0
+آدھے	ɑː d̪ʱ eː	ipa	0
+آذر	ɑː z ə ɾ	ipa	0
+آذربائیجان	ɑː z ə ɾ b ɑː ɪ d͡ʒ ɑː n	ipa	0
+آرام	ɑː ɾ ɑː m	ipa	0
+آربل	ɑː ɾ b ə l	ipa	0
+آرزو	ɑː ɾ z uː	ipa	0
+آرمبھ	ɑː ɾ ə m bʱ	ipa	0
+آرمی	ɑː ɾ m iː	ipa	0
+آرمینیا	ɑː ɾ m eː n ɪ j ɑː	ipa	0
+آرمینیا	ɑː ɾ m iː n ɪ j ɑː	ipa	0
+آروگیہ	ɑː ɾ oː ɡ j ɑ	ipa	0
+آروگیہ	ɑː ɾ oː ɡ j ɑː	ipa	0
+آری	ɑː ɾ iː	ipa	0
+آریامن	ɑː ɾ j ə m ə n	ipa	0
+آریہ	ɑː ɾ jᵊ	ipa	0
+آرے	ɑː ɾ eː	ipa	0
+آزاد	ɑː z ɑː d̪	ipa	0
+آزادی	ɑː z ɑː d̪ iː	ipa	0
+آزادیاں	ɑː z ɑː d̪ ɪ j ɑ̃ː	ipa	0
+آزادیوں	ɑː z ɑː d̪ ɪ j õː	ipa	0
+آزاری	ɑː z ɑː ɾ iː	ipa	0
+آزمائش	ɑː z m ɑː ɪ ʃ	ipa	0
+آزمائشوں	ɑː z m ɑː ɪ ʃ õː	ipa	0
+آزمائشیں	ɑː z m ɑː ɪ ʃ ẽː	ipa	0
+آزمانا	ɑː z m ɑː n ɑː	ipa	0
+آزمودگی	ɑː z m uː d̪ ə ɡ iː	ipa	0
+آزمودہ	ɑː z m uː d̪ ɑː	ipa	0
+آس	ɑː s	ipa	0
+آسام	ɑː s ɑː m	ipa	0
+آسامی	ɑː s ɑː m iː	ipa	0
+آسان	ɑː s ɑː n	ipa	0
+آسان	ə s ɑː n	ipa	0
+آسانی	ɑː s ɑː n iː	ipa	0
+آساں	ɑː s ɑ̃ː	ipa	0
+آستھا	ɑː s t̪ʰ ɑː	ipa	0
+آستین	ɑː s t̪ iː n	ipa	0
+آسرا	ɑː s ɾ ɑː	ipa	0
+آسمان	ɑː s m ɑː n	ipa	0
+آسمانوں	ɑː s m ɑː n õː	ipa	0
+آسمانی	ɑː s m ɑː n iː	ipa	0
+آسماں	ɑː s m ɑ̃ː	ipa	0
+آسن	ɑː s ə n	ipa	0
+آسند	ɑː s ə n d̪	ipa	0
+آسٹریا	ɑː s ʈ ɾ ɪ j ɑː	ipa	0
+آسٹریلیا	ɑː s ʈ ɾ eː l j ɑː	ipa	0
+آسٹریلیا	ɑː s ʈ ɾ eː l ɪ j ɑː	ipa	0
+آسکت	ɑː s ə k t̪	ipa	0
+آسکول	ɑː s k oː l	ipa	0
+آسیب	ɑː s eː b	ipa	0
+آشا	ɑː ʃ ɑː	ipa	0
+آشنا	ɑː ʃ n ɑː	ipa	0
+آشچریہ	ɑː ʃ t͡ʃ ə ɾ jᵊ	ipa	0
+آشکارا	ɑː ʃ k ɑː ɾ ɑː	ipa	0
+آشیرواد	ɑː ʃ iː ɾ ʋ ɑː d̪	ipa	0
+آغا	ɑː ɣ ɑː	ipa	0
+آغاز	ɑː ɣ ɑː z	ipa	0
+آغوش	ɑː ɣ oː ʃ	ipa	0
+آفت	ɑː f ə t̪	ipa	0
+آفتاب	ɑː f t̪ ɑː b	ipa	0
+آفتابی	ɑː f t̪ ɑː b iː	ipa	0
+آفتوں	ɑː f ə t̪ õː	ipa	0
+آفتیں	ɑː f ə t̪ ẽː	ipa	0
+آفریدی	ɑː f ɾ iː d̪ iː	ipa	0
+آفرین	ɑː f ɾ iː n	ipa	0
+آفیسر	ɑː f iː s ə ɾ	ipa	0
+آقا	ɑː q ɑː	ipa	0
+آقچہ	ɑː q t͡ʃ ɑː	ipa	0
+آلس	ɑː l ə s	ipa	0
+آلسی	ɑː l s iː	ipa	0
+آلنگن	ɑː l ɪ ŋ ɡ ə n	ipa	0
+آلو	ɑː l uː	ipa	0
+آلود	ɑː l uː d̪	ipa	0
+آلودگی	ɑː l uː d̪ ə ɡ iː	ipa	0
+آلودگیاں	ɑː l uː d̪ ə ɡ ɪ j ɑ̃ː	ipa	0
+آلودگیو	ɑː l uː d̪ ə ɡ ɪ j oː	ipa	0
+آلودگیوں	ɑː l uː d̪ ə ɡ ɪ j õː	ipa	0
+آلودہ	ɑː l uː d̪ ɑː	ipa	0
+آلوچنا	ɑː l oː t͡ʃ n ɑː	ipa	0
+آلوچہ	ɑː l uː t͡ʃ ɑ	ipa	0
+آلوچہ	ɑː l uː t͡ʃ ɑː	ipa	0
+آلچی	ɑː l t͡ʃ iː	ipa	0
+آلہ	ɑː l ɑː	ipa	0
+آم	ɑː m	ipa	0
+آمد	ɑː m ə d̪	ipa	0
+آمدنی	ɑː m d̪ ə n iː	ipa	0
+آمر	ɑː m ɪ ɾ	ipa	0
+آمریت	ɑː m ɪ ɾ ɪ j ə t̪	ipa	0
+آملہ	ɑː m l ɑ	ipa	0
+آملہ	ɑː m l ɑː	ipa	0
+آمنہ	ɑː m ɪ n ɑ	ipa	0
+آمنہ	ɑː m ɪ n ɑː	ipa	0
+آموختہ	ɑː m oː x t̪ ɑ	ipa	0
+آموختہ	ɑː m oː x t̪ ɑː	ipa	0
+آمود	ɑː m oː d̪	ipa	0
+آموزش	ɑː m oː z ɪ ʃ	ipa	0
+آمیزش	ɑː m eː z ɪ ʃ	ipa	0
+آنا	ɑː n ɑː	ipa	0
+آندھی	ɑː n d̪ʱ iː	ipa	0
+آندھیاں	ɑː n d̪ʱ ɪ j ɑ̃ː	ipa	0
+آندھیوں	ɑː n d̪ʱ ɪ j õː	ipa	0
+آنساؤ	ɑː n ɪ s ɑː oː	ipa	0
+آنساؤں	ɑː n ɪ s ɑː õː	ipa	0
+آنسائیں	ɑː n ɪ s ɑː ẽː	ipa	0
+آنسو	ɑ̃ː s uː	ipa	0
+آنسہ	ɑː n ɪ s ɑ	ipa	0
+آنسہ	ɑː n ɪ s ɑː	ipa	0
+آنول	ɑ̃ː ʋ ə l	ipa	0
+آنچل	ɑ̃ː t͡ʃ ə l	ipa	0
+آنکھ	ɑ̃ː kʰ	ipa	0
+آنکھ	ɑ̃ːᵑ kʰ	ipa	0
+آنکھو	ɑ̃ː ŋ kʰ oː	ipa	0
+آنکھوں	ɑ̃ː kʰ õː	ipa	0
+آنکھیں	ɑ̃ː kʰ ẽː	ipa	0
+آنگن	ɑː ŋ ɡ ə n	ipa	0
+آنہ	ɑː n ə	ipa	0
+آواران	ɑː ʋ ɑː ɾ ɑː n	ipa	0
+آوارہ	ɑː ʋ ɑː ɾ ə	ipa	0
+آواز	ɑː ʋ ɑː z	ipa	0
+آوازو	ɑː ʋ ɑː z oː	ipa	0
+آوازوں	ɑː ʋ ɑː z õː	ipa	0
+آوازیں	ɑː ʋ ɑː z ẽː	ipa	0
+آوشيکتا	ɑː ʋ ə ʃ j ə k t̪ ɑː	ipa	0
+آٹا	ɑː ʈ ɑː	ipa	0
+آٹھ	ɑː ʈʰ	ipa	0
+آٹھواں	ɑː ʈʰ w ɑ̃ː	ipa	0
+آٹھواں	ɑː ʈʰ ʋ ɑ̃ː	ipa	0
+آٹھویں	ɑː ʈʰ ʋ ĩː	ipa	0
+آپ	ɑː p	ipa	0
+آپا	ɑː p ɑː	ipa	0
+آپی	ɑː p iː	ipa	0
+آچار	ɑː t͡ʃ ɑː ɾ	ipa	0
+آڑو	ɑː ɽ uː	ipa	0
+آکاش	ɑː k ɑː ʃ	ipa	0
+آکاشی	ɑː k ɑː ʃ iː	ipa	0
+آکرشت	ɑː k ə ɾ ʃ ɪ t̪	ipa	0
+آکرمن	ɑː k ɾ ə m ə n	ipa	0
+آکھیٹ	ɑː kʰ eː ʈ	ipa	0
+آگ	ɑː ɡ	ipa	0
+آگار	ɑː ɡ ɑː ɾ	ipa	0
+آگاہ	ɑː ɡ ɑː ɦ	ipa	0
+آگرہ	ɑː ɡ ɾ ə ɦ	ipa	0
+آگھات	ɑː ɡʱ ɑː t̪	ipa	0
+آگے	ɑː ɡ eː	ipa	0
+آہ	ɑː ɦ	ipa	0
+آہستہ	ɑː j ɪ s t̪ ɑ	ipa	0
+آہستہ	ɑː j ɪ s t̪ ɑː	ipa	0
+آہستہ	ɑː ɦ ɪ s t̪ ɑ	ipa	0
+آہستہ	ɑː ɦ ɪ s t̪ ɑː	ipa	0
+آہو	ɑː ɦ uː	ipa	0
+آیا	ɑː j ɑː	ipa	0
+آیت	ɑː j ə t̪	ipa	0
+آیتوں	ɑː j ə t̪ õː	ipa	0
+آیتیں	ɑː j ə t̪ ẽː	ipa	0
+ا	ɑː	ipa	0
+ا	ə	ipa	0
+ا	ə l ɪ f	ipa	0
+ا	ʔ	ipa	0
+اب	ə b	ipa	0
+ابا	ə bː ɑː	ipa	0
+ابابیل	ə b ɑː b iː l	ipa	0
+اباضی	ɪ b ɑː z iː	ipa	0
+ابال	ʊ b ɑː l	ipa	0
+ابالنا	ʊ b ɑː l n ɑː	ipa	0
+ابتدا	ɪ b t̪ ɪ d̪ ɑː	ipa	0
+ابتدائی	ɪ b t̪ ɪ d̪ ɑː iː	ipa	0
+ابتسام	ɪ b t̪ ɪ s ɑː m	ipa	0
+ابدا	ə b d̪ ə n	ipa	0
+ابداع	ɪ b d̪ ɑː	ipa	0
+ابداع	ɪ b d̪ ɑː ʔ	ipa	0
+ابراہیم	ɪ b ɾ ɑː ɦ iː m	ipa	0
+ابرق	ə b ɾ ə q	ipa	0
+ابرنجن	ə b ɾ ə n d͡ʒ ə n	ipa	0
+ابرنجین	ə b ɾ ə n d͡ʒ iː n	ipa	0
+ابرو	ə b ɾ uː	ipa	0
+ابریق	ɪ b ɾ iː q	ipa	0
+ابصار	ə b s ɑː ɾ	ipa	0
+ابصار	ɪ b s ɑː ɾ	ipa	0
+ابلق	ə b l ə q	ipa	0
+ابلنا	ʊ b ə l n ɑː	ipa	0
+ابلیس	ɪ b l iː s	ipa	0
+ابلیسیانہ	ɪ b l iː s ɪ j ɑː n ɑ	ipa	0
+ابلیسیانہ	ɪ b l iː s ɪ j ɑː n ɑː	ipa	0
+ابن	ɪ b n	ipa	0
+ابنہ	ɪ b n ɑː	ipa	0
+ابو	ə bː uː	ipa	0
+ابٹن	ʊ b ʈ ə n	ipa	0
+ابکائی	ʊ b k ɑː iː	ipa	0
+ابھار	ʊ bʱ ɑː ɾ	ipa	0
+ابھال	ə bʱ ɑː l	ipa	0
+ابھاو	ə bʱ ɑː ʋ	ipa	0
+ابھرتا	ʊ bʱ ə ɾ t̪ ɑː	ipa	0
+ابھشیک	ə bʱ ɪ ʃ eː k	ipa	0
+ابھلاش	ə bʱ ɪ l ɑː ʃ ɑː	ipa	0
+ابھمان	ə bʱ ɪ m ɑː n	ipa	0
+ابھی	ə bʱ iː	ipa	0
+ابھیاس	ə bʱ j ɑː s	ipa	0
+ابھے	ə bʱ ɛː	ipa	0
+ابہام	ɪ b ɦ ɑː m	ipa	0
+اتارنا	ʊ t̪ ɑː ɾ n ɑː	ipa	0
+اتاق	uː t̪ ɑː q	ipa	0
+اتالیق	ə t̪ ɑː l iː q	ipa	0
+اتحاد	ɪ t̪ː e ɦ ɑː d̪	ipa	0
+اتحاد	ɪ t̪ː ɪ ɦ ɑː d̪	ipa	0
+اتحادی	ɪ t̪ t̪ ɪ ɦ ɑː d̪ iː	ipa	0
+اترنا	ʊ t̪ ə ɾ n ɑː	ipa	0
+اتصال	ɪ t̪ t̪ ɪ s ɑː l	ipa	0
+اتفاق	ɪ t̪ t̪ e f ɑː q	ipa	0
+اتفاق	ɪ t̪ t̪ ɪ f ɑː q	ipa	0
+اتفاقا	ɪ t̪ t̪ ɪ f ɑː q ə n	ipa	0
+اتم	ə t̪ ə m	ipa	0
+اتمام	ɪ t̪ m ɑː m	ipa	0
+اتمک	ə t̪ m ə k	ipa	0
+اتوار	ɪ t̪ ʋ ɑː ɾ	ipa	0
+اتکا	ɪ t̪ t̪ ɪ k ɑː	ipa	0
+اتھان	ʊ t̪ t̪ʰ ɑː n	ipa	0
+اتہاس	ɪ t̪ ɪ ɦ ɑː s	ipa	0
+اتہام	ɪ t̪ t̪ ɪ ɦ ɑː m	ipa	0
+اتیاچاری	ə t̪ j ɑː t͡ʃ ɑː ɾ iː	ipa	0
+اثاث	ə s ɑː s	ipa	0
+اثبات	ɪ s b ɑː t̪	ipa	0
+اثباتی	ɪ s b ɑː t̪ iː	ipa	0
+اثر	ə s ə ɾ	ipa	0
+اثنا	ə s n ɑː	ipa	0
+اجازت	ɪ d͡ʒ ɑː z ə t̪	ipa	0
+اجازتوں	ɪ d͡ʒ ɑː z ə t̪ õː	ipa	0
+اجازتیں	ɪ d͡ʒ ɑː z ə t̪ ẽː	ipa	0
+اجالا	ʊ d͡ʒ ɑː l ɑː	ipa	0
+اجالنا	ʊ d͡ʒ ɑː l n ɑː	ipa	0
+اجتماع	ɪ d͡ʒ t̪ ɪ m ɑː	ipa	0
+اجر	ə d͡ʒ ɾ	ipa	0
+اجرا	ɪ d͡ʒ ɾ ɑː	ipa	0
+اجرت	ʊ d͡ʒ ɾ ə t̪	ipa	0
+اجرک	ə d͡ʒ ɾ ə k	ipa	0
+اجزا	ə d͡ʒ z ɑː	ipa	0
+اجل	ə d͡ʒ ə l	ipa	0
+اجلاس	ɪ d͡ʒ l ɑː s	ipa	0
+اجمالی	ɪ d͡ʒ m ɑː l iː	ipa	0
+اجمود	ə d͡ʒ m oː d̪	ipa	0
+اجمودا	ə d͡ʒ m oː d̪ ɑː	ipa	0
+اجنبی	ə d͡ʒ n ə b iː	ipa	0
+اجوائن	ə d͡ʒ ʋ ɑː ɪ n	ipa	0
+اجڈ	ʊ d͡ʒ ə ɖ ɖ	ipa	0
+اجگر	ə d͡ʒ ɡ ə ɾ	ipa	0
+اجی	ə d͡ʒ iː	ipa	0
+اجیر	ə d͡ʒ iː ɾ	ipa	0
+اجین	ʊ d̪ d͡ʒ ɛː n	ipa	0
+احاطہ	ə ɦ ɑː t̪ ɑ	ipa	0
+احاطہ	ə ɦ ɑː t̪ ɑː	ipa	0
+احاطہ	ɪ ɦ ɑː t̪ ɑ	ipa	0
+احاطہ	ɪ ɦ ɑː t̪ ɑː	ipa	0
+احباب	ə ɦ b ɑː b	ipa	0
+احتجاج	eː ɦ t̪ ɪ d͡ʒ ɑː d͡ʒ	ipa	0
+احترام	eː ɦ t̪ ə ɾ ɑː m	ipa	0
+احترام	eː ɦ t̪ ɪ ɾ ɑː m	ipa	0
+احترام	ɪ ɦ t̪ ə ɾ ɑː m	ipa	0
+احترام	ɪ ɦ t̪ ɪ ɾ ɑː m	ipa	0
+احتلام	ɪ ɦ t̪ ɪ l ɑː m	ipa	0
+احتمال	eː ɦ t̪ eː m ɑː l	ipa	0
+احتیاج	ɪ ɦ t̪ ɪ j ɑː d͡ʒ	ipa	0
+احتیاط	ɪ ɦ t̪ ɪ j ɑː t̪	ipa	0
+احساس	ɪ ɦ s ɑː s	ipa	0
+احساساتی	ɪ ɦ s ɑː s ɑː t̪ iː	ipa	0
+احسان	ɪ ɦ s ɑː n	ipa	0
+احشا	ə ɦ ʃ ɑː	ipa	0
+احمد	ə ɦ m ə d̪	ipa	0
+احمق	ə ɦ m ə q	ipa	0
+احمقانہ	ə ɦ m ə q ɑː n ɑ	ipa	0
+احمقانہ	ə ɦ m ə q ɑː n ɑː	ipa	0
+احوال	ə ɦ ʋ ɑː l	ipa	0
+احیا	ə ɦ j ɑː	ipa	0
+احیا	ɪ ɦ j ɑː	ipa	0
+اخاہ	ə xː ɑː ɦ	ipa	0
+اخبار	ə x b ɑː ɾ	ipa	0
+اختر	ə x t̪ ə ɾ	ipa	0
+اختصار	ɪ x t̪ ɪ s ɑː ɾ	ipa	0
+اختلاف	ɪ x t̪ ɪ l ɑː f	ipa	0
+اختلافات	ɪ x t̪ ɪ l ɑː f ɑː t̪	ipa	0
+اختہ	ə x t̪ ɑ	ipa	0
+اختہ	ə x t̪ ɑː	ipa	0
+اختیار	ɪ x t̪ ɪ j ɑː ɾ	ipa	0
+اختیاری	ɪ x t̪ ɪ j ɑː ɾ iː	ipa	0
+اخذ	ə x z	ipa	0
+اخروٹ	ə x ɾ oː ʈ	ipa	0
+اخلاط	ə x l ɑː t̪	ipa	0
+اخلاق	ə x l ɑː q	ipa	0
+اخلاق	ɪ x l ɑː q	ipa	0
+اخلاقا	ɪ x l ɑː q ə n	ipa	0
+ادا	ə d̪ ɑː	ipa	0
+ادائیگی	ə d̪ ɑː iː ɡ iː	ipa	0
+ادارتی	ɪ d̪ ɑː ɾ ə t̪ iː	ipa	0
+ادارہ	ɪ d̪ ɑː ɾ ɑː	ipa	0
+اداری	ɪ d̪ ɑː ɾ iː	ipa	0
+اداس	ʊ d̪ ɑː s	ipa	0
+اداسی	ʊ d̪ ɑː s iː	ipa	0
+اداسیاں	ʊ d̪ ɑː s ɪ j ɑ̃ː	ipa	0
+اداسیوں	ʊ d̪ ɑː s ɪ j õː	ipa	0
+اداہرن	ʊ d̪ ɑː ɦ ɾ ə n	ipa	0
+ادب	ə d̪ ə b	ipa	0
+ادبا	ʊ d̪ ə b ɑː	ipa	0
+ادبی	ə d̪ b iː	ipa	0
+ادبیات	ə d̪ ə b ɪ j j ɑː t̪	ipa	0
+ادبیات	ə d̪ ə b ɪ j ɑː t̪	ipa	0
+ادرنہ	ə d̪ ɪ ɾ n ɑ	ipa	0
+ادرنہ	ə d̪ ɪ ɾ n ɑː	ipa	0
+ادرک	ə d̪ ɾ ə k	ipa	0
+ادریس	ɪ d̪ ɾ iː s	ipa	0
+ادوان	ə d̪ ʋ ɑː n	ipa	0
+اديان	ə d̪ j ɑː n	ipa	0
+ادھار	ʊ d̪ʱ ɑː ɾ	ipa	0
+ادھلنا	ʊ d̪ʱ ə l n ɑː	ipa	0
+ادھماس	ə d̪ʱ ɪ m ɑː s	ipa	0
+ادھورا	ə d̪ʱ uː ɾ ɑː	ipa	0
+ادھکار	ə d̪ʱ ɪ k ɑː ɾ	ipa	0
+ادھکاری	ə d̪ʱ ɪ k ɑː ɾ iː	ipa	0
+ادھیڑ	ə d̪ʱ eː ɽ	ipa	0
+ادہم	ə d̪ ɦ ə m	ipa	0
+ادیب	ə d̪ iː b	ipa	0
+ادیہ	ə d̪ jᵊ	ipa	0
+اذن	ɪ z n	ipa	0
+اذہان	ə z ɦ ɑː n	ipa	0
+اذیت	ə z ɪ j ə t̪	ipa	0
+ارادو	ɪ ɾ ɑː d̪ oː	ipa	0
+ارادوں	ɪ ɾ ɑː d̪ õː	ipa	0
+ارادہ	ɪ ɾ ɑː d̪ ɑ	ipa	0
+ارادہ	ɪ ɾ ɑː d̪ ɑː	ipa	0
+ارادے	ɪ ɾ ɑː d̪ eː	ipa	0
+ارب	ə ɾ ə b	ipa	0
+ارتداد	ɪ ɾ t̪ ɪ d̪ ɑː d̪	ipa	0
+ارتعاش	ɪ ɾ t̪ ɪ ɑː ʃ	ipa	0
+ارتقا	ɪ ɾ t̪ ə q ɑː	ipa	0
+ارتقا	ɪ ɾ t̪ ɪ q ɑː	ipa	0
+ارتھ	ə ɾ t̪ʰ	ipa	0
+ارجت	ə ɾ d͡ʒ ɪ t̪	ipa	0
+ارجن	ə ɾ d͡ʒ ə n	ipa	0
+ارجن	ə ɾ d͡ʒ ʊ n	ipa	0
+ارجنٹائن	ə ɾ d͡ʒ ə n ʈ ɑː ɪ n	ipa	0
+اردلی	ə ɾ d̪ ə l iː	ipa	0
+اردن	ʊ ɾ d̪ ʊ n	ipa	0
+اردو	ʊ ɾ d̪ uː	ipa	0
+ارز	ə ɾ z	ipa	0
+ارزانی	ə ɾ z ɑː n iː	ipa	0
+ارسطو	ə ɾ ə s t̪ uː	ipa	0
+ارسل	ə ɾ s ə l	ipa	0
+ارسلہ	ə ɾ s ə l ɑ	ipa	0
+ارسلہ	ə ɾ s ə l ɑː	ipa	0
+ارش	ə ɾ ʃ	ipa	0
+ارض	ə ɾ z	ipa	0
+ارغوانی	ə ɾ ɣ ʋ ɑː n iː	ipa	0
+ارمان	ə ɾ m ɑː n	ipa	0
+ارمنستان	ə ɾ m ə n ɪ s t̪ ɑː n	ipa	0
+ارمیا	ɪ ɾ m ɪ j ɑː	ipa	0
+ارے	ə ɾ eː	ipa	0
+از	ə z	ipa	0
+ازار	ɪ z ɑː ɾ	ipa	0
+ازبک	ʊ z b ə k	ipa	0
+ازبکستان	ʊ z b ə k ɪ s t̪ ɑː n	ipa	0
+ازدواج	ɪ z d̪ ɪ ʋ ɑː d͡ʒ	ipa	0
+اساس	ə s ɑː s	ipa	0
+اساس	ʊ s ɑː s	ipa	0
+اساسی	ə s ɑː s iː	ipa	0
+اساطیر	ə s ɑː t̪ iː ɾ	ipa	0
+اساطیری	ə s ɑː t̪ iː ɾ iː	ipa	0
+اسباب	ə s b ɑː b	ipa	0
+استاد	ʊ s t̪ ɑː d̪	ipa	0
+استانی	ʊ s t̪ ɑː n iː	ipa	0
+استبداد	ɪ s t̪ ɪ b d̪ ɑː d̪	ipa	0
+استحکام	ɪ s t̪ ɪ ɦ k ɑː m	ipa	0
+استخلاف	ɪ s t̪ ɪ x l ɑː f	ipa	0
+استخوان	ʊ s t̪ ʊ x w ɑː n	ipa	0
+استر	ə s t̪ ə ɾ	ipa	0
+استری	ɪ s t̪ ə ɾ iː	ipa	0
+استری	ɪ s t̪ ɪ ɾ iː	ipa	0
+استری	ɪ s t̪ ɾ iː	ipa	0
+استعفا	ɪ s t̪ iː f ɑː	ipa	0
+استعمال	ɪ s t̪ eː m ɑː l	ipa	0
+استقبال	ɪ s t̪ ɪ q b ɑː l	ipa	0
+استقلال	ɪ s t̪ ɪ q l ɑː l	ipa	0
+استنبول	ɪ s t̪ ə m b oː l	ipa	0
+استوار	ʊ s t̪ ə w ɑː ɾ	ipa	0
+استوار	ʊ s t̪ ʊ ʋ ɑː ɾ	ipa	0
+استور	ə s t̪ oː ɾ	ipa	0
+استھ	ə s t̪ʰ iː	ipa	0
+اسحاق	ɪ s ɦ ɑː q	ipa	0
+اسد	ə s ə d̪	ipa	0
+اسرائیل	ɪ s ɾ ɑː iː l	ipa	0
+اسراف	ɪ s ɾ ɑː f	ipa	0
+اسطوخودوس	ʊ s t̪ oː x uː d̪ d̪ uː s	ipa	0
+اسطورہ	ʊ s t̪ uː ɾ ɑː	ipa	0
+اسطوری	ʊ s t̪ uː ɾ iː	ipa	0
+اسفنج	ɪ s f ə n d͡ʒ	ipa	0
+اسلام	ɪ s l ɑː m	ipa	0
+اسلامی	ɪ s l ɑː m iː	ipa	0
+اسلحہ	ə s l ə ɦ ɑː	ipa	0
+اسلحہ	ə s l ɪ ɦ ɑː	ipa	0
+اسلوب	ʊ s l uː b	ipa	0
+اسم	ə s ə m	ipa	0
+اسم	ɪ s m	ipa	0
+اسماعیل	ɪ s m ɑː iː l	ipa	0
+اسٹرابیری	ɪ s ʈ ɾ ɑː b eː ɾ iː	ipa	0
+اسٹیشن	ɪ s ʈ eː ʃ ə n	ipa	0
+اسٹیڈیم	s ʈ eː ɖ ɪ j ə m	ipa	0
+اسٹیڈیم	ɪ s ʈ eː ɖ ɪ j ə m	ipa	0
+اسپ	ə s p	ipa	0
+اسپات	ɪ s p ɑː t̪	ipa	0
+اسپتال	ə s p ə t̪ ɑː l	ipa	0
+اسپغول	ɪ s p ə ɣ oː l	ipa	0
+اسکندریہ	ɪ s k ə n d̪ ə ɾ ɪ jᵊ	ipa	0
+اسکول	s k uː l	ipa	0
+اسکول	ɪ s k uː l	ipa	0
+اسکولوں	ɪ s k uː l õː	ipa	0
+اسہال	ɪ s ɦ ɑː l	ipa	0
+اسیر	ə s iː ɾ	ipa	0
+اسیران	ə s iː ɾ ɑː n	ipa	0
+اسیرو	ə s iː ɾ oː	ipa	0
+اسیروں	ə s iː ɾ õː	ipa	0
+اسیری	ə s iː ɾ iː	ipa	0
+اشارو	ɪ ʃ ɑː ɾ oː	ipa	0
+اشاروں	ɪ ʃ ɑː ɾ õː	ipa	0
+اشارہ	ɪ ʃ ɑː ɾ ɑ	ipa	0
+اشارہ	ɪ ʃ ɑː ɾ ɑː	ipa	0
+اشارے	ɪ ʃ ɑː ɾ eː	ipa	0
+اشاعت	ɪ ʃ ɑː t̪	ipa	0
+اشاعت	ɪ ʃ ɑː ə t̪	ipa	0
+اشاعت	ɪ ʃ ɑː ʔ ə t̪	ipa	0
+اشبھ	ə ʃ ʊ bʱ	ipa	0
+اشبیلیہ	ə ʃ b iː l ɪ j ɑ	ipa	0
+اشبیلیہ	ə ʃ b iː l ɪ j ɑː ɦ	ipa	0
+اشتباہا	ɪ ʃ t̪ ɪ b ɑː ɦ ə n	ipa	0
+اشتراک	ɪ ʃ t̪ ɪ ɾ ɑː k	ipa	0
+اشتراکیت	ɪ ʃ t̪ ɪ ɾ ɑː k ɪ j ə t̪	ipa	0
+اشتقاق	ɪ ʃ t̪ ɪ q ɑː q	ipa	0
+اشتہا	ɪ ʃ t̪ ɪ ɦ ɑː	ipa	0
+اشتہار	ɪ ʃ t̪ ɪ ɦ ɑː ɾ	ipa	0
+اشتیاق	ɪ ʃ t̪ ɪ j ɑː q	ipa	0
+اشراق	ɪ ʃ ɾ ɑː q	ipa	0
+اشوک	ə ʃ oː k	ipa	0
+اشک	ə ʃ k	ipa	0
+اصطبل	ə s t̪ ə b ə l	ipa	0
+اصطلاح	ɪ s t̪ ɪ l ɑː ɦ	ipa	0
+اصغر	ə s ɣ ə ɾ	ipa	0
+اصفہان	ə s f ə ɦ ɑː n	ipa	0
+اصفہان	ɪ s f ə ɦ ɑː n	ipa	0
+اصل	ə s l	ipa	0
+اصل	ə s ə l	ipa	0
+اصلاح	ɪ s l ɑː ɦ	ipa	0
+اصول	ʊ s uː l	ipa	0
+اصہار	ə s ɦ ɑː ɾ	ipa	0
+اصیل	ə s iː l	ipa	0
+اضافت	ɪ z ɑː f ə t̪	ipa	0
+اضافہ	ɪ z ɑː f ɑ	ipa	0
+اضافہ	ɪ z ɑː f ɑː	ipa	0
+اضطراب	ɪ z t̪ ə ɾ ɑː b	ipa	0
+اضطراب	ɪ z t̪ ɪ ɾ ɑː b	ipa	0
+اضطراری	ɪ z t̪ ɪ ɾ ɑː ɾ iː	ipa	0
+اطالیہ	ɪ t̪ ɑː l ɪ j ɑː	ipa	0
+اطراف	ə t̪ ɾ ɑː f	ipa	0
+اطفال	ə t̪ f ɑː l	ipa	0
+اطلاع	ɪ t̪ t̪ ɪ l ɑː	ipa	0
+اطلاع	ɪ t̪ t̪ ɪ l ɑː ʔ	ipa	0
+اطلاقی	ɪ t̪ l ɑː q iː	ipa	0
+اطلس	ə t̪ l ə s	ipa	0
+اطمینان	ɪ t̪ m iː n ɑː n	ipa	0
+اظہار	ɪ z ɦ ɑː ɾ	ipa	0
+اعتبار	ɪ ʕ t̪ ɪ b ɑː ɾ	ipa	0
+اعتراض	ɪ ʔ t̪ ɪ ɾ ɑː z	ipa	0
+اعتراضات	ɪ t̪ ɪ ɾ ɑː z ɑː t̪	ipa	0
+اعتراضات	ɪ ʔ t̪ ɪ ɾ ɑː z ɑː t̪	ipa	0
+اعتراضوں	ɪ t̪ ɪ ɾ ɑː z õː	ipa	0
+اعتراضوں	ɪ ʔ t̪ ɪ ɾ ɑː z õː	ipa	0
+اعتراف	eː t̪ ɪ ɾ ɑː f	ipa	0
+اعتراف	eː ʔ t̪ ɪ ɾ ɑː f	ipa	0
+اعتماد	ɪ ʔ t̪ ɪ m ɑː d̪	ipa	0
+اعضا	ə z ɑː	ipa	0
+اعضا	ə ʔ z ɑː	ipa	0
+اعظم	ɑː z ə m	ipa	0
+اعظم	ə z ə m	ipa	0
+اعظم	ə ʔ z ə m	ipa	0
+اعلی	ə ʔ l ɑː	ipa	0
+اغوا	ə ɣ ʋ ɑː	ipa	0
+اغوا	ɪ ɣ ʋ ɑː	ipa	0
+افراد	ə f ɾ ɑː d̪	ipa	0
+افریقہ	ə f ɾ iː q ɑ	ipa	0
+افریقہ	ə f ɾ iː q ɑː	ipa	0
+افریقی	ə f ɾ iː q iː	ipa	0
+افزائش	ə f z ɑː ɪ ʃ	ipa	0
+افسانو	ə f s ɑː n oː	ipa	0
+افسانوں	ə f s ɑː n õː	ipa	0
+افسانوی	ə f s ɑː n ʋ iː	ipa	0
+افسانہ	ə f s ɑː n ɑ	ipa	0
+افسانہ	ə f s ɑː n ɑː	ipa	0
+افسانے	ə f s ɑː n eː	ipa	0
+افسر	ə f s ə ɾ	ipa	0
+افسردہ	ə f s ʊ ɾ d̪ᵊ	ipa	0
+افطار	ɪ f t̪ ɑː ɾ	ipa	0
+افطاری	ɪ f t̪ ɑː ɾ iː	ipa	0
+افغان	ə f ɣ ɑː n	ipa	0
+افغانستان	ə f ɣ ɑː n ɪ s t̪ ɑː n	ipa	0
+افق	ʊ f ʊ q	ipa	0
+افلاس	ɪ f l ɑː s	ipa	0
+افواہ	ə f w ɑː	ipa	0
+افواہ	ə f w ɑː ɦ	ipa	0
+افواہ	ə f ʋ ɑː	ipa	0
+افواہ	ə f ʋ ɑː ɦ	ipa	0
+افیون	ə f j uː n	ipa	0
+اقامت	ɪ q ɑː m ə t̪	ipa	0
+اقتدار	ɪ q t̪ ɪ d̪ ɑː ɾ	ipa	0
+اقتصادی	ɪ q t̪ ɪ s ɑː d̪ iː	ipa	0
+اقلیت	ə q l ɪ j ə t̪	ipa	0
+اقلیت	ə q ə l l ɪ j ə t̪	ipa	0
+اقلیم	ɪ q l iː m	ipa	0
+اقوام	ə q ʋ ɑː m	ipa	0
+الائچی	ɪ l ɑː j t͡ʃ iː	ipa	0
+البانیا	ə l b ɑː n ɪ j ɑː	ipa	0
+البتہ	ə l b ə t̪ t̪ ɑ	ipa	0
+البتہ	ə l b ə t̪ t̪ ɑː	ipa	0
+البیلا	ə l b eː l ɑː	ipa	0
+الجزائر	ə l d͡ʒ ə z ɑː ɪ ɾ	ipa	0
+الحاق	ɪ l ɦ ɑː q	ipa	0
+الزام	ɪ l z ɑː m	ipa	0
+الف	ə l ɪ f	ipa	0
+الفاظ	ə l f ɑː z	ipa	0
+اللہ	ə l l ɑː	ipa	0
+اللہ	ə l l ɑː ɦ	ipa	0
+الم	ə l ə m	ipa	0
+الماری	ə l m ɑː ɾ iː	ipa	0
+الماس	ə l m ɑː s	ipa	0
+المغرب	ə l m ə ɣ ɾ ɪ b	ipa	0
+النکار	ə l ə ŋ k ɑː ɾ	ipa	0
+النکرت	ə l ə ŋ k ɾ ɪ t̪	ipa	0
+الو	ʊ l l uː	ipa	0
+الوداع	ə l ʋ ɪ d̪ ɑː	ipa	0
+الوداع	ə l ʋ ɪ d̪ ə	ipa	0
+الوداع	ə l ʋ ɪ d̪ ə ʔ	ipa	0
+الٹنا	ʊ l ə ʈ n ɑː	ipa	0
+الٹی	ʊ l ʈ iː	ipa	0
+الٹیاں	ʊ l ʈ j ɑ̃ː	ipa	0
+الٹیوں	ʊ l ʈ j õː	ipa	0
+الکحل	æ l k ɔː ɦ ɔː l	ipa	0
+الکحل	ə l k ʊ ɦ ʊ l	ipa	0
+الگ	ə l ə ɡ	ipa	0
+الہام	ɪ l ɦ ɑː m	ipa	0
+الہاموں	ɪ l ɦ ɑː m õː	ipa	0
+الیاس	ɪ l j ɑː s	ipa	0
+الیسع	ə l j ə s ə	ipa	0
+الیسع	ə l j ə s ə ʔ	ipa	0
+امارت	ɪ m ɑː ɾ ə t̪	ipa	0
+امام	ɪ m ɑː m	ipa	0
+امانت	ə m ɑː n ə t̪	ipa	0
+امانتو	ə m ɑː n ə t̪ oː	ipa	0
+امانتوں	ə m ɑː n ə t̪ õː	ipa	0
+امانتیں	ə m ɑː n ə t̪ ẽː	ipa	0
+امتحان	ɪ m t̪ ɪ ɦ ɑː n	ipa	0
+امتحانوں	ɪ m t̪ ɪ ɦ ɑː n õː	ipa	0
+امداد	ɪ m d̪ ɑː d̪	ipa	0
+امر	ə m ɾ	ipa	0
+امرا	ʊ m ə ɾ ɑː	ipa	0
+امرت	ə m ɾ ɪ t̪	ipa	0
+امرت	ɪ m ɾ ɪ t̪	ipa	0
+امرتسر	ə m ɾ ɪ t̪ s ə ɾ	ipa	0
+امرود	ə m ɾ uː d̪	ipa	0
+امروز	ɪ m ɾ oː z	ipa	0
+امریکا	ə m ɾ iː k ɑː	ipa	0
+امریکہ	ə m ɾ iː k ɑ	ipa	0
+امریکہ	ə m ɾ iː k ɑː	ipa	0
+امل	ə m ə l	ipa	0
+املا	ɪ m l ɑː	ipa	0
+املی	ɪ m l iː	ipa	0
+امن	ə m ə n	ipa	0
+امور	ʊ m uː ɾ	ipa	0
+امکان	ɪ m k ɑː n	ipa	0
+امی	ə mː iː	ipa	0
+امید	ʊ m eː d̪	ipa	0
+امید	ʊ m iː d̪	ipa	0
+امید	ʊ m m eː d̪	ipa	0
+امید	ʊ m m iː d̪	ipa	0
+امیدوار	ʊ m m eː d̪ ʋ ɑː ɾ	ipa	0
+امیدوار	ʊ m m iː d̪ ʋ ɑː ɾ	ipa	0
+امیر	ə m iː ɾ	ipa	0
+امینہ	ə m iː n ɑ	ipa	0
+امینہ	ə m iː n ɑː	ipa	0
+اناتھ	ə n ɑː t̪ʰ	ipa	0
+انار	ə n ɑː ɾ	ipa	0
+انارکلی	ə n ɑː ɾ k ə l iː	ipa	0
+انبار	ə m b ɑː ɾ	ipa	0
+انبیاء	ə m b ɪ j ɑː	ipa	0
+انت	ə n t̪	ipa	0
+انتباہ	ɪ n t̪ ɪ b ɑː ɦ	ipa	0
+انتخاب	ɪ n t̪ eː x ɑː b	ipa	0
+انتخاب	ɪ n t̪ ə x ɑː b	ipa	0
+انتخاب	ɪ n t̪ ɪ x ɑː b	ipa	0
+انتر	ə n t̪ ə ɾ	ipa	0
+انترم	ə n t̪ ɾ ɪ m	ipa	0
+انتظار	ɪ n t̪ e z ɑː ɾ	ipa	0
+انتظار	ɪ n t̪ ə z ɑː ɾ	ipa	0
+انتظار	ɪ n t̪ ɪ z ɑː ɾ	ipa	0
+انتظام	ɪ n t̪ ɪ z ɑː m	ipa	0
+انتظامی	ɪ n t̪ ɪ z ɑː m iː	ipa	0
+انتظامیہ	ɪ n t̪ ɪ z ɑː m ɪ j ɑː	ipa	0
+انتقال	ɪ n t̪ ɪ q ɑː l	ipa	0
+انتقام	ɪ n t̪ ə q ɑː m	ipa	0
+انتقام	ɪ n t̪ ɪ q ɑː m	ipa	0
+انتم	ə n t̪ ɪ m	ipa	0
+انتہا	ɪ n t̪ ɪ ɦ ɑː	ipa	0
+انتہائی	ɪ n t̪ ɪ ɦ ɑː iː	ipa	0
+انتہاپسند	ɪ n t̪ e ɦ ɑː p ə s ə n d̪	ipa	0
+انجام	ə n d͡ʒ ɑː m	ipa	0
+انجانا	ə n d͡ʒ ɑː n ɑː	ipa	0
+انجماد	ɪ n d͡ʒ ɪ m ɑː d̪	ipa	0
+انجمن	ə n d͡ʒ ʊ m ə n	ipa	0
+انجیر	ə n d͡ʒ iː ɾ	ipa	0
+انداز	ə n d̪ ɑː z	ipa	0
+اندر	ə n d̪ ə ɾ	ipa	0
+اندر	ɪ n d̪ ə ɾ	ipa	0
+اندر	ɪ n d̪ ɾᵊ	ipa	0
+اندر	ɪ n d̪ ʊ ɾ	ipa	0
+اندراج	ɪ n d̪ ɪ ɾ ɑː d͡ʒ	ipa	0
+اندرون	ə n d̪ ɾ uː n	ipa	0
+اندلس	ʊ n d̪ ʊ l ʊ s	ipa	0
+اندھا	ə n d̪ʱ ɑː	ipa	0
+اندھو	ə n d̪ʱ oː	ipa	0
+اندھوں	ə n d̪ʱ õː	ipa	0
+اندھکار	ə n d̪ʱ k ɑː ɾ	ipa	0
+اندھی	ə n d̪ʱ iː	ipa	0
+اندھیرا	ə n d̪ʱ eː ɾ ɑː	ipa	0
+اندھیروں	ə n d̪ʱ eː ɾ õː	ipa	0
+اندھیری	ə n d̪ʱ eː ɾ iː	ipa	0
+اندھیرے	ə n d̪ʱ eː ɾ eː	ipa	0
+اندھے	ə n d̪ʱ eː	ipa	0
+اندیشوں	ə n d̪ eː ʃ õː	ipa	0
+اندیشہ	ə n d̪ eː ʃ ɑ	ipa	0
+اندیشہ	ə n d̪ eː ʃ ɑː	ipa	0
+اندیشے	ə n d̪ eː ʃ eː	ipa	0
+اندیکھا	ə n d̪ eː kʰ ɑː	ipa	0
+انسان	ɪ n s ɑː n	ipa	0
+انسانی	ɪ n s ɑː n iː	ipa	0
+انسانیت	ɪ n s ɑː n ɪ j ə t̪	ipa	0
+انسداد	ɪ n s ɪ d̪ ɑː d̪	ipa	0
+انش	ə n ʃ	ipa	0
+انصاف	ɪ n s ɑː f	ipa	0
+انطاکیہ	ə n t̪̤ ɑː k ɪ j ɑ	ipa	0
+انطاکیہ	ə n t̪̤ ɑː k ɪ j ɑː	ipa	0
+انطلیاس	ə n t̪ ɪ l j ɑː s	ipa	0
+انعام	ɪ n ʔ ɑː m	ipa	0
+انعامو	ɪ n ɑː m oː	ipa	0
+انعامو	ɪ n ʔ ɑː m oː	ipa	0
+انعاموں	ɪ n ɑː m õː	ipa	0
+انعاموں	ɪ n ʔ ɑː m õː	ipa	0
+انقلاب	ɪ n q ə l ɑː b	ipa	0
+انقلاب	ɪ n q ɪ l ɑː b	ipa	0
+انل	ə n ə l	ipa	0
+انل	ə n ɪ l	ipa	0
+انوادک	ə n ʊ ʋ ɑː d̪ ə k	ipa	0
+انوکھا	ə n oː kʰ ɑː	ipa	0
+انوکھی	ə n oː kʰ iː	ipa	0
+انوکھے	ə n oː kʰ eː	ipa	0
+انٹارکٹکا	ə ɳ ʈ ɑː ɾ k ʈ ɪ k ɑː	ipa	0
+انٹرنیشنل	ɪ n ʈ ə ɾ n ɛː ʃ ɪ n ə l	ipa	0
+انپم	ə n ʊ p ə m	ipa	0
+انچل	ə n t͡ʃ ə l	ipa	0
+انڈا	ə ɳ ɖ ɑː	ipa	0
+انڈو	ə n ɖ oː	ipa	0
+انڈونیشیا	ɪ n ɖ oː n eː ʃ ɪ j ɑː	ipa	0
+انڈوں	ə n ɖ õː	ipa	0
+انڈکوش	ə n ɖ ə k oː ʃ	ipa	0
+انڈیا	ɪ n ɖ ɪ j ɑː	ipa	0
+انڈے	ə n ɖ eː	ipa	0
+انکار	ɪ n k ɑː ɾ	ipa	0
+انکشاف	ɪ n k ɪ ʃ ɑː f	ipa	0
+انکشافات	ɪ n k ɪ ʃ ɑː f ɑː t̪	ipa	0
+انکل	ə ŋ k ə l	ipa	0
+انگریز	ə ŋ ɡ ɾ eː z	ipa	0
+انگریزی	ə̃ ŋ ɡ ɾ eː z iː	ipa	0
+انگلستان	ɪ ŋ ɡ l ɪ s t̪ ɑː n	ipa	0
+انگلی	ʊ ŋ ɡ l iː	ipa	0
+انگلینڈ	ɪ ŋ ɡ l ɛː n ɖ	ipa	0
+انگور	ə ŋ ɡ uː ɾ	ipa	0
+انگوری	ə ŋ ɡ uː ɾ iː	ipa	0
+انگولہ	ə ŋ ɡ oː l ɑː	ipa	0
+انگوٹھا	ə ŋ ɡ uː ʈʰ ɑː	ipa	0
+انگوٹھی	ə ŋ ɡ uː ʈʰ iː	ipa	0
+انگڑائی	ə ŋ ɡ ɽ ɑː iː	ipa	0
+انگھیٹی	ə ŋ ɡʱ iː ʈ iː	ipa	0
+انھیں	ɪ n ɦ ẽː	ipa	0
+انھیں	ʊ n ɦ ẽː	ipa	0
+انہ	ɑː n ɑː	ipa	0
+انہیں	ɪ n ɦ ẽː	ipa	0
+انہیں	ʊ n ɦ ẽː	ipa	0
+انیس	ʊ n n iː s	ipa	0
+انیک	ə n eː k	ipa	0
+اهہ	iː ɦ	ipa	0
+اهہ	ɪ ɦ	ipa	0
+اوتار	ɔː t̪ ɑː ɾ	ipa	0
+اوتار	ə ʋ t̪ ɑː ɾ	ipa	0
+اوتھل	uː t̪ʰ ɑː l	ipa	0
+اودا	uː d̪ ɑː	ipa	0
+اودبلاؤ	uː d̪ b ɪ l ɑː oː	ipa	0
+اودھی	ə ʋ ə d̪ʱ iː	ipa	0
+اور	ɔː ɾ	ipa	0
+اورماڑا	oː ɾ m ɑː ɽ ɑː	ipa	0
+اورنگ	ɔː ɾ ə ŋ ɡ	ipa	0
+اورنگزیب	ɔː ɾ ə ŋ ɡ z eː b	ipa	0
+اوروں	ɔː ɾ õː	ipa	0
+اوس	oː s	ipa	0
+اوساکا	oː s ɑː k ɑː	ipa	0
+اوسطا	ɔː s t̪ ə n	ipa	0
+اوقات	ɔː q ɑː t̪	ipa	0
+اوقیانوس	uː q ɪ j ɑː n uː s	ipa	0
+اول	ə ʋː ə l	ipa	0
+اولا	oː l ɑː	ipa	0
+اولا	ə ʋ ʋ ə l ə n	ipa	0
+اولاد	ɔː l ɑː d̪	ipa	0
+اولو	ʊ l uː	ipa	0
+اولی	uː l ɑː	ipa	0
+اولی	ɔː l ɑː	ipa	0
+اولی	ʊ l iː	ipa	0
+اون	uː n	ipa	0
+اونٹ	ũː ʈ	ipa	0
+اونٹوں	ũː ʈ õː	ipa	0
+اونچا	uː n t͡ʃ ɑː	ipa	0
+اونچائی	ũː t͡ʃ ɑː iː	ipa	0
+اونگھ	ũː ŋ ɡʱ	ipa	0
+اوپر	uː p ə ɾ	ipa	0
+اوڈیشہ	oː ɽ iː ʃ ɑː	ipa	0
+اوڑی	uː ɽ iː	ipa	0
+اوکاش	ə ʋ k ɑː ʃ	ipa	0
+اوکاڑہ	oː k ɑː ɽ ɑ	ipa	0
+اوکاڑہ	oː k ɑː ɽ ɑː	ipa	0
+اوکھل	uː kʰ l iː	ipa	0
+اوکھل	uː kʰ ə l	ipa	0
+اوکھی	ɔː kʰ iː	ipa	0
+اوہ	uː ɦ	ipa	0
+اویغور	uː ɪ ɣ uː ɾ	ipa	0
+اویغورستان	uː ɪ ɣ uː ɾ ɪ s t̪ ɑː n	ipa	0
+اٹاری	ə ʈ ɑː ɾ iː	ipa	0
+اٹاچی	ə ʈ ɑː t͡ʃ iː	ipa	0
+اٹاچی	ə ʈ ɛː t͡ʃ iː	ipa	0
+اٹک	ə ʈ ə k	ipa	0
+اٹھارہ	ə ʈʰ ɑː ɾ ə ɦ	ipa	0
+اٹھانا	ʊ ʈʰ ɑː n ɑː	ipa	0
+اٹھنا	ʊ ʈʰ n ɑː	ipa	0
+اپاسک	ʊ p ɑː s ə k	ipa	0
+اپاہج	ə p ɑː ɦ ɪ d͡ʒ	ipa	0
+اپدهان	ʊ p d̪ʱ ɑː n	ipa	0
+اپدیش	ʊ p d̪ eː ʃ	ipa	0
+اپرادھ	ə p ɾ ɑː d̪ʱ	ipa	0
+اپرادھی	ə p ɾ ɑː d̪ʱ iː	ipa	0
+اپرمپار	ə p ɾ ə m p ɑː ɾ	ipa	0
+اپریل	ə p ɾ ɛː l	ipa	0
+اپستھت	ʊ p ə s t̪ʰ ɪ t̪	ipa	0
+اپلبدھ	ʊ p l ə b d̪ʱ	ipa	0
+اپنا	ə p n ɑː	ipa	0
+اپنيتر	ʊ p n eː t̪ ɾᵊ	ipa	0
+اپواس	ʊ p ʋ ɑː s	ipa	0
+اپہار	ʊ pʰ ɑː ɾ	ipa	0
+اپیوگ	ʊ p j oː ɡ	ipa	0
+اچار	ə t͡ʃ ɑː ɾ	ipa	0
+اچانک	ə t͡ʃ ɑː n ə k	ipa	0
+اچت	ʊ t͡ʃ ɪ t̪	ipa	0
+اچکیریہ	ɪ t͡ʃ k eː ɾ j ɑ	ipa	0
+اچکیریہ	ɪ t͡ʃ k eː ɾ j ɑː	ipa	0
+اچکیریہ	ɪ t͡ʃ k iː ɾ j ɑ	ipa	0
+اچکیریہ	ɪ t͡ʃ k iː ɾ j ɑː	ipa	0
+اچھا	ə t̪ t͡ʃʰ ɑː	ipa	0
+اچھا	ɪ t̪ t͡ʃʰ ɑː	ipa	0
+اچھلنا	ʊ t͡ʃʰ ə l n ɑː	ipa	0
+اچھوت	ə t͡ʃʰ uː t̪	ipa	0
+اچھوتا	ə t͡ʃʰ uː t̪ ɑː	ipa	0
+اچھوتی	ə t͡ʃʰ uː t̪ iː	ipa	0
+اچھی	ə t̪ t͡ʃʰ iː	ipa	0
+اچھے	ə t̪ t͡ʃʰ eː	ipa	0
+اڑان	ʊ ɽ ɑː n	ipa	0
+اڑانا	ʊ ɽ ɑː n ɑː	ipa	0
+اڑنا	ə ɽ n ɑː	ipa	0
+اڑنا	ʊ ɽ n ɑː	ipa	0
+اڑھائی	ə ɽʱ ɑː iː	ipa	0
+اژدہا	ə z d̪ ə ɦ ɑː	ipa	0
+اژدہا	ə ʒ d̪ ə ɦ ɑː	ipa	0
+اژدہو	ə ʒ d̪ ə ɦ oː	ipa	0
+اژدہوں	ə ʒ d̪ ə ɦ õː	ipa	0
+اژدہے	ə ʒ d̪ ə ɦ eː	ipa	0
+اک	ɪ k	ipa	0
+اکا	ɪ k k ɑː	ipa	0
+اکائی	ɪ k ɑː iː	ipa	0
+اکادمک	ə k ɑː d̪ m ɪ k	ipa	0
+اکادمی	ə k ɑː d̪ m iː	ipa	0
+اکال	ə k ɑː l	ipa	0
+اکانوے	ɪ k ɑː n ʋ eː	ipa	0
+اکتاہٹ	ʊ k t̪ ɑː ɦ ə ʈ	ipa	0
+اکتوبر	ə k t̪ uː b ə ɾ	ipa	0
+اکثر	ə k s ə ɾ	ipa	0
+اکثریت	ə k s ə ɾ ɪ j ə t̪	ipa	0
+اکشر	ə k ʃ ə ɾ	ipa	0
+اکلوتا	ɪ k l ɔː t̪ ɑː	ipa	0
+اکلوتی	ɪ k l ɔː t̪ iː	ipa	0
+اکلوتے	ɪ k l ɔː t̪ eː	ipa	0
+اکنون	ə k n uː n	ipa	0
+اکٹھا	ɪ k ə ʈ ʈʰ ɑː	ipa	0
+اکڑ	ə k ə ɽ	ipa	0
+اکھاڑا	ə kʰ ɑː ɽ ɑː	ipa	0
+اکھروٹ	ə kʰ ɾ oː ʈ	ipa	0
+اکیس	ɪ k k iː s	ipa	0
+اکیلا	ə k eː l ɑː	ipa	0
+اکیلاپن	ə k eː l ɑː p ə n	ipa	0
+اکیلی	ə k eː l iː	ipa	0
+اکیلے	ə k eː l eː	ipa	0
+اگر	ə ɡ ə ɾ	ipa	0
+اگربتی	ə ɡ ə ɾ b ə t̪ t̪ iː	ipa	0
+اگرچہ	ə ɡ ə ɾ t͡ʃ eː	ipa	0
+اگست	ə ɡ ə s t̪	ipa	0
+اگلا	ə ɡ l ɑː	ipa	0
+اگلی	ə ɡ l iː	ipa	0
+اگلے	ə ɡ l eː	ipa	0
+اگن	ə ɡ ə n	ipa	0
+اگنا	ʊ ɡ n ɑː	ipa	0
+اگنی	ə ɡ n iː	ipa	0
+اہلیاؤ	ə ɦ l ɪ j ɑː oː	ipa	0
+اہلیاؤں	ə ɦ l ɪ j ɑː õː	ipa	0
+اہلیائیں	ə ɦ l ɪ j ɑː ẽː	ipa	0
+اہلیہ	ə ɦ l ɪ j ɑ	ipa	0
+اہلیہ	ə ɦ l ɪ j ɑː	ipa	0
+اہم	ə ɦ ə m	ipa	0
+ایالت	ɪ j ɑː l ə t̪	ipa	0
+ایت	ə j ʊ t̪	ipa	0
+ایتھنز	eː t̪ʰ ə n z	ipa	0
+ایتھنز	iː t̪ʰ ə n z	ipa	0
+ایتھوپیا	ɪ t̪ʰ ɪ j oː p ɪ j ɑː	ipa	0
+ایجنٹ	eː d͡ʒ ə n ʈ	ipa	0
+ایران	iː ɾ ɑː n	ipa	0
+ایرانی	iː ɾ ɑː n iː	ipa	0
+ایرشا	iː ɾ ʃ ɑː	ipa	0
+ایرکھا	iː ɾ kʰ ɑː	ipa	0
+ایزد	eː z ɪ d̪	ipa	0
+ایزد	iː z ɪ d̪	ipa	0
+ایسٹر	iː s ʈ ə ɾ	ipa	0
+ایشور	iː ʃ ʋ ə ɾ	ipa	0
+ایلچی	eː l t͡ʃ iː	ipa	0
+ایمان	iː m ɑː n	ipa	0
+ایماندار	iː m ɑː n d̪ ɑː ɾ	ipa	0
+ایمانوں	iː m ɑː n õː	ipa	0
+ایندھن	iː n d̪ʱ ə n	ipa	0
+اینٹ	ĩː ʈ	ipa	0
+اینٹوں	ĩː ʈ õː	ipa	0
+اینٹیں	ĩː ʈ ẽː	ipa	0
+ایوان	ɛː ʋ ɑː n	ipa	0
+ایوب	ə j j uː b	ipa	0
+ایڈنبرا	iː ɖ ɪ m b ɾ ɑː	ipa	0
+ایڈنبرا	iː ɖ ɪ n b ɾ ɑː	ipa	0
+ایڈنبرا	ɛː ɖ ɪ n b ɾ ɑː	ipa	0
+ایک	eː k	ipa	0
+ایکواڈور	eː k ʋ ɑː ɖ oː ɾ	ipa	0
+ایکھ	iː kʰ	ipa	0
+اے	eː	ipa	0
+ب	b	ipa	0
+ب	b eː	ipa	0
+بآواز	b ə ɑː ʋ ɑː z	ipa	0
+بائبل	b ɑː ɪ b ɪ l	ipa	0
+بائیسکل	b ɑː iː s ɪ k ə l	ipa	0
+بابو	b ɑː b uː	ipa	0
+بابی	b ɑː b iː	ipa	0
+بات	b ɑː t̪	ipa	0
+باتری	b ɑː t̪ ɾ iː	ipa	0
+باتوں	b ɑː t̪ õː	ipa	0
+باتھروم	b ɑː t̪ʰ ɾ uː m	ipa	0
+باتیں	b ɑː t̪ ẽː	ipa	0
+باجی	b ɑː d͡ʒ iː	ipa	0
+باختر	b ɑː x t̪ ə ɾ	ipa	0
+باد	b ɑː d̪	ipa	0
+بادام	b ɑː d̪ ɑː m	ipa	0
+بادام	b ə d̪ ɑː m	ipa	0
+بادامی	b ɑː d̪̪ ɑː m ɪː	ipa	0
+بادرنگ	b ɑː d̪ ɾ ə ŋ ɡ	ipa	0
+بادشاہ	b ɑː d̪ ʃ ɑː ɦ	ipa	0
+بادشاہت	b ɑː d̪ ʃ ɑː ɦ ə t̪	ipa	0
+بادل	b ɑː d̪ ə l	ipa	0
+بادلو	b ɑː d̪ ə l oː	ipa	0
+بادلوں	b ɑː d̪ ə l õː	ipa	0
+بادنجان	b ɑː d̪ ə n d͡ʒ ɑː n	ipa	0
+بار	b ɑː ɾ	ipa	0
+بارات	b ɑː ɾ ɑː t̪	ipa	0
+باراں	b ɑː ɾ ɑ̃ː	ipa	0
+بارش	b ɑː ɾ ɪ ʃ	ipa	0
+بارشوں	b ɑː ɾ ɪ ʃ õː	ipa	0
+بارشیں	b ɑː ɾ ɪ ʃ ẽː	ipa	0
+بارکھان	b ɑː ɾ kʰ ɑː n	ipa	0
+بارہ	b ɑː ɾ ɑ	ipa	0
+بارہ	b ɑː ɾ ɑː	ipa	0
+بارہ	b ɑː ɾ ə ɦ	ipa	0
+بارہا	b ɑː ɾ ɦ ɑː	ipa	0
+باریک	b ɑː ɾ iː k	ipa	0
+باز	b ɑː z	ipa	0
+بازار	b ɑː z ɑː ɾ	ipa	0
+بازار	b ə z ɑː ɾ	ipa	0
+بازاروں	b ɑː z ɑː ɾ õː	ipa	0
+بازو	b ɑː z uː	ipa	0
+بازوبند	b ɑː z uː b ə n d̪	ipa	0
+بازی	b ɑː z iː	ipa	0
+باسن	b ɑː s ə n	ipa	0
+باسی	b ɑː s iː	ipa	0
+باشندہ	b ɑː ʃ ɪ n d̪ ɑː	ipa	0
+باعث	b ɑː ɪ s	ipa	0
+باعث	b ɑː ʔ ɪ s	ipa	0
+باغ	b ɑː ɣ	ipa	0
+باغوں	b ɑː ɣ õː	ipa	0
+باغی	b ɑː ɣ iː	ipa	0
+باغیچہ	b ɑː ɣ iː t͡ʃ ɑː	ipa	0
+باقی	b ɑː q iː	ipa	0
+بال	b ɑː l	ipa	0
+بالآخر	b ɪ l ɑː x ɪ ɾ	ipa	0
+بالش	b ɑː l ɪ ʃ	ipa	0
+بالفرض	b ɪ l f ə ɾ z	ipa	0
+بالفعل	b ɪ l f ɪ ʕ l	ipa	0
+بالم	b ɑː l ə m	ipa	0
+بالمیکی	b ɑː l m iː k iː	ipa	0
+بالٹی	b ɑː l ʈ iː	ipa	0
+بالکل	b ɪ l k ʊ l	ipa	0
+باندھنا	b ɑː n d̪ʱ n ɑː	ipa	0
+بانس	b ɑ̃ː s	ipa	0
+بانسری	b ɑ̃ː s ɾ iː	ipa	0
+بانسری	b ɑ̃ː s ʊ ɾ iː	ipa	0
+بانسو	b ɑ̃ː s oː	ipa	0
+بانسوں	b ɑ̃ː n s õː	ipa	0
+بانو	b ɑː n oː	ipa	0
+بانو	b ɑː n uː	ipa	0
+بانٹنا	b ɑ̃ː ʈ n ɑː	ipa	0
+بانچنا	b ɑ̃ː t͡ʃ n ɑː	ipa	0
+بانگ	b ɑː ŋ ɡ	ipa	0
+بانگی	b ɑː ŋ ɡ iː	ipa	0
+بانہو	b ɑ̃ː ɦ õː	ipa	0
+بانہوں	b ɑ̃ː ɦ õː	ipa	0
+بانہہ	b ɑ̃ː ɦ	ipa	0
+بانہیں	b ɑ̃ː ɦ ẽː	ipa	0
+بانی	b ɑː n iː	ipa	0
+باور	b ɑː ʋ ə ɾ	ipa	0
+باورچی	b ɑː ʋ ə ɾ t͡ʃ iː	ipa	0
+باون	b ɑː ʋ ə n	ipa	0
+باٹ	b ɑː ʈ	ipa	0
+باڑ	b ɑː ɽ	ipa	0
+باڑھ	b ɑː ɽʱ	ipa	0
+باکو	b ɑː k uː	ipa	0
+باہر	b ɑː ɦ ə ɾ	ipa	0
+باہم	b ɑː ɦ ə m	ipa	0
+باہمی	b ɑː ɦ ə m iː	ipa	0
+باہوبلی	b ɑː ɦ ʊ b ə l iː	ipa	0
+بایاں	b ɑː j ɑ̃ː	ipa	0
+بباد	b ɪ b ɑː d̪	ipa	0
+ببھکشا	b ʊ bʱ ʊ k ʃ ɑː	ipa	0
+بت	b ʊ t̪	ipa	0
+بتانا	b ə t̪ ɑː n ɑː	ipa	0
+بتانا	b ɪ t̪ ɑː n ɑː	ipa	0
+بتوں	b ə t̪ õː	ipa	0
+بتوں	b ʊ t̪ õː	ipa	0
+بجائے	b ə d͡ʒ ɑː eː	ipa	0
+بجری	b ə d͡ʒ ɾ iː	ipa	0
+بجلی	b ɪ d͡ʒ l iː	ipa	0
+بجلیاں	b ɪ d͡ʒ l ɪ j ɑ̃ː	ipa	0
+بجلیوں	b ɪ d͡ʒ l ɪ j õː	ipa	0
+بجنا	b ə d͡ʒ n ɑː	ipa	0
+بجے	b ə d͡ʒ eː	ipa	0
+بحال	b ə ɦ ɑː l	ipa	0
+بحث	b ə ɦ ə s	ipa	0
+بحر	b ə ɦ ɾ	ipa	0
+بحران	b oː ɦ ɾ ɑː n	ipa	0
+بحرین	b ə ɦ ɾ iː n	ipa	0
+بحریہ	b ə ɦ ɾ ɪ j ɑː	ipa	0
+بخار	b ʊ x ɑː ɾ	ipa	0
+بخت	b ə x t̪	ipa	0
+بخش	b ə x ʃ	ipa	0
+بخیریت	b ə x ɛː ɾ ɪ j ə t̪	ipa	0
+بخیل	b ə x iː l	ipa	0
+بدبو	b ə d̪ b oː	ipa	0
+بدبو	b ə d̪ b uː	ipa	0
+بدتر	b ə d̪ t̪ ə ɾ	ipa	0
+بددعا	b ə d̪ d̪ ʊ ɑː	ipa	0
+بدر	b ə d̪ ə ɾ	ipa	0
+بدصورت	b ə d̪ s uː ɾ ə t̪	ipa	0
+بدعتوں	b ɪ d̪ ə t̪ õː	ipa	0
+بدعتوں	b ɪ d̪ ʔ ə t̪ õː	ipa	0
+بدعنوانی	b ə d̪ ʊ n ʋ ɑː n iː	ipa	0
+بدعنوانی	b ə d̪ ʔ ʊ n ʋ ɑː n iː	ipa	0
+بدقسمت	b ə d̪ q ɪ s m ə t̪	ipa	0
+بدلنا	b ə d̪ ə l n ɑː	ipa	0
+بدلوانا	b ə d̪ ə l ʋ ɑː n ɑː	ipa	0
+بدلہ	b ə d̪ l ə	ipa	0
+بدمعاشوں	b ə d̪ m ə ɑː ʃ õː	ipa	0
+بدمعاشوں	b ə d̪ m ə ʔ ɑː ʃ õː	ipa	0
+بدن	b ə d̪ ə n	ipa	0
+بدنصیب	b ə d̪ n ə s iː b	ipa	0
+بدنوں	b ə d̪ ə n õː	ipa	0
+بدنیت	b ə d̪ n iː t̪	ipa	0
+بدولت	b ə d̪ ɔː l ə t̪	ipa	0
+بدھ	b ʊ d̪ʱ	ipa	0
+بدھائی	b ə d̪ʱ ɑː iː	ipa	0
+بدھو	b ʊ d̪ d̪ʱ uː	ipa	0
+بدھوار	b ʊ d̪ʱ ʋ ɑː ɾ	ipa	0
+بدھیا	b ə d̪ʱ ɪ j ɑː	ipa	0
+بدی	b ə d̪ iː	ipa	0
+بدیع	b ə d̪ iː	ipa	0
+بدیع	b ə d̪ iː ʔ	ipa	0
+بدین	b ə d̪ iː n	ipa	0
+برآمد	b ə ɾ ɑː m ə d̪	ipa	0
+برا	b ʊ ɾ ɑː	ipa	0
+برات	b ə ɾ ɑː t̪	ipa	0
+براتو	b ə ɾ ɑː t̪ oː	ipa	0
+براتوں	b ə ɾ ɑː t̪ õː	ipa	0
+براتیں	b ə ɾ ɑː t̪ ẽː	ipa	0
+برازیل	b ɾ ɑː z iː l	ipa	0
+براعظم	b ə ɾ ɾ eː əː z ə m	ipa	0
+براعظم	b ə ɾ ɾ ɪ ə z ə m	ipa	0
+براعظم	b ə ɾ ɾ ɪ ə ʔ z ə m	ipa	0
+براعظمی	b ə ɾ ɾ eː əː z ə m iː	ipa	0
+براعظمی	b ə ɾ ɾ ɪ ə z ə m iː	ipa	0
+براعظمی	b ə ɾ ɾ ɪ ə ʔ z ə m iː	ipa	0
+برباد	b ə ɾ b ɑː d̪	ipa	0
+برت	b ə ɾ ə t̪	ipa	0
+برتاؤ	b ə ɾ t̪ ɑː oː	ipa	0
+برتن	b ə ɾ t̪ ə n	ipa	0
+برج	b ʊ ɾ d͡ʒ	ipa	0
+برخاست	b ə ɾ x ɑː s t̪	ipa	0
+برخاستوں	b ə ɾ x ɑː s t̪ õː	ipa	0
+برخاستیں	b ə ɾ x ɑː s t̪ ẽː	ipa	0
+برس	b ə ɾ ə s	ipa	0
+برسات	b ə ɾ s ɑː t̪	ipa	0
+برساتوں	b ə ɾ s ɑː t̪ õː	ipa	0
+برساتیں	b ə ɾ s ɑː t̪ ẽː	ipa	0
+برسلز	b ɾ ə s ə l z	ipa	0
+برسنا	b ə ɾ ə s n ɑː	ipa	0
+برسی	b ə ɾ s iː	ipa	0
+برسیاں	b ə ɾ s ɪ j ɑ̃ː	ipa	0
+برسیوں	b ə ɾ s ɪ j õː	ipa	0
+برصغیر	b ə r e s ə ɣ iː ɾ	ipa	0
+برصغیر	b ə rː e s ə ɣ iː ɾ	ipa	0
+برطانوی	b ə ɾ t̪ ɑː n ʋ iː	ipa	0
+برطانیہ	b ə ɾ t̪ ɑː n ɪ j ɑ	ipa	0
+برطانیہ	b ə ɾ t̪ ɑː n ɪ j ɑː	ipa	0
+برف	b ə ɾ f	ipa	0
+برق	b ə ɾ q	ipa	0
+برقع	b ʊ ɾ q ɑː	ipa	0
+برقع	b ʊ ɾ q ə	ipa	0
+برقع	b ʊ ɾ q ə ʔ	ipa	0
+برقی	b ə ɾ q iː	ipa	0
+برلن	b ə ɾ l ɪ n	ipa	0
+برما	b ə ɾ m ɑː	ipa	0
+برمنگھم	b ə ɾ m ɪ ŋ ɡʱ ə m	ipa	0
+بروخے	b ɾ uː x eː	ipa	0
+برودت	b ʊ ɾ uː d̪ ə t̪	ipa	0
+برٹش	b ɪ ɾ ʈ ɪ ʃ	ipa	0
+برچھا	b ə ɾ t͡ʃʰ ɑː	ipa	0
+برچھیت	b ə ɾ t͡ʃʰ ɛː t̪	ipa	0
+برکات	b ə ɾ ə k ɑː t̪	ipa	0
+برکت	b ə ɾ k ə t̪	ipa	0
+برکتوں	b ə ɾ k ə t̪ õː	ipa	0
+برکتیں	b ə ɾ k ə t̪ ẽː	ipa	0
+برکھا	b ə ɾ kʰ ɑː	ipa	0
+برگزیدہ	b ə ɾ ɡ ʊ z iː d̪ ɑː	ipa	0
+برہا	b ɪ ɾ ɦ ɑː	ipa	0
+برہسپت	b ɪ ɾ ɦ ə s p ə t̪	ipa	0
+برہما	b ə ɾ ə ɦ m ɑː	ipa	0
+برہما	b ə ɾ ɦ ə m ɑː	ipa	0
+برہنہ	b ə ɾ ə ɦ n ɑ	ipa	0
+برہنہ	b ə ɾ ə ɦ n ɑː	ipa	0
+بری	b ʊ ɾ iː	ipa	0
+بریانی	b ɪ ɾ j ɑː n iː	ipa	0
+بریشال	b ə ɾ iː s ɦ ɑː l	ipa	0
+برے	b ʊ ɾ eː	ipa	0
+بزار	b ə z ɑː ɾ	ipa	0
+بزرگ	b ʊ z ʊ ɾ ɡ	ipa	0
+بزرگی	b ʊ z ə ɾ ɡ iː	ipa	0
+بس	b ə s	ipa	0
+بستر	b ɪ s t̪ ə ɾ	ipa	0
+بستی	b ə s t̪ iː	ipa	0
+بستیاں	b ə s t̪ ɪ j ɑ̃ː	ipa	0
+بستیو	b ə s t̪ ɪ j oː	ipa	0
+بستیوں	b ə s t̪ ɪ j õː	ipa	0
+بسنا	b ə s n ɑː	ipa	0
+بسنت	b ə s ə n t̪	ipa	0
+بسکٹ	b ɪ s k ɪ ʈ	ipa	0
+بسیار	b ɪ s j ɑː ɾ	ipa	0
+بشیر	b ə ʃ iː ɾ	ipa	0
+بشیشن	b ɪ ʃ eː ʃ ə n	ipa	0
+بضاعت	b ɪ z ɑː ə t̪	ipa	0
+بضاعت	b ɪ z ɑː ʔ ə t̪	ipa	0
+بطخ	b ə t̪ t̪ ə k	ipa	0
+بطخ	b ə t̪ t̪ ə x	ipa	0
+بطخ	b ə t̪ ə k	ipa	0
+بطخ	b ə t̪ ə x	ipa	0
+بظاہر	b ə z ɑː ɦ ɪ ɾ	ipa	0
+بعث	b ə s	ipa	0
+بعث	b ə ʔ s	ipa	0
+بعثت	b ɪ ʔ s ə t̪	ipa	0
+بعثت	b ɪ ʕ s ə t̪	ipa	0
+بعد	b ɑː d̪	ipa	0
+بعض	b ɑː z	ipa	0
+بعلبک	b ə l ə b ə k	ipa	0
+بعلبک	b ə ʔ l ə b ə k	ipa	0
+بغاوت	b ə ɣ ɑː ʋ ə t̪	ipa	0
+بغاوتوں	b ə ɣ ɑː ʋ ə t̪ õː	ipa	0
+بغاوتیں	b ə ɣ ɑː ʋ ə t̪ ẽː	ipa	0
+بغل	b ə ɣ ə l	ipa	0
+بغیر	b ə ɣ ɛː ɾ	ipa	0
+بغیچہ	b ə ɣ iː t͡ʃ ɑː	ipa	0
+بقا	b ə q ɑː	ipa	0
+بقار	b ə q q ɑː ɾ	ipa	0
+بقر	b ə q ə ɾ	ipa	0
+بقرعید	b ə q ə ɾ iː d̪	ipa	0
+بقرعید	b ə q ə ɾ ʔ iː d̪	ipa	0
+بقرعید	b ə q ɾ iː d̪	ipa	0
+بقرہ	b ə q ə ɾ ɑː	ipa	0
+بلا	b ə l l ɑː	ipa	0
+بلا	b ə l ɑː	ipa	0
+بلا	b ɪ l l ɑː	ipa	0
+بلا	b ʊ l l ɑː	ipa	0
+بلب	b ə l b	ipa	0
+بلبل	b ʊ l b ʊ l	ipa	0
+بلبلو	b ʊ l b ʊ l oː	ipa	0
+بلبلوں	b ʊ l b ʊ l õː	ipa	0
+بلبلیں	b ʊ l b ʊ l ẽː	ipa	0
+بلغاری	b ʊ l ɣ ɑː ɾ iː	ipa	0
+بلغاریہ	b ʊ l ɣ ɑː ɾ ɪ j ɑː	ipa	0
+بلغم	b ə l ɣ ə m	ipa	0
+بلند	b ə l ə n d̪	ipa	0
+بلوغت	b ʊ l uː ɣ ə t̪	ipa	0
+بلوچ	b ə l oː t͡ʃ	ipa	0
+بلوچستان	b ə l oː t͡ʃ ɪ s t̪ ɑː n	ipa	0
+بلکہ	b ə l k iː	ipa	0
+بلہ	b ə l l ɑː	ipa	0
+بلہار	b ə l ɪ ɦ ɑː ɾ	ipa	0
+بلی	b ɪ l l iː	ipa	0
+بلیدہ	b ʊ l ɛː d̪ ɑː	ipa	0
+بلے	b ə l eː	ipa	0
+بم	b ə m	ipa	0
+بمبئی	b ə m b ə iː	ipa	0
+بمباری	b ə m b ɑː ɾ iː	ipa	0
+بمبہ	b ə m bᵊ	ipa	0
+بمقابلہ	b ɑ m ʊ q ɑː b l ɑ	ipa	0
+بمقابلہ	b ɑ m ʊ q ɑː b l ɑː	ipa	0
+بمقابلہ	b ɑ m ʊ q ɑː b ɪ l ɑ	ipa	0
+بمقابلہ	b ɑ m ʊ q ɑː b ɪ l ɑː	ipa	0
+بمقابلہ	b ə m ʊ q ɑː b ɪ l ɑ	ipa	0
+بمقابلہ	b ə m ʊ q ɑː b ɪ l ɑː	ipa	0
+بنا	b ə n n ɑː	ipa	0
+بنا	b ɪ n ɑː	ipa	0
+بنارس	b ə n ɑː ɾ ə s	ipa	0
+بنانا	b ə n ɑː n ɑː	ipa	0
+بناوٹ	b ə n ɑː ʋ ə t̪	ipa	0
+بناوٹی	b ə n ɑː ʋ ə ʈ iː	ipa	0
+بنت	b ɪ n t̪	ipa	0
+بنتی	b ɪ n t̪ iː	ipa	0
+بنجارا	b ə n d͡ʒ ɑː ɾ ɑː	ipa	0
+بنجی	b ʊ n d͡ʒ iː	ipa	0
+بند	b ə n d̪	ipa	0
+بندر	b ə n d̪ ə ɾ	ipa	0
+بندش	b ə n d̪ ɪ ʃ	ipa	0
+بندو	b ə n d̪ oː	ipa	0
+بندوق	b ə n d̪ uː k	ipa	0
+بندوق	b ə n d̪ uː q	ipa	0
+بندوں	b ə n d̪ õː	ipa	0
+بندگی	b ə n d̪ ə ɡ iː	ipa	0
+بندھن	b ə n d̪ʱ ə n	ipa	0
+بندہ	b ə n d̪ ɑ	ipa	0
+بندہ	b ə n d̪ ɑː	ipa	0
+بندے	b ə n d̪ eː	ipa	0
+بنزین	b ə n z iː n	ipa	0
+بنفشی	b ə n ə f ʃ iː	ipa	0
+بنٹنا	b ə̃ ʈ n ɑː	ipa	0
+بنگ	b ə ŋ ɡ	ipa	0
+بنگال	b ə ŋ ɡ ɑː l	ipa	0
+بنگالن	b ə ŋ ɡ ɑː l ə n	ipa	0
+بنگالی	b ə n ɡ ɑː l iː	ipa	0
+بنگلہ	b ə ŋ ɡ l ɑː	ipa	0
+بنیاد	b ʊ n j ɑː d̪	ipa	0
+بنیادی	b ʊ n ɪ j ɑː d̪ iː	ipa	0
+بنیان	b ə n ɪ j ɑː n	ipa	0
+بو	b oː	ipa	0
+بو	b uː	ipa	0
+بوا	b ʊ ʋ ɑː	ipa	0
+بواؤ	b uː ɑː oː	ipa	0
+بواؤں	b uː ɑː õː	ipa	0
+بوائیں	b uː ɑː ẽː	ipa	0
+بواب	b ə ʋ ʋ ɑː b	ipa	0
+بوتل	b oː t̪ ə l	ipa	0
+بوجھ	b oː d͡ʒʱ	ipa	0
+بوجھوں	b oː d͡ʒʱ õː	ipa	0
+بودار	b uː d̪ ɑː ɾ	ipa	0
+بوداپست	b ʊ d̪ ɑː p eː s t̪	ipa	0
+بور	b oː ɾ	ipa	0
+بوریت	b oː ɾ ɪ j ə t̪	ipa	0
+بوستان	b oː s t̪ ɑː n	ipa	0
+بوسنیا	b oː s n ɪ j ɑː	ipa	0
+بوسيدہ	b oː s iː d̪ ɑ	ipa	0
+بوسيدہ	b oː s iː d̪ ɑː	ipa	0
+بوسہ	b oː s ɑ	ipa	0
+بوسہ	b oː s ɑː	ipa	0
+بولنا	b oː l n ɑː	ipa	0
+بولی	b oː l iː	ipa	0
+بوم	b uː m	ipa	0
+بونا	b oː n ɑː	ipa	0
+بونا	b ɔː n ɑː	ipa	0
+بونڈر	b ə ʋ ə n ɖ ə ɾ	ipa	0
+بوٹ	b uː ʈ	ipa	0
+بوچڑ	b uː t͡ʃ ə ɽ	ipa	0
+بوچھار	b ɔː t͡ʃʰ ɑː ɾ	ipa	0
+بوچھاڑ	b ɔː t͡ʃʰ ɑː ɽ	ipa	0
+بوڑھا	b uː ɽʱ ɑː	ipa	0
+بوڑھو	b uː ɽʱ oː	ipa	0
+بوڑھوں	b uː ɽʱ õː	ipa	0
+بوڑھی	b uː ɽʱ iː	ipa	0
+بوڑھے	b uː ɽʱ eː	ipa	0
+بٹن	b ə ʈ ə n	ipa	0
+بٹوا	b ə ʈ ʊ ɑː	ipa	0
+بٹوا	b ə ʈ ʋ ɑː	ipa	0
+بٹورنا	b ə ʈ oː ɾ n ɑː	ipa	0
+بٹھانا	b ɪ ʈʰ ɑː n ɑː	ipa	0
+بپتسمہ	b ə p t̪ ɪ s m ɑː	ipa	0
+بچانا	b ə t͡ʃ ɑː n ɑː	ipa	0
+بچنا	b ə t͡ʃ n ɑː	ipa	0
+بچو	b ə t̪ t͡ʃ oː	ipa	0
+بچوں	b ə t̪ t͡ʃ õː	ipa	0
+بچپن	b ə t͡ʃ p ə n	ipa	0
+بچھانا	b ɪ t͡ʃʰ ɑː n ɑː	ipa	0
+بچھو	b ɪ t̪ t͡ʃʰ uː	ipa	0
+بچہ	b ə t̪ t͡ʃ ɑ	ipa	0
+بچہ	b ə t̪ t͡ʃ ɑː	ipa	0
+بچی	b ə t̪ t͡ʃ iː	ipa	0
+بچے	b ə t̪ t͡ʃ eː	ipa	0
+بڑا	b ə ɽ ɑː	ipa	0
+بڑائی	b ə ɽ ɑː iː	ipa	0
+بڑھاپا	b ʊ ɽʱ ɑː p ɑː	ipa	0
+بڑھنا	b ə ɽʱ n ɑː	ipa	0
+بڑھیا	b ə ɽʱ j ɑː	ipa	0
+بڑھیا	b ə ɽʱ ɪ j ɑː	ipa	0
+بڑھیا	b ʊ ɽʱ j ɑː	ipa	0
+بڑھیا	b ʊ ɽʱ ɪ j ɑː	ipa	0
+بڑی	b ə ɽ iː	ipa	0
+بڑے	b ə ɽ eː	ipa	0
+بکاؤ	b ɪ k ɑː oː	ipa	0
+بکاؤ	b ɪ k ɑː uː	ipa	0
+بکتاش	b ə k t̪ ɑː ʃ	ipa	0
+بکتاشی	b ə k t̪ ɑː ʃ iː	ipa	0
+بکرا	b ə k ɾ ɑː	ipa	0
+بکری	b ə k ɾ iː	ipa	0
+بکس	b ə k s	ipa	0
+بکم	b ə k k ə m	ipa	0
+بکم	b ʊ k m	ipa	0
+بکواس	b ə k ʋ ɑː s	ipa	0
+بکھراو	b ɪ kʰ ɾ ɑː ʋ	ipa	0
+بھائی	bʱ ɑː iː	ipa	0
+بھائیو	bʱ ɑː ɪ j oː	ipa	0
+بھائیوں	bʱ ɑː ɪ j õː	ipa	0
+بھابھی	bʱ ɑː bʱ iː	ipa	0
+بھابی	bʱ ɑː b iː	ipa	0
+بھابیاں	bʱ ɑː b ɪ j ɑ̃ː	ipa	0
+بھابیو	bʱ ɑː b ɪ j oː	ipa	0
+بھابیوں	bʱ ɑː b ɪ j õː	ipa	0
+بھاجن	bʱ ɑː d͡ʒ ə n	ipa	0
+بھادوں	bʱ ɑː d̪ õː	ipa	0
+بھارت	bʱ ɑː ɾ ə t̪	ipa	0
+بھارتی	bʱ ɑː ɾ t̪ iː	ipa	0
+بھاشا	bʱ ɑː ʃ ɑː	ipa	0
+بھاشن	bʱ ɑː ʃ ə n	ipa	0
+بھاشنوں	bʱ ɑː ʃ ə n õː	ipa	0
+بھاشیہ	bʱ ɑː ʃ jᵊ	ipa	0
+بھالو	bʱ ɑː l uː	ipa	0
+بھانجا	bʱ ɑː n d͡ʒ ɑː	ipa	0
+بھانجو	bʱ ɑː n d͡ʒ oː	ipa	0
+بھانجوں	bʱ ɑː n d͡ʒ õː	ipa	0
+بھانجی	bʱ ɑː n d͡ʒ iː	ipa	0
+بھانجیاں	bʱ ɑː n d͡ʒ ɪ j ɑ̃ː	ipa	0
+بھانجیو	bʱ ɑː n d͡ʒ ɪ j oː	ipa	0
+بھانجیوں	bʱ ɑː n d͡ʒ ɪ j õː	ipa	0
+بھانجے	bʱ ɑː n d͡ʒ eː	ipa	0
+بھانگ	bʱ ɑː ŋ ɡ	ipa	0
+بھاپ	bʱ ɑː p	ipa	0
+بھاکھا	bʱ ɑː kʰ ɑː	ipa	0
+بھاگ	bʱ ɑː ɡ	ipa	0
+بھاگنا	bʱ ɑː ɡ n ɑː	ipa	0
+بھاگیہ	bʱ ɑː ɡ jᵊ	ipa	0
+بھتیجا	bʱ ə t̪ iː d͡ʒ ɑː	ipa	0
+بھتیجی	bʱ ə t̪ iː d͡ʒ iː	ipa	0
+بھجن	bʱ ə d͡ʒ ə n	ipa	0
+بھراتا	bʱ ɾ ɑː t̪ ɑː	ipa	0
+بھراتر	bʱ ɾ ɑː t̪ ɾ	ipa	0
+بھرم	bʱ ə ɾ ə m	ipa	0
+بھرن	bʱ ə ɾ ə n	ipa	0
+بھرنا	bʱ ə ɾ n ɑː	ipa	0
+بھروسہ	bʱ ə ɾ oː s ə	ipa	0
+بھلوال	bʱ ə l ʋ ɑː l	ipa	0
+بھلکڑ	bʱ ʊ l ə k k ə ɽ	ipa	0
+بھنجک	bʱ ə n d͡ʒ ə k	ipa	0
+بھنور	bʱ ə̃ ʋ ə ɾ	ipa	0
+بھنورو	bʱ ə̃ ʋ ə ɾ oː	ipa	0
+بھنوروں	bʱ ə̃ ʋ ə ɾ õː	ipa	0
+بھنوریں	bʱ ə̃ ʋ ə ɾ ẽː	ipa	0
+بھنڈ	bʱ ə n ɖ	ipa	0
+بھنڈی	bʱ ɪ ɳ ɖ ɪː	ipa	0
+بھوت	bʱ uː t̪	ipa	0
+بھوتل	bʱ uː t̪ ə l	ipa	0
+بھوتنی	bʱ uː t̪ n iː	ipa	0
+بھوتنی	bʱ uː t̪ ɪ n iː	ipa	0
+بھوجن	bʱ oː d͡ʒ ə n	ipa	0
+بھور	bʱ oː ɾ	ipa	0
+بھورا	bʱ uː ɾ ɑː	ipa	0
+بھوسڑی	bʱ oː s ɽ iː	ipa	0
+بھولنا	bʱ uː l n ɑː	ipa	0
+بھومکا	bʱ uː m ɪ k ɑː	ipa	0
+بھومی	bʱ uː m iː	ipa	0
+بھونکنا	bʱ õː k n ɑː	ipa	0
+بھونیشور	bʱ ʊ w n eː ʃ w ə ɾ	ipa	0
+بھونیشور	bʱ ʊ w n eː ʃ ʋ ə ɾ	ipa	0
+بھونیشور	bʱ ʊ ʋ n eː ʃ w ə ɾ	ipa	0
+بھونیشور	bʱ ʊ ʋ n eː ʃ ʋ ə ɾ	ipa	0
+بھوٹان	bʱ uː ʈ ɑː n	ipa	0
+بھوک	bʱ uː k	ipa	0
+بھوکا	bʱ uː k ɑː	ipa	0
+بھوکی	bʱ uː k iː	ipa	0
+بھوکے	bʱ uː k eː	ipa	0
+بھوگول	bʱ uː ɡ oː l	ipa	0
+بھکت	bʱ ə k t̪	ipa	0
+بھکتی	bʱ ə k t̪ iː	ipa	0
+بھکر	bʱ ə k k ə ɾ	ipa	0
+بھگدڑ	bʱ ə ɡ d̪ ə ɽ	ipa	0
+بھگوان	bʱ ə ɡ ʋ ɑː n	ipa	0
+بھی	bʱ iː	ipa	0
+بھیا	bʱ ə j j ɑː	ipa	0
+بھیانک	bʱ ə j ɑː n ə k	ipa	0
+بھیجنا	bʱ eː d͡ʒ n ɑː	ipa	0
+بھید	bʱ eː d̪	ipa	0
+بھیدوں	bʱ eː d̪ õː	ipa	0
+بھیس	bʱ eː s	ipa	0
+بھینا	bʱ iː n ɑː	ipa	0
+بھینا	bʱ ɛː n ɑː	ipa	0
+بھینس	bʱ ĩː s	ipa	0
+بھینس	bʱ ɛ̃ː s	ipa	0
+بھیڑ	bʱ eː ɽ	ipa	0
+بھیڑ	bʱ iː ɽ	ipa	0
+بھیڑو	bʱ eː ɽ oː	ipa	0
+بھیڑو	bʱ iː ɽ oː	ipa	0
+بھیڑوں	bʱ eː ɽ õː	ipa	0
+بھیڑوں	bʱ iː ɽ õː	ipa	0
+بھیڑیں	bʱ eː ɽ ẽː	ipa	0
+بھیڑیں	bʱ iː ɽ ẽː	ipa	0
+بھیک	bʱ iː k	ipa	0
+بہ	b ɑː	ipa	0
+بہاء	b ə ɦ ɑː	ipa	0
+بہاؤالدین	b ə ɦ ɑː ʊ d̪ d̪ iː n	ipa	0
+بہاؤالدین	b ə ɦ ɑː ʔ ʊ d̪ d̪ iː n	ipa	0
+بہائی	b ə ɦ ɑː iː	ipa	0
+بہادری	b ə ɦ ɑː d̪ ə ɾ iː	ipa	0
+بہادری	b ə ɦ ɑː d̪ ʊ ɾ iː	ipa	0
+بہار	b ə ɦ ɑː ɾ	ipa	0
+بہار	b ɪ ɦ ɑː ɾ	ipa	0
+بہارا	b ə ɦ ɑː ɾ ɑː	ipa	0
+بہاراں	b ə ɦ ɑː ɾ ɑ̃ː	ipa	0
+بہارو	b ə ɦ ɑː ɾ oː	ipa	0
+بہاروں	b ə ɦ ɑː ɾ õː	ipa	0
+بہاریں	b ə ɦ ɑː ɾ ẽː	ipa	0
+بہاولنگر	b ə ɦ ɑː ʋ ə l n ə ɡ ə ɾ	ipa	0
+بہت	b ə ɦ oː t̪	ipa	0
+بہت	b ə ɦ ʊ t̪	ipa	0
+بہتان	b ʊ ɦ t̪ ɑː n	ipa	0
+بہتانوں	b ʊ ɦ t̪ ɑː n õː	ipa	0
+بہتر	b eːʱ t̪ ə ɾ	ipa	0
+بہتر	b ə ɦ ə t̪ t̪ ə ɾ	ipa	0
+بہتر	b ɪ ɦ t̪ ə ɾ	ipa	0
+بہرا	b ə ɦ ɾ ɑː	ipa	0
+بہرام	b eː ɦ ɾ ɑː m	ipa	0
+بہرام	b ə ɦ ɾ ɑː m	ipa	0
+بہروز	b eː ɦ ɾ oː z	ipa	0
+بہشت	b ə ɦ ɪ ʃ t̪	ipa	0
+بہشت	b ɪ ɦ ɪ ʃ t̪	ipa	0
+بہن	b ə ɦ ə n	ipa	0
+بہن	b ə ɦ ɪ n	ipa	0
+بہنا	b ə ɦ n ɑː	ipa	0
+بہنو	b ə ɦ ə n oː	ipa	0
+بہنوئی	b ə ɦ n oː iː	ipa	0
+بہنوئیو	b ə ɦ n oː ɪ j oː	ipa	0
+بہنوئیوں	b ə ɦ n oː ɪ j õː	ipa	0
+بہنوں	b ə ɦ ə n õː	ipa	0
+بہنیں	b ə ɦ ə n ẽː	ipa	0
+بہو	b ə ɦ uː	ipa	0
+بہی	b ɪ ɦ iː	ipa	0
+بیابان	b ə j ɑː b ɑː n	ipa	0
+بیاباں	b ə j ɑː b ɑ̃ː	ipa	0
+بیاض	b ə j ɑː z	ipa	0
+بیان	b ə j ɑː n	ipa	0
+بیاہ	b j ɑː ɦ	ipa	0
+بیاہ	b ɪ j ɑː ɦ	ipa	0
+بیت	b ɛː t̪	ipa	0
+بیتا	b iː t̪ ɑː	ipa	0
+بیج	b iː d͡ʒ	ipa	0
+بیجا	b eː d͡ʒ ɑː	ipa	0
+بیجنگ	b eː d͡ʒ ɪ ŋ ɡ	ipa	0
+بیخ	b eː x	ipa	0
+بیخ	b iː x	ipa	0
+بید	b ɛː d̪	ipa	0
+بیدار	b eː d̪ ɑː ɾ	ipa	0
+بیدق	b ɛː d̪ ə q	ipa	0
+بیر	b iː ɾ	ipa	0
+بیروت	b ɛː ɾ uː t̪	ipa	0
+بیزار	b eː z ɑː ɾ	ipa	0
+بیزتی	b eː s t̪ iː	ipa	0
+بیزتی	b eː z t̪ iː	ipa	0
+بیس	b iː s	ipa	0
+بیستی	b eː s t̪ iː	ipa	0
+بیش	b eː ʃ	ipa	0
+بیشک	b eː ʃ ə k	ipa	0
+بیضہ	b ɛː z a	ipa	0
+بیعت	b ɛː t̪	ipa	0
+بیعت	b ɛː ʔ ə t̪	ipa	0
+بیعتو	b ɛː ə t̪ oː	ipa	0
+بیعتو	b ɛː ʔ ə t̪ oː	ipa	0
+بیعتوں	b ɛː ə t̪ õː	ipa	0
+بیعتوں	b ɛː ʔ ə t̪ õː	ipa	0
+بیعتیں	b ɛː ə t̪ ẽː	ipa	0
+بیعتیں	b ɛː ʔ ə t̪ ẽː	ipa	0
+بیل	b eː l	ipa	0
+بیلاروس	b eː l ɑː ɾ uː s	ipa	0
+بیلجیم	b eː l d͡ʒ ɪ j ə m	ipa	0
+بیلن	b eː l ə n	ipa	0
+بیلہ	b eː l ɑː	ipa	0
+بیمار	b iː m ɑː ɾ	ipa	0
+بیماری	b iː m ɑː ɾ iː	ipa	0
+بین	b iː n	ipa	0
+بین	b ɛː n	ipa	0
+بینک	b ɛː ŋ k	ipa	0
+بینگن	b ɛː ŋ ɡ ə n	ipa	0
+بینگن	b ɛː ɡ ə n	ipa	0
+بیوقوف	b e ʋ ə k uː f	ipa	0
+بیوقوف	b e ʋ ə q uː f	ipa	0
+بیوقوف	b e ʋ ʊ q uː f	ipa	0
+بیوقوف	b eː ʋ ʊ q uː f	ipa	0
+بیوقوفی	b eː ʋ ə q uː f iː	ipa	0
+بیوہ	b eː ʋ ɑ	ipa	0
+بیوہ	b eː ʋ ɑː	ipa	0
+بیوی	b iː ʋ iː	ipa	0
+بیویاں	b iː ʋ ɪ j ɑ̃ː	ipa	0
+بیویو	b iː ʋ ɪ j oː	ipa	0
+بیویوں	b iː ʋ ɪ j õː	ipa	0
+بیٹا	b eː ʈ ɑː	ipa	0
+بیٹو	b eː ʈ oː	ipa	0
+بیٹوں	b eː ʈ õː	ipa	0
+بیٹھنا	b ɛː ʈʰ n ɑː	ipa	0
+بیٹھک	b ɛː ʈʰ ə k	ipa	0
+بیٹی	b eː ʈ iː	ipa	0
+بیٹیاں	b eː ʈ ɪ j ɑ̃ː	ipa	0
+بیٹیو	b eː ʈ ɪ j oː	ipa	0
+بیٹیوں	b eː ʈ ɪ j õː	ipa	0
+بیٹے	b eː ʈ eː	ipa	0
+بیچ	b iː t͡ʃ	ipa	0
+بیچنا	b eː t͡ʃ n ɑː	ipa	0
+بیڑا	b eː ɽ ɑː	ipa	0
+بیکر	b eː k ə ɾ	ipa	0
+بیگ	b eː ɡ	ipa	0
+بیگ	b ɛː ɡ	ipa	0
+بیگار	b eː ɡ ɑː ɾ	ipa	0
+بیگم	b eː ɡ ə m	ipa	0
+بے	b eː	ipa	0
+ت	t̪	ipa	0
+ت	t̪ eː	ipa	0
+تا	t̪ ɑː	ipa	0
+تائو	t̪ ɑː oː	ipa	0
+تائوں	t̪ ɑː õː	ipa	0
+تائے	t̪ ɑː eː	ipa	0
+تابش	t̪ ɑː b ɪ ʃ	ipa	0
+تابندہ	t̪ ɑː b ə n d̪ ɑ	ipa	0
+تابندہ	t̪ ɑː b ə n d̪ ɑː	ipa	0
+تابندہ	t̪ ɑː b ɪ n d̪ ɑ	ipa	0
+تابندہ	t̪ ɑː b ɪ n d̪ ɑː	ipa	0
+تابوت	t̪ ɑː b uː t̪	ipa	0
+تابکار	t̪ ɑː b k ɑː ɾ	ipa	0
+تاثیر	t̪ ɑː s iː ɾ	ipa	0
+تاثیرو	t̪ ɑː s iː ɾ oː	ipa	0
+تاثیروں	t̪ ɑː s iː ɾ õː	ipa	0
+تاثیریں	t̪ ɑː s iː ɾ ẽː	ipa	0
+تاج	t̪ ɑː d͡ʒ	ipa	0
+تاجکستان	t̪ ɑː d͡ʒ ɪ k ɪ s t̪ ɑː n	ipa	0
+تار	t̪ ɑː ɾ	ipa	0
+تارا	t̪ ɑː ɾ ɑː	ipa	0
+تارو	t̪ ɑː ɾ oː	ipa	0
+تاروں	t̪ ɑː ɾ õː	ipa	0
+تارکین	t̪ ɑː ɾ ɪ k iː n	ipa	0
+تاریخ	t̪ ɑː ɾ iː x	ipa	0
+تاریخچہ	t̪ ɑː ɾ iː x t͡ʃ ɑː	ipa	0
+تاریخی	t̪ ɑː ɾ iː x iː	ipa	0
+تاریک	t̪ ɑː ɾ iː k	ipa	0
+تاریکی	t̪ ɑː ɾ iː k iː	ipa	0
+تارے	t̪ ɑː ɾ eː	ipa	0
+تازہ	t̪ ɑː z ɑ	ipa	0
+تازہ	t̪ ɑː z ɑː	ipa	0
+تازی	t̪ ɑː z iː	ipa	0
+تازے	t̪ ɑː z eː	ipa	0
+تاش	t̪ ɑː ʃ	ipa	0
+تاشقند	t̪ ɑː ʃ q ə n d̪	ipa	0
+تال	t̪ ɑː l	ipa	0
+تالا	t̪ ɑː l ɑː	ipa	0
+تالو	t̪ ɑː l uː	ipa	0
+تالی	t̪ ɑː l iː	ipa	0
+تاناشاہ	t̪ ɑː n ɑː ʃ ɑː ɦ	ipa	0
+تانبا	t̪ ɑː m b ɑː	ipa	0
+تانگا	t̪ ɑː ŋ ɡ ɑː	ipa	0
+تاپ	t̪ ɑː p	ipa	0
+تاپنا	t̪ ɑː p n ɑː	ipa	0
+تاڑ	t̪ ɑː ɽ	ipa	0
+تاڑی	t̪ ɑː ɽ iː	ipa	0
+تاہم	t̪ ɑː ɦ ə m	ipa	0
+تایا	t̪ ɑː j ɑː	ipa	0
+تب	t̪ ə b	ipa	0
+تبادلہ	t̪ ə b ɑː d̪ l ɑ	ipa	0
+تبادلہ	t̪ ə b ɑː d̪ l ɑ ɦ	ipa	0
+تبادلہ	t̪ ə b ɑː d̪ ɪ l ɑ	ipa	0
+تبادلہ	t̪ ə b ɑː d̪ ɪ l ɑ ɦ	ipa	0
+تباہ	t̪ ə b ɑː ɦ	ipa	0
+تبت	t̪ ɪ b b ə t̪	ipa	0
+تبدیل	t̪ ə b d̪ iː l	ipa	0
+تبرک	t̪ ə b ə ɾ ɾ ʊ k	ipa	0
+تبرکات	t̪ ə b ə ɾ ɾ ʊ k ɑː t̪	ipa	0
+تبرکوں	t̪ ə b ə ɾ ɾ ʊ k õː	ipa	0
+تبریر	t̪ ə b ɾ iː ɾ	ipa	0
+تبریز	t̪ ə b ɾ eː z	ipa	0
+تبسم	t̪ ə b ə s s ʊ m	ipa	0
+تبصرہ	t̪ ə b s ɪ ɾ ɑː	ipa	0
+تتلی	t̪ ɪ t̪ l iː	ipa	0
+تتلیاں	t̪ ɪ t̪ l ɪ j ɑ̃ː	ipa	0
+تتلیو	t̪ ɪ t̪ l ɪ j oː	ipa	0
+تتلیوں	t̪ ɪ t̪ l ɪ j õː	ipa	0
+تجارت	t̪ ɪ d͡ʒ ɑː ɾ ə t̪	ipa	0
+تجارتی	t̪ ɪ d͡ʒ ɑː ɾ ə t̪ iː	ipa	0
+تجاوز	t̪ ə d͡ʒ ɑː ʋ ʊ z	ipa	0
+تجربہ	t̪ ə d͡ʒ ə ɾ b ə	ipa	0
+تجربہ	t̪ ə d͡ʒ ɾ ɪ b ə	ipa	0
+تجزیہ	t̪ ə d͡ʒ z ɪ j ɑː	ipa	0
+تجسس	t̪ ə d͡ʒ ə s s ʊ s	ipa	0
+تجھے	t̪ ʊ d͡ʒʱ eː	ipa	0
+تحریر	t̪ ə ɦ ɾ iː ɾ	ipa	0
+تحریک	t̪ ə ɦ ɾ iː k	ipa	0
+تحصیل	t̪ ə ɦ s iː l	ipa	0
+تحفظ	t̪ ə ɦ ə f f ʊ z	ipa	0
+تحفہ	t̪ oː ɦ f ɑ	ipa	0
+تحفہ	t̪ oː ɦ f ɑː	ipa	0
+تحفہ	t̪ oː ɦ f ə ɦ	ipa	0
+تحقیق	t̪ ə ɦ q iː q	ipa	0
+تخت	t̪ ə x t̪	ipa	0
+تختہ	t̪ ə x t̪ ɑ	ipa	0
+تختہ	t̪ ə x t̪ ɑː	ipa	0
+تخلیق	t̪ ə x l iː q	ipa	0
+تخم	t̪ ʊ x m	ipa	0
+تخمہ	t̪ ʊ x m ɑ	ipa	0
+تخمہ	t̪ ʊ x m ɑː	ipa	0
+تخیل	t̪ ə x ə j j ʊ l	ipa	0
+ترائی	t̪ ə ɾ ɑː iː	ipa	0
+ترازو	t̪ ə ɾ ɑː z uː	ipa	0
+ترانہ	t̪ ə ɾ ɑː n ɑ	ipa	0
+ترانہ	t̪ ə ɾ ɑː n ɑː	ipa	0
+تراویح	t̪ ə ɾ ɑː ʋ iː ɦ	ipa	0
+تربت	t̪ ʊ ɾ b ə t̪	ipa	0
+تربیت	t̪ ə ɾ b ɪ j j ə t̪	ipa	0
+ترتیب	t̪ ə ɾ t̪ iː b	ipa	0
+ترجمان	t̪ ə ɾ d͡ʒ ʊ m ɑː n	ipa	0
+ترجموں	t̪ ə ɾ d͡ʒ ə m õː	ipa	0
+ترجمہ	t̪ ə ɾ d͡ʒ ə m ɑ	ipa	0
+ترجمہ	t̪ ə ɾ d͡ʒ ə m ɑː	ipa	0
+ترجمہ	t̪ ə ɾ d͡ʒ ʊ m ɑ	ipa	0
+ترجمہ	t̪ ə ɾ d͡ʒ ʊ m ɑː	ipa	0
+ترجمے	t̪ ə ɾ d͡ʒ ə m eː	ipa	0
+ترجیح	t̪ ə ɾ d͡ʒ iː	ipa	0
+ترجیح	t̪ ə ɾ d͡ʒ iː ɦ	ipa	0
+ترس	t̪ ə ɾ ə s	ipa	0
+ترسوں	t̪ ə ɾ s õː	ipa	0
+ترقی	t̪ ə ɾ ɒ x iː	ipa	0
+ترقی	t̪ ə ɾ ə q q iː	ipa	0
+ترنگ	t̪ ʊ ɾ ə ŋ ɡ	ipa	0
+ترنگ	t̪ ʊ ɾ ə̃ ɡ	ipa	0
+ترٹی	t̪ ɾ ʊ ʈ iː	ipa	0
+ترک	t̪ ʊ ɾ k	ipa	0
+ترکاری	t̪ ə ɾ k ɑː ɾ iː	ipa	0
+ترکستان	t̪ ʊ ɾ k ɪ s t̪ ɑː n	ipa	0
+ترکی	t̪ ʊ ɾ k iː	ipa	0
+ترکیہ	t̪ ʊ ɾ k ɪ j ɑ	ipa	0
+ترکیہ	t̪ ʊ ɾ k ɪ j ɑː	ipa	0
+ترکیے	t̪ ʊ ɾ k ɪ j eː	ipa	0
+تریپورہ	t̪ ɾ iː p uː ɾ ɑː	ipa	0
+تسبیح	t̪ ə s b iː ɦ	ipa	0
+تسلی	t̪ ə s ə l l iː	ipa	0
+تسلیم	t̪ ə s l iː m	ipa	0
+تسمہ	t̪ ə s mᵊ	ipa	0
+تشدد	t̪ ə ʃ ə d̪ d̪ ʊ d̪	ipa	0
+تشریح	t̪ ə ʃ ɾ iː ɦ	ipa	0
+تشریف	t̪ ə ʃ ɾ iː f	ipa	0
+تشنہ	t̪ ɪ ʃ n ɑː	ipa	0
+تشویشناک	t̪ ə ʃ ʋ iː ʃ n ɑː k	ipa	0
+تشکیل	t̪ ə ʃ k iː l	ipa	0
+تصاویر	t̪ ə s ɑː ʋ iː ɾ	ipa	0
+تصدیق	t̪ ə s d̪ iː q	ipa	0
+تصریف	t̪ ə s ɾ iː f	ipa	0
+تصمیم	t̪ ə s m iː m	ipa	0
+تصور	t̪ ə s ə ʋ ʋ ʊ ɾ	ipa	0
+تصویر	t̪ ə s ʋ iː ɾ	ipa	0
+تصویرو	t̪ ə s ʋ iː ɾ oː	ipa	0
+تصویروں	t̪ ə s ʋ iː ɾ õː	ipa	0
+تصویریں	t̪ ə s ʋ iː ɾ ẽː	ipa	0
+تعارف	t̪ ɑː ɾ ʊ f	ipa	0
+تعارف	t̪ ə ɑː ɾ ʊ f	ipa	0
+تعارف	t̪ ə ʔ ɑː ɾ ʊ f	ipa	0
+تعبیر	t̪ ə ʔ b iː ɾ	ipa	0
+تعبیرو	t̪ ə b iː ɾ oː	ipa	0
+تعبیرو	t̪ ə ʔ b iː ɾ oː	ipa	0
+تعبیروں	t̪ ə b iː ɾ õː	ipa	0
+تعبیروں	t̪ ə ʔ b iː ɾ õː	ipa	0
+تعبیریں	t̪ ə b iː ɾ ẽː	ipa	0
+تعبیریں	t̪ ə ʔ b iː ɾ ẽː	ipa	0
+تعجب	t̪ ə ʔ ə d̪ d͡ʒ ʊ b	ipa	0
+تعجبو	t̪ ə ə d̪ d͡ʒ ʊ b oː	ipa	0
+تعجبو	t̪ ə ʔ ə d̪ d͡ʒ ʊ b oː	ipa	0
+تعجبوں	t̪ ə ə d̪ d͡ʒ ʊ b õː	ipa	0
+تعجبوں	t̪ ə ʔ ə d̪ d͡ʒ ʊ b õː	ipa	0
+تعداد	t̪ ɑː d̪ ɑː d̪	ipa	0
+تعداد	t̪ ə d̪ ɑː d̪	ipa	0
+تعداد	t̪ ə ʔ d̪ ɑː d̪	ipa	0
+تعریف	t̪ ɑː ɾ iː f	ipa	0
+تعزیت	t̪ ə z ɪ j ə t̪	ipa	0
+تعزیت	t̪ ə ʔ z ɪ j ə t̪	ipa	0
+تعزیہ	t̪ ə z ɪ jᵊ	ipa	0
+تعزیہ	t̪ ə ʔ z ɪ jᵊ	ipa	0
+تعطیل	t̪ ɑː t̪ iː l	ipa	0
+تعطیل	t̪ ə t̪ iː l	ipa	0
+تعطیل	t̪ ə ʔ t̪ iː l	ipa	0
+تعلق	t̪ ə l l ə q	ipa	0
+تعلق	t̪ ə ʔ ə l l ʊ q	ipa	0
+تعلقات	t̪ ə ə l l ʊ q ɑː t̪	ipa	0
+تعلقات	t̪ ə ʔ ə l l ʊ q ɑː t̪	ipa	0
+تعلقوں	t̪ ə ə l l ʊ q õː	ipa	0
+تعلقوں	t̪ ə ʔ ə l l ʊ q õː	ipa	0
+تعلیم	t̪ ɑː l iː m	ipa	0
+تعلیمات	t̪ ə l iː m ɑː t̪	ipa	0
+تعلیمات	t̪ ə ʔ l iː m ɑː t̪	ipa	0
+تعلیموں	t̪ ə l iː m õː	ipa	0
+تعلیموں	t̪ ə ʔ l iː m õː	ipa	0
+تعلیمیں	t̪ ə l iː m ẽː	ipa	0
+تعلیمیں	t̪ ə ʔ l iː m ẽː	ipa	0
+تعویذ	t̪ ə ʋ iː z	ipa	0
+تعویذ	t̪ ə ʔ ʋ iː z	ipa	0
+تغافل	t̪ ə ɣ ɑː f ʊ l	ipa	0
+تغییر	t̪ ə ɣ j iː ɾ	ipa	0
+تفاح	t̪ ʊ f f ɑː ɦ	ipa	0
+تفسیر	t̪ ə f s iː ɾ	ipa	0
+تفصیل	t̪ ə f s iː l	ipa	0
+تفصیلات	t̪ ə f s iː l ɑː t̪	ipa	0
+تفصیلوں	t̪ ə f s iː l õː	ipa	0
+تفصیلیں	t̪ ə f s iː l ẽː	ipa	0
+تفنگ	t̪ ʊ f ə ŋ ɡ	ipa	0
+تقدس	t̪ ə q ə d̪ d̪ ʊ s	ipa	0
+تقدیر	t̪ ə q d̪ iː ɾ	ipa	0
+تقریبا	t̪ ə q ɾ iː b ə n	ipa	0
+تقریر	t̪ ə q ɾ iː ɾ	ipa	0
+تقسیم	t̪ ə q s iː m	ipa	0
+تقلید	t̪ ə q l iː d̪	ipa	0
+تقوی	t̪ ə q ʋ ɑː	ipa	0
+تلا	t̪ ə l ɑː	ipa	0
+تلا	t̪ ʊ l ɑː	ipa	0
+تلاوت	t̪ ɪ l ɑː ʋ ə t̪	ipa	0
+تلخ	t̪ ə l̪ x	ipa	0
+تلخ	t̪ ə l̪ ə x	ipa	0
+تلخی	t̪ ə l x iː	ipa	0
+تلسی	t̪ ʊ l s iː	ipa	0
+تلفظ	t̪ ə l ə f f ʊ z	ipa	0
+تلوار	t̪ ə l ʋ ɑː ɾ	ipa	0
+تلواروں	t̪ ə l ʋ ɑː ɾ õː	ipa	0
+تلواریں	t̪ ə l ʋ ɑː ɾ ẽː	ipa	0
+تم	t̪ ʊ m	ipa	0
+تماشا	t̪ ə m ɑː ʃ ɑː	ipa	0
+تماشائی	t̪ ə m ɑː ʃ ɑː iː	ipa	0
+تماشوں	t̪ ə m ɑː ʃ õː	ipa	0
+تماشہ	t̪ ə m ɑː ʃ ɑ	ipa	0
+تماشہ	t̪ ə m ɑː ʃ ɑː	ipa	0
+تماشے	t̪ ə m ɑː ʃ eː	ipa	0
+تمام	t̪ ə m ɑː m	ipa	0
+تمباکو	t̪ ə m b ɑː k uː	ipa	0
+تمبوڑی	t̪ ə m b uː ɽ iː	ipa	0
+تمرکز	t̪ ə m ə ɾ k ʊ z	ipa	0
+تمغا	t̪ ə m ɣ ɑː	ipa	0
+تملق	t̪ ə m ə l l ʊ q	ipa	0
+تمنا	t̪ ə m ə n n ɑː	ipa	0
+تمناؤ	t̪ ə m ə n n ɑː oː	ipa	0
+تمناؤں	t̪ ə m ə n n ɑː õː	ipa	0
+تمنائیں	t̪ ə m ə n n ɑː ẽː	ipa	0
+تمنچہ	t̪ ə m ə n t͡ʃ ɑ	ipa	0
+تمنچہ	t̪ ə m ə n t͡ʃ ɑː	ipa	0
+تمپ	t̪ ʊ m p	ipa	0
+تمھیں	t̪ ʊ mʱ ẽː	ipa	0
+تمہارا	t̪ ʊ m ɦ ɑː ɾ ɑː	ipa	0
+تمہیں	t̪ ʊ m ɦ ẽː	ipa	0
+تمیز	t̪ ə m iː z	ipa	0
+تن	t̪ ə n	ipa	0
+تنازع	t̪ ə n ɑː z oː	ipa	0
+تنازع	t̪ ə n ɑː z oː ʔ	ipa	0
+تناول	t̪ ə n ɑː ʋ ʊ l	ipa	0
+تنباکو	t̪ ə n b ɑː k uː	ipa	0
+تنبولی	t̪ ə m b oː l iː	ipa	0
+تندر	t̪ ə n d̪ ə ɾ	ipa	0
+تندر	t̪ ʊ n d̪ ə ɾ	ipa	0
+تندر	t̪ ʊ n d̪ ʊ ɾ	ipa	0
+تندرست	t̪ ə n d̪ ʊ ɾ ʊ s t̪	ipa	0
+تندرستی	t̪ ə n d̪ ʊ ɾ ʊ s t̪ iː	ipa	0
+تندور	t̪ ə n d̪ uː ɾ	ipa	0
+تنزانیہ	t̪ ə n z ɑː n ɪ j ɑː	ipa	0
+تنظیم	t̪ ə n z iː m	ipa	0
+تنظیمی	t̪ ə n z iː m iː	ipa	0
+تنقید	t̪ ə ŋ q iː d̪	ipa	0
+تنگ	t̪ ə ŋ ɡ	ipa	0
+تنہائی	t̪ ə n ɦ ɑː iː	ipa	0
+تو	t̪ oː	ipa	0
+تو	t̪ uː	ipa	0
+توانا	t̪ ə ʋ ɑː n ɑː	ipa	0
+توانائی	t̪ ə w ɑː n ɑː j	ipa	0
+توبہ	t̪ ɔː b ɑ	ipa	0
+توبہ	t̪ ɔː b ɑː	ipa	0
+توجہ	t̪ ə ʋ ə d̪ d͡ʒ ʊ	ipa	0
+توجہ	t̪ ə ʋ ə d̪ d͡ʒ ʊ ɦ	ipa	0
+توحید	t̪ ɔː ɦ iː d̪	ipa	0
+تودہ	t̪ oː d̪ᵊ	ipa	0
+تودہ	t̪ uː d̪ᵊ	ipa	0
+توران	t̪ uː ɾ ɑː n	ipa	0
+توقع	t̪ ə ʋ ə q q oː	ipa	0
+توقع	t̪ ə ʋ ə q q oː ʔ	ipa	0
+تولد	t̪ ə ʋ ə l l ʊ d̪	ipa	0
+تولیہ	t̪ ɔː l ɪ j ɑ	ipa	0
+تولیہ	t̪ ɔː l ɪ j ɑː	ipa	0
+تولیے	t̪ ɔː l ɪ j eː	ipa	0
+توند	t̪ oː n d̪	ipa	0
+توپ	t̪ oː p	ipa	0
+توچا	t̪ ʋ ə t͡ʃ ɑː	ipa	0
+توڑنا	t̪ oː ɽ n ɑː	ipa	0
+توہین	t̪ ɔː ɦ iː n	ipa	0
+تڑت	t̪ ə ɽ ɪ t̪	ipa	0
+تڑپنا	t̪ ə ɽ ə p n ɑː	ipa	0
+تکبر	t̪ ə k ə b b ʊ ɾ	ipa	0
+تکبیر	t̪ ə k b iː ɾ	ipa	0
+تکرار	t̪ ə k ɾ ɑː ɾ	ipa	0
+تکلیف	t̪ ə k l iː f	ipa	0
+تکمیل	t̪ ə k m iː l	ipa	0
+تکھان	t̪ ə kʰ ɑː n	ipa	0
+تکیہ	t̪ ə k j ɑ	ipa	0
+تکیہ	t̪ ə k j ɑː	ipa	0
+تکیہ	t̪ ə k ɪ j ɑ	ipa	0
+تکیہ	t̪ ə k ɪ j ɑː	ipa	0
+تگنا	t̪ ɪ ɡ n ɑː	ipa	0
+تھا	t̪ʰ ɑː	ipa	0
+تھائیلینڈ	t̪ʰ ɑː iː l ɛː n ɖ	ipa	0
+تھانہ	t̪ʰ ɑː n ə	ipa	0
+تھل	t̪ʰ ə l	ipa	0
+تھوڑا	t̪ʰ oː ɽ ɑː	ipa	0
+تھوک	t̪ʰ uː k	ipa	0
+تھوکنا	t̪ʰ uː k n ɑː	ipa	0
+تھکنا	t̪ʰ ə k n ɑː	ipa	0
+تھی	t̪ʰ iː	ipa	0
+تھے	t̪ʰ eː	ipa	0
+تہ	t̪ ə ɦ	ipa	0
+تہائی	t̪ ɪ ɦ ɑː iː	ipa	0
+تہجد	t̪ ə ɦ ə d̪ d͡ʒ ʊ d̪	ipa	0
+تہجی	t̪ ə ɦ ə d͡ʒː iː	ipa	0
+تہذیب	t̪ ə ɦ z iː b	ipa	0
+تہمت	t̪ ʊ ɦ m ə t̪	ipa	0
+تہمتوں	t̪ ʊ ɦ m ə t̪ õː	ipa	0
+تہمتیں	t̪ ʊ ɦ m ə t̪ ẽː	ipa	0
+تہوار	t̪ ɪ ɦ ʋ ɑː ɾ	ipa	0
+تہواروں	t̪ ɪ ɦ ʋ ɑː ɾ õː	ipa	0
+تہہ	t̪ ə ɦ	ipa	0
+تیار	t̪ ə̯ i j ɑː ɾ	ipa	0
+تیاری	t̪ ə̯ i j ɑː ɾ iː	ipa	0
+تیاگ	t̪ j ɑː ɡ	ipa	0
+تیرا	t̪ eː ɾ ɑː	ipa	0
+تیراک	t̪ ɛː ɾ ɑː k	ipa	0
+تیراکوں	t̪ ɛː ɾ ɑː k õː	ipa	0
+تیرتھنکر	t̪ iː ɾ t̪ʰ ə ŋ k ə ɾ	ipa	0
+تیرنا	t̪ ɛː ɾ n ɑː	ipa	0
+تیرگی	t̪ iː ɾ ə ɡ iː	ipa	0
+تیرگی	t̪ iː ɾ ɡ iː	ipa	0
+تیرہ	t̪ eː ɾ ɑ	ipa	0
+تیرہ	t̪ eː ɾ ɑː	ipa	0
+تیرہ	t̪ eː ɾ ə ɦ	ipa	0
+تیز	t̪ eː z	ipa	0
+تیزاب	t̪ eː z aː b	ipa	0
+تیزابیت	t̪ eː z ɑː b ɪ j ə t̪	ipa	0
+تیسرا	t̪ iː s ɾ ɑː	ipa	0
+تیل	t̪ eː l	ipa	0
+تیمم	t̪ ə j ə m m ʊ m	ipa	0
+تیمور	t̪ ɛː m uː ɾ	ipa	0
+تین	t̪ iː n	ipa	0
+تیکھا	t̪ iː kʰ ɑː	ipa	0
+ث	s	ipa	0
+ث	s eː	ipa	0
+ثابت	s ɑː b ɪ t̪	ipa	0
+ثانیہ	s ɑː n ɪ j ɑː	ipa	0
+ثبوت	s ə b uː t̪	ipa	0
+ثروت	s ə ɾ ʋ ə t̪	ipa	0
+ثریا	s ʊ ɾ ə j j ɑː	ipa	0
+ثقافت	s ə q ɑː f ə t̪	ipa	0
+ثقافتی	s ə q ɑː f ə t̪ iː	ipa	0
+ثقالت	s ə q ɑː l ə t̪	ipa	0
+ثم	s ʊ m mᵊ	ipa	0
+ثواب	s ə ʋ ɑː b	ipa	0
+ثورہ	s ɔː ɾ ɑː	ipa	0
+ج	d͡ʒ	ipa	0
+ج	d͡ʒ iː m	ipa	0
+جائداد	d͡ʒ ɑː j d̪ ɑː d̪	ipa	0
+جائزہ	d͡ʒ ɑː j ɪ z ɑ	ipa	0
+جائزہ	d͡ʒ ɑː j ɪ z ɑː	ipa	0
+جائپھل	d͡ʒ ɑː ɪ pʰ ə l	ipa	0
+جائیدادوں	d͡ʒ ɑː eː d̪ ɑː d̪ õː	ipa	0
+جائیدادیں	d͡ʒ ɑː eː d̪ ɑː d̪ ẽː	ipa	0
+جادو	d͡ʒ ɑː d̪ uː	ipa	0
+جادوگر	d͡ʒ ɑː d̪ uː ɡ ə ɾ	ipa	0
+جارجیا	d͡ʒ ɑː ɾ d͡ʒ ɪ j ɑː	ipa	0
+جارجیا	d͡ʒ ɔː ɾ d͡ʒ ɪ j ɑː	ipa	0
+جاری	d͡ʒ ɑː ɾ iː	ipa	0
+جال	d͡ʒ ɑː l	ipa	0
+جالندھر	d͡ʒ ɑː l ə n d̪ʱ ə ɾ	ipa	0
+جالوں	d͡ʒ ɑː l õː	ipa	0
+جام	d͡ʒ ɑː m	ipa	0
+جامعہ	d͡ʒ ɑː m ɪ j ɑː	ipa	0
+جامعہ	d͡ʒ ɑː m ɪ ɑː	ipa	0
+جامعہ	d͡ʒ ɑː m ɪ ʔ ɑː	ipa	0
+جامن	d͡ʒ ɑː m ə n	ipa	0
+جامن	d͡ʒ ɑː m ʊ n	ipa	0
+جامنی	d͡ʒ ɑː m n iː	ipa	0
+جامہ	d͡ʒ ɑː m ɑː	ipa	0
+جان	d͡ʒ ɑː n	ipa	0
+جانا	d͡ʒ ɑː n ɑː	ipa	0
+جانب	d͡ʒ ɑː n ɪ b	ipa	0
+جاننا	d͡ʒ ɑː n n ɑː	ipa	0
+جانو	d͡ʒ ɑː n oː	ipa	0
+جانور	d͡ʒ ɑː n ʋ ə ɾ	ipa	0
+جانوں	d͡ʒ ɑː n õː	ipa	0
+جانوں	d͡ʒ ɑː n ũː	ipa	0
+جانچنا	d͡ʒ ɑː n t͡ʃ n ɑː	ipa	0
+جانکاری	d͡ʒ ɑː n k ɑː ɾ iː	ipa	0
+جانیں	d͡ʒ ɑː n ẽː	ipa	0
+جاوید	d͡ʒ ɑː ʋ eː d̪	ipa	0
+جاوید	d͡ʒ ɑː ʋ iː d̪	ipa	0
+جاپان	d͡ʒ ɑː p ɑː n	ipa	0
+جاپانی	d͡ʒ ɑː p ɑː n iː	ipa	0
+جاگ	d͡ʒ ɑː ɡ	ipa	0
+جاگنا	d͡ʒ ɑː ɡ n ɑː	ipa	0
+جاگہ	d͡ʒ ɑː ɡ ɑ	ipa	0
+جاگہ	d͡ʒ ɑː ɡ ɑː	ipa	0
+جاہل	d͡ʒ ɑː ɦ ɪ l	ipa	0
+جب	d͡ʒ ə b	ipa	0
+جبرائیل	d͡ʒ ɪ b ɾ ɑː iː l	ipa	0
+جبرالٹر	d͡ʒ ɪ b ɾ ɑː l ʈ ə ɾ	ipa	0
+جبوتی	d͡ʒ ɪ b uː t̪ iː	ipa	0
+جبڑا	d͡ʒ ə b ɽ ɑː	ipa	0
+جبیل	d͡ʒ ʊ b ɛː l	ipa	0
+جتوئی	d͡ʒ ə t̪ oː iː	ipa	0
+جج	d͡ʒ ə d͡ʒ	ipa	0
+جدا	d͡ʒ ʊ d̪ ɑː	ipa	0
+جدید	d͡ʒ ə d̪ iː d̪	ipa	0
+جذب	d͡ʒ ə z b	ipa	0
+جذبہ	d͡ʒ ə z bᵊ	ipa	0
+جرأت	d͡ʒ ʊ ɾ ɾ ə t̪	ipa	0
+جراثیم	d͡ʒ ə ɾ ɑː s iː m	ipa	0
+جراح	d͡ʒ ə ɾ ɾ ɑː ɦ	ipa	0
+جراحت	d͡ʒ ə ɾ ɑː ɦ ə t̪	ipa	0
+جرثومہ	d͡ʒ ʊ ɾ s uː m ə	ipa	0
+جرح	d͡ʒ ʊ ɾ ɦ	ipa	0
+جرسی	d͡ʒ ə ɾ s iː	ipa	0
+جرم	d͡ʒ ʊ ɾ m	ipa	0
+جرمانوں	d͡ʒ ʊ ɾ m ɑː n õː	ipa	0
+جرمانہ	d͡ʒ ʊ ɾ m ɑː n ɑ	ipa	0
+جرمانہ	d͡ʒ ʊ ɾ m ɑː n ɑː	ipa	0
+جرمانے	d͡ʒ ʊ ɾ m ɑː n eː	ipa	0
+جرمن	d͡ʒ ə ɾ m ə n	ipa	0
+جرمنی	d͡ʒ ə ɾ m ə n iː	ipa	0
+جرگہ	d͡ʒ ɪ ɾ ɡ ɑː	ipa	0
+جزیرہ	d͡ʒ ə z iː ɾ ɑː	ipa	0
+جسامت	d͡ʒ ə s ɑː m ə t̪	ipa	0
+جست	d͡ʒ ə s t̪	ipa	0
+جستجو	d͡ʒ ʊ s t̪ ə d͡ʒ uː	ipa	0
+جستجو	d͡ʒ ʊ s t̪ ʊ d͡ʒ uː	ipa	0
+جسد	d͡ʒ ə s ə d̪	ipa	0
+جسم	d͡ʒ ɪ s m	ipa	0
+جسم	d͡ʒ ɪ s ə m	ipa	0
+جسور	d͡ʒ ə s uː ɾ	ipa	0
+جشن	d͡ʒ ə ʃ n	ipa	0
+جشن	d͡ʒ ə ʃ ə n	ipa	0
+جعلی	d͡ʒ ɑː l iː	ipa	0
+جغرافیائی	d͡ʒ ʊ ɣ ɾ ɑː f ɪ j ɑː iː	ipa	0
+جغرافیہ	d͡ʒ ʊ ɣ ɾ ɑː f iː j ə	ipa	0
+جفتی	d͡ʒ ʊ f t̪ iː	ipa	0
+جل	d͡ʒ ə l	ipa	0
+جلانا	d͡ʒ ə l ɑː n ɑː	ipa	0
+جلسو	d͡ʒ ə l s oː	ipa	0
+جلسوں	d͡ʒ ə l s õː	ipa	0
+جلسہ	d͡ʒ ə l s ɑ	ipa	0
+جلسہ	d͡ʒ ə l s ɑː	ipa	0
+جلسہ	d͡ʒ ɪ l s ä	ipa	0
+جلسے	d͡ʒ ə l s eː	ipa	0
+جلنا	d͡ʒ ə l n ɑː	ipa	0
+جلوس	d͡ʒ ʊ l uː s	ipa	0
+جلوو	d͡ʒ ə l ʋ oː	ipa	0
+جلووں	d͡ʒ ə l ʋ õː	ipa	0
+جلوہ	d͡ʒ ə l ʋ ɑ	ipa	0
+جلوہ	d͡ʒ ə l ʋ ɑː	ipa	0
+جلوے	d͡ʒ ə l ʋ eː	ipa	0
+جماعت	d͡ʒ ə m ɑː t̪	ipa	0
+جماعت	d͡ʒ ə m ɑː ə t̪	ipa	0
+جماعت	d͡ʒ ə m ɑː ʔ ə t̪	ipa	0
+جماعتو	d͡ʒ ə m ɑː ə t̪ oː	ipa	0
+جماعتو	d͡ʒ ə m ɑː ʔ ə t̪ oː	ipa	0
+جماعتوں	d͡ʒ ə m ɑː ə t̪ õː	ipa	0
+جماعتوں	d͡ʒ ə m ɑː ʔ ə t̪ õː	ipa	0
+جماعتیں	d͡ʒ ə m ɑː ə t̪ ẽː	ipa	0
+جماعتیں	d͡ʒ ə m ɑː ʔ ə t̪ ẽː	ipa	0
+جماگی	d͡ʒ ʊ m ɑː ɡ iː	ipa	0
+جمعرات	d͡ʒ ʊ m ɑ ɾ ɑː t̪	ipa	0
+جمعرات	d͡ʒ ʊ m ɑː ʔ ɾ ɑː t̪	ipa	0
+جمعرات	d͡ʒ ʊ m ɪ ʔ ɾ ɑː t̪	ipa	0
+جمعراتوں	d͡ʒ ʊ m ɪ ɾ ɑː t̪ õː	ipa	0
+جمعراتوں	d͡ʒ ʊ m ɪ ʔ ɾ ɑː t̪ õː	ipa	0
+جمعو	d͡ʒ ʊ m oː	ipa	0
+جمعو	d͡ʒ ʊ m ʔ oː	ipa	0
+جمعوں	d͡ʒ ʊ m õː	ipa	0
+جمعوں	d͡ʒ ʊ m ʔ õː	ipa	0
+جمعہ	d͡ʒ ʊ m ʔ ɑ	ipa	0
+جمعہ	d͡ʒ ʊ m ʔ ɑː	ipa	0
+جمعے	d͡ʒ ʊ m eː	ipa	0
+جمعے	d͡ʒ ʊ m ʔ eː	ipa	0
+جملہ	d͡ʒ ʊ m l ɑː	ipa	0
+جمنا	d͡ʒ ə m n ɑː	ipa	0
+جموں	d͡ʒ ə m m ũː	ipa	0
+جمہوری	d͡ʒ ə m ɦ uː ɾ iː	ipa	0
+جمہوریت	d͡ʒ ə m ɦ uː ɾ ɪ j ə t̪	ipa	0
+جمہوریہ	d͡ʒ ə m ɦ uː ɾ ɪ j ə	ipa	0
+جمہوریہ	d͡ʒ ʊ m ɦ uː ɾ ɪ j ə	ipa	0
+جن	d͡ʒ ɪ n	ipa	0
+جن	d͡ʒ ɪ n n	ipa	0
+جناب	d͡ʒ ə n ɑː b	ipa	0
+جناح	d͡ʒ ə n ɑː ɦ	ipa	0
+جناح	d͡ʒ ɪ n ɑː ɦ	ipa	0
+جناح	d͡ʒ ʊ n ɑː ɦ	ipa	0
+جنازو	d͡ʒ ə n ɑː z oː	ipa	0
+جنازوں	d͡ʒ ə n ɑː z õː	ipa	0
+جنازہ	d͡ʒ ə n ɑː z ɑ	ipa	0
+جنازہ	d͡ʒ ə n ɑː z ɑː	ipa	0
+جنازے	d͡ʒ ə n ɑː z eː	ipa	0
+جنت	d͡ʒ ə n n ə t̪	ipa	0
+جنتا	d͡ʒ ə n t̪ ɑː	ipa	0
+جنتری	d͡ʒ ə n t̪ ə ɾ iː	ipa	0
+جنتری	d͡ʒ ə n t̪ ɾ iː	ipa	0
+جنتو	d͡ʒ ə n n ə t̪ oː	ipa	0
+جنتوں	d͡ʒ ə n n ə t̪ õː	ipa	0
+جنتی	d͡ʒ ə nː ə t̪ iː	ipa	0
+جنتیں	d͡ʒ ə n n ə t̪ ẽː	ipa	0
+جنرل	d͡ʒ ə n ɾ ə l	ipa	0
+جنسی	d͡ʒ ɪ n s iː	ipa	0
+جنم	d͡ʒ ə n ə m	ipa	0
+جنوب	d͡ʒ ə n uː b	ipa	0
+جنوبی	d͡ʒ ə n uː b iː	ipa	0
+جنوبی	d͡ʒ ʊ n uː b iː	ipa	0
+جنوری	d͡ʒ ə n ʋ ə ɾ iː	ipa	0
+جنون	d͡ʒ ʊ n uː n	ipa	0
+جنگ	d͡ʒ ə ŋ ɡ	ipa	0
+جنگ	d͡ʒ ʊ ŋ ɡ	ipa	0
+جنگل	d͡ʒ ə ŋ ɡ ə l	ipa	0
+جنگلا	d͡ʒ ə ŋ ɡ l ɑː	ipa	0
+جنگی	d͡ʒ ə ŋ ɡ iː	ipa	0
+جنیئو	d͡ʒ ə n eː uː	ipa	0
+جو	d͡ʒ oː	ipa	0
+جوا	d͡ʒ uː ɑː	ipa	0
+جوا	d͡ʒ ʊ w ɑː	ipa	0
+جوا	d͡ʒ ʊ ɑː	ipa	0
+جواب	d͡ʒ ə w ɑː b	ipa	0
+جواب	d͡ʒ ə ʋ ɑː b	ipa	0
+جواد	d͡ʒ ə ʋ ʋ ɑː d̪	ipa	0
+جواز	d͡ʒ ə ʋ ɑː z	ipa	0
+جوازوں	d͡ʒ ə ʋ ɑː z õː	ipa	0
+جوان	d͡ʒ ə ʋ ɑː n	ipa	0
+جوانو	d͡ʒ ə ʋ ɑː n oː	ipa	0
+جوانوں	d͡ʒ ə ʋ ɑː n õː	ipa	0
+جوانی	d͡ʒ ə ʋ ɑː n iː	ipa	0
+جوت	d͡ʒ oː t̪	ipa	0
+جوتا	d͡ʒ uː t̪ ɑː	ipa	0
+جوتوں	d͡ʒ uː t̪ õː	ipa	0
+جوتے	d͡ʒ uː t̪ eː	ipa	0
+جوجھنا	d͡ʒ uː d͡ʒʱ n ɑː	ipa	0
+جور	d͡ʒ ʋ ə ɾ	ipa	0
+جوز	d͡ʒ ɔː z	ipa	0
+جولائی	d͡ʒ ʊ l ɑː iː	ipa	0
+جون	d͡ʒ uː n	ipa	0
+جوناگڑھ	d͡ʒ uː n ɑː ɡ ə ɽʱ	ipa	0
+جونپوری	d͡ʒ ɔː n p uː ɾ iː	ipa	0
+جوڈیو	d͡ʒ uː ɖ ɪ j oː	ipa	0
+جوڑ	d͡ʒ oː ɽ	ipa	0
+جوڑنا	d͡ʒ oː ɽ n ɑː	ipa	0
+جوکھم	d͡ʒ oː kʰ ɪ m	ipa	0
+جوگی	d͡ʒ oː ɡ iː	ipa	0
+جوں	d͡ʒ ũː	ipa	0
+جوہر	d͡ʒ ɔː ɦ ə ɾ	ipa	0
+جوہری	d͡ʒ ɔː ɦ ə ɾ iː	ipa	0
+جوہری	d͡ʒ ɔː ɦ ɾ iː	ipa	0
+جوہی	d͡ʒ uː ɦ iː	ipa	0
+جٹا	d͡ʒ ə ʈ ɑː	ipa	0
+جٹھانی	d͡ʒ ɪ ʈʰ ɑː n iː	ipa	0
+جٹھانیاں	d͡ʒ ɪ ʈʰ ɑː n ɪ j ɑ̃ː	ipa	0
+جٹھانیو	d͡ʒ ɪ ʈʰ ɑː n ɪ j oː	ipa	0
+جٹھانیوں	d͡ʒ ɪ ʈʰ ɑː n ɪ j õː	ipa	0
+جپنا	d͡ʒ ə p n ɑː	ipa	0
+جڑ	d͡ʒ ə ɽ	ipa	0
+جڑانوالہ	d͡ʒ ə ɽ ɑː n ʋ ɑː l ɑː	ipa	0
+جڑواں	d͡ʒ ʊ ɽ w ɑ̃ː	ipa	0
+جڑواں	d͡ʒ ʊ ɽ ʋ ɑ̃ː	ipa	0
+جگ	d͡ʒ ə ɡ	ipa	0
+جگاڑ	d͡ʒ ʊ ɡ ɑː ɽ	ipa	0
+جگر	d͡ʒ ɪ ɡ ə ɾ	ipa	0
+جگنا	d͡ʒ ə ɡ n ɑː	ipa	0
+جگناتھ	d͡ʒ ə ɡ ə n n ɑː t̪ʰ	ipa	0
+جگنو	d͡ʒ ʊ ɡ n uː	ipa	0
+جگہ	d͡ʒ ə ɡ e	ipa	0
+جگہ	d͡ʒ ə ɡ ɑ	ipa	0
+جگہ	d͡ʒ ə ɡ ɑː	ipa	0
+جگہ	d͡ʒ ə ɡ ə ɦ	ipa	0
+جگہ	d͡ʒ ə ɡʱ e	ipa	0
+جھارکھنڈ	d͡ʒʱ ɑː ɾ kʰ ə n ɖ	ipa	0
+جھانجھ	d͡ʒʱ ɑ̃ː d͡ʒʱ	ipa	0
+جھاڑنا	d͡ʒʱ ɑː ɽ n ɑː	ipa	0
+جھاڑو	d͡ʒʱ ɑː ɽ uː	ipa	0
+جھلمل	d͡ʒʱ ɪ l m ɪ l	ipa	0
+جھمیلا	d͡ʒʱ ə m eː l ɑː	ipa	0
+جھمیلو	d͡ʒʱ ə m eː l oː	ipa	0
+جھمیلوں	d͡ʒʱ ə m eː l õː	ipa	0
+جھمیلے	d͡ʒʱ ə m eː l eː	ipa	0
+جھنڈا	d͡ʒʱ ə n ɖ ɑː	ipa	0
+جھنگ	d͡ʒʱ ə n ɡ	ipa	0
+جھولا	d͡ʒʱ uː l ɑː	ipa	0
+جھونپڑی	d͡ʒʱ õː p ɽ iː	ipa	0
+جھوٹ	d͡ʒʱ uː ʈ	ipa	0
+جھوٹ	d͡ʒʱ uː ʈʱ	ipa	0
+جھوٹا	d͡ʒʱ uː ʈ ɑː	ipa	0
+جھوٹوں	d͡ʒʱ uː ʈ õː	ipa	0
+جھوٹھ	d͡ʒʱ uː ʈʰ	ipa	0
+جھٹکا	d͡ʒʱ ə ʈ k ɑː	ipa	0
+جھٹکوں	d͡ʒʱ ə ʈ k õː	ipa	0
+جھٹکے	d͡ʒʱ ə ʈ k eː	ipa	0
+جھگڑا	d͡ʒʱ ə ɡ ɽ ɑː	ipa	0
+جھیل	d͡ʒʱ iː l	ipa	0
+جھیلمی	d͡ʒʱ eː l ə m iː	ipa	0
+جہاد	d͡ʒ ɪ ɦ ɑː d̪	ipa	0
+جہاز	d͡ʒ ə ɦ ɑː z	ipa	0
+جہازوں	d͡ʒ ə ɦ ɑː z õː	ipa	0
+جہازی	d͡ʒ ə ɦ ɑː z iː	ipa	0
+جہان	d͡ʒ ə ɦ ɑː n	ipa	0
+جہاں	d͡ʒ ə ɦ ɑ̃ː	ipa	0
+جہلم	d͡ʒ ɪ ɦ l ə m	ipa	0
+جہنم	d͡ʒ ə ɦ ə n n ə m	ipa	0
+جہنمو	d͡ʒ ə ɦ ə n n ə m oː	ipa	0
+جہنموں	d͡ʒ ə ɦ ə n n ə m õː	ipa	0
+جہیز	d͡ʒ ə ɦ eː z	ipa	0
+جی	d͡ʒ iː	ipa	0
+جیالا	d͡ʒ e j ɑː l ɑː	ipa	0
+جیالا	d͡ʒ ɪ j ɑː l ɑː	ipa	0
+جیب	d͡ʒ eː b	ipa	0
+جیبوں	d͡ʒ eː b õː	ipa	0
+جیبھ	d͡ʒ iː bʱ	ipa	0
+جیبیں	d͡ʒ eː b ẽː	ipa	0
+جیت	d͡ʒ iː t̪	ipa	0
+جیرا	d͡ʒ iː ɾ ɑː	ipa	0
+جیش	d͡ʒ ɛː ʃ	ipa	0
+جیل	d͡ʒ eː l	ipa	0
+جین	d͡ʒ ɛː n	ipa	0
+جینا	d͡ʒ iː n ɑː	ipa	0
+جیوتی	d͡ʒ j oː t̪ iː	ipa	0
+جیومیٹری	d͡ʒ ɪ oː m eː ʈ ɾ iː	ipa	0
+جیون	d͡ʒ iː ʋ ə n	ipa	0
+جیونی	d͡ʒ iː ʋ ə n iː	ipa	0
+جیٹھ	d͡ʒ eː ʈʰ	ipa	0
+جیٹھانی	d͡ʒ eː ʈʰ ɑː n iː	ipa	0
+جیٹھوں	d͡ʒ eː ʈʰ õː	ipa	0
+ح	ɦ	ipa	0
+حائل	ɦ ɑː ɪ l	ipa	0
+حاجت	ɦ ɑː d͡ʒ ə t̪	ipa	0
+حادثات	ɦ ɑː d̪ ɪ s ɑː t̪	ipa	0
+حادثوں	ɦ ɑː d̪ ɪ s õː	ipa	0
+حادثہ	ɦ ɑː d̪ ɪ s ɑ	ipa	0
+حادثہ	ɦ ɑː d̪ ɪ s ɑː	ipa	0
+حادثے	ɦ ɑː d̪ ɪ s eː	ipa	0
+حاسب	ɦ ɑː s ɪ b	ipa	0
+حاصل	ɦ ɑː s ɪ l	ipa	0
+حاضری	ɦ ɑː z ɪ ɾ iː	ipa	0
+حافظ	ɦ ɑː f ɪ z	ipa	0
+حافظہ	ɦ ɑː f ɪ z ɑ	ipa	0
+حافظہ	ɦ ɑː f ɪ z ɑː	ipa	0
+حال	ɦ ɑː l	ipa	0
+حالانکہ	ɦ ɑː l ɑ̃ː k eː	ipa	0
+حالانکہ	ɦ ɑː l ɑ̃ː k iː	ipa	0
+حالت	ɦ ɑː l ə t̪	ipa	0
+حالیہ	ɦ ɑː l ɪ j ɑ	ipa	0
+حالیہ	ɦ ɑː l ɪ j ɑː	ipa	0
+حامی	ɦ ɑː m iː	ipa	0
+حامیو	ɦ ɑː m ɪ j oː	ipa	0
+حامیوں	ɦ ɑː m ɪ j õː	ipa	0
+حب	ɦ ə b	ipa	0
+حبش	ɦ ə b ə ʃ	ipa	0
+حبشن	ɦ ə b ʃ ə n	ipa	0
+حبشہ	ɦ ə b ʃ ɑ	ipa	0
+حبشہ	ɦ ə b ʃ ɑː	ipa	0
+حبشی	ɦ ə b ʃ iː	ipa	0
+حبقوق	ɦ ə b ə q q uː q	ipa	0
+حج	ɦ ə d̪ d͡ʒ	ipa	0
+حجام	ɦ ə d̪ d͡ʒ ɑː m	ipa	0
+حجرہ	ɦ ʊ d͡ʒ ɾ ɑ	ipa	0
+حجرہ	ɦ ʊ d͡ʒ ɾ ɑː	ipa	0
+حدیث	ɦ ə d̪ iː s	ipa	0
+حرارت	ɦ ə ɾ ɑː ɾ ə t̪	ipa	0
+حراست	ɦ ɪ ɾ ɑː s ə t̪	ipa	0
+حرام	ɦ ə ɾ ɑː m	ipa	0
+حرف	ɦ ə ɾ f	ipa	0
+حرمت	ɦ ʊ ɾ m ə t̪	ipa	0
+حرمزئی	ɦ ʊ ɾ m ə z ə iː	ipa	0
+حساب	ɦ ɪ s ɑː b	ipa	0
+حسد	ɦ ə s ə d̪	ipa	0
+حسرت	ɦ ə s ɾ ə t̪	ipa	0
+حسین	ɦ ə s iː n	ipa	0
+حسین	ɦ ʊ s ɛː n	ipa	0
+حسیں	ɦ ə s ĩː	ipa	0
+حشرہ	ɦ ə ʃ ə ɾ ɑ	ipa	0
+حشرہ	ɦ ə ʃ ə ɾ ɑː	ipa	0
+حشفہ	ɦ ə ʃ ə f ɑ	ipa	0
+حشفہ	ɦ ə ʃ ə f ɑː	ipa	0
+حشیش	ɦ ə ʃ iː ʃ	ipa	0
+حصہ	ɦ ɪ s s ɑː	ipa	0
+حضرات	ɦ ə z ɾ ɑː t̪	ipa	0
+حضرت	ɦ ə d̪ ɾ ə t̪	ipa	0
+حضور	ɦ ə z uː ɾ	ipa	0
+حضور	ɦ ʊ z uː ɾ	ipa	0
+حفاظت	ɦ ɪ f ɑː z ə t̪	ipa	0
+حق	ɦ ə q	ipa	0
+حقائق	ɦ ə q ɑː ɪ q	ipa	0
+حقو	ɦ ə q oː	ipa	0
+حقوق	ɦ ʊ q uː q	ipa	0
+حقوں	ɦ ə q õː	ipa	0
+حقوں	ɦ ʊ q q õː	ipa	0
+حقہ	ɦ ʊ q q ə	ipa	0
+حقیر	ɦ ə q iː ɾ	ipa	0
+حقیقت	ɦ ə q iː q ə t̪	ipa	0
+حقے	ɦ ʊ q q eː	ipa	0
+حلال	ɦ ə l ɑː l	ipa	0
+حلب	ɦ ə l ə b	ipa	0
+حلقہ	ɦ ə l q ɑ	ipa	0
+حلقہ	ɦ ə l q ɑː	ipa	0
+حلم	ɦ ɪ l m	ipa	0
+حلم	ɦ ʊ l m	ipa	0
+حلیہ	ɦ u l ɪ j ɑ	ipa	0
+حلیہ	ɦ u l ɪ j ɑː	ipa	0
+حلیہ	ɦ ɪ l ɪ j ɑ	ipa	0
+حلیہ	ɦ ɪ l ɪ j ɑː	ipa	0
+حلیہ	ɦ ʊ l ɪ j ɑ	ipa	0
+حلیہ	ɦ ʊ l ɪ j ɑː	ipa	0
+حمار	ɦ ɪ m ɑː ɾ	ipa	0
+حمارہ	ɦ ɪ m ɑː ɾ ɑː	ipa	0
+حماقت	ɦ ə m ɑː q ə t̪	ipa	0
+حماقت	ɦ ə m ɑː x ə t̪	ipa	0
+حماقت	ɦ ɪ m ɑː q ə t̪	ipa	0
+حماقت	ɦ ɪ m ɑː x ə t̪	ipa	0
+حمام	ɦ ə m m ɑː m	ipa	0
+حمایت	ɦ ɪ m ɑː j ə t̪	ipa	0
+حمد	ɦ ə m d̪	ipa	0
+حملوں	ɦ ə m l õː	ipa	0
+حملہ	ɦ ə m l ɑ	ipa	0
+حملہ	ɦ ə m l ɑː	ipa	0
+حملے	ɦ ə m l eː	ipa	0
+حنا	ɦ ɪ n ɑː	ipa	0
+حنوکاہ	ɦ ə n uː k ɑː ɦ	ipa	0
+حواری	ɦ ə ʋ ɑː ɾ iː	ipa	0
+حواریو	ɦ ə ʋ ɑː ɾ ɪ j oː	ipa	0
+حواریوں	ɦ ə ʋ ɑː ɾ j õː	ipa	0
+حوالہ	ɦ ə w ɑː l ɑː	ipa	0
+حوالہ	ɦ ə ʋ ɑː l ɑː	ipa	0
+حور	ɦ uː ɾ	ipa	0
+حورو	ɦ uː ɾ oː	ipa	0
+حوروں	ɦ uː ɾ õː	ipa	0
+حوریں	ɦ uː ɾ ẽː	ipa	0
+حوصلہ	ɦ ɔː s l ɑː	ipa	0
+حوصلہ	ɦ ɔː s ə l ɑː	ipa	0
+حوض	ɦ ɔː z	ipa	0
+حول	ɦ ɔː l	ipa	0
+حویلی	ɦ ə ʋ eː l iː	ipa	0
+حکایت	ɦ ɪ k ɑː j ə t̪	ipa	0
+حکم	ɦ ʊ k m	ipa	0
+حکومت	ɦ ʊ k uː m ə t̪	ipa	0
+حکیم	ɦ ə k iː m	ipa	0
+حیا	ɦ ə j ɑː	ipa	0
+حیات	ɦ ə j ɑː t̪	ipa	0
+حیاتیات	ɦ ə j ɑː t̪ ɪ j ɑː t̪	ipa	0
+حیاتین	ɦ ə j ɑː t̪ iː n	ipa	0
+حیران	ɦ ɛː ɾ ɑː n	ipa	0
+حیرانگی	ɦ ɛː ɾ ɑː n ɡ iː	ipa	0
+حیرانگیاں	ɦ ɛː ɾ ɑː n ɡ ɪ j ɑ̃ː	ipa	0
+حیرانگیو	ɦ ɛː ɾ ɑː n ɡ ɪ j oː	ipa	0
+حیرانگیوں	ɦ ɛː ɾ ɑː n ɡ ɪ j õː	ipa	0
+حیراں	ɦ ɛː ɾ ɑ̃ː	ipa	0
+حیرت	ɦ ɛː ɾ ə t̪	ipa	0
+حیرتو	ɦ ɛː ɾ ə t̪ oː	ipa	0
+حیرتوں	ɦ ɛː ɾ ə t̪ õː	ipa	0
+حیرتیں	ɦ ɛː ɾ ə t̪ ẽː	ipa	0
+حیفا	ɦ ə iː f ɑː	ipa	0
+حیفا	ɦ ɛː f ɑː	ipa	0
+حیوان	ɦ ɛː ʋ ɑː n	ipa	0
+حیوانیات	ɦ ɛː ʋ ɑː n ɪ j ɑː t̪	ipa	0
+خ	x	ipa	0
+خ	x eː	ipa	0
+خاتمہ	x ɑː t̪ m ɑ	ipa	0
+خاتمہ	x ɑː t̪ m ɑː	ipa	0
+خاتمہ	x ɑː t̪ ɪ m ɑ	ipa	0
+خاتمہ	x ɑː t̪ ɪ m ɑː	ipa	0
+خاتون	x ɑː t̪ uː n	ipa	0
+خادم	x ɑː d̪ ɪ m	ipa	0
+خار	x ɑː ɾ	ipa	0
+خاران	x ɑː ɾ ɑː n	ipa	0
+خارج	x ɑː ɾ ɪ d͡ʒ	ipa	0
+خارجہ	x ɑː ɾ ɪ d͡ʒᵊ	ipa	0
+خارجی	x ɑː ɾ d͡ʒ iː	ipa	0
+خارجی	x ɑː ɾ ɪ d͡ʒ iː	ipa	0
+خارش	x ɑː ɾ ɪ ʃ	ipa	0
+خاص	x ɑː s	ipa	0
+خاصا	x ɑː s ɑː	ipa	0
+خاصگی	x ɑː s ɡ iː	ipa	0
+خاصی	x ɑː s iː	ipa	0
+خاطر	x ɑː t̪ ɪ ɾ	ipa	0
+خاقانیت	x ɑː q ɑː n ɪ j ə t̪	ipa	0
+خال	x ɑː l	ipa	0
+خالق	x ɑː l ɪ q	ipa	0
+خالو	x ɑː l uː	ipa	0
+خالہ	x ɑː l ɑ	ipa	0
+خالہ	x ɑː l ɑː	ipa	0
+خالی	x ɑː l iː	ipa	0
+خام	x ɑː m	ipa	0
+خاموش	x ɑː m oː ʃ	ipa	0
+خاموشی	x ɑː m oː ʃ iː	ipa	0
+خان	x ɑː n	ipa	0
+خاندان	x ɑː n d̪ ɑː n	ipa	0
+خانسامان	x ɑː n s ɑː m ɑː n	ipa	0
+خانساماں	x ɑː n s ɑː m ɑ̃ː	ipa	0
+خانقاہ	x ɑː n q ɑː ɦ	ipa	0
+خانقاہ	x ɑː n ə q ɑː ɦ	ipa	0
+خانوزئی	x ɑː n oː z ə iː	ipa	0
+خانپور	x ɑː n p uː ɾ	ipa	0
+خانہ	x ɑː n ɑ	ipa	0
+خانہ	x ɑː n ɑː	ipa	0
+خانیت	x ɑː n ɪ j ə t̪	ipa	0
+خانیوال	x ɑː n eː ʋ ɑː l	ipa	0
+خاکسار	x ɑː k s ɑː ɾ	ipa	0
+خاکستری	x ɑː k ɪ s t̪ ə ɾ iː	ipa	0
+خاکنائے	x ɑː k n ɑː eː	ipa	0
+خاکی	x ɑː k iː	ipa	0
+خبر	x ə b ə ɾ	ipa	0
+ختم	x ə t̪ m	ipa	0
+ختم	x ə t̪ ə m	ipa	0
+خجیر	x ə d͡ʒ iː ɾ	ipa	0
+خجیر	x ʊ d͡ʒ iː ɾ	ipa	0
+خدا	x ʊ d̪ ɑː	ipa	0
+خداوند	x ʊ d̪ ɑː ʋ ə n d̪	ipa	0
+خدمات	x ɪ d̪ m ɑː t̪	ipa	0
+خدمت	x ɪ d̪ m ə t̪	ipa	0
+خدمتوں	x ɪ d̪ m ə t̪ õː	ipa	0
+خدمتیں	x ɪ d̪ m ə t̪ ẽː	ipa	0
+خدیو	x ə d̪ eː ʋ	ipa	0
+خدیو	x ɪ d̪ eː ʋ	ipa	0
+خدیو	x ɪ d̪ iː ʋ	ipa	0
+خراب	x ə ɾ ɑː b	ipa	0
+خرابی	x ɑː ɾ ɑː b iː	ipa	0
+خراش	x ə ɾ ɑː ʃ	ipa	0
+خراٹا	x ə ɾ ɾ ɑː ʈ ɑː	ipa	0
+خربوزہ	x ə ɾ b uː z ə	ipa	0
+خرد	x ɪ ɾ ə d̪	ipa	0
+خرد	x ʊ ɾ d̪	ipa	0
+خرس	x ɪ ɾ s	ipa	0
+خرچ	x ə ɾ t͡ʃ	ipa	0
+خرچہ	x ə ɾ t͡ʃ ɑ	ipa	0
+خرچہ	x ə ɾ t͡ʃ ɑː	ipa	0
+خرگوش	x ə ɾ ɡ oː ʃ	ipa	0
+خریدنا	x ə ɾ iː d̪ n ɑː	ipa	0
+خریدوانا	x ə ɾ iː d̪ ʋ ɑː n ɑː	ipa	0
+خزاؤں	x ɪ z ɑː õː	ipa	0
+خزائیں	x ɪ z ɑː ẽː	ipa	0
+خزانہ	x ə z ɑː n ɑ	ipa	0
+خزانہ	x ə z ɑː n ɑː	ipa	0
+خزانہ	x ɪ z ɑː n ɑ	ipa	0
+خزانہ	x ɪ z ɑː n ɑː	ipa	0
+خزاں	x ə z ɑ̃ː	ipa	0
+خزاں	x ɪ z ɑ̃ː	ipa	0
+خسارہ	x ɪ s ɑː ɾ ɑ	ipa	0
+خسارہ	x ɪ s ɑː ɾ ɑː ɦ	ipa	0
+خستہ	x ə s t̪ ɑ	ipa	0
+خستہ	x ə s t̪ ɑː	ipa	0
+خسرہ	x ə s ɾ ɑː	ipa	0
+خشبو	x ʊ ʃ b uː	ipa	0
+خشت	x ɪ ʃ t̪	ipa	0
+خشم	x ə ʃ m	ipa	0
+خشک	x ʊ ʃ k	ipa	0
+خصم	x ə s m	ipa	0
+خصم	x ə s ə m	ipa	0
+خصوصا	x ə s uː s ə n	ipa	0
+خصوصا	x ʊ s uː s ə n	ipa	0
+خصوصی	x ʊ s uː s iː	ipa	0
+خضدار	x ʊ z d̪ ɑː ɾ	ipa	0
+خط	x ə t̪	ipa	0
+خطا	x ə t̪ ɑː	ipa	0
+خطاؤں	x ə t̪ ɑː õː	ipa	0
+خطائی	x ə t̪ ɑː iː	ipa	0
+خطائیں	x ə t̪ ɑː ẽː	ipa	0
+خطبا	x ʊ t̪ ə b ɑː	ipa	0
+خطبوں	x ʊ t̪ b õː	ipa	0
+خطبہ	x ʊ t̪ b ɑ	ipa	0
+خطبہ	x ʊ t̪ b ɑː	ipa	0
+خطبے	x ʊ t̪ b eː	ipa	0
+خطرو	x ə t̪ ɾ oː	ipa	0
+خطروں	x ə t̪ ɾ õː	ipa	0
+خطرہ	x ə t̪ ɾ ɑ	ipa	0
+خطرہ	x ə t̪ ɾ ɑː	ipa	0
+خطرے	x ə t̪ ɾ eː	ipa	0
+خطہ	x ɪ t̪ t̪ ɑ	ipa	0
+خطہ	x ɪ t̪ t̪ ɑː	ipa	0
+خطیب	x ə t̪ eː b	ipa	0
+خطیب	x ə t̪ iː b	ipa	0
+خطیر	x ə t̪ iː ɾ	ipa	0
+خطیہ	x ə t̪ ɪ j j ɑ	ipa	0
+خطیہ	x ə t̪ ɪ j j ɑː	ipa	0
+خفیہ	x ʊ f j ɑ	ipa	0
+خفیہ	x ʊ f j ɑː	ipa	0
+خفیہ	x ʊ f ɪ j ɑ	ipa	0
+خفیہ	x ʊ f ɪ j ɑː	ipa	0
+خلا	x ə l ɑː	ipa	0
+خلاف	x ɪ l ɑː f	ipa	0
+خلافت	x ɪ l ɑː f ə t̪	ipa	0
+خلفا	x ʊ l ə f ɑː	ipa	0
+خلق	x ə l q	ipa	0
+خلقت	x ə l q ə t̪	ipa	0
+خلقت	x ɪ l q ə t̪	ipa	0
+خلل	x ə l ə l	ipa	0
+خلوی	x ə l ʋ iː	ipa	0
+خلوی	x ʊ l ʋ iː	ipa	0
+خلیج	x ə l iː d͡ʒ	ipa	0
+خلیفہ	x ə l iː f ɑ	ipa	0
+خلیفہ	x ə l iː f ɑː	ipa	0
+خنازیر	x ə n ɑː z iː ɾ	ipa	0
+خنجر	x ə n d͡ʒ ə ɾ	ipa	0
+خنجرو	x ə n d͡ʒ ə ɾ oː	ipa	0
+خنجروں	x ə n d͡ʒ ə ɾ õː	ipa	0
+خنزیر	x ɪ n z iː ɾ	ipa	0
+خنزیرو	x ɪ n z iː ɾ oː	ipa	0
+خنزیروں	x ɪ n z iː ɾ õː	ipa	0
+خنزیریں	x ɪ n z iː ɾ ẽː	ipa	0
+خواب	xʷ ɑː b	ipa	0
+خوابوں	x ʋ ɑː b õː	ipa	0
+خواتین	x ə w ɑː t̪ iː n	ipa	0
+خواتین	x ə ʋ ɑː t̪ iː n	ipa	0
+خواجہ	x ɑː d͡ʒ ə	ipa	0
+خواجہ	x ʋ ɑː d͡ʒ ə	ipa	0
+خواہ	x w ɑː ɦ	ipa	0
+خواہ	x ɑː ɦ	ipa	0
+خواہر	x ɑː ɦ ə ɾ	ipa	0
+خواہش	x w ɑː ɦ ɪ ʃ	ipa	0
+خواہش	x ɑː ɦ ɪ ʃ	ipa	0
+خواہشوں	x ʋ ɑː ɦ ɪ ʃ õː	ipa	0
+خواہشیں	x ʋ ɑː ɦ ɪ ʃ ẽː	ipa	0
+خوب	x uː b	ipa	0
+خوبانی	x uː b ɑː n iː	ipa	0
+خوبصورت	x uː b s uː ɾ ə t̪	ipa	0
+خوجہ	x oː d͡ʒ ɑː	ipa	0
+خود	x w ʊ d̪	ipa	0
+خود	x ʊ d̪	ipa	0
+خودمختاری	x ʊ d̪ m ʊ x t̪ ɑː ɾ iː	ipa	0
+خودکش	x ʊ d̪ k ʊ ʃ	ipa	0
+خودکشی	x ʊ d̪ k ə ʃ iː	ipa	0
+خودکشی	x ʊ d̪ k ʊ ʃ iː	ipa	0
+خوراک	x ʊ ɾ ɑː k	ipa	0
+خورشید	x ʊ ɾ ʃ iː d̪	ipa	0
+خوش	x ʊ ʃ	ipa	0
+خوشاب	x ʊ ʃ ɑː b	ipa	0
+خوشبو	x ʊ ʃ b uː	ipa	0
+خوشبودار	x ʊ ʃ b uː d̪ ɑː ɾ	ipa	0
+خوشی	x ʊ ʃ iː	ipa	0
+خوشیاں	x oː ʃ ɪ j ɑ̃ː	ipa	0
+خوشیوں	x oː ʃ ɪ j õː	ipa	0
+خوف	x ɔː f	ipa	0
+خوفناک	x ɔː f n ɑː k	ipa	0
+خول	x oː l	ipa	0
+خون	x uː n	ipa	0
+خونی	x uː n iː	ipa	0
+خوک	x uː k	ipa	0
+خوں	x ũː	ipa	0
+خپلو	x ə p l uː	ipa	0
+خچر	x ə t̪ t͡ʃ ə ɾ	ipa	0
+خیابان	x ɪ j ɑː b ɑː n	ipa	0
+خیاط	x ə j j ɑː t̪	ipa	0
+خیال	x j ɑː l	ipa	0
+خیال	x ə j ɑː l	ipa	0
+خیالوں	x ə j ɑː l õː	ipa	0
+خیر	x ɛː ɾ	ipa	0
+خیرپور	x ɛː ɾ p uː ɾ	ipa	0
+خیریت	x ɛː ɾ ɪ j ə t̪	ipa	0
+خیلا	x eː l ɑː	ipa	0
+خیمہ	x ɛː m ɑ	ipa	0
+خیمہ	x ɛː m ɑː	ipa	0
+د	d̪	ipa	0
+د	d̪ ɑː l	ipa	0
+داؤد	d̪ ɑː uː d̪	ipa	0
+دائرہ	d̪ ɑː eː ɾ ə ɦ	ipa	0
+دائی	d̪ ɑː iː	ipa	0
+داخل	d̪ ɑː x ɪ l	ipa	0
+داخلہ	d̪ ɑː x ɪ l ɑ	ipa	0
+داخلہ	d̪ ɑː x ɪ l ɑː	ipa	0
+داخلی	d̪ ɑː x ɪ l iː	ipa	0
+دادا	d̪ ɑː d̪ ɑː	ipa	0
+دادو	d̪ ɑː d̪ oː	ipa	0
+دادو	d̪ ɑː d̪ uː	ipa	0
+دادوں	d̪ ɑː d̪ õː	ipa	0
+دادی	d̪ ɑː d̪ iː	ipa	0
+دادے	d̪ ɑː d̪ eː	ipa	0
+دار	d̪ ɑː ɾ	ipa	0
+داردر	d̪ ɑː ɾ ɪ d̪ ɾᵊ	ipa	0
+دارو	d̪ ɑː ɾ uː	ipa	0
+داریل	d̪ ɑː ɾ eː l	ipa	0
+داستان	d̪ ɑː s t̪ ɑː n	ipa	0
+داستان	d̪ ɑː s t̪ ɑ̃ː	ipa	0
+داستانوں	d̪ ɑː s t̪ ɑː n õː	ipa	0
+داستانیں	d̪ ɑː s t̪ ɑː n ẽː	ipa	0
+داسی	d̪ ɑː s iː	ipa	0
+داعش	d̪ ɑː ɪ ʃ	ipa	0
+داغ	d̪ ɑː ɣ	ipa	0
+داغستان	d̪ ɑː ɣ ɪ s t̪ ɑː n	ipa	0
+دال	d̪ ɑː l	ipa	0
+دالبندین	d̪ ɑː l b ə n d̪ iː n	ipa	0
+دام	d̪ ɑː m	ipa	0
+داماد	d̪ ɑː m ɑː d̪	ipa	0
+دامادو	d̪ ɑː m ɑː d̪ oː	ipa	0
+دامادوں	d̪ ɑː m ɑː d̪ õː	ipa	0
+دامن	d̪ ɑː m ə n	ipa	0
+دانت	d̪ ɑ̃ː t̪	ipa	0
+دانتی	d̪ ɑ̃ː t̪ iː	ipa	0
+دانش	d̪ ɑː n ɪ ʃ	ipa	0
+داڑم	d̪ ɑː ɽ ɪ m	ipa	0
+داڑھی	d̪ ɑː ɽʱ iː	ipa	0
+داہنا	d̪ ɑː ɦ ɪ n ɑː	ipa	0
+دایاں	d̪ ɑː j ɑ̃ː	ipa	0
+دایہ	d̪ ɑː jᵊ	ipa	0
+دبئی	d̪ ʊ b ə iː	ipa	0
+دباؤ	d̪ ə b ɑː oː	ipa	0
+دبانا	d̪ ə b ɑː n ɑː	ipa	0
+دبستان	d̪ ə b ɪ s t̪ ɑː n	ipa	0
+دبنگ	d̪ ə b ə ŋ ɡ	ipa	0
+دجلہ	d̪ ə d͡ʒ l ɑː	ipa	0
+دختر	d̪ ʊ x t̪ ə ɾ	ipa	0
+دخمہ	d̪ ə x m ɑ	ipa	0
+دخمہ	d̪ ə x m ɑː	ipa	0
+دراصل	d̪ ə ɾ ə s ə l	ipa	0
+دربار	d̪ ə ɾ b ɑː ɾ	ipa	0
+درجات	d̪ ə ɾ d͡ʒ ɑː t̪	ipa	0
+درجن	d̪ ə ɾ d͡ʒ ə n	ipa	0
+درجہ	d̪ ə ɾ d͡ʒ ɑː	ipa	0
+درخت	d̪ ə ɾ ə x t̪	ipa	0
+درخش	d̪ ə ɾ ə x ʃ	ipa	0
+درخواست	d̪ ə ɾ xʷ ɑː s t̪	ipa	0
+درد	d̪ ə ɾ d̪	ipa	0
+دردو	d̪ ə ɾ d̪ oː	ipa	0
+دردوں	d̪ ə ɾ d̪ õː	ipa	0
+درزی	d̪ ə ɾ z iː	ipa	0
+درس	d̪ ə ɾ s	ipa	0
+درست	d̪ ʊ ɾ ʊ s t̪	ipa	0
+درفش	d̪ ə ɾ ə f ʃ	ipa	0
+درفش	d̪ ɪ ɾ ə f ʃ	ipa	0
+درفش	d̪ ʊ ɾ ə f ʃ	ipa	0
+درمیان	d̪ ə ɾ m ɪ j ɑː n	ipa	0
+درمیانی	d̪ ə ɾ m ɪ j ɑː n iː	ipa	0
+درندو	d̪ ə ɾ ɪ n d̪ oː	ipa	0
+درندوں	d̪ ə ɾ ɪ n d̪ õː	ipa	0
+درندے	d̪ ə ɾ ɪ n d̪ eː	ipa	0
+دروازوں	d̪ ə ɾ ʋ ɑː z õː	ipa	0
+دروازہ	d̪ ə ɾ ʋ ɑː z ɑ	ipa	0
+دروازہ	d̪ ə ɾ ʋ ɑː z ɑː	ipa	0
+دروازہ	d̪ ɪ ɾ ʋ ɑː z ɑ	ipa	0
+دروازہ	d̪ ɪ ɾ ʋ ɑː z ɑː	ipa	0
+دروازے	d̪ ə ɾ ʋ ɑː z eː	ipa	0
+دروبست	d̪ ə ɾ oː b ə s t̪	ipa	0
+درود	d̪ ʊ ɾ uː d̪	ipa	0
+درودوں	d̪ ʊ ɾ uː d̪ õː	ipa	0
+درویش	d̪ ə ɾ w eː ʃ	ipa	0
+درویش	d̪ ə ɾ ʋ eː ʃ	ipa	0
+درویشان	d̪ ə ɾ ʋ eː ʃ ɑː n	ipa	0
+درویشو	d̪ ə ɾ ʋ eː ʃ oː	ipa	0
+درویشوں	d̪ ə ɾ ʋ eː ʃ õː	ipa	0
+درکار	d̪ ə ɾ k ɑː ɾ	ipa	0
+درگ	d̪ ʊ ɾ ɡ	ipa	0
+درگاہ	d̪ ə ɾ ɡ ɑː ɦ	ipa	0
+درگت	d̪ ʊ ɾ ɡ ə t̪	ipa	0
+درہال	d̪ ə ɾ ɦ ɑː l	ipa	0
+دری	d̪ ʊ ɾ iː	ipa	0
+دریا	d̪ ə ɾ j ɑː	ipa	0
+دریاچہ	d̪ ə ɾ ɪ j ɑː t͡ʃ ɑ	ipa	0
+دریاچہ	d̪ ə ɾ ɪ j ɑː t͡ʃ ɑː	ipa	0
+دریجی	d̪ ʊ ɾ ɛː d͡ʒ iː	ipa	0
+دریودھن	d̪ ʊ ɾ ɪ j oː d̪ʱ ə n	ipa	0
+دزد	d̪ ʊ z d̪	ipa	0
+دس	d̪ ə s	ipa	0
+دست	d̪ ə s t̪	ipa	0
+دستار	d̪ ə s t̪ ɑː ɾ	ipa	0
+دستانو	d̪ ə s t̪ ɑː n oː	ipa	0
+دستانوں	d̪ ə s t̪ ɑː n õː	ipa	0
+دستانہ	d̪ ə s t̪ ɑː n ɑ	ipa	0
+دستانہ	d̪ ə s t̪ ɑː n ɑː	ipa	0
+دستانے	d̪ ə s t̪ ɑː n eː	ipa	0
+دستاویز	d̪ ə s t̪ ɑː ʋ eː z	ipa	0
+دستخط	d̪ ə s t̪ x ə t̪	ipa	0
+دستخط	d̪ ə s t̪ ə x ə t̪	ipa	0
+دستور	d̪ ə s t̪ uː ɾ	ipa	0
+دستک	d̪ ə s t̪ ə k	ipa	0
+دستکاری	d̪ ə s t̪ k ɑː ɾ iː	ipa	0
+دستہ	d̪ ə s t̪ ɑ	ipa	0
+دستہ	d̪ ə s t̪ ɑː	ipa	0
+دسمبر	d̪ ɪ s ə m b ə ɾ	ipa	0
+دسواں	d̪ ə s ʋ ɑ̃ː	ipa	0
+دشت	d̪ ə ʃ t̪	ipa	0
+دشمن	d̪ ʊ ʃ m ə n	ipa	0
+دشمنوں	d̪ ʊ ʃ m ə n õː	ipa	0
+دشمنی	d̪ ʊ ʃ m ə n iː	ipa	0
+دشک	d̪ ə ʃ ə k	ipa	0
+دعا	d̪ ʊ ɑː	ipa	0
+دعا	d̪ ʊ ʔ ɑː	ipa	0
+دعاؤں	d̪ ʊ ɑː õː	ipa	0
+دعاؤں	d̪ ʊ ʔ ɑː õː	ipa	0
+دعائیں	d̪ ʊ ɑː ẽː	ipa	0
+دعائیں	d̪ ʊ ʔ ɑː ẽː	ipa	0
+دعوت	d̪ ə ʔ ʋ ə t̪	ipa	0
+دعوتوں	d̪ ə ʋ ə t̪ õː	ipa	0
+دعوتوں	d̪ ə ʔ ʋ ə t̪ õː	ipa	0
+دعوتیں	d̪ ə ʋ ə t̪ ẽː	ipa	0
+دعوتیں	d̪ ə ʔ ʋ ə t̪ ẽː	ipa	0
+دعوی	d̪ ɑː ʋ ɑː	ipa	0
+دعوی	d̪ ə ʋ ɑː	ipa	0
+دعوی	d̪ ə ʔ ʋ ɑː	ipa	0
+دغا	d̪ ə ɣ ɑː	ipa	0
+دفاع	d̪ ɪ f ɑː	ipa	0
+دفاع	d̪ ɪ f ɑː ʔ	ipa	0
+دفتر	d̪ ə f t̪ ə ɾ	ipa	0
+دفعہ	d̪ ə f ɑ	ipa	0
+دفعہ	d̪ ə f ɑː	ipa	0
+دفعہ	d̪ ə f ʔ ɑ	ipa	0
+دفعہ	d̪ ə f ʔ ɑː	ipa	0
+دفنانا	d̪ ə f n ɑː n ɑː	ipa	0
+دقت	d̪ ɪ q q ə t̪	ipa	0
+دقتوں	d̪ ɪ q q ə t̪ õː	ipa	0
+دقتیں	d̪ ɪ q q ə t̪ ẽː	ipa	0
+دقیقہ	d̪ ə q iː q ɑ	ipa	0
+دقیقہ	d̪ ə q iː q ɑː	ipa	0
+دل	d̪ ɪ l	ipa	0
+دلدادہ	d̪ ɪ l d̪ ɑː d̪ ɑː	ipa	0
+دلربا	d̪ ɪ l ɾ ʊ b ɑː	ipa	0
+دلو	d̪ ɪ l oː	ipa	0
+دلوں	d̪ ɪ l õː	ipa	0
+دلچسپ	d̪ ɪ l t͡ʃ ə s p	ipa	0
+دلکش	d̪ ɪ l k ə ʃ	ipa	0
+دلہا	d̪ ʊ l ɦ ɑː	ipa	0
+دلہن	d̪ ʊ l ɦ ə n	ipa	0
+دلہنو	d̪ ʊ l ɦ ə n oː	ipa	0
+دلہنوں	d̪ ʊ l ɦ ə n õː	ipa	0
+دلہنیں	d̪ ʊ l ɦ ə n ẽː	ipa	0
+دلی	d̪ ɪ l l iː	ipa	0
+دم	d̪ ə m	ipa	0
+دم	d̪ ʊ m	ipa	0
+دماغ	d̪ ɪ m ɑː ɣ	ipa	0
+دماغو	d̪ ɪ m ɑː ɣ oː	ipa	0
+دماغوں	d̪ ɪ m ɑː ɣ õː	ipa	0
+دمشق	d̪ ə m ɪ ʃ q	ipa	0
+دموں	d̪ ə m õː	ipa	0
+دمہ	d̪ ə m ɑ	ipa	0
+دمہ	d̪ ə m ɑː	ipa	0
+دمے	d̪ ə m eː	ipa	0
+دن	d̪ ɪ n	ipa	0
+دنداسہ	d̪ ə n d̪ ɑː s ɑ	ipa	0
+دنداسہ	d̪ ə n d̪ ɑː s ɑː	ipa	0
+دنوں	d̪ ɪ n õː	ipa	0
+دنڈ	d̪ ə n ɖ	ipa	0
+دنیا	d̪ ʊ n j ɑː	ipa	0
+دنیا	d̪ ʊ n ɪ j ɑː	ipa	0
+دنیاؤں	d̪ ʊ n j ɑː õː	ipa	0
+دنیائیں	d̪ ʊ n j ɑː ẽː	ipa	0
+دنیاوی	d̪ ʊ n j ɑː ʋ iː	ipa	0
+دنیور	d̪ ə n j oː ɾ	ipa	0
+دو	d̪ oː	ipa	0
+دوائی	d̪ ə w ɑː iː	ipa	0
+دوائی	d̪ ə ʋ ɑː iː	ipa	0
+دوات	d̪ ə ʋ ɑː t̪	ipa	0
+دواتیں	d̪ ə ʋ ɑː t̪ ẽː	ipa	0
+دواخانہ	d̪ ə ʋ ɑː x ɑː n ɑ	ipa	0
+دواخانہ	d̪ ə ʋ ɑː x ɑː n ɑː	ipa	0
+دوالی	d̪ ɪ ʋ ɑː l iː	ipa	0
+دوبارہ	d̪ oː b ɑː ɾ ɑː	ipa	0
+دودمان	d̪ uː d̪ m ɑː n	ipa	0
+دودھ	d̪ uː d̪ʱ	ipa	0
+دور	d̪ uː ɾ	ipa	0
+دور	d̪ ɔː ɾ	ipa	0
+دوربین	d̪ uː ɾ b iː n	ipa	0
+دوردرشن	d̪ uː ɾ d̪ ə ɾ ʃ ə n	ipa	0
+دورلیکھ	d̪ uː ɾ l eː kʰ	ipa	0
+دوزخ	d̪ oː z ə x	ipa	0
+دوست	d̪ oː s t̪	ipa	0
+دوستانہ	d̪ oː s t̪ ɑː n ə	ipa	0
+دوستو	d̪ oː s t̪ oː	ipa	0
+دوستوں	d̪ oː s t̪ õː	ipa	0
+دوستی	d̪ oː s t̪ iː	ipa	0
+دوسرا	d̪ uː s ɾ ɑː	ipa	0
+دوش	d̪ oː ʃ	ipa	0
+دوشنبہ	d̪ oː ʃ ə m b ɑ	ipa	0
+دوشنبہ	d̪ oː ʃ ə m b ɑː	ipa	0
+دوشیزاؤ	d̪ oː ʃ iː z ɑː oː	ipa	0
+دوشیزاؤں	d̪ oː ʃ iː z ɑː õː	ipa	0
+دوشیزائیں	d̪ oː ʃ iː z ɑː ẽː	ipa	0
+دوشیزہ	d̪ oː ʃ iː z ɑ	ipa	0
+دوشیزہ	d̪ oː ʃ iː z ɑː	ipa	0
+دوغلا	d̪ oː ɣ l ɑː	ipa	0
+دولت	d̪ ɔː l ə t̪	ipa	0
+دولتوں	d̪ ɔː l ə t̪ õː	ipa	0
+دولتیں	d̪ ɔː l ə t̪ ẽː	ipa	0
+دولہا	d̪ uː l ɦ ɑː	ipa	0
+دولہو	d̪ uː l ɦ oː	ipa	0
+دولہوں	d̪ uː l ɦ õː	ipa	0
+دولہے	d̪ uː l ɦ eː	ipa	0
+دوم	d̪ ʊ ʋ ə m	ipa	0
+دونا	d̪ uː n ɑː	ipa	0
+دونمہ	d̪ uː n m ɑ	ipa	0
+دونمہ	d̪ uː n m ɑː	ipa	0
+دوپٹوں	d̪ oː p ə ʈ ʈ õː	ipa	0
+دوپٹہ	d̪ ʊ p ə ʈ ʈ ə	ipa	0
+دوپٹے	d̪ oː p ə ʈ ʈ eː	ipa	0
+دوپہر	d̪ oː p ə ɦ ə ɾ	ipa	0
+دوڑنا	d̪ ɔː ɽ n ɑː	ipa	0
+دوکی	d̪ uː k iː	ipa	0
+دوگنا	d̪ oː ɡ ʊ n ɑː	ipa	0
+دژ	d̪ ə ʒ	ipa	0
+دژ	d̪ ɪ ʒ	ipa	0
+دژم	d̪ ɪ ʒ ə m	ipa	0
+دکان	d̪ ʊ k ɑː n	ipa	0
+دکھ	d̪ ʊ kʰ	ipa	0
+دکھانا	d̪ ɪ kʰ ɑː n ɑː	ipa	0
+دکھانا	d̪ ʊ kʰ ɑː n ɑː	ipa	0
+دکھاوا	d̪ ɪ kʰ ɑː ʋ ɑː	ipa	0
+دکھن	d̪ ə k kʰ ɪ n	ipa	0
+دکھنا	d̪ ɪ kʰ n ɑː	ipa	0
+دکھنا	d̪ ʊ kʰ n ɑː	ipa	0
+دگنا	d̪ ʊ ɡ n ɑː	ipa	0
+دھات	d̪ʱ ɑː t̪	ipa	0
+دھادر	d̪ʱ ɑː d̪ ə ɾ	ipa	0
+دھارا	d̪ʱ ɑː ɾ ɑː	ipa	0
+دھارمک	d̪ʱ ɑː ɾ m ɪ k	ipa	0
+دھاندل	d̪ʱ ɑː n d̪ ə l	ipa	0
+دھاندلی	d̪ʱ ɑː n d̪ l iː	ipa	0
+دھبا	d̪ʱ ə b b ɑː	ipa	0
+دھرتی	d̪ʱ ə ɾ t̪ iː	ipa	0
+دھرم	d̪ʱ ə ɾ m	ipa	0
+دھرمو	d̪ʱ ə ɾ m oː	ipa	0
+دھرموں	d̪ʱ ə ɾ m õː	ipa	0
+دھلائی	d̪ʱ ʊ l ɑː iː	ipa	0
+دھمال	d̪ʱ ə m m ɑː l	ipa	0
+دھماکہ	d̪ʱ ə m ɑː k ɑ	ipa	0
+دھماکہ	d̪ʱ ə m ɑː k ɑː ɦ	ipa	0
+دھن	d̪ʱ ə n	ipa	0
+دھن	d̪ʱ ʊ n	ipa	0
+دھند	d̪ʱ ʊ n d̪	ipa	0
+دھندا	d̪ʱ ə n d̪ ɑː	ipa	0
+دھندوں	d̪ʱ ʊ n d̪ õː	ipa	0
+دھندھ	d̪ʱ ʊ n d̪ʱ	ipa	0
+دھندھا	d̪ʱ ə n d̪ʱ ɑː	ipa	0
+دھندہ	d̪ʱ ə n d̪ ɑː	ipa	0
+دھندیں	d̪ʱ ʊ n d̪ ẽː	ipa	0
+دھواں	d̪ʱ uː ɑ̃ː	ipa	0
+دھوج	d̪ʱ ʋ ə d͡ʒ	ipa	0
+دھوسر	d̪ʱ uː s ə r	ipa	0
+دھول	d̪ʱ uː l	ipa	0
+دھوم	d̪ʱ uː m	ipa	0
+دھونا	d̪ʱ oː n ɑː	ipa	0
+دھونا	d̪ʱ uː n ɑː	ipa	0
+دھوندھر	d̪ʱ ʊ ɾ ə n d̪ʱ ə ɾ	ipa	0
+دھوپ	d̪ʱ uː p	ipa	0
+دھوپوں	d̪ʱ uː p õː	ipa	0
+دھوپیں	d̪ʱ uː p ẽː	ipa	0
+دھڑکن	d̪ʱ ə ɽ k ə n	ipa	0
+دھڑکنوں	d̪ʱ ə ɽ k ə n õː	ipa	0
+دھڑکنیں	d̪ʱ ə ɽ k ə n ẽː	ipa	0
+دھکا	d̪ʱ ə k k ɑː	ipa	0
+دھکوں	d̪ʱ ə k k õː	ipa	0
+دھکے	d̪ʱ ə k k eː	ipa	0
+دھیان	d̪ʱ j ɑː n	ipa	0
+دھیریہ	d̪ʱ ɛː ɾ jᵊ	ipa	0
+دہ	d̪ ə ɦ	ipa	0
+دہ	d̪ ɪ ɦ	ipa	0
+دہائی	d̪ e ɦ ɑː iː	ipa	0
+دہائی	d̪ ə ɦ ɑː iː	ipa	0
+دہائیاں	d̪ ə ɦ ɑː ɪ j ɑ̃ː	ipa	0
+دہائیو	d̪ ə ɦ ɑː ɪ j oː	ipa	0
+دہائیوں	d̪ ə ɦ ɑː ɪ j õː	ipa	0
+دہان	d̪ ə ɦ ɑː n	ipa	0
+دہشت	d̪ ə ɦ ʃ ə t̪	ipa	0
+دہقان	d̪ ə ɦ q ɑː n	ipa	0
+دہقان	d̪ ɪ ɦ q ɑː n	ipa	0
+دہلوی	d̪ eː ɦ l ə ʋ iː	ipa	0
+دہلوی	d̪ ɪ ɦ l ə ʋ iː	ipa	0
+دہلی	d̪ e l iː	ipa	0
+دہلی	d̪ ɛ l iː	ipa	0
+دہلی	d̪ ɪ ɦ l iː	ipa	0
+دہی	d̪ ə ɦ iː	ipa	0
+دہیز	d̪ ə ɦ eː z	ipa	0
+دیا	d̪ ə j ɑː	ipa	0
+دیا	d̪ ɪ j ɑː	ipa	0
+دیاوان	d̪ ə j ɑː ʋ ɑː n	ipa	0
+دیباچہ	d̪ iː b ɑː t͡ʃ ɑ	ipa	0
+دیباچہ	d̪ iː b ɑː t͡ʃ ɑː	ipa	0
+دیدار	d̪ iː d̪ ɑː ɾ	ipa	0
+دیروز	d̪ iː ɾ oː z	ipa	0
+دیز	d̪ eː z	ipa	0
+دیس	d̪ eː s	ipa	0
+دیسو	d̪ eː s oː	ipa	0
+دیسوں	d̪ eː s õː	ipa	0
+دیسی	d̪ eː s iː	ipa	0
+دیش	d̪ eː ʃ	ipa	0
+دیشج	d̪ eː ʃ ə d͡ʒ	ipa	0
+دینا	d̪ eː n ɑː	ipa	0
+دینی	d̪ iː n iː	ipa	0
+دینے	d̪ eː n eː	ipa	0
+دیوانہ	d̪ iː ʋ ɑː n ɑ	ipa	0
+دیوانہ	d̪ iː ʋ ɑː n ɑː	ipa	0
+دیوبندی	d̪ eː ʋ b ə n d̪ iː	ipa	0
+دیوث	d̪ ə j j uː s	ipa	0
+دیور	d̪ eː ʋ ə ɾ	ipa	0
+دیورانی	d̪ eː ʋ ɾ ɑː n iː	ipa	0
+دیورانیاں	d̪ eː ʋ ɾ ɑː n ɪ j ɑ̃ː	ipa	0
+دیورانیو	d̪ eː ʋ ɾ ɑː n ɪ j oː	ipa	0
+دیورانیوں	d̪ eː ʋ ɾ ɑː n ɪ j õː	ipa	0
+دیورو	d̪ eː ʋ ə ɾ oː	ipa	0
+دیوروں	d̪ eː ʋ ə ɾ õː	ipa	0
+دیوناگری	d̪ eː ʋ n ɑː ɡ ɾ iː	ipa	0
+دیپ	d̪ iː p	ipa	0
+دیپک	d̪ iː p ə k	ipa	0
+دیپکا	d̪ iː p ɪ k ɑː	ipa	0
+دیکھنا	d̪ eː kʰ n ɑː	ipa	0
+دیکھنے	d̪ eː kʰ n eː	ipa	0
+دیگچی	d̪ eː ɡ t͡ʃ iː	ipa	0
+دیہات	d̪ eː ɦ ɑː t̪	ipa	0
+ذ	z	ipa	0
+ذ	z ɑː l	ipa	0
+ذائقو	z ɑː ɪ q oː	ipa	0
+ذائقوں	z ɑː ɪ q õː	ipa	0
+ذائقہ	z ɑː ɪ q ɑ	ipa	0
+ذائقہ	z ɑː ɪ q ɑː	ipa	0
+ذائقے	z ɑː ɪ q eː	ipa	0
+ذات	z ɑː t̪	ipa	0
+ذبح	z ə bʱ	ipa	0
+ذرائع	z ə ɾ ɑː eː	ipa	0
+ذرہ	z ə ɾ ɾ ɑː	ipa	0
+ذریعہ	z ə ɾ ɪ j ɑː	ipa	0
+ذلت	z ɪ lː ə t̪	ipa	0
+ذلیل	z ə l iː l	ipa	0
+ذوق	z ɔː q	ipa	0
+ذکر	z ə k ə ɾ	ipa	0
+ذکر	z ɪ k ɾ	ipa	0
+ذہن	z ɪ ɦ n	ipa	0
+ذہن	z ɪ ɦ ə n	ipa	0
+ذیابیطس	z ɪ j ɑː b iː t̪ ə s	ipa	0
+ر	ɾ	ipa	0
+ر	ɾ eː	ipa	0
+رؤسا	ɾ ʊ ə s ɑː	ipa	0
+رؤسا	ɾ ʊ ʔ ə s ɑː	ipa	0
+رئیس	ɾ ə iː s	ipa	0
+رئیس	ɾ ə ʔ iː s	ipa	0
+رائس	ɾ ɑː ɪ s	ipa	0
+رائے	ɾ ɑː eː	ipa	0
+رائے	ɾ ɑː j	ipa	0
+رابطہ	ɾ ɑː b t̪ ɑ	ipa	0
+رابطہ	ɾ ɑː b t̪ ɑː	ipa	0
+رابطہ	ɾ ɑː b ɪ t̪ ɑ	ipa	0
+رابطہ	ɾ ɑː b ɪ t̪ ɑː	ipa	0
+رات	ɾ ɑː t̪	ipa	0
+راتا	ɾ ɑː t̪ ɑː	ipa	0
+راتوں	ɾ ɑː t̪ õː	ipa	0
+راتیں	ɾ ɑː t̪ ẽː	ipa	0
+راج	ɾ ɑː d͡ʒ	ipa	0
+راجا	ɾ ɑː d͡ʒ ɑː	ipa	0
+راجدھانی	ɾ ɑː d͡ʒ d̪ʱ ɑː n iː	ipa	0
+راجستھان	ɾ ɑː d͡ʒ ə s t̪ʰ ɑː n	ipa	0
+راجستھانی	ɾ ɑː d͡ʒ ə s t̪ʰ ɑː n iː	ipa	0
+راجشاہی	ɾ ɑː d͡ʒ s ɦ ɑː ɦ iː	ipa	0
+راجنیہ	ɾ ɑː d͡ʒ ə n j ɑ	ipa	0
+راجنیہ	ɾ ɑː d͡ʒ ə n j ɑː	ipa	0
+راجوری	ɾ ɑː d͡ʒ ɔː ɾ iː	ipa	0
+راحت	ɾ ɑː ɦ ə t̪	ipa	0
+راحتو	ɾ ɑː ɦ ə t̪ oː	ipa	0
+راحتوں	ɾ ɑː ɦ ə t̪ õː	ipa	0
+راحتیں	ɾ ɑː ɦ ə t̪ ẽː	ipa	0
+راز	ɾ ɑː z	ipa	0
+راستوں	ɾ ɑː s t̪ õː	ipa	0
+راستہ	ɾ ɑː s t̪ ə	ipa	0
+راستے	ɾ ɑː s t̪ eː	ipa	0
+راشٹر	ɾ ɑː ʃ ʈ ɾᵊ	ipa	0
+راضی	ɾ ɑː z iː	ipa	0
+رال	ɾ ɑː l	ipa	0
+رام	ɾ ɑː m	ipa	0
+رامائن	ɾ ɑː m ɑː j ə n	ipa	0
+ران	ɾ ɑː n	ipa	0
+رانجھا	ɾ ɑː n d͡ʒʱ ɑː	ipa	0
+رانجھو	ɾ ɑː n d͡ʒʱ oː	ipa	0
+رانجھوں	ɾ ɑː n d͡ʒʱ õː	ipa	0
+رانجھے	ɾ ɑː n d͡ʒʱ eː	ipa	0
+رانی	ɾ ɑː n iː	ipa	0
+رانیاں	ɾ ɑː n ɪ j ɑ̃ː	ipa	0
+رانیو	ɾ ɑː n ɪ j oː	ipa	0
+رانیوں	ɾ ɑː n ɪ j õː	ipa	0
+راولپنڈی	ɾ ɑː ʋ ə l p ɪ n ɖ iː	ipa	0
+راکٹ	ɾ ɑː k ɪ ʈ	ipa	0
+راکھ	ɾ ɑː kʰ	ipa	0
+راکھس	ɾ ɑː kʰ ə s	ipa	0
+راکھشس	ɾ ɑː k ʃ ə s	ipa	0
+راکھو	ɾ ɑː kʰ oː	ipa	0
+راکھوں	ɾ ɑː kʰ õː	ipa	0
+راکھیں	ɾ ɑː kʰ ẽː	ipa	0
+راہ	ɾ ɑː ɦ	ipa	0
+راہب	ɾ ɑː ɦ ɪ b	ipa	0
+راہبہ	ɾ ɑː ɦ ɪ b ɑ	ipa	0
+راہبہ	ɾ ɑː ɦ ɪ b ɑː	ipa	0
+راہداری	ɾ ɑː ɦ d̪ ɑː ɾ iː	ipa	0
+راہو	ɾ ɑː ɦ oː	ipa	0
+راہوں	ɾ ɑː ɦ õː	ipa	0
+راہیں	ɾ ɑː ɦ ẽː	ipa	0
+رب	ɾ ə b	ipa	0
+ربا	ɾ ə b b ɑː	ipa	0
+رباعی	ɾ ʊ b ɑː iː	ipa	0
+رباعی	ɾ ʊ b ɑː ʔ iː	ipa	0
+ربوہ	ɾ ə b ʋ ɑ	ipa	0
+ربوہ	ɾ ə b ʋ ɑ ɦ	ipa	0
+رتبہ	ɾ ʊ t̪ b ɑ	ipa	0
+رتبہ	ɾ ʊ t̪ b ɑː	ipa	0
+رتن	ɾ ə t̪ ə n	ipa	0
+رتھ	ɾ ə t̪ʰ	ipa	0
+رجا	ɾ ə d͡ʒ ɑː	ipa	0
+رجعت	ɾ ə d͡ʒ ə t̪	ipa	0
+رجل	ɾ ə d͡ʒ ʊ l	ipa	0
+رحیم	ɾ ə ɦ iː m	ipa	0
+رخ	ɾ ʊ x	ipa	0
+رخسار	ɾ ʊ x s ɑː ɾ	ipa	0
+رخشان	ɾ ə x ʃ ɑː n	ipa	0
+رخصت	ɾ ʊ x s ə t̪	ipa	0
+رخصتی	ɾ ʊ x s ə t̪ iː	ipa	0
+رد	ɾ ə d̪ d̪	ipa	0
+ردیف	ɾ ə d̪ iː f	ipa	0
+رزق	ɾ ɪ z q	ipa	0
+رس	ɾ ə s	ipa	0
+رسالہ	ɾ ɪ s ɑː l ɑ	ipa	0
+رسالہ	ɾ ɪ s ɑː l ɑː	ipa	0
+رستم	ɾ ʊ s t̪ ə m	ipa	0
+رسن	ɾ ə s ə n	ipa	0
+رسول	ɾ ə s uː l	ipa	0
+رسولو	ɾ ə s uː l oː	ipa	0
+رسولوں	ɾ ə s uː l õː	ipa	0
+رسی	ɾ ə sː iː	ipa	0
+رسید	ɾ ə s iː d̪	ipa	0
+رسیدو	ɾ ə s iː d̪ oː	ipa	0
+رسیدوں	ɾ ə s iː d̪ õː	ipa	0
+رسیدیں	ɾ ə s iː d̪ ẽː	ipa	0
+رشتو	ɾ ɪ ʃ t̪ oː	ipa	0
+رشتوں	ɾ ɪ ʃ t̪ õː	ipa	0
+رشتہ	ɾ ɪ ʃ t̪ ɑ	ipa	0
+رشتہ	ɾ ɪ ʃ t̪ ɑː	ipa	0
+رشتے	ɾ ɪ ʃ t̪ eː	ipa	0
+رشوت	ɾ ɪ ʃ ʋ ə t̪	ipa	0
+رشوتوں	ɾ ɪ ʃ ʋ ə t̪ õː	ipa	0
+رشوتیں	ɾ ɪ ʃ ʋ ə t̪ ẽː	ipa	0
+رشک	ɾ ə ʃ k	ipa	0
+رشی	ɾ ɪ ʃ iː	ipa	0
+رشیو	ɾ ɪ ʃ ɪ j oː	ipa	0
+رشیوں	ɾ ɪ ʃ ɪ j õː	ipa	0
+رضا	ɾ ə z ɑː	ipa	0
+رضیع	ɾ ə z iː	ipa	0
+رضیع	ɾ ə z iː ʔ	ipa	0
+رفتار	ɾ ə f t̪ ɑː ɾ	ipa	0
+رفع	ɾ ə f	ipa	0
+رفع	ɾ ə f ʔ	ipa	0
+رفقا	ɾ ʊ f ə q ɑː	ipa	0
+رقص	ɾ ə q s	ipa	0
+رقیب	ɾ ə q iː b	ipa	0
+رقیبو	ɾ ə q iː b oː	ipa	0
+رقیبوں	ɾ ə q iː b õː	ipa	0
+رمزی	ɾ ə m z iː	ipa	0
+رمضان	ɾ ə m z ɑː n	ipa	0
+رمضان	ɾ ə m ə z ɑː n	ipa	0
+رمہ	ɾ ə m ɑ	ipa	0
+رمہ	ɾ ə m ɑː	ipa	0
+رنڈی	ɾ ə ɳ ɖ iː	ipa	0
+رنگ	ɾ ə ŋ ɡ	ipa	0
+رنگت	ɾ ə ŋ ɡ ə t̪	ipa	0
+رنگو	ɾ ə ŋ ɡ oː	ipa	0
+رنگولی	ɾ ə ŋ ɡ oː l iː	ipa	0
+رنگوں	ɾ ə ŋ ɡ õː	ipa	0
+رنگپور	ɾ ə n ɡ p uː ɾ	ipa	0
+رنگیلا	ɾ ə ŋ ɡ iː l ɑː	ipa	0
+روان	ɾ ə ʋ ɑː n ~ ɾ ə w ɑː n	ipa	0
+روانڈا	ɾ ə ʋ ɑː n ɖ ɑː	ipa	0
+روانگی	ɾ ə ʋ ɑː ŋ ɡ iː	ipa	0
+روانہ	ɾ ə ʋ ɑː n ɑː	ipa	0
+رواں	ɾ ə ʋ ɑ̃ː	ipa	0
+روایت	ɾ ɪ ʋ ɑː j ə t̪	ipa	0
+روح	ɾ uː ɦ	ipa	0
+روحانی	ɾ uː ɦ ɑː n iː	ipa	0
+روحو	ɾ uː ɦ oː	ipa	0
+روحوں	ɾ uː ɦ õː	ipa	0
+روحیں	ɾ uː ɦ ẽː	ipa	0
+رود	ɾ uː d̪	ipa	0
+روز	ɾ oː z	ipa	0
+روزانہ	ɾ oː z ɑː n ə	ipa	0
+روزن	ɾ ɔː z ə n	ipa	0
+روزنامہ	ɾ oː z n ɑː m ɑ	ipa	0
+روزنامہ	ɾ oː z n ɑː m ɑː	ipa	0
+روزوں	ɾ oː z õː	ipa	0
+روزہ	ɾ oː z ɑ	ipa	0
+روزہ	ɾ oː z ɑː	ipa	0
+روزے	ɾ oː z eː	ipa	0
+روس	ɾ uː s	ipa	0
+روسنا	ɾ uː s n ɑː	ipa	0
+روسی	ɾ uː s iː	ipa	0
+روشن	ɾ oː ʃ ə n	ipa	0
+روشن	ɾ ɔː ʃ ə n	ipa	0
+روشنی	ɾ oː ʃ n iː	ipa	0
+روشنی	ɾ ɔː ʃ n iː	ipa	0
+روغن	ɾ oː ɣ ə n	ipa	0
+روغن	ɾ ɔː ɣ ə n	ipa	0
+روم	ɾ uː m	ipa	0
+رومال	ɾ uː m ɑː l	ipa	0
+رومان	ɾ uː m ɑː n	ipa	0
+رومانس	ɾ oː m ɑː n s	ipa	0
+رومانس	ɾ uː m ɑː n s	ipa	0
+رومانیہ	ɾ oː m ɑː n ɪ j ɑ	ipa	0
+رومانیہ	ɾ oː m ɑː n ɪ j ɑː	ipa	0
+رومی	ɾ uː m iː	ipa	0
+رونا	ɾ oː n ɑː	ipa	0
+رونق	ɾ ɔː n ə q	ipa	0
+رونقو	ɾ ɔː n ə q oː	ipa	0
+رونقوں	ɾ ɔː n ə q õː	ipa	0
+رونقیں	ɾ ɔː n ə q ẽː	ipa	0
+روٹی	ɾ oː ʈ iː	ipa	0
+روپ	ɾ uː p	ipa	0
+روپیہ	ɾ ʊ p j ɑ	ipa	0
+روپیہ	ɾ ʊ p j ɑː	ipa	0
+روپیہ	ɾ ʊ p ə j ɑː	ipa	0
+روچڈیل	ɾ oː t͡ʃ ɖ eː l	ipa	0
+روچڈیل	ɾ ɑː t͡ʃ ɖ eː l	ipa	0
+روچڈیل	ɾ ɔː t͡ʃ ɖ eː l	ipa	0
+روگ	ɾ oː ɡ	ipa	0
+روگوں	ɾ oː ɡ õː	ipa	0
+روی	ɾ ə ʋ iː	ipa	0
+رویئہ	ɾ ə ʋ ə̯ i ə	ipa	0
+رویہ	ɾ ə ʋ ə̯ i j ɑː	ipa	0
+رڑک	ɾ ə ɽ ə k	ipa	0
+رکاز	ɾ ɪ k ɑː z	ipa	0
+رکاوٹ	ɾ ʊ k ɑː ʋ ə ʈ	ipa	0
+رکت	ɾ ə k t̪	ipa	0
+رکشا	ɾ ə k ʃ ɑː	ipa	0
+رکعت	ɾ ə k ʔ ə t̪	ipa	0
+رگوید	ɾ ɪ ɡ ʋ eː d̪	ipa	0
+رہائش	ɾ ə ɦ ɑː ɪ ʃ	ipa	0
+رہائش	ɾ ɪ ɦ ɑː ɪ ʃ	ipa	0
+رہبر	ɾ ə ɦ b ə ɾ	ipa	0
+رہسیہ	ɾ ə ɦ ə s j ɑ	ipa	0
+رہسیہ	ɾ ə ɦ ə s j ɑː	ipa	0
+رہنا	ɾ ə ɦ n ɑː	ipa	0
+ریاست	ɾ ɪ j ɑː s ə t̪	ipa	0
+ریاستہا	ɾ ɪ j ɑː s ə t̪ ɦ ɑː	ipa	0
+ریاض	ɾ ɪ j ɑː z	ipa	0
+ریاضی	ɾ ɪ j ɑː z iː	ipa	0
+ریب	ɾ ɛː b	ipa	0
+ریت	ɾ eː t̪	ipa	0
+ریت	ɾ iː t̪	ipa	0
+ریتوں	ɾ eː t̪ õː	ipa	0
+ریتوں	ɾ iː t̪ õː	ipa	0
+ریتیں	ɾ eː t̪ ẽː	ipa	0
+ریتیں	ɾ iː t̪ ẽː	ipa	0
+ریختہ	ɾ eː x t̪ ɑ	ipa	0
+ریختہ	ɾ eː x t̪ ɑː	ipa	0
+ریش	ɾ eː ʃ	ipa	0
+ریش	ɾ iː ʃ	ipa	0
+ریشم	ɾ eː ʃ ə m	ipa	0
+ریشمی	ɾ eː ʃ m iː	ipa	0
+ریشہ	ɾ eː ʃ ɑ	ipa	0
+ریشہ	ɾ eː ʃ ɑː	ipa	0
+رین	ɾ ɛː n	ipa	0
+رینو	ɾ ɛː n oː	ipa	0
+رینوں	ɾ ɛː n õː	ipa	0
+رینیں	ɾ ɛː n ẽː	ipa	0
+ریوڑ	ɾ eːː ʋ ə ɽ	ipa	0
+ریپھ	ɾ eː pʰ	ipa	0
+ریچھ	ɾ iː t͡ʃʰ	ipa	0
+ریڈیو	ɾ eː ɖ ɪ j oː	ipa	0
+ریکھا	ɾ eː kʰ ɑː	ipa	0
+ریگستان	ɾ eː ɡ ɪ s t̪ ɑː n	ipa	0
+ز	z	ipa	0
+ز	z eː	ipa	0
+زائر	z ɑː j ɪ ɾ	ipa	0
+زائر	z ɑː ɪ ɾ	ipa	0
+زائنہ	z ɑː ɪ n ɑ	ipa	0
+زائنہ	z ɑː ɪ n ɑː	ipa	0
+زار	z ɑː ɾ	ipa	0
+زایندہ	z ɑː j ə n d̪ᵊ	ipa	0
+زایندہ	z ɑː j ɪ n d̪ᵊ	ipa	0
+زبان	z ə b ɑː n	ipa	0
+زبان	z ʊ b ɑː n	ipa	0
+زبانو	z ə b ɑː n oː	ipa	0
+زبانو	z ʊ b ɑː n oː	ipa	0
+زبانوں	z ə b ɑː n õː	ipa	0
+زبانوں	z ʊ b ɑː n õː	ipa	0
+زبانیں	z ə b ɑː n ẽː	ipa	0
+زبانیں	z ʊ b ɑː n ẽː	ipa	0
+زباں	z ə b ɑ̃ː	ipa	0
+زباں	z ʊ b ɑ̃ː	ipa	0
+زبر	z ə b ə ɾ	ipa	0
+زبردستی	z ə b ə ɾ d̪ ə s t̪ iː	ipa	0
+زحمت	z ə ɦ m ə t̪	ipa	0
+زخم	z ə x m	ipa	0
+زراعت	z ɪ ɾ ɑː t̪	ipa	0
+زرافہ	z ə ɾ ɑː f ɑ	ipa	0
+زرافہ	z ə ɾ ɑː f ɑː	ipa	0
+زرافہ	z ɪ ɾ ɑː f ɑ	ipa	0
+زرافہ	z ɪ ɾ ɑː f ɑː	ipa	0
+زرتشت	z ə ɾ t̪ ə ʃ t̪	ipa	0
+زرتشت	z ə ɾ t̪ ʊ ʃ t̪	ipa	0
+زردوزی	z ə ɾ d̪ oː z iː	ipa	0
+زرشک	z ɪ ɾ ɪ ʃ k	ipa	0
+زعفران	z ə f ɾ ɑː n	ipa	0
+زعفران	z ə ʔ f ɾ ɑː n	ipa	0
+زلزلو	z ə l z ə l oː	ipa	0
+زلزلوں	z ə l z ə l õː	ipa	0
+زلزلہ	z ə l z ə l ɑː	ipa	0
+زلزلے	z ə l z ə l eː	ipa	0
+زلف	z ʊ l f	ipa	0
+زلفوں	z ʊ l f õː	ipa	0
+زلفیں	z ʊ l f ẽː	ipa	0
+زمانو	z ə m ɑː n oː	ipa	0
+زمانوں	z ə m ɑː n õː	ipa	0
+زمانہ	z ə m ɑː n ɑ	ipa	0
+زمانہ	z ə m ɑː n ɑː	ipa	0
+زمانے	z ə m ɑː n eː	ipa	0
+زمستان	z ə m ɪ s t̪ ɑː n	ipa	0
+زمستان	z ɪ m ə s t̪ ɑː n	ipa	0
+زمین	z ə m iː n	ipa	0
+زمینو	z ə m iː n oː	ipa	0
+زمینوں	z ə m iː n õː	ipa	0
+زمینیں	z ə m iː n ẽː	ipa	0
+زن	z ə n	ipa	0
+زنانہ	z ə n ɑː nᵊ	ipa	0
+زنجیر	z ə n d͡ʒ iː ɾ	ipa	0
+زنجیرو	z ə n d͡ʒ iː ɾ oː	ipa	0
+زنجیروں	z ə n d͡ʒ iː ɾ õː	ipa	0
+زنجیریں	z ə n d͡ʒ iː ɾ ẽː	ipa	0
+زنخا	z ə n x ɑː p ə n	ipa	0
+زندان	z ɪ n d̪ ɑː n	ipa	0
+زندانو	z ɪ n d̪ ɑː n oː	ipa	0
+زندانوں	z ɪ n d̪ ɑː n õː	ipa	0
+زندگی	z ɪ n d̪ ə ɡ iː	ipa	0
+زندگیاں	z ɪ n d̪ ə ɡ ɪ j ɑ̃ː	ipa	0
+زندگیو	z ɪ n d̪ ə ɡ ɪ j oː	ipa	0
+زندگیوں	z ɪ n d̪ ə ɡ ɪ j õː	ipa	0
+زندہ	z ɪ n d̪ ɑ	ipa	0
+زندہ	z ɪ n d̪ ɑː	ipa	0
+زنگ	z ə ŋ ɡ	ipa	0
+زنگبار	z ə ŋ ɡ b ɑː ɾ	ipa	0
+زنگی	z ə ŋ ɡ iː	ipa	0
+زور	z oː ɾ	ipa	0
+زور	z uː ɾ	ipa	0
+زوردار	z oː ɾ d̪ ɑː ɾ	ipa	0
+زون	z oː n	ipa	0
+زيربند	z eː ɾ b ə n d̪	ipa	0
+زکات	z ə k ɑː t̪	ipa	0
+زکریا	z ə k ə ɾ ɪ j j ɑː	ipa	0
+زکوۃ	z ə k ɑː t̪	ipa	0
+زہر	z ə ɦ ɾ	ipa	0
+زہری	z ə ɦ ɾ iː	ipa	0
+زہیب	z ʊ ɦ eː b	ipa	0
+زیادتی	z j ɑː d̪ t̪ iː	ipa	0
+زیادتی	z ɪ j ɑː d̪ ə t̪ iː	ipa	0
+زیادتیاں	z ɪ j ɑː d̪ ə t̪ ɪ j ɑ̃ː	ipa	0
+زیادتیوں	z ɪ j ɑː d̪ ə t̪ ɪ j õː	ipa	0
+زیارت	z ɪ j ɑː ɾ ə t̪	ipa	0
+زیتون	z ɛː t̪ uː n	ipa	0
+زیربند	z eː ɾ b ə n d̪	ipa	0
+زینت	z iː n ə t̪	ipa	0
+زینتو	z iː n ə t̪ oː	ipa	0
+زینتوں	z iː n ə t̪ õː	ipa	0
+زینتیں	z iː n ə t̪ ẽː	ipa	0
+زینہ	z iː n ɑ	ipa	0
+زینہ	z iː n ɑː	ipa	0
+زیور	z eː ʋ ə ɾ	ipa	0
+س	s	ipa	0
+س	s iː n	ipa	0
+سؤر	s uː ə ɾ	ipa	0
+سؤر	s uː ɾ	ipa	0
+سؤرو	s ʊ ə ɾ oː	ipa	0
+سؤروں	s ʊ ə ɾ õː	ipa	0
+سا	s ɑː	ipa	0
+سائز	s ɑː ɪ z	ipa	0
+سائمہ	s ɑː ɪ m ɑ	ipa	0
+سائمہ	s ɑː ɪ m ɑː	ipa	0
+سائنس	s ɑː ɪ n s	ipa	0
+سائنسدان	s ɑː ɪ n s d̪ ɑː n	ipa	0
+سائنسی	s ɑː eː n s iː	ipa	0
+سائنسی	s ɑː ɪ n s iː	ipa	0
+سائیکل	s ɑː iː k ə l	ipa	0
+سائیکل	s ɑː iː k ɪ l	ipa	0
+سائیں	s ɑː ĩː	ipa	0
+سات	s ɑː t̪	ipa	0
+ساتواں	s ɑː t̪ ʋ ɑ̃ː	ipa	0
+ساتھ	s ɑː t̪ʰ	ipa	0
+ساتھی	s ɑː t̪ʰ iː	ipa	0
+ساحل	s ɑː ɦ ɪ l	ipa	0
+ساحلی	s ɑː ɦ ɪ l iː	ipa	0
+ساخت	s ɑː x t̪	ipa	0
+سادگی	s ɑː d̪ ɡ iː	ipa	0
+سادہ	s ɑː d̪ ə	ipa	0
+سارا	s ɑː ɾ ɑː	ipa	0
+سارنگی	s ɑː ɾ ə ŋ ɡ iː	ipa	0
+ساری	s ɑː ɾ iː	ipa	0
+سارے	s ɑː ɾ eː	ipa	0
+ساز	s ɑː z	ipa	0
+سازش	s ɑː z ɪ ʃ	ipa	0
+ساس	s ɑː s	ipa	0
+ساسانی	s ɑː s ɑː n iː	ipa	0
+ساسو	s ɑː s oː	ipa	0
+ساسوں	s ɑː s õː	ipa	0
+ساسیں	s ɑː s ẽː	ipa	0
+ساقی	s ɑː q iː	ipa	0
+سال	s ɑː l	ipa	0
+سالانہ	s ɑː l ɑː n ɑː	ipa	0
+سالمہ	s ɑː l mᵊ	ipa	0
+سالن	s ɑː l ə n	ipa	0
+سالگرہ	s ɑː l ɡ ɪ ɾ ə ɦ	ipa	0
+سامان	s ɑː m ɑː n	ipa	0
+سامراجیہ	s ɑː m ɾ ɑː d͡ʒ jᵊ	ipa	0
+سامعین	s ɑː m eː iː n	ipa	0
+سامعین	s ɑː m eː ʔ iː n	ipa	0
+سامنا	s ɑː m n ɑː	ipa	0
+سامی	s ɑː m iː	ipa	0
+سامیہ	s ɑː m ɪ j ɑː	ipa	0
+سانبہ	s ɑ̃ː m b ɑ	ipa	0
+سانبہ	s ɑ̃ː m b ɑː	ipa	0
+سانس	s ɑ̃ː s	ipa	0
+سانسوں	s ɑ̃ː s õː	ipa	0
+سانسیں	s ɑ̃ː s ẽː	ipa	0
+سانول	s ɑ̃ː ʋ ə l	ipa	0
+سانولا	s ɑ̃ː ʋ l ɑː	ipa	0
+سانپ	s ɑ̃ː p	ipa	0
+ساودھان	s ɑː ʋ d̪ʱ ɑː n	ipa	0
+ساون	s ɑː ʋ ə n	ipa	0
+ساڑھے	s ɑː ɽʱ eː	ipa	0
+ساڑی	s ɑː ɽ iː	ipa	0
+ساکشیہ	s ɑː k ʃ jᵊ	ipa	0
+ساگر	s ɑː ɡ ə ɾ	ipa	0
+ساگرتٹ	s ɑː ɡ ə ɾ t̪ ə ʈ	ipa	0
+ساہتیہ	s ɑː ɦ ɪ t̪ jᵊ	ipa	0
+ساہیوال	s ɑː ɦ iː ʋ ɑː l	ipa	0
+سایہ	s ɑː j ɑ	ipa	0
+سایہ	s ɑː j ɑː	ipa	0
+سب	s ə b	ipa	0
+سبب	s ə b ə b	ipa	0
+سبت	s ə b t̪	ipa	0
+سبد	s ə b ʊ d̪	ipa	0
+سبز	s ə b z	ipa	0
+سبزی	s ə b z iː	ipa	0
+سبزیاں	s ə b z ɪ j ɑ̃ː	ipa	0
+سبزیوں	s ə b z ɪ j õː	ipa	0
+سبق	s ə b ə q	ipa	0
+سبھا	s ə bʱ ɑː	ipa	0
+سبھی	s ə bʱ iː	ipa	0
+سبی	s ɪ b iː	ipa	0
+ستارو	s ɪ t̪ ɑː ɾ oː	ipa	0
+ستاروں	s ɪ t̪ ɑː ɾ õː	ipa	0
+ستارہ	s ɪ t̪ ɑː ɾ ə	ipa	0
+ستارے	s ɪ t̪ ɑː ɾ eː	ipa	0
+سترک	s ə t̪ ə ɾ k	ipa	0
+سترہ	s ə t̪ ɾ ɑ	ipa	0
+سترہ	s ə t̪ ɾ ɑː	ipa	0
+سترہ	s ə t̪ ɾ ə ɦ	ipa	0
+ستم	s ɪ t̪ ə m	ipa	0
+ستمبر	s ɪ t̪ ə m b ə ɾ	ipa	0
+ستون	s ə t̪ uː n	ipa	0
+ستون	s ʊ t̪ uː n	ipa	0
+ستھان	s t̪ʰ ɑː n	ipa	0
+سجدو	s ə d͡ʒ d̪ oː	ipa	0
+سجدوں	s ə d͡ʒ d̪ õː	ipa	0
+سجدہ	s ə d͡ʒ d̪ ɑ	ipa	0
+سجدہ	s ə d͡ʒ d̪ ɑː	ipa	0
+سجدے	s ə d͡ʒ d̪ eː	ipa	0
+سحر	s eː ɦ ɾ	ipa	0
+سحر	s ə ɦ ə ɾ	ipa	0
+سحر	s ɪ ɦ ɾ	ipa	0
+سحری	s ə ɦ ə ɾ iː	ipa	0
+سحریاں	s ə ɦ ə ɾ ɪ j ɑ̃ː	ipa	0
+سحریوں	s ə ɦ ə ɾ ɪ j õː	ipa	0
+سخت	s ə x t̪	ipa	0
+سخی	s ə x iː	ipa	0
+سدابہار	s ə d̪ ɑː b ə ɦ ɑː ɾ	ipa	0
+سدن	s ə d̪ ə n	ipa	0
+سدھارنا	s ʊ d̪ʱ ɑː ɾ n ɑː	ipa	0
+سدھارک	s ʊ d̪ʱ ɑː ɾ ə k	ipa	0
+سرائیکی	s ə ɾ ɑː iː k iː	ipa	0
+سراب	s ə ɾ ɑː b	ipa	0
+سراسر	s ə ɾ ɑː s ə ɾ	ipa	0
+سرانان	s ə ɾ ɑː n ɑː n	ipa	0
+سراہنا	s ə ɾ ɑː ɦ n ɑː	ipa	0
+سربیا	s ə ɾ b ɪ j ɑː	ipa	0
+سرحد	s ə ɾ ɦ ə d̪	ipa	0
+سرحدوں	s ə ɾ ɦ ə d̪ õː	ipa	0
+سرحدیں	s ə ɾ ɦ ə d̪ ẽː	ipa	0
+سرخ	s ʊ ɾ x	ipa	0
+سرخی	s ʊ ɾ x iː	ipa	0
+سردی	s ə ɾ d̪ iː	ipa	0
+سردیاں	s ə ɾ d̪ ɪ j ɑ̃ː	ipa	0
+سرزمین	s ə ɾ z ə m iː n	ipa	0
+سرسائی	s ə ɾ s ɑː iː	ipa	0
+سرسوتی	s ə ɾ s uː t̪ iː	ipa	0
+سرسوتی	s ə ɾ ə s ʋ ə t̪ iː	ipa	0
+سرسوں	s ə ɾ s õː	ipa	0
+سرشت	s ə ɾ ɪ ʃ t̪	ipa	0
+سرشٹی	s ɪ ɾ ɪ ʃ ʈ iː	ipa	0
+سرفروش	s ə ɾ f ə ɾ oː ʃ	ipa	0
+سرمئی	s ə ɾ m ə iː	ipa	0
+سرمئی	s ʊ ɾ m ə iː	ipa	0
+سرما	s ə ɾ m ɑː	ipa	0
+سرما	s ʊ ɾ m ɑː	ipa	0
+سرمایہ	s ə ɾ m ɑː j ɑ	ipa	0
+سرمایہ	s ə ɾ m ɑː j ɑː	ipa	0
+سرمہ	s ʊ ɾ m ə	ipa	0
+سرنگ	s ʊ ɾ ə ŋ ɡ	ipa	0
+سرنگوں	s ʊ ɾ ə ŋ ɡ õː	ipa	0
+سرنگیں	s ʊ ɾ ə ŋ ɡ ẽː	ipa	0
+سرور	s ʊ ɾ uː ɾ	ipa	0
+سرورق	s ə ɾ ʋ ə ɾ ə q	ipa	0
+سروش	s ə ɾ oː ʃ	ipa	0
+سرونام	s ə ɾ ʋ n ɑː m	ipa	0
+سرکار	s ə ɾ k ɑː ɾ	ipa	0
+سرکس	s ə ɾ k ə s	ipa	0
+سرکو	s ɪ ɾ k oː	ipa	0
+سرکوں	s ɪ ɾ k õː	ipa	0
+سرکہ	s ɪ ɾ k ɑ	ipa	0
+سرکہ	s ɪ ɾ k ɑː	ipa	0
+سرکے	s ɪ ɾ k eː	ipa	0
+سرگ	s ʊ ɾ ɡ	ipa	0
+سرگرم	s ə ɾ ɡ ə ɾ m	ipa	0
+سرگرمی	s ə ɾ ɡ ə ɾ m iː	ipa	0
+سرگودھا	s ə ɾ ɡ oː d̪ʱ ɑː	ipa	0
+سرہانہ	s ɪ ɾ ɦ ɑː n ɑː	ipa	0
+سریانی	s ʊ ɾ j ɑː n iː	ipa	0
+سریر	s ə ɾ iː ɾ	ipa	0
+سریع	s ə ɾ iː	ipa	0
+سزا	s ə z ɑː	ipa	0
+سسا	s ə s s ɑː	ipa	0
+سسا	s ʊ s s ɑː	ipa	0
+سست	s ʊ s t̪	ipa	0
+سستا	s ə s t̪ ɑː	ipa	0
+سستی	s ə s t̪ iː	ipa	0
+سستی	s ʊ s t̪ iː	ipa	0
+سسر	s ə s ʊ ɾ	ipa	0
+سسر	s ɪ s ɪ ɾ	ipa	0
+سسرال	s ʊ s ɾ ɑː l	ipa	0
+سسروں	s ʊ s ə ɾ õː	ipa	0
+سسری	s ə s ʊ ɾ iː	ipa	0
+سطح	s ə t̪ ə ɦ	ipa	0
+سطحی	s ə t̪ ɦ iː	ipa	0
+سطر	s ə t̪ ɾ	ipa	0
+سعتر	s ɑː t̪ ə ɾ	ipa	0
+سغدی	s ʊ ɣ d̪ iː	ipa	0
+سفارت	s ɪ f ɑː ɾ ə t̪	ipa	0
+سفارش	s ɪ f ɑː ɾ ɪ ʃ	ipa	0
+سفال	s ɪ f ɑː l	ipa	0
+سفر	s ə f ə ɾ	ipa	0
+سفرو	s ə f ə ɾ oː	ipa	0
+سفروں	s ə f ə ɾ õː	ipa	0
+سفید	s ə f eː d̪	ipa	0
+سفیر	s ə f iː ɾ	ipa	0
+سلاح	s ɪ l ɑː	ipa	0
+سلاخ	s ə l ɑː x	ipa	0
+سلاد	s ə l ɑː d̪	ipa	0
+سلام	s ə l ɑː m	ipa	0
+سلامت	s ə l ɑː m ə t̪	ipa	0
+سلامتی	s ə l ɑː m t̪ iː	ipa	0
+سلجوق	s ə l d͡ʒ uː q	ipa	0
+سلجوقی	s ə l d͡ʒ uː q iː	ipa	0
+سلسلہ	s ɪ l s ɪ l ɑ	ipa	0
+سلسلہ	s ɪ l s ɪ l ɑː	ipa	0
+سلطان	s ʊ l t̪ ɑː n	ipa	0
+سلطنت	s ə l t̪ ə n ə t̪	ipa	0
+سلوواکیہ	s l oː ʋ ɑː k ɪ j ɑ	ipa	0
+سلوواکیہ	s l oː ʋ ɑː k ɪ j ɑː	ipa	0
+سلوک	s ə l uː k	ipa	0
+سلوک	s ʊ l uː k	ipa	0
+سلہٹ	s ɪ l ɦ ə ʈ	ipa	0
+سلیمان	s ʊ l ɛː m ɑː n	ipa	0
+سمئے	s ə m ə j	ipa	0
+سماج	s ə m ɑː d͡ʒ	ipa	0
+سمادھان	s ə m ɑː d̪ʱ ɑː n	ipa	0
+سماس	s ə m ɑː s	ipa	0
+سماعت	s ə m ɑː ə t̪	ipa	0
+سماعت	s ə m ɑː ʔ ə t̪	ipa	0
+سماپت	s ə m ɑː p t̪	ipa	0
+سماپن	s ə m ɑː p ə n	ipa	0
+سماچار	s ə m ɑː t͡ʃ ɑː ɾ	ipa	0
+سماں	s ə m ɑ̃ː	ipa	0
+سمبڑیال	s ə m b ɽ ɪ j ɑː l	ipa	0
+سمجھ	s ə m ə d͡ʒʱ	ipa	0
+سمجھدار	s ə m ə d͡ʒʱ d̪ ɑː ɾ	ipa	0
+سمجھنا	s ə m ə d͡ʒʱ n ɑː	ipa	0
+سمجھوتہ	s ə m d͡ʒʱ ɔː t̪ ɑː	ipa	0
+سمدائے	s ə m ʊ d̪ ɑː eː	ipa	0
+سمدر	s ə m ʊ d̪ ɾᵊ	ipa	0
+سمراج	s ə m ɾ ɑː d͡ʒ	ipa	0
+سمراٹ	s ə m ɾ ɑː ʈ	ipa	0
+سمرتھک	s ə m ə ɾ t̪ʰ ə k	ipa	0
+سمرتی	s m ɾ ɪ t̪ iː	ipa	0
+سمرتی	s ə m ə ɾ t̪ iː	ipa	0
+سمرتی	ɪ s m ɾ ɪ t̪ iː	ipa	0
+سمرقند	s ə m ə ɾ q ə n d̪	ipa	0
+سمسم	s ɪ m s ɪ m	ipa	0
+سمع	s ə m	ipa	0
+سمع	s ə m ʔ	ipa	0
+سمندر	s ə m ə n d̪ ə ɾ	ipa	0
+سمندر	s ə m ʊ n d̪ ə ɾ	ipa	0
+سمندروں	s ə m ʊ n d̪ ə ɾ õː	ipa	0
+سمندری	s ə m ʊ n d̪ ɾ iː	ipa	0
+سموسہ	s ə m oː s ə	ipa	0
+سموہ	s ə m uː ɦ	ipa	0
+سمپردائے	s ə m p ə ɾ d̪ ɑː eː	ipa	0
+سمپردائے	s ə m p ɾ ə d̪ ɑː eː	ipa	0
+سمکالین	s ə m k ɑː l iː n	ipa	0
+سمکھ	s ə m m ʊ kʰ	ipa	0
+سمین	s ə m iː n	ipa	0
+سن	s ɪ n	ipa	0
+سناتن	s ə n ɑː t̪ ə n	ipa	0
+سنار	s ʊ n ɑː ɾ	ipa	0
+سنارو	s ʊ n ɑː ɾ oː	ipa	0
+سناروں	s ʊ n ɑː ɾ õː	ipa	0
+سنانا	s ʊ n ɑː n ɑː	ipa	0
+سناٹا	s ə n n ɑː ʈ ɑː	ipa	0
+سنبھالنا	s ə m bʱ ɑː l n ɑː	ipa	0
+سنت	s ə n t̪	ipa	0
+سنت	s ʊ n n ə t̪	ipa	0
+سنتان	s ə n t̪ ɑː n	ipa	0
+سنترا	s ə n t̪ ə ɾ ɑː	ipa	0
+سنترا	s ə n t̪ ɾ ɑː	ipa	0
+سنتھالی	s ə n t̪ʰ ɑː l iː	ipa	0
+سنجھا	s ə n d͡ʒʱ ɑː	ipa	0
+سنجیدہ	s ə n d͡ʒ iː d̪ ɑː	ipa	0
+سندر	s ʊ n d̪ ə ɾ	ipa	0
+سندھ	s ɪ n d̪ʱ	ipa	0
+سندھی	s ɪ n d̪ʱ iː	ipa	0
+سندیش	s ə n d̪ eː ʃ	ipa	0
+سندیہہ	s ə n d̪ eː ɦ	ipa	0
+سنسار	s ə n s ɑː ɾ	ipa	0
+سنسان	s ʊ n s ɑː n	ipa	0
+سنسکرت	s ə n s k ɾ ɪ t̪	ipa	0
+سنشیہ	s ə n ʃ ə j ɑ	ipa	0
+سنشیہ	s ə n ʃ ə j ɑː	ipa	0
+سننا	s ʊ n n ɑː	ipa	0
+سنچائی	s ɪ̃ t͡ʃ ɑː iː	ipa	0
+سنچری	s ɪ n t͡ʃ ʊ ɾ iː	ipa	0
+سنگ	s ə ŋ ɡ	ipa	0
+سنگار	s ɪ ŋ ɡ ɑː ɾ	ipa	0
+سنگاپور	s ɪ ŋ ɡ ɑː p uː ɾ	ipa	0
+سنگم	s ə ŋ ɡ ə m	ipa	0
+سنگھ	s ɪ̃ ŋ ɡʱ	ipa	0
+سنگھرش	s ə ŋ ɡʱ ə ɾ ʃ	ipa	0
+سنگیت	s ə ŋ ɡ iː t̪	ipa	0
+سنگین	s ə ŋ ɡ iː n	ipa	0
+سنہ	s ɪ̃ ŋ ɦ	ipa	0
+سنیاسی	s ə n j ɑː s iː	ipa	0
+سنیوگ	s ə̃ j oː ɡ	ipa	0
+سنیچر	s ə n iː t͡ʃ ə ɾ	ipa	0
+سوئی	s uː iː	ipa	0
+سواد	s ʋ ɑː d̪	ipa	0
+سوادو	s ʋ ɑː d̪ uː	ipa	0
+سوال	s ə w ɑː l	ipa	0
+سوال	s ə ʋ ɑː l	ipa	0
+سوالات	s ə ʋ ɑː l ɑː t̪	ipa	0
+سوالو	s ə ʋ ɑː l oː	ipa	0
+سوالوں	s ə ʋ ɑː l õː	ipa	0
+سوامی	s ʋ ɑː m iː	ipa	0
+سوانگ	s ʋ ɑː ŋ ɡ	ipa	0
+سواگت	s ʋ ɑː ɡ ə t̪	ipa	0
+سوتا	s oː t̪ ɑː	ipa	0
+سوتن	s ɔː t̪ ə n	ipa	0
+سوتنو	s ɔː t̪ ə n oː	ipa	0
+سوتنوں	s ɔː t̪ ə n õː	ipa	0
+سوتنیں	s ɔː t̪ ə n ẽː	ipa	0
+سوتیلا	s ɔː t̪ eː l ɑː	ipa	0
+سوتے	s oː t̪ eː	ipa	0
+سوجن	s uː d͡ʒ ə n	ipa	0
+سوجنا	s uː d͡ʒ n ɑː	ipa	0
+سودا	s ɔː d̪ ɑː	ipa	0
+سوراب	s uː ɾ ɑː b	ipa	0
+سورج	s uː ɾ ə d͡ʒ	ipa	0
+سورجو	s uː ɾ ə d͡ʒ oː	ipa	0
+سورجوں	s uː ɾ ə d͡ʒ õː	ipa	0
+سورہ	s uː ɾ ɑ	ipa	0
+سورہ	s uː ɾ ɑː	ipa	0
+سوری	s uː ɾ iː	ipa	0
+سوریہ	s uː ɾ jᵊ	ipa	0
+سوریہ	s uː ɾ ɪ j ɑː	ipa	0
+سوستک	s ʋ ə s t̪ ɪ k	ipa	0
+سوغات	s ɔː ɣ ɑː t̪	ipa	0
+سولہ	s oː l ɑ	ipa	0
+سولہ	s oː l ɑː	ipa	0
+سولہ	s oː l ə ɦ	ipa	0
+سوم	s oː m	ipa	0
+سوم	s ɪ ʋ ə m	ipa	0
+سوم	s ɪ ʋ ʊ m	ipa	0
+سوموار	s oː m ʋ ɑː ɾ	ipa	0
+سونا	s oː n ɑː	ipa	0
+سونا	s uː n ɑː	ipa	0
+سونگھنا	s uː ŋ ɡʱ n ɑː	ipa	0
+سوویت	s oː ʋ ɪ j ə t̪	ipa	0
+سويمور	s ʋ ə j ə m ʋ ə ɾ	ipa	0
+سوپن	s ʋ ə p n	ipa	0
+سوچنا	s oː t͡ʃ n ɑː	ipa	0
+سوڈا	s oː ɖ ɑː	ipa	0
+سوڈان	s uː ɖ ɑː n	ipa	0
+سوڈیم	s oː ɖ ɪ j ə m	ipa	0
+سوکھا	s uː kʰ ɑː	ipa	0
+سوکھنا	s oː kʰ n ɑː	ipa	0
+سوکھنا	s uː kʰ n ɑː	ipa	0
+سوگ	s oː ɡ	ipa	0
+سوگند	s ɔː ɡ ə n d̪	ipa	0
+سوہن	s oː ɦ ə n	ipa	0
+سویرا	s ə ʋ eː ɾ ɑː	ipa	0
+سویٹزرلینڈ	s ʋ iː ʈ z ə ɾ l ɛː n ɖ	ipa	0
+سویڈن	s ʋ iː ɖ ə n	ipa	0
+سپارو	s ɪ p ɑː ɾ oː	ipa	0
+سپاروں	s ɪ p ɑː ɾ õː	ipa	0
+سپارہ	s ɪ p ɑː ɾ ɑ	ipa	0
+سپارہ	s ɪ p ɑː ɾ ɑː	ipa	0
+سپارے	s ɪ p ɑː ɾ eː	ipa	0
+سپاس	s ɪ p ɑː s	ipa	0
+سپاس	s ʊ p ɑː s	ipa	0
+سپاہ	s ɪ p ɑː ɦ	ipa	0
+سپاہنی	s ɪ p ɑː ɦ n iː	ipa	0
+سپاہی	s ɪ p ɑː ɦ iː	ipa	0
+سپاہیو	s ɪ p ɑː ɦ ɪ j oː	ipa	0
+سپاہیوں	s ɪ p ɑː ɦ ɪ j õː	ipa	0
+سپتاہ	s ə p t̪ ɑː ɦ	ipa	0
+سپنا	s ə p n ɑː	ipa	0
+سپنوں	s ə p n õː	ipa	0
+سپنے	s ə p n õː	ipa	0
+سچ	s ə t͡ʃ	ipa	0
+سچا	s ə t̪ t͡ʃ ɑː	ipa	0
+سچی	s ə t̪ t͡ʃ iː	ipa	0
+سچے	s ə t̪ t͡ʃ eː	ipa	0
+سڑا	s ə ɽ ɑː	ipa	0
+سڑک	s ə ɽ ə k	ipa	0
+سکا	s ə k ɑː	ipa	0
+سکنا	s ə k n ɑː	ipa	0
+سکندر	s ɪ k ə n d̪ ə ɾ	ipa	0
+سکون	s ʊ k uː n	ipa	0
+سکھ	s ɪ kʰ	ipa	0
+سکھ	s ʊ kʰ	ipa	0
+سکھانا	s ɪ kʰ ɑː n ɑː	ipa	0
+سکھانا	s ʊ kʰ ɑː n ɑː	ipa	0
+سکھر	s ə k kʰ ə ɾ	ipa	0
+سکھی	s ə kʰ iː	ipa	0
+سکہ	s ɪ k k ɑ	ipa	0
+سکہ	s ɪ k k ɑː	ipa	0
+سگ	s ə ɡ	ipa	0
+سگریٹ	s ɪ ɡ ɾ eː ʈ	ipa	0
+سہارا	s ə ɦ ɑː ɾ ɑː	ipa	0
+سہاگ	s ʊ ɦ ɑː ɡ	ipa	0
+سہایک	s ə ɦ ɑː j ə k	ipa	0
+سہج	s ə ɦ ə d͡ʒ	ipa	0
+سہس	s ə ɦ ə s	ipa	0
+سہسرابد	s ə ɦ ə s ɾ ɑː b d̪	ipa	0
+سہلانا	s ə ɦ l ɑː n ɑː	ipa	0
+سہمانا	s ə ɦ m ɑː n ɑː	ipa	0
+سہمت	s ə ɦ m ə t̪	ipa	0
+سہمنا	s ə ɦ ə m n ɑː	ipa	0
+سہواس	s ə ɦ ʋ ɑː s	ipa	0
+سہولت	s ə ɦ uː l ə t̪	ipa	0
+سہولت	s ʊ ɦ uː l ə t̪	ipa	0
+سہیلی	s ə ɦ eː l iː	ipa	0
+سہیلیاں	s ə ɦ eː l ɪ j ɑ̃ː	ipa	0
+سہیلیو	s ə ɦ eː l ɪ j oː	ipa	0
+سہیلیوں	s ə ɦ eː l ɪ j õː	ipa	0
+سیاح	s ə j j ɑː ɦ	ipa	0
+سیاحت	s ɪ j ɑː ɦ ə t̪	ipa	0
+سیاروں	s ə j j ɑː ɾ õː	ipa	0
+سیارہ	s ə j j ɑː ɾ ɑ	ipa	0
+سیارہ	s ə j j ɑː ɾ ɑː	ipa	0
+سیارے	s ə j j ɑː ɾ eː	ipa	0
+سیاست	s ɪ j ɑː s ə t̪	ipa	0
+سیاستدان	s ɪ j ɑː s ə t̪ d̪ ɑː n	ipa	0
+سیاسی	s ɪ j ɑː s iː	ipa	0
+سیالکوٹ	s ɪ j ɑː l k oː ʈ	ipa	0
+سیب	s eː b	ipa	0
+سیتا	s iː t̪ ɑː	ipa	0
+سیخ	s iː x	ipa	0
+سیدھا	s iː d̪ʱ ɑː	ipa	0
+سیر	s ɛː ɾ	ipa	0
+سیرت	s iː ɾ ə t̪	ipa	0
+سیلاب	s ɛː l ɑː b	ipa	0
+سینو	s iː n oː	ipa	0
+سینوں	s iː n õː	ipa	0
+سینچنا	s ĩː t͡ʃ n ɑː	ipa	0
+سینکڑا	s ɛː ŋ k ə ɽ ɑː	ipa	0
+سینکڑا	s ɛː ŋ k ɽ ɑː	ipa	0
+سینکڑا	s ɛ̃ː k ə ɽ ɑː	ipa	0
+سینکڑا	s ɛ̃ː k ɽ ɑː	ipa	0
+سینگ	s iː ŋ ɡ	ipa	0
+سینہ	s iː n ɑ	ipa	0
+سینہ	s iː n ɑː	ipa	0
+سینیٹر	s iː n eː ʈ ə ɾ	ipa	0
+سینے	s iː n eː	ipa	0
+سیٹھا	s iː ʈʰ ɑː	ipa	0
+سیڑھی	s iː ɽʱ iː	ipa	0
+سیکھنا	s iː kʰ n ɑː	ipa	0
+سے	s eː	ipa	0
+ش	ʃ	ipa	0
+ش	ʃ iː n	ipa	0
+شاباش	ʃ ɑː b ɑː ʃ	ipa	0
+شاخ	ʃ ɑː x	ipa	0
+شاد	ʃ ɑː d̪	ipa	0
+شاداب	ʃ ɑː d̪ ɑː b	ipa	0
+شادی	ʃ ɑː d̪ iː	ipa	0
+شارجہ	ʃ ɑː ɾ d͡ʒ ɑ	ipa	0
+شارجہ	ʃ ɑː ɾ d͡ʒ ɑː ɦ	ipa	0
+شارک	ʃ ɑː ɾ k	ipa	0
+شاستر	ʃ ɑː s t̪ ə ɾ	ipa	0
+شاسن	ʃ ɑː s ə n	ipa	0
+شاسک	ʃ ɑː s ə k	ipa	0
+شاطر	ʃ ɑː t̪ ɪ ɾ	ipa	0
+شاعر	ʃ ɑː ɪ ɾ	ipa	0
+شاعر	ʃ ɑː ʔ ɪ ɾ	ipa	0
+شاعرہ	ʃ ɑː j ɾ ɑː	ipa	0
+شاعری	ʃ ɑː ɪ ɾ iː	ipa	0
+شاعری	ʃ ɑː ʔ ɪ ɾ iː	ipa	0
+شال	ʃ ɑː l	ipa	0
+شام	ʃ ɑː m	ipa	0
+شامل	ʃ ɑː m ɪ l	ipa	0
+شاموں	ʃ ɑː m õː	ipa	0
+شامیں	ʃ ɑː m ẽː	ipa	0
+شان	ʃ ɑː n	ipa	0
+شانتی	ʃ ɑː n t̪ iː	ipa	0
+شانو	ʃ ɑː n oː	ipa	0
+شانوں	ʃ ɑː n õː	ipa	0
+شانہ	ʃ ɑː n ɑ	ipa	0
+شانہ	ʃ ɑː n ɑː	ipa	0
+شانے	ʃ ɑː n eː	ipa	0
+شاور	ʃ ɑː ʋ ə ɾ	ipa	0
+شاپر	ʃ ɑː p ə ɾ	ipa	0
+شاگرد	ʃ ɑː ɡ ɪ ɾ d̪	ipa	0
+شاگردوں	ʃ ɑː ɡ ɪ ɾ d̪ õː	ipa	0
+شاہ	ʃ ɑː ɦ	ipa	0
+شاہراہ	ʃ ɑː ɦ ɾ ɑː ɦ	ipa	0
+شاہی	ʃ ɑː ɦ iː	ipa	0
+شاہین	ʃ ɑː ɦ iː n	ipa	0
+شاید	ʃ ɑː j ə d̪	ipa	0
+شب	ʃ ə b	ipa	0
+شبد	ʃ ə b d̪	ipa	0
+شبدکوش	ʃ ə b d̪ ə k oː ʃ	ipa	0
+شبنم	ʃ ə b n ə m	ipa	0
+شبھ	ʃ ʊ bʱ	ipa	0
+شتابدی	ʃ ə t̪ ɑː b d̪ iː	ipa	0
+شترو	ʃ ə t̪ ɾ uː	ipa	0
+شتک	ʃ ə t̪ ə k	ipa	0
+شجر	ʃ ə d͡ʒ ə ɾ	ipa	0
+شخص	ʃ ə x s	ipa	0
+شدت	ʃ ɪ d̪ d̪ ə t̪	ipa	0
+شدھ	ʃ ʊ d̪ d̪ʱ	ipa	0
+شراب	ʃ ə ɾ ɑː b	ipa	0
+شرارت	ʃ ə ɾ ɑː ɾ ə t̪	ipa	0
+شرارتو	ʃ ə ɾ ɑː ɾ ə t̪ oː	ipa	0
+شرارتوں	ʃ ə ɾ ɑː ɾ ə t̪ õː	ipa	0
+شرارتی	ʃ e ɾ ɑː ɾ t̪ iː	ipa	0
+شرارتی	ʃ ə ɾ ɑː ɾ ə t̪ iː	ipa	0
+شرارتیں	ʃ ə ɾ ɑː ɾ ə t̪ ẽː	ipa	0
+شرافت	ʃ ə ɾ ɑː f ə t̪	ipa	0
+شرط	ʃ ə ɾ t̪	ipa	0
+شرطی	ʃ ʊ ɾ t̪ iː	ipa	0
+شرفا	ʃ ʊ ɾ ə f ɑː	ipa	0
+شرم	ʃ ə ɾ m	ipa	0
+شرمگیں	ʃ ə ɾ m ɡ ĩː	ipa	0
+شرک	ʃ ɪ ɾ k	ipa	0
+شرکت	ʃ ɪ ɾ k ə t̪	ipa	0
+شرکرا	ʃ ə ɾ k ə ɾ ɑː	ipa	0
+شریر	ʃ ə ɾ iː ɾ	ipa	0
+شریعت	ʃ ə ɾ iː ə t̪	ipa	0
+شریعت	ʃ ə ɾ iː ʔ ə t̪	ipa	0
+شریعتوں	ʃ ə ɾ iː ə t̪ õː	ipa	0
+شریعتوں	ʃ ə ɾ iː ʔ ə t̪ õː	ipa	0
+شریعتیں	ʃ ə ɾ iː ə t̪ ẽː	ipa	0
+شریعتیں	ʃ ə ɾ iː ʔ ə t̪ ẽː	ipa	0
+شریف	ʃ ə ɾ iː f	ipa	0
+شرینگر	ʃ ɾ iː n ə ɡ ə ɾ	ipa	0
+ششن	ʃ ɪ ʃ n	ipa	0
+ششک	ʃ ə ʃ ə k	ipa	0
+شطرنج	ʃ ə t̪ ɾ ə n d͡ʒ	ipa	0
+شعر	ʃ i ʔ r	ipa	0
+شعرا	ʃ ʊ ə ɾ ɑː	ipa	0
+شعرا	ʃ ʊ ʔ ə ɾ ɑː	ipa	0
+شعلوں	ʃ ʊ ʕ l õː	ipa	0
+شعلہ	ʃ ʊ ʕ l ɑ	ipa	0
+شعلہ	ʃ ʊ ʕ l ɑː	ipa	0
+شعلے	ʃ ʊ ʕ l eː	ipa	0
+شعور	ʃ ʊ uː ɾ	ipa	0
+شعور	ʃ ʊ ʔ uː ɾ	ipa	0
+شعیب	ʃ ʊ ɛː b	ipa	0
+شعیب	ʃ ʊ ʔ ɛː b	ipa	0
+شفا	ʃ ɪ f ɑː	ipa	0
+شفقت	ʃ ə f q ə t̪	ipa	0
+شفقتوں	ʃ ə f q ə t̪ õː	ipa	0
+شفقتیں	ʃ ə f q ə t̪ ẽː	ipa	0
+شفیق	ʃ ə f iː q	ipa	0
+شقرا	ʃ ə q ɾ ɑː	ipa	0
+شلپشالا	ʃ ɪ l p ʃ ɑː l ɑː	ipa	0
+شلیہ	ʃ ə l jᵊ	ipa	0
+شلیہ	ʃ ə l ɪ j ɑː	ipa	0
+شمال	ʃ ɪ m ɑː l	ipa	0
+شمال	ʃ ʊ m ɑː l	ipa	0
+شمس	ʃ ə m s	ipa	0
+شمشیر	ʃ ə m ʃ eː ɾ	ipa	0
+شمشیر	ʃ ə m ʃ iː ɾ	ipa	0
+شمع	ʃ ə m ʔ ə	ipa	0
+شمعو	ʃ ə m oː	ipa	0
+شمعو	ʃ ə m ʔ oː	ipa	0
+شمعوں	ʃ ə m õː	ipa	0
+شمعوں	ʃ ə m ʔ õː	ipa	0
+شمعیں	ʃ ə m ʔ ẽː	ipa	0
+شمعیں	ʃ ə m ẽː	ipa	0
+شناخت	ʃ ɪ n ɑː x t̪	ipa	0
+شنتانو	ʃ ə n t̪ ə n uː	ipa	0
+شوخی	s ɦ oː kʰ iː	ipa	0
+شوربا	ʃ oː ɾ b ɑː	ipa	0
+شوق	ʃ ɔː q	ipa	0
+شوپیاں	ʃ oː p ɪ j ɑ̃ː	ipa	0
+شوہر	ʃ ɔː ɦ ə ɾ	ipa	0
+شيخوپورہ	ʃ eː x uː p uː ɾ ɑ	ipa	0
+شيخوپورہ	ʃ eː x uː p uː ɾ ɑː	ipa	0
+شکار	ʃ ɪ k ɑː ɾ	ipa	0
+شکارپور	ʃ ɪ k ɑː ɾ p uː ɾ	ipa	0
+شکاری	ʃ ɪ k ɑː ɾ iː	ipa	0
+شکایت	ʃ ɪ k ɑː j ə t̪	ipa	0
+شکتی	ʃ ə k t̪ iː	ipa	0
+شکر	ʃ ə k ə ɾ	ipa	0
+شکر	ʃ ʊ k ɾ	ipa	0
+شکر	ʃ ʊ k ɾᵊ	ipa	0
+شکرانو	ʃ ʊ k ɾ ɑː n oː	ipa	0
+شکرانوں	ʃ ʊ k ɾ ɑː n õː	ipa	0
+شکرانہ	ʃ ʊ k ɾ ɑː n ɑ	ipa	0
+شکرانہ	ʃ ʊ k ɾ ɑː n ɑː	ipa	0
+شکرانے	ʃ ʊ k ɾ ɑː n eː	ipa	0
+شکریہ	ʃ ʊ k ɾ ɪ j ɑ	ipa	0
+شکریہ	ʃ ʊ k ɾ ɪ j ɑː	ipa	0
+شکست	ʃ ɪ k ə s t̪	ipa	0
+شکنجہ	ʃ ɪ k ə n d͡ʒᵊ	ipa	0
+شکووں	ʃ ɪ k ʋ õː	ipa	0
+شکوہ	ʃ ɪ k oː ɦ	ipa	0
+شکوہ	ʃ ɪ k ʋ ɑ	ipa	0
+شکوہ	ʃ ɪ k ʋ ɑː	ipa	0
+شکوہو	ʃ ɪ k oː ɦ oː	ipa	0
+شکوہوں	ʃ ɪ k oː ɦ õː	ipa	0
+شکوے	ʃ ɪ k ʋ eː	ipa	0
+شکی	ʃ ə k iː	ipa	0
+شگن	ʃ ə ɡ ʊ n	ipa	0
+شہادت	ʃ ə ɦ ɑː d̪ ə t̪	ipa	0
+شہباز	ʃ ə ɦ b ɑː z	ipa	0
+شہتوت	ʃ ə ɦ t̪ uː t̪	ipa	0
+شہدا	ʃ ʊ ɦ ə d̪ ɑː	ipa	0
+شہر	ʃ ə ɦ ɾ	ipa	0
+شہرت	ʃ ʊ ɦ ɾ ə t̪	ipa	0
+شہرتوں	ʃ ʊ ɦ ɾ ə t̪ ẽː	ipa	0
+شہرتیں	ʃ ʊ ɦ ɾ ə t̪ õː	ipa	0
+شہروز	ʃ ə ɦ ɾ oː z	ipa	0
+شہری	ʃ ə ɦ ɾ iː	ipa	0
+شہزادہ	ʃ ə ɦ z ɑː d̪ ɑː	ipa	0
+شہزادی	ʃ ə ɦ z ɑː d̪ iː	ipa	0
+شہلا	ʃ ə ɦ l ɑː	ipa	0
+شہمات	ʃ ə ɦ m ɑː t̪	ipa	0
+شہنشاہ	ʃ ə ɦ ə n ʃ ɑː ɦ	ipa	0
+شہید	ʃ ə ɦ iː d̪	ipa	0
+شہیدو	ʃ ə ɦ iː d̪ oː	ipa	0
+شہیدوں	ʃ ə ɦ iː d̪ õː	ipa	0
+شیخ	ʃ eː x	ipa	0
+شیخ	ʃ ɛː x	ipa	0
+شیخی	ʃ eː x iː	ipa	0
+شیدا	ʃ ɛː d̪ ɑː	ipa	0
+شیر	ʃ eː ɾ	ipa	0
+شیر	ʃ iː ɾ	ipa	0
+شیریں	ʃ iː ɾ ĩː	ipa	0
+شیشو	ʃ iː ʃ oː	ipa	0
+شیشوں	ʃ iː ʃ õː	ipa	0
+شیشہ	ʃ iː ʃ ɑ	ipa	0
+شیشہ	ʃ iː ʃ ɑː	ipa	0
+شیشے	ʃ iː ʃ eː	ipa	0
+شیطان	ʃ ɛː t̪ ɑː n	ipa	0
+شیفیلڈ	ʃ ɛː f iː l ɖ	ipa	0
+شیو	ʃ eː ʋ	ipa	0
+شیو	ʃ iː ʋ	ipa	0
+شیو	ʃ ɛː ʋ	ipa	0
+شیوہ	ʃ eː ʋ ɑ	ipa	0
+شیوہ	ʃ eː ʋ ɑː	ipa	0
+شیکھاواٹی	ʃ eː kʰ ɑː ʋ ɑː ʈ iː	ipa	0
+شے	ʃ eː	ipa	0
+ص	s	ipa	0
+ص	s ʋ ɑː d̪	ipa	0
+صائب	s ɑː ɪ b	ipa	0
+صابر	s ɑː b ɪ ɾ	ipa	0
+صابن	s ɑː b ʊ n	ipa	0
+صاحب	s ɑː b	ipa	0
+صاحب	s ɑː ɦ ə b	ipa	0
+صاحب	s ɑː ɦ ɪ b	ipa	0
+صاحبزادہ	s ɑː ɦ ə b z ɑː d̪ᵊ	ipa	0
+صارف	s ɑː ɾ ɪ f	ipa	0
+صارفین	s ɑː ɾ ɪ f iː n	ipa	0
+صاف	s ɑː f	ipa	0
+صالح	s ɑː l iː ɦ	ipa	0
+صبح	s ʊ b ə ɦ	ipa	0
+صبر	s ə b ə ɾ	ipa	0
+صبر	s ə b ɾ	ipa	0
+صحافی	s ə ɦ ɑː f iː	ipa	0
+صحافی	s ɪ ɦ ɑː f iː	ipa	0
+صحبت	s ʊ ɦ b ə t̪	ipa	0
+صحت	s eː ɦ ə t̪	ipa	0
+صحت	s ɪ ɦ ə t̪	ipa	0
+صحرا	s ə ɦ ɾ ɑː	ipa	0
+صحن	s ə ɦ n	ipa	0
+صحن	s ə ɦ ə n	ipa	0
+صحیح	s ə iː	ipa	0
+صحیح	s ə ɦ iː	ipa	0
+صحیح	s ə ɦ iː ɦ	ipa	0
+صحیفہ	s ə ɦ iː f ɑː	ipa	0
+صدا	s ə d̪ ɑː	ipa	0
+صداقت	s ə d̪ ɑː q ə t̪	ipa	0
+صدر	s ə d̪ ɾ	ipa	0
+صدرو	s ə d̪ ɾ oː	ipa	0
+صدروں	s ə d̪ ɾ õː	ipa	0
+صدقہ	s ə d̪ q ɑ	ipa	0
+صدقہ	s ə d̪ q ɑː	ipa	0
+صدی	s ə d̪ iː	ipa	0
+صدیاں	s ə d̪ ɪ j ɑ̃ː	ipa	0
+صدیوں	s ə d̪ ɪ j õː	ipa	0
+صرف	s ə ɾ f	ipa	0
+صرف	s ɪ ɾ f	ipa	0
+صرف	s ɪ ɾ ə f	ipa	0
+صعب	s ɑː b	ipa	0
+صعب	s ə b	ipa	0
+صعب	s ə ʔ b	ipa	0
+صغیر	s ə ɣ iː ɾ	ipa	0
+صفائی	s ə f ɑː iː	ipa	0
+صفائی	s ɪ f ɑː iː	ipa	0
+صفحو	s ə f ɦ oː	ipa	0
+صفحوں	s ə f ɦ õː	ipa	0
+صفحہ	s ə f ɦ ɑ	ipa	0
+صفحہ	s ə f ɦ ɑː	ipa	0
+صفحے	s ə f ɦ eː	ipa	0
+صفر	s ɪ f ɾ	ipa	0
+صفرواں	s ɪ f ə ɾ ʋ ɑ̃ː	ipa	0
+صلاح	s ə l ɑː ɦ	ipa	0
+صلاحیت	s ə l ɑː ɦ ɪ j ə t̪	ipa	0
+صلوۃ	s ə l ɑː t̪	ipa	0
+صلہ	s ɪ l ə	ipa	0
+صلی	s ə l l ɑː	ipa	0
+صلیب	s ə l iː b	ipa	0
+صلیبی	s ə l iː b iː	ipa	0
+صنعت	s ə n ə t̪	ipa	0
+صنعت	s ə n ʔ ə t̪	ipa	0
+صنف	s ɪ n f	ipa	0
+صنم	s ə n ə m	ipa	0
+صنمیات	s ə n ə m ɪ j ɑː t̪	ipa	0
+صنوبر	s ə n oː b ə ɾ	ipa	0
+صوابی	s w ɑː b iː	ipa	0
+صوبہ	s uː b ɑ	ipa	0
+صوبہ	s uː b ɑː	ipa	0
+صورت	s uː ɾ ə t̪	ipa	0
+صورتو	s uː ɾ ə t̪ oː	ipa	0
+صورتوں	s uː ɾ ə t̪ õː	ipa	0
+صورتیں	s uː ɾ ə t̪ ẽː	ipa	0
+صومالیہ	s oː m ɑː l ɪ j ɑ	ipa	0
+صومالیہ	s oː m ɑː l ɪ j ɑː	ipa	0
+ض	z	ipa	0
+ض	z ʋ ɑː d̪	ipa	0
+ضائع	z ɑː j ɪ	ipa	0
+ضائع	z ɑː j ɪ ʔ	ipa	0
+ضابطہ	z ɑː b ɪ t̪ ɑ	ipa	0
+ضابطہ	z ɑː b ɪ t̪ ɑː	ipa	0
+ضبط	z ə b t̪	ipa	0
+ضد	z ɪ d̪	ipa	0
+ضدی	z ɪ d̪ d̪ iː	ipa	0
+ضرر	z ə ɾ ə ɾ	ipa	0
+ضرور	z ʊ ɾ uː ɾ	ipa	0
+ضرورت	z ə ɾ uː ɾ ə t̪	ipa	0
+ضروری	z ə ɾ uː ɾ iː	ipa	0
+ضروری	z ʊ ɾ uː ɾ iː	ipa	0
+ضعفا	z ʊ ə f ɑː	ipa	0
+ضعفا	z ʊ ʔ ə f ɑː	ipa	0
+ضعیف	z ə iː f	ipa	0
+ضعیف	z ə ʔ iː f	ipa	0
+ضعیفو	z ə iː f oː	ipa	0
+ضعیفو	z ə ʔ iː f oː	ipa	0
+ضعیفوں	z ə iː f õː	ipa	0
+ضعیفوں	z ə ʔ iː f õː	ipa	0
+ضعیفہ	z ə iː fᵊ	ipa	0
+ضعیفہ	z ə ʔ iː fᵊ	ipa	0
+ضلع	z ɪ l ʔ ə	ipa	0
+ضلعوں	z ɪ l õː	ipa	0
+ضلعوں	z ɪ l ʔ õː	ipa	0
+ضلعے	z ɪ l eː	ipa	0
+ضلعے	z ɪ l ʔ eː	ipa	0
+ضم	z ə m	ipa	0
+ضمانت	z ə m ɑː n ə t̪	ipa	0
+ضمیر	z ə m iː ɾ	ipa	0
+ضمیمہ	z ə m iː m ɑː	ipa	0
+ضیافت	z ɪ j ɑː f ə t̪	ipa	0
+ط	t̪	ipa	0
+ط	t̪ oː eː	ipa	0
+طائرانہ	t̪ ɑː j ɪ ɾ ɑː n ɑ	ipa	0
+طائرانہ	t̪ ɑː j ɪ ɾ ɑː n ɑː	ipa	0
+طاعون	t̪ ɑː uː n	ipa	0
+طاعون	t̪ ɑː ʔ uː n	ipa	0
+طاقت	t̪ ɑː q ə t̪	ipa	0
+طاقتو	t̪ ɑː q ə t̪ oː	ipa	0
+طاقتور	t̪ ɑː q ə t̪ ʋ ə ɾ	ipa	0
+طاقتوں	t̪ ɑː q ə t̪ õː	ipa	0
+طاقتیں	t̪ ɑː q ə t̪ ẽː	ipa	0
+طالبان	t̪ ɑː l ɪ b ɑː n	ipa	0
+طبق	t̪ ə b ə q	ipa	0
+طبقو	t̪ ə b ə q oː	ipa	0
+طبقوں	t̪ ə b ə q õː	ipa	0
+طبقہ	t̪ ə b ə q ɑ	ipa	0
+طبقہ	t̪ ə b ə q ɑː	ipa	0
+طبقے	t̪ ə b ə q eː	ipa	0
+طبلہ	t̪ ə b l ɑː	ipa	0
+طبی	t̪ ɪ b b iː	ipa	0
+طبیب	t̪ ə b iː b	ipa	0
+طبیعت	t̪ ə b iː ə t̪	ipa	0
+طبیعت	t̪ ə b iː ʔ ə t̪	ipa	0
+طبیعی	t̪ ə b iː iː	ipa	0
+طبیعی	t̪ ə b iː ʔ iː	ipa	0
+طبیعیات	t̪ ə b iː ɪ j j ɑː t̪	ipa	0
+طبیعیات	t̪ ə b iː ʔ ɪ j j ɑː t̪	ipa	0
+طرابلس	t̪ ə ɾ ɑː b ʊ l ʊ s	ipa	0
+طرح	t̪ ə ɾ ɑː	ipa	0
+طرح	t̪ ə ɾ ə ɦ	ipa	0
+طرز	t̪ ə ɾ z	ipa	0
+طرزوں	t̪ ə ɾ z õː	ipa	0
+طرزیات	t̪ ə ɾ z ɪ j ɑː t̪	ipa	0
+طرزیں	t̪ ə ɾ z ẽː	ipa	0
+طرف	t̪ ə ɾ ə f	ipa	0
+طریقہ	t̪ ə ɾ iː q ɑ	ipa	0
+طریقہ	t̪ ə ɾ iː q ɑː	ipa	0
+طشتری	t̪ ə ʃ t̪ ə ɾ iː	ipa	0
+طعام	t̪ ə ɑː m	ipa	0
+طعام	t̪ ə ʔ ɑː m	ipa	0
+طعنو	t̪ ə n oː	ipa	0
+طعنو	t̪ ə ʔ n oː	ipa	0
+طعنوں	t̪ ə n õː	ipa	0
+طعنوں	t̪ ə ʔ n õː	ipa	0
+طعنہ	t̪ ə n ɑː	ipa	0
+طعنہ	t̪ ə ʔ n ɑː	ipa	0
+طعنے	t̪ ə n eː	ipa	0
+طعنے	t̪ ə ʔ n eː	ipa	0
+طفل	t̪ ɪ f l	ipa	0
+طلاق	t̪ ə l ɑː q	ipa	0
+طلب	t̪ ə l ə b	ipa	0
+طلبگارو	t̪ ə l ə b ɡ ɑː ɾ oː	ipa	0
+طلبگاروں	t̪ ə l ə b ɡ ɑː ɾ õː	ipa	0
+طلعت	t̪ ə l ə t̪	ipa	0
+طلوع	t̪ ʊ l uː	ipa	0
+طلوع	t̪ ʊ l uː ʔ	ipa	0
+طوائف	t̪ ə w ɑː j ə f	ipa	0
+طوائف	t̪ ə w ɑː ɪ f	ipa	0
+طوائف	t̪ ə ʋ ɑː j ə f	ipa	0
+طوائف	t̪ ə ʋ ɑː ɪ f	ipa	0
+طوبی	t̪ uː b ɑː	ipa	0
+طور	t̪ uː ɾ	ipa	0
+طور	t̪ ɔː ɾ	ipa	0
+طوفان	t̪ uː f ɑː n	ipa	0
+طیاروں	t̪ ə j j ɑː ɾ õː	ipa	0
+طیارہ	t̪ ə j j ɑː ɾ ɑ	ipa	0
+طیارہ	t̪ ə j j ɑː ɾ ɑː	ipa	0
+طیارے	t̪ ə j j ɑː ɾ eː	ipa	0
+طیب	t̪̤ iː b	ipa	0
+طیب	t̪̤ ə j j ɪ b	ipa	0
+طیر	t̪̤ ɛː ɾ	ipa	0
+طے	t̪ ə j	ipa	0
+طے	t̪ ɛː	ipa	0
+ظ	z	ipa	0
+ظ	z oː eː	ipa	0
+ظالم	z ɑː l ɪ m	ipa	0
+ظرف	z ə ɾ f	ipa	0
+ظرف	z ə ɾ ə f	ipa	0
+ظروف	z ʊ ɾ uː f	ipa	0
+ظفر	z ə f ə ɾ	ipa	0
+ظلم	z ʊ l m	ipa	0
+ظہور	z ʊ ɦ uː ɾ	ipa	0
+ع	eː	ipa	0
+ع	oː	ipa	0
+ع	ɑː	ipa	0
+ع	ɛː n	ipa	0
+ع	ʕ	ipa	0
+عائلہ	ɑː ɪ l ɑ	ipa	0
+عائلہ	ɑː ɪ l ɑː	ipa	0
+عائلہ	ʔ ɑː ɪ l ɑ	ipa	0
+عائلہ	ʔ ɑː ɪ l ɑː	ipa	0
+عائلی	ɑː ɪ l iː	ipa	0
+عائلی	ʔ ɑː ɪ l iː	ipa	0
+عابد	ɑː b ɪ d̪	ipa	0
+عابد	ʔ ɑː b ɪ d̪	ipa	0
+عابدہ	ɑː b ɪ d̪ ɑ	ipa	0
+عابدہ	ɑː b ɪ d̪ ɑː	ipa	0
+عابدہ	ʕ ɑː b ɪ d̪ ɑ	ipa	0
+عابدہ	ʕ ɑː b ɪ d̪ ɑː	ipa	0
+عاجزی	ɑː d͡ʒ ɪ z iː	ipa	0
+عاجزی	ʔ ɑː d͡ʒ ɪ z iː	ipa	0
+عادت	ɑː d̪ ə t̪	ipa	0
+عاشق	ɑː ʃ ɪ q	ipa	0
+عاشق	ʔ ɑː ʃ ɪ q	ipa	0
+عاصی	ɑː s iː	ipa	0
+عاصی	ʔ ɑː s iː	ipa	0
+عالم	ɑː l ə m	ipa	0
+عالم	ɑː l ɪ m	ipa	0
+عالیہ	ɑː l ɪ j ɑ	ipa	0
+عالیہ	ɑː l ɪ j ɑː	ipa	0
+عالیہ	ʔ ɑː l ɪ j ɑ	ipa	0
+عالیہ	ʔ ɑː l ɪ j ɑː	ipa	0
+عام	ɑː m	ipa	0
+عام	ʔ ɑː m	ipa	0
+عاملہ	ɑː m ɪ l ɑ	ipa	0
+عاملہ	ɑː m ɪ l ɑː	ipa	0
+عاملہ	ʕ ɑː m ɪ l ɑ	ipa	0
+عاملہ	ʕ ɑː m ɪ l ɑː	ipa	0
+عبادت	ɪ b ɑː d̪ ə t̪	ipa	0
+عبادت	ʔ ɪ b ɑː d̪ ə t̪	ipa	0
+عبادتوں	ɪ b ɑː d̪ ə t̪ õː	ipa	0
+عبادتوں	ʔ ɪ b ɑː d̪ ə t̪ õː	ipa	0
+عبادتی	ɪ b ɑː d̪ ə t̪ iː	ipa	0
+عبادتیں	ɪ b ɑː d̪ ə t̪ ẽː	ipa	0
+عبادتیں	ʔ ɪ b ɑː d̪ ə t̪ ẽː	ipa	0
+عبرانی	ɪ b ɾ ɑː n iː	ipa	0
+عبری	ɪ b ɾ iː	ipa	0
+عجائب	ə d͡ʒ ɑː eː b	ipa	0
+عجائب	ə d͡ʒ ɑː ɪ b	ipa	0
+عجائبات	ə d͡ʒ ɑː ɪ b ɑː t̪	ipa	0
+عجب	ə d͡ʒ ə b	ipa	0
+عجب	ʔ ə d͡ʒ ə b	ipa	0
+عجمی	ə d͡ʒ ə m iː	ipa	0
+عجوبہ	ə d͡ʒ uː b ɑː	ipa	0
+عجیب	ə d͡ʒ iː b	ipa	0
+عدالت	ə d̪ ɑː l ə t̪	ipa	0
+عدس	ə d̪ ə s	ipa	0
+عدس	ʔ ə d̪ ə s	ipa	0
+عدم	ə d̪ ə m	ipa	0
+عدم	ʔ ə d̪ ə m	ipa	0
+عذاب	ə z ɑː b	ipa	0
+عذاب	ʔ ə z ɑː b	ipa	0
+عراق	ɪ ɾ ɑː q	ipa	0
+عربستان	ə ɾ b ɪ s t̪ ɑː n	ipa	0
+عربستان	ʔ ə ɾ b ɪ s t̪ ɑː n	ipa	0
+عربی	ə ɾ b iː	ipa	0
+عربی	ʔ ə ɾ b iː	ipa	0
+عرش	ə ɾ ʃ	ipa	0
+عرش	ʔ ə ɾ ʃ	ipa	0
+عرشی	ə ɾ ʃ iː	ipa	0
+عرشی	ʔ ə ɾ ʃ iː	ipa	0
+عرض	ə ɾ z	ipa	0
+عرضی	ə ɾ z iː	ipa	0
+عرف	ʊ ɾ f	ipa	0
+عرق	ə ɾ ə q	ipa	0
+عرق	ʔ ə ɾ ə q	ipa	0
+عروج	ʊ ɾ uː d͡ʒ	ipa	0
+عروج	ʔ ʊ ɾ uː d͡ʒ	ipa	0
+عزت	ɪ z z ə t̪	ipa	0
+عزت	ʔ ɪ z z ə t̪	ipa	0
+عزیز	ə z iː z	ipa	0
+عسل	ə s ə l	ipa	0
+عسل	ʔ ə s ə l	ipa	0
+عشائیہ	ɪ ʃ ɑː ɪ j ɑ	ipa	0
+عشائیہ	ɪ ʃ ɑː ɪ j ɑː	ipa	0
+عشائیہ	ʔ ɪ ʃ ɑː ɪ j ɑ	ipa	0
+عشائیہ	ʔ ɪ ʃ ɑː ɪ j ɑː	ipa	0
+عشق	ʔ ɪ ʃ q	ipa	0
+عشقو	ɪ ʃ q oː	ipa	0
+عشقو	ʔ ɪ ʃ q oː	ipa	0
+عشقوں	ɪ ʃ q õː	ipa	0
+عشقوں	ʔ ɪ ʃ q õː	ipa	0
+عصیان	ɪ s j ɑː n	ipa	0
+عصیان	ʔ ɪ s j ɑː n	ipa	0
+عضو	ʊ z ʋ	ipa	0
+عطر	ə t̪ ɾ	ipa	0
+عطر	ɪ t̪ ɾ	ipa	0
+عطر	ʔ ə t̪ ɾ	ipa	0
+عطر	ʔ ɪ t̪ ɾ	ipa	0
+عظم	ə z m	ipa	0
+عظم	ʔ ə z m	ipa	0
+عظمت	ə z m ə t̪	ipa	0
+عظمت	ə z ə m ə t̪	ipa	0
+عظمت	ʔ ə z m ə t̪	ipa	0
+عظمت	ʔ ə z ə m ə t̪	ipa	0
+عظمتو	ə z m ə t̪ oː	ipa	0
+عظمتو	ʔ ə z m ə t̪ oː	ipa	0
+عظمتوں	ə z m ə t̪ õː	ipa	0
+عظمتوں	ʔ ə z m ə t̪ õː	ipa	0
+عظمتیں	ə z m ə t̪ ẽː	ipa	0
+عظمتیں	ʔ ə z m ə t̪ ẽː	ipa	0
+عظیم	ə z iː m	ipa	0
+عظیم	ʔ ə z iː m	ipa	0
+عفو	ə f ʊ ʋ ʋ	ipa	0
+عفو	ə f ʋ	ipa	0
+عفو	ʔ ə f ʊ ʋ ʋ	ipa	0
+عفو	ʔ ə f ʋ	ipa	0
+عقاب	ɪ q ɑː b	ipa	0
+عقاب	ʊ q ɑː b	ipa	0
+عقاب	ʔ ɪ q ɑː b	ipa	0
+عقاب	ʔ ʊ q ɑː b	ipa	0
+عقل	ə q l	ipa	0
+عقل	ʔ ə q l	ipa	0
+عقلمند	ə q l m ə n d̪	ipa	0
+عقلمند	ʔ ə q l m ə n d̪	ipa	0
+عقیلہ	ə q iː l ɑ	ipa	0
+عقیلہ	ə q iː l ɑː	ipa	0
+علاج	ɪ l ɑː d͡ʒ	ipa	0
+علاج	ʔ ɪ l ɑː d͡ʒ	ipa	0
+علاقو	ɪ l ɑː q oː	ipa	0
+علاقو	ʔ ɪ l ɑː q oː	ipa	0
+علاقوں	ɪ l ɑː q õː	ipa	0
+علاقوں	ʔ ɪ l ɑː q õː	ipa	0
+علاقہ	ɪ l ɑː q ɑ	ipa	0
+علاقہ	ɪ l ɑː q ɑː	ipa	0
+علاقہ	ʔ ɪ l ɑː q ɑ	ipa	0
+علاقہ	ʔ ɪ l ɑː q ɑː	ipa	0
+علاقے	ɪ l ɑː q eː	ipa	0
+علاقے	ʔ ɪ l ɑː q eː	ipa	0
+علامت	ə l ɑː m ə t̪	ipa	0
+علامت	ʔ ə l ɑː m ə t̪	ipa	0
+علامتو	ə l ɑː m ə t̪ oː	ipa	0
+علامتو	ʔ ə l ɑː m ə t̪ oː	ipa	0
+علامتوں	ə l ɑː m ə t̪ õː	ipa	0
+علامتوں	ʔ ə l ɑː m ə t̪ õː	ipa	0
+علامتیں	ə l ɑː m ə t̪ ẽː	ipa	0
+علامتیں	ʔ ə l ɑː m ə t̪ ẽː	ipa	0
+علف	ə l ə f	ipa	0
+علف	ʔ ə l ə f	ipa	0
+علم	ə l ə m	ipa	0
+علم	ɪ l m	ipa	0
+علما	ʊ l ə m ɑː	ipa	0
+علمی	ɪ l m iː	ipa	0
+علمیات	ɪ l m ɪ j ɑː t̪	ipa	0
+علوم	ʊ l uː m	ipa	0
+علوم	ʔ ʊ l uː m	ipa	0
+علی	ə l iː	ipa	0
+علی	ə l ɑː	ipa	0
+علی	ə l ə j	ipa	0
+علی	ʔ ə l iː	ipa	0
+علی	ʔ ə l ɑː	ipa	0
+علی	ʔ ə l ə j	ipa	0
+علیحدگی	ə l ɛː ɦ ɪ d̪ ə ɡ iː	ipa	0
+علیحدگی	ʔ ə l ɛː ɦ ɪ d̪ ə ɡ iː	ipa	0
+علیحدہ	ə l ɑː ɦ ɪ d̪ ɑː	ipa	0
+علیحدہ	ə l ə ɦ d̪ ɑː	ipa	0
+علیحدہ	ə l ɛː ɦ ɪ d̪ ɑː	ipa	0
+علیحدہ	ʔ ə l ɑː ɦ ɪ d̪ ɑː	ipa	0
+علیحدہ	ʔ ə l ɛː ɦ ɪ d̪ ɑː	ipa	0
+علیزہ	ə l iː z ɑ	ipa	0
+علیزہ	ə l iː z ɑː	ipa	0
+علیزہ	ʔ ə l iː z ɑ	ipa	0
+علیزہ	ʔ ə l iː z ɑː	ipa	0
+علینہ	ə l iː n ɑ	ipa	0
+علینہ	ə l iː n ɑː	ipa	0
+عمان	o m ɑː n	ipa	0
+عمان	ə m m ɑː n	ipa	0
+عمدہ	ʊ m d̪ ɑ	ipa	0
+عمدہ	ʊ m d̪ ɑː	ipa	0
+عمدہ	ʔ ʊ m d̪ ɑ	ipa	0
+عمدہ	ʔ ʊ m d̪ ɑː	ipa	0
+عمر	ʊ m ə ɾ	ipa	0
+عمر	ʊ m ɾᵊ	ipa	0
+عمران	ɪ m ɾ ɑː n	ipa	0
+عمران	ʔ ɪ m ɾ ɑː n	ipa	0
+عمرکوٹ	ʔ ʊ m ə ɾ k oː ʈ	ipa	0
+عمرہ	ʊ m ɾ ɑː	ipa	0
+عمل	ə m ə l	ipa	0
+عملہ	ə m ə l ɑː	ipa	0
+عملہ	ʔ ə m ə l ɑː	ipa	0
+عموما	ə m uː m ə n	ipa	0
+عموما	ʊ m uː m ə n	ipa	0
+عمومی	ʊ m uː m iː	ipa	0
+عنایات	ɪ n ɑː j ɑː t̪	ipa	0
+عنایات	ʔ ɪ n ɑː j ɑː t̪	ipa	0
+عنایت	ɪ n ɑː j ə t̪	ipa	0
+عنایت	ʔ ɪ n ɑː j ə t̪	ipa	0
+عنایتوں	ɪ n ɑː j ə t̪ õː	ipa	0
+عنایتوں	ʔ ɪ n ɑː j ə t̪ õː	ipa	0
+عنایتیں	ɪ n ɑː j ə t̪ ẽː	ipa	0
+عنایتیں	ʔ ɪ n ɑː j ə t̪ ẽː	ipa	0
+عنب	ɪ n eː b	ipa	0
+عنصر	ʊ n s ə ɾ	ipa	0
+عنصر	ʊ n s ʊ ɾ	ipa	0
+عنصر	ʔ ʊ n s ʊ ɾ	ipa	0
+عنوان	ə n w ɑː n	ipa	0
+عنوان	ə n ʋ ɑː n	ipa	0
+عنوان	ʊ n w ɑː n	ipa	0
+عنوان	ʊ n ʋ ɑː n	ipa	0
+عنوان	ʔ ʊ n w ɑː n	ipa	0
+عنوان	ʔ ʊ n ʋ ɑː n	ipa	0
+عوام	ə ʋ ɑː m	ipa	0
+عوام	ʔ ə ʋ ɑː m	ipa	0
+عورت	oː ɾ ə t̪	ipa	0
+عورت	ɔː ɾ ə t̪	ipa	0
+عورتو	ɔː ɾ t̪ oː	ipa	0
+عورتو	ɔː ɾ ə t̪ oː	ipa	0
+عورتوں	ɔː ɾ t̪ õː	ipa	0
+عورتوں	ɔː ɾ ə t̪ õː	ipa	0
+عورتیں	ɔː ɾ t̪ ẽː	ipa	0
+عورتیں	ɔː ɾ ə t̪ ẽː	ipa	0
+عکرشہ	ʔ ɪ k ɾ ə ʃ ɑː	ipa	0
+عکس	ə k s	ipa	0
+عکس	ʔ ə k s	ipa	0
+عہد	ə ɦ ə d̪	ipa	0
+عہدوں	ʊ ɦ d̪ õː	ipa	0
+عہدوں	ʔ ʊ ɦ d̪ õː	ipa	0
+عہدہ	ʊ ɦ d̪ ɑː	ipa	0
+عہدے	ʊ ɦ d̪ eː	ipa	0
+عہدے	ʔ ʊ ɦ d̪ eː	ipa	0
+عیادت	ɪ j ɑː d̪ ə t̪	ipa	0
+عیادتوں	ɪ j ɑː d̪ ə t̪ õː	ipa	0
+عیادتوں	ʔ ɪ j ɑː d̪ ə t̪ õː	ipa	0
+عیادتیں	ɪ j ɑː d̪ ə t̪ ẽː	ipa	0
+عیادتیں	ʔ ɪ j ɑː d̪ ə t̪ ẽː	ipa	0
+عیاشی	ə j j ɑː ʃ iː	ipa	0
+عیاشی	ə̯ i j ɑː ʃ iː	ipa	0
+عیاشی	ʔ ə j j ɑː ʃ iː	ipa	0
+عیاشی	ʔ ə̯ i j ɑː ʃ iː	ipa	0
+عیاں	ə j ɑ̃ː	ipa	0
+عیاں	ʔ ə j ɑ̃ː	ipa	0
+عیب	ɛː b	ipa	0
+عیب	ʔ ɛː b	ipa	0
+عید	iː d̪	ipa	0
+عید	ʔ iː d̪	ipa	0
+عیسائی	iː s ɑː iː	ipa	0
+عیسائی	ʔ iː s ɑː iː	ipa	0
+عیسائیت	iː s ɑː ɪ j ə t̪	ipa	0
+عیسائیت	ʔ iː s ɑː ɪ j ə t̪	ipa	0
+عیسی	iː s ɑː	ipa	0
+عیش	ɛː ʃ	ipa	0
+عیش	ʔ ɛː ʃ	ipa	0
+عین	ɛː n	ipa	0
+عین	ʔ ɛː n	ipa	0
+عینک	ɛː n ə k	ipa	0
+غ	ɣ	ipa	0
+غ	ɣ ɛː n	ipa	0
+غائب	ɣ ɑː j ə b	ipa	0
+غار	ɣ ɑː ɾ	ipa	0
+غاروں	ɣ ɑː ɾ õː	ipa	0
+غالب	ɣ ɑː l ɪ b	ipa	0
+غالبا	ɣ ɑː l ɪ b ə n	ipa	0
+غالی	ɣ ɑː l iː	ipa	0
+غبارہ	ɣ ʊ b b ɑː ɾᵊ	ipa	0
+غدار	ɣ ə d̪ d̪ ɑː ɾ	ipa	0
+غدارو	ɣ ə d̪ d̪ ɑː ɾ oː	ipa	0
+غداروں	ɣ ə d̪ d̪ ɑː ɾ õː	ipa	0
+غذا	ɣ ɪ z ɑː	ipa	0
+غرض	ɣ ə ɾ ə z	ipa	0
+غرق	ɣ ə ɾ q	ipa	0
+غرناطہ	ɣ ə ɾ n ɑː t̪ ɑ	ipa	0
+غرناطہ	ɣ ə ɾ n ɑː t̪ ɑː ɦ	ipa	0
+غروب	ɣ ʊ ɾ uː b	ipa	0
+غرور	ɣ ʊ ɾ uː ɾ	ipa	0
+غریب	ɣ ə ɾ iː b	ipa	0
+غریبو	ɣ ə ɾ iː b oː	ipa	0
+غریبوں	ɣ ə ɾ iː b õː	ipa	0
+غزل	ɣ ə z ə l	ipa	0
+غزوہ	ɣ ə z ʋ ɑː	ipa	0
+غزہ	ɣ ə z z ɑ	ipa	0
+غزہ	ɣ ə z z ɑː	ipa	0
+غسل	ɣ ʊ s l	ipa	0
+غسلخانہ	ɣ ʊ s l x ɑː n ɑː	ipa	0
+غش	ɣ ə ʃ	ipa	0
+غضب	ɣ ə z ə b	ipa	0
+غفلت	ɣ ə f l ə t̪	ipa	0
+غلام	ɣ ʊ l ɑː m	ipa	0
+غلامو	ɣ ʊ l ɑː m oː	ipa	0
+غلاموں	ɣ ʊ l ɑː m õː	ipa	0
+غلط	ɣ ə l ə t̪	ipa	0
+غلطی	ɣ ə l t̪ iː	ipa	0
+غلطی	ɣ ə l ə t̪ iː	ipa	0
+غلطیاں	ɣ ə l ə t̪ ɪ j ɑ̃ː	ipa	0
+غلطیو	ɣ ə l ə t̪ ɪ j oː	ipa	0
+غلطیوں	ɣ ə l ə t̪ ɪ j õː	ipa	0
+غلہ	ɣ ə l l ɑː	ipa	0
+غلیظ	ɣ ə l iː z	ipa	0
+غم	ɣ ə m	ipa	0
+غمر	ɣ ʊ m ə ɾ	ipa	0
+غمو	ɣ ə m oː	ipa	0
+غموں	ɣ ə m õː	ipa	0
+غمگین	ɣ ə m ɡ iː n	ipa	0
+غنائیت	ɣ ʊ n n ɑː iː j ə t̪	ipa	0
+غنودگی	ɣ ʊ n uː d̪ ə ɡ iː	ipa	0
+غنودگیاں	ɣ ʊ n uː d̪ ə ɡ ɪ j ɑ̃ː	ipa	0
+غنودگیوں	ɣ ʊ n uː d̪ ə ɡ ɪ j õː	ipa	0
+غنودہ	ɣ ʊ n uː d̪ ɑ	ipa	0
+غنودہ	ɣ ʊ n uː d̪ ɑː	ipa	0
+غنچہ	ɣ ʊ n t͡ʃ ɑː	ipa	0
+غنڈہ	ɣ ʊ n ɖ ɑː	ipa	0
+غنہ	ɣ ʊ n n ə	ipa	0
+غنیمت	ɣ ə n iː m ə t̪	ipa	0
+غور	ɣ ɔː ɾ	ipa	0
+غوطہ	ɣ oː t̪ᵊ	ipa	0
+غوٹہ	ɣ oː ʈ ɑː	ipa	0
+غٹاغٹ	ɣ ə ʈ ɑː ɣ ə ʈ	ipa	0
+غژماں	ɣ ʊ ʒ m ɑ̃ː	ipa	0
+غیر	ɣ ɛː ɾ	ipa	0
+غیرت	ɣ ɛː ɾ ə t̪	ipa	0
+ـستان	s t̪ ɑː n	ipa	0
+ـستان	ɪ s t̪ ɑː n	ipa	0
+ـگی	‿ ɡ iː	ipa	0
+ف	f	ipa	0
+ف	f eː	ipa	0
+فائدہ	f ɑː ɪ d̪ᵊ	ipa	0
+فادر	f ɑː d̪ ə ɾ	ipa	0
+فارس	f ɑː ɾ s	ipa	0
+فارسی	f ɑː ɾ s iː	ipa	0
+فارغ	f ɑː ɾ ɪ ɣ	ipa	0
+فاس	f ɑː s	ipa	0
+فاسد	f ɑː s ɪ d̪	ipa	0
+فاصلہ	f ɑː s l ɑː	ipa	0
+فاصلہ	f ɑː s ɪ l ɑː	ipa	0
+فاضل	f ɑː z ɪ l	ipa	0
+فاقہ	f ɑː q ɑː	ipa	0
+فالتو	f ɑː l t̪ uː	ipa	0
+فالج	f ɑː l ɪ d͡ʒ	ipa	0
+فالجوں	f ɑː l ɪ d͡ʒ õː	ipa	0
+فالحال	f ɪ l ɦ ɑː l	ipa	0
+فالسئی	f ɑː l s ə iː	ipa	0
+فالسہ	f ɑː l s ɑ	ipa	0
+فالسہ	f ɑː l s ɑː	ipa	0
+فالودہ	f ɑː l uː d̪ ɑ	ipa	0
+فالودہ	f ɑː l uː d̪ ɑː	ipa	0
+فانوس	f ɑː n uː s	ipa	0
+فانی	f ɑː n iː	ipa	0
+فاکہہ	f ɑː k ɪ ɦ ɑ	ipa	0
+فاکہہ	f ɑː k ɪ ɦ ɑː	ipa	0
+فایدہ	f ɑː j ɪ d̪ᵊ	ipa	0
+فتح	f ə t̪ ə ɦ	ipa	0
+فتنہ	f ɪ t̪ n ɑ	ipa	0
+فتنہ	f ɪ t̪ n ɑː	ipa	0
+فتور	f ʊ t̪ uː ɾ	ipa	0
+فتورو	f ʊ t̪ uː ɾ oː	ipa	0
+فتوروں	f ʊ t̪ uː ɾ õː	ipa	0
+فتیلہ	f ə t̪ iː lᵊ	ipa	0
+فجی	f ɪ d͡ʒ iː	ipa	0
+فحش	f ʊ ɦ ʃ	ipa	0
+فخر	f ə x ɾ	ipa	0
+فدیہ	f ɪ d̪ j ɑ	ipa	0
+فدیہ	f ɪ d̪ j ɑː	ipa	0
+فرات	f ə ɾ ɑː t̪	ipa	0
+فرات	f ʊ ɾ ɑː t̪	ipa	0
+فراز	f ə ɾ ɑː z	ipa	0
+فراق	f ɪ ɾ ɑː q	ipa	0
+فراقوں	f ɪ ɾ ɑː q õː	ipa	0
+فراموش	f ə ɾ ɑː m oː ʃ	ipa	0
+فراموشی	f ə ɾ ɑː m oː ʃ iː	ipa	0
+فرانس	f ə ɾ ɑ̃ː s	ipa	0
+فرانس	f ɾ ɑː n s	ipa	0
+فرانس	f ɾ ɑ̃ː s	ipa	0
+فرانسیسی	f ə ɾ ɑː n s iː s iː	ipa	0
+فرانسیسی	f ɾ ɑː n s iː s iː	ipa	0
+فراہم	f ə ɾ ɑː ɦ ə m	ipa	0
+فربہ	f ə ɾ b ɑ	ipa	0
+فربہ	f ə ɾ b ɑː	ipa	0
+فرزند	f ə ɾ z ə n d̪̪	ipa	0
+فرزی	f ə ɾ z iː	ipa	0
+فرزین	f ə ɾ z iː n	ipa	0
+فرزیں	f ə ɾ z ĩː	ipa	0
+فرش	f ə ɾ ʃ	ipa	0
+فرشتو	f ə ɾ ɪ ʃ t̪ oː	ipa	0
+فرشتوں	f ə ɾ ɪ ʃ t̪ õː	ipa	0
+فرشتہ	f ə ɾ ɪ ʃ t̪ ɑ	ipa	0
+فرشتہ	f ə ɾ ɪ ʃ t̪ ɑː	ipa	0
+فرشتہ	f ɪ ɾ ɪ ʃ t̪ ɑ	ipa	0
+فرشتہ	f ɪ ɾ ɪ ʃ t̪ ɑː	ipa	0
+فرشتے	f ə ɾ ɪ ʃ t̪ eː	ipa	0
+فرصت	f ʊ ɾ s ə t̪	ipa	0
+فرصتو	f ʊ ɾ s ə t̪ oː	ipa	0
+فرصتوں	f ʊ ɾ s ə t̪ õː	ipa	0
+فرصتیں	f ʊ ɾ s ə t̪ ẽː	ipa	0
+فرض	f ə ɾ z	ipa	0
+فرضی	f ə ɾ z iː	ipa	0
+فرعون	f ɪ ɾ ɔː n	ipa	0
+فرعون	f ɪ ɾ ʔ ɔː n	ipa	0
+فرقہ	f ɪ ɾ q ɑ	ipa	0
+فرقہ	f ɪ ɾ q ɑː	ipa	0
+فرمائش	f ə ɾ m ɑː ɪ ʃ	ipa	0
+فرمان	f ə ɾ m ɑː n	ipa	0
+فرمانا	f ə ɾ m ɑː n ɑː	ipa	0
+فرنگی	f ə ɾ ə ŋ ɡ iː	ipa	0
+فرنگی	f ɪ ɾ ə ŋ ɡ iː	ipa	0
+فروری	f ə ɾ ʋ ə ɾ iː	ipa	0
+فرہاد	f ə ɾ ɦ ɑː d̪	ipa	0
+فرہنگ	f ə ɾ ɦ ə ŋ ɡ	ipa	0
+فریاد	f ə ɾ j ɑː d̪	ipa	0
+فریال	f ə ɾ j ɑː l	ipa	0
+فریب	f ə ɾ eː b	ipa	0
+فریبو	f ə ɾ eː b oː	ipa	0
+فریبوں	f ə ɾ eː b õː	ipa	0
+فریق	f ə ɾ iː q	ipa	0
+فرینکفرٹ	f ɾ ɛː ŋ k f ə ɾ ʈ	ipa	0
+فزان	f ə z z ɑː n	ipa	0
+فساد	f ə s ɑː d̪	ipa	0
+فسادی	f ə s ɑː d̪ iː	ipa	0
+فسانہ	f ə s ɑː n ɑ	ipa	0
+فسانہ	f ə s ɑː n ɑː	ipa	0
+فصل	f ə s l	ipa	0
+فضا	f ə z ɑː	ipa	0
+فضا	f ɪ z ɑː	ipa	0
+فضائیہ	f ɪ z ɑː ɪ j ɑ	ipa	0
+فضائیہ	f ɪ z ɑː ɪ j ɑː	ipa	0
+فضل	f ə z l	ipa	0
+فضلو	f ə z l oː	ipa	0
+فضلوں	f ə z l õː	ipa	0
+فضول	f ʊ z uː l	ipa	0
+فطرت	f ɪ t̪ ɾ ə t̪	ipa	0
+فعل	f eː l	ipa	0
+فعل	f eː ʔ l	ipa	0
+فعل	f ɪ l	ipa	0
+فعل	f ɪ ʔ l	ipa	0
+فغاں	f ʊ ɣ ɑ̃ː	ipa	0
+فقروں	f ɪ q ɾ õː	ipa	0
+فقرہ	f ɪ q ɾ ɑ	ipa	0
+فقرہ	f ɪ q ɾ ɑː	ipa	0
+فقرے	f ɪ q ɾ eː	ipa	0
+فقہ	f ɪ q ɦ	ipa	0
+فقیر	f ə q iː ɾ	ipa	0
+فلائٹ	f l ɑː ɪ ʈ	ipa	0
+فلاں	f ʊ l ɑ̃ː	ipa	0
+فلسطین	f ɪ l ɪ s t̪ iː n	ipa	0
+فلم	f ɪ l m	ipa	0
+فلپائن	f ɪ l p ɑː ɪ n	ipa	0
+فلپائن	f ɪ l ɪ p ɑː ɪ n	ipa	0
+فلک	f ə l ə k	ipa	0
+فلکیات	f ə l k iː j ɑː t̪	ipa	0
+فن	f ə n	ipa	0
+فوتگی	f ɔː t̪ ə ɡ iː	ipa	0
+فوتگی	f ɔː t̪ ɪ ɡ iː	ipa	0
+فوج	f ɔː d͡ʒ	ipa	0
+فوجو	f oː d͡ʒ oː	ipa	0
+فوجوں	f oː d͡ʒ õː	ipa	0
+فوجی	f ɔː d͡ʒ iː	ipa	0
+فوجیں	f oː d͡ʒ ẽː	ipa	0
+فورا	f ɔː ɾ ə n	ipa	0
+فولاد	f uː l ɑː d̪	ipa	0
+فولاد	f ɔː l ɑː d̪	ipa	0
+فولادو	f ɔː l ɑː d̪ oː	ipa	0
+فولادوں	f ɔː l ɑː d̪ õː	ipa	0
+فون	f oː n	ipa	0
+فون	f uː n	ipa	0
+فٹ	f ʊ ʈ	ipa	0
+فٹافٹ	f ə ʈ ɑː f ə ʈ	ipa	0
+فٹافٹ	pʰ	ipa	0
+فکر	f ɪ k ɾ	ipa	0
+فہرست	f ə ɦ ɾ ɪ s t̪	ipa	0
+فہرستو	f eː ɦ ɾ ɪ s t̪ oː	ipa	0
+فہرستوں	f eː ɦ ɾ ɪ s t̪ õː	ipa	0
+فہرستیں	f eː ɦ ɾ ɪ s t̪ ẽː	ipa	0
+فہم	f ə ɦ m	ipa	0
+فیروزہ	f iː ɾ oː z ɑ	ipa	0
+فیروزہ	f iː ɾ oː z ɑː	ipa	0
+فیروزی	f eː ɾ oː z iː	ipa	0
+فیصد	f iː s ə d̪	ipa	0
+فیصل	f ɛː s ə l	ipa	0
+فیصلہ	f ɛː s l ɑ	ipa	0
+فیصلہ	f ɛː s l ɑː	ipa	0
+فیضانو	f ɛː z ɑː n oː	ipa	0
+فیضانوں	f ɛː z ɑː n õː	ipa	0
+فیل	f iː l	ipa	0
+فیلا	f iː l ɑː	ipa	0
+فیلان	f iː l ɑː n	ipa	0
+فیلاں	f iː l ɑ̃ː	ipa	0
+فیلہ	f iː l ɑː	ipa	0
+فیلہ	f ɪ j ə l ɑː	ipa	0
+ق	q	ipa	0
+ق	q ɑː f	ipa	0
+قائل	q ɑː ɪ l	ipa	0
+قائل	q ɑː ʔ ɪ l	ipa	0
+قائم	q ɑː j ɪ m	ipa	0
+قاب	q ɑː b	ipa	0
+قابض	q ɑː b ɪ z	ipa	0
+قابل	q ɑː b ɪ l	ipa	0
+قابلیت	q ɑː b l ɪ j ə t̪	ipa	0
+قاتل	k ɑː t̪ ə l	ipa	0
+قاتل	q ɑː t̪ ɪ l	ipa	0
+قادیان	q ɑː d̪ ɪ j ɑː n	ipa	0
+قاری	q ɑː ɾ iː	ipa	0
+قاضی	q ɑː z iː	ipa	0
+قاعدو	q ɑː ɪ d̪ oː	ipa	0
+قاعدو	q ɑː ʔ ɪ d̪ oː	ipa	0
+قاعدوں	q ɑː ɪ d̪ õː	ipa	0
+قاعدوں	q ɑː ʔ ɪ d̪ õː	ipa	0
+قاعدہ	q ɑː j d̪ ɑ	ipa	0
+قاعدہ	q ɑː j d̪ ɑː	ipa	0
+قاعدے	q ɑː ɪ d̪ eː	ipa	0
+قاعدے	q ɑː ʔ ɪ d̪ eː	ipa	0
+قافلو	q ɑː f ɪ l oː	ipa	0
+قافلوں	q ɑː f ɪ l õː	ipa	0
+قافلہ	q ɑː f l ɑ	ipa	0
+قافلہ	q ɑː f l ɑː	ipa	0
+قافلہ	q ɑː f ɪ l ɑ	ipa	0
+قافلہ	q ɑː f ɪ l ɑː	ipa	0
+قافلے	q ɑː f ɪ l eː	ipa	0
+قافیہ	q ɑː f ɪ j ɑː	ipa	0
+قاقم	q ɑː q ʊ m	ipa	0
+قالین	q ɑː l iː n	ipa	0
+قالینوں	q ɑː l iː n õː	ipa	0
+قاموس	q ɑː m uː s	ipa	0
+قانون	q ɑː n uː n	ipa	0
+قانونوں	q ɑː n uː n õː	ipa	0
+قانونی	q ɑː n uː n iː	ipa	0
+قاچاقی	q ɑː t͡ʃ ɑː q iː	ipa	0
+قاہرہ	q ɑː ɦ ɪ ɾ ɑ	ipa	0
+قاہرہ	q ɑː ɦ ɪ ɾ ɑː	ipa	0
+قباحت	q ə b ɑː ɦ ə t̪	ipa	0
+قباحتو	q ə b ɑː ɦ ə t̪ oː	ipa	0
+قباحتوں	q ə b ɑː ɦ ə t̪ õː	ipa	0
+قباحتیں	q ə b ɑː ɦ ə t̪ ẽː	ipa	0
+قبر	q ə b ɾ	ipa	0
+قبرستان	q ə b ɾ ɪ s t̪ ɑː n	ipa	0
+قبرص	q ɪ b ɾ ɪ s	ipa	0
+قبض	q ə b z	ipa	0
+قبضوں	q ə b z õː	ipa	0
+قبضہ	q ə b z ɑ	ipa	0
+قبضہ	q ə b z ɑː	ipa	0
+قبل	q ə b l	ipa	0
+قبلتین	q ɪ b l ə t̪ ɛː n	ipa	0
+قبول	q ʊ b uː l	ipa	0
+قتل	q ə t̪ l	ipa	0
+قدر	q ə d̪ ɾ	ipa	0
+قدرت	q ʊ d̪ ɾ ə t̪	ipa	0
+قدرتو	q ʊ d̪ ɾ ə t̪ oː	ipa	0
+قدرتوں	q ʊ d̪ ɾ ə t̪ õː	ipa	0
+قدرتیں	q ʊ d̪ ɾ ə t̪ ẽː	ipa	0
+قدم	q ə d̪ ə m	ipa	0
+قدم	q ɪ d̪ ə m	ipa	0
+قدیم	q ə d̪ iː m	ipa	0
+قرآن	q ʊ ɾ ʔ ɑː n	ipa	0
+قرار	q ə ɾ ɑː ɾ	ipa	0
+قراقرم	q ə ɾ ɑː q ʊ ɾ ə m	ipa	0
+قربان	q ʊ ɾ b ɑː n	ipa	0
+قربانی	q ʊ ɾ b ɑː n iː	ipa	0
+قرض	q ə ɾ z	ipa	0
+قرضہ	q ə ɾ z ɑ	ipa	0
+قرضہ	q ə ɾ z ɑː	ipa	0
+قرطبہ	q ʊ ɾ t̪ ʊ b ɑ	ipa	0
+قرطبہ	q ʊ ɾ t̪ ʊ b ɑː ɦ	ipa	0
+قرمز	q ɪ ɾ m ɪ z	ipa	0
+قرمزی	q ɪ ɾ m ɪ z iː	ipa	0
+قرنطینہ	q ə ɾ ə n t̪ iː n ɑ	ipa	0
+قرنطینہ	q ə ɾ ə n t̪ iː n ɑː	ipa	0
+قرہ	q ə ɾ ɑː	ipa	0
+قریب	k ə ɾ iː b	ipa	0
+قریب	q ə ɾ iː b	ipa	0
+قریں	q ə ɾ ĩː	ipa	0
+قزاقستان	q ə z ɑː q ɪ s t̪ ɑː n	ipa	0
+قسط	q ɪ s t̪	ipa	0
+قسطنطنیہ	q ʊ s t̪ ʊ n t̪ ʊ n ɪ j ɑː	ipa	0
+قسطوں	q ɪ s t̪ õː	ipa	0
+قسطیں	q ɪ s t̪ ẽː	ipa	0
+قسم	q ə s ə m	ipa	0
+قسم	q ɪ s m	ipa	0
+قسمت	q ɪ s m ə t̪	ipa	0
+قسموں	q ə s ə m õː	ipa	0
+قسموں	q ɪ s m õː	ipa	0
+قسمیں	q ə s ə m ẽː	ipa	0
+قسمیں	q ɪ s m ẽː	ipa	0
+قشنگ	q ə ʃ ə ŋ ɡ	ipa	0
+قصائی	q ə s ɑː iː	ipa	0
+قصاب	q ə s s ɑː b	ipa	0
+قصاص	q ɪ s ɑː s	ipa	0
+قصبات	q ə s b ɑː t̪	ipa	0
+قصبوں	q ə s b õː	ipa	0
+قصبہ	q ə s b ɑ	ipa	0
+قصبہ	q ə s b ɑː	ipa	0
+قصبے	q ə s b eː	ipa	0
+قصور	q ə s uː ɾ	ipa	0
+قصور	q ʊ s uː ɾ	ipa	0
+قصہ	q ɪ s s ɑ	ipa	0
+قصہ	q ɪ s s ɑː	ipa	0
+قصیدو	q ə s iː d̪ oː	ipa	0
+قصیدوں	q ə s iː d̪ õː	ipa	0
+قصیدہ	q ə s iː d̪ ɑ	ipa	0
+قصیدہ	q ə s iː d̪ ɑː	ipa	0
+قصیدے	q ə s iː d̪ eː	ipa	0
+قضا	q ə z ɑ	ipa	0
+قضا	q ə z ɑː	ipa	0
+قضات	q ʊ z ɑː t̪	ipa	0
+قطار	q ɪ t̪ ɑː ɾ	ipa	0
+قطب	q ʊ t̪ b	ipa	0
+قطب	q ʊ t̪ ə b	ipa	0
+قطب	q ʊ t̪ ʊ b	ipa	0
+قطر	q ə t̪ ə ɾ	ipa	0
+قطرہ	q ə t̪ ɾ ɑ	ipa	0
+قطرہ	q ə t̪ ɾ ɑː	ipa	0
+قطعا	q ə t̪ ʔ ə n	ipa	0
+قطعی	q ə t̪ ə iː	ipa	0
+قفس	q ə f ə s	ipa	0
+ققنس	q ə q n ʊ s	ipa	0
+ققنوس	q ʊ q n uː s	ipa	0
+قلات	q ə l ɑː t̪	ipa	0
+قلب	q ə l b	ipa	0
+قلع	q ə l	ipa	0
+قلع	q ə l ʔ	ipa	0
+قلعو	q ɪ l oː	ipa	0
+قلعو	q ɪ l ʔ oː	ipa	0
+قلعوں	q ɪ l õː	ipa	0
+قلعوں	q ɪ l ʔ õː	ipa	0
+قلعہ	q ə l ʔ ɑ	ipa	0
+قلعہ	q ə l ʔ ɑː	ipa	0
+قلعہ	q ɪ l ʔ ɑ	ipa	0
+قلعہ	q ɪ l ʔ ɑː	ipa	0
+قلعے	q ɪ l eː	ipa	0
+قلعے	q ɪ l ʔ eː	ipa	0
+قلفی	q ʊ l f iː	ipa	0
+قلم	q ə l ə m	ipa	0
+قلندر	q ə l ə n d̪ ə ɾ	ipa	0
+قلی	q ʊ l iː	ipa	0
+قمچی	q ʊ m t͡ʃ iː	ipa	0
+قمیص	q ə m iː s	ipa	0
+قمیض	q ə m iː z	ipa	0
+قواعد	q ə ʋ ɑː j ə d̪	ipa	0
+قوالی	q ə ʋ ʋ ɑː l iː	ipa	0
+قوانین	q ə ʋ ɑː n iː n	ipa	0
+قوت	q uː t̪	ipa	0
+قوت	q ʊ ʋ ʋ ə t̪	ipa	0
+قوطی	q uː t̪ iː	ipa	0
+قوق	q ɔː q	ipa	0
+قول	q ɔː l	ipa	0
+قوم	q ɔː m	ipa	0
+قومی	q ɔː m iː	ipa	0
+قومیت	q ɔː m ɪ j ə t̪	ipa	0
+قوی	q ə ʋ iː	ipa	0
+قوی	q ʊ ʋ ɑː	ipa	0
+قہر	q ə ɦ ɾ	ipa	0
+قہرمان	q ə ɦ ɾ m ɑː n	ipa	0
+قہقہہ	q ə ɦ q ə ɦ ɑː	ipa	0
+قہوہ	q ə ɦ ʋ ɑ	ipa	0
+قہوہ	q ə ɦ ʋ ɑː	ipa	0
+قیادت	q ɪ j ɑː d̪ ə t̪	ipa	0
+قیامت	q ə j ɑː m ə t̪	ipa	0
+قید	q ɛː d̪	ipa	0
+قیمت	q iː m ə t̪	ipa	0
+قیمتی	q iː m t̪ iː	ipa	0
+قیمہ	k iː m ɑː	ipa	0
+قیمہ	q iː m ɑː	ipa	0
+قینچی	q ɛ̃ː t͡ʃ iː	ipa	0
+قے	q ɛː	ipa	0
+ل	l	ipa	0
+ل	l ɑː m	ipa	0
+لئے	l ɪ j eː	ipa	0
+لائبریری	l ɑː ɪ b ɾ eː ɾ iː	ipa	0
+لائٹر	l ɑː ɪ ʈ ə ɾ	ipa	0
+لاج	l ɑː d͡ʒ	ipa	0
+لاجورد	l ɑː d͡ʒ ʋ ə ɾ d̪	ipa	0
+لاجوردی	l ɑː d͡ʒ ʋ ə ɾ d̪ iː	ipa	0
+لاجوں	l ɑː d͡ʒ õː	ipa	0
+لاجیں	l ɑː d͡ʒ ẽː	ipa	0
+لاحق	l ɑː ɦ ɪ q	ipa	0
+لازم	l ɑː z ɪ m	ipa	0
+لاش	l ɑː ʃ	ipa	0
+لاشو	l ɑː ʃ oː	ipa	0
+لاشیں	l ɑː ʃ ẽː	ipa	0
+لاطینی	l ɑː t̪ iː n iː	ipa	0
+لال	l ɑː l	ipa	0
+لالٹین	l ɑː l ʈ eː n	ipa	0
+لالہ	l ɑː l ɑ	ipa	0
+لالہ	l ɑː l ɑː	ipa	0
+لامتناہی	l ɑː m ʊ t̪ ə n ɑː ɦ iː	ipa	0
+لانا	l ɑː n ɑː	ipa	0
+لانڈگا	l ɑ̃ː ɖ ɡ ɑː	ipa	0
+لاوارث	l ɑː ʋ ɑː ɾ ɪ s	ipa	0
+لاٹری	l ɑː ʈ ə ɾ iː	ipa	0
+لاٹری	l ɑː ʈ ɾ iː	ipa	0
+لاٹھی	l ɑː ʈʰ iː	ipa	0
+لاپتہ	l ɑː p ə t̪ ɑ	ipa	0
+لاپتہ	l ɑː p ə t̪ ɑː	ipa	0
+لاپروا	l ɑː p ə ɾ ʋ ɑː	ipa	0
+لاڈلہ	l ɑː ɖ l ɑː	ipa	0
+لاڈلی	l ɑː ɖ l iː	ipa	0
+لاڑکانہ	l ɑː ɽ k ɑː n ɑ	ipa	0
+لاڑکانہ	l ɑː ɽ k ɑː n ɑː	ipa	0
+لاکھ	l ɑː kʰ	ipa	0
+لاگت	l ɑː ɡ ə t̪	ipa	0
+لاگتوں	l ɑː ɡ ə t̪ õː	ipa	0
+لاگتیں	l ɑː ɡ ə t̪ ẽː	ipa	0
+لاہور	l ɑː ɦ ɔː ɾ	ipa	0
+لاہور	l ə ɦ ɔː ɾ	ipa	0
+لاہوری	l ɑː ɦ ɔː ɾ iː	ipa	0
+لب	l ə b	ipa	0
+لباس	l ɪ b ɑː s	ipa	0
+لبنان	l ə b n ɑː n	ipa	0
+لبنان	l ɪ b n ɑː n	ipa	0
+لبوں	l ə b õː	ipa	0
+لبھانا	l ʊ bʱ ɑː n ɑː	ipa	0
+لتھوینیا	l ɪ t̪ʰ ʊ eː n ɪ j ɑː	ipa	0
+لجنہ	l ə d͡ʒ n ɑ	ipa	0
+لجنہ	l ə d͡ʒ n ɑː	ipa	0
+لجنہ	l ə d͡ʒ ə n ɑ	ipa	0
+لجنہ	l ə d͡ʒ ə n ɑː	ipa	0
+لحظوں	l ə ɦ z õː	ipa	0
+لحظہ	l ə ɦ z ɑ	ipa	0
+لحظہ	l ə ɦ z ɑː	ipa	0
+لحظے	l ə ɦ z eː	ipa	0
+لحم	l ə ɦ ə m	ipa	0
+لداخ	l ə d̪ d̪ ɑː x	ipa	0
+لدھیانہ	l ʊ d̪ʱ ɪ j ɑː n ɑː	ipa	0
+لذات	l ə z z ɑː t̪	ipa	0
+لذت	l ə z z ə t̪	ipa	0
+لذتوں	l ə z z ə t̪ õː	ipa	0
+لذتیں	l ə z z ə t̪ ẽː	ipa	0
+لرزاں	l ə ɾ z ɑ̃ː	ipa	0
+لسان	l ɪ s ɑː n	ipa	0
+لسانیات	l ɪ s ɑː n ɪ j ɑː t̪	ipa	0
+لشکر	l ə ʃ k ə ɾ	ipa	0
+لطفا	l ʊ t̪ f ə n	ipa	0
+لطیفہ	l ə t̪ iː f ɑ	ipa	0
+لطیفہ	l ə t̪ iː f ɑː	ipa	0
+لعب	l ə b	ipa	0
+لعب	l ə ʔ b	ipa	0
+لغت	l ʊ ɣ ə t̪	ipa	0
+لغو	l ə ɣ ʋ	ipa	0
+لغوی	l ʊ ɣ ʋ iː	ipa	0
+لفافو	l ɪ f ɑː f oː	ipa	0
+لفافوں	l ɪ f ɑː f õː	ipa	0
+لفافہ	l ɪ f ɑː f ɑ	ipa	0
+لفافہ	l ɪ f ɑː f ɑː	ipa	0
+لفافے	l ɪ f ɑː f eː	ipa	0
+لفظ	l ə f z	ipa	0
+لفنگا	l ə f ə ŋ ɡ ɑː	ipa	0
+لقب	l ə q ə b	ipa	0
+لقمان	l ʊ q m ɑː n	ipa	0
+للاٹ	l ə l ɑː ʈ	ipa	0
+لمبا	l ə m b ɑː	ipa	0
+لمبائی	l ə̃ m b ɑː iː	ipa	0
+لمحاتی	l ə m ɦ ɑː t̪ iː	ipa	0
+لمحہ	l ə m ɦᵊ	ipa	0
+لمپٹ	l ə m p ə ʈ	ipa	0
+لندن	l ə n d̪ ə n	ipa	0
+لنگ	l ɪ ŋ ɡ	ipa	0
+لنگایت	l ɪ ŋ ɡ ɑː j ə t̪	ipa	0
+لوبیا	l oː b ɪ j ɑː	ipa	0
+لوتھ	l oː t̪ʰ	ipa	0
+لودهراں	l oː d̪ʱ ɾ ɑ̃ː	ipa	0
+لورالائی	l oː ɾ ɑː l ɑː iː	ipa	0
+لوری	l oː ɾ iː	ipa	0
+لوسیل	l uː s ɛː l	ipa	0
+لوط	l uː t̪	ipa	0
+لومڑی	l oː m ɽ iː	ipa	0
+لوٹا	l oː ʈ ɑː	ipa	0
+لوٹا	l uː ʈ ɑː	ipa	0
+لوٹا	l ɔː ʈ ɑː	ipa	0
+لوٹو	l oː ʈ oː	ipa	0
+لوٹوں	l oː ʈ õː	ipa	0
+لوٹے	l oː ʈ eː	ipa	0
+لوگ	l oː ɡ	ipa	0
+لوگو	l oː ɡ oː	ipa	0
+لوگوں	l oː ɡ õː	ipa	0
+لوہا	l oː ɦ ɑː	ipa	0
+لوہار	l oː ɦ ɑː ɾ	ipa	0
+لوہوں	l oː ɦ õː	ipa	0
+لوہے	l oː ɦ eː	ipa	0
+لٹکنا	l ə ʈ ə k n ɑː	ipa	0
+لپٹنا	l ɪ p ə ʈ n ɑː	ipa	0
+لڑائی	l ə ɽ ɑː iː	ipa	0
+لڑنا	l ə ɽ n ɑː	ipa	0
+لڑکا	l ə ɽ k ɑː	ipa	0
+لڑکی	l ə ɽ k iː	ipa	0
+لڑھکنا	l ʊ ɽʱ ə k n ɑː	ipa	0
+لکشادیپ	l ə k ʃ ɑː d̪ iː p	ipa	0
+لکشمی	l ə k ʃ m iː	ipa	0
+لکڑی	l ə k ɽ iː	ipa	0
+لکھائی	l ɪ kʰ ɑː iː	ipa	0
+لکھنؤ	l ə kʰ n ə uː	ipa	0
+لکھنا	l ɪ kʰ n ɑː	ipa	0
+لکھنوی	l ə kʰ n ə ʋ iː	ipa	0
+لکیر	l ə k iː ɾ	ipa	0
+لگام	l ə ɡ ɑː m	ipa	0
+لگانا	l ə ɡ ɑː n ɑː	ipa	0
+لگن	l ə ɡ ə n	ipa	0
+لگے	l ə ɡ eː	ipa	0
+لہجوں	l ə ɦ d͡ʒ õː	ipa	0
+لہجہ	l ə ɦ d͡ʒ ɑ	ipa	0
+لہجہ	l ə ɦ d͡ʒ ɑː	ipa	0
+لہجے	l ə ɦ d͡ʒ eː	ipa	0
+لہذا	l ɪ ɦ ɑː z ɑː	ipa	0
+لہرانا	l ɛ ɦ ɾ ɑː n ɑː	ipa	0
+لہسن	l ə s ə n	ipa	0
+لہسن	l ə ɦ s ʊ n	ipa	0
+لہنگا	l ɛː ɦ ŋ ɡ ɑː	ipa	0
+لہنگا	l ɛː ɦ ɛː ŋ ɡ ɑː	ipa	0
+لہو	l ə ɦ uː	ipa	0
+لہہ	l eː ɦ	ipa	0
+لیئج	l ɪ eː d͡ʒ	ipa	0
+لیئج	l ɪ j eː d͡ʒ	ipa	0
+لیبیا	l iː b ɪ j ɑː	ipa	0
+لیسٹر	l ɛː s ʈ ə ɾ	ipa	0
+لیل	l iː l	ipa	0
+لیلی	l ɛː l ɑː	ipa	0
+لیموں	l iː m uː	ipa	0
+لیموں	l iː m ũː	ipa	0
+لینا	l eː n ɑː	ipa	0
+لیون	l ɪ j oː n	ipa	0
+لیون	l ɪ j ɔː n	ipa	0
+لیوں	l ɪ j õː	ipa	0
+لیوں	l ɪ j ɔ̃ː	ipa	0
+لیٹنا	l eː ʈ n ɑː	ipa	0
+لیکن	l eː k ɪ n	ipa	0
+لیکھ	l eː kʰ	ipa	0
+لیکھنی	l eː kʰ ə n iː	ipa	0
+لیکھک	l eː kʰ ə k	ipa	0
+لیہہ	l eː ɦ	ipa	0
+لیے	l ɪ j eː	ipa	0
+لے	l eː	ipa	0
+م	m	ipa	0
+م	m iː m	ipa	0
+مآل	m ə ɑː l	ipa	0
+مآلات	m ə ɑː l ɑː t̪	ipa	0
+مؤثر	m ʊ ə s s ɪ ɾ	ipa	0
+مؤثر	m ʊ ʔ ə s s ɪ ɾ	ipa	0
+مؤذن	m ʊ ə z z ɪ n	ipa	0
+مؤسسہ	m ʊ ə s s ɪ s ə	ipa	0
+مؤسسہ	m ʊ ʔ ə s s ɪ s ə	ipa	0
+مؤنث	m ʊ ə n n ə s	ipa	0
+مؤنث	m ʊ ʔ ə n n ə s	ipa	0
+مئی	m ə iː	ipa	0
+ماء	m ɑː	ipa	0
+ماء	m ɑː ʔ	ipa	0
+ماتا	m ɑː t̪ ɑː	ipa	0
+ماتم	m ɑː t̪ ə m	ipa	0
+ماتھا	m ɑː t̪ʰ ɑː	ipa	0
+ماتھو	m ɑː t̪ʰ oː	ipa	0
+ماتھوں	m ɑː t̪ʰ õː	ipa	0
+ماتھے	m ɑː t̪ʰ eː	ipa	0
+ماحول	m ɑː ɦ ɔː l	ipa	0
+ماخولیا	m ɑː x uː l ɪ j ɑː	ipa	0
+مادہ	m ɑː d̪ d̪ ɑː	ipa	0
+مادہ	m ɑː d̪ ɑː	ipa	0
+مادیت	m ɑː d̪ d̪ ɪ j ə t̪	ipa	0
+مارتول	m ɑː ɾ t̪ oː l	ipa	0
+مارتول	m ɑː ɾ t̪ ɔː l	ipa	0
+مارنا	m ɑː ɾ n ɑː	ipa	0
+مارونی	m ɑː ɾ uː n iː	ipa	0
+مارچ	m ɑː ɾ t͡ʃ	ipa	0
+مارگ	m ɑː ɾ ɡ	ipa	0
+ماسٹر	m ɑː s ʈ ə ɾ	ipa	0
+ماسکو	m ɑː s k oː	ipa	0
+ماسی	m ɑː s iː	ipa	0
+ماضی	m ɑː z iː	ipa	0
+مالا	m ɑː l ɑː	ipa	0
+مالدووا	m ɑː l d̪ oː ʋ ɑː	ipa	0
+مالدیپ	m ɑː l d̪ iː p	ipa	0
+مالٹا	m ɑː l ʈ ɑː	ipa	0
+مالٹوں	m ɑː l ʈ õː	ipa	0
+مالٹے	m ɑː l ʈ eː	ipa	0
+مالک	m ɑː l ɪ k	ipa	0
+مالیخولیا	m ɑː l iː x uː l ɪ j ɑː	ipa	0
+ماما	m ɑː m ɑː	ipa	0
+ماموں	m ɑː m ũː	ipa	0
+مامے	m ɑː m eː	ipa	0
+ماندہ	m ɑː n d̪ ɑ	ipa	0
+ماندہ	m ɑː n d̪ ɑː	ipa	0
+ماندہ	m ɑ̃ː d̪ ɑ	ipa	0
+ماندہ	m ɑ̃ː d̪ ɑː	ipa	0
+مانسہرہ	m ɑː n s ɛ ɦ ɾ ɑ	ipa	0
+مانسہرہ	m ɑː n s ɛ ɦ ɾ ɑː	ipa	0
+مانوس	m ɑː n uː s	ipa	0
+مانچسٹر	m ɑː n t͡ʃ ɪ s ʈ ə ɾ	ipa	0
+مانگ	m ɑː ŋ ɡ	ipa	0
+مانگنا	m ɑː ŋ ɡ n ɑː	ipa	0
+ماں	m ɑ̃ː	ipa	0
+ماہ	m ɑː ɦ	ipa	0
+ماہانہ	m ɑː ɦ ɑː n ɑː	ipa	0
+ماہر	m ɑː ɦ ɪ ɾ	ipa	0
+ماہرین	m ɑː ɦ ɪ ɾ iː n	ipa	0
+ماہی	m ɑː ɦ iː	ipa	0
+ماہ‌جبیں	m ɑː ɦ d͡ʒ ə b ĩː	ipa	0
+مایوس	m ɑː j uː s	ipa	0
+مبارزہ	m ʊ b ɑː ɾ ə z ɑː	ipa	0
+مبارک	m ʊ b ɑː ɾ ə k	ipa	0
+مبارک	m ʊ b ɑː ɾ ɪ k	ipa	0
+مبلغ	m ə b l ə ɣ	ipa	0
+مبلغ	m ʊ b l ə ɣ	ipa	0
+مبلغ	m ʊ b ə l l ɪ ɣ	ipa	0
+مبنی	m ə b n ɑː	ipa	0
+مت	m ə t̪	ipa	0
+متجسس	m ʊ t̪ ə d͡ʒ ə s s ɪ s	ipa	0
+مترا	m ɪ t̪ ɾ ɑː	ipa	0
+مترائی	m ɪ t̪ ɾ ɑː iː	ipa	0
+مترجم	m ʊ t̪ ə ɾ d͡ʒ ɪ m	ipa	0
+متسیہ	m ə t̪ s j ɑ	ipa	0
+متسیہ	m ə t̪ s j ɑː	ipa	0
+متعارف	m ʊ t̪ ə ɑː ɾ ə f	ipa	0
+متعارف	m ʊ t̪ ə ʔ ɑː ɾ ə f	ipa	0
+متعلق	m ʊ t̪ ə ə l l ɪ q	ipa	0
+متعلق	m ʊ t̪ ə ʔ ə l l ɪ q	ipa	0
+متفرق	m ʊ t̪ ə f ə ɾ ɾ ɪ q	ipa	0
+متلی	m ə t̪ l iː	ipa	0
+متنوع	m ʊ t̪ ə n ə ʋ ʋ eː	ipa	0
+متنوع	m ʊ t̪ ə n ə ʋ ʋ eː ʔ	ipa	0
+متوالا	m ə t̪ ʋ ɑː l ɑː	ipa	0
+متوالی	m ʊ t̪ ə ʋ ɑː l iː	ipa	0
+متوجہ	m ʊ t̪ ə ʋ ə d̪ d͡ʒᵊ	ipa	0
+متولد	m ʊ t̪ ə ʋ ə l l ɪ d̪	ipa	0
+متولی	m ʊ t̪ ə ʋ ə l l iː	ipa	0
+متکلم	m ʊ t̪ ə k ə l l ɪ m	ipa	0
+متھرا	m ə t̪ʰ ʊ ɾ ɑː	ipa	0
+مثال	m ɪ s ɑː l	ipa	0
+مثلا	m ə s l ə n	ipa	0
+مثلا	m ə s ə l ə n	ipa	0
+مثلثیات	m ʊ s ə l s ɪ j ɑː t̪	ipa	0
+مجارستان	m ə d͡ʒ ɑː ɾ ɪ s t̪ ɑː n	ipa	0
+مجال	m ə d͡ʒ ɑː l	ipa	0
+مجبور	m ə d͡ʒ b uː ɾ	ipa	0
+مجرم	m ʊ d͡ʒ ɾ ɪ m	ipa	0
+مجمع	m ə d͡ʒ m ə ʔ	ipa	0
+مجمعو	m ə d͡ʒ m oː	ipa	0
+مجمعوں	m ə d͡ʒ m õː	ipa	0
+مجمعے	m ə d͡ʒ m eː	ipa	0
+مجموعو	m ə d͡ʒ m uː oː	ipa	0
+مجموعو	m ə d͡ʒ m uː ʔ oː	ipa	0
+مجموعوں	m ə d͡ʒ m uː õː	ipa	0
+مجموعوں	m ə d͡ʒ m uː ʔ õː	ipa	0
+مجموعہ	m ə d͡ʒ m uː ʔ ɑ	ipa	0
+مجموعہ	m ə d͡ʒ m uː ʔ ɑː	ipa	0
+مجموعے	m ə d͡ʒ m uː eː	ipa	0
+مجموعے	m ə d͡ʒ m uː ʔ eː	ipa	0
+مجنون	m ə d͡ʒ n uː n	ipa	0
+مجھ	m ʊ d͡ʒʱ	ipa	0
+مجھے	m ɪ d͡ʒʱ eː	ipa	0
+مجھے	m ʊ d͡ʒʱ eː	ipa	0
+مجہول	m ə d͡ʒ ɦ uː l	ipa	0
+محاسب	m ʊ ɦ ɑː s ɪ b	ipa	0
+محافظ	m ʊ ɦ ɑː f ɪ z	ipa	0
+محافظت	m ʊ ɦ ɑː f ə z ə t̪	ipa	0
+محافظو	m ʊ ɦ ɑː f ɪ z oː	ipa	0
+محافظوں	m ʊ ɦ ɑː f ɪ z õː	ipa	0
+محال	m ʊ ɦ ɑː l	ipa	0
+محبت	m ʊ ɦ ə b b ə t̪	ipa	0
+محبتوں	m ʊ ɦ ə b b ə t̪ õː	ipa	0
+محبتیں	m ʊ ɦ ə b b ə t̪ ẽː	ipa	0
+محتاط	m ʊ ɦ t̪ ɑː t̪	ipa	0
+محترم	m oː ɦ t̪ ə ɾ ə m	ipa	0
+محترم	m ʊ ɦ t̪ ə ɾ ə m	ipa	0
+محترمہ	m oː ɦ t̪ ə ɾ m ɑː	ipa	0
+محترمہ	m ʊ ɦ t̪ ə ɾ m ɑː	ipa	0
+محتسب	m oː ɦ t̪ ə s ɪ b	ipa	0
+محراب	m eː ɦ ɾ ɑː b	ipa	0
+محراب	m ɪ ɦ ɾ ɑː b	ipa	0
+محروم	m ə ɦ ɾ uː m	ipa	0
+محسن	m oː ɦ s ɪ n	ipa	0
+محسوس	m ə ɦ s uː s	ipa	0
+محشر	m ə ɦ ʃ ə ɾ	ipa	0
+محفل	m ə ɦ f ɪ l	ipa	0
+محل	m ə ɦ ə l	ipa	0
+محلات	m ə ɦ ə l l ɑː t̪	ipa	0
+محلوں	m ə ɦ ə l l õː	ipa	0
+محلوں	m ə ɦ ə l õː	ipa	0
+محلہ	m o ɦ ə l l ɑː	ipa	0
+محلہ	m ə ɦ ə l l ɑ	ipa	0
+محلہ	m ə ɦ ə l l ɑː	ipa	0
+محلہ	m ʊ ɦ ə l l ɑ	ipa	0
+محلہ	m ʊ ɦ ə l l ɑː	ipa	0
+محلے	m ə ɦ ə l l eː	ipa	0
+محمد	m ʊ ɦ ə m m ə d̪	ipa	0
+محمدی	m ʊ ɦ ə mː ə d̪ iː	ipa	0
+محنت	m ɪ ɦ n ə t̪	ipa	0
+محنتو	m ɪ ɦ n ə t̪ oː	ipa	0
+محنتوں	m ɪ ɦ n ə t̪ õː	ipa	0
+محنتی	m ɪ ɦ n ə t̪ iː	ipa	0
+محنتیں	m ɪ ɦ n ə t̪ ẽː	ipa	0
+محور	m ɪ ɦ ʋ ə ɾ	ipa	0
+مخالف	m ʊ x ɑː l ɪ f	ipa	0
+مخالفت	m ʊ x ɑː l ɪ f ə t̪	ipa	0
+مخالفتوں	m ʊ x ɑː l ɪ f ə t̪ õː	ipa	0
+مخالفتیں	m ʊ x ɑː l ɪ f ə t̪ ẽː	ipa	0
+مخالفو	m ʊ x ɑː l ɪ f oː	ipa	0
+مخالفوں	m ʊ x ɑː l ɪ f õː	ipa	0
+مختصر	m ʊ x t̪ ə s ə ɾ	ipa	0
+مختصرا	m ʊ x t̪ ə s ə ɾ ə n	ipa	0
+مختلف	m ʊ x t̪ ə l ə f	ipa	0
+مختلف	m ʊ x t̪ ə l ɪ f	ipa	0
+مخدوم	m ə x d̪ uː m	ipa	0
+مخزن	m ə x z ə n	ipa	0
+مخلوط	m ə x l uː t̪	ipa	0
+مخمل	m ə x m ə l	ipa	0
+مخملی	m ə x m ə l iː	ipa	0
+مدت	m ʊ d̪ d̪ ə t̪	ipa	0
+مدد	m ə d̪ ə d̪	ipa	0
+مددو	m ə d̪ ə d̪ oː	ipa	0
+مددوں	m ə d̪ ə d̪ õː	ipa	0
+مددگار	m ə d̪ ə d̪ ɡ ɑː ɾ	ipa	0
+مددیں	m ə d̪ ə d̪ ẽː	ipa	0
+مدرا	m ʊ d̪ ə ɾ ɑː	ipa	0
+مدراس	m ə d̪ ɾ ɑː s	ipa	0
+مدعو	m ə d̪ ʔ uː	ipa	0
+مدعی	m ʊ d̪ d̪ ə iː	ipa	0
+مدعی	m ʊ d̪ d̪ ə ɑː	ipa	0
+مدعی	m ʊ d̪ d̪ ə ʔ iː	ipa	0
+مدعی	m ʊ d̪ d̪ ə ʔ ɑː	ipa	0
+مدفون	m ə d̪ f uː n	ipa	0
+مدھم	m ə d̪ːʰ ə m	ipa	0
+مدھو	m ə d̪ʱ uː	ipa	0
+مدہوش	m ə d̪ ɦ oː ʃ	ipa	0
+مدیر	m ʊ d̪ iː ɾ	ipa	0
+مدیرا	m ə d̪ iː ɾ ɑː	ipa	0
+مدینہ	m ə d̪ iː n ɑː	ipa	0
+مذاق	m ə z ɑː q	ipa	0
+مذاکرات	m ʊ z ɑː k ə ɾ ɑː t̪	ipa	0
+مذاکرہ	m ʊ z ɑː k ə ɾ ɑ	ipa	0
+مذاکرہ	m ʊ z ɑː k ə ɾ ɑː	ipa	0
+مذمت	m ə z ə m m ə t̪	ipa	0
+مذکر	m ʊ z ə k k ə ɾ	ipa	0
+مذکور	m ə z k uː ɾ	ipa	0
+مذہب	m ə z ɦ ə b	ipa	0
+مذہبوں	m ə z ɦ ə b õː	ipa	0
+مذہبی	m ə z ɦ ə b iː	ipa	0
+مرا	m ɪ ɾ ɑː	ipa	0
+مراد	m ʊ ɾ ɑː d̪	ipa	0
+مراٹھی	m ə ɾ ɑː ʈʰ iː	ipa	0
+مراکش	m ə ɾ ɑː k ɪ ʃ	ipa	0
+مربا	m ʊ ɾ ə b b ɑː	ipa	0
+مربع	m ʊ ɾ ə b b ɑː	ipa	0
+مربع	m ʊ ɾ ə b b ɑː ʔ	ipa	0
+مربی	m ʊ ɾ ə b b iː	ipa	0
+مرتبہ	m ə ɾ t̪ ə b ɑ	ipa	0
+مرتبہ	m ə ɾ t̪ ə b ɑː	ipa	0
+مرتیو	m ə ɾ ɪ t̪ j uː	ipa	0
+مرثیہ	m ə ɾ s ɪ j ɑ	ipa	0
+مرثیہ	m ə ɾ s ɪ j ɑː	ipa	0
+مرد	m ə ɾ d̪	ipa	0
+مردار	m ʊ ɾ d̪ ɑː ɾ	ipa	0
+مردان	m ə ɾ d̪ ɑː n	ipa	0
+مردانگی	m ɪ ɾ d̪ ɑː ŋ ɡ iː	ipa	0
+مردانہ	m ə ɾ d̪ ɑː n ɑ	ipa	0
+مردانہ	m ə ɾ d̪ ɑː n ɑː	ipa	0
+مردد	m ʊ ɾ ə d̪ d̪ ə d̪	ipa	0
+مردد	m ʊ ɾ ə d̪ d̪ ɪ d̪	ipa	0
+مردنی	m ə ɾ d̪ ə n iː	ipa	0
+مردنی	m ʊ ɾ d̪ ə n iː	ipa	0
+مردو	m ə ɾ d̪ oː	ipa	0
+مردو	m ʊ ɾ d̪ oː	ipa	0
+مردوں	m ə ɾ d̪ õː	ipa	0
+مردوں	m ʊ ɾ d̪ õː	ipa	0
+مردہ	m ʊ ɾ d̪ ɑ	ipa	0
+مردہ	m ʊ ɾ d̪ ɑː	ipa	0
+مردے	m ʊ ɾ d̪ eː	ipa	0
+مرض	m ə ɾ z	ipa	0
+مرض	m ə ɾ ə z	ipa	0
+مرضی	m ə ɾ z iː	ipa	0
+مرضی	m ə ɾ ə z iː	ipa	0
+مرعش	m ə ɾ ə ʃ	ipa	0
+مرعش	m ə ɾ ʔ ə ʃ	ipa	0
+مرغابی	m ʊ ɾ ɣ ɑː b iː	ipa	0
+مرغی	m ʊ ɾ ɣ iː	ipa	0
+مرغیاں	m ʊ ɾ ɣ ɪ j ɑ̃ː	ipa	0
+مرغیو	m ʊ ɾ ɣ ɪ j oː	ipa	0
+مرغیوں	m ʊ ɾ ɣ ɪ j õː	ipa	0
+مرمت	m ə ɾ ə mː ə t̪	ipa	0
+مرنا	m ə ɾ n ɑː	ipa	0
+مروانا	m ə ɾ ʋ ɑː n ɑː	ipa	0
+مرکز	m ə ɾ k ə z	ipa	0
+مرکزی	m ə ɾ k ə z iː	ipa	0
+مرگ	m ə ɾ ɡ	ipa	0
+مرگ	m ɾ ɪ ɡ	ipa	0
+مرگی	m ɪ ɾ ɡ iː	ipa	0
+مریادا	m ə ɾ j ɑː d̪ ɑː	ipa	0
+مریخ	m ə ɾ iː x	ipa	0
+مریخ	m ɪ ɾ ɾ iː x	ipa	0
+مریدکے	m ʊ ɾ iː d̪ k eː	ipa	0
+مریض	m ə ɾ iː z	ipa	0
+مریم	m ə ɾ j ə m	ipa	0
+مزاج	m ɪ z ɑː d͡ʒ	ipa	0
+مزاحمت	m ʊ z ɑː ɦ ə m ə t̪	ipa	0
+مزدور	m ə z d̪ uː ɾ	ipa	0
+مزور	m ə z uː ɾ	ipa	0
+مزہ	m ə z ɑ	ipa	0
+مزہ	m ə z ɑː	ipa	0
+مزید	m ə z iː d̪	ipa	0
+مزیدار	m ə z eː d̪ ɑː ɾ	ipa	0
+مسئلوں	m ə s ə l õː	ipa	0
+مسئلہ	m ə s l ɑː	ipa	0
+مسئلہ	m ə s ə l ɑ	ipa	0
+مسئلہ	m ə s ə l ɑː	ipa	0
+مسئلہ	m ə s ʔ ə l ɑ	ipa	0
+مسئلہ	m ə s ʔ ə l ɑː	ipa	0
+مسئلے	m ə s ə l eː	ipa	0
+مسائل	m ə s ɑː ɪ l	ipa	0
+مساجد	m ə s ɑː d͡ʒ ɪ d̪	ipa	0
+مسافر	m ʊ s ɑː f ɪ ɾ	ipa	0
+مست	m ə s t̪	ipa	0
+مستحق	m ʊ s t̪ ə ɦ ə q	ipa	0
+مستحکم	m ʊ s t̪ ə ɦ k ə m	ipa	0
+مستراح	m ʊ s t̪ ə ɾ ɑː ɦ	ipa	0
+مسترد	m ʊ s t̪ ə ɾ ə d̪	ipa	0
+مستری	m ɪ s t̪ ə ɾ iː	ipa	0
+مستری	m ɪ s t̪ ɾ iː	ipa	0
+مستعفی	m ʊ s t̪ ə ʔ f iː	ipa	0
+مستقبل	m ʊ s t̪ ə q b ɪ l	ipa	0
+مستقر	m ʊ s t̪ ə q ə ɾ	ipa	0
+مستقل	m ʊ s t̪ ə q ɪ l	ipa	0
+مستونگ	m ə s t̪ uː ŋ ɡ	ipa	0
+مسجد	m ə s d͡ʒ ɪ d̪	ipa	0
+مسجدوں	m ə s d͡ʒ ɪ d̪ õː	ipa	0
+مسجدیں	m ə s d͡ʒ ɪ d̪ ẽː	ipa	0
+مسقط	m ə s q ə t̪	ipa	0
+مسلسل	m ʊ s ə l s ɪ l	ipa	0
+مسلط	m ʊ s ə l l ə t̪	ipa	0
+مسلم	m ʊ s l ɪ m	ipa	0
+مسلمان	m ʊ s ə l m ɑː n	ipa	0
+مسلمہ	m ʊ s ə l l ə m ɑ	ipa	0
+مسلمہ	m ʊ s ə l l ə m ɑː	ipa	0
+مسود	m ʊ s ə ʋ ʋ ə d̪	ipa	0
+مسوڑا	m ə s uː ɽ ɑː	ipa	0
+مسوڑو	m ə s uː ɽ oː	ipa	0
+مسوڑوں	m ə s uː ɽ õː	ipa	0
+مسوڑھا	m ə s uː ɽʱ ɑː	ipa	0
+مسوڑھو	m ə s uː ɽʱ oː	ipa	0
+مسوڑھوں	m ə s uː ɽʱ õː	ipa	0
+مسوڑھے	m ə s uː ɽʱ eː	ipa	0
+مسوڑے	m ə s uː ɽ eː	ipa	0
+مسٹنڈا	m ʊ s ʈ ə n ɖ ɑː	ipa	0
+مسٹنڈا	m ʊ ʃ ʈ ə n ɖ ɑː	ipa	0
+مسکراہٹ	m ʊ s k ʊ ɾ ɑː ɦ ə ʈ	ipa	0
+مسکراہٹوں	m ʊ s k ʊ ɾ ɑː ɦ ə ʈ õː	ipa	0
+مسکراہٹیں	m ʊ s k ʊ ɾ ɑː ɦ ə ʈ ẽː	ipa	0
+مسیح	m ə s iː ɦ	ipa	0
+مسیحا	m ə s iː ɦ ɑː	ipa	0
+مسیحی	m ə s iː ɦ iː	ipa	0
+مسیحیت	m ə s iː ɦ ɪ j ə t̪	ipa	0
+مشاور	m ʊ ʃ ɑː ʋ ɪ ɾ	ipa	0
+مشاہدات	m ʊ ʃ ɑː ɦ ɪ d̪ ɑː t̪	ipa	0
+مشاہدو	m ʊ ʃ ɑː ɦ ɪ d̪ oː	ipa	0
+مشاہدوں	m ʊ ʃ ɑː ɦ ɪ d̪ õː	ipa	0
+مشاہدہ	m ʊ ʃ ɑː ɦ ə d̪ ɑ	ipa	0
+مشاہدہ	m ʊ ʃ ɑː ɦ ə d̪ ɑː	ipa	0
+مشاہدہ	m ʊ ʃ ɑː ɦ ɪ d̪ ɑ	ipa	0
+مشاہدہ	m ʊ ʃ ɑː ɦ ɪ d̪ ɑː	ipa	0
+مشاہدے	m ʊ ʃ ɑː ɦ ɪ d̪ eː	ipa	0
+مشترکہ	m ʊ ʃ t̪ ə ɾ k ɑ	ipa	0
+مشترکہ	m ʊ ʃ t̪ ə ɾ k ɑː	ipa	0
+مشترکہ	m ʊ ʃ t̪ ə ɾ ə k ɑ	ipa	0
+مشترکہ	m ʊ ʃ t̪ ə ɾ ə k ɑː	ipa	0
+مشدد	m ʊ ʃ ə d̪ d̪ ə d̪	ipa	0
+مشرق	m ə ʃ ɾ ɪ q	ipa	0
+مشرک	m ʊ ʃ ɾ ɪ k	ipa	0
+مشعل	m ə ʃ ə l	ipa	0
+مشعل	m ə ʃ ʔ ə l	ipa	0
+مشغلہ	m ə ʃ ɣ ə l ɑː	ipa	0
+مشغول	m ə ʃ ɣ uː l	ipa	0
+مشق	m ə ʃ q	ipa	0
+مشقت	m ə ʃ ə qː ə t̪	ipa	0
+مشوروں	m ə ʃ ʋ ə ɾ õː	ipa	0
+مشورہ	m ə ʃ ʋ ə ɾ ɑ	ipa	0
+مشورہ	m ə ʃ ʋ ə ɾ ɑː	ipa	0
+مشورے	m ə ʃ ʋ ə ɾ eː	ipa	0
+مشک	m ʊ ʃ k	ipa	0
+مشکل	m ʊ ʃ k ɪ l	ipa	0
+مشکوک	m ə ʃ k uː k	ipa	0
+مشہد	m ə ʃ ɦ ə d̪	ipa	0
+مشہور	m ə ʃ ɦ uː ɾ	ipa	0
+مشہوری	m ə ʃ ɦ uː ɾ iː	ipa	0
+مشہوریاں	m ə ʃ ɦ uː ɾ ɪ j ɑ̃ː	ipa	0
+مشہوریوں	m ə ʃ ɦ uː ɾ ɪ j õː	ipa	0
+مشین	m ə ʃ iː n	ipa	0
+مصالحہ	m ə s ɑː l ɑ	ipa	0
+مصالحہ	m ə s ɑː l ɑː	ipa	0
+مصالحہ	m ə s ɑː l ɦ ɑ	ipa	0
+مصالحہ	m ə s ɑː l ɦ ɑː	ipa	0
+مصالحہ	m ə s ɑː l ɪ ɦ ɑ	ipa	0
+مصالحہ	m ə s ɑː l ɪ ɦ ɑː	ipa	0
+مصر	m ɪ s ə ɾ	ipa	0
+مصر	m ɪ s ɾ	ipa	0
+مصروف	m ə s ɾ uː f	ipa	0
+مصری	m ɪ s ɾ iː	ipa	0
+مصنف	m ʊ s ə n n ɪ f	ipa	0
+مصنفہ	m ʊ s ə n n ɪ fᵊ	ipa	0
+مصیبت	m ʊ s iː b ə t̪	ipa	0
+مضر	m ʊ z ɪ ɾ	ipa	0
+مضموم	m ə z m uː m	ipa	0
+مضمون	m ə z m uː n	ipa	0
+مطالعہ	m ʊ t̪ ɑː l ə ɑ	ipa	0
+مطالعہ	m ʊ t̪ ɑː l ə ɑː	ipa	0
+مطالعہ	m ʊ t̪ ɑː l ə ʔ ɑ	ipa	0
+مطالعہ	m ʊ t̪ ɑː l ə ʔ ɑː	ipa	0
+مطعم	m ə t̪ ə m	ipa	0
+مطعم	m ə t̪ ʔ ə m	ipa	0
+مطلب	m ə t̪ l ə b	ipa	0
+مطلبی	m ə t̪ l ə b iː	ipa	0
+مطلقا	m ʊ t̪ l ə q ə n	ipa	0
+مطمئن	m ʊ t̪ m ə ɪ n	ipa	0
+مظاہرہ	m ʊ z ɑː ɦ ɪ ɾ ɑː	ipa	0
+مظاہرین	m ʊ z ɑː ɦ ɪ ɾ iː n	ipa	0
+مظلوم	m ə z l uː m	ipa	0
+مع	m ə	ipa	0
+مع	m ə ʔ	ipa	0
+معائنوں	m ʊ ɑː ɪ n õː	ipa	0
+معائنوں	m ʊ ʔ ɑː ɪ n õː	ipa	0
+معائنہ	m ʊ ɑː ɪ n ɑ	ipa	0
+معائنہ	m ʊ ɑː ɪ n ɑː	ipa	0
+معائنہ	m ʊ ʔ ɑː ɪ n ɑ	ipa	0
+معائنہ	m ʊ ʔ ɑː ɪ n ɑː	ipa	0
+معائنے	m ʊ ɑː ɪ n eː	ipa	0
+معائنے	m ʊ ʔ ɑː ɪ n eː	ipa	0
+معاش	m ə ɑː ʃ	ipa	0
+معاش	m ə ʔ ɑː ʃ	ipa	0
+معاشرہ	m ɑː ʃ ɾ ɑː	ipa	0
+معاشرہ	m ʊ ɑː ʃ ə ɾ ɑ	ipa	0
+معاشرہ	m ʊ ɑː ʃ ə ɾ ɑː	ipa	0
+معاشرہ	m ʊ ʔ ɑː ʃ ə ɾ ɑ	ipa	0
+معاشرہ	m ʊ ʔ ɑː ʃ ə ɾ ɑː	ipa	0
+معاصر	m ʊ ɑː s ə ɾ	ipa	0
+معاصر	m ʊ ʔ ɑː s ə ɾ	ipa	0
+معاف	m ʊ ɑː f	ipa	0
+معاف	m ʊ ʔ ɑː f	ipa	0
+معافی	m ʊ ɑː f iː	ipa	0
+معافی	m ʊ ʔ ɑː f iː	ipa	0
+معافیاں	m ʊ ɑː f ɪ j ɑ̃ː	ipa	0
+معافیاں	m ʊ ʔ ɑː f ɪ j ɑ̃ː	ipa	0
+معافیوں	m ʊ ɑː f ɪ j õː	ipa	0
+معافیوں	m ʊ ʔ ɑː f ɪ j õː	ipa	0
+معاملات	m ʊ ɑː m ə l ɑː t̪	ipa	0
+معاملات	m ʊ ʔ ɑː m ə l ɑː t̪	ipa	0
+معاملہ	m ʊ ɑː m l ɑː	ipa	0
+معاملہ	m ʊ ʔ ɑː m l ɑː	ipa	0
+معاہدو	m ʊ ɑː ɦ ə d̪ oː	ipa	0
+معاہدو	m ʊ ʔ ɑː ɦ ə d̪ oː	ipa	0
+معاہدوں	m ʊ ɑː ɦ ə d̪ õː	ipa	0
+معاہدوں	m ʊ ʔ ɑː ɦ ə d̪ õː	ipa	0
+معاہدہ	m ʊ ɑː ɦ ə d̪ ɑ	ipa	0
+معاہدہ	m ʊ ɑː ɦ ə d̪ ɑː	ipa	0
+معاہدہ	m ʊ ɑː ɦ ɪ d̪ ɑ	ipa	0
+معاہدہ	m ʊ ɑː ɦ ɪ d̪ ɑː	ipa	0
+معاہدہ	m ʊ ʔ ɑː ɦ ə d̪ ɑ	ipa	0
+معاہدہ	m ʊ ʔ ɑː ɦ ə d̪ ɑː	ipa	0
+معاہدہ	m ʊ ʔ ɑː ɦ ɪ d̪ ɑ	ipa	0
+معاہدہ	m ʊ ʔ ɑː ɦ ɪ d̪ ɑː	ipa	0
+معاہدے	m ʊ ɑː ɦ ə d̪ eː	ipa	0
+معاہدے	m ʊ ʔ ɑː ɦ ə d̪ eː	ipa	0
+معبد	m ə ʔ b ə d̪	ipa	0
+معبد	m ə ʕ b ə d̪	ipa	0
+معبود	m ɑː b uː d̪	ipa	0
+معبود	m ɑː ʔ b uː d̪	ipa	0
+معتمد	m oː t̪ ə m ə d̪	ipa	0
+معتمد	m oː ʔ t̪ ə m ə d̪	ipa	0
+معجزات	m ʊ d͡ʒ ɪ z ɑː t̪	ipa	0
+معجزات	m ʊ ʔ d͡ʒ ɪ z ɑː t̪	ipa	0
+معجزو	m ʊ d͡ʒ ɪ z oː	ipa	0
+معجزو	m ʊ ʔ d͡ʒ ɪ z oː	ipa	0
+معجزوں	m ʊ d͡ʒ ɪ z õː	ipa	0
+معجزوں	m ʊ ʔ d͡ʒ ɪ z õː	ipa	0
+معجزہ	m ɔː d͡ʒ ɪ z ə	ipa	0
+معجزہ	m ʊ d͡ʒ ɪ z ə	ipa	0
+معجزہ	m ʊ ʔ d͡ʒ ɪ z ə	ipa	0
+معجزے	m ʊ d͡ʒ ɪ z eː	ipa	0
+معجزے	m ʊ ʔ d͡ʒ ɪ z eː	ipa	0
+معجم	m ʊ d͡ʒ ə m	ipa	0
+معجم	m ʊ ə d̪ d͡ʒ ə m	ipa	0
+معجم	m ʊ ʔ d͡ʒ ə m	ipa	0
+معجم	m ʊ ʔ ə d̪ d͡ʒ ə m	ipa	0
+معجمہ	m ʊ d͡ʒ ə m ɑ	ipa	0
+معجمہ	m ʊ d͡ʒ ə m ɑː	ipa	0
+معجمہ	m ʊ ə d̪ d͡ʒ ə m ɑ	ipa	0
+معجمہ	m ʊ ə d̪ d͡ʒ ə m ɑː	ipa	0
+معجمہ	m ʊ ʔ d͡ʒ ə m ɑ	ipa	0
+معجمہ	m ʊ ʔ d͡ʒ ə m ɑː	ipa	0
+معجمہ	m ʊ ʔ ə d̪ d͡ʒ ə m ɑ	ipa	0
+معجمہ	m ʊ ʔ ə d̪ d͡ʒ ə m ɑː	ipa	0
+معدہ	m eː d̪ a	ipa	0
+معذرت	m ə ʔ z ə ɾ ə t̪	ipa	0
+معذرتو	m ə z ə ɾ ə t̪ oː	ipa	0
+معذرتو	m ə ʔ z ə ɾ ə t̪ oː	ipa	0
+معذرتوں	m ə z ə ɾ ə t̪ õː	ipa	0
+معذرتوں	m ə ʔ z ə ɾ ə t̪ õː	ipa	0
+معذرتیں	m ə z ə ɾ ə t̪ ẽː	ipa	0
+معذرتیں	m ə ʔ z ə ɾ ə t̪ ẽː	ipa	0
+معذور	m ə ʕ z uː ɾ	ipa	0
+معروف	m ə ʕ ɾ uː f	ipa	0
+معرکہ	m ə ɾ ə k ɑ	ipa	0
+معرکہ	m ə ɾ ə k ɑː	ipa	0
+معرکہ	m ə ʔ ɾ ə k ɑ	ipa	0
+معرکہ	m ə ʔ ɾ ə k ɑː	ipa	0
+معصوم	m ə ʔ s uː m	ipa	0
+معصومو	m ə s uː m oː	ipa	0
+معصومو	m ə ʔ s uː m oː	ipa	0
+معصوموں	m ə s uː m õː	ipa	0
+معصوموں	m ə ʔ s uː m õː	ipa	0
+معطل	m ʊ ʔ ə t̪ t̪ ə l	ipa	0
+معلم	m ʊ ə l l ə m	ipa	0
+معلم	m ʊ ə l l ɪ m	ipa	0
+معلم	m ʊ ʔ ə l l ə m	ipa	0
+معلم	m ʊ ʔ ə l l ɪ m	ipa	0
+معلوم	m ɑː l uː m	ipa	0
+معمار	m eː m ɑː ɾ	ipa	0
+معمار	m eː ʔ m ɑː ɾ	ipa	0
+معماری	m ɪ m ɑː ɾ iː	ipa	0
+معماری	m ɪ ʔ m ɑː ɾ iː	ipa	0
+معمر	m ʊ m ə ɾ	ipa	0
+معمر	m ʊ ə mː ə ɾ	ipa	0
+معمر	m ʊ ʔ m ə ɾ	ipa	0
+معمر	m ʊ ʔ ə mː ə ɾ	ipa	0
+معمول	m ɑː m uː l	ipa	0
+معمولی	m ɑː m uː l iː	ipa	0
+معنوی	m ɑː n ə ʋ iː	ipa	0
+معنوی	m ɑː ʔ n ə ʋ iː	ipa	0
+معیار	m eː j ɑː ɾ	ipa	0
+معیاروں	m ɪ j ɑː ɾ õː	ipa	0
+معیاروں	m ɪ ʔ j ɑː ɾ õː	ipa	0
+معیاری	m eː j ɑː ɾ iː	ipa	0
+معیاری	m eː ʔ j ɑː ɾ iː	ipa	0
+معیشت	m ə iː ʃ ə t̪	ipa	0
+معیشت	m ə ʔ iː ʃ ə t̪	ipa	0
+مغرب	m ə ɣ ɾ ɪ b	ipa	0
+مغربی	m ə ɣ ɾ ɪ b iː	ipa	0
+مغل	m ʊ ɣ ə l	ipa	0
+مغلوط	m ə ɣ l uː t̪	ipa	0
+مفاہمت	m ʊ f ɑː ɦ ɪ m ə t̪	ipa	0
+مفت	m ʊ f t̪	ipa	0
+مفتوح	m ə f t̪ uː	ipa	0
+مفتوح	m ə f t̪ uː ɦ	ipa	0
+مفتی	m ʊ f t̪ iː	ipa	0
+مفسد	m ʊ f s ɪ d̪	ipa	0
+مفہوم	m ə f ɦ uː m	ipa	0
+مقاصد	m ə q ɑː s ɪ d̪	ipa	0
+مقامی	m ə q ɑː m iː	ipa	0
+مقامی	m ʊ q ɑː m iː	ipa	0
+مقاومت	m ʊ q ɑː w ə m ə t̪	ipa	0
+مقبوض	m ə q b uː z	ipa	0
+مقبوضہ	m ə q b uː z ɑ	ipa	0
+مقبوضہ	m ə q b uː z ɑː	ipa	0
+مقبول	m ə q b uː l	ipa	0
+مقبولیت	m ə q b uː l ɪ j j ə t̪	ipa	0
+مقتل	m ə q t̪ ə l	ipa	0
+مقدار	m ɪ q d̪ ɑː ɾ	ipa	0
+مقدسہ	m ʊ q ə d̪ː ə s ɑː	ipa	0
+مقدمہ	m ʊ q ə d̪ d̪ ə m ɑ	ipa	0
+مقدمہ	m ʊ q ə d̪ d̪ ə m ɑː	ipa	0
+مقدمہ	m ʊ q ə d̪ m ɑ	ipa	0
+مقدمہ	m ʊ q ə d̪ m ɑː	ipa	0
+مقدونی	m ə q d̪ uː n iː	ipa	0
+مقروض	m ə q ɾ uː z	ipa	0
+مقصد	m ə q s ə d̪	ipa	0
+مقصود	m ə q s uː d̪	ipa	0
+مقطع	m ə q t̪ ɑː	ipa	0
+مقطع	m ə q t̪ ə	ipa	0
+مقطع	m ə q t̪ ə ʔ	ipa	0
+مقطع	m ʊ q ə t̪ t̪ ɑː	ipa	0
+مقطع	m ʊ q ə t̪ t̪ ə	ipa	0
+مقطع	m ʊ q ə t̪ t̪ ə ʔ	ipa	0
+مقناطيس	m ə q n ɑː t̪ iː s	ipa	0
+مقناطيس	m ɪ q n ɑː t̪ iː s	ipa	0
+مقناطیس	m ə q n ɑː t̪ iː s	ipa	0
+مقناطیس	m ɪ q n ɑː t̪ iː s	ipa	0
+مقننہ	m ʊ q ə n n ɪ n ɑː	ipa	0
+مقید	m ʊ q ə j j ə d̪	ipa	0
+مقیم	m ʊ q iː m	ipa	0
+ملائم	m ʊ l ɑː j ə m	ipa	0
+ملائیشیا	m ə l ə j ʃ ɪ j ɑː	ipa	0
+ملاحظہ	m ʊ l ɑː ɦ ə z ɑ	ipa	0
+ملاحظہ	m ʊ l ɑː ɦ ə z ɑː	ipa	0
+ملازمت	m ʊ l ɑː z m ə t̪	ipa	0
+ملازمت	m ʊ l ɑː z ə m ə t̪	ipa	0
+ملاقات	m ʊ l ɑː q ɑː t̪	ipa	0
+ملامت	m ə l ɑː m ə t̪	ipa	0
+ملانا	m ɪ l ɑː n ɑː	ipa	0
+ملبوس	m ə l b uː s	ipa	0
+ملتان	m ʊ l t̪ ɑː n	ipa	0
+ملتانی	m ʊ l t̪ ɑː n iː	ipa	0
+ملزم	m ʊ l z ɪ m	ipa	0
+ململ	m ə l m ə l	ipa	0
+ملن	m ə l ɪ n	ipa	0
+ملن	m ɪ l ə n	ipa	0
+ملنا	m ə l n ɑː	ipa	0
+ملنا	m ɪ l n ɑː	ipa	0
+ملنسار	m ɪ l ə n s ɑː ɾ	ipa	0
+ملنگ	m ə l ə ŋ ɡ	ipa	0
+ملوث	m ʊ l ə ʋ ʋ ə s	ipa	0
+ملک	m ʊ l k	ipa	0
+ملک	m ʊ l ə k	ipa	0
+ملکاؤ	m ə l ɪ k ɑː oː	ipa	0
+ملکاؤں	m ə l ɪ k ɑː õː	ipa	0
+ملکائیں	m ə l ɪ k ɑː ẽː	ipa	0
+ملکو	m ʊ l k oː	ipa	0
+ملکوں	m ʊ l k õː	ipa	0
+ملکہ	m ə l k ɑː	ipa	0
+ملکہ	m ə l ɪ k ɑ	ipa	0
+ملکہ	m ə l ɪ k ɑː	ipa	0
+ملکی	m ʊ l k iː	ipa	0
+ملکیت	m ɪ l ɪ k ɪ j j ə t̪	ipa	0
+ملی	m ə l l iː	ipa	0
+ملی	m ɪ l l iː	ipa	0
+ملیامیٹ	m ə l ɪ j ɑː m eː ʈ	ipa	0
+ملیامیٹ	m ɪ l ɪ j ɑː m eː ʈ	ipa	0
+ممالک	m ə m ɑː l ɪ k	ipa	0
+ممانی	m ʊ m ɑː n iː	ipa	0
+ممبئی	m ʊ m b ə iː	ipa	0
+ممباسہ	m ʊ m b ɑː s ɑ	ipa	0
+ممباسہ	m ʊ m b ɑː s ɑː	ipa	0
+ممتاز	m ʊ m t̪ ɑː z	ipa	0
+مملکت	m ə m l ə k ə t̪	ipa	0
+مملکت	m ə m l ʊ k ə t̪	ipa	0
+ممنوع	m ə m n uː	ipa	0
+ممنوع	m ə m n uː ʔ	ipa	0
+ممکن	m ʊ m k ɪ n	ipa	0
+ممی	m ə m iː	ipa	0
+ممی	m ə m m iː	ipa	0
+منا	m ʊ n n ɑː	ipa	0
+منازل	m ə n ɑː z ɪ l	ipa	0
+مناسب	m ʊ n ɑː s ɪ b	ipa	0
+مناسبت	m ʊ n ɑː s ə b ə t̪	ipa	0
+مناظر	m ə n ɑː z ɪ ɾ	ipa	0
+مناعت	m ə n ɑː ə t̪	ipa	0
+مناعت	m ə n ɑː ʔ ə t̪	ipa	0
+منافقانہ	m ʊ n ɑː f ɪ q ɑː nᵊ	ipa	0
+منانا	m ə n ɑː n ɑː	ipa	0
+منبع	m ə m b ɑː	ipa	0
+منتخب	m ʊ n t̪ ə x ə b	ipa	0
+منتر	m ə n t̪ ə ɾ	ipa	0
+منتظم	m ʊ n t̪ ə z ɪ m	ipa	0
+منجمد	m ʊ n d͡ʒ ə m ɪ d̪	ipa	0
+منحصر	m ʊ n ɦ ə s ɪ ɾ	ipa	0
+منحوس	m ə n ɦ uː s	ipa	0
+مند	m ə n d̪	ipa	0
+مندر	m ə n d̪ ɪ ɾ	ipa	0
+مندروں	m ə n d̪ ɪ ɾ õː	ipa	0
+منزل	m ə n z ɪ l	ipa	0
+منزلو	m ə n z ɪ l oː	ipa	0
+منزلوں	m ə n z ɪ l õː	ipa	0
+منزلیں	m ə n z ɪ l ẽː	ipa	0
+منسلک	m ʊ n s ə l ɪ k	ipa	0
+منسوخ	m ə n s uː x	ipa	0
+منشور	m ə n ʃ uː ɾ	ipa	0
+منشوروں	m ə n ʃ uː ɾ õː	ipa	0
+منشی	m ʊ n ə ʃ ʃ iː	ipa	0
+منشی	m ʊ n ʃ iː	ipa	0
+منشیات	m ʊ n ə ʃ ʃ ɪ j ɑː t̪	ipa	0
+منشیہ	m ə n ʊ ʃ j ɑ	ipa	0
+منشیہ	m ə n ʊ ʃ j ɑː	ipa	0
+منصوبہ	m ə n s uː b ɑː	ipa	0
+منظر	m ə n z ə ɾ	ipa	0
+منظم	m ʊ n ə z z ə m	ipa	0
+منظور	m ə n z uː ɾ	ipa	0
+منفرد	m ʊ n f ə ɾ ɪ d̪	ipa	0
+منقبت	m ə n q ə b ə t̪	ipa	0
+منقطع	m ʊ n q ə t̪ ɑ	ipa	0
+منقطع	m ʊ n q ə t̪ ɑː	ipa	0
+منقطع	m ʊ n q ə t̪ ɪ ʔ	ipa	0
+منٹ	m ɪ n ə ʈ	ipa	0
+منڈا	m ʊ n ɖ ɑː	ipa	0
+منکر	m ʊ n k ə ɾ	ipa	0
+منکھ	m ə n ʊ kʰ	ipa	0
+منگنی	m ə ŋ ɡ n iː	ipa	0
+منگوانا	m ə ŋ ɡ ʋ ɑː n ɑː	ipa	0
+منگوانا	m ə ɡ ʋ ɑː n ɑː	ipa	0
+منگیتر	m ə ŋ ɡ eː t̪ ə ɾ	ipa	0
+منہ	m ũː	ipa	0
+منہ	m ũː ɦ	ipa	0
+منہ	m ʊ̃ ɦ	ipa	0
+منہدم	m ʊ n ɦ ə d̪ ɪ m	ipa	0
+منی	m ə n iː	ipa	0
+منیت	m ʊ n iː j ə t̪	ipa	0
+منیت	m ʊ n j ə t̪	ipa	0
+مواصلات	m oː ɑː s ə l ɑː t̪	ipa	0
+مواصلات	m ʊ ɑː s ə l ɑː t̪	ipa	0
+مواصلات	m ʊ ʋ ɑː s ə l ɑː t̪	ipa	0
+مواقع	m ə ʋ ɑː q eː	ipa	0
+موبائل	m oː b ɑː j l	ipa	0
+موت	m uː t̪	ipa	0
+موت	m ɔː t̪	ipa	0
+موتر	m uː t̪ ə ɾ	ipa	0
+موتر	m uː t̪ ɾ	ipa	0
+موتوں	m uː t̪ õː	ipa	0
+موتوں	m ɔː t̪ õː	ipa	0
+موتی	m oː t̪ iː	ipa	0
+موتیو	m oː t̪ ɪ j oː	ipa	0
+موتیوں	m oː t̪ ɪ j õː	ipa	0
+موتیں	m ɔː t̪ ẽː	ipa	0
+موج	m ɔː d͡ʒ	ipa	0
+موجود	m ɔː d͡ʒ uː d̪	ipa	0
+موجود	m ə d͡ʒ uː d̪	ipa	0
+موجودگی	m ɔː d͡ʒ uː d̪ ə ɡ iː	ipa	0
+موجودہ	m ɔː d͡ʒ uː d̪ ɑ	ipa	0
+موجودہ	m ɔː d͡ʒ uː d̪ ɑː	ipa	0
+مور	m oː ɾ	ipa	0
+مورت	m uː ɾ ə t̪	ipa	0
+مورتی	m uː ɾ t̪ iː	ipa	0
+مورمن	m ɔ ɾ m ə n	ipa	0
+مورچہ	m oː ɾ t͡ʃ ɑː	ipa	0
+موز	m ɔː z	ipa	0
+موزمبیق	m oː z ɑː m b iː q	ipa	0
+موسم	m ɔː s ə m	ipa	0
+موسم	m ɔː s ɪ m	ipa	0
+موسمبی	m ɔː s ə m b iː	ipa	0
+موسموں	m ɔː s ə m õː	ipa	0
+موسوم	m ɔː s uː m	ipa	0
+موسی	m uː s ɑː	ipa	0
+موسیقار	m uː s iː q ɑː ɾ	ipa	0
+موسیقار	m ɔː s iː q ɑː ɾ	ipa	0
+موسیقارو	m uː s iː q ɑː ɾ oː	ipa	0
+موسیقاروں	m uː s iː q ɑː ɾ õː	ipa	0
+موسیقی	m uː s iː q iː	ipa	0
+موسیقی	m ɔː s iː q iː	ipa	0
+موضوع	m ɔː z uː	ipa	0
+موضوع	m ɔː z uː ʔ	ipa	0
+موضوعات	m ɔː z uː ɑː t̪	ipa	0
+موضوعات	m ɔː z uː ʔ ɑː t̪	ipa	0
+موقع	m ɔː q ɑː	ipa	0
+موقعوں	m ɔː q õː	ipa	0
+موقعوں	m ɔː q ʔ õː	ipa	0
+موقعے	m ɔː q eː	ipa	0
+موقعے	m ɔː q ʔ eː	ipa	0
+مول	m oː l	ipa	0
+مول	m uː l	ipa	0
+مولا	m ɔː l ɑː	ipa	0
+مولود	m ɔː l uː d̪	ipa	0
+مومن	m oː m ɪ n	ipa	0
+مومنو	m oː m ɪ n oː	ipa	0
+مومنوں	m oː m ɪ n õː	ipa	0
+مومنہ	m oː m ɪ n ɑ	ipa	0
+مومنہ	m oː m ɪ n ɑː	ipa	0
+مومنین	m oː m ɪ n iː n	ipa	0
+مونٹینیگرو	m oː n ʈ eː n iː ɡ ɾ oː	ipa	0
+مونچھ	m ũː t͡ʃʰ	ipa	0
+مونچھوں	m ũː t͡ʃʰ õː	ipa	0
+مونچھیں	m ũː t͡ʃʰ ẽː	ipa	0
+موٹا	m oː ʈ ɑː	ipa	0
+موٹی	m oː ʈ iː	ipa	0
+مویشی	m ə ʋ eː ʃ iː	ipa	0
+ميت	m ə j j ə t̪	ipa	0
+مٹانا	m ɪ ʈ ɑː n ɑː	ipa	0
+مٹاپا	m ʊ ʈ ɑː p ɑː	ipa	0
+مٹاپوں	m ʊ ʈ ɑː p õː	ipa	0
+مٹاپے	m ʊ ʈ ɑː p eː	ipa	0
+مٹر	m ə ʈ ə ɾ	ipa	0
+مٹنا	m ɪ ʈ n ɑː	ipa	0
+مٹکی	m ə ʈ k iː	ipa	0
+مٹھ	m ə ʈʰ	ipa	0
+مٹھائی	m ɪ ʈʰ ɑː iː	ipa	0
+مٹھائیاں	m ɪ ʈʰ ɑː ɪ j ɑ̃ː	ipa	0
+مٹھائیوں	m ɪ ʈʰ ɑː ɪ j õː	ipa	0
+مٹھاس	m ɪ ʈʰ ɑː s	ipa	0
+مٹھی	m ʊ ʈ ʈʰ iː	ipa	0
+مچھ	m ə t̪ t͡ʃʰ	ipa	0
+مچھر	m ə t͡ʃːʰ ə ɾ	ipa	0
+مچھلی	m ə t͡ʃʰ l iː	ipa	0
+مژگانی	m ɪ ʒ ɡ ɑː n iː	ipa	0
+مکا	m ə k k ɑː	ipa	0
+مکاتب	m ə k ɑː t̪ ɪ b	ipa	0
+مکالمہ	m ʊ k ɑː l ə m ɑ	ipa	0
+مکالمہ	m ʊ k ɑː l ə m ɑː	ipa	0
+مکان	m ə k ɑː n	ipa	0
+مکتب	m ə k t̪ ə b	ipa	0
+مکروہ	m ə k ɾ uː ɦ	ipa	0
+مکسور	m ə k s uː ɾ	ipa	0
+مکمل	m ʊ k ə m m ə l	ipa	0
+مکنون	m ə k n uː n	ipa	0
+مکھ	m ʊ kʰ	ipa	0
+مکھن	m ə k kʰ ə n	ipa	0
+مکھنوں	m ə k kʰ ə n õː	ipa	0
+مکھڑا	m ʊ kʰ ɽ ɑː	ipa	0
+مکھی	m ə k kʰ iː	ipa	0
+مکھیاں	m ə k kʰ ɪ j ɑ̃ː	ipa	0
+مکھیو	m ə k kʰ ɪ j oː	ipa	0
+مکھیوں	m ə k kʰ ɪ j õː	ipa	0
+مکہ	m ə k k ɑ	ipa	0
+مکہ	m ə k k ɑː	ipa	0
+مگرمچھ	m ə ɡ ə ɾ m ə t͡ʃʰ	ipa	0
+مہا	m ə ɦ ɑː	ipa	0
+مہابھارت	m ə ɦ ɑː bʱ ɑː ɾ ə t̪	ipa	0
+مہاتما	m ə ɦ ɑː t̪ m ɑː	ipa	0
+مہاجر	m ʊ ɦ ɑː d͡ʒ ɪ ɾ	ipa	0
+مہاجرت	m o ɦ ɑː d͡ʒ ə ɾ ə t̪	ipa	0
+مہاجرت	m ʊ ɦ ɑː d͡ʒ ə ɾ ə t̪	ipa	0
+مہاجرین	m ʊ ɦ ɑː d͡ʒ ɪ ɾ iː n	ipa	0
+مہاراشٹر	m ə ɦ ɑː ɾ ɑː ʃ ʈ ə ɾ	ipa	0
+مہاراشٹر	m ə ɦ ɑː ɾ ɑː ʃ ʈ ɾ ɑː	ipa	0
+مہارانی	m ə ɦ ɑː ɾ ɑː n iː	ipa	0
+مہارت	m ə ɦ ɑː ɾ ə t̪	ipa	0
+مہان	m ə ɦ ɑː n	ipa	0
+مہاوت	m ə ɦ ɑː ʋ ə t̪	ipa	0
+مہر	m eː ɦ ə ɾ	ipa	0
+مہر	m oː ɦ ə ɾ	ipa	0
+مہر	m ɪ ɦ ə ɾ	ipa	0
+مہر	m ʊ ɦ ə ɾ	ipa	0
+مہران	m eː ɦ ɾ ɑː n	ipa	0
+مہران	m ɪ ɦ ɾ ɑː n	ipa	0
+مہربان	m eː ɦ ɾ b ɑː n	ipa	0
+مہربان	m ɪ ɦ ɾ b ɑː n	ipa	0
+مہرہ	m ʊ ɦ ɾ ɑ	ipa	0
+مہرہ	m ʊ ɦ ɾ ɑː	ipa	0
+مہلت	m ʊ ɦ l ə t̪	ipa	0
+مہلتوں	m ʊ ɦ l ə t̪ õː	ipa	0
+مہلتیں	m ʊ ɦ l ə t̪ ẽː	ipa	0
+مہمان	m eː ɦ m ɑː n	ipa	0
+مہمان	m eː ɦ m ɑ̃ː	ipa	0
+مہمان	m ɪ ɦ m ɑː n	ipa	0
+مہمانی	m ɪ ɦ m ɑː n iː	ipa	0
+مہندس	m ʊ ɦ ə n d̪ ɪ s	ipa	0
+مہندی	m eː ɦ ə n d̪ iː	ipa	0
+مہندی	m eː ɦ ə̃ d̪ iː	ipa	0
+مہندی	m ɪ ɦ ə n d̪ iː	ipa	0
+مہندی	m ɪ ɦ ə̃ d̪ iː	ipa	0
+مہنڈر	m ɪ ɦ ɪ n ɖ ə ɾ	ipa	0
+مہنگا	m ə ɦ ə ŋ ɡ ɑː	ipa	0
+مہنگا	m ə ɦ ə̃ ɡ ɑː	ipa	0
+مہنگائی	m ə ɦ ə ŋ ɡ ɑː iː	ipa	0
+مہک	m ə ɦ ə k	ipa	0
+مہکار	m ə ɦ ə k ɑː ɾ	ipa	0
+مہکو	m ə ɦ ə k oː	ipa	0
+مہکوں	m ə ɦ ə k õː	ipa	0
+مہکیں	m ə ɦ ə k ẽː	ipa	0
+مہیلا	m ə ɦ iː l ɑː	ipa	0
+مہینا	m ə ɦ iː n ɑː	ipa	0
+مہینہ	m ə ɦ iː n ɑ	ipa	0
+مہینہ	m ə ɦ iː n ɑː	ipa	0
+میانمار	m ɪ j ɑː n m ɑː ɾ	ipa	0
+میانوالی	m ɪ j ɑ̃ː ʋ ɑː l iː	ipa	0
+میاں	m ɪ j ɑ̃ː	ipa	0
+میتھن	m ɛː t̪ʰ ʊ n	ipa	0
+میخانہ	m ɛː x ɑː n ɑ	ipa	0
+میخانہ	m ɛː x ɑː n ɑː	ipa	0
+میدان	m ɛː d̪ ɑː n	ipa	0
+میدھا	m eː d̪ʱ ɑː	ipa	0
+میرا	m eː ɾ ɑː	ipa	0
+میرپور	m iː ɾ p uː ɾ	ipa	0
+میری	m eː ɾ iː	ipa	0
+میز	m eː z	ipa	0
+میزان	m iː z ɑː n	ipa	0
+میزبان	m eː z b ɑː n	ipa	0
+میزورم	m iː z oː ɾ ə m	ipa	0
+میش	m eː ʃ	ipa	0
+میغ	m eː ɣ	ipa	0
+میغ	m iː ɣ	ipa	0
+میل	m iː l	ipa	0
+میلاد	m iː l ɑː d̪	ipa	0
+میمن	m ɛː m ə n	ipa	0
+مینو	m iː n uː	ipa	0
+مینڈک	m eː n ɖ ə k	ipa	0
+مینڈک	m eː n ɖ ʊ k	ipa	0
+مینڈھا	m ɛː n ɖʱ ɑː	ipa	0
+مینڈھر	m eː n ɖʱ ə ɾ	ipa	0
+مینڈھک	m eː n ɖʱ ə k	ipa	0
+مینگورہ	m iː ŋ ɡ oː ɾ ɑ	ipa	0
+مینگورہ	m iː ŋ ɡ oː ɾ ɑː	ipa	0
+مینہ	m ẽː ɦ	ipa	0
+میور	m ə j uː ɾ	ipa	0
+میونخ	m j uː n ɪ x	ipa	0
+میوہ	m eː ʋ ɑː	ipa	0
+میٹھا	m iː ʈʰ ɑː	ipa	0
+میکائیل	m iː k ɑː iː l	ipa	0
+میکسیکو	m eː k s iː k oː	ipa	0
+میگھ	m eː ɡʱ	ipa	0
+میگھالیہ	m eː ɡʱ ɑː l ɪ j ə ɦ	ipa	0
+میں	m ɛ̃ː	ipa	0
+میں	m ẽː	ipa	0
+مے	m ə j	ipa	0
+مے	m ɛː	ipa	0
+ن	n	ipa	0
+ن	n uː n	ipa	0
+ن	ŋ	ipa	0
+ن	ɲ	ipa	0
+ن	ɳ	ipa	0
+نئی	n ə iː	ipa	0
+نا	n ɑː	ipa	0
+نائب	n ɑː ɪ b	ipa	0
+نائی	n ɑː iː	ipa	0
+نائیجیریا	n ɑː iː d͡ʒ iː ɾ ɪ j ɑː	ipa	0
+ناامید	n ɑː ʊ m m iː d̪	ipa	0
+ناانصافی	n ɑː ɪ n s ɑː f iː	ipa	0
+نابینا	n ɑː b iː n ɑː	ipa	0
+ناتن	n ɑː t̪ ɪ n	ipa	0
+ناتی	n ɑː t̪ iː	ipa	0
+ناخدا	n ɑː x ʊ d̪ ɑː	ipa	0
+ناخن	n ɑː x uː n	ipa	0
+ناخن	n ɑː x ʊ n	ipa	0
+نادار	n ɑː d̪ ɑː ɾ	ipa	0
+نادان	n ɑː d̪ ɑː n	ipa	0
+نادر	n ɑː d̪ ɪ ɾ	ipa	0
+ناراض	n ɑː ɾ ɑː z	ipa	0
+ناراضگی	n ɑː ɾ ɑː z ɡ iː	ipa	0
+نارنجی	n ɑː ɾ ə n d͡ʒ iː	ipa	0
+نارنگی	n ɑː ɾ ə ŋ ɡ iː	ipa	0
+ناروا	n ɑː ɾ ə ʋ ɑː	ipa	0
+نارووال	n ɑː ɾ oː ʋ ɑː l	ipa	0
+ناروے	n ɑː ɾ ʋ eː	ipa	0
+ناریل	n ɑː ɾ ɪ j ə l	ipa	0
+ناز	n ɑː z	ipa	0
+نازل	n ɑː z ɪ l	ipa	0
+نازک	n ɑː z ʊ k	ipa	0
+نازیبا	n ɑː z eː b ɑː	ipa	0
+ناستک	n ɑː s t̪ ɪ k	ipa	0
+ناشتا	n ɑː ʃ t̪ ɑː	ipa	0
+ناشتوں	n ɑː ʃ t̪ õː	ipa	0
+ناشتے	n ɑː ʃ t̪ eː	ipa	0
+ناشر	n ɑː ʃ ɪ ɾ	ipa	0
+ناشپاتی	n ɑː ʃ p ɑː t̪ iː	ipa	0
+ناصر	n ɑː s ɪ ɾ	ipa	0
+ناصرت	n ɑː s ə ɾ ə t̪	ipa	0
+ناصرہ	n ɑː s ɪ ɾ ɑ	ipa	0
+ناصرہ	n ɑː s ɪ ɾ ɑː	ipa	0
+ناظر	n ɑː z ɪ ɾ	ipa	0
+ناظم	n ɑː z ɪ m	ipa	0
+ناف	n ɑː f	ipa	0
+نافرمان	n ɑː f ə ɾ m ɑː n	ipa	0
+نافرمانبرداری	n ɑː f ə ɾ m ɑ̃ː b ə ɾ d̪ ɑː ɾ iː	ipa	0
+ناقوس	n ɑː q uː s	ipa	0
+نال	n ɑː l	ipa	0
+نالی	n ɑː l iː	ipa	0
+نام	n ɑː m	ipa	0
+نامرد	n ɑː m ə ɾ d̪	ipa	0
+نامردی	n ɑː m ə ɾ d̪ iː	ipa	0
+ناممکن	n ɑː m ʊ m k ɪ n	ipa	0
+نامنظور	n ɑː m ə n z uː ɾ	ipa	0
+نامنظوری	n ɑː m ə n z uː ɾ iː	ipa	0
+نامہ	n ɑː m ɑ	ipa	0
+نامہ	n ɑː m ɑː	ipa	0
+نامی	n ɑː m iː	ipa	0
+نان	n ɑː n	ipa	0
+نانا	n ɑː n ɑː	ipa	0
+نانگل	n ɑː ŋ ɡ ə l	ipa	0
+نانی	n ɑː n iː	ipa	0
+ناو	n ɑː oː	ipa	0
+ناو	n ɑː ʋ	ipa	0
+ناول	n ɑː ʋ ɪ l	ipa	0
+ناٹک	n ɑː ʈ ə k	ipa	0
+ناپاک	n ɑː p ɑː k	ipa	0
+ناچ	n ɑː t͡ʃ	ipa	0
+ناچنا	n ɑː t͡ʃ n ɑː	ipa	0
+ناک	n ɑː k	ipa	0
+ناکارہ	n ɑː k ɑː ɾ ɑ	ipa	0
+ناکارہ	n ɑː k ɑː ɾ ɑː	ipa	0
+ناکام	n ɑː k ɑː m	ipa	0
+ناکہ	n ɑː k ɑ	ipa	0
+ناکہ	n ɑː k ɑː	ipa	0
+ناگ	n ɑː ɡ	ipa	0
+ناگالینڈ	n ɑː ɡ ɑː l ɛː n ɖ	ipa	0
+ناگرک	n ɑː ɡ ɾ ɪ k	ipa	0
+ناہر	n ɑː ɦ ə ɾ	ipa	0
+نایاب	n ɑː j ɑː b	ipa	0
+نباتیات	n ə b ɑː t̪ ɪ j ɑː t̪	ipa	0
+نبض	n ə b z	ipa	0
+نبھانا	n ɪ bʱ ɑː n ɑː	ipa	0
+نتیجتا	n ə t̪ iː d͡ʒ ə t̪ ə n	ipa	0
+نتیجہ	n ə t̪ iː d͡ʒ ɑ	ipa	0
+نتیجہ	n ə t̪ iː d͡ʒ ɑː	ipa	0
+نثر	n ə s ɾ	ipa	0
+نجار	n ə d̪ d͡ʒ ɑː ɾ	ipa	0
+نجبا	n ʊ d͡ʒ ə b ɑː	ipa	0
+نجم	n ə d͡ʒ m	ipa	0
+نجم	n ə d͡ʒ ə m	ipa	0
+نجوم	n ə d͡ʒ uː m	ipa	0
+نجوم	n ʊ d͡ʒ uː m	ipa	0
+نجی	n ɪ d͡ʒ iː	ipa	0
+نجیب	n ə d͡ʒ iː b	ipa	0
+نخرا	n ə x ɾ ɑː	ipa	0
+نخست	n ʊ x ʊ s t̪	ipa	0
+نخستین	n x ʊ s t̪ iː n	ipa	0
+نخلستان	n ə x l ɪ s t̪ ɑː n	ipa	0
+نخچیر	n ə x t͡ʃ iː ɾ	ipa	0
+ندرشن	n ɪ d̪ ə ɾ ʃ ə n	ipa	0
+ندی	n ə d̪ iː	ipa	0
+ندیاں	n ə d̪ ɪ j ɑ̃ː	ipa	0
+ندیو	n ə d̪ ɪ j oː	ipa	0
+ندیوں	n ə d̪ ɪ j õː	ipa	0
+نر	n ə ɾ	ipa	0
+نردوش	n ɪ ɾ d̪ oː ʃ	ipa	0
+نرست	n ɪ ɾ ə s t̪	ipa	0
+نرم	n ə ɾ m	ipa	0
+نرمان	n ɪ ɾ m ɑː n	ipa	0
+نرمی	n ə ɾ m iː	ipa	0
+نرنایک	n ɪ ɾ n ɑː j ə k	ipa	0
+نرگس	n ə ɾ ɡ ɪ s	ipa	0
+نزاکت	n ə z ɑː k ə t̪	ipa	0
+نزدیک	n ə z d̪ iː k	ipa	0
+نزدیکی	n ə z d̪ iː k iː	ipa	0
+نزہت	n ʊ z ɦ ə t̪	ipa	0
+نس	n ə s	ipa	0
+نس	n ɪ s	ipa	0
+نسا	n ɪ s ɑː	ipa	0
+نسائیت	n ɪ s ɑː ɪ j ə t̪	ipa	0
+نسبتا	n ɪ s b ə t̪ ə n	ipa	0
+نستعلیق	n ə s t̪ ɑː l iː q	ipa	0
+نسخ	n ə s x	ipa	0
+نسخہ	n ʊ s x ɑ	ipa	0
+نسخہ	n ʊ s x ɑː	ipa	0
+نسل	n ə s l	ipa	0
+نسیم	n ə s iː m	ipa	0
+نسیموں	n ə s iː m õː	ipa	0
+نسیمیں	n ə s iː m ẽː	ipa	0
+نشان	n ɪ ʃ ɑː n	ipa	0
+نشانی	n ɪ ʃ ɑː n iː	ipa	0
+نشریات	n ə ʃ ɾ ɪ j j ɑː t̪	ipa	0
+نشریہ	n ə ʃ ɾ ɪ j ɑ	ipa	0
+نشریہ	n ə ʃ ɾ ɪ j ɑː	ipa	0
+نشست	n ə ʃ ɪ s t̪	ipa	0
+نشور	n ʊ ʃ uː ɾ	ipa	0
+نشچت	n ɪ ʃ t͡ʃ ɪ t̪	ipa	0
+نشہ	n ə ʃ ə	ipa	0
+نصاب	n ɪ s ɑː b	ipa	0
+نصاری	n ə s ɑː ɾ ɑː	ipa	0
+نصرانی	n ə s ɾ ɑː n iː	ipa	0
+نصرت	n ʊ s ɾ ə t̪	ipa	0
+نصیب	n ə s iː b	ipa	0
+نصیبو	n ə s iː b oː	ipa	0
+نصیبوں	n ə s iː b õː	ipa	0
+نصیحت	n ə s iː ɦ ə t̪	ipa	0
+نطرون	n ə t̪ ɾ uː n	ipa	0
+نظارہ	n ə z ɑː ɾ ɑː	ipa	0
+نظام	n ɪ z ɑː m	ipa	0
+نظامت	n ɪ z ɑː m ə t̪	ipa	0
+نظر	n ə z ə ɾ	ipa	0
+نظریہ	n ə z ə ɾ ɪ j ɑː	ipa	0
+نظم	n ə z m	ipa	0
+نظموں	n ə z m õː	ipa	0
+نظمیں	n ə z m ẽː	ipa	0
+نظیف	n ə z iː f	ipa	0
+نعت	n ɑː t̪	ipa	0
+نعتوں	n ə ə t̪ õː	ipa	0
+نعتوں	n ə ʔ ə t̪ õː	ipa	0
+نعتیں	n ə ə t̪ ẽː	ipa	0
+نعتیں	n ə ʔ ə t̪ ẽː	ipa	0
+نعرہ	n ɑː ɾ ɑ	ipa	0
+نعرہ	n ɑː ɾ ɑː ɦ	ipa	0
+نعمت	n eː m ə t̪	ipa	0
+نعمت	n ɪ m ə t̪	ipa	0
+نعمت	n ɪ ʔ m ə t̪	ipa	0
+نعمتو	n ɪ m ə t̪ oː	ipa	0
+نعمتو	n ɪ ʔ m ə t̪ oː	ipa	0
+نعمتوں	n ɪ m ə t̪ õː	ipa	0
+نعمتوں	n ɪ ʔ m ə t̪ õː	ipa	0
+نعمتیں	n ɪ m ə t̪ ẽː	ipa	0
+نعمتیں	n ɪ ʔ m ə t̪ ẽː	ipa	0
+نغمات	n ə ɣ m ɑː t̪	ipa	0
+نغمو	n ə ɣ m oː	ipa	0
+نغموں	n ə ɣ m õː	ipa	0
+نغمہ	n ə ɣ m ɑ	ipa	0
+نغمہ	n ə ɣ m ɑː	ipa	0
+نغمے	n ə ɣ m eː	ipa	0
+نفاذ	n ə f ɑː z	ipa	0
+نفاق	n ə f ɑː q	ipa	0
+نفرت	n ə f ɾ ə t̪	ipa	0
+نفرتوں	n ə f ɾ ə t̪ õː	ipa	0
+نفرتیں	n ə f ɾ ə t̪ ẽː	ipa	0
+نقاب	n ə q ɑː b	ipa	0
+نقاب	n ɪ q ɑː b	ipa	0
+نقارہ	n ə q q ɑː ɾ ɑː	ipa	0
+نقاش	n ə q q ɑː ʃ	ipa	0
+نقاشی	n ə q q ɑː ʃ iː	ipa	0
+نقشہ	n ə q ʃ ɑ	ipa	0
+نقشہ	n ə q ʃ ɑː	ipa	0
+نقشہ	n ə q ʃ ə ɦ	ipa	0
+نقصان	n ʊ q s ɑː n	ipa	0
+نقطہ	n ʊ q t̪ ɑ	ipa	0
+نقطہ	n ʊ q t̪ ɑː	ipa	0
+نقلی	n ə q l iː	ipa	0
+نلکا	n ə l k ɑː	ipa	0
+نمائندگی	n ʊ m ɑː ɪ n d̪ ə ɡ iː	ipa	0
+نماز	n ə m ɑː z	ipa	0
+نماز	n ɪ m ɑː z	ipa	0
+نمازوں	n ə m ɑː z õː	ipa	0
+نمازیں	n ə m ɑː z ẽː	ipa	0
+نمبو	n ɪ m b uː	ipa	0
+نمستے	n ə m ə s t̪ eː	ipa	0
+نمونہ	n ə m uː nᵊ	ipa	0
+نمک	n ə m ə k	ipa	0
+نمکین	n ə m k iː n	ipa	0
+نمی	n ə m iː	ipa	0
+نن	n ə n	ipa	0
+نند	n ə n d̪	ipa	0
+نند	n ə n ə d̪	ipa	0
+نند	n ə n ə̃ d̪	ipa	0
+نندو	n ə n d̪ oː	ipa	0
+نندوئی	n ə n d̪ oː iː	ipa	0
+نندوئیو	n ə n d̪ oː ɪ j oː	ipa	0
+نندوئیوں	n ə n d̪ oː ɪ j õː	ipa	0
+نندوں	n ə n d̪ õː	ipa	0
+نندیں	n ə n d̪ ẽː	ipa	0
+ننگا	n ə̃ ŋ ɡ ɑː	ipa	0
+ننھا	n ə n n ɑː	ipa	0
+ننھا	n ə nʱ ɑː	ipa	0
+نو	n ɔː	ipa	0
+نوآبادیاتی	n ɔː ɑː b ɑː d̪ ɪ j ɑː t̪ iː	ipa	0
+نوابشاہ	n ə ʋ ɑː b ʃ ɑː ɦ	ipa	0
+نوازش	n ə ʋ ɑː z ɪ ʃ	ipa	0
+نوازشوں	n ə ʋ ɑː z ɪ ʃ õː	ipa	0
+نوازشیں	n ə ʋ ɑː z ɪ ʃ ẽː	ipa	0
+نواسو	n ə ʋ ɑː s oː	ipa	0
+نواسوں	n ə ʋ ɑː s õː	ipa	0
+نواسہ	n ə ʋ ɑː s ɑ	ipa	0
+نواسہ	n ə ʋ ɑː s ɑː	ipa	0
+نواسے	n ə ʋ ɑː s eː	ipa	0
+نوبت	n ɔː b ə t̪	ipa	0
+نوجوان	n ɔː d͡ʒ ə ʋ ɑː n	ipa	0
+نوجوانو	n ɔː d͡ʒ ə ʋ ɑː n oː	ipa	0
+نوجوانوں	n ɔː d͡ʒ ə ʋ ɑː n õː	ipa	0
+نوح	n uː ɦ	ipa	0
+نور	n uː ɾ	ipa	0
+نوش	n oː ʃ	ipa	0
+نوشکی	n uː ʃ k iː	ipa	0
+نوشہرہ	n ɔː ʃ ɛ ɦ ɾ ɑ	ipa	0
+نوشہرہ	n ɔː ʃ ɛ ɦ ɾ ɑː	ipa	0
+نوشی	n oː ʃ iː	ipa	0
+نومبر	n ə ʋ ə m b ə ɾ	ipa	0
+نونہال	n ɔː n ɪ ɦ ɑː l	ipa	0
+نونہالان	n ɔː n ɪ ɦ ɑː l ɑː n	ipa	0
+نونہالو	n ɔː n ɪ ɦ ɑː l oː	ipa	0
+نونہالوں	n ɔː n ɪ ɦ ɑː l õː	ipa	0
+نوواں	n ə̯ u ʋ ɑ̃ː	ipa	0
+نوکر	n ɔː k ə ɾ	ipa	0
+نوکرانی	n ɔː k ɾ ɑː n iː	ipa	0
+نوکری	n ɔː k ɾ iː	ipa	0
+نوید	n ə ʋ eː d̪	ipa	0
+نوید	n ə ʋ iː d̪	ipa	0
+نویدن	n ɪ ʋ eː d̪ ə n	ipa	0
+نویس	n ə ʋ iː s	ipa	0
+نویسندہ	n ə ʋ iː s ə n d̪ ɑ	ipa	0
+نویسندہ	n ə ʋ iː s ə n d̪ ɑː	ipa	0
+نيت	n iː t̪	ipa	0
+نپولین	n ə p oː l ɪ j ə n	ipa	0
+نچوڑنا	n ɪ t͡ʃ oː ɽ n ɑː	ipa	0
+نڈر	n ɪ ɖ ə ɾ	ipa	0
+نژاد	n ə ʒ ɑː d̪	ipa	0
+نژاد	n ɪ ʒ ɑː d̪	ipa	0
+نکاح	n ɪ k ɑː ɦ	ipa	0
+نکاراتمک	n ə k ɑː ɾ ɑː t̪ m ə k	ipa	0
+نکالنا	n ɪ k ɑː l n ɑː	ipa	0
+نکسیر	n ə k s iː ɾ	ipa	0
+نکما	n ɪ k ə m m ɑː	ipa	0
+نگاڑا	n ə ɡ ɑː ɽ ɑː	ipa	0
+نگاہ	n ɪ ɡ ɑː ɦ	ipa	0
+نگاہوں	n ɪ ɡ ɑː ɦ õː	ipa	0
+نگاہیں	n ɪ ɡ ɑː ɦ ẽː	ipa	0
+نگر	n ə ɡ ə ɾ	ipa	0
+نگرانی	n ɪ ɡ ɾ ɑː n iː	ipa	0
+نہ	n a	ipa	0
+نہ	n ə	ipa	0
+نہاد	n ɪ ɦ ɑː d̪	ipa	0
+نہایت	n ɪ h ɑː j ə t̪	ipa	0
+نہتا	n ɪ ɦ ə t̪ t̪ ɑː	ipa	0
+نہتی	n ɪ ɦ ə t̪ t̪ iː	ipa	0
+نہتے	n ɪ ɦ ə t̪ t̪ eː	ipa	0
+نہضت	n ə ɦ z ə t̪	ipa	0
+نہیں	n ə ɦ ĩː	ipa	0
+نیا	n ə j ɑː	ipa	0
+نیت	n ɪ j j ə t̪	ipa	0
+نیتو	n ɪ j j ə t̪ oː	ipa	0
+نیتوں	n ɪ j j ə t̪ õː	ipa	0
+نیتیں	n ɪ j j ə t̪ ẽː	ipa	0
+نیدرلینڈ	n eː d̪ ə ɾ l eː n ɖ	ipa	0
+نیدرلینڈ	n iː d̪ ə ɾ l ɛː n ɖ	ipa	0
+نیر	n iː ɾ	ipa	0
+نیز	n iː z	ipa	0
+نیزوں	n eː z õː	ipa	0
+نیزہ	n eː z ɑ	ipa	0
+نیزہ	n eː z ɑː	ipa	0
+نیزے	n eː z eː	ipa	0
+نیشکر	n ɛː ʃ ə k ə ɾ	ipa	0
+نیلام	n iː l ɑː m	ipa	0
+نیم	n eː m	ipa	0
+نیم	n iː m	ipa	0
+نیم	n ɪ j ə m	ipa	0
+نین	n ɛː n	ipa	0
+نیند	n iː n d̪	ipa	0
+نیندوں	n iː n d̪ õː	ipa	0
+نیندیں	n iː n d̪ ẽː	ipa	0
+نینوں	n ɛː n õː	ipa	0
+نیوجن	n ɪ j oː d͡ʒ ə n	ipa	0
+نیٹرون	n ɛː ʈ ɾ oː n	ipa	0
+نیپال	n eː p ɑː l	ipa	0
+نیچا	n iː t͡ʃ ɑː	ipa	0
+نیک	n eː k	ipa	0
+نے	n eː	ipa	0
+و	oː	ipa	0
+و	uː	ipa	0
+و	ɔː	ipa	0
+و	ʋ	ipa	0
+و	ʋ ɑː ʋ	ipa	0
+و	ʋ ə	ipa	0
+وا	ʋ ɑː	ipa	0
+وابستگی	ʋ ɑː b ə s t̪ ə ɡ iː	ipa	0
+واجب	ʋ ɑː d͡ʒ ɪ b	ipa	0
+واحد	ʋ ɑː ɦ ɪ d̪	ipa	0
+وادی	ʋ ɑː d̪ iː	ipa	0
+وار	ʋ ɑː ɾ	ipa	0
+وارانسی	ʋ ɑː ɾ ɑː n s iː	ipa	0
+وارث	ʋ ɑː ɾ ɪ s	ipa	0
+وارد	ʋ ɑː ɾ ɪ d̪	ipa	0
+واسط	ʋ ɑː s ɪ t̪	ipa	0
+واسطہ	ʋ ɑː s ɪ t̪ ɑː	ipa	0
+واسع	ʋ ɑː s eː	ipa	0
+واسی	ʋ ɑː s iː	ipa	0
+واشک	ʋ ɑː ʃ ʊ k	ipa	0
+واضح	ʋ ɑː z iː ɦ	ipa	0
+واقع	ʋ ɑː q eː	ipa	0
+واقعات	ʋ ɑː q ɪ ɑː t̪	ipa	0
+واقعات	ʋ ɑː q ɪ ʔ ɑː t̪	ipa	0
+واقعہ	ʋ ɑː q ɪ ɑ	ipa	0
+واقعہ	ʋ ɑː q ɪ ɑː	ipa	0
+واقعہ	ʋ ɑː q ɪ ʔ ɑ	ipa	0
+واقعہ	ʋ ɑː q ɪ ʔ ɑː	ipa	0
+واقف	ʋ ɑː q ɪ f	ipa	0
+والا	w ɑː l ɑː	ipa	0
+والد	ʋ ɑː l ɪ d̪	ipa	0
+والدہ	ʋ ɑː l ɪ d̪ ɑ	ipa	0
+والدہ	ʋ ɑː l ɪ d̪ ɑː	ipa	0
+والدین	ʋ ɑː l d̪ ɛː n	ipa	0
+والدین	ʋ ɑː l ɪ d̪ ɛː n	ipa	0
+وامن	ʋ ɑː m ə n	ipa	0
+وان	ʋ ɑː n	ipa	0
+واپس	ʋ ɑː p ə s	ipa	0
+واپس	ʋ ɑː p ɪ s	ipa	0
+واکیہ	ʋ ɑː k jᵊ	ipa	0
+واہ	ʋ ɑː ɦ	ipa	0
+واہک	ʋ ɑː ɦ ə k	ipa	0
+وبا	ʋ ə b ɑː	ipa	0
+وبھاگ	ʋ ɪ bʱ ɑː ɡ	ipa	0
+وتر	ʋ ə t̪ ə ɾ	ipa	0
+وتر	ʋ ɪ t̪ ɾ	ipa	0
+وجود	ʋ ə d͡ʒ uː d̪	ipa	0
+وجودیات	ʋ ʊ d͡ʒ uː d̪ ɪ j ɑː t̪	ipa	0
+وجہ	ʋ ə d͡ʒ ɑː	ipa	0
+وجہ	ʋ ə d͡ʒ ə ɦ	ipa	0
+وحیدہ	ʋ ə ɦ iː d̪ ɑ	ipa	0
+وحیدہ	ʋ ə ɦ iː d̪ ɑː	ipa	0
+ودھان	ʋ ɪ d̪ʱ ɑː n	ipa	0
+ودھوا	ʋ ɪ d̪ʱ ʋ ɑː	ipa	0
+ودیارتھی	ʋ ɪ d̪ j ɑː ɾ t̪ʰ iː	ipa	0
+وراثت	ʋ ɪ ɾ ɑː s ə t̪	ipa	0
+وراثتو	ʋ ɪ ɾ ɑː s ə t̪ oː	ipa	0
+وراثتوں	ʋ ɪ ɾ ɑː s ə t̪ õː	ipa	0
+وراثتیں	ʋ ɪ ɾ ɑː s ə t̪ ẽː	ipa	0
+ورزش	ʋ ə ɾ z ɪ ʃ	ipa	0
+ورودھ	ʋ ɪ ɾ oː d̪ʱ	ipa	0
+وزارت	ʋ ɪ z ɑː ɾ ə t̪	ipa	0
+وزرا	ʋ ʊ z ə ɾ ɑː	ipa	0
+وزیر	ʋ ə z iː ɾ	ipa	0
+وستو	ʋ ə s t̪ uː	ipa	0
+وسعت	ʋ ʊ s ə t̪	ipa	0
+وسعت	ʋ ʊ s ʔ ə t̪	ipa	0
+وسنت	ʋ ə s ə n t̪	ipa	0
+وسیع	ʋ ə s iː	ipa	0
+وسیع	ʋ ə s iː ʔ	ipa	0
+وشنو	ʋ ɪ ʃ n uː	ipa	0
+وشواس	ʋ ɪ ʃ ʋ ɑː s	ipa	0
+وصال	ʋ ɪ s ɑː l	ipa	0
+وصیت	w ə s ɪ j j ə t̪	ipa	0
+وصیت	w ə s ɪ j ə t̪	ipa	0
+وصیت	ʋ ə s ɪ j j ə t̪	ipa	0
+وصیت	ʋ ə s ɪ j ə t̪	ipa	0
+وضع	w ə z	ipa	0
+وضع	w ə z ɑː	ipa	0
+وضع	w ə z ʔ	ipa	0
+وضع	ʋ ə z	ipa	0
+وضع	ʋ ə z ɑː	ipa	0
+وضع	ʋ ə z ʔ	ipa	0
+وضو	ʋ ə z uː	ipa	0
+وضو	ʋ ʊ z uː	ipa	0
+وطن	ʋ ə t̪ ə n	ipa	0
+وطنوں	ʋ ə t̪ ə n õː	ipa	0
+وعدو	ʋ ə d̪ oː	ipa	0
+وعدو	ʋ ə ʔ d̪ oː	ipa	0
+وعدوں	ʋ ə d̪ õː	ipa	0
+وعدوں	ʋ ə ʔ d̪ õː	ipa	0
+وعدہ	ʋ ə d̪ ɑ	ipa	0
+وعدہ	ʋ ə d̪ ɑː	ipa	0
+وعدہ	ʋ ə ʔ d̪ ɑ	ipa	0
+وعدہ	ʋ ə ʔ d̪ ɑː	ipa	0
+وعدے	ʋ ə d̪ eː	ipa	0
+وعدے	ʋ ə ʔ d̪ eː	ipa	0
+وغیرہ	ʋ ə ɣ ɛː ɾ ə ɦ	ipa	0
+وفا	ʋ ə f ɑː	ipa	0
+وفاؤ	ʋ ə f ɑː oː	ipa	0
+وفاؤں	ʋ ə f ɑː õː	ipa	0
+وفائیں	ʋ ə f ɑː ẽː	ipa	0
+وفات	ʋ ə f ɑː t̪	ipa	0
+وفاق	w ə f ɑː q	ipa	0
+وفاق	w ɪ f ɑː q	ipa	0
+وفد	ʋ ə f d̪	ipa	0
+وفد	ʋ ə f ə d̪	ipa	0
+وقار	ʋ ə q ɑː ɾ	ipa	0
+وقارو	ʋ ə q ɑː ɾ oː	ipa	0
+وقاروں	ʋ ə q ɑː ɾ õː	ipa	0
+وقف	ʋ ə q f	ipa	0
+وقوع	ʋ ʊ q uː	ipa	0
+وقوع	ʋ ʊ q uː ʔ	ipa	0
+ولایت	ʋ ɪ l ɑː j ə t̪	ipa	0
+ولایتی	ʋ ɪ l ɑː ɪ t̪ iː	ipa	0
+ولد	ʋ ə l ə d̪	ipa	0
+ولندیز	ʋ ə l ə n d̪ eː z	ipa	0
+ولی	ʋ ə l iː	ipa	0
+ونا	ʋ ɪ n ɑː	ipa	0
+وندر	ʋ ɪ n d̪ ə ɾ	ipa	0
+ونشج	ʋ ə n ʃ ə d͡ʒ	ipa	0
+وواد	ʋ ɪ ʋ ɑː d̪	ipa	0
+وواہ	ʋ ɪ ʋ ɑː ɦ	ipa	0
+وچ	ʋ ə t͡ʃ	ipa	0
+وچن	ʋ ə t͡ʃ ə n	ipa	0
+وڈھ	ʋ ə ɖʱ	ipa	0
+وڑا	ʋ ə ɽ ɑː	ipa	0
+وکٹ	ʋ ɪ k ə ʈ	ipa	0
+وکھیات	ʋ ɪ kʰ j ɑː t̪	ipa	0
+وگیان	ʋ ɪ ɡ j ɑː n	ipa	0
+وہ	w oː	ipa	0
+وہ	w ə ɦ	ipa	0
+وہ	ʋ oː	ipa	0
+وہ	ʋ ə ɦ	ipa	0
+وہاڑی	ʋ ɪ ɦ ɑː ɽ iː	ipa	0
+وہاں	ʋ ə ɦ ɑ̃ː	ipa	0
+وہران	ʋ ə ɦ ɾ ɑː n	ipa	0
+وہم	ʋ ə ɦ m	ipa	0
+وہم	ʋ ə ɦ ə m	ipa	0
+وہموں	ʋ ə ɦ m õː	ipa	0
+وہی	ʋ oː ɦ iː	ipa	0
+وہی	ʋ ə ɦ iː	ipa	0
+ویاکرن	ʋ j ɑː k ə ɾ ə n	ipa	0
+ویتنام	ʋ iː j ə t̪ n ɑː m	ipa	0
+وید	ʋ eː d̪	ipa	0
+وید	ʋ ɛː d̪	ipa	0
+ویدک	ʋ ɛː d̪ ɪ k	ipa	0
+ویر	ʋ iː ɾ	ipa	0
+ویران	ʋ iː ɾ ɑː n	ipa	0
+وینجن	ʋ j ə n d͡ʒ ə n	ipa	0
+وینیزویلا	ʋ ɛː n iː z ʋ ɛː l ɑː	ipa	0
+ویژن	ʋ iː ʒ ə n	ipa	0
+وے	w eː	ipa	0
+وے	w ɛː	ipa	0
+وے	ʋ eː	ipa	0
+وے	ʋ ɛː	ipa	0
+ٹ	ʈ	ipa	0
+ٹ	ʈ eː	ipa	0
+ٹائٹ	ʈ ɑː j ɪ ʈ	ipa	0
+ٹالنا	ʈ ɑː l n ɑː	ipa	0
+ٹانگ	ʈ ɑː ŋ ɡ	ipa	0
+ٹانگوں	ʈ ɑː ŋ ɡ õː	ipa	0
+ٹانگیں	ʈ ɑː ŋ ɡ ẽː	ipa	0
+ٹاپو	ʈ ɑː p uː	ipa	0
+ٹخنا	ʈ ə x n ɑː	ipa	0
+ٹخنوں	ʈ ə x n õː	ipa	0
+ٹخنے	ʈ ə x n eː	ipa	0
+ٹرام	ʈ ɾ ɑː m	ipa	0
+ٹرو	ʈ ə ɾ ɾ uː	ipa	0
+ٹرک	ʈ ɾ ə k	ipa	0
+ٹریکٹر	ʈ ə ɾ ɛː k ʈ ə ɾ	ipa	0
+ٹریکٹر	ʈ ɾ ɛː k ʈ ə ɾ	ipa	0
+ٹرے	ʈ ɾ eː	ipa	0
+ٹلفورڈ	ʈ ɪ l f oː ɾ ɖ	ipa	0
+ٹماٹر	ʈ ə m ɑː ʈ ə ɾ	ipa	0
+ٹوٹا	ʈ uː ʈ ɑː	ipa	0
+ٹوٹنا	ʈ uː ʈ n ɑː	ipa	0
+ٹوٹی	ʈ uː ʈ iː	ipa	0
+ٹوٹیاں	ʈ uː ʈ ɪ j ɑ̃ː	ipa	0
+ٹوٹیوں	ʈ uː ʈ ɪ j õː	ipa	0
+ٹوٹے	ʈ uː ʈ eː	ipa	0
+ٹوپی	ʈ oː p iː	ipa	0
+ٹوکری	ʈ oː k ɾ iː	ipa	0
+ٹٹی	ʈ ə ʈ ʈ iː	ipa	0
+ٹکا	ʈ ə k ɑː	ipa	0
+ٹکر	ʈ ə k k ə ɾ	ipa	0
+ٹکراو	ʈ ə k ɾ ɑː ʋ	ipa	0
+ٹکوں	ʈ ə k õː	ipa	0
+ٹکٹ	ʈ ɪ k ə ʈ	ipa	0
+ٹکڑا	ʈ ʊ k ɽ ɑː	ipa	0
+ٹکے	ʈ ə k eː	ipa	0
+ٹھرکی	ʈʰ ə ɾ k iː	ipa	0
+ٹھنڈا	ʈʰ ə n ɖ ɑː	ipa	0
+ٹھنگنا	ʈʰ ɪ̃ ɡ n ɑː	ipa	0
+ٹھوس	ʈʰ oː s	ipa	0
+ٹھوڑی	ʈʰ oː ɽ iː	ipa	0
+ٹھڈی	ʈʰ ʊ ɖ ɖ iː	ipa	0
+ٹھکانا	ʈʰ ɪ k ɑː n ɑː	ipa	0
+ٹھگ	ʈʰ ə ɡ	ipa	0
+ٹھہرنا	ʈʰ ə ɦ ə ɾ n ɑː	ipa	0
+ٹھہرنا	ʈʰ ɛ ɦ ɛ ɾ n ɑː	ipa	0
+ٹھیس	ʈʰ eː s	ipa	0
+ٹھیلا	ʈʰ eː l ɑː	ipa	0
+ٹھیکا	ʈʰ eː k ɑː	ipa	0
+ٹھیکیدار	ʈʰ eː k eː d̪ ɑː ɾ	ipa	0
+ٹینگی	ʈ ẽː ɡ iː	ipa	0
+ٹیپ	ʈ eː p	ipa	0
+ٹیچر	ʈ iː t͡ʃ ə ɾ	ipa	0
+ٹیچرو	ʈ iː t͡ʃ ə ɾ oː	ipa	0
+ٹیچروں	ʈ iː t͡ʃ ə ɾ õː	ipa	0
+ٹیڑھا	ʈ eː ɽʱ ɑː	ipa	0
+ٹیکسلا	ʈ ɛː k s ɪ l ɑː	ipa	0
+ٹیکسی	ʈ ɛː k s iː	ipa	0
+پ	p	ipa	0
+پ	p eː	ipa	0
+پاؤں	p ɑː ũː	ipa	0
+پائخانہ	p ɑː ɪ x ɑː n ɑː	ipa	0
+پائخانہ	p ɑː ʔ ɪ x ɑː n ɑː	ipa	0
+پائپ	p ɑː ɪ p	ipa	0
+پابند	p ɑː b ə n d̪	ipa	0
+پاجامہ	p ɑː d͡ʒ ɑː m ɑ	ipa	0
+پاجامہ	p ɑː d͡ʒ ɑː m ɑː	ipa	0
+پاخانہ	p ɑː x ɑː n ɑː	ipa	0
+پاد	p ɑː d̪	ipa	0
+پادری	p ɑː d̪ ɾ iː	ipa	0
+پادشاہ	p ɑː d̪ ʃ ɑː ɦ	ipa	0
+پارسی	p ɑː ɾ s iː	ipa	0
+پاروتی	p ɑː ɾ uː t̪ iː	ipa	0
+پاروتی	p ɑː ɾ ʋ ə t̪ iː	ipa	0
+پارچہ	p ɑː ɾ t͡ʃ ɑ	ipa	0
+پارچہ	p ɑː ɾ t͡ʃ ɑː	ipa	0
+پارہ	p ɑː ɾᵊ	ipa	0
+پاریکھ	p ɑː ɾ eː kʰ	ipa	0
+پازیب	p ɑː z eː b	ipa	0
+پاس	p ɑː s	ipa	0
+پاسبان	p ɑː s b ɑː n	ipa	0
+پاستا	p ɑː s t̪ ɑː	ipa	0
+پاسپورٹ	p ɑː s p oː ɾ ʈ	ipa	0
+پال	p ɑː l	ipa	0
+پالتو	p ɑː l t̪ uː	ipa	0
+پالم	p ɑː l ə m	ipa	0
+پالنا	p ɑː l n ɑː	ipa	0
+پالک	p ɑː l ə k	ipa	0
+پان	p ɑː n	ipa	0
+پانا	p ɑː n ɑː	ipa	0
+پانو	p ɑ̃ː oː	ipa	0
+پانو	p ɑ̃ː ʋ	ipa	0
+پانچ	p ɑ̃ː t͡ʃ	ipa	0
+پانچواں	p ɑ̃ː t͡ʃ ʋ ɑ̃ː	ipa	0
+پانڈو	p ɑː n ɖ ə ʋ	ipa	0
+پانہ	p ɑː n ɑ	ipa	0
+پانہ	p ɑː n ɑː	ipa	0
+پانی	p ɑː n iː	ipa	0
+پاٹھک	p ɑː ʈʰ ə k	ipa	0
+پاپ	p ɑː p	ipa	0
+پاک	p ɑː k	ipa	0
+پاکستان	p ɑː k ɪ s t̪ ɑː n	ipa	0
+پاکستانی	p ɑː k ɪ s t̪ ɑː n iː	ipa	0
+پاکپتن	p ɑː k p ə t̪ t̪ ə n	ipa	0
+پاگل	p ɑː ɡ ə l	ipa	0
+پاگلو	p ɑː ɡ ə l oː	ipa	0
+پاگلوں	p ɑː ɡ ə l õː	ipa	0
+پایدان	p ɑː j d̪ ɑː n	ipa	0
+پایل	p ɑː j ə l	ipa	0
+پتا	p ə t̪ ɑː	ipa	0
+پتا	p ɪ t̪ ɑː	ipa	0
+پتری	p ʊ t̪ ɾ iː	ipa	0
+پتلا	p ə t̪ l ɑː	ipa	0
+پتلون	p ə t̪ l uː n	ipa	0
+پتنگ	p ə t̪ ə ŋ ɡ	ipa	0
+پتنی	p ə t̪ n iː	ipa	0
+پتھ	p ə t̪ʰ	ipa	0
+پتھر	p ə t̪ t̪ʰ ə ɾ	ipa	0
+پتھروں	p ə t̪ t̪ʰ ə ɾ õː	ipa	0
+پتھک	p ə t̪ʰ ɪ k	ipa	0
+پتہ	p ə t̪ ɑ	ipa	0
+پتہ	p ə t̪ ɑː	ipa	0
+پتی	p ə t̪ iː	ipa	0
+پتی	p ə t̪ t̪ iː	ipa	0
+پختہ	p ʊ x t̪ᵊ	ipa	0
+پد	p ə d̪	ipa	0
+پدر	p ɪ d̪ ə ɾ	ipa	0
+پذیر	p ə z iː ɾ	ipa	0
+پر	p ə ɾ	ipa	0
+پراتن	p ʊ ɾ ɑː t̪ ə n	ipa	0
+پرانا	p ʊ ɾ ɑː n ɑː	ipa	0
+پرانت	p ɾ ɑː n t̪	ipa	0
+پراٹھا	p ə ɾ ɑː ʈʰ ɑː	ipa	0
+پراپت	p ɾ ɑː p t̪	ipa	0
+پراچین	p ɾ ɑː t͡ʃ iː n	ipa	0
+پراکرت	p ɾ ɑː k ɾ ɪ t̪	ipa	0
+پربھات	p ɾ ə bʱ ɑː t̪	ipa	0
+پربھاو	p ə ɾ bʱ ɑː ʋ	ipa	0
+پرتگال	p ʊ ɾ t̪ ə ɡ ɑː l	ipa	0
+پرتگال	p ʊ ɾ t̪ ʊ ɡ ɑː l	ipa	0
+پرتگیا	p ɾ ə t̪ ɪ ɡ j ɑː	ipa	0
+پردوں	p ə ɾ d̪ õː	ipa	0
+پردہ	p ə ɾ d̪ ɑ	ipa	0
+پردہ	p ə ɾ d̪ ɑː	ipa	0
+پردیسی	p ə ɾ d̪ eː s iː	ipa	0
+پردیش	p ɾ ə d̪ eː ʃ	ipa	0
+پردے	p ə ɾ d̪ eː	ipa	0
+پرزہ	p ʊ ɾ z ɑː	ipa	0
+پرستان	p ə ɾ ɪ s t̪ ɑː n	ipa	0
+پرستش	p ə ɾ ə s t̪ ɪ ʃ	ipa	0
+پرسوں	p ə ɾ s õː	ipa	0
+پرش	p ə ɾ ʊ ʃ	ipa	0
+پرش	p ʊ ɾ ʊ ʃ	ipa	0
+پرشنسا	p ɾ ə ʃ ə n s ɑː	ipa	0
+پرشیا	p ə ɾ ʃ ɪ j ɑː	ipa	0
+پرمکھ	p ɾ ə m ʊ kʰ	ipa	0
+پرمیشور	p ə ɾ m eː ʃ ʋ ə ɾ	ipa	0
+پرمیشور	p ə ɾ ə m eː ʃ ʋ ə ɾ	ipa	0
+پرندو	p ə ɾ ɪ n d̪ oː	ipa	0
+پرندوں	p ə ɾ ɪ n d̪ õː	ipa	0
+پرندہ	p ə ɾ ə n d̪ ɑ	ipa	0
+پرندہ	p ə ɾ ə n d̪ ɑː	ipa	0
+پرندہ	p ə ɾ ɪ n d̪ ɑ	ipa	0
+پرندہ	p ə ɾ ɪ n d̪ ɑː	ipa	0
+پرندے	p ə ɾ ɪ n d̪ eː	ipa	0
+پرنی	p ə ɾ n iː	ipa	0
+پروا	p ə ɾ ʋ ɑː	ipa	0
+پروار	p ə ɾ ɪ ʋ ɑː ɾ	ipa	0
+پرواز	p ə ɾ ʋ ɑː z	ipa	0
+پروانو	p ə ɾ ʋ ɑː n oː	ipa	0
+پروانوں	p ə ɾ ʋ ɑː n õː	ipa	0
+پروانہ	p ə ɾ ʋ ɑː n ɑ	ipa	0
+پروانہ	p ə ɾ ʋ ɑː n ɑː	ipa	0
+پروانہ	p ʊ ɾ ʋ ɑː n ɑ	ipa	0
+پروانہ	p ʊ ɾ ʋ ɑː n ɑː	ipa	0
+پروانے	p ə ɾ ʋ ɑː n eː	ipa	0
+پروت	p ə ɾ ʋ ə t̪	ipa	0
+پروردگار	p ə ɾ ʋ ə ɾ d̪ ɪ ɡ ɑː ɾ	ipa	0
+پرورش	p ə ɾ ʋ ə ɾ ɪ ʃ	ipa	0
+پرول	p ə ɾ ʋ ə l	ipa	0
+پرونا	p ɪ ɾ oː n ɑː	ipa	0
+پرچار	p ə ɾ t͡ʃ ɑː ɾ	ipa	0
+پرچم	p ə ɾ t͡ʃ ə m	ipa	0
+پرچمو	p ə ɾ t͡ʃ ə m oː	ipa	0
+پرچموں	p ə ɾ t͡ʃ ə m õː	ipa	0
+پرچہ	p ə ɾ t͡ʃ ɑː	ipa	0
+پرچہ	p ə ɾ t͡ʃ ə	ipa	0
+پرچی	p ə ɾ t͡ʃ iː	ipa	0
+پرکاش	p ɾ ə k ɑː ʃ	ipa	0
+پرکاشک	p ə ɾ k ɑː ʃ ə k	ipa	0
+پرکھ	p ʊ ɾ ʊ kʰ	ipa	0
+پرکھیات	p ɾ ə kʰ j ɑː t̪	ipa	0
+پری	p ə ɾ iː	ipa	0
+پریت	p ə ɾ eː t̪	ipa	0
+پریت	p ə ɾ iː t̪	ipa	0
+پریت	p ɾ eː t̪	ipa	0
+پریتم	p ɾ iː t̪ ə m	ipa	0
+پریتمو	p ɾ iː t̪ ə m oː	ipa	0
+پریتموں	p ɾ iː t̪ ə m õː	ipa	0
+پریشان	p ə ɾ eː ʃ ɑː n	ipa	0
+پریم	p ə ɾ eː m	ipa	0
+پریم	p ɾ eː m	ipa	0
+پریڈ	p ə ɾ ɛː ɖ	ipa	0
+پریکشا	p ə ɾ iː k ʃ ɑː	ipa	0
+پریکشائیں	p ə ɾ iː k ʃ ɑː ẽː	ipa	0
+پستان	p ɪ s t̪ ɑː n	ipa	0
+پستول	p ɪ s t̪ ɔː l	ipa	0
+پستک	p ʊ s t̪ ə k	ipa	0
+پستہ	p ɪ s t̪ ɑ	ipa	0
+پستہ	p ɪ s t̪ ɑː	ipa	0
+پسر	p ɪ s ə ɾ	ipa	0
+پسلی	p ə s l iː	ipa	0
+پسلیاں	p ə s l ɪ j ɑ̃ː	ipa	0
+پسلیو	p ə s l ɪ j oː	ipa	0
+پسلیوں	p ə s l ɪ j õː	ipa	0
+پسند	p ə s ə n d̪	ipa	0
+پسندیدہ	p ə s ə n d̪ iː d̪ ɑ	ipa	0
+پسندیدہ	p ə s ə n d̪ iː d̪ ɑː	ipa	0
+پسنی	p ə s n iː	ipa	0
+پسو	p ə s uː	ipa	0
+پسو	p ɪ s s uː	ipa	0
+پسینہ	p ə s iː n ɑː	ipa	0
+پشاور	p ɪ ʃ ɑː ʋ ə ɾ	ipa	0
+پشت	p ʊ ʃ t̪	ipa	0
+پشتو	p ə ʃ t̪ oː	ipa	0
+پشپ	p ʊ ʃ p	ipa	0
+پشچم	p ə ʃ t͡ʃ ɪ m	ipa	0
+پشکلاوتی	p ʊ ʃ k ə l ɑː ʋ ə t̪ iː	ipa	0
+پشیمان	p ə ʃ eː m ɑː n	ipa	0
+پشین	p ɪ ʃ iː n	ipa	0
+پل	p ə l	ipa	0
+پل	p ʊ l	ipa	0
+پلانڈو	p ə l ɑː n ɖ uː	ipa	0
+پلاٹینم	p l eː ʈ ɪ n ə m	ipa	0
+پلاٹینم	p l ɛː ʈ ɪ n ə m	ipa	0
+پلنگ	p ə l ə ŋ ɡ	ipa	0
+پلٹنا	p ə l ə ʈ n ɑː	ipa	0
+پلیٹ	p l ɛː ʈ	ipa	0
+پلیٹ	p ə l ɛː ʈ	ipa	0
+پنا	p ə n n ɑː	ipa	0
+پناہ	p ə n ɑː ɦ	ipa	0
+پناہو	p ə n ɑː ɦ oː	ipa	0
+پناہوں	p ə n ɑː ɦ õː	ipa	0
+پناہیں	p ə n ɑː ɦ ẽː	ipa	0
+پنجاب	p ə n d͡ʒ ɑː b	ipa	0
+پنجابی	p ə n d͡ʒ ɑː b iː	ipa	0
+پنجہ	p ə n d͡ʒ ɑ	ipa	0
+پنجہ	p ə n d͡ʒ ɑː	ipa	0
+پندرہ	p ə n d̪ ɾ ɑ	ipa	0
+پندرہ	p ə n d̪ ɾ ɑː	ipa	0
+پندرہ	p ə n d̪ ɾ ə ɦ	ipa	0
+پنسل	p eː n s ɪ l	ipa	0
+پنسل	p ɪ n s ɪ l	ipa	0
+پنچھی	p ə n t͡ʃʰ iː	ipa	0
+پنڈال	p ɪ n ɖ ɑː l	ipa	0
+پنڈت	p ə n ɖ ɪ t̪	ipa	0
+پنکھ	p ə ŋ kʰ	ipa	0
+پنکھا	p ə ŋ kʰ ɑː	ipa	0
+پنکھڑی	p ə ŋ kʰ ʊ ɽ iː	ipa	0
+پنگھٹ	p ə n ɡʱ ə ʈ	ipa	0
+پنیر	p ə n iː ɾ	ipa	0
+پنیہ	p ə n j ɑ	ipa	0
+پنیہ	p ə n j ɑː	ipa	0
+پنیہ	p ʊ n j ɑ	ipa	0
+پنیہ	p ʊ n j ɑː	ipa	0
+پوت	p uː t̪	ipa	0
+پوتا	p oː t̪ ɑː	ipa	0
+پوتو	p oː t̪ oː	ipa	0
+پوتوں	p oː t̪ õː	ipa	0
+پوتھی	p oː t̪ʰ iː	ipa	0
+پوتی	p oː t̪ iː	ipa	0
+پوتے	p oː t̪ eː	ipa	0
+پوجا	p uː d͡ʒ ɑː	ipa	0
+پوجنا	p uː d͡ʒ n ɑː	ipa	0
+پوجک	p uː d͡ʒ ə k	ipa	0
+پور	p uː ɾ	ipa	0
+پورا	p uː ɾ ɑː	ipa	0
+پوربی	p uː ɾ b iː	ipa	0
+پوست	p oː s t̪	ipa	0
+پوشاک	p oː ʃ ɑː k	ipa	0
+پوشیدگی	p oː ʃ iː d̪ᵊ ɡ iː	ipa	0
+پوشیدہ	p oː ʃ iː d̪ᵊ	ipa	0
+پول	p oː l	ipa	0
+پولس	p uː l iː s	ipa	0
+پولس	p uː l ɪ s	ipa	0
+پولس	p ɔː l ʊ s	ipa	0
+پولس	p ʊ l iː s	ipa	0
+پولینڈ	p oː l æː n ɖ	ipa	0
+پون	p ə ʋ ə n	ipa	0
+پونچھ	p ũː t͡ʃʰ	ipa	0
+پونچھنا	p õː t̪͡ʃʰ n ɑː	ipa	0
+پونے	p ɔː n eː	ipa	0
+پوپ	p oː p	ipa	0
+پوپ	p ɔ p	ipa	0
+پوچھنا	p uː t͡ʃʰ n ɑː	ipa	0
+پٹاخا	p ə ʈ ɑː x ɑː	ipa	0
+پٹل	p ə ʈ ə l	ipa	0
+پٹواری	p ə ʈ ʋ ɑː ɾ iː	ipa	0
+پٹواریو	p ə ʈ ʋ ɑː ɾ ɪ j oː	ipa	0
+پٹواریوں	p ə ʈ ʋ ɑː ɾ ɪ j õː	ipa	0
+پٹول	p ə ʈ oː l	ipa	0
+پٹھان	p ə ʈʰ ɑː n	ipa	0
+پٹھانو	p ə ʈʰ ɑː n oː	ipa	0
+پٹھانوں	p ə ʈʰ ɑː n õː	ipa	0
+پٹی	p ə ʈ ʈ iː	ipa	0
+پچکاری	p ɪ t͡ʃ k ɑː ɾ iː	ipa	0
+پچھتر	p ə t͡ʃʰ ə t̪ ə ɾ	ipa	0
+پچھم	p ə t̪ t͡ʃʰ ə m	ipa	0
+پچھواڑا	p ɪ t͡ʃʰ ʋ ɑː ɽ ɑː	ipa	0
+پڑوسی	p ə ɽ oː s iː	ipa	0
+پڑھائی	p ə ɽʱ ɑː iː	ipa	0
+پڑھنا	p ə ɽʱ n ɑː	ipa	0
+پژمردگی	p ə ʒ m ʊ ɾ d̪ ə ɡ iː	ipa	0
+پژوہش	p ɪ ʒ oː ɦ ɪ ʃ	ipa	0
+پکا	p ə kː ɑː	ipa	0
+پکار	p ʊ k ɑː ɾ	ipa	0
+پکارنا	p ʊ k ɑː ɾ n ɑː	ipa	0
+پکانا	p ə k ɑː n ɑː	ipa	0
+پکنا	p ə k n ɑː	ipa	0
+پکوان	p ə k w ɑː n	ipa	0
+پکڑنا	p ə k ə ɽ n ɑː	ipa	0
+پگار	p ə ɡ ɑː ɾ	ipa	0
+پھانسی	pʰ ɑ̃ː s iː	ipa	0
+پھاوڑا	pʰ ɑː ʋ ɽ ɑː	ipa	0
+پھاٹک	pʰ ɑː ʈ ə k	ipa	0
+پھاٹکوں	pʰ ɑː ʈ ə k õː	ipa	0
+پھدی	pʰ ʊ d̪ d̪ iː	ipa	0
+پھرنا	pʰ ɪ ɾ n ɑː	ipa	0
+پھریرے	pʰ ə ɾ ɛː ɾ eː	ipa	0
+پھل	pʰ ə l	ipa	0
+پھلنا	pʰ ə l n ɑː	ipa	0
+پھوار	pʰ ʊ ʋ ɑː ɾ	ipa	0
+پھول	pʰ uː l	ipa	0
+پھولو	pʰ uː l oː	ipa	0
+پھولوں	pʰ uː l õː	ipa	0
+پھوپھا	pʰ uː pʰ ɑː	ipa	0
+پھوڑا	pʰ oː ɽ ɑː	ipa	0
+پھیرا	pʰ eː ɾ ɑː	ipa	0
+پھیلاو	pʰ ɛː l ɑː ʋ	ipa	0
+پھینکنا	pʰ ɛ̃ː k n ɑː	ipa	0
+پھینکنا	pʰ ẽː k n ɑː	ipa	0
+پہ	p eː	ipa	0
+پہاڑ	p ə ɦ ɑː ɽ	ipa	0
+پہر	p ə ɦ ə ɾ	ipa	0
+پہرہ	p ə ɦ ɾᵊ	ipa	0
+پہلا	p ə ɦ l ɑː	ipa	0
+پہلوان	p ɛ ɦ ɛ l ʋ ɑː n	ipa	0
+پہلوان	p ɛʱ l ʋ ɑː n	ipa	0
+پہلی	p ə ɦ l iː	ipa	0
+پہلے	p ə ɦ l eː	ipa	0
+پہننا	p ə ɦ ə n n ɑː	ipa	0
+پہنچنا	p ə ɦ ʊ̃ t͡ʃ n ɑː	ipa	0
+پہچان	p ə ɦ t͡ʃ ɑː n	ipa	0
+پہچاننا	p ə ɦ t͡ʃ ɑː n n ɑː	ipa	0
+پہیا	p ə ɦ ɪ jː ɑː	ipa	0
+پہیا	p ə ɪ̯ jː ɑː	ipa	0
+پہیلی	p ə ɦ eː l iː	ipa	0
+پیادہ	p j ɑː d̪ ɑː	ipa	0
+پیار	p j ɑː ɾ	ipa	0
+پیار	p ɪ j ɑː ɾ	ipa	0
+پیارا	p j ɑː ɾ ɑː	ipa	0
+پیارو	p ɪ j ɑː ɾ oː	ipa	0
+پیاروں	p ɪ j ɑː ɾ õː	ipa	0
+پیاز	p j ɑː z	ipa	0
+پیاز	p ɪ j ɑː z	ipa	0
+پیاس	p j ɑː s	ipa	0
+پیاسا	p j ɑː s ɑː	ipa	0
+پیالہ	p j ɑː lᵊ	ipa	0
+پیانو	p ɪ j ɑː n oː	ipa	0
+پیتل	p iː t̪ ə l	ipa	0
+پیج	p ɛː d͡ʒ	ipa	0
+پیدا	p ɛː d̪ ɑː	ipa	0
+پیدائش	p ɛː d̪ ɑː ɪ ʃ	ipa	0
+پیر	p iː ɾ	ipa	0
+پیر	p ɛː ɾ	ipa	0
+پیرس	p ɛː ɾ ɪ s	ipa	0
+پیرو	p iː ɾ uː	ipa	0
+پیرو	p ɛː ɾ uː	ipa	0
+پیروزہ	p iː ɾ oː z ɑ	ipa	0
+پیروزہ	p iː ɾ oː z ɑː	ipa	0
+پیروں	p iː ɾ õː	ipa	0
+پیروں	p ɛː ɾ õː	ipa	0
+پیروی	p ɛː ɾ ə ʋ iː	ipa	0
+پیسو	p ɛː s oː	ipa	0
+پیسوں	p ɛː s õː	ipa	0
+پیسہ	p ɛː s ɑ	ipa	0
+پیسہ	p ɛː s ɑː	ipa	0
+پیسے	p ɛː s eː	ipa	0
+پیش	p eː ʃ	ipa	0
+پیشاب	p eː ʃ ɑː b	ipa	0
+پیشانی	p eː ʃ ɑː n iː	ipa	0
+پیشگوئی	p eː ʃ ɡ oː j iː	ipa	0
+پیغام	p ɛː ɣ ɑː m	ipa	0
+پیغمبر	p ɛː ɣ ə m b ə ɾ	ipa	0
+پیل	p iː l	ipa	0
+پیمان	p ɛː m ɑː n	ipa	0
+پیمانہ	p ɛː m ɑː n ɑ	ipa	0
+پیمانہ	p ɛː m ɑː n ɑː	ipa	0
+پینا	p iː n ɑː	ipa	0
+پینسل	p eː n s ɪ l	ipa	0
+پینگوئن	p ɛː n ɡ uː ɪ n	ipa	0
+پیوند	p ɛː ʋ ə n d̪	ipa	0
+پیٹ	p eː ʈ	ipa	0
+پیٹرول	p eː ʈ ɾ oː l	ipa	0
+پیٹرول	p ɛ ʈ ɾ oː l	ipa	0
+پیڑ	p eː ɽ	ipa	0
+چ	t͡ʃ	ipa	0
+چ	t͡ʃ eː	ipa	0
+چا	t͡ʃ ɑː	ipa	0
+چائے	t͡ʃ ɑː eː	ipa	0
+چابھی	t͡ʃ ɑː bʱ iː	ipa	0
+چابی	t͡ʃ ɑː b iː	ipa	0
+چادر	t͡ʃ ɑː d̪ ə ɾ	ipa	0
+چار	t͡ʃ ɑː ɾ	ipa	0
+چارسدہ	t͡ʃ ɑː ɾ s ə d̪ d̪ ɑː	ipa	0
+چاشت	t͡ʃ ɑː ʃ t̪	ipa	0
+چاشنی	t͡ʃ ɑː ʃ n iː	ipa	0
+چاق	t͡ʃ ɑː q	ipa	0
+چاقو	t͡ʃ ɑː q uː	ipa	0
+چال	t͡ʃ ɑː l	ipa	0
+چالان	t͡ʃ ɑː l ɑː n	ipa	0
+چالانوں	t͡ʃ ɑː l ɑː n õː	ipa	0
+چالاک	t͡ʃ ɑː l ɑː k	ipa	0
+چالک	t͡ʃ ɑː l ə k	ipa	0
+چاند	t͡ʃ ɑː n d̪	ipa	0
+چاند	t͡ʃ ɑ̃ː d̪	ipa	0
+چاندوں	t͡ʃ ɑ̃ː d̪ õː	ipa	0
+چاندی	t͡ʃ ɑː n d̪ iː	ipa	0
+چاندی	t͡ʃ ɑ̃ː d̪ iː	ipa	0
+چانٹا	t͡ʃ ɑ̃ː ʈ ɑː	ipa	0
+چاول	t͡ʃ ɑː ʋ ə l	ipa	0
+چاٹ	t͡ʃ ɑː ʈ	ipa	0
+چاٹنا	t͡ʃ ɑː ʈ n ɑː	ipa	0
+چاٹگام	t͡ʃ ɑː ʈ ɡ ɑː m	ipa	0
+چاچو	t͡ʃ ɑː t͡ʃ uː	ipa	0
+چاچی	t͡ʃ ɑː t͡ʃ iː	ipa	0
+چاک	t͡ʃ ɑː k	ipa	0
+چاکلیٹ	t͡ʃ ɑː k l eː ʈ	ipa	0
+چاہت	t͡ʃ ɑː ɦ ə t̪	ipa	0
+چاہتو	t͡ʃ ɑː ɦ ə t̪ oː	ipa	0
+چاہتوں	t͡ʃ ɑː ɦ ə t̪ õː	ipa	0
+چاہتیں	t͡ʃ ɑː ɦ ə t̪ ẽː	ipa	0
+چاہنا	t͡ʃ ɑː ɦ n ɑː	ipa	0
+چاہے	t͡ʃ ɑː ɦ eː	ipa	0
+چای	t͡ʃ ɑː j	ipa	0
+چتا	t͡ʃ ɪ t̪ ɑː	ipa	0
+چتاؤ	t͡ʃ ɪ t̪ ɑː oː	ipa	0
+چتاؤں	t͡ʃ ɪ t̪ ɑː õː	ipa	0
+چتائیں	t͡ʃ ɪ t̪ ɑː ẽː	ipa	0
+چتکان	t͡ʃ ɪ t̪ k ɑː n	ipa	0
+چراغ	t͡ʃ ə ɾ ɑː ɣ	ipa	0
+چراغ	t͡ʃ ɪ ɾ ɑː ɣ	ipa	0
+چراک	t͡ʃ ə ɾ ɑː k	ipa	0
+چربی	t͡ʃ ə ɾ b iː	ipa	0
+چرخہ	t͡ʃ ə ɾ x ə	ipa	0
+چرس	t͡ʃ ə ɾ ə s	ipa	0
+چرپرا	t͡ʃ ə ɾ p ə ɾ ɑː	ipa	0
+چرچ	t͡ʃ ə ɾ t͡ʃ	ipa	0
+چست	t͡ʃ ʊ s t̪	ipa	0
+چشتیاں	t͡ʃ ɪ ʃ t̪ ɪ j ɑ̃ː	ipa	0
+چشم	t͡ʃ ə ʃ m	ipa	0
+چشموں	t͡ʃ ə ʃ m õː	ipa	0
+چشمک	t͡ʃ ə ʃ m ə k	ipa	0
+چشمہ	t͡ʃ ə ʃ m ɑ	ipa	0
+چشمہ	t͡ʃ ə ʃ m ɑː	ipa	0
+چشمے	t͡ʃ ə ʃ m eː	ipa	0
+چغتائی	t͡ʃ ʊ ɣ t̪ ɑː iː	ipa	0
+چغد	t͡ʃ ʊ ɣ d̪	ipa	0
+چغد	t͡ʃ ʊ ɣ ə d̪	ipa	0
+چفتی	t͡ʃ ə f t̪ iː	ipa	0
+چق	t͡ʃ ɪ q	ipa	0
+چقماق	t͡ʃ ə q m ɑː q	ipa	0
+چقمق	t͡ʃ ə q m ə q	ipa	0
+چلاس	t͡ʃ ɪ l ɑː s	ipa	0
+چلان	t͡ʃ ə l ɑː n	ipa	0
+چلانا	t͡ʃ ə l ɑː n ɑː	ipa	0
+چلانا	t͡ʃ ɪ l l ɑː n ɑː	ipa	0
+چلاہٹ	t͡ʃ ɪ l l ɑː ɦ ə t̪	ipa	0
+چلم	t͡ʃ ɪ l ə m	ipa	0
+چلمن	t͡ʃ ɪ l m ə n	ipa	0
+چلن	t͡ʃ ə l ə n	ipa	0
+چلنا	t͡ʃ ə l n ɑː	ipa	0
+چلون	t͡ʃ ɪ l ʋ ə n	ipa	0
+چلچتر	t͡ʃ ə l t͡ʃ ɪ t̪ ɾ ə	ipa	0
+چلی	t͡ʃ ɪ l iː	ipa	0
+چماٹ	t͡ʃ ə m ɑː ʈ	ipa	0
+چمبیلی	t͡ʃ ə m b eː l iː	ipa	0
+چمن	t͡ʃ ə m ə n	ipa	0
+چمو	t͡ʃ ə m uː	ipa	0
+چمچ	t͡ʃ ə m m ə t͡ʃ	ipa	0
+چمچو	t͡ʃ ə m t͡ʃ oː	ipa	0
+چمچوں	t͡ʃ ə m t͡ʃ õː	ipa	0
+چمچہ	t͡ʃ ə m t͡ʃ ɑ	ipa	0
+چمچہ	t͡ʃ ə m t͡ʃ ɑː	ipa	0
+چمچے	t͡ʃ ə m t͡ʃ eː	ipa	0
+چمکار	t͡ʃ ə m k ɑː ɾ	ipa	0
+چنئی	t͡ʃ ə nː ə iː	ipa	0
+چناب	t͡ʃ ə n ɑː b	ipa	0
+چنتا	t͡ʃ ɪ n t̪ ɑː	ipa	0
+چند	t͡ʃ ə n d̪	ipa	0
+چندر	t͡ʃ ə n d̪ ɾᵊ	ipa	0
+چندربند	t͡ʃ ə n d̪ ə ɾ b ɪ n d̪	ipa	0
+چندربند	t͡ʃ ə n d̪ ə ɾ b ɪ n d̪ ʊ	ipa	0
+چندربند	t͡ʃ ə n d̪ ə ɾ ə b ɪ n d̪	ipa	0
+چندربند	t͡ʃ ə n d̪ ə ɾ ə b ɪ n d̪ ʊ	ipa	0
+چندن	t͡ʃ ə n d̪ ə n	ipa	0
+چننا	t͡ʃ ɪ n n ɑː	ipa	0
+چننا	t͡ʃ ʊ n n ɑː	ipa	0
+چنيوٹی	t͡ʃ ɪ n j oː ʈ iː	ipa	0
+چنگال	t͡ʃ ə ŋ ɡ ɑː l	ipa	0
+چنیوٹ	t͡ʃ ɪ n ɪ j oː ʈ	ipa	0
+چوبے	t͡ʃ ɔː b eː	ipa	0
+چوت	t͡ʃ uː t̪	ipa	0
+چوتر	t͡ʃ uː t̪ ə ɾ	ipa	0
+چوتڑ	t͡ʃ uː t̪ ə ɽ	ipa	0
+چوتھا	t͡ʃ ɔː t̪ʰ ɑː	ipa	0
+چوتھائی	t͡ʃ ɔː t̪ʰ ɑː iː	ipa	0
+چود	t͡ʃ oː d̪	ipa	0
+چودنا	t͡ʃ oː d̪ n ɑː	ipa	0
+چودہ	t͡ʃ ɔː d̪ ɑ	ipa	0
+چودہ	t͡ʃ ɔː d̪ ɑː	ipa	0
+چودہ	t͡ʃ ɔː d̪ ə ɦ	ipa	0
+چور	t͡ʃ oː ɾ	ipa	0
+چورنگی	t͡ʃ ɔː ɾ ə ŋ ɡ iː	ipa	0
+چورو	t͡ʃ oː ɾ oː	ipa	0
+چوروں	t͡ʃ oː ɾ õː	ipa	0
+چوری	t͡ʃ oː ɾ iː	ipa	0
+چوسنا	t͡ʃ uː s n ɑː	ipa	0
+چول	t͡ʃ uː l	ipa	0
+چولھا	t͡ʃ uː l ɑː	ipa	0
+چولھا	t͡ʃ uː l ɦ ɑː	ipa	0
+چومنا	t͡ʃ uː m n ɑː	ipa	0
+چونا	t͡ʃ uː n ɑː	ipa	0
+چوٹ	t͡ʃ oː ʈ	ipa	0
+چوپان	t͡ʃ oː p ɑː n	ipa	0
+چوپان	t͡ʃ uː p ɑː n	ipa	0
+چوپان	t͡ʃ ɔː p ɑː n	ipa	0
+چوڑا	t͡ʃ ɔː ɽ ɑː	ipa	0
+چوڑائی	t͡ʃ ɔː ɽ ɑː iː	ipa	0
+چوڑی	t͡ʃ uː ɽ iː	ipa	0
+چوک	t͡ʃ ɔː k	ipa	0
+چوکا	t͡ʃ ɔː k ɑː	ipa	0
+چوکی	t͡ʃ ɔː k iː	ipa	0
+چوکیدار	t͡ʃ ɔː k iː d̪ ɑː ɾ	ipa	0
+چوگنا	t͡ʃ ɔː ɡ ʊ n ɑː	ipa	0
+چوں	t͡ʃ ũː	ipa	0
+چوہا	t͡ʃ uː ɦ ɑː	ipa	0
+چٹکی	t͡ʃ ɪ ʈ k iː	ipa	0
+چٹکی	t͡ʃ ʊ ʈ k iː	ipa	0
+چٹگاؤں	t͡ʃ ə ʈ ɡ ɑː õː	ipa	0
+چپ	t͡ʃ ʊ p	ipa	0
+چپاتی	t͡ʃ ə p ɑː t̪ iː	ipa	0
+چپقلش	t͡ʃ ə p q ʊ l ə ʃ	ipa	0
+چپل	t͡ʃ ə pː ə l	ipa	0
+چپٹی	t͡ʃ ə p ʈ iː	ipa	0
+چچی	t͡ʃ ə t͡ʃ iː	ipa	0
+چڑھانا	t͡ʃ ə ɽʱ ɑː n ɑː	ipa	0
+چڑھنا	t͡ʃ ə ɽʱ n ɑː	ipa	0
+چڑیا	t͡ʃ ɪ ɽ ɪ j ɑː	ipa	0
+چڑیل	t͡ʃ ʊ ɽ eː l	ipa	0
+چڑیل	t͡ʃ ʊ ɽ ɛː l	ipa	0
+چکت	t͡ʃ ə k ɪ t̪	ipa	0
+چکمہ	t͡ʃ ə k m ɑː	ipa	0
+چکنا	t͡ʃ ə k n ɑː	ipa	0
+چکنا	t͡ʃ ɪ k n ɑː	ipa	0
+چکنا	t͡ʃ ʊ k n ɑː	ipa	0
+چکنگنیا	t͡ʃ ɪ k ə n ɡ ʊ n ɪ j ɑː	ipa	0
+چکوال	t͡ʃ ə k ʋ ɑː l	ipa	0
+چکھنا	t͡ʃ ə kʰ n ɑː	ipa	0
+چکی	t͡ʃ ə k k iː	ipa	0
+چگونہ	t͡ʃ ɪ ɡ uː n ɑː	ipa	0
+چھ	t͡ʃʰᵊ	ipa	0
+چھاؤنی	t͡ʃʰ ɑː ʊ n iː	ipa	0
+چھاؤں	t͡ʃʰ ɑ̃ː õː	ipa	0
+چھائی	t͡ʃʰ ɑː iː	ipa	0
+چھاتر	t͡ʃʰ ɑː t̪ ə ɾ	ipa	0
+چھال	t͡ʃʰ ɑː l	ipa	0
+چھاپنا	t͡ʃʰ ɑː p n ɑː	ipa	0
+چھاپہ	t͡ʃʰ ɑː p ɑː	ipa	0
+چھایا	t͡ʃʰ ɑː j ɑː	ipa	0
+چھت	t͡ʃʰ ə t̪	ipa	0
+چھتری	t͡ʃʰ ə t̪ ɾ iː	ipa	0
+چھتوں	t͡ʃʰ ə t̪ õː	ipa	0
+چھتیں	t͡ʃʰ ə t̪ ẽː	ipa	0
+چھلانگ	t͡ʃʰ ə l ɑː ŋ ɡ	ipa	0
+چھلکا	t͡ʃʰ ɪ l k ɑː	ipa	0
+چھوارے	t͡ʃʰ ʊ ʋ ɑː ɾ eː	ipa	0
+چھولا	t͡ʃʰ oː l ɑː	ipa	0
+چھونا	t͡ʃʰ uː n ɑː	ipa	0
+چھوٹ	t͡ʃʰ uː ʈ	ipa	0
+چھوٹا	t͡ʃʰ oː ʈ ɑː	ipa	0
+چھوٹنا	t͡ʃʰ uː ʈ n ɑː	ipa	0
+چھٹا	t͡ʃʰ ə ʈ ɑː	ipa	0
+چھٹا	t͡ʃʰ ʊ ʈ ʈ ɑː	ipa	0
+چھٹپٹانا	t͡ʃʰ ə ʈ p ə ʈ ɑː n ɑː	ipa	0
+چھٹی	t͡ʃʰ ʊ ʈː iː	ipa	0
+چھٹیاں	t͡ʃʰ ʊ ʈ ʈ ɪ j ɑ̃ː	ipa	0
+چھٹیوں	t͡ʃʰ ʊ ʈ ʈ ɪ j õː	ipa	0
+چھپانا	t͡ʃʰ ʊ p ɑː n ɑː	ipa	0
+چھپنا	t͡ʃʰ ə p n ɑː	ipa	0
+چھپنا	t͡ʃʰ ʊ p n ɑː	ipa	0
+چھپکلی	t͡ʃʰ ɪ p k ə l iː	ipa	0
+چھڑکاؤ	t͡ʃʰ ɪ ɾ k ɑː oː	ipa	0
+چھکا	t͡ʃʰ ə k k ɑː	ipa	0
+چھکو	t͡ʃʰ ə k k oː	ipa	0
+چھکوں	t͡ʃʰ ə k k õː	ipa	0
+چھکے	t͡ʃʰ ə k k eː	ipa	0
+چھہ	t͡ʃʰ ɛ ɦ	ipa	0
+چھیلا	t͡ʃʰ ɛː l ɑː	ipa	0
+چھیننا	t͡ʃʰ iː n n ɑː	ipa	0
+چھینک	t͡ʃʰ ĩː k	ipa	0
+چھیڑنا	t͡ʃʰ eː ɽ n ɑː	ipa	0
+چہارم	t͡ʃ ə ɦ ɑː ɾ ʊ m	ipa	0
+چہرو	t͡ʃ ɪ ɦ ɾ oː	ipa	0
+چہروں	t͡ʃ ɪ ɦ ɾ õː	ipa	0
+چہرہ	t͡ʃ ɪ ɦ ɾ ɑ	ipa	0
+چہرہ	t͡ʃ ɪ ɦ ɾ ɑː	ipa	0
+چہرے	t͡ʃ ɪ ɦ ɾ eː	ipa	0
+چیت	t͡ʃ ɛː t̪	ipa	0
+چیخ	t͡ʃ iː x	ipa	0
+چیرنا	t͡ʃ iː ɾ n ɑː	ipa	0
+چیز	t͡ʃ iː z	ipa	0
+چیزو	t͡ʃ iː z oː	ipa	0
+چیزوں	t͡ʃ iː z õː	ipa	0
+چیزیں	t͡ʃ iː z ẽː	ipa	0
+چیل	t͡ʃ iː l	ipa	0
+چیلینجی	t͡ʃ iː l l iː n d͡ʒ iː	ipa	0
+چین	t͡ʃ eː n	ipa	0
+چین	t͡ʃ iː n	ipa	0
+چین	t͡ʃ ɛː n	ipa	0
+چینٹی	t͡ʃ ĩː ʈ iː	ipa	0
+چینی	t͡ʃ iː n iː	ipa	0
+چیونٹی	t͡ʃ j ũː ʈ iː	ipa	0
+چیونٹی	t͡ʃ ɪ j ũː ʈ iː	ipa	0
+چیچنیا	t͡ʃ eː t͡ʃ ə n j ɑː	ipa	0
+چیچنیا	t͡ʃ iː t͡ʃ ə n j ɑː	ipa	0
+چیکوسلوواکیہ	t͡ʃ ɛ k oː s l oː ʋ ɑː k ɪ j ɑː	ipa	0
+چیکیا	t͡ʃ eː k ɪ j ɑː	ipa	0
+چیکیہ	t͡ʃ eː k ɪ jᵊ	ipa	0
+ڈ	ɖ	ipa	0
+ڈ	ɖ ɑː l	ipa	0
+ڈالنا	ɖ ɑː l n ɑː	ipa	0
+ڈاڈو	ɖ ɑː ɖ uː	ipa	0
+ڈاک	ɖ ɑː k	ipa	0
+ڈاکا	ɖ ɑː k ɑː	ipa	0
+ڈاکو	ɖ ɑː k uː	ipa	0
+ڈاکٹر	ɖ ɑː k ʈ ə ɾ	ipa	0
+ڈاکیا	ɖ ɑː k ɪ j ɑː	ipa	0
+ڈاکیہ	ɖ ɑː k ɪ j ɑ	ipa	0
+ڈاکیہ	ɖ ɑː k ɪ j ɑː	ipa	0
+ڈبہ	ɖ ə b b ə	ipa	0
+ڈبہ	ɖ ɪ b b ə	ipa	0
+ڈبے	ɖ ɪ b b eː	ipa	0
+ڈراؤنا	ɖ ə ɾ ɑː oː n ɑː	ipa	0
+ڈراؤنا	ɖ ə ɾ ɑː ʋ n ɑː	ipa	0
+ڈرنا	ɖ ə ɾ n ɑː	ipa	0
+ڈرپوک	ɖ ə ɾ p oː k	ipa	0
+ڈسکہ	ɖ ə s k ɑ	ipa	0
+ڈسکہ	ɖ ə s k ɑː	ipa	0
+ڈمبوداس	ɖ ə m b uː d̪ ɑː s	ipa	0
+ڈمرو	ɖ ə m ɾ uː	ipa	0
+ڈنمارک	ɖ ɪ n m ɑː ɾ k	ipa	0
+ڈنڈا	ɖ ə n ɖ ɑː	ipa	0
+ڈنکرک	ɖ ə n k ə ɾ k	ipa	0
+ڈنکی	ɖ ə ŋ k iː	ipa	0
+ڈوری	ɖ oː ɾ iː	ipa	0
+ڈونگا	ɖ oː ŋ ɡ ɑː	ipa	0
+ڈوور	ɖ oː ʋ ə ɾ	ipa	0
+ڈچ	ɖ ə t͡ʃ	ipa	0
+ڈڑھیل	ɖ ə ɽʱ j ə l	ipa	0
+ڈکار	ɖ ə k ɑː ɾ	ipa	0
+ڈکار	ɖ ɪ k ɑː ɾ	ipa	0
+ڈکی	ɖ ɪ kː iː	ipa	0
+ڈگمگانا	ɖ ə ɡ m ə ɡ ɑː n ɑː	ipa	0
+ڈگی	ɖ ɪ ɡː iː	ipa	0
+ڈھائی	ɖʱ ɑː iː	ipa	0
+ڈھانپنا	ɖʱ ɑ̃ː p n ɑː	ipa	0
+ڈھانچہ	ɖʱ ɑː n t͡ʃ ɑː	ipa	0
+ڈھاکہ	ɖʱ ɑː k ɑː	ipa	0
+ڈھول	ɖʱ oː l	ipa	0
+ڈھولک	ɖʱ oː l ə k	ipa	0
+ڈھونڈنا	ɖʱ uː n ɖ n ɑː	ipa	0
+ڈھونڈھ	ɖʱ uː n ɖʱ	ipa	0
+ڈھيٹ	ɖʱ iː ʈ	ipa	0
+ڈھکن	ɖʱ ə k k ə n	ipa	0
+ڈھینچوں	ɖʱ ɛ̃ː t͡ʃ ũː	ipa	0
+ڈہرکی	ɖ ə ɦ ə ɾ k iː	ipa	0
+ڈیرہ	ɖ eː ɾ ɑ	ipa	0
+ڈیرہ	ɖ eː ɾ ɑː	ipa	0
+ڈیوڑھی	ɖ eː oː ɽʱ iː	ipa	0
+ڈیٹابیس	ɖ eː ʈ ɑː b eː s	ipa	0
+ڈیٹھ	ɖ iː ʈʰ	ipa	0
+ڈیڑھ	ɖ eː ɽʱ	ipa	0
+ڑ	ɽ	ipa	0
+ڑ	ɽ eː	ipa	0
+ژ	ʒ	ipa	0
+ژ	ʒ eː	ipa	0
+ژالہ	ʒ ɑː l ɑ	ipa	0
+ژالہ	ʒ ɑː l ɑː	ipa	0
+ژاژ	ʒ ɑː ʒ	ipa	0
+ژنده	ʒ ə n d̪ ɑ	ipa	0
+ژنده	ʒ ə n d̪ ɑː	ipa	0
+ژوب	ʒ oː b	ipa	0
+ژیان	ʒ ə j ɑː n	ipa	0
+ژیاں	z ɪ j ɑ̃ː	ipa	0
+ژیاں	ʒ ɪ j ɑ̃ː	ipa	0
+ک	k	ipa	0
+ک	k ɑː f	ipa	0
+کا	k ɑː	ipa	0
+کائنات	k ɑː ɪ n ɑː t̪	ipa	0
+کائناتو	k ɑː ɪ n ɑː t̪ oː	ipa	0
+کائناتوں	k ɑː ɪ n ɑː t̪ õː	ipa	0
+کائناتیں	k ɑː ɪ n ɑː t̪ ẽː	ipa	0
+کابل	k ɑː b ʊ l	ipa	0
+کابوس	k ɑː b uː s	ipa	0
+کاتب	k ɑː t̪ ɪ b	ipa	0
+کاتھولک	k ɑː t̪ʰ oː l ɪ k	ipa	0
+کاج	k ɑː d͡ʒ	ipa	0
+کاجو	k ɑː d͡ʒ uː	ipa	0
+کارا	k ɑː ɾ ɑː	ipa	0
+کارخانہ	k ɑː ɾ x ɑː n ɑ	ipa	0
+کارخانہ	k ɑː ɾ x ɑː n ɑː	ipa	0
+کارروائی	k ɑː ɾ ɾ ə ʋ ɑː iː	ipa	0
+کارزار	k ɑː ɾ z ɑː ɾ	ipa	0
+کارن	k ɑː ɾ ə n	ipa	0
+کارواں	k ɑː ɾ ʋ ɑ̃ː	ipa	0
+کاروبار	k ɑː ɾ oː b ɑː ɾ	ipa	0
+کاروباری	k ɑː ɾ oː b ɑː ɾ iː	ipa	0
+کارٹون	k ɑː ɾ ʈ uː n	ipa	0
+کارکردگی	k ɑː ɾ k ə ɾ d̪ ə ɡ iː	ipa	0
+کاش	k ɑː ʃ	ipa	0
+کاشغر	k ɑː ʃ ɣ ə ɾ	ipa	0
+کاغذ	k ɑː ɣ ə z	ipa	0
+کاغذات	k ɑː ɣ z ɑː t̪	ipa	0
+کاغذوں	k ɑː ɣ ə z õː	ipa	0
+کافی	k ɑː f iː	ipa	0
+کالا	k ɑː l ɑː	ipa	0
+کالج	k ɑː l ɪ d͡ʒ	ipa	0
+کالسروئے	k ɑː l s ɾ uː eː	ipa	0
+کالی	k ɑː l iː	ipa	0
+کالے	k ɑː l eː	ipa	0
+کام	k ɑː m	ipa	0
+کامل	k ɑː m ɪ l	ipa	0
+کامونکے	k ɑː m oː ŋ k eː	ipa	0
+کامیاب	k ɑː m j ɑː b	ipa	0
+کامیابی	k ɑː m j ɑː b iː	ipa	0
+کان	k ɑː n	ipa	0
+کانٹا	k ɑː n ʈ ɑː	ipa	0
+کانٹو	k ɑ̃ː ʈ oː	ipa	0
+کانٹوں	k ɑː n ʈ õː	ipa	0
+کانپنا	k ɑ̃ː p n ɑː	ipa	0
+کانچ	k ɑ̃ː t͡ʃ	ipa	0
+کانچوں	k ɑ̃ː t͡ʃ õː	ipa	0
+کاویہ	k ɑː ʋ j ə	ipa	0
+کاٹھیاواڑ	k ɑː ʈʰ j ɑː ʋ ɑː ɽ	ipa	0
+کاٹھیاواڑی	k ɑː ʈʰ j ɑː ʋ ɑː ɽ iː	ipa	0
+کاپی	k ɑː p iː	ipa	0
+کاڑھا	k ɑː ɽʱ ɑː	ipa	0
+کاہکشان	k ɑː ɦ k ə ʃ ɑː n	ipa	0
+کب	k ə b	ipa	0
+کبابیر	k ə b ɑː b iː ɾ	ipa	0
+کباڑ	k ə b ɑː ɽ	ipa	0
+کبج	k ʊ b d͡ʒ	ipa	0
+کبریت	k ɪ b ɾ iː t̪	ipa	0
+کبل	k ə b ə l	ipa	0
+کبھو	k ə bʱ uː	ipa	0
+کبھی	k ə bʱ iː	ipa	0
+کبیر	k ə b iː ɾ	ipa	0
+کتا	k ʊ t̪ t̪ ɑː	ipa	0
+کتاب	k ɪ t̪ ɑː b	ipa	0
+کتراپی	k ʊ t̪ ɾ ɑː p iː	ipa	0
+کتنا	k ɪ t̪ n ɑː	ipa	0
+کتو	k ʊ t̪ t̪ oː	ipa	0
+کتوں	k ʊ t̪ t̪ õː	ipa	0
+کتھن	k ə t̪ʰ ə n	ipa	0
+کتھک	k ə t̪ʰ ə k	ipa	0
+کتی	k ə t̪ iː	ipa	0
+کتے	k ʊ t̪ t̪ eː	ipa	0
+کثرت	k ə s ɾ ə t̪	ipa	0
+کجرا	k ə d͡ʒ ɾ ɑː	ipa	0
+کدو	k ə d̪ d̪ uː	ipa	0
+کدو	k ə d̪ uː	ipa	0
+کر	k ə ɾ	ipa	0
+کراٹے	k ə ɾ ɑː ʈ eː	ipa	0
+کراچوی	k ə ɾ ɑː t͡ʃ ə ʋ iː	ipa	0
+کراچی	k ə ɾ ɑː n t͡ʃ iː	ipa	0
+کراچی	k ə ɾ ɑː t͡ʃ iː	ipa	0
+کراچی	k ə ɾ ɑ̃ː t͡ʃ iː	ipa	0
+کراہنا	k ə ɾ ɑː ɦ n ɑː	ipa	0
+کرخندار	k ə ɾ x ə n d̪ ɑː ɾ	ipa	0
+کردار	k ɪ ɾ d̪ ɑː ɾ	ipa	0
+کردارو	k ɪ ɾ d̪ ɑː ɾ oː	ipa	0
+کرداروں	k ɪ ɾ d̪ ɑː ɾ õː	ipa	0
+کردستان	k ʊ ɾ d̪ ɪ s t̪ ɑː n	ipa	0
+کردن	k ə ɾ d̪ ə n	ipa	0
+کردنت	k ɾ ɪ d̪ ə n t̪	ipa	0
+کرسی	k ʊ ɾ s iː	ipa	0
+کرشمو	k ə ɾ ɪ ʃ m oː	ipa	0
+کرشموں	k ə ɾ ɪ ʃ m õː	ipa	0
+کرشمہ	k ə ɾ ɪ ʃ m ə	ipa	0
+کرشمے	k ə ɾ ɪ ʃ m eː	ipa	0
+کرغیزستان	k ɪ ɾ ɣ iː z ə s t̪ ɑː n	ipa	0
+کرم	k ə ɾ ə m	ipa	0
+کرن	k ə ɾ ə n	ipa	0
+کرن	k ɪ ɾ ə n	ipa	0
+کرنا	k ə ɾ n ɑː	ipa	0
+کرناٹک	k ə ɾ n ɑː ʈ ə k	ipa	0
+کرنو	k ə ɾ ə n oː	ipa	0
+کرنو	k ɪ ɾ ə n oː	ipa	0
+کرنوں	k ə ɾ ə n õː	ipa	0
+کرنوں	k ɪ ɾ ə n õː	ipa	0
+کرنیں	k ə ɾ ə n ẽː	ipa	0
+کرنیں	k ɪ ɾ ə n ẽː	ipa	0
+کرو	k ə ɾ oː	ipa	0
+کرو	k ʊ ɾ uː	ipa	0
+کروانا	k ə ɾ ʋ ɑː n ɑː	ipa	0
+کرکٹ	k ɪ ɾ k ɪ ʈ	ipa	0
+کرکٹ	k ɾ ɪ k ɪ ʈ	ipa	0
+کری	k ə ɾ iː	ipa	0
+کریم	k ə ɾ iː m	ipa	0
+کس	k ʊ s	ipa	0
+کسان	k ɪ s ɑː n	ipa	0
+کسرت	k ə s ɾ ə t̪	ipa	0
+کسی	k ɪ s iː	ipa	0
+کشتی	k ə ʃ t̪ iː	ipa	0
+کشتی	k ʊ ʃ t̪ iː	ipa	0
+کشتیاں	k ɪ ʃ t̪ ɪ j ɑ̃ː	ipa	0
+کشتیاں	k ʊ ʃ t̪ ɪ j ɑ̃ː	ipa	0
+کشتیوں	k ɪ ʃ t̪ ɪ j õː	ipa	0
+کشتیوں	k ʊ ʃ t̪ ɪ j õː	ipa	0
+کشدھا	k ʃ ʊ d̪ʱ ɑː	ipa	0
+کشف	k ə ʃ f	ipa	0
+کشف	k ə ʃ ə f	ipa	0
+کشفو	k ə ʃ f oː	ipa	0
+کشفو	k ə ʃ ə f oː	ipa	0
+کشفوں	k ə ʃ f õː	ipa	0
+کشفوں	k ə ʃ ə f õː	ipa	0
+کشما	k ʃ ə m ɑː	ipa	0
+کشمیر	k ə ʃ m iː ɾ	ipa	0
+کشن	k ɪ ʃ ə n	ipa	0
+کشندہ	k ʊ ʃ ɪ n d̪ ɑ	ipa	0
+کشندہ	k ʊ ʃ ɪ n d̪ ɑː	ipa	0
+کشور	k ɪ ʃ oː ɾ	ipa	0
+کشور	k ɪ ʃ ʋ ə ɾ	ipa	0
+کشور	k ʃ ɔː ɾ	ipa	0
+کشٹ	k ə ʃ ʈ	ipa	0
+کشی	k ə ʃ iː	ipa	0
+کشیدگی	k ə ʃ iː d̪ ɡ iː	ipa	0
+کعبہ	k ɑː b ɑː	ipa	0
+کفارہ	k ə f f ɑː ɾ ɑ	ipa	0
+کفارہ	k ə f f ɑː ɾ ɑː	ipa	0
+کل	k ə l	ipa	0
+کلائی	k ə l ɑː iː	ipa	0
+کلائیاں	k ə l ɑː ɪ j ɑ̃ː	ipa	0
+کلائیو	k ə l ɑː ɪ j oː	ipa	0
+کلائیوں	k ə l ɑː ɪ j õː	ipa	0
+کلاشنکوف	k l ɑː ʃ ɪ n k oː f	ipa	0
+کلام	k ə l ɑː m	ipa	0
+کلاوا	k ə l ɑː ʋ ɑː	ipa	0
+کلاوا	k ɪ l ɑː ʋ ɑː	ipa	0
+کلاونت	k ə l ɑː ʋ ə n t̪	ipa	0
+کلاں	k ə l ɑ̃ː	ipa	0
+کلب	k l ə b	ipa	0
+کلب	k ə l b	ipa	0
+کلمہ	k ə l m ɑ	ipa	0
+کلمہ	k ə l m ɑː	ipa	0
+کلمہ	k ə l ɪ m ɑ	ipa	0
+کلمہ	k ə l ɪ m ɑː	ipa	0
+کلو	k ə l l uː	ipa	0
+کلی	k ə l iː	ipa	0
+کلی	k ʊ l l iː	ipa	0
+کلیان	k ə l j ɑː n	ipa	0
+کلیجا	k ə l eː d͡ʒ ɑː	ipa	0
+کلیسیا	k ə l iː s ɪ j ɑː	ipa	0
+کلیہ	k ə l j ɑ	ipa	0
+کلیہ	k ə l j ɑː	ipa	0
+کلیہ	k ʊ l l ɪ j ɑ	ipa	0
+کلیہ	k ʊ l l ɪ j ɑː	ipa	0
+کم	k ə m	ipa	0
+کمائی	k ə m ɑː iː	ipa	0
+کمال	k ə m ɑː l	ipa	0
+کمالیہ	k ə m ɑː l ɪ j ɑː	ipa	0
+کمان	k ə m ɑː n	ipa	0
+کمانا	k ə m ɑː n ɑː	ipa	0
+کمبخت	k ə m b ə x t̪	ipa	0
+کمبل	k ə m b ə l	ipa	0
+کمبوڈیا	k ə m b oː ɖ ɪ j ɑː	ipa	0
+کمبھ	k ʊ m bʱ	ipa	0
+کمتر	k ə m t̪ ə ɾ	ipa	0
+کمر	k ə m ə ɾ	ipa	0
+کمرو	k ə m ɾ oː	ipa	0
+کمروں	k ə m ɾ õː	ipa	0
+کمرہ	k ə m ɾ ɑ	ipa	0
+کمرہ	k ə m ɾ ɑː	ipa	0
+کمری	k ə m ɾ iː	ipa	0
+کمرے	k ə m ɾ eː	ipa	0
+کمزور	k ə m z oː ɾ	ipa	0
+کمزوری	k ə m z oː ɾ iː	ipa	0
+کمل	k ə m ə l	ipa	0
+کملا	k ʊ m ɪ l l ɑː	ipa	0
+کملائی	k ʊ m ɪ l l ɑː iː	ipa	0
+کمپ	k ə m p	ipa	0
+کمپت	k ə m p ɪ t̪	ipa	0
+کمپن	k ə m p ə n	ipa	0
+کمپیوٹر	k ə m p j uː ʈ ə ɾ	ipa	0
+کمھلانا	k ʊ m l ɑː n ɑː	ipa	0
+کمھلانا	k ʊ mʱ l ɑː n ɑː	ipa	0
+کمھڑا	k ʊ m ɽ ɑː	ipa	0
+کمھڑا	k ʊ mʱ ɽ ɑː	ipa	0
+کمی	k ə m iː	ipa	0
+کمیاب	k ə m j ɑː b	ipa	0
+کمینہ	k ə m iː n ɑ	ipa	0
+کمینہ	k ə m iː n ɑː	ipa	0
+کمیٹی	k ə m eː ʈ iː	ipa	0
+کنارو	k ɪ n ɑː ɾ oː	ipa	0
+کناروں	k ɪ n ɑː ɾ õː	ipa	0
+کنارہ	k ɪ n ɑː ɾ ɑ	ipa	0
+کنارہ	k ɪ n ɑː ɾ ɑː	ipa	0
+کنارے	k ɪ n ɑː ɾ eː	ipa	0
+کنجی	k ʊ n d͡ʒ iː	ipa	0
+کندرا	k ə n d̪ ə ɾ ɑː	ipa	0
+کندھا	k ə n d̪ʱ ɑː	ipa	0
+کندھوں	k ə n d̪ʱ õː	ipa	0
+کندھے	k ə n d̪ʱ eː	ipa	0
+کنشت	k ʊ n ɪ ʃ t̪	ipa	0
+کنعان	k ə n ɑː n	ipa	0
+کنعان	k ə n ʔ ɑː n	ipa	0
+کنفیوشس	k ə n f ʊ ʃ ə s	ipa	0
+کنوا	k ʊ̃ ʋ ɑː	ipa	0
+کنواری	k ʊ̃ ʋ ɑː ɾ iː	ipa	0
+کنواں	k ʊ̃ ʋ ɑ̃ː	ipa	0
+کنور	k ũː ə ɾ	ipa	0
+کنور	k ʊ̃ w ə ɾ	ipa	0
+کنور	k ʊ̃ ʋ ə ɾ	ipa	0
+کنول	k ə n ʋ ə l	ipa	0
+کنول	k ə̃ ʋ ə l	ipa	0
+کنٹرول	k ə n ʈ ɾ oː l	ipa	0
+کنڑ	k ʊ n ə ɽ	ipa	0
+کنکال	k ə ŋ k ɑː l	ipa	0
+کنگارو	k ə ŋ ɡ ɑː ɾ uː	ipa	0
+کنگال	k ə ŋ ɡ ɑː l	ipa	0
+کنگن	k ə ŋ ɡ ə n	ipa	0
+کنگھی	k ə ŋ ɡʱ iː	ipa	0
+کنہیا	k ə n ə̯ j j ɑː	ipa	0
+کنہیا	k ə n ɦ ə j j ɑː	ipa	0
+کنیا	k ə n j ɑː	ipa	0
+کنیا	k ə n n ɪ j ɑː	ipa	0
+کنیا	k ə n ɪ j ɑː	ipa	0
+کنیز	k ə n iː z	ipa	0
+کنیسہ	k ə n iː s ə	ipa	0
+کو	k oː	ipa	0
+کوئٹہ	k oː ɪ ʈ ə	ipa	0
+کوئی	k oː iː	ipa	0
+کوا	k ə ʋ ʋ ɑː	ipa	0
+کواں	k ʊ ʋ ɑ̃ː	ipa	0
+کوتا	k ə ʋ ɪ t̪ ɑː	ipa	0
+کوتاہ	k oː t̪ ɑː ɦ	ipa	0
+کوتھمیر	k oː t̪ʰ m iː ɾ	ipa	0
+کوثر	k ɔː s ə ɾ	ipa	0
+کورو	k oː ɾ ə ʋ	ipa	0
+کورو	k ɔː ɾ ə ʋ	ipa	0
+کوشش	k oː ʃ ɪ ʃ	ipa	0
+کوفی	k oː f iː	ipa	0
+کوفی	k ɔː f iː	ipa	0
+کولر	k uː l ə ɾ	ipa	0
+کولمبیا	k oː l ə m b ɪ j ɑː	ipa	0
+کولن	k oː l ə n	ipa	0
+کولہو	k oː l ɦ uː	ipa	0
+کون	k oː n	ipa	0
+کون	k uː n	ipa	0
+کون	k ɔː n	ipa	0
+کووا	k ʊ ʋ ɑː	ipa	0
+کووں	k ə ʋ ʋ õː	ipa	0
+کوٹری	k oː ʈ ɾ iː	ipa	0
+کوٹھی	k oː ʈʰ iː	ipa	0
+کوکب	k ɔː k ə b	ipa	0
+کوہ	k oː ɦ	ipa	0
+کوہاٹ	k oː ɦ ɑː ʈ	ipa	0
+کوہرا	k ʊ ɦ ɾ ɑː	ipa	0
+کوہلو	k oː ɦ l uː	ipa	0
+کویت	k ʊ ɛː t̪	ipa	0
+کویت	k ʊ ʋ eː t̪	ipa	0
+کوے	k ə̯ u ʋ eː	ipa	0
+کٹرائی	k ə ʈ ɾ ɑː iː	ipa	0
+کٹھل	k ə ʈʰ ə l	ipa	0
+کٹھور	k ə ʈʰ ō ɾ	ipa	0
+کٹی	k ə ʈ iː	ipa	0
+کپ	k ə p	ipa	0
+کپاس	k ə p ɑː s	ipa	0
+کپاسی	k ə p ɑː s iː	ipa	0
+کپتان	k ə p t̪ ɑː n	ipa	0
+کپوت	k ə p oː t̪	ipa	0
+کپڑا	k ə p ɽ ɑː	ipa	0
+کپڑوں	k ə p ɽ õː	ipa	0
+کپڑے	k ə p ɽ eː	ipa	0
+کچا	k ə t̪ t͡ʃ ɑː	ipa	0
+کچھ	k ʊ t͡ʃʰ	ipa	0
+کچھوا	k ə t͡ʃʰ ʊ ɑː	ipa	0
+کچھوا	k ə t͡ʃʰ ʊ ʋ ɑː	ipa	0
+کچھوا	k ə t͡ʃʰ ʋ ɑː	ipa	0
+کڑوا	k ə ɽ ʋ ɑː	ipa	0
+کژدم	k ə ʒ d̪ ʊ m	ipa	0
+ککر	k ʊ k ə ɾ	ipa	0
+ککشہ	k ə k ʃᵊ	ipa	0
+کھاتا	kʰ ɑː t̪ ɑː	ipa	0
+کھاتوں	kʰ ɑː t̪ õː	ipa	0
+کھاتے	kʰ ɑː t̪ eː	ipa	0
+کھاد	kʰ ɑː d̪	ipa	0
+کھان	kʰ ɑː n	ipa	0
+کھانا	kʰ ɑː n ɑː	ipa	0
+کھانگ	kʰ ɑː ŋ ɡ	ipa	0
+کھانگ	kʰ ɑ̃ː ɡ	ipa	0
+کھانی	kʰ ɑː n iː	ipa	0
+کھاگ	kʰ ɑː ɡ	ipa	0
+کھجلی	kʰ ə d͡ʒ ʊ l iː	ipa	0
+کھجلی	kʰ ʊ d͡ʒ l iː	ipa	0
+کھجور	kʰ ə d͡ʒ uː ɾ	ipa	0
+کھدیوت	kʰ ə d̪ j oː t̪	ipa	0
+کھر	kʰ ʊ ɾ	ipa	0
+کھرجو	kʰ ə ɾ d͡ʒ uː	ipa	0
+کھرنا	kʰ ʊ ɾ n ɑː	ipa	0
+کھرچنا	kʰ ʊ ɾ ə t̪͡ʃ n ɑː	ipa	0
+کھسرا	kʰ ʊ s ɾ ɑː	ipa	0
+کھلنا	kʰ ɪ l n ɑː	ipa	0
+کھلنا	kʰ ʊ l n ɑː	ipa	0
+کھلونا	kʰ ɪ l ɔː n ɑː	ipa	0
+کھلونوں	kʰ ɪ l ɔː n õː	ipa	0
+کھلونے	kʰ ɪ l ɔː n eː	ipa	0
+کھمبی	kʰ ʊ m b iː	ipa	0
+کھنن	kʰ ə n ə n	ipa	0
+کھنڈر	kʰ ə n ɖ ə ɾ	ipa	0
+کھنڈرات	kʰ ə n ɖ ə ɾ ɑː t̪	ipa	0
+کھنڈروں	kʰ ə n ɖ ə ɾ õː	ipa	0
+کھنک	kʰ ə n ə k	ipa	0
+کھنکنا	kʰ ə n ə k n ɑː	ipa	0
+کھوتا	kʰ oː t̪ ɑː	ipa	0
+کھوتو	kʰ oː t̪ oː	ipa	0
+کھوتوں	kʰ oː t̪ õː	ipa	0
+کھوتے	kʰ oː t̪ eː	ipa	0
+کھوج	kʰ oː d͡ʒ	ipa	0
+کھودنا	kʰ oː d̪ n ɑː	ipa	0
+کھوٹا	kʰ oː ʈ ɑː	ipa	0
+کھٹا	kʰ ə ʈ ʈ ɑː	ipa	0
+کھٹائی	kʰ ə ʈ ɑː iː	ipa	0
+کھٹمل	kʰ ə ʈ m ə l	ipa	0
+کھڈا	kʰ ə ɖ ɖ ɑː	ipa	0
+کھڑا	kʰ ə ɽ ɑː	ipa	0
+کھڑکی	kʰ ɪ ɽ k iː	ipa	0
+کھڑی	kʰ ə ɽ iː	ipa	0
+کھڑے	kʰ ə ɽ eː	ipa	0
+کھیت	kʰ eː t̪	ipa	0
+کھیتو	kʰ eː t̪ oː	ipa	0
+کھیتوں	kʰ eː t̪ õː	ipa	0
+کھیرا	kʰ iː ɾ ɑː	ipa	0
+کھیل	kʰ eː l	ipa	0
+کھیلا	kʰ eː l ɑː	ipa	0
+کھیلنا	kʰ eː l n ɑː	ipa	0
+کھینچنا	kʰ ĩː t͡ʃ n ɑː	ipa	0
+کھینچنا	kʰ ẽː t͡ʃ n ɑː	ipa	0
+کہ	k eː	ipa	0
+کہ	k ɪ	ipa	0
+کہانی	k ə ɦ ɑː n iː	ipa	0
+کہاوت	k ə ɦ ɑː ʋ ə t̪	ipa	0
+کہاں	k ə ɦ ɑ̃ː	ipa	0
+کہر	k ə ɦ ə ɾ	ipa	0
+کہرا	k ʊ ɦ ɾ ɑː	ipa	0
+کہنا	k ə ɦ n ɑː	ipa	0
+کہنی	k ʊ ɦ n iː	ipa	0
+کہکشاؤں	k ə ɦ k ə ʃ ɑː õː	ipa	0
+کہکشائیں	k ə ɦ k ə ʃ ɑː ẽː	ipa	0
+کی	k iː	ipa	0
+کیا	k j ɑː	ipa	0
+کیا	k ɪ j ɑː	ipa	0
+کیاری	k ɪ j ɑː ɾ iː	ipa	0
+کیتھولک	k ɛː t̪ʰ oː l ɪ k	ipa	0
+کیرل	k eː ɾ ə l	ipa	0
+کیرلا	k eː ɾ ə l ɑː	ipa	0
+کیسے	k ɛː s eː	ipa	0
+کیش	k eː ʃ	ipa	0
+کیف	k iː f	ipa	0
+کیفے	k ɛː f eː	ipa	0
+کیل	k iː l	ipa	0
+کیل	k ɛː l	ipa	0
+کیلئے	k eː l ɪ j eː	ipa	0
+کیلا	k eː l ɑː	ipa	0
+کیلکولیٹر	k ɛː l k uː l eː ʈ ə ɾ	ipa	0
+کیلی	k eː l iː	ipa	0
+کیلے	k ɛː l eː	ipa	0
+کیمرہ	k ɛː m ɾ ɑː	ipa	0
+کیمیا	k iː m ɪ j ɑː	ipa	0
+کیمیائی	k iː m ɪ j ɑː iː	ipa	0
+کینسر	k ɛː n s ə ɾ	ipa	0
+کینچلی	k ẽː t͡ʃ ʊ l iː	ipa	0
+کینڈی	k ɛː n ɖ iː	ipa	0
+کینیا	k iː n ɪ j ɑː	ipa	0
+کینیڈا	k ɛː n eː ɖ ɑː	ipa	0
+کیوبیک	k w ɪ b ɛ k	ipa	0
+کیول	k eː ʋ ə l	ipa	0
+کیونکہ	k j ũː k e	ipa	0
+کیونکہ	k j ũː k eː	ipa	0
+کیوں	k j õː	ipa	0
+کیوں	k j ũː	ipa	0
+کیچڑ	k iː t͡ʃ ə ɽ	ipa	0
+کیڑا	k iː ɽ ɑː	ipa	0
+کیک	k eː k	ipa	0
+کیکر	k iː k ə ɾ	ipa	0
+کے	k eː	ipa	0
+گ	ɡ	ipa	0
+گ	ɡ ɑː f	ipa	0
+گاؤں	ɡ ɑː õː	ipa	0
+گاؤں	ɡ ɑ̃ː oː	ipa	0
+گائے	ɡ ɑː eː	ipa	0
+گاتر	ɡ ɑː t̪ ɾᵊ	ipa	0
+گاجر	ɡ ɑː d͡ʒ ə ɾ	ipa	0
+گال	ɡ ɑː l	ipa	0
+گالی	ɡ ɑː l iː	ipa	0
+گام	ɡ ɑː m	ipa	0
+گان	ɡ ɑː n	ipa	0
+گانا	ɡ ɑː n ɑː	ipa	0
+گانجا	ɡ ɑː n d͡ʒ ɑː	ipa	0
+گاندھی	ɡ ɑː n d̪ʱ iː	ipa	0
+گانو	ɡ ɑː n oː	ipa	0
+گانو	ɡ ɑ̃ː oː	ipa	0
+گانو	ɡ ɑ̃ː ʋ	ipa	0
+گانوں	ɡ ɑː n õː	ipa	0
+گانوں	ɡ ɑ̃ː õː	ipa	0
+گانڈ	ɡ ɑː n ɖ	ipa	0
+گانڈو	ɡ ɑː n ɖ uː	ipa	0
+گانڈو	ɡ ɑ̃ː ɖ uː	ipa	0
+گانے	ɡ ɑː n eː	ipa	0
+گاو	ɡ ɑː oː	ipa	0
+گاو	ɡ ɑː ʋ	ipa	0
+گاڑھا	ɡ ɑː ɽʰ ɑː	ipa	0
+گاڑی	ɡ ɑː ɽ iː	ipa	0
+گایک	ɡ ɑː j ə k	ipa	0
+گتا	ɡ ə t̪ t̪ ɑː	ipa	0
+گج	ɡ ə d͡ʒ	ipa	0
+گجرا	ɡ ə d͡ʒ ɾ ɑː	ipa	0
+گجرات	ɡ ʊ d͡ʒᵊ ɾ ɑː t̪	ipa	0
+گجراتی	ɡ ʊ d͡ʒ ɾ ɑː t̪ iː	ipa	0
+گجروں	ɡ ə d͡ʒ ɾ õː	ipa	0
+گجرے	ɡ ə d͡ʒ ɾ eː	ipa	0
+گدا	ɡ ʊ d̪ ɑː	ipa	0
+گدگدانا	ɡ ʊ d̪ ɡ ʊ d̪ ɑː n ɑː	ipa	0
+گدھ	ɡ ɪ d̪ d̪ʱ	ipa	0
+گدھا	ɡ ə d̪ʱ ɑː	ipa	0
+گدھو	ɡ ə d̪ʱ oː	ipa	0
+گدھوں	ɡ ə d̪ʱ õː	ipa	0
+گدھی	ɡ ə d̪ʱ iː	ipa	0
+گدھیاں	ɡ ə d̪ʱ ɪ j ɑ̃ː	ipa	0
+گدھیو	ɡ ə d̪ʱ ɪ j oː	ipa	0
+گدھیوں	ɡ ə d̪ʱ ɪ j õː	ipa	0
+گدھے	ɡ ə d̪ʱ eː	ipa	0
+گذارنا	ɡ ʊ z ɑː ɾ n ɑː	ipa	0
+گذراننا	ɡ ʊ z ɾ ɑː n n ɑː	ipa	0
+گذرنا	ɡ ʊ z ə ɾ n ɑː	ipa	0
+گذشتہ	ɡ ʊ z ə ʃ t̪ᵊ	ipa	0
+گرام	ɡ ɾ ɑː m	ipa	0
+گرامر	ɡ ɾ ɑː m ə ɾ	ipa	0
+گرانا	ɡ ɪ ɾ ɑː n ɑː	ipa	0
+گرج	ɡ ə ɾ ə d͡ʒ	ipa	0
+گرجا	ɡ ɪ ɾ d͡ʒ ɑː	ipa	0
+گرجنا	ɡ ə ɾ ə d͡ʒ n ɑː	ipa	0
+گرجوں	ɡ ɪ ɾ d͡ʒ õː	ipa	0
+گرجے	ɡ ɪ ɾ d͡ʒ eː	ipa	0
+گردش	ɡ ə ɾ d̪ ɪ ʃ	ipa	0
+گردن	ɡ ə ɾ d̪ ə n	ipa	0
+گردنوں	ɡ ə ɾ d̪ ə n õː	ipa	0
+گردنیں	ɡ ə ɾ d̪ ə n ẽː	ipa	0
+گردوارہ	ɡ ʊ ɾ d̪ ʊ ɑː ɾ ɑ	ipa	0
+گردوارہ	ɡ ʊ ɾ d̪ ʊ ɑː ɾ ɑː	ipa	0
+گردوارہ	ɡ ʊ ɾ d̪ ʋ ɑː ɾ ɑ	ipa	0
+گردوارہ	ɡ ʊ ɾ d̪ ʋ ɑː ɾ ɑː	ipa	0
+گردوں	ɡ ʊ ɾ d̪ õː	ipa	0
+گردہ	ɡ ʊ ɾ d̪ ɑ	ipa	0
+گردہ	ɡ ʊ ɾ d̪ ɑː	ipa	0
+گردے	ɡ ʊ ɾ d̪ eː	ipa	0
+گرز	ɡ ʊ ɾ z	ipa	0
+گرم	ɡ ə ɾ m	ipa	0
+گرم	ɡ ə ɾ ə m	ipa	0
+گرما	ɡ ə ɾ m ɑː	ipa	0
+گرمکھی	ɡ ʊ ɾ m ʊ kʰ iː	ipa	0
+گرمی	ɡ ə ɾ m iː	ipa	0
+گرمیاں	ɡ ə ɾ m ɪ j ɑ̃ː	ipa	0
+گرمیو	ɡ ə ɾ m ɪ j oː	ipa	0
+گرمیوں	ɡ ə ɾ m ɪ j õː	ipa	0
+گرنا	ɡ ɪ ɾ n ɑː	ipa	0
+گرنتھ	ɡ ə ɾ ə n t̪ʰ	ipa	0
+گرو	ɡ ʊ ɾ uː	ipa	0
+گروپ	ɡ ɾ uː p	ipa	0
+گروہ	ɡ ɪ ɾ oː ɦ	ipa	0
+گرڈ	ɡ ə ɾ ʊ ɖ	ipa	0
+گرگٹ	ɡ ɪ ɾ ɡ ɪ ʈ	ipa	0
+گرہن	ɡ ɾ ə ɦ ə n	ipa	0
+گزارش	ɡ ʊ z ɑː ɾ ɪ ʃ	ipa	0
+گزارہ	ɡ ʊ z ɑː ɾ ɑ	ipa	0
+گزارہ	ɡ ʊ z ɑː ɾ ɑː	ipa	0
+گزشتہ	ɡ ʊ z ə ʃ t̪ᵊ	ipa	0
+گستاخ	ɡ ʊ s t̪ ɑː x	ipa	0
+گستاخی	ɡ ʊ s t̪ ɑː x iː	ipa	0
+گشت	ɡ ə ʃ t̪	ipa	0
+گشتی	ɡ ə ʃ t̪ iː	ipa	0
+گشتیاں	ɡ ə ʃ t̪ ɪ j ɑ̃ː	ipa	0
+گشتیو	ɡ ə ʃ t̪ ɪ j oː	ipa	0
+گشتیوں	ɡ ə ʃ t̪ ɪ j õː	ipa	0
+گفتار	ɡ ʊ f t̪ ɑː ɾ	ipa	0
+گفتگو	ɡ ʊ f t̪ ɡ uː	ipa	0
+گلاب	ɡ ʊ l ɑː b	ipa	0
+گلابی	ɡ ʊ l ɑː b iː	ipa	0
+گلاس	ɡ l ɑː s	ipa	0
+گلال	ɡ ʊ l ɑː l	ipa	0
+گلانی	ɡ l ɑː n iː	ipa	0
+گلستان	ɡ ʊ l ɪ s t̪ ɑː n	ipa	0
+گلشن	ɡ ʊ l ʃ ə n	ipa	0
+گلو	ɡ ə l oː	ipa	0
+گلو	ɡ ə l uː	ipa	0
+گلو	ɡ ʊ l oː	ipa	0
+گلو	ɡ ʊ l uː	ipa	0
+گلوں	ɡ ə l õː	ipa	0
+گلوں	ɡ ɪ l õː	ipa	0
+گلگت	ɡ ɪ l ɡ ɪ t̪	ipa	0
+گلہ	ɡ ɪ l ɑ	ipa	0
+گلہ	ɡ ɪ l ɑː	ipa	0
+گلہری	ɡ ɪ l ə ɦ ɾ iː	ipa	0
+گلی	ɡ ə l iː	ipa	0
+گلیاں	ɡ ə l ɪ j ɑ̃ː	ipa	0
+گلیل	ɡ ə l iː l	ipa	0
+گلیم	ɡ ɪ l iː m	ipa	0
+گلیو	ɡ ə l ɪ j oː	ipa	0
+گلیوں	ɡ ə l ɪ j õː	ipa	0
+گلے	ɡ ə l eː	ipa	0
+گلے	ɡ ɪ l eː	ipa	0
+گم	ɡ ʊ m	ipa	0
+گمان	ɡ ʊ m ɑː n	ipa	0
+گمانا	ɡ ʊ m ɑː n ɑː	ipa	0
+گمبھیر	ɡ ə m bʱ iː ɾ	ipa	0
+گملا	ɡ ə m l ɑː	ipa	0
+گمنام	ɡ ʊ m n ɑː m	ipa	0
+گنا	ɡ ə n n ɑː	ipa	0
+گناہ	ɡ ʊ n ɑː ɦ	ipa	0
+گنبد	ɡ ʊ m b ə d̪	ipa	0
+گنبذ	ɡ ʊ m b ə z	ipa	0
+گنبھیر	ɡ ə̃ m bʱ iː ɾ	ipa	0
+گنت	ɡ ə n ɪ t̪	ipa	0
+گنتی	ɡ ɪ n t̪ iː	ipa	0
+گنجا	ɡ ə n d͡ʒ ɑː	ipa	0
+گندم	ɡ ə n d̪ ʊ m	ipa	0
+گندمی	ɡ ə n d̪ ʊ m iː	ipa	0
+گندگی	ɡ ə n d̪ ə ɡ iː	ipa	0
+گندھک	ɡ ə n d̪ʱ ə k	ipa	0
+گندہ	ɡ ə n d̪ ɑ	ipa	0
+گندہ	ɡ ə n d̪ ɑː	ipa	0
+گنگا	ɡ ə ŋ ɡ ɑː	ipa	0
+گنگنا	ɡ ʊ n ɡ ʊ n ɑː	ipa	0
+گنی	ɡ ɪ n iː	ipa	0
+گنیش	ɡ ə n eː ʃ	ipa	0
+گوا	ɡ oː ɑː	ipa	0
+گوادر	ɡ ʊ ɑː d̪ ə ɾ	ipa	0
+گوادر	ɡ ʋ ɑː d̪ ə ɾ	ipa	0
+گوبھی	ɡ oː bʱ iː	ipa	0
+گوجرانوالہ	ɡ ʊ d͡ʒ ɾ ɑ̃ː ʋ ɑː l ɑ	ipa	0
+گوجرانوالہ	ɡ ʊ d͡ʒ ɾ ɑ̃ː ʋ ɑː l ɑː	ipa	0
+گوجرہ	ɡ oː d͡ʒ ɾ ɑː ɦ	ipa	0
+گودام	ɡ oː d̪ ɑː m	ipa	0
+گورا	ɡ oː ɾ ɑː	ipa	0
+گورداسپور	ɡ oː ɾ d̪ ɑː s p uː ɾ	ipa	0
+گورستان	ɡ oː ɾ ɪ s t̪ ɑː n	ipa	0
+گورمنٹ	ɡ oː ɾ m ə n ʈ	ipa	0
+گورو	ɡ ɔː ɾ ə ʋ	ipa	0
+گورکن	ɡ oː ɾ k ə n	ipa	0
+گورکھا	ɡ oː ɾ kʰ ɑː	ipa	0
+گوزن	ɡ ɔː z ə n	ipa	0
+گوزن	ɡ ə ʋ ə z n	ipa	0
+گوسفند	ɡ oː s f ə n d̪	ipa	0
+گوشت	ɡ oː ʃ t̪	ipa	0
+گول	ɡ oː l	ipa	0
+گولا	ɡ oː l ɑː	ipa	0
+گولی	ɡ oː l iː	ipa	0
+گونج	ɡ uː n d͡ʒ	ipa	0
+گونگا	ɡ uː ŋ ɡ ɑː	ipa	0
+گوٹھ	ɡ oː ʈʰ	ipa	0
+گوٹی	ɡ oː ʈ iː	ipa	0
+گوٹیاں	ɡ oː ʈ ɪ j ɑ̃ː	ipa	0
+گوٹیو	ɡ oː ʈ ɪ j oː	ipa	0
+گوٹیوں	ɡ oː ʈ ɪ j õː	ipa	0
+گوگرد	ɡ oː ɡ ɪ ɾ d̪	ipa	0
+گٹار	ɡ ɪ ʈ ɑː ɾ	ipa	0
+گٹھری	ɡ ə ʈʰ ɾ iː	ipa	0
+گپ	ɡ ə p	ipa	0
+گڈا	ɡ ʊ ɖ ɖ ɑː	ipa	0
+گڑ	ɡ ʊ ɽ	ipa	0
+گڑھ	ɡ ə ɽʱ	ipa	0
+گڑیا	ɡ ʊ ɽ ɪ j ɑː	ipa	0
+گگن	ɡ ə ɡ ə n	ipa	0
+گھاس	ɡʱ ɑː s	ipa	0
+گھام	ɡʱ ɑː m	ipa	0
+گھانا	ɡʱ ɑː n ɑː	ipa	0
+گھاو	ɡʱ ɑː ʋ	ipa	0
+گھاٹا	ɡʱ ɑː ʈ ɑː	ipa	0
+گھبرانا	ɡʱ ə b ɾ ɑː n ɑː	ipa	0
+گھر	ɡʱ ə ɾ	ipa	0
+گھرانا	ɡʱ ə ɾ ɑː n ɑː	ipa	0
+گھرنا	ɡʱ ɪ ɾ n ɑː	ipa	0
+گھروں	ɡʱ ə ɾ õː	ipa	0
+گھریلو	ɡʱ ə ɾ eː l uː	ipa	0
+گھمنڈ	ɡʱ ə m ə n ɖ	ipa	0
+گھنا	ɡʱ ə n ɑː	ipa	0
+گھناؤنا	ɡʱ ɪ n ɑː oː n ɑː	ipa	0
+گھناؤنی	ɡʱ ɪ n ɑː oː n iː	ipa	0
+گھناؤنے	ɡʱ ɪ n ɑː oː n eː	ipa	0
+گھنونا	ɡʱ ɪ n ɔː n ɑː	ipa	0
+گھنونی	ɡʱ ɪ n ɔː n iː	ipa	0
+گھنونے	ɡʱ ɪ n ɔː n eː	ipa	0
+گھنٹا	ɡʱ ə n ʈ ɑː	ipa	0
+گھنٹو	ɡʱ ə n ʈ oː	ipa	0
+گھنٹوں	ɡʱ ə n ʈ õː	ipa	0
+گھنٹہ	ɡʱ ə n ʈ ɑ	ipa	0
+گھنٹہ	ɡʱ ə n ʈ ɑː	ipa	0
+گھنٹی	ɡʱ ə n ʈ iː	ipa	0
+گھنٹے	ɡʱ ə n ʈ eː	ipa	0
+گھنی	ɡʱ ə n iː	ipa	0
+گھنے	ɡʱ ə n eː	ipa	0
+گھوش	ɡʱ oː ʃ	ipa	0
+گھونسلہ	ɡʱ õː s l ə	ipa	0
+گھونٹ	ɡʱ uː n ʈ	ipa	0
+گھونٹ	ɡʱ ũː ʈ	ipa	0
+گھونٹوں	ɡʱ ũː ʈ õː	ipa	0
+گھوٹکی	ɡʱ oː ʈ k iː	ipa	0
+گھوڑا	ɡʱ oː ɽ ɑː	ipa	0
+گھوڑو	ɡʱ oː ɽ oː	ipa	0
+گھوڑوں	ɡʱ oː ɽ õː	ipa	0
+گھوڑی	ɡʱ oː ɽ iː	ipa	0
+گھوڑے	ɡʱ oː ɽ eː	ipa	0
+گھٹنا	ɡʱ ə ʈ n ɑː	ipa	0
+گھٹنا	ɡʱ ʊ ʈ n ɑː	ipa	0
+گھڑی	ɡʱ ə ɽ iː	ipa	0
+گھڑیال	ɡʱ ə ɽ ɪ j ɑː l	ipa	0
+گھی	ɡʱ iː	ipa	0
+گہرا	ɡ ə ɦ ɾ ɑː	ipa	0
+گہنا	ɡ ə ɦ n ɑː	ipa	0
+گیا	ɡ ə j ɑː	ipa	0
+گیارہ	ɡ j ɑː ɾ ɑ	ipa	0
+گیارہ	ɡ j ɑː ɾ ɑː	ipa	0
+گیارہ	ɡ j ɑː ɾ ə ɦ	ipa	0
+گیت	ɡ iː t̪	ipa	0
+گیدڑ	ɡ iː d̪ ə ɽ	ipa	0
+گیر	ɡ ɛː ɾ	ipa	0
+گیزر	ɡ iː z ə ɾ	ipa	0
+گیس	ɡ æː s	ipa	0
+گیسن	ɡ iː s ə n	ipa	0
+گیسو	ɡ eː s uː	ipa	0
+گیلا	ɡ iː l ɑː	ipa	0
+گیند	ɡ eː n d̪	ipa	0
+گیندوں	ɡ eː n d̪ õː	ipa	0
+گیندیں	ɡ eː n d̪ ẽː	ipa	0
+گینڈا	ɡ eː n ɖ ɑː	ipa	0
+گینڈا	ɡ ɛː n ɖ ɑː	ipa	0
+گیہوں	ɡ eː ɦ ũː	ipa	0
+گے	ɡ eː	ipa	0
+ں	◌̃	ipa	0
+ھ	ʰ	ipa	0
+ھ	ʱ	ipa	0
+ہ	ɑː	ipa	0
+ہ	ɦ	ipa	0
+ہائے	ɦ ɑː eː	ipa	0
+ہائے	ɦ ɑː j	ipa	0
+ہائے	ɦ ɑː ɛː	ipa	0
+ہاتھ	ɦ ɑː t̪ʰ	ipa	0
+ہاتھوں	ɦ ɑː t̪ʰ õː	ipa	0
+ہاتھی	ɦ ɑː t̪ʰ iː	ipa	0
+ہار	ɦ ɑː ɾ	ipa	0
+ہاردک	ɦ ɑː ɾ d̪ ɪ k	ipa	0
+ہارون	ɦ ɑː ɾ uː n	ipa	0
+ہانڈی	ɦ ɑː n ɖ iː	ipa	0
+ہانڈیاں	ɦ ɑː n ɖ ɪ j ɑ̃ː	ipa	0
+ہانڈیو	ɦ ɑː n ɖ ɪ j oː	ipa	0
+ہانڈیوں	ɦ ɑː n ɖ ɪ j õː	ipa	0
+ہانک	ɦ ɑ̃ː k	ipa	0
+ہانکنا	ɦ ɑː ŋ k n ɑː	ipa	0
+ہانیہ	ɦ ɑː n ɪ j ɑ	ipa	0
+ہانیہ	ɦ ɑː n ɪ j ɑː	ipa	0
+ہاٹ	ɦ ɑː ʈ	ipa	0
+ہاں	ɦ ɑ̃ː	ipa	0
+ہتھیار	ɦ ə t̪ʰ ɪ j ɑː ɾ	ipa	0
+ہتھیلی	ɦ ə t̪ʰ eː l iː	ipa	0
+ہتھیلیاں	ɦ ə t̪ʰ eː l ɪ j ɑ̃ː	ipa	0
+ہتھیلیو	ɦ ə t̪ʰ eː l ɪ j oː	ipa	0
+ہتھیلیوں	ɦ ə t̪ʰ eː l ɪ j õː	ipa	0
+ہتیارا	ɦ ə t̪ j ɑː ɾ ɑː	ipa	0
+ہجر	ɦ ə d͡ʒ ɾ	ipa	0
+ہجر	ɦ ɪ d͡ʒ ɾ	ipa	0
+ہجروں	ɦ ɪ d͡ʒ ɾ õː	ipa	0
+ہجوم	ɦ ʊ d͡ʒ uː m	ipa	0
+ہجے	ɦ ɪ d̪ d͡ʒ eː	ipa	0
+ہخامنش	ɦ ə x ɑː m ə n ɪ ʃ	ipa	0
+ہخامنشی	ɦ ə x ɑː m ə n ɪ ʃ iː	ipa	0
+ہدایات	ɦ ɪ d̪ ɑː j ɑː t̪	ipa	0
+ہدایت	ɦ ɪ d̪ ɑː j ə t̪	ipa	0
+ہدایتوں	ɦ ɪ d̪ ɑː j ə t̪ õː	ipa	0
+ہدایتیں	ɦ ə d̪ ɑː j ə t̪ ẽː	ipa	0
+ہدف	ɦ ə d̪ ə f	ipa	0
+ہدیہ	ɦ ə d̪ ɪ jᵊ	ipa	0
+ہرا	ɦ ə ɾ ɑː	ipa	0
+ہرانا	ɦ ə ɾ ɑː n ɑː	ipa	0
+ہرجا	ɦ ə ɾ d͡ʒ ɑː	ipa	0
+ہرجائی	ɦ ə ɾ d͡ʒ ɑː iː	ipa	0
+ہرن	ɦ ɪ ɾ ə n	ipa	0
+ہرنائی	ɦ ə ɾ n ɑː iː	ipa	0
+ہرگز	ɦ ə ɾ ɡ ɪ z	ipa	0
+ہریالی	ɦ ə ɾ j ɑː l iː	ipa	0
+ہریالی	ɦ ə ɾ ɪ j ɑː l iː	ipa	0
+ہریانہ	ɦ ə ɾ ɪ j ɑː n ɑ	ipa	0
+ہریانہ	ɦ ə ɾ ɪ j ɑː n ɑː	ipa	0
+ہستی	ɦ ə s t̪ iː	ipa	0
+ہستیاں	ɦ ə s t̪ ɪ j ɑ̃ː	ipa	0
+ہستیو	ɦ ə s t̪ ɪ j oː	ipa	0
+ہستیوں	ɦ ə s t̪ ɪ j õː	ipa	0
+ہسپانی	ɦ ə s p ɑː n iː	ipa	0
+ہسپانیہ	ɦ ə s p ɑː n ɪ j ɑ	ipa	0
+ہسپانیہ	ɦ ə s p ɑː n ɪ j ɑː	ipa	0
+ہفتو	ɦ ə f t̪ oː	ipa	0
+ہفتوں	ɦ ə f t̪ õː	ipa	0
+ہفتہ	ɦ ə f t̪ ɑ	ipa	0
+ہفتہ	ɦ ə f t̪ ɑː	ipa	0
+ہفتے	ɦ ə f t̪ eː	ipa	0
+ہفوۃ	ɦ ə f ʋ ə t̪	ipa	0
+ہل	ɦ ə l	ipa	0
+ہلال	ɦ ɪ l ɑː l	ipa	0
+ہلانا	ɦ ɪ l ɑː n ɑː	ipa	0
+ہلاک	ɦ ə l ɑː k	ipa	0
+ہلاکت	ɦ ə l ɑː k ə t̪	ipa	0
+ہلاکتوں	ɦ ə l ɑː k ə t̪ õː	ipa	0
+ہلاکتیں	ɦ ə l ɑː k ə t̪ ẽː	ipa	0
+ہلاکوں	ɦ ə l ɑː k õː	ipa	0
+ہلسہ	ɦ ɪ l s ɑː	ipa	0
+ہلو	h ə lː uː	ipa	0
+ہلکا	ɦ ə l k ɑː	ipa	0
+ہلکان	ɦ ə l k ɑː n	ipa	0
+ہم	ɦ ə m	ipa	0
+ہمارا	ɦ ə m ɑː ɾ ɑː	ipa	0
+ہمالیہ	ɦ ɪ m ɑː l ɪ j ə	ipa	0
+ہماہمی	ɦ ə m ɑː ɦ ə m iː	ipa	0
+ہمایوں	ɦ ʊ m ɑː j ũː	ipa	0
+ہمت	ɦ ɪ m m ə t̪	ipa	0
+ہمجنسیت	ɦ ə m d͡ʒ ɪ n s ɪ j ə t̪	ipa	0
+ہمسایہ	ɦ ə m s ɑː j ɑ	ipa	0
+ہمسایہ	ɦ ə m s ɑː j ɑː	ipa	0
+ہمسفر	ɦ ə m s ə f ə ɾ	ipa	0
+ہموار	ɦ ə m ʋ ɑː ɾ	ipa	0
+ہمیشگی	ɦ ə m eː ʃ ɡ iː	ipa	0
+ہمیشہ	ɦ ə m eː ʃ ɑ	ipa	0
+ہمیشہ	ɦ ə m eː ʃ ɑː	ipa	0
+ہمیں	ɦ ə m ẽː	ipa	0
+ہند	ɦ ɪ n d̪	ipa	0
+ہندسوں	ɦ ɪ n d̪ ɪ s õː	ipa	0
+ہندسہ	ɦ ə n d̪ ə s ɑ	ipa	0
+ہندسہ	ɦ ə n d̪ ə s ɑː	ipa	0
+ہندسہ	ɦ ɪ n d̪ ɪ s ɑ	ipa	0
+ہندسہ	ɦ ɪ n d̪ ɪ s ɑː	ipa	0
+ہندسے	ɦ ɪ n d̪ ɪ s eː	ipa	0
+ہندو	ɦ ɪ n d̪ uː	ipa	0
+ہندوتوا	ɦ ɪ n d̪ uː t̪ ʋ ɑː	ipa	0
+ہندوستان	ɦ ɪ n d̪ oː s t̪ ɑː n	ipa	0
+ہندوستان	ɦ ɪ n d̪ ʊ s t̪ ɑː n	ipa	0
+ہندوستانی	ɦ ɪ n d̪ uː s t̪ ɑː n iː	ipa	0
+ہندوستانی	ɦ ɪ n d̪ ʊ s t̪ ɑː n iː	ipa	0
+ہندوکش	ɦ ɪ n d̪ uː k ʊ ʃ	ipa	0
+ہندوی	ɦ ɪ n d̪ ʋ iː	ipa	0
+ہندی	ɦ ɪ n d̪ iː	ipa	0
+ہندیہ	ɦ ɪ n d̪ ɪ j ɑ	ipa	0
+ہندیہ	ɦ ɪ n d̪ ɪ j ɑː	ipa	0
+ہنزلو	ɦ ə n z l oː	ipa	0
+ہنسا	ɦ ɪ n s ɑː	ipa	0
+ہنساتمک	ɦ ɪ̃ n s ɑː t̪ m ə k	ipa	0
+ہنسلو	ɦ ə n s l oː	ipa	0
+ہنسنا	ɦ a n s n ɑː	ipa	0
+ہنسنا	ɦ ə s n ɑː	ipa	0
+ہنسنا	ɦ ə̃ s n ɑː	ipa	0
+ہنومان	ɦ ə n uː m ɑː n	ipa	0
+ہنڈار	ɦ ʊ n ɖ ɑː ɾ	ipa	0
+ہنڈی	ɦ ʊ n ɖ iː	ipa	0
+ہنگامی	ɦ ə ŋ ɡ ɑː m iː	ipa	0
+ہنہنانا	ɦ ɪ n ɦ ɪ n ɑː n ɑː	ipa	0
+ہنہناہٹ	ɦ ɪ n ɦ ɪ n ɑː ɦ ə ʈ	ipa	0
+ہو	ɦ oː	ipa	0
+ہوئے	ɦ ʊ eː	ipa	0
+ہوا	ɦ uː ɑː	ipa	0
+ہوا	ɦ ə ʋ ɑː	ipa	0
+ہواؤں	ɦ ʋ ɑː õː	ipa	0
+ہوائی	ɦ ə ʋ ɑː iː	ipa	0
+ہوائیں	ɦ ʋ ɑː ẽː	ipa	0
+ہوتا	ɦ oː t̪ ɑː	ipa	0
+ہود	ɦ uː d̪	ipa	0
+ہوس	ɦ ə ʋ ə s	ipa	0
+ہوسیع	ɦ uː s iː ɑː	ipa	0
+ہوسیع	ɦ uː s iː ʔ ɑː	ipa	0
+ہوش	ɦ oː ʃ	ipa	0
+ہوشنگ	ɦ oː ʃ ə ŋ ɡ	ipa	0
+ہوشوں	ɦ oː ʃ õː	ipa	0
+ہوشیار	ɦ oː ʃ ɪ j ɑː ɾ	ipa	0
+ہوشیع	ɦ uː ʃ iː ɑː	ipa	0
+ہوشیع	ɦ uː ʃ iː ʔ ɑː	ipa	0
+ہولی	ɦ oː l iː	ipa	0
+ہونا	ɦ oː n ɑː	ipa	0
+ہونٹ	ɦ oː n ʈ	ipa	0
+ہونٹ	ɦ õː ʈ	ipa	0
+ہونٹو	ɦ oː n ʈ oː	ipa	0
+ہونٹوں	ɦ oː n ʈ õː	ipa	0
+ہونٹھ	ɦ oː n ʈʰ	ipa	0
+ہونٹھ	ɦ õː ʈʰ	ipa	0
+ہوٹل	ɦ oː ʈ ə l	ipa	0
+ہوں	ɦ ũː	ipa	0
+ہٹانا	ɦ ə ʈ ɑː n ɑː	ipa	0
+ہٹنا	ɦ ə ʈ n ɑː	ipa	0
+ہچکنا	ɦ ɪ t͡ʃ ə k n ɑː	ipa	0
+ہچکی	ɦ ɪ t͡ʃ k iː	ipa	0
+ہڈی	ɦ ə ɖː iː	ipa	0
+ہڑبڑاہٹ	ɦ ə ɽ b ə ɽ ɑː ɦ ə ʈ	ipa	0
+ہڑتال	ɦ ə ɽ t̪ ɑː l	ipa	0
+ہکا	ɦ ɪ k k ɑː	ipa	0
+ہی	ɦ iː	ipa	0
+ہیجڑا	ɦ iː d͡ʒ ɽ ɑː	ipa	0
+ہیر	ɦ iː ɾ	ipa	0
+ہیرا	ɦ iː ɾ ɑː	ipa	0
+ہیضہ	ɦ ɛː z ɑ	ipa	0
+ہیضہ	ɦ ɛː z ɑː	ipa	0
+ہیمبرگ	ɦ ɛː m b ə ɾ ɡ	ipa	0
+ہیمبرگ	ɦ ɛː m b ʊ ɾ ɡ	ipa	0
+ہینسنا	ɦ ĩː s n ɑː	ipa	0
+ہیک	ɦ iː k	ipa	0
+ہیں	ɦ ɛ̃ː	ipa	0
+ہے	eː	ipa	0
+ہے	ɛː	ipa	0
+ہے	ɦ eː	ipa	0
+ہے	ɦ ɛː	ipa	0
+ی	eː	ipa	0
+ی	iː	ipa	0
+ی	j	ipa	0
+ی	ɛː	ipa	0
+یا	j ɑː	ipa	0
+یات	ɪ j ɑː t̪	ipa	0
+یاتری	j ɑː t̪ ɾ iː	ipa	0
+یاد	j ɑː d̪	ipa	0
+یادداشت	j ɑː d̪ d̪ ɑː ʃ t̪	ipa	0
+یادو	j ɑː d̪ oː	ipa	0
+یادوں	j ɑː d̪ õː	ipa	0
+یادیں	j ɑː d̪ ẽː	ipa	0
+یار	j ɑː ɾ	ipa	0
+یارو	j ɑː ɾ oː	ipa	0
+یاروں	j ɑː ɾ õː	ipa	0
+یاس	j ɑː s	ipa	0
+یاس	j ə s	ipa	0
+یاس	j ə ʔ s	ipa	0
+یاسمین	j ɑː s ə m iː n	ipa	0
+یاقوت	j ɑː q uː t̪	ipa	0
+یال	j ɑː l	ipa	0
+یاور	j ɑː ʋ ə ɾ	ipa	0
+یت	j ʊ t̪	ipa	0
+یت	ɪ j ə t̪	ipa	0
+یتیم	j ə t̪ iː m	ipa	0
+یحیی	j ə ɦ j ɑː	ipa	0
+یخ	j ə x	ipa	0
+یخنی	j ə x n iː	ipa	0
+یدھ	j ʊ d̪ d̪ʱ	ipa	0
+یدھ	j ʊ d̪ʱ	ipa	0
+یرغمال	j ə ɾ ɣ ə m ɑː l	ipa	0
+یرمیاہ	j ɪ ɾ m ɪ j ɑː ɦ	ipa	0
+یروشلم	j ə ɾ oː ʃ l ə m	ipa	0
+یروشلم	j ə ɾ oː ʃ ə l ə m	ipa	0
+یروشلم	j ə ɾ uː ʃ l ə m	ipa	0
+یروشلم	j ə ɾ ʊ ʃ ə l ə m	ipa	0
+یزدان	j ə z d̪ ɑː n	ipa	0
+یزیدیت	j ə z iː d̪ ɪ j ə t̪	ipa	0
+یسعیاہ	j ə s ɑː j ɑː ɦ	ipa	0
+یسعیاہ	j ə s ɑː ʔ j ɑː ɦ	ipa	0
+یسوع	j ə s uː	ipa	0
+یسوع	j ə s uː ʔ	ipa	0
+یشوع	j ə ʃ uː	ipa	0
+یشوع	j ə ʃ uː ʔ	ipa	0
+یعقوب	j ə q uː b	ipa	0
+یعقوب	j ə ʔ q uː b	ipa	0
+یعنی	j ɑː n iː	ipa	0
+یقین	j ə q iː n	ipa	0
+یقینا	j ə q iː n ə n	ipa	0
+یقیں	j ə q ĩː	ipa	0
+یلغار	j ə l ɣ ɑː ɾ	ipa	0
+یلغارو	j ə l ɣ ɑː ɾ oː	ipa	0
+یلغاروں	j ə l ɣ ɑː ɾ õː	ipa	0
+یلغاریں	j ə l ɣ ɑː ɾ ẽː	ipa	0
+یمن	j ə m ə n	ipa	0
+یمنا	j ə m ʊ n ɑː	ipa	0
+ین	iː n	ipa	0
+یوحنا	j uː ɦ ə n n ɑː	ipa	0
+یوراگوئے	j uː ɾ ɑː ɡ ʋ eː	ipa	0
+یورش	j uː ɾ ɪ ʃ	ipa	0
+یوروپ	j uː ɾ oː p	ipa	0
+یورپ	j uː ɾ ə p	ipa	0
+یوسف	j uː s ʊ f	ipa	0
+یوغ	j oː ɣ	ipa	0
+یوم	j ɔː m	ipa	0
+یون	j ə ʋ ə n	ipa	0
+یونان	j uː n ɑː n	ipa	0
+یونانی	j uː n ɑː n iː	ipa	0
+یونس	j uː n ʊ s	ipa	0
+یوکرین	j uː k ɾ eː n	ipa	0
+یوگدان	j oː ɡ d̪ ɑː n	ipa	0
+یوگنڈا	j uː ɡ ə n ɖ ɑː	ipa	0
+یوگیتو	j oː ɡ j ə t̪ ʋᵊ	ipa	0
+یوگیہ	j oː ɡ jᵊ	ipa	0
+یوں	j õː	ipa	0
+یوں	j ũː	ipa	0
+یک	j ə k	ipa	0
+یکتا	j ə k t̪ ɑː	ipa	0
+یکم	j ə k ʊ m	ipa	0
+یکیدم	j ə k iː d̪ ə m	ipa	0
+یگانہ	j ə ɡ ɑː n ɑ	ipa	0
+یگانہ	j ə ɡ ɑː n ɑː	ipa	0
+یہ	j eː	ipa	0
+یہ	j ə ɦ	ipa	0
+یہاں	j ə ɦ ɑ̃ː	ipa	0
+یہود	j ə ɦ uː d̪	ipa	0
+یہودنی	j ə ɦ uː d̪ n iː	ipa	0
+یہودنی	j ə ɦ uː d̪ ɪ n iː	ipa	0
+یہودی	j ə ɦ uː d̪ iː	ipa	0
+یہودیت	j ə ɦ uː d̪ iː t̪	ipa	0
+یہودیت	j ə ɦ uː d̪ ɪ j ə t̪	ipa	0
+یہودیہ	j ə ɦ uː d̪ ɪ j ɑ	ipa	0
+یہودیہ	j ə ɦ uː d̪ ɪ j ɑː	ipa	0
+ے	eː	ipa	0
+ے	ɛː	ipa	0

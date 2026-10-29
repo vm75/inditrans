@@ -39,13 +39,19 @@ def main():
     invalid = run("-f", "urdu", "-t", "indlish", "-l", str(SOURCE), source)
     assert invalid.returncode != 0 and "Invalid IUL1" in invalid.stderr, invalid.stderr
     corpus = ROOT / "demo/urdu-pronunciation.iul"
-    assert corpus.stat().st_size < 3_000_000
+    assert corpus.stat().st_size > 0
     corpus_run = run("-f", "urdu", "-t", "indlish", "-l", str(corpus), source)
     assert corpus_run.returncode == 0 and corpus_run.stdout == phonetic.stdout, corpus_run.stderr
     unknown = run("-f", "urdu", "-t", "indlish", "-l", str(corpus), "زززززززززززز")
     unknown_legacy = run("-f", "urdu", "-t", "indlish", "زززززززززززز")
     assert unknown.stdout == unknown_legacy.stdout
-    print("Embedded Urdu default, CLI override, strict literal mode, punctuation and protected spans: passed")
+    pal = run("-f", "urdu", "-t", "indlish", "پل")
+    pal_strict = run("-f", "urdu", "-t", "indlish", "-o", "DisableInference", "پل")
+    pal_explicit_fixture = run("-f", "urdu", "-t", "indlish", "-l", str(PACK), "پل")
+    assert pal.stdout.strip() == "pal", pal.stdout
+    assert pal_strict.stdout.strip() == "pl", pal_strict.stdout
+    assert pal_explicit_fixture.stdout.strip() == "pl", pal_explicit_fixture.stdout
+    print("Embedded Urdu wordlist default, ambiguous pal, CLI override, strict literal mode: passed")
 
 if __name__ == "__main__":
     main()

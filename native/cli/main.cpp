@@ -137,8 +137,8 @@ int main(int argc, char** argv) {
       return false;
     }
     const std::vector<char> bytes(std::istreambuf_iterator<char>{stream}, std::istreambuf_iterator<char>{});
-    if (bytes.empty() || bytes.size() > 3'000'000) {
-      std::cerr << "Invalid Urdu pronunciation pack size (limit: 3 MB): " << file << "\n";
+    if (bytes.empty()) {
+      std::cerr << "Empty Urdu pronunciation pack: " << file << "\n";
       return false;
     }
     void* handle = createUrduLexiconHandle(bytes.data(), static_cast<unsigned long>(bytes.size()));

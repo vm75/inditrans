@@ -41,7 +41,6 @@ function assisted(text, to, handle, flags = 0) {
 }
 test('ordinary Urdu transliteration uses embedded pronunciation and explicit pack overrides remain supported', () => {
   const bytes = readFileSync(join(root, 'demo/urdu-example.iul'));
-  assert.ok(bytes.length < 3000000);
   const raw = alloc(bytes);
   const handle = wasm.createUrduLexiconHandle(raw, bytes.length);
   wasm.free(raw);
@@ -63,9 +62,10 @@ test('ordinary Urdu transliteration uses embedded pronunciation and explicit pac
 
 test('full experimental Urdu lexicon loads through the runtime and retains conservative fallback', () => {
   const pack = readFileSync(join(root, 'demo/urdu-pronunciation.iul'));
-  const report = JSON.parse(readFileSync(join(root, 'scripts/urdu/concordant-report.json'), 'utf8'));
-  assert.ok(pack.length <= 3000000);
-  assert.equal(report.packed_entries, 4252);
+  const report = JSON.parse(readFileSync(join(root, 'scripts/urdu/wordlist-report.json'), 'utf8'));
+  assert.ok(pack.length > 100000);
+  assert.ok(report.entries > 4252);
+  assert.ok(report.ambiguities_with_alternatives > 0);
   assert.equal(pack.length, report.pack_bytes);
   const raw = alloc(pack);
   const handle = wasm.createUrduLexiconHandle(raw, pack.length);
@@ -74,6 +74,9 @@ test('full experimental Urdu lexicon loads through the runtime and retains conse
   try {
     assert.equal(assisted('جیسی کرنی ویسی بھرنی', 'indlish', handle), 'jaisI karnI vaisI bharnI');
     assert.equal(ordinary('قلم', 'urdu', 'indlish'), 'qalam');
+    assert.equal(ordinary('پل', 'urdu', 'indlish'), 'pal');
+    assert.equal(assisted('پل', 'indlish', handle), 'pal');
+    assert.equal(ordinary('پل', 'urdu', 'indlish', 64), 'pl');
     assert.equal(assisted('زززززززززززز', 'indlish', handle), ordinary('زززززززززززز', 'urdu', 'indlish'));
     assert.equal(assisted('##جیسی## جیسی', 'indlish', handle), 'جیسی jaisI');
   } finally { wasm.releaseUrduLexiconHandle(handle); }

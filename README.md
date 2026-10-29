@@ -179,16 +179,16 @@ make dll
 
 ## License
 
-Inditrans source code is [MIT](LICENSE). The built-in **experimental Urdu
-pronunciation dictionary is separately licensed CC BY-SA 4.0** and attributed
+Inditrans source code is [MIT](LICENSE). The built-in **current experimental Urdu
+pronunciation dataset is separately licensed CC BY-SA 4.0** and attributed
 to Wiktionary contributors; see [Urdu data licensing and source hashes](scripts/urdu/README.md).
 Distributors of native/WASM binaries must preserve this data attribution and
 share-alike terms. The base engine license does not apply to this embedded data.
 
-### Urdu pronunciation (on by default)
+### Urdu pronunciation (on by default; wordlist-driven)
 
-Urdu → Indlish now recovers vowels for **4,252 dictionary entries** without
-an extra flag or downloadable asset. The 122,869-byte IUL1 corpus is embedded
+Urdu → Indlish now recovers vowels for **a configurable wordlist** without
+an extra flag or downloadable asset. The IUL1 corpus is embedded
 in native libraries and WASM, with its index initialized lazily on the first
 Urdu conversion. Words absent from the dictionary fall back to literal
 transliteration; no sentence-level homograph disambiguation is claimed.
@@ -203,5 +203,5 @@ Use `-o DisableInference` for deterministic literal Urdu letter mapping,
 or `--urdu-lexicon path/to/alternative.iul` to override the bundled
 dictionary for CLI conversions. In the browser demo, **Urdu pronunciation is
 on by default**, and the existing **Disable inference** option restores
-literal output. The experimental data is not independently human-reviewed:
+literal output. The current candidate corpus is sourced from WikiPron (CC BY-SA 4.0); the source-neutral builder also accepts independently authored or public-domain wordlists, whose rights must be verified. The experimental data is not independently human-reviewed:
 [see limitations](scripts/urdu/README.md).

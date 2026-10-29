@@ -35,7 +35,7 @@ class ConcordantTest(unittest.TestCase):
 
     def test_checked_in_asset_manifest_if_present(self):
         pack_path = ROOT / "demo/urdu-pronunciation.iul"
-        report_path = ROOT / "scripts/urdu/concordant-report.json"
+        report_path = ROOT / "scripts/urdu/wordlist-report.json"
         if not pack_path.exists() and not report_path.exists():
             self.skipTest("data build not yet checked in")
         self.assertTrue(pack_path.is_file() and report_path.is_file())
@@ -44,8 +44,8 @@ class ConcordantTest(unittest.TestCase):
         self.assertEqual(len(blob), report["pack_bytes"])
         self.assertEqual(build_concordant.sha(blob), report["pack_sha256"])
         self.assertLessEqual(len(blob), build_concordant.MAX_PACK_BYTES)
-        self.assertGreaterEqual(report["concordant_entries"], build_concordant.MIN_CONCORDANT)
-        self.assertGreaterEqual(report["packed_entries"], report["concordant_entries"])
+        self.assertGreater(report["entries"], 4252)
+        self.assertGreaterEqual(report["ambiguities_with_alternatives"], 1)
         self.assertEqual(blob[:4], b"IUL1")
         self.assertEqual(struct.unpack_from("<I", blob, 4)[0], zlib.crc32(blob[8:]))
 

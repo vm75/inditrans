@@ -1,0 +1,16 @@
+# Project-authored editorial defaults and demo phoneme examples.
+# Columns: spelling, IAST pronunciation, notation, priority.
+# Priority is an explicit build choice, NOT frequency measured from a corpus.
+پل	pal	iast	100
+پل	pul	iast	20
+کل	kal	iast	90
+کل	kul	iast	10
+علم	ilm	iast	90
+علم	alam	iast	10
+ملک	mulk	iast	90
+ملک	milk	iast	10
+جیسی	jaisī	iast	200
+کرنی	karnī	iast	200
+ویسی	vaisī	iast	200
+بھرنی	bharnī	iast	200
+کتاب	kitāb	iast	200
