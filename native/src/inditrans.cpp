@@ -413,6 +413,15 @@ bool transliterate_core(const std::string_view& input, const ScriptReaderMap& re
 /// The compact IUL1 asset remains immutable in the binary. Its index is
 /// initialized only on the first eligible Urdu conversion, once per process;
 /// non-Urdu scripts never allocate or parse it.
+/// A single immutable, lazy-loaded index shared by every output sink and API.
+static UrduLexicon builtinUrduLexicon() noexcept {
+  static UrduLexiconPack pack;
+  static const bool valid = pack.load(std::span<const uint8_t>(
+      reinterpret_cast<const uint8_t*>(inditrans::embedded_urdu::pack),
+      static_cast<size_t>(inditrans::embedded_urdu::pack_size)));
+  return valid ? pack.lexicon() : UrduLexicon {};
+}
+
 template <typename Sink>
 bool transliterateWithDefaultUrdu(std::string_view input, const ScriptReaderMap& readerMap,
     const ScriptWriterMap& writerMap, TranslitOptions options, Sink& sink,
@@ -420,12 +429,9 @@ bool transliterateWithDefaultUrdu(std::string_view input, const ScriptReaderMap&
   if (options / TranslitOptions::DisableInference
       && &readerMap == getScriptReaderMap("urdu")
       && &writerMap != getScriptWriterMap("urdu")) {
-    static UrduLexiconPack pack;
-    static const bool valid = pack.load(std::span<const uint8_t>(
-        reinterpret_cast<const uint8_t*>(inditrans::embedded_urdu::pack),
-        static_cast<size_t>(inditrans::embedded_urdu::pack_size)));
-    if (valid) {
-      inditrans::handlers::UrduPronunciationReader reader(input, pack.lexicon());
+    const auto lexicon = builtinUrduLexicon();
+    if (!lexicon.empty()) {
+      inditrans::handlers::UrduPronunciationReader reader(input, lexicon);
       auto extension = ReaderExtension::bind(reader);
       return transliterate_core<Sink, true>(input, readerMap, writerMap,
           options, sink, skipStart, skipEnd, &extension);
