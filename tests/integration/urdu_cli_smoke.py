@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI opt-in Urdu pronunciation smoke test; no external datasets required."""
+"""Always-on embedded Urdu pronunciation and explicit-override CLI regression."""
 from pathlib import Path
 import subprocess
 import tempfile
@@ -25,13 +25,13 @@ def main():
     phonetic = run("-f", "urdu", "-t", "indlish", "--urdu-lexicon", str(PACK), source)
     assert phonetic.returncode == 0, phonetic.stderr
     assert phonetic.stdout.strip() == "jaisI karnI vaisI bharnI", phonetic.stdout
-    assert base.stdout != phonetic.stdout
+    assert base.stdout == phonetic.stdout, "Urdu should be pronounced by default without -l"
     punctuation = run("-f", "urdu", "-t", "indlish", "۔")
     full = run("-f", "urdu", "-t", "indlish", "-l", str(PACK), source + "۔")
     assert full.stdout.strip() == phonetic.stdout.strip() + punctuation.stdout.strip(), full.stdout
     strict = run("-f", "urdu", "-t", "indlish", "-o", "DisableInference",
                  "-l", str(PACK), source)
-    assert strict.returncode == 0 and strict.stdout == base.stdout, strict.stderr
+    assert strict.returncode == 0 and strict.stdout.strip() == "jysy krny vysy bhrny", strict.stderr
     protected = run("-f", "urdu", "-t", "indlish", "-l", str(PACK), "##جیسی## جیسی")
     assert protected.stdout.strip() == "جیسی jaisI", protected.stdout
     interactive = run("-f", "urdu", "-t", "indlish", input_text=f"-l {PACK}\n{source}\nquit\n")
@@ -45,7 +45,7 @@ def main():
     unknown = run("-f", "urdu", "-t", "indlish", "-l", str(corpus), "زززززززززززز")
     unknown_legacy = run("-f", "urdu", "-t", "indlish", "زززززززززززز")
     assert unknown.stdout == unknown_legacy.stdout
-    print("Urdu demo lexicon, CLI opt-in, strict mode, punctuation and protected spans: passed")
+    print("Embedded Urdu default, CLI override, strict literal mode, punctuation and protected spans: passed")
 
 if __name__ == "__main__":
     main()
