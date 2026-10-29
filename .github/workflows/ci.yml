@@ -40,6 +40,9 @@ jobs:
       - name: Run maintenance script regression tests
         run: make test_scripts
 
+      - name: Verify checked-in built-in Urdu lexicon exactly matches pinned source
+        run: python3 scripts/urdu/embed_lexicon.py --check
+
       - name: Verify generated artifacts are up to date
         run: |
           python3 scripts/generate_headers.py
