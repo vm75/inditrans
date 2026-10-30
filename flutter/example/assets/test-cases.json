@@ -1,5 +1,37 @@
 [
   {
+    "description": "Traditional Devanagari folds short e and o",
+    "script": "telugu",
+    "text": "ఎ ఒ వెల కొ",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "ऎ ऒ वॆल कॊ"
+      },
+      {
+        "script": "devanagari",
+        "text": "ए ओ वेल को",
+        "options": "DevanagariTraditional"
+      }
+    ]
+  },
+  {
+    "description": "Traditional Devanagari folds Dravidian consonants",
+    "script": "tamil",
+    "text": "தமிழ் அறம் அன்னம்",
+    "targets": [
+      {
+        "script": "devanagari",
+        "text": "तमिऴ् अऱम् अऩ्ऩम्"
+      },
+      {
+        "script": "devanagari",
+        "text": "तमिळ् अरम् अन्नम्",
+        "options": "DevanagariTraditional"
+      }
+    ]
+  },
+  {
     "description": "Urdu open-e vowels use ae in Indlish",
     "script": "urdu",
     "text": "جیسی ویسی",

@@ -47,6 +47,7 @@ const FONT_RESOURCES = {
 const OPTION_DEFINITIONS = [
   { name: 'TamilTraditional', label: 'Traditional Tamil', tamilOnly: true, description: 'Use traditional Tamil consonants' },
   { name: 'TamilSuperscripted', label: 'Superscripted Tamil', tamilOnly: true, description: 'Use superscripted Tamil consonants' },
+  { name: 'DevanagariTraditional', label: 'Traditional Devanagari', devanagariOnly: true, description: 'Map Dravidian short e/o and consonants to standard Devanagari' },
   { name: 'ASCIINumerals', label: 'ASCII numerals', description: 'Use 0–9 for numbers in the output' },
   { name: 'IgnoreVedicAccents', label: 'Ignore Vedic accents', description: 'Remove Vedic accents during conversion' },
   { name: 'RetainSpecialMarkers', label: 'Retain special markers', description: 'Keep markers used for non-standard characters' },

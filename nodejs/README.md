@@ -104,6 +104,7 @@ Returns `true` when the given script name is recognised.
 | `Option.None` | `0` | No options (default) |
 | `Option.TamilTraditional` | `1` | Traditional Tamil consonants only |
 | `Option.TamilSuperscripted` | `2` | Superscripted Tamil consonants |
+| `Option.DevanagariTraditional` | `128` | Traditional Devanagari orthography (maps Dravidian short e/o and consonants) |
 | `Option.ASCIINumerals` | `4` | Force ASCII numerals in output |
 | `Option.IgnoreVedicAccents` | `8` | Strip Vedic accent markers |
 | `Option.RetainSpecialMarkers` | `16` | Keep non-standard character markers |

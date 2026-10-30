@@ -44,5 +44,13 @@
         "name": "DisableInference",
         "comment": "Disable contextual pronunciation inference (including anuswara assimilation and Tamil reading/writing rules)",
         "value": 64
+    },
+    {
+        "name": "DevanagariTraditional",
+        "comment": "Use traditional Devanagari orthography, mapping Dravidian short e/o and consonants to standard forms",
+        "value": 128,
+        "scripts": [
+            "Devanagari"
+        ]
     }
 ]

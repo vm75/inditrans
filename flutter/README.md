@@ -82,6 +82,7 @@ Pass an `Option` value (or combine with `+`) as the fourth argument to `translit
 |---|---|
 | `Option.TamilTraditional` | Traditional Tamil consonants only |
 | `Option.TamilSuperscripted` | Superscripted Tamil consonants |
+| `Option.DevanagariTraditional` | Traditional Devanagari orthography (maps Dravidian short e/o and consonants) |
 | `Option.ASCIINumerals` | Force ASCII numerals in output |
 | `Option.IgnoreVedicAccents` | Strip Vedic accent markers |
 | `Option.RetainSpecialMarkers` | Keep non-standard character markers |

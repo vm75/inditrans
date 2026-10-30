@@ -26,4 +26,7 @@ export enum Option {
 
   /// Disable contextual pronunciation inference (including anuswara assimilation and Tamil reading/writing rules)
   DisableInference = 64,
+
+  /// Use traditional Devanagari orthography, mapping Dravidian short e/o and consonants to standard forms
+  DevanagariTraditional = 128,
 }

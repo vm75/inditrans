@@ -9,6 +9,7 @@ Module['onRuntimeInitialized'] = function () {
             'RetainSpecialMarkers': 16,
             'NoXMLTagHandling': 32,
             'DisableInference': 64,
+            'DevanagariTraditional': 128,
         },
         'Scripts': [
             'assamese',

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 
 # Project-level configuration.
 set(PROJECT_NAME "inditrans")
-project(${PROJECT_NAME} VERSION 0.17.1 LANGUAGES CXX)
+project(${PROJECT_NAME} VERSION 0.17.2 LANGUAGES CXX)
 
 # Invoke the build for native code shared with the other target platforms.
 # This can be changed to accomodate different builds.

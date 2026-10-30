@@ -13,6 +13,7 @@ class Option {
     'retainspecialmarkers': 16,
     'noxmltaghandling': 32,
     'disableinference': 64,
+    'devanagaritraditional': 128,
   };
 
   /// No options (default)
@@ -38,6 +39,9 @@ class Option {
 
   /// Disable contextual pronunciation inference (including anuswara assimilation and Tamil reading/writing rules)
   static final DisableInference = Option._(64);
+
+  /// Use traditional Devanagari orthography, mapping Dravidian short e/o and consonants to standard forms
+  static final DevanagariTraditional = Option._(128);
 
   /// Returns the int value of the option flag
   int get value => _value;

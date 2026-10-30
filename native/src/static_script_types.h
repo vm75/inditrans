@@ -494,6 +494,7 @@ struct ScriptWriterMap {
   constexpr ScriptType getType() const noexcept { return scriptType; }
   constexpr bool supportsVedicAccents() const noexcept { return vedicAccents; }
   constexpr bool isIndlish() const noexcept;
+  constexpr bool isDevanagari() const noexcept;
   constexpr std::string_view lookupChar(TokenType type, size_t index) const noexcept;
   constexpr std::string_view lookupChar(const Token& token) const noexcept {
     return lookupChar(token.tokenType, token.idx);

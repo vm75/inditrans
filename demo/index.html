@@ -3995,7 +3995,8 @@
             + Number(delimiters.skipEnd !== DEMO_DEFAULTS.skipEnd);
           for (const definition of OPTION_DEFINITIONS) {
             const checkbox = element('option-' + definition.name);
-            checkbox.disabled = !!definition.tamilOnly && targetScript.value !== 'tamil';
+            checkbox.disabled = (!!definition.tamilOnly && targetScript.value !== 'tamil') ||
+                                (!!definition.devanagariOnly && targetScript.value !== 'devanagari');
             checkbox.parentElement.setAttribute('aria-disabled', String(checkbox.disabled));
             if (checkbox.checked && !checkbox.disabled) activeCount++;
           }

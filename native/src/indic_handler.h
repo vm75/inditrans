@@ -72,13 +72,29 @@ public:
   template <typename Writer>
   [[gnu::always_inline]] static inline void write(const TokenUnit& tokenUnit, const ScriptWriterMap& map,
       TranslitOptions options, Writer& writer) noexcept {
-    if (AsciiNumeralFormatter::matches(tokenUnit.leadToken, options)) {
-      AsciiNumeralFormatter::emit(tokenUnit.leadToken.idx, writer);
-    } else {
-      writer.push(map.lookupChar(tokenUnit.leadToken));
+    auto lead = tokenUnit.leadToken;
+    auto mark = tokenUnit.vowelMark;
+
+    if (map.isDevanagari() && (options * TranslitOptions::DevanagariTraditional)) {
+      if (lead.tokenType == TokenType::Vowel) {
+        if (lead.idx == 10) lead.idx = 11;
+        else if (lead.idx == 13) lead.idx = 14;
+      } else if (lead.tokenType == TokenType::Consonant) {
+        if (lead.idx == 34) lead.idx = 33;
+        else if (lead.idx == 35) lead.idx = 26;
+        else if (lead.idx == 36) lead.idx = 19;
+      }
+      if (mark.idx == 10) mark.idx = 11;
+      else if (mark.idx == 13) mark.idx = 14;
     }
-    if (tokenUnit.vowelMark.idx != InvalidToken) {
-      writer.push(map.lookupChar(tokenUnit.vowelMark));
+
+    if (AsciiNumeralFormatter::matches(lead, options)) {
+      AsciiNumeralFormatter::emit(lead.idx, writer);
+    } else {
+      writer.push(map.lookupChar(lead));
+    }
+    if (mark.idx != InvalidToken) {
+      writer.push(map.lookupChar(mark));
     }
     if (tokenUnit.otherDiacritic.idx != InvalidToken) {
       writer.push(map.lookupChar(tokenUnit.otherDiacritic));

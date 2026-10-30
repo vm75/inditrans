@@ -20,10 +20,19 @@ constexpr bool ScriptWriterMap::isIndlish() const noexcept {
   return this == &inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Indlish)];
 }
 
+/// Returns true if this writer target is the Devanagari script.
+constexpr bool ScriptWriterMap::isDevanagari() const noexcept {
+  return this == &inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Devanagari)];
+}
+
 static_assert(
     inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Indlish)].isIndlish());
 static_assert(
     !inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Iast)].isIndlish());
+static_assert(
+    inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Devanagari)].isDevanagari());
+static_assert(
+    !inditrans::static_data::writers[static_cast<size_t>(inditrans::static_data::ScriptId::Bengali)].isDevanagari());
 
 /// Parsing policy governing token matching from input text.
 enum class ReaderPolicy {

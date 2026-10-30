@@ -71,7 +71,8 @@
     IgnoreVedicAccents: 8,
     RetainSpecialMarkers: 16,
     NoXMLTagHandling: 32,
-    DisableInference: 64
+    DisableInference: 64,
+    DevanagariTraditional: 128
   };
 
   let moduleReady = false;

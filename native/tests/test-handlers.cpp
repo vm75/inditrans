@@ -890,6 +890,33 @@ suite<"Indic and Roman handler tests"> indicRomanTests = [] {
     expect(unit.vowelMark.tokenType == TokenType::VowelMark);
     expect(unit.vowelMark.idx == 2u);
   };
+
+  "Devanagari traditional option"_test = [] {
+    // Without DevanagariTraditional: retains short e/o and Dravidian consonants
+    expect(transliterate("వెల", "telugu", "devanagari", TranslitOptions::None) == "वॆल");
+    expect(transliterate("ఒక", "telugu", "devanagari", TranslitOptions::None) == "ऒक");
+    expect(transliterate("தமிழ்", "tamil", "devanagari", TranslitOptions::None) == "तमिऴ्");
+    expect(transliterate("அறம்", "tamil", "devanagari", TranslitOptions::None) == "अऱम्");
+    expect(transliterate("அன்னம்", "tamil", "devanagari", TranslitOptions::None) == "अऩ्ऩम्");
+
+    // With DevanagariTraditional: folds short e/o and Dravidian consonants to standard forms
+    constexpr auto opt = TranslitOptions::DevanagariTraditional;
+    expect(transliterate("వెల", "telugu", "devanagari", opt) == "वेल");
+    expect(transliterate("ఒక", "telugu", "devanagari", opt) == "ओक");
+    expect(transliterate("தமிழ்", "tamil", "devanagari", opt) == "तमिळ्");
+    expect(transliterate("அறம்", "tamil", "devanagari", opt) == "अरम्");
+    expect(transliterate("அன்னம்", "tamil", "devanagari", opt) == "अन्नम्");
+
+    // Translating from Indic (virtual mixed reader) with short e/o to Devanagari
+    expect(transliterate("वॆल", "indic", "devanagari", opt) == "वेल");
+    expect(transliterate("ऒक", "indic", "devanagari", opt) == "ओक");
+    expect(transliterate("तमिऴ्", "indic", "devanagari", opt) == "तमिळ्");
+    expect(transliterate("अऱम्", "indic", "devanagari", opt) == "अरम्");
+    expect(transliterate("अऩ्ऩम्", "indic", "devanagari", opt) == "अन्नम्");
+
+    // Does not affect non-Devanagari targets (e.g. Telugu target keeps short e/o)
+    expect(transliterate("वॆल", "indic", "telugu", opt) == "వెల");
+  };
 };
 
 

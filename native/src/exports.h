@@ -58,6 +58,8 @@ enum TranslitOptions {
   NoXMLTagHandling = 32,
   /// Disable contextual pronunciation inference (including anuswara assimilation and Tamil reading/writing rules)
   DisableInference = 64,
+  /// Use traditional Devanagari orthography, mapping Dravidian short e/o and consonants to standard forms
+  DevanagariTraditional = 128,
 };
 
 /// Transliterates null-terminated UTF-8 text from source script to target script.

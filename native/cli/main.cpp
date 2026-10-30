@@ -31,6 +31,7 @@ TranslitOptions getTranslitOptions(const std::string_view& optStr) noexcept {
     "RetainSpecialMarkers",
     "NoXMLTagHandling",
     "DisableInference",
+    "DevanagariTraditional",
   };
 
   TranslitOptions mask { TranslitOptions::None };
