@@ -47,7 +47,7 @@ remain boxes, check that `fonts.googleapis.com` and `fonts.gstatic.com` are
 accessible; no Android language or keyboard setting is required for web fonts.
 
 Choose **Find more fonts…** in either font dropdown to open Font Dev Tools (also
-available by clicking **Font tools** or pressing **Ctrl+Shift+D**). **Find online
+available by clicking the **Inditrans Demo** badge or pressing **Ctrl+Shift+D**). **Find online
 fonts** queries the [Fontsource catalog](https://fontsource.org/docs/api/fonts)
 for Google Fonts and adds families by script subset; fonts download from Google
 only when selected. **Find installed fonts** asks for local-font permission in

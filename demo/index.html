@@ -178,6 +178,18 @@
       letter-spacing: -.03em;
       margin: 0;
       white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: filter .15s ease;
+    }
+
+    .brand-title:hover {
+      filter: brightness(1.1);
+    }
+
+    .brand-title:focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
     }
 
     .brand-subtitle {
@@ -442,6 +454,7 @@
       border: 1px solid transparent;
       cursor: pointer;
       white-space: nowrap;
+      text-decoration: none;
       flex-shrink: 0;
       transition: background .12s, border-color .12s, color .12s;
     }
@@ -1944,6 +1957,7 @@
         font-size: 15px;
         font-weight: 750;
         letter-spacing: -.045em;
+        cursor: pointer;
       }
 
       .brand-context {
@@ -2169,7 +2183,7 @@
         font-size: 16px;
       }
 
-      #mobile-preferences button {
+      #mobile-preferences :is(button, a, .btn--icon) {
         min-height: 44px;
       }
     }
@@ -2397,14 +2411,6 @@
       gap: 0;
     }
 
-    #engine-version {
-      cursor: pointer;
-    }
-
-    #engine-version:hover {
-      text-decoration: underline;
-      text-decoration-style: dotted;
-    }
 
     :root[data-theme="dark"] .devfont-section+.devfont-section {
       border-color: #2b394e;
@@ -2458,7 +2464,8 @@
     <header class="app-header">
       <div class="brand">
         <img class="brand-logo" src="logo.png" alt="" width="31" height="31">
-        <h1 class="brand-title">Inditrans <span class="brand-context">Demo</span></h1>
+        <h1 class="brand-title" id="brand-badge" role="button" tabindex="0" title="Font Dev Tools (Ctrl+Shift+D)"
+          aria-haspopup="dialog" aria-label="Font Dev Tools">Inditrans <span class="brand-context">Demo</span></h1>
       </div>
       <div class="header-actions">
         <div class="theme-control">
@@ -2470,7 +2477,8 @@
           </select>
         </div>
         <div class="engine-version">
-          <span id="engine-version">Font tools</span>
+          <span class="version-label">Version</span>
+          <span id="engine-version"></span>
           <span id="status" class="status" data-state="loading" role="status" aria-live="polite" tabindex="0"
             title="Loading Inditrans…"><span id="status-message" class="sr-only">Loading Inditrans…</span></span>
         </div>
@@ -2483,6 +2491,13 @@
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
         </button>
+        <a id="github-link" class="btn btn--icon" href="https://github.com/vm75/inditrans" target="_blank"
+          rel="noopener noreferrer" title="Inditrans on GitHub" aria-label="Inditrans on GitHub">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z" />
+          </svg>
+        </a>
       </div>
       <div id="mobile-size" class="mobile-only"></div>
       <button id="mobile-settings-button" class="mobile-only mobile-menu" type="button" aria-label="Settings"
@@ -2754,7 +2769,7 @@
     </div>
   </dialog>
 
-  <!-- Font Dev Tools — open with Ctrl+Shift+D or click the version number -->
+  <!-- Font Dev Tools — open with Ctrl+Shift+D or click the Inditrans Demo badge -->
   <dialog id="font-devtools" class="modal" aria-labelledby="font-devtools-title">
     <div class="modal-card">
       <div class="modal-header">
@@ -4431,17 +4446,23 @@
         element('font-devtools-done').addEventListener('click', () => dialog.close());
         dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
 
-        // Trigger: Ctrl+Shift+D or click on the font tools label
+        // Trigger: Ctrl+Shift+D or click on the Inditrans Demo badge
         document.addEventListener('keydown', event => {
           if (event.ctrlKey && event.shiftKey && event.key === 'D') {
             event.preventDefault();
             if (dialog.open) dialog.close(); else openDialog();
           }
         });
-        const versionEl = element('engine-version');
-        if (versionEl) {
-          versionEl.title = 'Font Dev Tools (Ctrl+Shift+D)';
-          versionEl.addEventListener('click', openDialog);
+        const badgeEl = element('brand-badge');
+        if (badgeEl) {
+          badgeEl.title = 'Font Dev Tools (Ctrl+Shift+D)';
+          badgeEl.addEventListener('click', openDialog);
+          badgeEl.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              openDialog();
+            }
+          });
         }
         return { openDialog };
       }
