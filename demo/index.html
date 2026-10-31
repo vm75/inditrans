@@ -1298,8 +1298,7 @@
 
     @container (max-width: 600px) {
 
-      .brand-subtitle,
-      .keyboard-script {
+      .brand-subtitle {
         display: none;
       }
 
@@ -1852,6 +1851,7 @@
       --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a1bce7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 10 5 5 5-5'/%3E%3C/svg%3E");
     }
 
+    #mobile-mode-slot,
     #mobile-layout-slot {
       margin-top: 12px;
     }
@@ -1944,7 +1944,6 @@
       .brand-logo {
         width: 24px;
         height: 24px;
-        border-radius: 7px;
         box-shadow: 0 2px 6px #244d9620;
       }
 
@@ -2006,7 +2005,14 @@
       }
 
       #mobile-size output {
+        display: none;
+      }
+
+      #github-link {
+        display: inline-flex;
         flex-shrink: 0;
+        width: 36px;
+        height: 36px;
       }
 
       .mobile-menu {
@@ -2030,6 +2036,26 @@
       .mobile-script-field {
         flex: 0 0 clamp(104px, calc(100cqw - 216px), 180px);
         min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+
+      .mobile-typing-script {
+        order: 2;
+        max-width: 100%;
+        padding-left: 7px;
+        color: #59779f;
+        font-size: 10px;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      :root[data-theme="dark"] .mobile-typing-script {
+        color: #a1bce7;
       }
 
       .mobile-script-field select {
@@ -2507,6 +2533,7 @@
           <circle cx="14" cy="7" r="2" />
           <circle cx="8" cy="17" r="2" />
         </svg></button>
+      <div id="mobile-github" class="mobile-only"></div>
     </header>
 
     <!-- Single Compact Toolbar for Input & Output Controls -->
@@ -2589,7 +2616,8 @@
     <div class="workspace">
       <div class="editor-pane">
         <div class="mobile-only mobile-pane-head">
-          <div id="mobile-source-slot" class="mobile-script-field"></div>
+          <div id="mobile-source-slot" class="mobile-script-field"><span id="mobile-typing-script"
+              class="mobile-typing-script" hidden></span></div>
           <div id="mobile-input-actions" class="mobile-pane-actions">
             <button id="mobile-reference-button" type="button" aria-label="ASCII shortcut reference"
               title="ASCII shortcut reference" aria-haspopup="dialog"><svg width="19" height="19" viewBox="0 0 24 24"
@@ -2654,9 +2682,9 @@
       <div id="keyboard-content" class="keyboard-content">
         <div id="keyboard-keys" class="keyboard-keys" role="region" aria-label="Script character rows"></div>
         <div id="keyboard-controls" class="keyboard-controls" role="group" aria-label="Text editing keys"></div>
-        <p id="ascii-keyboard-help" class="keyboard-note" hidden>Type the shortcuts shown on keys. Vowels after
-          consonants
-          become signs: ki → कि. Use :i for an independent vowel, backtick (`) for virama, ; to separate shortcuts,
+        <p id="ascii-keyboard-help" class="keyboard-note" hidden>Type the ASCII shortcuts shown on keys.
+          Non-Roman vowels after consonants become signs (ki → कि); Roman vowels stay explicit.
+          Use :i for an independent vowel, backtick (`) for virama, ; to separate shortcuts,
           and \ before a literal ASCII character. Paste inserts text unchanged.</p>
       </div>
       <button id="keyboard-corner-resizer" class="keyboard-corner-resizer" type="button"
@@ -2690,11 +2718,12 @@
         </div><button class="sheet-close" type="button" aria-label="Close shortcuts">×</button>
       </div>
       <div class="sheet-scroll">
+        <div id="mobile-mode-slot" class="settings-field"><label for="keyboard-mode">Keyboard input</label></div>
         <div id="mobile-layout-slot" class="settings-field"><label for="keyboard-script">Mixed Indic typing
             layout</label></div>
         <div id="mobile-reference-groups"></div>
         <div class="reference-intro">
-          <p>Shortcuts are case-sensitive. Vowels after consonants become signs.</p>
+          <p>Shortcuts are case-sensitive. In non-Roman scripts, vowels after consonants become signs.</p>
           <p><code>:</code> Independent vowel · <code>`</code> Virama<br><code>;</code> Separate shortcuts ·
             <code>\</code> Literal character
           </p>
@@ -3417,7 +3446,7 @@
         let composition = null;
         let composeAscii;
         function resetAscii() { asciiRun = null; }
-        function asciiEnabled() { return (window.matchMedia('(max-width: 600px), (max-height: 500px) and (pointer: coarse)').matches || inputMode.value === 'ascii') && !inputMode.disabled; }
+        function asciiEnabled() { return inputMode.value === 'ascii'; }
         sourceText.addEventListener('beforeinput', event => {
           if (!asciiEnabled() || event.isComposing || !event.cancelable) return;
           const start = sourceText.selectionStart;
@@ -3479,7 +3508,8 @@
         inputMode.addEventListener('change', () => {
           resetAscii();
           renderKeyboard();
-          sourceText.focus({ preventScroll: true });
+          // The mode selector also lives in the mobile reference dialog.
+          if (!document.querySelector('dialog[open]')) sourceText.focus({ preventScroll: true });
         });
         // All groups checked by default so all rows are visible
         const activeKeyboardGroups = new Set(KEYBOARD_GROUPS.map(group => group.id));
@@ -3628,7 +3658,7 @@
 
           button.append(primary);
           const shortcut = keyboardShortcut(group, index);
-          if (asciiEnabled() && shortcut && value) {
+          if (shortcut && value) {
             const hint = document.createElement('span');
             hint.className = 'keyboard-key-shortcut';
             hint.textContent = shortcut;
@@ -3637,7 +3667,7 @@
           const titleDesc = (refText ? 'Reference: ' + refText + (value && value !== refText ? ' (' + value + ')' : '') + ' · ' : '') + groupLabel + ': ' + (value || '(no character)') + ' · ' + Array.from(value || '').map(ch => 'U+' + ch.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')).join(' ');
           button.title = titleDesc;
           button.setAttribute('aria-label', (value || 'Not applicable') + (refText ? ' — reference ' + refText : ''));
-          if (asciiEnabled() && shortcut && value) {
+          if (shortcut && value) {
             button.title += ' · ASCII: ' + shortcut;
             button.setAttribute('aria-label', button.getAttribute('aria-label') + ' — ASCII ' + shortcut);
           }
@@ -3740,17 +3770,9 @@
         function renderMobileReference() {
           const container = element('mobile-reference-groups');
           container.replaceChildren();
-          element('mobile-reference-script').textContent = keyboardIsRoman()
-            ? 'Roman source: type directly with your phone’s keyboard'
-            : SCRIPT_CATALOG[activeKeyboardScript()].label + ' · Case-sensitive shortcuts';
+          element('mobile-reference-script').textContent =
+            SCRIPT_CATALOG[activeKeyboardScript()].label + ' · Case-sensitive shortcuts';
           element('mobile-layout-slot').hidden = sourceScript.value !== 'indic';
-          if (keyboardIsRoman()) {
-            const note = document.createElement('p');
-            note.className = 'reference-intro';
-            note.textContent = 'ASCII conversion is used for Indic source scripts. For this source, enter its Roman transliteration directly.';
-            container.append(note);
-            return;
-          }
           for (const id of ['vowels', 'consonants', 'additionalConsonants', 'vowelMarks', 'otherDiacritics', 'nativeSigns', 'symbols', 'accents']) {
             const group = KEYBOARD_GROUPS.find(group => group.id === id);
             const section = document.createElement('section');
@@ -3768,7 +3790,7 @@
               const glyph = document.createElement('dt');
               glyph.className = 'reference-glyph';
               glyph.style.fontFamily = element('keyboard-keys').style.fontFamily;
-              glyph.textContent = keyboardKeyDisplay(value, group, false);
+              glyph.textContent = keyboardKeyDisplay(value, group, keyboardIsRoman());
               const shortcut = document.createElement('code');
               shortcut.textContent = token;
               const definition = document.createElement('dd');
@@ -3782,11 +3804,12 @@
 
         function renderKeyboard() {
           resetAscii();
-          inputMode.disabled = keyboardIsRoman();
           element('ascii-keyboard-help').hidden = !asciiEnabled();
           const layout = keyboardLayout();
           composeAscii = createAsciiComposer({
             ...layout,
+            // Roman consonant keys do not carry an implicit 'a'.
+            inherentVowel: keyboardIsRoman() ? layout.vowels[0] : layout.inherentVowel,
             consonants: activeKeyboardScript() === 'tamil'
               ? layout.consonants.map((value, index) => index === 7 ? 'ச³' : index === 8 ? 'ச⁴' : index === 37 ? 'ஜ' : value)
               : layout.consonants,
@@ -3813,6 +3836,11 @@
             keyboardScript.replaceChildren();
             keyboardScript.add(new Option(SCRIPT_CATALOG[sourceScript.value].label, sourceScript.value));
             keyboardScript.value = sourceScript.value;
+          }
+          const mobileTypingScript = element('mobile-typing-script');
+          mobileTypingScript.hidden = sourceScript.value !== 'indic';
+          if (!mobileTypingScript.hidden) {
+            mobileTypingScript.textContent = 'Typing: ' + SCRIPT_CATALOG[activeIndicKeyboardScript].label;
           }
           renderKeyboardToggles();
           renderKeyboardKeys();
@@ -4104,7 +4132,8 @@
           ['options-button', 'mobile-output-actions'], ['copy-button', 'mobile-output-actions'],
           ['sample-button', 'mobile-input-actions'], ['copy-source-button', 'mobile-input-actions'],
           ['undo-button', 'mobile-input-actions'], ['redo-button', 'mobile-input-actions'],
-          ['keyboard-script', 'mobile-layout-slot']
+          ['keyboard-mode', 'mobile-mode-slot'], ['keyboard-script', 'mobile-layout-slot'],
+          ['github-link', 'mobile-github']
         ].map(([id, slot]) => {
           const node = element(id);
           const marker = document.createComment('desktop ' + id);
@@ -4588,6 +4617,11 @@
         populateTargetOptions();
         restoreTargetOptions(SAVED_DEMO_STATE);
         restoreSelect(element('keyboard-mode'), SAVED_DEMO_STATE.inputMode);
+        // Keep ASCII as the default on phones, but honor an explicitly saved Native choice.
+        if (typeof SAVED_DEMO_STATE.inputMode !== 'string'
+          && window.matchMedia('(max-width: 600px), (max-height: 500px) and (pointer: coarse)').matches) {
+          element('keyboard-mode').value = 'ascii';
+        }
         keyboard.restoreState(SAVED_DEMO_STATE.keyboard);
         setKeyboardGroupColors(SAVED_DEMO_STATE.keyboardGroupColors !== false);
         renderKeyboard();

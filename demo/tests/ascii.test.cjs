@@ -16,7 +16,11 @@ const { KEYBOARD_MAPS, ASCII_KEYBOARD_TOKENS, createAsciiComposer, keyboardAccen
 );
 function layoutFor(script) {
   const layout = KEYBOARD_MAPS[script];
-  return { ...layout, symbols: [...layout.symbols, ...layout.vedicSymbols], accents: keyboardAccents(script) };
+  return {
+    ...layout,
+    inherentVowel: SCRIPT_CATALOG[script].kind === 'roman' ? layout.vowels[0] : layout.inherentVowel,
+    symbols: [...layout.symbols, ...layout.vedicSymbols], accents: keyboardAccents(script)
+  };
 }
 const compose = createAsciiComposer(layoutFor('devanagari'));
 
@@ -81,6 +85,19 @@ test('every character slot has a unique ASCII shortcut', () => {
   }
 });
 
+test('Roman source schemes support ASCII typing with explicit vowels', () => {
+  for (const script of ['hk', 'iast', 'ipa', 'iso', 'itrans', 'slp1', 'titus', 'velthuis']) {
+    const layout = layoutFor(script);
+    const convert = createAsciiComposer(layout);
+    assert.equal(convert('ka'), 'k' + layout.vowels[0], script + ' keeps explicit inherent vowel');
+    assert.equal(convert('kA'), 'k' + layout.vowels[1], script + ' composes long vowel');
+    assert.equal(convert('k:i'), 'k' + layout.vowels[2], script + ' forces an independent vowel');
+  }
+  assert.equal(createAsciiComposer(layoutFor('iso'))('kA'), 'kā');
+  assert.equal(createAsciiComposer(layoutFor('iast'))('kA'), 'kā');
+  assert.equal(createAsciiComposer(layoutFor('itrans'))('kA'), 'kaa');
+});
+
 test('vowels become signs only immediately after a consonant', () => {
   for (const [ascii, expected] of Object.entries({
     k: 'क', i: 'इ', ki: 'कि', kI: 'की', ka: 'क', kai: 'कै', kri: 'करि',
@@ -124,7 +141,7 @@ test('incomplete shortcuts, separators and literal escapes are deterministic', (
   assert.equal(compose('\\`'), '`');
 });
 
-function inputHarness({ mobile = true, mode = 'direct', disabled = false } = {}) {
+function inputHarness({ mobile = true, mode = mobile ? 'ascii' : 'direct', disabled = false, convert = compose } = {}) {
   const listeners = new Map();
   const sourceText = {
     value: '', selectionStart: 0, selectionEnd: 0,
@@ -147,7 +164,7 @@ function inputHarness({ mobile = true, mode = 'direct', disabled = false } = {})
   runInNewContext(code + ';composeAscii = convert;', {
     sourceText, element: () => ({ value: mode, disabled, addEventListener() {} }),
     window: { matchMedia: () => ({ matches: mobile }) },
-    editor: { replaceInputRange: replace }, convert: compose
+    editor: { replaceInputRange: replace }, convert
   });
   return {
     sourceText, dispatch, replace,
@@ -160,14 +177,19 @@ function inputHarness({ mobile = true, mode = 'direct', disabled = false } = {})
   };
 }
 
-test('mobile enables ASCII while preserving desktop direct mode and Roman input', () => {
+test('ASCII and Native modes work on desktop and mobile, even for Roman keyboards', () => {
   const mobile = inputHarness();
   mobile.type('k'); mobile.type('i');
   assert.equal(mobile.sourceText.value, 'कि');
-  for (const settings of [{ mobile: false }, { disabled: true }]) {
+  for (const settings of [{ mobile: false }, { mobile: true, mode: 'direct' }]) {
     const input = inputHarness(settings);
     assert.equal(input.type('ki').defaultPrevented, undefined);
   }
+  const iso = inputHarness({ mobile: false, mode: 'ascii', disabled: true,
+    convert: createAsciiComposer(layoutFor('iso')) });
+  iso.type('k'); iso.type('a'); iso.type('A');
+  assert.equal(iso.sourceText.value, 'kaā');
+  assert.equal(iso.type('i').defaultPrevented, true);
 });
 
 test('phone composition commits convert once and extend previous ASCII shortcuts', () => {
@@ -223,4 +245,73 @@ test('script families and accent keyboards match the canonical data', () => {
   assert.equal(SCRIPT_CATALOG.tamil.kind, 'indic');
   assert.equal(keyboardAccents('tamil')[0], '॒');
   assert.equal(keyboardAccents('iso')[0], '̱');
+});
+
+test('native keyboard keys still display the ASCII shortcuts and accessible labels', () => {
+  const code = html.slice(html.indexOf('function createKeyButton('), html.indexOf('function renderKeyboardKeys()'));
+  function node() {
+    return {
+      dataset: {}, children: [], classList: { add() {} },
+      append(child) { this.children.push(child); },
+      setAttribute(name, value) { this[name] = value; },
+      getAttribute(name) { return this[name]; },
+      addEventListener() {}
+    };
+  }
+  const createKeyButton = runInNewContext(code + ';createKeyButton', {
+    document: { createElement: node }, keyboardIsRoman: () => true,
+    keyCategory: () => ({ color: 'vowel', label: 'Vowel' }),
+    KEYBOARD_COLORS: { vowel: 'purple' },
+    keyboardKeyDisplay: value => value,
+    keyboardShortcut: () => 'A',
+    asciiEnabled: () => false
+  });
+  const button = createKeyButton('ā', '', { id: 'vowels', label: 'Vowels' });
+  assert.equal(button.children[0].textContent, 'ā');
+  assert.equal(button.children[1].className, 'keyboard-key-shortcut');
+  assert.equal(button.children[1].textContent, 'A');
+  assert.match(button.title, /ASCII: A/);
+  assert.match(button['aria-label'], /ASCII A/);
+});
+
+test('Mixed Indic typing label follows the active layout and hides on other source scripts', () => {
+  const code = html.slice(html.indexOf('function renderKeyboard()'), html.indexOf('function populateKeyboardControls()'));
+  const sourceScript = { value: 'indic' };
+  const typing = { hidden: true };
+  const keyboardScript = {
+    disabled: true, options: [],
+    replaceChildren() { this.options = []; },
+    add(value) { this.options.push(value); }
+  };
+  const mode = { value: 'direct', disabled: false };
+  const nodes = { 'keyboard-script': keyboardScript, 'mobile-typing-script': typing,
+    'ascii-keyboard-help': { hidden: true } };
+  const ctx = {
+    sourceScript, inputMode: mode, element: id => nodes[id], resetAscii() {}, asciiEnabled: () => false,
+    keyboardIsRoman: () => sourceScript.value === 'iso',
+    keyboardLayout: () => ({ vowels: ['a'], consonants: [], symbols: [], vedicSymbols: [] }),
+    createAsciiComposer: () => () => '',
+    keyboardAccents: () => [], nativeKeyboardExtras: () => [],
+    renderKeyboardKeys() {}, renderKeyboardToggles() {}, renderMobileReference() {},
+    SCRIPT_CATALOG: {
+      devanagari: { label: 'Devanagari' },
+      tamil: { label: 'Tamil' }, iso: { label: 'ISO 15919' }
+    },
+    INDIC_SCRIPTS: ['devanagari', 'tamil'],
+    Option: class { constructor(text, value) { this.text = text; this.value = value; } }
+  };
+  const controller = runInNewContext('let activeIndicKeyboardScript = "devanagari"; let composeAscii; '
+    + 'function activeKeyboardScript() { return sourceScript.value === "indic" ? activeIndicKeyboardScript : sourceScript.value; }'
+    + code + ';({ renderKeyboard, select: value => { activeIndicKeyboardScript = value; } })', ctx);
+  controller.renderKeyboard();
+  assert.equal(typing.textContent, 'Typing: Devanagari');
+  assert.equal(typing.hidden, false);
+  assert.equal(keyboardScript.disabled, false);
+  controller.select('tamil');
+  controller.renderKeyboard();
+  assert.equal(typing.textContent, 'Typing: Tamil');
+  sourceScript.value = 'iso';
+  controller.renderKeyboard();
+  assert.equal(typing.hidden, true);
+  assert.equal(mode.disabled, false);
 });

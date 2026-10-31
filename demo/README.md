@@ -98,8 +98,10 @@ grouped by vowels, signs, consonants, and symbols. Script-specific keys appear
 in **Script keys**; for example, Burmese includes its medial signs and
 Malayalam includes chillu letters. Tamil vargas use superscripted consonants.
 Mixed Indic uses the script selected in the keyboard layout control. Roman
-schemes show their distinct spellings. The keyboard is a typing aid rather
-than an exhaustive inventory of every character accepted by the engine.
+schemes show their distinct spellings. Every keyboard (Indic, Roman, and
+Perso-Arabic) offers **Native** and **ASCII** typing; ASCII shortcuts are always
+shown on the on-screen keys, including in Native mode. The keyboard is a typing
+aid rather than an exhaustive inventory of every character accepted by the engine.
 
 The desktop layout can use the full browser width, including wide monitors.
 Drag the grip above the keyboard to change its height, or the bottom-right corner
@@ -124,15 +126,17 @@ for deferred characters and tracking issues.
 
 On screens up to 600px wide and short touch screens in landscape, each pane has
 its own script selector in its toolbar. The top bar and both pane toolbars stay
-visible while typing with the phone’s keyboard, and both panes keep equal height. Indic sources use
-**ASCII → script** automatically with the phone’s English keyboard; Roman sources
-accept direct input. Autocorrection and automatic capitalization are disabled
-because shortcuts are case-sensitive. The desktop input-mode preference is preserved.
+visible while typing with the phone’s keyboard, and both panes keep equal height. On a new mobile session, **ASCII** is selected automatically; a saved input mode
+(including **Native**) is respected for every source script. The keyboard input
+mode selector is available in the mobile shortcut reference. Autocorrection and
+automatic capitalization are disabled because shortcuts are case-sensitive.
 
 Tap the **book icon** for a full-screen reference matching the selected source, including
 vowels, consonants, signs, and symbols. Mixed Indic has a typing-layout selector
-in the reference, and typing notes appear after the shortcut tables. Closing the
-reference preserves the input selection.
+in the reference, and the input pane displays the active typing script beside
+the Mixed Indic source dropdown. Changing the layout updates that label and the
+ASCII mapping. Roman and Urdu sources have shortcut tables too. Typing notes
+appear after the tables. Closing the reference preserves the input selection.
 Each pane has a copy control for its complete text. The **reset icon** in the
 source toolbar restores the current input script's sample;
 the conversion-options icon is in the target toolbar.
@@ -151,8 +155,11 @@ deploy both when updating output conventions.
 
 ## ASCII input
 
-Choose **ASCII → script** in the keyboard controls. Shortcuts appear below each
-key and use the selected Indic input script (or keyboard layout for Mixed Indic).
+Choose **ASCII** in the keyboard input selector to convert typed shortcuts.
+Choose **Native** to type directly. Both modes are supported for all input
+scripts, including Roman and Urdu. Shortcuts remain visible below each on-screen
+key even when Native mode is selected. For Mixed Indic, shortcuts follow the
+selected typing layout.
 
 | Input | Devanagari result | Meaning |
 | --- | --- | --- |
@@ -162,8 +169,9 @@ key and use the selected Indic input script (or keyboard layout for Mixed Indic)
 | `kh` / `k;h` | ख / कह | `;` separates overlapping shortcuts |
 | `\k` | k | Backslash escapes a literal ASCII character |
 
-Paste and system input methods bypass ASCII conversion. Direct input remains
-available; ASCII mode is disabled for Roman input scripts.
+Paste and system input methods bypass ASCII conversion. For Roman schemes,
+the ASCII shortcuts enter the scheme’s actual characters (for example, `kA`
+produces `kā` in ISO/IAST), and `ka` retains the explicit `a`.
 The shortcut reference shows the keys in the selected layout. Other existing
 ASCII shortcuts continue to work even when their mapping is not shown. Extra
 script keys have shortcuts beginning with `.x`, shown on the key and in the
