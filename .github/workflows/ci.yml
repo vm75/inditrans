@@ -179,7 +179,10 @@ jobs:
               "scripts/refine_vedic_anchors.py",
               "scripts/verify_demo_font.py",
           }
-          run = not changed or any(path not in native_neutral for path in changed)
+          def neutral(path):
+              return path in native_neutral or path.startswith(("demo/", ".github/"))
+
+          run = not changed or any(not neutral(path) for path in changed)
           print("Changed paths:", *changed, sep="\n  ")
           print("Run native benchmarks:", run)
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
