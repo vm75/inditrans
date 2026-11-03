@@ -164,17 +164,38 @@ are read from the generator's `out/demo-font-sources/` cache.
 CI also verifies deterministic WOFF2 regeneration and uploads a
 Chromium screenshot of the comparison as a build artifact.
 
+### Context-sensitive consonant and vowel-sign repair
+
+The initial independent-vowel repair left large gaps for many bare consonants
+(e.g. Tamil `க॑` and Telugu `క॒`) because their native anchor positions must
+also accommodate tall matras and conjunct components. To avoid moving shared
+anchors and disturbing correctly positioned combinations,
+`scripts/refine_vedic_anchors.py` now shapes each ordinary consonant plus
+common dependent vowel signs in Bengali, Tamil, Telugu, Kannada and Malayalam,
+measures U+0951/U+0952 ink positions, and adds *contextual* GPOS corrections
+only where the clearance is excessive. It preserves the independent-vowel fix
+and existing native positioning on the other script families.
+
+The generated context patterns use 32-unit quantization and shared shift and
+extension lookups to respect OpenType's 16-bit lookup-list offset limit. The
+pinned build currently uses **1,361 context rules**, **25 shared shift lookups**
+and **7 shared contextual lookups**. Its WOFF2 is **446,472 bytes** versus
+**437,736 bytes** for the independent-vowel-only revision (+8,736 bytes,
+approximately 2%). These additions do not modify glyph outlines or character
+advances.
+
+The verifier checks **378** consonant/vowel-sign ink cases in addition to
+**83** independent-vowel/representative samples, **105** Tamil superscript
+attachment cases, the full Indic shaping corpus and raw Telugu accent cases.
+A successful GPOS build is not sufficient: oversized gaps fail the ink tests,
+and Tamil superscripts must stay aligned exactly with their unannotated base.
+
 ### Remaining constraints
 
-The native Noto fonts often set a high accent anchor on consonants in
-order to clear dependent vowels, and a low anchor to clear below-base
-components. A single OpenType MarkBase anchor on a consonant cannot
-simultaneously optimize the unsuffixed consonant and every dependent
-vowel/conjunct context. This targeted change deliberately **does not
-move** those consonant anchors: some plain consonants therefore still
-show the source font's larger gap (e.g., unmodified Tamil `க॑` and
-Telugu `క॒`). A complete correction of those contexts would need
-carefully tested contextual GPOS positioning, rather than a blanket
-script-wide offset. Genuine tall clusters and stacked Vedic marks may
-still need extra application line spacing; this font does not attempt to
-compress their outlines.
+The compact context corpus covers bare consonants and common vowel signs;
+less common signs and arbitrary stacked conjuncts can still use native Noto
+anchors and may show larger clearances. Some split/reordered clusters have
+disjoint ink, so a simple vertical union gap is not a complete collision
+metric. True tall clusters and stacked Vedic marks may require application
+line spacing. Use the browser comparison to review such cases before
+considering this a universally optically corrected font.
