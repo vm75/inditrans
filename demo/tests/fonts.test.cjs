@@ -237,3 +237,66 @@ test('font inspector distinguishes idle, loading, and failed faces', () => {
   assert.match(find('Loading').children[0].className, /devfont-partial/);
   assert.match(find('Broken').children[2].textContent, /error/);
 });
+
+test('script baseline font size and line spacing sliders are hidden by default and enabled via Font Dev Tools', () => {
+  const h = harness();
+  // By default, sliders are hidden and setting is disabled
+  assert.equal(h.api.devFontSettings.enableScriptMetrics, false);
+  assert.equal(h.nodes['source-metrics-bar'].hidden, true);
+  assert.equal(h.nodes['target-metrics-bar'].hidden, true);
+
+  // Enable option in Font Dev Tools
+  h.nodes['devfont-enable-metrics'].checked = true;
+  h.nodes['devfont-enable-metrics'].events.change();
+  assert.equal(h.api.devFontSettings.enableScriptMetrics, true);
+  assert.equal(h.nodes['source-metrics-bar'].hidden, false);
+  assert.equal(h.nodes['target-metrics-bar'].hidden, false);
+
+  // Default metrics applied to panes
+  assert.equal(h.sourceText.style.fontSize, '25px');
+  assert.equal(h.sourceText.style.lineHeight, '1.55');
+
+  // Adjust input pane font size and line spacing for Tamil
+  h.nodes['source-font-size'].value = '32';
+  h.nodes['source-font-size'].events.input();
+  assert.equal(h.sourceText.style.fontSize, '32px');
+  assert.equal(h.nodes['source-font-size-val'].textContent, '32 px');
+  assert.equal(h.api.devFontSettings.scriptMetrics.tamil.fontSize, 32);
+
+  h.nodes['source-line-spacing'].value = '1.80';
+  h.nodes['source-line-spacing'].events.input();
+  assert.equal(h.sourceText.style.lineHeight, '1.8');
+  assert.equal(h.nodes['source-line-spacing-val'].textContent, '1.80');
+  assert.equal(h.api.devFontSettings.scriptMetrics.tamil.lineSpacing, 1.8);
+
+  // Check output pane for Devanagari
+  h.nodes['target-font-size'].value = '28';
+  h.nodes['target-font-size'].events.input();
+  assert.equal(h.targetText.style.fontSize, '28px');
+  assert.equal(h.nodes['target-font-size-val'].textContent, '28 px');
+  assert.equal(h.api.devFontSettings.scriptMetrics.devanagari.fontSize, 28);
+
+  // Open dialog and verify metrics summary table displays configured values
+  h.api.openDialog();
+  const summaryTable = h.nodes['devfont-metrics-summary'].children[0];
+  assert.ok(summaryTable, 'Summary table rendered in Font Dev Tools');
+  const tbody = summaryTable.children[1];
+  assert.ok(tbody.children.length > 0, 'Table rows generated');
+
+  // Reset Tamil baseline metrics
+  h.nodes['source-metrics-reset'].events.click();
+  assert.equal(h.sourceText.style.fontSize, '25px');
+  assert.equal(h.sourceText.style.lineHeight, '1.55');
+  assert.equal(h.api.devFontSettings.scriptMetrics.tamil, undefined);
+
+  // Reset all via Font Dev Tools
+  h.nodes['devfont-reset-metrics'].events.click();
+  assert.equal(Object.keys(h.api.devFontSettings.scriptMetrics).length, 0);
+
+  // Disable option in Font Dev Tools
+  h.nodes['devfont-enable-metrics'].checked = false;
+  h.nodes['devfont-enable-metrics'].events.change();
+  assert.equal(h.api.devFontSettings.enableScriptMetrics, false);
+  assert.equal(h.nodes['source-metrics-bar'].hidden, true);
+  assert.equal(h.nodes['target-metrics-bar'].hidden, true);
+});

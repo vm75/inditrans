@@ -199,6 +199,19 @@ test('session storage round-trips settings and both panes, including empty text'
   assert.deepEqual(JSON.parse(JSON.stringify(api.readDemoState())), state);
 });
 
+test('session storage round-trips script metrics and enable settings', () => {
+  const api = storageApi(memoryStorage());
+  const state = {
+    scriptMetricsEnabled: true,
+    scriptMetrics: {
+      tamil: { fontSize: 32, lineSpacing: 1.8 },
+      devanagari: { fontSize: 28, lineSpacing: 1.6 }
+    }
+  };
+  api.writeDemoState(state);
+  assert.deepEqual(JSON.parse(JSON.stringify(api.readDemoState())), state);
+});
+
 test('corrupt or obsolete storage falls back to defaults', () => {
   const storage = memoryStorage();
   const api = storageApi(storage);

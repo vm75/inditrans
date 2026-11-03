@@ -56,13 +56,17 @@ to filter families by basic script coverage; font files are never uploaded.
 Coverage does not guarantee shaping quality or Vedic accent support. Other
 browsers can still use **Custom installed font…** by family name.
 
-Discovered fonts and dev-tool settings last for the current page session and
-survive script changes. Dev tools also support custom fallback stacks and loading
-a family from a CSS URL. Failed stylesheet or font downloads report an error.
-The loaded-font list reports download status, including idle and failed faces;
-use the browser's rendered-font inspector to identify fonts used for particular
-glyphs. **Selected font only** removes demo fallbacks, but the browser may still
-use system fallback fonts.
+Discovered fonts and dev-tool settings survive script changes. Dev tools
+support custom fallback stacks, loading a family from a CSS URL, and a **Script
+Baseline Typography** section to test and tune the baseline font size and line
+spacing for each script on the desktop input and output panes. A single option
+enables the per-pane sliders (hidden by default and desktop-only). Configured
+metrics are displayed in the dev-tools summary table, saved in local storage,
+and can be copied as JSON or reset per script or globally. Failed stylesheet or
+font downloads report an error. The loaded-font list reports download status,
+including idle and failed faces; use the browser's rendered-font inspector to
+identify fonts used for particular glyphs. **Selected font only** removes demo
+fallbacks, but the browser may still use system fallback fonts.
 
 The panes, clipboard and saved sessions use the raw engine string. Extended
 vowels now use native approximations, so no Telugu separator rearrangement is

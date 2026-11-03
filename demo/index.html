@@ -548,6 +548,85 @@
       box-shadow: 0 0 20px #3b82f61f, 0 5px 16px #253f7312;
     }
 
+    /* Desktop per-pane baseline metrics bar */
+    .pane-metrics-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 4px 10px;
+      background: #f4f7fc;
+      border-bottom: 1px solid #d5deec;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    .pane-metrics-bar[hidden] {
+      display: none !important;
+    }
+
+    .pane-metrics-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .pane-metrics-script {
+      font-weight: 700;
+      color: #3b506e;
+      white-space: nowrap;
+      min-width: 60px;
+      max-width: 110px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-shrink: 0;
+    }
+
+    .pane-metrics-slider {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .pane-metrics-slider label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #64748b;
+      flex-shrink: 0;
+    }
+
+    .pane-metrics-slider input[type="range"] {
+      flex: 1 1 auto;
+      min-width: 45px;
+      max-width: 110px;
+      height: 4px;
+      cursor: pointer;
+    }
+
+    .pane-metrics-slider output {
+      font-size: 10.5px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: #253956;
+      min-width: 40px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .pane-metrics-reset {
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
     .editor-pane textarea {
       display: block;
       width: 100%;
@@ -1975,8 +2054,9 @@
 
       .app-header>.header-actions,
       .toolbar,
-      .keyboard-shell {
-        display: none;
+      .keyboard-shell,
+      .pane-metrics-bar {
+        display: none !important;
       }
 
       #mobile-size {
@@ -2478,6 +2558,97 @@
       border-color: #2c3a50;
     }
 
+    .devfont-checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #354967;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .devfont-metrics-table-wrapper {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #d5deec;
+      border-radius: 8px;
+      background: #fbfcff;
+    }
+
+    .devfont-metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+
+    .devfont-metrics-table th,
+    .devfont-metrics-table td {
+      padding: 5px 8px;
+      text-align: left;
+      border-bottom: 1px solid #eef2f7;
+    }
+
+    .devfont-metrics-table th {
+      position: sticky;
+      top: 0;
+      background: #edf3fb;
+      font-weight: 700;
+      color: #405777;
+      z-index: 1;
+    }
+
+    .devfont-badge-custom {
+      display: inline-block;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 9.5px;
+      font-weight: 700;
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    :root[data-theme="dark"] .pane-metrics-bar {
+      background: #151f30;
+      border-bottom-color: #2b394e;
+    }
+
+    :root[data-theme="dark"] .pane-metrics-script {
+      color: #b6ccf1;
+    }
+
+    :root[data-theme="dark"] .pane-metrics-slider label {
+      color: #94a3b8;
+    }
+
+    :root[data-theme="dark"] .pane-metrics-slider output {
+      color: #d4e3fb;
+    }
+
+    :root[data-theme="dark"] .devfont-checkbox-label {
+      color: #ced9ef;
+    }
+
+    :root[data-theme="dark"] .devfont-metrics-table-wrapper {
+      background: #0e1624;
+      border-color: #2c3a50;
+    }
+
+    :root[data-theme="dark"] .devfont-metrics-table th {
+      background: #1a2536;
+      color: #b6ccf1;
+    }
+
+    :root[data-theme="dark"] .devfont-metrics-table td {
+      border-bottom-color: #1e293b;
+    }
+
+    :root[data-theme="dark"] .devfont-badge-custom {
+      background: #1e3a5f;
+      color: #7dd3fc;
+    }
+
     :root[data-theme="dark"] .devfont-font-name {
       color: #c8d9ef;
     }
@@ -2628,6 +2799,24 @@
               </svg></button>
           </div>
         </div>
+        <div id="source-metrics-bar" class="pane-metrics-bar desktop-only" hidden>
+          <div class="pane-metrics-group">
+            <span class="pane-metrics-script" id="source-metrics-script"></span>
+            <div class="pane-metrics-slider">
+              <label for="source-font-size" title="Baseline font size for this script">Size</label>
+              <input id="source-font-size" type="range" min="14" max="56" value="25" step="1" aria-label="Input script baseline font size">
+              <output id="source-font-size-val" for="source-font-size">25 px</output>
+            </div>
+            <div class="pane-metrics-slider">
+              <label for="source-line-spacing" title="Baseline line spacing for this script">Spacing</label>
+              <input id="source-line-spacing" type="range" min="1.0" max="3.5" value="1.55" step="0.05" aria-label="Input script baseline line spacing">
+              <output id="source-line-spacing-val" for="source-line-spacing">1.55</output>
+            </div>
+            <button id="source-metrics-reset" class="btn btn--subtle btn--icon pane-metrics-reset" type="button" title="Reset this script's baseline to default" aria-label="Reset this script's baseline to default">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+          </div>
+        </div>
         <textarea id="source-text" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"
           aria-label="Original input text"></textarea>
       </div>
@@ -2636,6 +2825,24 @@
         <div class="mobile-only mobile-pane-head">
           <div id="mobile-target-slot" class="mobile-script-field"></div>
           <div id="mobile-output-actions" class="mobile-pane-actions"></div>
+        </div>
+        <div id="target-metrics-bar" class="pane-metrics-bar desktop-only" hidden>
+          <div class="pane-metrics-group">
+            <span class="pane-metrics-script" id="target-metrics-script"></span>
+            <div class="pane-metrics-slider">
+              <label for="target-font-size" title="Baseline font size for this script">Size</label>
+              <input id="target-font-size" type="range" min="14" max="56" value="25" step="1" aria-label="Output script baseline font size">
+              <output id="target-font-size-val" for="target-font-size">25 px</output>
+            </div>
+            <div class="pane-metrics-slider">
+              <label for="target-line-spacing" title="Baseline line spacing for this script">Spacing</label>
+              <input id="target-line-spacing" type="range" min="1.0" max="3.5" value="1.55" step="0.05" aria-label="Output script baseline line spacing">
+              <output id="target-line-spacing-val" for="target-line-spacing">1.55</output>
+            </div>
+            <button id="target-metrics-reset" class="btn btn--subtle btn--icon pane-metrics-reset" type="button" title="Reset this script's baseline to default" aria-label="Reset this script's baseline to default">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </button>
+          </div>
         </div>
         <textarea id="target-text" readonly spellcheck="false" aria-label="Transliterated converted text"></textarea>
       </div>
@@ -2831,6 +3038,28 @@
             <span class="devfont-hint">Applied to both panes regardless of current script or font selection.</span>
           </div>
         </div>
+
+        <!-- Script Baseline Typography -->
+        <div class="devfont-section">
+          <div class="devfont-section-head">
+            <span class="devfont-section-title">Script Baseline Typography</span>
+            <div class="devfont-actions-left">
+              <button id="devfont-copy-metrics" class="btn btn--subtle" type="button"
+                style="height:26px;font-size:11px;padding:0 8px" title="Copy configured values as JSON">Copy JSON</button>
+              <button id="devfont-reset-metrics" class="btn btn--subtle" type="button"
+                style="height:26px;font-size:11px;padding:0 8px" title="Reset all scripts to default values">Reset All</button>
+            </div>
+          </div>
+          <p class="devfont-desc">Enable sliders on desktop input and output panes to test and tune the baseline font size and line spacing for each script.</p>
+          <div class="devfont-field">
+            <label class="devfont-checkbox-label">
+              <input type="checkbox" id="devfont-enable-metrics">
+              Enable script font size &amp; line spacing controls (desktop panes)
+            </label>
+          </div>
+          <div id="devfont-metrics-summary" class="devfont-metrics-table-wrapper"></div>
+          <p id="devfont-metrics-status" class="devfont-load-status" role="status"></p>
+        </div>
         <div class="devfont-section">
           <span class="devfont-section-title">Find More Fonts</span>
           <p class="devfont-desc">Add online or installed families to the font dropdowns, filtered by the selected
@@ -2916,8 +3145,25 @@
         if (!entry.supportsVedicAccents) return [];
         return entry.kind === 'roman' ? ROMAN_KEYBOARD_ACCENTS : VEDIC_KEYBOARD_ACCENTS;
       }
-      // Font dev tools: controls fallback mode for both panes. Not persisted to localStorage.
-      let devFontSettings = { mode: 'full', customStack: '' };
+      // Font dev tools: controls fallback mode for both panes, script baseline metrics and dev settings.
+      let devFontSettings = { mode: 'full', customStack: '', enableScriptMetrics: false, scriptMetrics: {} };
+      function defaultScriptMetrics(script) {
+        const entry = (typeof SCRIPT_CATALOG !== 'undefined' && SCRIPT_CATALOG[script]) || {};
+        return {
+          fontSize: 25,
+          lineSpacing: entry.dir === 'rtl' ? 2.4 : 1.55
+        };
+      }
+      function getScriptMetrics(script) {
+        const defaults = defaultScriptMetrics(script);
+        const custom = devFontSettings.scriptMetrics?.[script];
+        if (!custom) return { ...defaults, isCustom: false };
+        return {
+          fontSize: Number.isFinite(Number(custom.fontSize)) ? Number(custom.fontSize) : defaults.fontSize,
+          lineSpacing: Number.isFinite(Number(custom.lineSpacing)) ? Number(custom.lineSpacing) : defaults.lineSpacing,
+          isCustom: true
+        };
+      }
       // Session-only discoveries; rebuilding a script dropdown must preserve these.
       const additionalFonts = new Map();
       const onlineFontLoads = new Map();
@@ -3183,21 +3429,49 @@
             }
           }
         }
+        function isDesktop() {
+          return typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+            ? !window.matchMedia('(max-width: 600px), (max-height: 500px) and (pointer: coarse)').matches
+            : true;
+        }
+        function applyMetrics() {
+          if (!devFontSettings.enableScriptMetrics || !isDesktop()) return false;
+          const sScript = sourceScript?.value;
+          if (sScript && sourceText) {
+            const sm = getScriptMetrics(sScript);
+            sourceText.style.fontSize = sm.fontSize + 'px';
+            sourceText.style.lineHeight = String(sm.lineSpacing);
+          }
+          const tScript = targetScript?.value;
+          if (tScript && targetText) {
+            const tm = getScriptMetrics(tScript);
+            targetText.style.fontSize = tm.fontSize + 'px';
+            targetText.style.lineHeight = String(tm.lineSpacing);
+          }
+          return true;
+        }
         function applyTextSize() {
           const size = textSize.value;
           textSizeValue.textContent = size + ' px';
-          sourceText.style.fontSize = size + 'px';
-          targetText.style.fontSize = size + 'px';
+          if (!applyMetrics()) {
+            sourceText.style.fontSize = size + 'px';
+            targetText.style.fontSize = size + 'px';
+          }
         }
         function updateLanguage() {
           for (const [text, script] of [[sourceText, sourceScript.value], [targetText, targetScript.value]]) {
             const entry = SCRIPT_CATALOG[script];
-            text.lang = entry.lang || 'sa-Latn';
-            text.dir = entry.dir || 'auto';
-            text.style.lineHeight = entry.dir === 'rtl' ? '2.4' : '';
+            text.lang = entry?.lang || 'sa-Latn';
+            text.dir = entry?.dir || 'auto';
+          }
+          if (!applyMetrics()) {
+            for (const [text, script] of [[sourceText, sourceScript.value], [targetText, targetScript.value]]) {
+              const entry = SCRIPT_CATALOG[script];
+              text.style.lineHeight = entry?.dir === 'rtl' ? '2.4' : '';
+            }
           }
         }
-        return { populateScripts, populateFonts, applyFont, applyTextSize, updateLanguage, isRoman, fontStack };
+        return { populateScripts, populateFonts, applyFont, applyTextSize, updateLanguage, applyMetrics, isRoman, fontStack };
       }
 
       function createEditHistory(limit = 100) {
@@ -4202,9 +4476,15 @@
         updateLayout();
       }
 
-      function createFontDevTools({ sourceFont, targetFont, sourceText, refreshFonts, applyFont, updateKeyboardFont }) {
+      function createFontDevTools({ sourceScript, targetScript, sourceFont, targetFont, sourceText, targetText, refreshFonts, applyFont, updateKeyboardFont, applyMetrics, applyTextSize, updateLanguage, onMetricsChange }) {
         const dialog = element('font-devtools');
         if (!dialog) return;
+
+        function isDesktop() {
+          return typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+            ? !window.matchMedia('(max-width: 600px), (max-height: 500px) and (pointer: coarse)').matches
+            : true;
+        }
 
         const modeRadios = dialog.querySelectorAll('input[name="devfont-mode"]');
         const customRow = element('devfont-custom-row');
@@ -4218,6 +4498,300 @@
         const dynamicListEl = element('devfont-dynamic-list');
         const loadedListEl = element('devfont-loaded-list');
         const dynamicFonts = [];
+
+        // Script Baseline Typography controls
+        const enableMetricsCheckbox = element('devfont-enable-metrics');
+        const resetMetricsButton = element('devfont-reset-metrics');
+        const copyMetricsButton = element('devfont-copy-metrics');
+        const metricsSummaryEl = element('devfont-metrics-summary');
+        const metricsStatus = element('devfont-metrics-status');
+
+        const sourceMetricsBar = element('source-metrics-bar');
+        const targetMetricsBar = element('target-metrics-bar');
+        const sourceMetricsScript = element('source-metrics-script');
+        const targetMetricsScript = element('target-metrics-script');
+        const sourceFontSize = element('source-font-size');
+        const sourceFontSizeVal = element('source-font-size-val');
+        const sourceLineSpacing = element('source-line-spacing');
+        const sourceLineSpacingVal = element('source-line-spacing-val');
+        const sourceMetricsReset = element('source-metrics-reset');
+
+        const targetFontSize = element('target-font-size');
+        const targetFontSizeVal = element('target-font-size-val');
+        const targetLineSpacing = element('target-line-spacing');
+        const targetLineSpacingVal = element('target-line-spacing-val');
+        const targetMetricsReset = element('target-metrics-reset');
+
+        function updateMetricsBars() {
+          const show = Boolean(devFontSettings.enableScriptMetrics && isDesktop());
+          if (sourceMetricsBar) sourceMetricsBar.hidden = !show;
+          if (targetMetricsBar) targetMetricsBar.hidden = !show;
+
+          const sScript = sourceScript?.value;
+          if (sourceMetricsScript && sScript && typeof SCRIPT_CATALOG !== 'undefined' && SCRIPT_CATALOG[sScript]) {
+            sourceMetricsScript.textContent = SCRIPT_CATALOG[sScript].label || sScript;
+          }
+          const tScript = targetScript?.value;
+          if (targetMetricsScript && tScript && typeof SCRIPT_CATALOG !== 'undefined' && SCRIPT_CATALOG[tScript]) {
+            targetMetricsScript.textContent = SCRIPT_CATALOG[tScript].label || tScript;
+          }
+
+          if (sScript) {
+            const sm = getScriptMetrics(sScript);
+            if (sourceFontSize) {
+              sourceFontSize.value = sm.fontSize;
+              if (sourceFontSizeVal) sourceFontSizeVal.textContent = sm.fontSize + ' px';
+            }
+            if (sourceLineSpacing) {
+              sourceLineSpacing.value = sm.lineSpacing;
+              if (sourceLineSpacingVal) sourceLineSpacingVal.textContent = Number(sm.lineSpacing).toFixed(2);
+            }
+          }
+
+          if (tScript) {
+            const tm = getScriptMetrics(tScript);
+            if (targetFontSize) {
+              targetFontSize.value = tm.fontSize;
+              if (targetFontSizeVal) targetFontSizeVal.textContent = tm.fontSize + ' px';
+            }
+            if (targetLineSpacing) {
+              targetLineSpacing.value = tm.lineSpacing;
+              if (targetLineSpacingVal) targetLineSpacingVal.textContent = Number(tm.lineSpacing).toFixed(2);
+            }
+          }
+        }
+
+        function saveMetrics() {
+          try {
+            if (typeof localStorage !== 'undefined') {
+              const state = readDemoState();
+              state.scriptMetricsEnabled = devFontSettings.enableScriptMetrics;
+              state.scriptMetrics = devFontSettings.scriptMetrics;
+              writeDemoState(state);
+            }
+          } catch { /* Storage may be unavailable */ }
+          if (typeof onMetricsChange === 'function') onMetricsChange();
+        }
+
+        function renderMetricsSummary() {
+          if (!metricsSummaryEl) return;
+          metricsSummaryEl.replaceChildren();
+          const table = document.createElement('table');
+          table.className = 'devfont-metrics-table';
+          const thead = document.createElement('thead');
+          const headerRow = document.createElement('tr');
+          for (const text of ['Script', 'Font Size', 'Line Spacing', 'Status', '']) {
+            const th = document.createElement('th');
+            th.textContent = text;
+            headerRow.append(th);
+          }
+          thead.append(headerRow);
+          table.append(thead);
+
+          const tbody = document.createElement('tbody');
+          if (typeof SCRIPT_CATALOG !== 'undefined') {
+            for (const [id, script] of Object.entries(SCRIPT_CATALOG)) {
+              if (script.separator) continue;
+              const metrics = getScriptMetrics(id);
+              const tr = document.createElement('tr');
+
+              const tdScript = document.createElement('td');
+              tdScript.textContent = script.label || id;
+              const sScript = sourceScript?.value;
+              const tScript = targetScript?.value;
+              if (id === sScript || id === tScript) {
+                const badge = document.createElement('span');
+                badge.className = 'devfont-hint';
+                badge.style.cssText = 'margin-left: 5px; font-weight: normal;';
+                badge.textContent = id === sScript && id === tScript ? '(in/out)' : id === sScript ? '(input)' : '(output)';
+                tdScript.append(badge);
+              }
+
+              const tdSize = document.createElement('td');
+              tdSize.textContent = metrics.fontSize + ' px';
+
+              const tdSpacing = document.createElement('td');
+              tdSpacing.textContent = Number(metrics.lineSpacing).toFixed(2);
+
+              const tdStatus = document.createElement('td');
+              if (metrics.isCustom) {
+                const badge = document.createElement('span');
+                badge.className = 'devfont-badge-custom';
+                badge.textContent = 'Custom';
+                tdStatus.append(badge);
+              } else {
+                tdStatus.textContent = 'Default';
+              }
+
+              const tdAction = document.createElement('td');
+              if (metrics.isCustom) {
+                const resetBtn = document.createElement('button');
+                resetBtn.type = 'button';
+                resetBtn.className = 'devfont-remove';
+                resetBtn.textContent = '×';
+                resetBtn.title = 'Reset ' + (script.label || id) + ' to default';
+                resetBtn.addEventListener('click', () => {
+                  delete devFontSettings.scriptMetrics[id];
+                  updateMetricsBars();
+                  if (typeof applyMetrics === 'function') applyMetrics();
+                  saveMetrics();
+                  renderMetricsSummary();
+                });
+                tdAction.append(resetBtn);
+              }
+
+              tr.append(tdScript, tdSize, tdSpacing, tdStatus, tdAction);
+              tbody.append(tr);
+            }
+          }
+          table.append(tbody);
+          metricsSummaryEl.append(table);
+        }
+
+        enableMetricsCheckbox?.addEventListener('change', () => {
+          devFontSettings.enableScriptMetrics = enableMetricsCheckbox.checked;
+          updateMetricsBars();
+          if (devFontSettings.enableScriptMetrics) {
+            if (typeof applyMetrics === 'function') applyMetrics();
+          } else {
+            if (typeof applyTextSize === 'function') applyTextSize();
+            if (typeof updateLanguage === 'function') updateLanguage();
+          }
+          saveMetrics();
+          renderMetricsSummary();
+        });
+
+        resetMetricsButton?.addEventListener('click', () => {
+          devFontSettings.scriptMetrics = {};
+          updateMetricsBars();
+          if (typeof applyMetrics === 'function') applyMetrics();
+          saveMetrics();
+          renderMetricsSummary();
+          if (metricsStatus) metricsStatus.textContent = 'Reset all scripts to default font size and spacing.';
+        });
+
+        copyMetricsButton?.addEventListener('click', async () => {
+          const payload = {};
+          if (typeof SCRIPT_CATALOG !== 'undefined') {
+            for (const [id, script] of Object.entries(SCRIPT_CATALOG)) {
+              if (script.separator) continue;
+              payload[id] = getScriptMetrics(id);
+            }
+          }
+          try {
+            if (navigator?.clipboard?.writeText) {
+              await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+              if (metricsStatus) metricsStatus.textContent = '✓ Configured script metrics copied to clipboard.';
+            } else {
+              throw new Error('Clipboard API unavailable');
+            }
+          } catch {
+            if (metricsStatus) metricsStatus.textContent = 'Values logged to console (clipboard unavailable).';
+            console.log('Inditrans Script Metrics:', payload);
+          }
+        });
+
+        sourceFontSize?.addEventListener('input', () => {
+          const sScript = sourceScript?.value;
+          if (!sScript) return;
+          const val = Number(sourceFontSize.value);
+          if (sourceFontSizeVal) sourceFontSizeVal.textContent = val + ' px';
+          devFontSettings.scriptMetrics ||= {};
+          devFontSettings.scriptMetrics[sScript] ||= {};
+          devFontSettings.scriptMetrics[sScript].fontSize = val;
+          if (devFontSettings.enableScriptMetrics && isDesktop()) {
+            if (sourceText) sourceText.style.fontSize = val + 'px';
+            if (targetScript?.value === sScript) {
+              if (targetText) targetText.style.fontSize = val + 'px';
+              if (targetFontSize) targetFontSize.value = val;
+              if (targetFontSizeVal) targetFontSizeVal.textContent = val + ' px';
+            }
+          }
+          saveMetrics();
+          renderMetricsSummary();
+        });
+
+        sourceLineSpacing?.addEventListener('input', () => {
+          const sScript = sourceScript?.value;
+          if (!sScript) return;
+          const val = Number(Number(sourceLineSpacing.value).toFixed(2));
+          if (sourceLineSpacingVal) sourceLineSpacingVal.textContent = val.toFixed(2);
+          devFontSettings.scriptMetrics ||= {};
+          devFontSettings.scriptMetrics[sScript] ||= {};
+          devFontSettings.scriptMetrics[sScript].lineSpacing = val;
+          if (devFontSettings.enableScriptMetrics && isDesktop()) {
+            if (sourceText) sourceText.style.lineHeight = String(val);
+            if (targetScript?.value === sScript) {
+              if (targetText) targetText.style.lineHeight = String(val);
+              if (targetLineSpacing) targetLineSpacing.value = val;
+              if (targetLineSpacingVal) targetLineSpacingVal.textContent = val.toFixed(2);
+            }
+          }
+          saveMetrics();
+          renderMetricsSummary();
+        });
+
+        sourceMetricsReset?.addEventListener('click', () => {
+          const sScript = sourceScript?.value;
+          if (!sScript || !devFontSettings.scriptMetrics) return;
+          delete devFontSettings.scriptMetrics[sScript];
+          updateMetricsBars();
+          if (typeof applyMetrics === 'function') applyMetrics();
+          saveMetrics();
+          renderMetricsSummary();
+        });
+
+        targetFontSize?.addEventListener('input', () => {
+          const tScript = targetScript?.value;
+          if (!tScript) return;
+          const val = Number(targetFontSize.value);
+          if (targetFontSizeVal) targetFontSizeVal.textContent = val + ' px';
+          devFontSettings.scriptMetrics ||= {};
+          devFontSettings.scriptMetrics[tScript] ||= {};
+          devFontSettings.scriptMetrics[tScript].fontSize = val;
+          if (devFontSettings.enableScriptMetrics && isDesktop()) {
+            if (targetText) targetText.style.fontSize = val + 'px';
+            if (sourceScript?.value === tScript) {
+              if (sourceText) sourceText.style.fontSize = val + 'px';
+              if (sourceFontSize) sourceFontSize.value = val;
+              if (sourceFontSizeVal) sourceFontSizeVal.textContent = val + ' px';
+            }
+          }
+          saveMetrics();
+          renderMetricsSummary();
+        });
+
+        targetLineSpacing?.addEventListener('input', () => {
+          const tScript = targetScript?.value;
+          if (!tScript) return;
+          const val = Number(Number(targetLineSpacing.value).toFixed(2));
+          if (targetLineSpacingVal) targetLineSpacingVal.textContent = val.toFixed(2);
+          devFontSettings.scriptMetrics ||= {};
+          devFontSettings.scriptMetrics[tScript] ||= {};
+          devFontSettings.scriptMetrics[tScript].lineSpacing = val;
+          if (devFontSettings.enableScriptMetrics && isDesktop()) {
+            if (targetText) targetText.style.lineHeight = String(val);
+            if (sourceScript?.value === tScript) {
+              if (sourceText) sourceText.style.lineHeight = String(val);
+              if (sourceLineSpacing) sourceLineSpacing.value = val;
+              if (sourceLineSpacingVal) sourceLineSpacingVal.textContent = val.toFixed(2);
+            }
+          }
+          saveMetrics();
+          renderMetricsSummary();
+        });
+
+        targetMetricsReset?.addEventListener('click', () => {
+          const tScript = targetScript?.value;
+          if (!tScript || !devFontSettings.scriptMetrics) return;
+          delete devFontSettings.scriptMetrics[tScript];
+          updateMetricsBars();
+          if (typeof applyMetrics === 'function') applyMetrics();
+          saveMetrics();
+          renderMetricsSummary();
+        });
+
+        updateMetricsBars();
 
         function reapplyFonts() {
           applyFont(sourceFont, false);
@@ -4466,8 +5040,10 @@
           for (const radio of modeRadios) radio.checked = radio.value === devFontSettings.mode;
           customRow.hidden = devFontSettings.mode !== 'custom';
           customStackArea.value = devFontSettings.customStack;
+          if (enableMetricsCheckbox) enableMetricsCheckbox.checked = Boolean(devFontSettings.enableScriptMetrics);
           renderDynamicList();
           refreshLoadedFonts();
+          renderMetricsSummary();
           dialog.showModal();
         }
 
@@ -4493,7 +5069,7 @@
             }
           });
         }
-        return { openDialog };
+        return { openDialog, updateMetricsBars, renderMetricsSummary };
       }
 
       function startApp() {
@@ -4530,12 +5106,14 @@
         const keyboardResize = createKeyboardResize(() => saveSession());
         const options = createTargetOptions(targetScript, transliterate, sourceScript, engine);
         const { count, rememberCursor } = editor;
-        const { populateScripts, populateFonts, applyFont, applyTextSize, updateLanguage } = appearance;
+        const { populateScripts, populateFonts, applyFont, applyTextSize, updateLanguage, applyMetrics } = appearance;
         const { renderKeyboard, populateKeyboardControls, updateKeyboardFont, hideKeyTooltip } = keyboard;
         const { populateTargetOptions, updateTargetOptions, selectedTargetOptions, selectedSkipDelimiters, restoreTargetOptions } = options;
 
         const fontDevTools = createFontDevTools({
-          sourceFont, targetFont, sourceText, applyFont, updateKeyboardFont,
+          sourceScript, targetScript, sourceFont, targetFont, sourceText, targetText,
+          applyFont, updateKeyboardFont, applyMetrics, applyTextSize, updateLanguage,
+          onMetricsChange: () => saveSession(),
           refreshFonts() {
             populateFonts(sourceFont, sourceScript.value, false);
             populateFonts(targetFont, targetScript.value, false);
@@ -4571,6 +5149,8 @@
             keyboardCollapsed: element('keyboard-content').hidden,
             keyboardGroupColors: element('keyboard-group-colors').checked,
             keyboardSize: keyboardResize.getSize(),
+            scriptMetricsEnabled: devFontSettings.enableScriptMetrics,
+            scriptMetrics: devFontSettings.scriptMetrics,
             ...selectedSkipDelimiters(),
             options: OPTION_DEFINITIONS.filter(definition => element('option-' + definition.name).checked).map(definition => definition.name)
           });
@@ -4637,12 +5217,33 @@
         const savedSize = Number(SAVED_DEMO_STATE.textSize);
         if (Number.isFinite(savedSize) && savedSize >= Number(textSize.min) && savedSize <= Number(textSize.max)) textSize.value = savedSize;
 
+        // Script Baseline Typography restoration
+        if (SAVED_DEMO_STATE.scriptMetricsEnabled === true) {
+          devFontSettings.enableScriptMetrics = true;
+        }
+        if (SAVED_DEMO_STATE.scriptMetrics && typeof SAVED_DEMO_STATE.scriptMetrics === 'object') {
+          devFontSettings.scriptMetrics = { ...SAVED_DEMO_STATE.scriptMetrics };
+        }
+        fontDevTools.updateMetricsBars();
+
         // Unified Text Size Slider
         applyTextSize();
         textSize.addEventListener('input', applyTextSize);
 
         updateLanguage();
+        appearance.applyMetrics();
         createMobileLayout(keyboard, sourceText);
+        const mobileViewQuery = window.matchMedia('(max-width: 600px), (max-height: 500px) and (pointer: coarse)');
+        mobileViewQuery.addEventListener?.('change', () => {
+          fontDevTools.updateMetricsBars();
+          if (devFontSettings.enableScriptMetrics && !mobileViewQuery.matches) {
+            appearance.applyMetrics();
+          } else {
+            appearance.applyTextSize();
+            appearance.updateLanguage();
+          }
+        });
+
         sourceText.addEventListener('input', () => { rememberCursor(); transliterate(); });
         for (const event of ['keyup', 'mouseup', 'select', 'click']) sourceText.addEventListener(event, rememberCursor);
         sourceScript.addEventListener('change', () => {
@@ -4653,6 +5254,8 @@
           saveSession();
           populateFonts(sourceFont, sourceScript.value);
           updateLanguage();
+          fontDevTools.updateMetricsBars();
+          appearance.applyMetrics();
           keyboard.sourceChanged();
           updateTargetOptions();
           transliterate();
@@ -4663,6 +5266,8 @@
         targetScript.addEventListener('change', () => {
           populateFonts(targetFont, targetScript.value);
           updateLanguage();
+          fontDevTools.updateMetricsBars();
+          appearance.applyMetrics();
           updateTargetOptions();
           transliterate();
         });
