@@ -25,6 +25,9 @@ jobs:
           import hashlib
           a,b=(TTFont(x) for x in ("/tmp/seed0a.woff2","/tmp/seed0b.woff2"))
           for tag in sorted(set(a.keys())|set(b.keys())):
+              if tag=="GlyphOrder":
+                  if a.getGlyphOrder()!=b.getGlyphOrder(): print("DIFFERENT GLYPH ORDER")
+                  continue
               aa=a.getTableData(tag) if tag in a else b""
               bb=b.getTableData(tag) if tag in b else b""
               if aa != bb:
