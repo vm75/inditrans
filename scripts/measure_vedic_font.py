@@ -65,9 +65,9 @@ def layout(font, script):
   result[rec.ScriptTag] = entries
  return result
 
-def shape(font, binary, sample):
+def shape(font, binary, sample, features=None):
  buf = hb.Buffer(); buf.add_str(sample); buf.guess_segment_properties()
- hb.shape(hb.Font(hb.Face(binary)),buf)
+ hb.shape(hb.Font(hb.Face(binary)),buf,features or {})
  gs = font.getGlyphSet(); order = font.getGlyphOrder(); cmap = font.getBestCmap()
  classes = font["GDEF"].table.GlyphClassDef.classDefs if "GDEF" in font else {}
  entries = []; x = y = 0
@@ -124,6 +124,29 @@ def main():
          "missing",c["missing"],n["missing"],"dotted",c["dotted"],n["dotted"],
          "glyphs",[(g["glyph"],g["offset"][1],g["rect"]) for g in c["glyphs"]])
   print(" GPOS",json.dumps(report["gpos_combined"]))
+  for label, face, binary in (("merged",combined,cb),("native",source,nb)):
+   tags = {}
+   if "GPOS" in face:
+    table = face["GPOS"].table
+    for rec in table.ScriptList.ScriptRecord:
+     if rec.ScriptTag not in SCRIPT_TAGS[script] or not rec.Script.DefaultLangSys: continue
+     for index in rec.Script.DefaultLangSys.FeatureIndex:
+      f = table.FeatureList.FeatureRecord[index]
+      tags.setdefault(f.FeatureTag, []).extend(f.Feature.LookupListIndex)
+   variants = {}
+   for char in ("॑","॒"):
+    sample = cases[0][0]+char
+    nofeatures = shape(face,binary,sample,{tag:False for tag in tags})
+    selective = {tag:shape(face,binary,sample,{tag:False}) for tag in tags}
+    variants[char] = {"default":shape(face,binary,sample),
+                       "no_gpos":nofeatures, "disabled_one":selective}
+   print(" FEATURES",script,label,json.dumps({k:v for k,v in tags.items()}))
+   for char,row in variants.items():
+    base=row["default"]["glyphs"]
+    markoffset=lambda result: [(g["glyph"],g["offset"]) for g in result["glyphs"] if g["class"]==3]
+    print(" EFFECT",script,label,repr(char),"default",markoffset(row["default"]),
+          "none",markoffset(row["no_gpos"]),"by_tag",
+          {tag:markoffset(value) for tag,value in row["disabled_one"].items()})
   data["scripts"][script]=report
  dest = ROOT/"out/vedic-font-measurements.json"
  dest.parent.mkdir(parents=True,exist_ok=True)
