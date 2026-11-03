@@ -193,8 +193,8 @@ def repair_contextual_vedic_anchors(font):
             if measured_gap is not None and measured_gap > EXCESS_GAP:
                 raw = TARGET_GAP[mark] - measured_gap if mark == 0x0951 else (
                     measured_gap - TARGET_GAP[mark])
-                # Quantization bounds the shared GPOS lookup count. A <=4-unit
-                # optical tolerance is immaterial at 1000 font units/em.
+                # Quantize to 32 font units (at most 16 units' deviation) to
+                # bound the shared GPOS lookup count without outline changes.
                 desired = 32 * round(raw / 32)
             key = (FEATURE[script][mark], tuple(name for name, _ in glyphs),
                    mark_index, mark)
