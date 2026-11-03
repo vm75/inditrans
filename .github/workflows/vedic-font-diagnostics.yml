@@ -1,0 +1,20 @@
+name: Vedic accent font diagnostics
+on:
+  push:
+    branches: [fix/vedic-accent-font-metrics]
+permissions:
+  contents: write
+jobs:
+  measure:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned font tools
+        run: python3 -m pip install 'fonttools[woff]==4.67.0' 'uharfbuzz==0.57.0'
+      - name: Measure original merged and native fonts
+        run: python3 scripts/measure_vedic_font.py
+      - name: Upload measurements
+        uses: actions/upload-artifact@v4
+        with:
+          name: vedic-font-measurements
+          path: out/vedic-font-measurements.json
