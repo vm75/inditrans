@@ -1,0 +1,43 @@
+name: Regenerate PR Vedic font after positioning changes
+
+on:
+  push:
+    branches: [fix/vedic-accent-font-metrics]
+    paths:
+      - 'scripts/generate_demo_font.py'
+      - 'scripts/refine_vedic_anchors.py'
+      - 'scripts/verify_demo_font.py'
+      - '.github/workflows/vedic-font-rebuild.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: regenerate-vedic-font-\${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  update-font:
+    if: github.repository == 'vm75/inditrans'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install pinned font tools
+        run: python3 -m pip install 'fonttools[woff]==4.67.0' 'uharfbuzz==0.57.0'
+      - name: Build new bundled font from pinned Noto sources
+        run: python3 scripts/generate_demo_font.py
+      - name: Check Vedic ink clearance, shaping, and annotations
+        run: python3 scripts/verify_demo_font.py
+      - name: Commit verified binary to this PR branch
+        run: |
+          git add demo/fonts/inditrans-indic-fallback.woff2
+          if git diff --cached --quiet; then
+            echo "Bundled font already up to date"
+            exit 0
+          fi
+          git -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit -m 'Regenerate measured contextual Vedic font'
+          git push origin "HEAD:fix/vedic-accent-font-metrics"
