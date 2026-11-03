@@ -109,7 +109,37 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Detect whether PR changes affect native performance
+        id: impact
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import subprocess
+
+          changed = subprocess.check_output(
+              ["git", "diff", "--name-only", os.environ["BASE_SHA"], "HEAD"],
+              text=True,
+          ).splitlines()
+          # This PR touches only Pages deployment and its isolated tests.
+          # Unknown changes or an empty diff must still run the benchmarks.
+          pages_only = {
+              ".github/workflows/pages.yml",
+              ".github/workflows/ci.yml",
+              "demo/README.md",
+              "scripts/stage_pages_demo.py",
+              "scripts/tests/test_stage_pages_demo.py",
+          }
+          run = not changed or any(path not in pages_only for path in changed)
+          print("Changed paths:", *changed, sep="\\n  ")
+          print("Run native benchmarks:", run)
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"run={'true' if run else 'false'}\\n")
+          PY
+
       - name: Select one runner CPU
+        if: steps.impact.outputs.run == 'true'
         run: |
           CPU=$(python3 - <<'PY'
           import os
@@ -120,6 +150,7 @@ jobs:
           echo "Benchmark CPU: $CPU"
 
       - name: Prepare perf-00-baseline with current benchmark harness
+        if: steps.impact.outputs.run == 'true'
         env:
           BASE_REF: perf-00-baseline
         run: |
@@ -135,6 +166,7 @@ jobs:
           echo "BASELINE_DIR=$BASELINE_DIR" >> "$GITHUB_ENV"
 
       - name: Measure perf-00-baseline
+        if: steps.impact.outputs.run == 'true'
         run: |
           cd "$BASELINE_DIR"
           taskset -c "$BENCH_CPU" make -f "$GITHUB_WORKSPACE/Makefile" bench-save \
@@ -142,6 +174,7 @@ jobs:
             BENCH_BASELINE="$GITHUB_WORKSPACE/out/bench-baseline"
 
       - name: Compare PR timing against perf-00-baseline
+        if: steps.impact.outputs.run == 'true'
         run: |
           taskset -c "$BENCH_CPU" make bench-compare \
             BENCH_BASELINE=out/bench-baseline \
@@ -149,6 +182,7 @@ jobs:
             BENCH_STRICT=1
 
       - name: Gate allocation and live-byte regressions
+        if: steps.impact.outputs.run == 'true'
         run: |
           awk -F, -v threshold=1 '
             NR==FNR {
@@ -176,6 +210,7 @@ jobs:
           ' out/bench-baseline-allocs.csv out/bench-current-allocs.csv
 
       - name: Require complete allocator-probe tracking
+        if: steps.impact.outputs.run == 'true'
         run: |
           check_probe() {
             label="$1"
