@@ -19,7 +19,7 @@ jobs:
           PYTHONHASHSEED=0 python3 scripts/generate_demo_font.py
           cp demo/fonts/inditrans-indic-fallback.woff2 /tmp/seed0b.woff2
           sha256sum /tmp/seed0b.woff2
-          cmp /tmp/seed0a.woff2 /tmp/seed0b.woff2 || true
+          cmp /tmp/seed0a.woff2 /tmp/seed0b.woff2
           python3 - <<'PY'
           from fontTools.ttLib import TTFont
           import hashlib
@@ -43,6 +43,7 @@ jobs:
           PY
           PYTHONHASHSEED=1 python3 scripts/generate_demo_font.py
           sha256sum demo/fonts/inditrans-indic-fallback.woff2
+          cmp /tmp/seed0a.woff2 demo/fonts/inditrans-indic-fallback.woff2
           cp /tmp/seed0a.woff2 demo/fonts/inditrans-indic-fallback.woff2
       - name: Commit normalized seed-zero WOFF2
         run: |
