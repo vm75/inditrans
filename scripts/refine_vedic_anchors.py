@@ -105,7 +105,7 @@ def _install(font, script, rules, shared_lookups):
 
     def lookup(subtables, extension=False):
         index = len(gpos.LookupList.Lookup)
-        gpos.LookupList.Lookup.append(buildLookup(subtables, extension=extension))
+        gpos.LookupList.Lookup.append(buildLookup(subtables, extension=extension, table="GPOS"))
         return index
 
     def context(glyphnames, accent_index, shift_lookup):
