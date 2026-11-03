@@ -103,9 +103,9 @@ def _install(font, script, rules, shared_lookups):
     gpos = font["GPOS"].table
     glyph_map = font.getReverseGlyphMap()
 
-    def lookup(subtables):
+    def lookup(subtables, extension=False):
         index = len(gpos.LookupList.Lookup)
-        gpos.LookupList.Lookup.append(buildLookup(subtables))
+        gpos.LookupList.Lookup.append(buildLookup(subtables, extension=extension))
         return index
 
     def context(glyphnames, accent_index, shift_lookup):
@@ -135,9 +135,10 @@ def _install(font, script, rules, shared_lookups):
             subtables = []
             for names, index, delta in by_length[size]:
                 subtables.append(context(names, index, shared_lookups[delta]))
-            # Bound lookup subtable arrays to keep OpenType 16-bit offsets valid.
-            for i in range(0, len(subtables), 80):
-                contexts.append(lookup(subtables[i:i + 80]))
+            # One ExtensionPos lookup per context length: the 32-bit
+            # extension offsets avoid thousands of separate LookupList entries,
+            # which otherwise overflow the LookupList's 16-bit lookup offsets.
+            contexts.append(lookup(subtables, extension=True))
         gpos.LookupList.LookupCount = len(gpos.LookupList.Lookup)
         attached = set()
         for script_record in gpos.ScriptList.ScriptRecord:
