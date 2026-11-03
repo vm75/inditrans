@@ -32,7 +32,11 @@ contents remain the literal engine output.
 
 Sources are pinned to the archived `notofonts/noto-fonts` revision
 [`ffebf8c`](https://github.com/notofonts/noto-fonts/tree/ffebf8c1ee449e544955a7e813c54f9b73848eac).
-The generator records and verifies each input's SHA-256 hash. Regenerate from the
+The generator records and verifies each input's SHA-256 hash and pins
+both `head.created` and `head.modified` timestamps. FontTools Merger
+otherwise sets `head.created` to the build time, which changes the
+whole-font checksum and WOFF2 bytes even when every other table is identical.
+Regenerate from the
 repository root with the isolated, pinned dependencies in the script:
 
 ```sh
