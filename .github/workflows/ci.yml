@@ -153,7 +153,47 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Detect native benchmark impact
+        id: impact
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import subprocess
+
+          # A font/demo-only PR cannot change native transliteration speed.
+          # Keep benchmarking all unknown paths, engine data and build inputs.
+          changed = subprocess.check_output(
+              ["git", "diff", "--name-only", os.environ["BASE_SHA"], "HEAD"],
+              text=True,
+          ).splitlines()
+          neutral_files = {
+              "README.md",
+              "scripts/README.md",
+              "scripts/generate_demo_font.py",
+              "scripts/measure_vedic_font.py",
+              "scripts/verify_demo_font.py",
+          }
+          def neutral(path):
+              return (
+                  path in neutral_files
+                  or path.startswith(("demo/", ".github/"))
+                  or (path.startswith("docs/") and path != "docs/extended-roman.txt")
+              )
+
+          relevant = [path for path in changed if not neutral(path)]
+          # An empty/unknown diff must not accidentally bypass the gate.
+          run = bool(relevant) or not changed
+          print("PR changes:", *changed, sep="\n  ")
+          print("Native benchmark inputs:", *relevant, sep="\n  ")
+          print("Run native benchmark:", run)
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"run={'true' if run else 'false'}\n")
+          PY
+
       - name: Select one runner CPU
+        if: steps.impact.outputs.run == 'true'
         run: |
           CPU=$(python3 - <<'PY'
           import os
@@ -164,6 +204,7 @@ jobs:
           echo "Benchmark CPU: $CPU"
 
       - name: Prepare perf-00-baseline with current benchmark harness
+        if: steps.impact.outputs.run == 'true'
         env:
           BASE_REF: perf-00-baseline
         run: |
@@ -179,6 +220,7 @@ jobs:
           echo "BASELINE_DIR=$BASELINE_DIR" >> "$GITHUB_ENV"
 
       - name: Measure perf-00-baseline
+        if: steps.impact.outputs.run == 'true'
         run: |
           cd "$BASELINE_DIR"
           taskset -c "$BENCH_CPU" make -f "$GITHUB_WORKSPACE/Makefile" bench-save \
@@ -186,6 +228,7 @@ jobs:
             BENCH_BASELINE="$GITHUB_WORKSPACE/out/bench-baseline"
 
       - name: Compare PR timing against perf-00-baseline
+        if: steps.impact.outputs.run == 'true'
         run: |
           taskset -c "$BENCH_CPU" make bench-compare \
             BENCH_BASELINE=out/bench-baseline \
@@ -193,6 +236,7 @@ jobs:
             BENCH_STRICT=1
 
       - name: Gate allocation and live-byte regressions
+        if: steps.impact.outputs.run == 'true'
         run: |
           awk -F, -v threshold=1 '
             NR==FNR {
@@ -220,6 +264,7 @@ jobs:
           ' out/bench-baseline-allocs.csv out/bench-current-allocs.csv
 
       - name: Require complete allocator-probe tracking
+        if: steps.impact.outputs.run == 'true'
         run: |
           check_probe() {
             label="$1"
