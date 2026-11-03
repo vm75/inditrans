@@ -35,6 +35,10 @@ jobs:
                         hashlib.sha256(aa).hexdigest()[:16],hashlib.sha256(bb).hexdigest()[:16])
                   if tag=="head":
                       print("HEAD MODIFIED",a["head"].modified,b["head"].modified)
+                      for key in sorted(set(a["head"].__dict__) | set(b["head"].__dict__)):
+                          av=a["head"].__dict__.get(key)
+                          bv=b["head"].__dict__.get(key)
+                          if av!=bv: print("HEAD FIELD DIFF",key,repr(av),repr(bv))
           print("All other tables identical")
           PY
           PYTHONHASHSEED=1 python3 scripts/generate_demo_font.py
