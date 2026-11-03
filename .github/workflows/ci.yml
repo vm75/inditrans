@@ -152,7 +152,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Detect native benchmark impact
+      - name: Detect whether PR changes affect native performance
         id: impact
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
@@ -161,32 +161,26 @@ jobs:
           import os
           import subprocess
 
-          # A font/demo-only PR cannot change native transliteration speed.
-          # Keep benchmarking all unknown paths, engine data and build inputs.
           changed = subprocess.check_output(
               ["git", "diff", "--name-only", os.environ["BASE_SHA"], "HEAD"],
               text=True,
           ).splitlines()
-          neutral_files = {
-              "README.md",
+          # Pages and bundled-font tooling cannot affect native transliteration speed.
+          # Unknown changes or an empty diff must still run the benchmarks.
+          native_neutral = {
+              ".github/workflows/pages.yml",
+              ".github/workflows/ci.yml",
+              "demo/README.md",
+              "scripts/stage_pages_demo.py",
+              "scripts/tests/test_stage_pages_demo.py",
               "scripts/README.md",
               "scripts/generate_demo_font.py",
               "scripts/measure_vedic_font.py",
               "scripts/verify_demo_font.py",
           }
-          def neutral(path):
-              return (
-                  path in neutral_files
-                  or path.startswith(("demo/", ".github/"))
-                  or (path.startswith("docs/") and path != "docs/extended-roman.txt")
-              )
-
-          relevant = [path for path in changed if not neutral(path)]
-          # An empty/unknown diff must not accidentally bypass the gate.
-          run = bool(relevant) or not changed
-          print("PR changes:", *changed, sep="\n  ")
-          print("Native benchmark inputs:", *relevant, sep="\n  ")
-          print("Run native benchmark:", run)
+          run = not changed or any(path not in native_neutral for path in changed)
+          print("Changed paths:", *changed, sep="\n  ")
+          print("Run native benchmarks:", run)
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
               output.write(f"run={'true' if run else 'false'}\n")
           PY
