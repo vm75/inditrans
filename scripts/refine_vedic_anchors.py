@@ -98,13 +98,6 @@ def _cases(font, script):
         for stem in stems:
             for mark in TARGET_GAP:
                 yield stem + chr(mark), mark
-    if script == "Tamil":
-        # Preserve the existing regression requirement that superscript
-        # annotation digits do not shift the accent away from the Tamil base.
-        for stem in ("க", "கி", "கு", "கீ", "க்ஷ", "த்யே", "ஃக"):
-            for digit in "²³⁴":
-                for mark in TARGET_GAP:
-                    yield stem + digit + chr(mark), mark
 
 
 def _install_all(font, plans, shared_lookups):
@@ -195,17 +188,7 @@ def repair_contextual_vedic_anchors(font):
             gap = _ink_gap(glyphs, mark_index, mark)
             if gap is None:
                 continue
-            # Tamil annotation glyphs should not change accent attachment:
-            # retain the SAME positional correction as the unannotated syllable
-            # even if the extra digit makes the ink-union gap appear small.
             measured_gap = gap
-            if script == "Tamil" and any(digit in text for digit in "²³⁴"):
-                clean = text.translate(str.maketrans("", "", "²³⁴"))
-                clean_glyphs = shape(clean)
-                clean_indices = [i for i, (name, _) in enumerate(clean_glyphs)
-                                 if name == accent_names[mark]]
-                if len(clean_indices) == 1:
-                    measured_gap = _ink_gap(clean_glyphs, clean_indices[0], mark)
             desired = 0
             if measured_gap is not None and measured_gap > EXCESS_GAP:
                 raw = TARGET_GAP[mark] - measured_gap if mark == 0x0951 else (
@@ -236,6 +219,44 @@ def repair_contextual_vedic_anchors(font):
                 rules[key] = residual
         stats[script] = {"measured": len(measured)}
         plans[script] = rules
+
+    # Tamil superscript annotations must follow the *exact same positional
+    # adjustments* as their unannotated base, even when a conjunct isn't in
+    # the compact measurement corpus. The original Noto offsets match; the
+    # context corrections must therefore also match.
+    tamil = plans["Tamil"]
+
+    def matching_shift(rules, tag, names, accent_index, mark):
+        total = 0
+        for (feature, pattern, index, source_mark), value in rules.items():
+            if feature != tag or source_mark != mark:
+                continue
+            for begin in range(len(names) - len(pattern) + 1):
+                if names[begin:begin + len(pattern)] == pattern and begin + index == accent_index:
+                    total += value
+        return total
+
+    for stem in ("க", "கி", "கு", "கீ", "க்ஷ", "த்யே", "ஃக"):
+        for mark in TARGET_GAP:
+            tag = FEATURE["Tamil"][mark]
+            glyph_name = shape("க" + chr(mark))[-1][0]
+            plain = shape(stem + chr(mark))
+            plain_positions = [i for i, (name, _) in enumerate(plain) if name == glyph_name]
+            if len(plain_positions) != 1:
+                continue
+            plain_names = tuple(name for name, _ in plain)
+            desired = matching_shift(tamil, tag, plain_names, plain_positions[0], mark)
+            for digit in "²³⁴":
+                annotated = shape(stem + digit + chr(mark))
+                positions = [i for i, (name, _) in enumerate(annotated) if name == glyph_name]
+                if len(positions) != 1:
+                    continue
+                names = tuple(name for name, _ in annotated)
+                current = matching_shift(tamil, tag, names, positions[0], mark)
+                correction = desired - current
+                if correction:
+                    key = (tag, names, positions[0], mark)
+                    tamil[key] = tamil.get(key, 0) + correction
 
     # One SinglePos lookup can serve all script-specific accent glyphs sharing
     # the same quantized YPlacement. This avoids the 16-bit GPOS LookupList
