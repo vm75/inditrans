@@ -9,6 +9,7 @@ import io
 import hashlib
 from urllib.request import urlopen
 import json
+from collections import Counter
 from pathlib import Path
 import subprocess
 
@@ -106,8 +107,19 @@ def verify_vertical_accent_geometry(bundled, binary):
             result = shape(bundled, binary, sample, accent_glyph=glyphs[sample[-1]])
             if result["missing"] or result["dotted"]:
                 raise AssertionError(f"Unshaped Vedic cluster: {script} {sample!r}")
-            accents = [g for g in result["glyphs"] if g["glyph"] == glyphs[sample[-1]]]
-            if len(accents) != 1 or accents[0]["advance"][0] != 0:
+            without = shape(bundled, binary, sample[:-1])
+            present = Counter(g["glyph"] for g in without["glyphs"])
+            extra = []
+            for glyph in result["glyphs"]:
+                if present[glyph["glyph"]]:
+                    present[glyph["glyph"]] -= 1
+                else:
+                    extra.append(glyph)
+            # GSUB may choose different accent forms after a dependent vowel.
+            # Count the extra, zero-advance GDEF mark rather than assuming that
+            # the cmap or bare-vowel glyph name survives those substitutions.
+            accents = [g for g in extra if g["class"] == 3 and g["advance"][0] == 0]
+            if not accents:
                 raise AssertionError(f"Missing/nonspacing accent: {script} {sample!r}")
             # Independent vowels are the first two corpus entries. Their bounds
             # are unlike a conjunct's combined glyph bounds or a split vowel.
