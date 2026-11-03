@@ -97,66 +97,69 @@ def _cases(font, script):
                         yield stem + digit + chr(mark), mark
 
 
-def _install(font, script, rules, shared_lookups):
-    if not rules:
-        return 0
+def _install_all(font, plans, shared_lookups):
+    """Share entire extension-context lookups across script-specific features.
+
+    A merged Indic font already has many native lookups. Adding separate
+    context lookups per script overflows GPOS LookupList's 16-bit offsets.
+    Lookups can be shared: the coverage glyphs themselves are script-specific.
+    """
     gpos = font["GPOS"].table
     glyph_map = font.getReverseGlyphMap()
 
-    def lookup(subtables, extension=False):
-        index = len(gpos.LookupList.Lookup)
-        gpos.LookupList.Lookup.append(buildLookup(subtables, extension=extension, table="GPOS"))
-        return index
-
-    def context(glyphnames, accent_index, shift_lookup):
+    def context(names, index, lookup_index):
         table = otTables.ContextPos()
         table.Format = 3
-        table.GlyphCount = len(glyphnames)
+        table.GlyphCount = len(names)
         table.PosCount = 1
-        table.Coverage = [
-            buildCoverage([name], glyph_map) for name in glyphnames
-        ]
+        table.Coverage = [buildCoverage([name], glyph_map) for name in names]
         record = otTables.PosLookupRecord()
-        record.SequenceIndex = accent_index
-        record.LookupListIndex = shift_lookup
+        record.SequenceIndex = index
+        record.LookupListIndex = lookup_index
         table.PosLookupRecord = [record]
         return table
 
-    count = 0
-    for tag in ("abvm", "blwm"):
-        by_length = defaultdict(list)
-        for (feature, names, index, mark), delta in rules.items():
-            if feature == tag and delta:
-                by_length[len(names)].append((names, index, delta))
-        if not by_length:
-            continue
-        contexts = []
-        for size in sorted(by_length):
-            subtables = []
-            for names, index, delta in by_length[size]:
-                subtables.append(context(names, index, shared_lookups[delta]))
-            # One ExtensionPos lookup per context length: the 32-bit
-            # extension offsets avoid thousands of separate LookupList entries,
-            # which otherwise overflow the LookupList's 16-bit lookup offsets.
-            contexts.append(lookup(subtables, extension=True))
-        gpos.LookupList.LookupCount = len(gpos.LookupList.Lookup)
-        attached = set()
+    groups = defaultdict(list)
+    for rules in plans.values():
+        for (tag, names, index, mark), delta in rules.items():
+            if delta:
+                groups[(tag, len(names))].append(context(names, index, shared_lookups[delta]))
+
+    feature_lookups = defaultdict(list)
+    for (tag, length), subtables in sorted(groups.items()):
+        # Offset16 points only to the ExtensionPos wrappers; their data uses
+        # Offset32. Limit wrapper arrays to keep the lookup header compact.
+        for i in range(0, len(subtables), 1200):
+            index = len(gpos.LookupList.Lookup)
+            gpos.LookupList.Lookup.append(
+                buildLookup(subtables[i:i + 1200], extension=True, table="GPOS"))
+            feature_lookups[tag].append(index)
+    gpos.LookupList.LookupCount = len(gpos.LookupList.Lookup)
+
+    patched = set()
+    for script, (_, _, _, script_tags) in SCRIPTS.items():
+        required = {FEATURE[script][mark] for (_, _, _, mark) in plans[script]}
+        found = set()
         for script_record in gpos.ScriptList.ScriptRecord:
-            if script_record.ScriptTag not in SCRIPTS[script][3]:
+            if script_record.ScriptTag not in script_tags:
                 continue
             languages = [script_record.Script.DefaultLangSys] + [
                 entry.LangSys for entry in script_record.Script.LangSysRecord]
             for language in filter(None, languages):
                 for feature_index in language.FeatureIndex:
                     feature = gpos.FeatureList.FeatureRecord[feature_index]
-                    if feature.FeatureTag == tag and feature_index not in attached:
-                        feature.Feature.LookupListIndex.extend(contexts)
-                        feature.Feature.LookupCount = len(feature.Feature.LookupListIndex)
-                        attached.add(feature_index)
-        if not attached:
-            raise ValueError(f"Missing {script} {tag} native GPOS feature")
-        count += sum(map(len, by_length.values()))
-    return count
+                    if feature.FeatureTag not in required:
+                        continue
+                    found.add(feature.FeatureTag)
+                    if feature_index in patched:
+                        continue
+                    feature.Feature.LookupListIndex.extend(feature_lookups[feature.FeatureTag])
+                    feature.Feature.LookupCount = len(feature.Feature.LookupListIndex)
+                    patched.add(feature_index)
+        if required - found:
+            raise ValueError(f"Missing {script} native GPOS features: {required - found}")
+    return sum(map(len, groups.values())), sum(map(len, feature_lookups.values()))
+
 
 
 def repair_contextual_vedic_anchors(font):
@@ -199,7 +202,7 @@ def repair_contextual_vedic_anchors(font):
                     measured_gap - TARGET_GAP[mark])
                 # Quantization bounds the shared GPOS lookup count. A <=4-unit
                 # optical tolerance is immaterial at 1000 font units/em.
-                desired = 8 * round(raw / 8)
+                desired = 16 * round(raw / 16)
             key = (FEATURE[script][mark], tuple(name for name, _ in glyphs),
                    mark_index, mark)
             measured[key] = desired
@@ -242,6 +245,9 @@ def repair_contextual_vedic_anchors(font):
     gpos.LookupList.LookupCount = len(gpos.LookupList.Lookup)
 
     for script, rules in plans.items():
-        stats[script]["context_rules"] = _install(font, script, rules, shared_lookups)
+        stats[script]["context_rules"] = len(rules)
+    total, shared_contexts = _install_all(font, plans, shared_lookups)
     stats["shared_shift_lookups"] = len(shared_lookups)
+    stats["shared_context_lookups"] = shared_contexts
+    stats["total_context_rules"] = total
     return stats
