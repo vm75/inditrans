@@ -97,7 +97,7 @@ def _cases(font, script):
                         yield stem + digit + chr(mark), mark
 
 
-def _install(font, script, rules):
+def _install(font, script, rules, shared_lookups):
     if not rules:
         return 0
     gpos = font["GPOS"].table
@@ -130,17 +130,11 @@ def _install(font, script, rules):
                 by_length[len(names)].append((names, index, delta))
         if not by_length:
             continue
-        shift_lookups = {}
         contexts = []
         for size in sorted(by_length):
             subtables = []
             for names, index, delta in by_length[size]:
-                key = (names[index], delta)
-                if key not in shift_lookups:
-                    adjustment = buildSinglePosSubtable(
-                        {key[0]: buildValue({"YPlacement": delta})}, glyph_map)
-                    shift_lookups[key] = lookup([adjustment])
-                subtables.append(context(names, index, shift_lookups[key]))
+                subtables.append(context(names, index, shared_lookups[delta]))
             # Bound lookup subtable arrays to keep OpenType 16-bit offsets valid.
             for i in range(0, len(subtables), 80):
                 contexts.append(lookup(subtables[i:i + 80]))
@@ -168,6 +162,7 @@ def repair_contextual_vedic_anchors(font):
     """Measure consonant/matra contexts and install only needed Vedic offsets."""
     shape = _shaper(font)
     stats = {}
+    plans = {}
     for script in SCRIPTS:
         sample_letter = chr(SCRIPTS[script][0][0])
         accent_names = {
@@ -199,8 +194,11 @@ def repair_contextual_vedic_anchors(font):
                     measured_gap = _ink_gap(clean_glyphs, clean_indices[0], mark)
             desired = 0
             if measured_gap is not None and measured_gap > EXCESS_GAP:
-                desired = round(TARGET_GAP[mark] - measured_gap) if mark == 0x0951 else (
-                    round(measured_gap - TARGET_GAP[mark]))
+                raw = TARGET_GAP[mark] - measured_gap if mark == 0x0951 else (
+                    measured_gap - TARGET_GAP[mark])
+                # Quantization bounds the shared GPOS lookup count. A <=4-unit
+                # optical tolerance is immaterial at 1000 font units/em.
+                desired = 8 * round(raw / 8)
             key = (FEATURE[script][mark], tuple(name for name, _ in glyphs),
                    mark_index, mark)
             measured[key] = desired
@@ -222,8 +220,27 @@ def repair_contextual_vedic_anchors(font):
             residual = desired - inherited
             if residual:
                 rules[key] = residual
-        stats[script] = {
-            "measured": len(measured),
-            "context_rules": _install(font, script, rules),
-        }
+        stats[script] = {"measured": len(measured)}
+        plans[script] = rules
+
+    # One SinglePos lookup can serve all script-specific accent glyphs sharing
+    # the same quantized YPlacement. This avoids the 16-bit GPOS LookupList
+    # overflow caused by thousands of one-mark adjustment lookups.
+    deltas = defaultdict(set)
+    for rules in plans.values():
+        for (_, sequence, index, _), amount in rules.items():
+            deltas[amount].add(sequence[index])
+    gpos = font["GPOS"].table
+    glyph_map = font.getReverseGlyphMap()
+    shared_lookups = {}
+    for amount, names in sorted(deltas.items()):
+        mapping = {name: buildValue({"YPlacement": amount}) for name in names}
+        subtable = buildSinglePosSubtable(mapping, glyph_map)
+        shared_lookups[amount] = len(gpos.LookupList.Lookup)
+        gpos.LookupList.Lookup.append(buildLookup([subtable]))
+    gpos.LookupList.LookupCount = len(gpos.LookupList.Lookup)
+
+    for script, rules in plans.items():
+        stats[script]["context_rules"] = _install(font, script, rules, shared_lookups)
+    stats["shared_shift_lookups"] = len(shared_lookups)
     return stats
