@@ -355,7 +355,12 @@ def main():
     for name_id, value in names.items():
         font["name"].setName(value, name_id, 3, 1, 0x409)
     font.recalcTimestamp = False
-    font["head"].modified = 2082844800 + 1674654016
+    # Merger builds a new head table, so its *created* timestamp otherwise
+    # depends on wall-clock time even with recalcTimestamp disabled. That
+    # changes the whole-font checksum and WOFF2 bytes on every build.
+    fixed_timestamp = 2082844800 + 1674654016
+    font["head"].created = fixed_timestamp
+    font["head"].modified = fixed_timestamp
     font.flavor = "woff2"
     destination = output / "inditrans-indic-fallback.woff2"
     font.save(destination)
