@@ -141,6 +141,20 @@ def main():
     variants[char] = {"default":shape(face,binary,sample),
                        "no_gpos":nofeatures, "disabled_one":selective}
    print(" FEATURES",script,label,json.dumps({k:v for k,v in tags.items()}))
+   for tag, indices in tags.items():
+    if tag not in ("abvm","blwm","mark","mkmk"): continue
+    for index in sorted(set(indices)):
+     lookup=table.LookupList.Lookup[index]
+     for sub in lookup.SubTable:
+      sub=getattr(sub,"ExtSubTable",sub)
+      cov=getattr(getattr(sub,"Coverage",None),"glyphs",[])
+      if not cov: cov=getattr(getattr(sub,"MarkCoverage",None),"glyphs",[])
+      sample_glyphs = [g["glyph"] for g in shape(face,binary,cases[0][0]+"॑")["glyphs"][-1:]]
+      sample_glyphs += [g["glyph"] for g in shape(face,binary,cases[0][0]+"॒")["glyphs"][-1:]]
+      print(" LOOKUP",script,label,tag,index,"type",lookup.LookupType,
+            "subclass",type(sub).__name__,"coverage",len(cov),
+            "mark_hits",[(g,cov.index(g)) for g in sample_glyphs if g in cov],
+            "mapping_hits",[(g,str(getattr(sub,"mapping",{}).get(g))) for g in sample_glyphs if g in getattr(sub,"mapping",{})])
    for char,row in variants.items():
     base=row["default"]["glyphs"]
     markoffset=lambda result: [(g["glyph"],g["offset"]) for g in result["glyphs"] if g["class"]==3]
