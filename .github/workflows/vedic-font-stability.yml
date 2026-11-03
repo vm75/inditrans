@@ -1,0 +1,34 @@
+name: Temporary Vedic font reproducibility investigation
+on:
+  push:
+    branches: [fix/vedic-accent-font-metrics]
+permissions:
+  contents: write
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m pip install 'fonttools[woff]==4.67.0' 'uharfbuzz==0.57.0'
+      - name: Probe Python hash seed sensitivity
+        run: |
+          sha256sum demo/fonts/inditrans-indic-fallback.woff2
+          PYTHONHASHSEED=0 python3 scripts/generate_demo_font.py
+          cp demo/fonts/inditrans-indic-fallback.woff2 /tmp/seed0a.woff2
+          sha256sum /tmp/seed0a.woff2
+          PYTHONHASHSEED=0 python3 scripts/generate_demo_font.py
+          cp demo/fonts/inditrans-indic-fallback.woff2 /tmp/seed0b.woff2
+          sha256sum /tmp/seed0b.woff2
+          cmp /tmp/seed0a.woff2 /tmp/seed0b.woff2
+          PYTHONHASHSEED=1 python3 scripts/generate_demo_font.py
+          sha256sum demo/fonts/inditrans-indic-fallback.woff2
+          cp /tmp/seed0a.woff2 demo/fonts/inditrans-indic-fallback.woff2
+      - name: Commit normalized seed-zero WOFF2
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add demo/fonts/inditrans-indic-fallback.woff2
+          if ! git diff --cached --quiet; then
+            git commit -m "Normalize generated WOFF2 to deterministic fontTools hash seed"
+            git push
+          fi
