@@ -65,7 +65,7 @@ def layout(font, script):
   result[rec.ScriptTag] = entries
  return result
 
-def shape(font, binary, sample, features=None):
+def shape(font, binary, sample, features=None, accent_glyph=None):
  buf = hb.Buffer(); buf.add_str(sample); buf.guess_segment_properties()
  hb.shape(hb.Font(hb.Face(binary)),buf,features or {})
  gs = font.getGlyphSet(); order = font.getGlyphOrder(); cmap = font.getBestCmap()
@@ -83,7 +83,7 @@ def shape(font, binary, sample, features=None):
                   "offset":[pos.x_offset,pos.y_offset],"advance":[pos.x_advance,pos.y_advance],
                   "rect":rect})
   x += pos.x_advance; y += pos.y_advance
- accent = cmap.get(ord(sample[-1]))
+ accent = accent_glyph or cmap.get(ord(sample[-1]))
  mark = next((g for g in reversed(entries) if g["glyph"]==accent),None)
  gap = None
  if mark and mark["rect"]:
@@ -117,8 +117,14 @@ def main():
             "gpos_combined":layout(combined,script),"gpos_native":layout(source,script),
             "cases":[]}
   print("SCRIPT",script,"native",json.dumps(report["native_metrics"]),"coverage",report["native_shared_coverage"])
+  glyphs = {}
+  for char in ("॑","॒"):
+   trial = cases[0][0]+char
+   glyphs[char] = (shape(combined,cb,trial)["glyphs"][-1]["glyph"],
+                   shape(source,nb,trial)["glyphs"][-1]["glyph"])
   for sample in cases:
-   c = shape(combined,cb,sample); n = shape(source,nb,sample)
+   char = sample[-1]
+   c = shape(combined,cb,sample,accent_glyph=glyphs[char][0]); n = shape(source,nb,sample,accent_glyph=glyphs[char][1])
    report["cases"].append({"combined":c,"native":n})
    print(" CASE",repr(sample),"gap merged/native",c["gap"],n["gap"],
          "missing",c["missing"],n["missing"],"dotted",c["dotted"],n["dotted"],
