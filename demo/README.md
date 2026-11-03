@@ -13,6 +13,26 @@ first. Internet access is required for hosted fonts; engine assets are loaded
 from this checkout. Pages deploys the demo and matching checked-in JS/Wasm
 bundle together, with the site root redirecting to `demo/`.
 
+## GitHub Pages PR previews
+
+The Pages workflow stages `main` at
+[the production demo](https://vm75.github.io/inditrans/demo/) and, after
+deployment, every open pull request from a branch **in this repository** at
+`https://vm75.github.io/inditrans/previews/pr-N/demo/` (replace `N` with
+the PR number). For example, the font-fix branch in PR #73 appears at
+`https://vm75.github.io/inditrans/previews/pr-73/demo/` once this
+workflow is merged into `main` and the Pages deployment succeeds.
+
+The preview contains that PR's own `demo/`, JavaScript engine assets and
+version metadata, including any changed bundled fonts. The production demo
+always uses `main`. Opening, updating, reopening, or closing a PR rebuilds
+the complete site from `main` plus all currently open internal PRs; closing
+or merging a PR removes its preview. Previews from forks are deliberately
+excluded so untrusted JavaScript is not served under the production origin.
+The deployment run's **GitHub Pages previews** summary lists the URLs.
+A preview is not live until the new Pages workflow has landed on `main`
+and a successful Pages deployment has finished.
+
 The default input is the mixed-script sample, with **Mixed Indic** as the source
 and **Indlish** as the output. The **reset icon** restores the current input
 script's bundled sample. Each input script retains its own edits when switching

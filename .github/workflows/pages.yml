@@ -8,14 +8,22 @@ on:
       - 'js/public/inditrans.js'
       - 'js/inditrans-standalone.js'
       - 'flutter/pubspec.yaml'
+      - 'scripts/stage_pages_demo.py'
       - '.github/workflows/pages.yml'
+  # On a PR event, run the trusted workflow from main. This job stages static
+  # PR files but never executes a PR's scripts with deployment permissions.
+  pull_request_target:
+    types: [opened, reopened, synchronize, closed]
   workflow_dispatch:
 
 permissions:
   contents: read
+  pull-requests: read
   pages: write
   id-token: write
 
+# Every deployment replaces the whole Pages site. Serialize and rebuild all
+# currently open previews, rather than allowing one PR to erase another.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -27,37 +35,61 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Stage demo with matching engine assets
-        run: |
-          mkdir -p "$RUNNER_TEMP/site/js/public"
-          cp -R demo "$RUNNER_TEMP/site/demo"
-          cp js/public/inditrans.js "$RUNNER_TEMP/site/js/public/"
-          cp js/inditrans-standalone.js "$RUNNER_TEMP/site/js/"
-          python3 - "$RUNNER_TEMP/site/demo/index.html" flutter/pubspec.yaml <<'PY'
-          import re
-          import sys
-          from pathlib import Path
+      - name: Checkout trusted main workflow and staging script
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
 
-          page = Path(sys.argv[1])
-          manifest = Path(sys.argv[2])
-          version_match = re.search(r"(?m)^version:\s*(\d+\.\d+\.\d+)\s*$", manifest.read_text(encoding="utf-8"))
-          if not version_match:
-              raise SystemExit(f"Could not read package version from {manifest}")
-          html, replacements = re.subn(
-              r'(<meta name="inditrans-version" content=")[^"]+(">)',
-              rf"\g<1>v{version_match.group(1)}\2",
-              page.read_text(encoding="utf-8"),
-              count=1,
-          )
-          if replacements != 1:
-              raise SystemExit(f"Expected one inditrans-version meta tag in {page}")
-          page.write_text(html, encoding="utf-8")
-          print(f"Injected demo engine version v{version_match.group(1)}")
-          PY
-          printf '<!doctype html><meta http-equiv="refresh" content="0;url=demo/"><a href="demo/">Inditrans demo</a>\n' > "$RUNNER_TEMP/site/index.html"
+      - name: Stage production demo
+        run: python3 scripts/stage_pages_demo.py --source . --destination "$RUNNER_TEMP/site"
+
+      - name: Stage previews for all open same-repository PRs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --paginate "repos/$GITHUB_REPOSITORY/pulls?state=open&base=main&per_page=100" \
+            --jq '.[] | [.number, (.head.repo.full_name // ""), .head.sha] | @tsv' \
+            > "$RUNNER_TEMP/open-prs.tsv"
+          : > "$RUNNER_TEMP/staged-previews.tsv"
+          while IFS=$'\t' read -r number head_repo head_sha; do
+            # Fork PRs are deliberately excluded: do not publish untrusted
+            # JavaScript into the same GitHub Pages origin as production.
+            if [[ "$head_repo" != "$GITHUB_REPOSITORY" ]]; then
+              echo "Skipping fork or deleted PR head: #$number ($head_repo)"
+              continue
+            fi
+            if [[ ! "$number" =~ ^[0-9]+$ || ! "$head_sha" =~ ^[0-9a-f]{40}$ ]]; then
+              echo "Invalid PR metadata for #$number" >&2
+              exit 1
+            fi
+            git fetch --quiet --no-tags --depth=1 origin "$head_sha"
+            src="$RUNNER_TEMP/preview-checkout-$number"
+            git worktree add --quiet --detach "$src" "$head_sha"
+            python3 scripts/stage_pages_demo.py \
+              --source "$src" --destination "$RUNNER_TEMP/site/previews/pr-$number"
+            printf '%s\t%s\n' "$number" "$head_sha" >> "$RUNNER_TEMP/staged-previews.tsv"
+          done < "$RUNNER_TEMP/open-prs.tsv"
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ runner.temp }}/site
       - id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Show deployed preview links
+        if: success()
+        shell: bash
+        env:
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          base="${PAGES_URL%/}/"
+          {
+            echo "### GitHub Pages previews"
+            echo "Production: ${base}demo/"
+            while IFS=$'\t' read -r number sha; do
+              echo "- PR #$number: ${base}previews/pr-$number/demo/ (commit \`${sha:0:12}\`)"
+            done < "$RUNNER_TEMP/staged-previews.tsv"
+          } >> "$GITHUB_STEP_SUMMARY"
