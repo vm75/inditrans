@@ -13,6 +13,21 @@ jobs:
         run: python3 -m pip install 'fonttools[woff]==4.67.0' 'uharfbuzz==0.57.0'
       - name: Measure original merged and native fonts
         run: python3 scripts/measure_vedic_font.py
+      - name: Regenerate bundled WOFF2 with pinned sources
+        run: python3 scripts/generate_demo_font.py
+      - name: Measure updated font
+        run: python3 scripts/measure_vedic_font.py
+      - name: Verify complete shaping and vertical geometry
+        run: python3 scripts/verify_demo_font.py
+      - name: Commit deterministic generated font
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add demo/fonts/inditrans-indic-fallback.woff2
+          if ! git diff --cached --quiet; then
+            git commit -m "Regenerate Indic fallback with repaired Vedic anchors"
+            git push
+          fi
       - name: Upload measurements
         uses: actions/upload-artifact@v4
         with:
