@@ -57,6 +57,49 @@ jobs:
             nodejs/src/Option.ts \
             js/src/inditrans.post.js
 
+  indicative-font:
+    name: Bundled Indic Font, Vedic Ink & Browser Snapshot
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install pinned FontTools and HarfBuzz
+        run: python3 -m pip install 'fonttools[woff]==4.67.0' 'uharfbuzz==0.57.0'
+
+      - name: Rebuild pinned font reproducibly
+        run: |
+          python3 scripts/generate_demo_font.py
+          git diff --exit-code -- demo/fonts/inditrans-indic-fallback.woff2 demo/fonts/OFL.txt
+
+      - name: Verify positioned accents and complete shaping
+        run: python3 scripts/verify_demo_font.py
+
+      - name: Set up Chrome
+        uses: browser-actions/setup-chrome@v1
+        id: chrome
+        with:
+          chrome-version: stable
+
+      - name: Capture native-versus-combined font comparison
+        run: |
+          python3 -m http.server 18775 --bind 127.0.0.1 >/tmp/vedic-font-http.log 2>&1 &
+          sleep 1
+          mkdir -p out
+          "${{ steps.chrome.outputs.chrome-path }}" --headless --no-sandbox \
+            --disable-gpu --hide-scrollbars --virtual-time-budget=2000 \
+            --window-size=1800,2200 \
+            --screenshot=out/vedic-accent-comparison.png \
+            http://127.0.0.1:18775/demo/fonts/vedic-accent-comparison.html
+          test -s out/vedic-accent-comparison.png
+
+      - name: Upload visual comparison
+        uses: actions/upload-artifact@v4
+        with:
+          name: vedic-accent-browser-comparison
+          path: out/vedic-accent-comparison.png
+          retention-days: 14
+
   native:
     name: Native C++ Tests
     runs-on: ubuntu-24.04
@@ -109,7 +152,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Detect whether PR changes affect native performance
+      - name: Detect native benchmark impact
         id: impact
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
@@ -118,22 +161,32 @@ jobs:
           import os
           import subprocess
 
+          # A font/demo-only PR cannot change native transliteration speed.
+          # Keep benchmarking all unknown paths, engine data and build inputs.
           changed = subprocess.check_output(
               ["git", "diff", "--name-only", os.environ["BASE_SHA"], "HEAD"],
               text=True,
           ).splitlines()
-          # This PR touches only Pages deployment and its isolated tests.
-          # Unknown changes or an empty diff must still run the benchmarks.
-          pages_only = {
-              ".github/workflows/pages.yml",
-              ".github/workflows/ci.yml",
-              "demo/README.md",
-              "scripts/stage_pages_demo.py",
-              "scripts/tests/test_stage_pages_demo.py",
+          neutral_files = {
+              "README.md",
+              "scripts/README.md",
+              "scripts/generate_demo_font.py",
+              "scripts/measure_vedic_font.py",
+              "scripts/verify_demo_font.py",
           }
-          run = not changed or any(path not in pages_only for path in changed)
-          print("Changed paths:", *changed, sep="\n  ")
-          print("Run native benchmarks:", run)
+          def neutral(path):
+              return (
+                  path in neutral_files
+                  or path.startswith(("demo/", ".github/"))
+                  or (path.startswith("docs/") and path != "docs/extended-roman.txt")
+              )
+
+          relevant = [path for path in changed if not neutral(path)]
+          # An empty/unknown diff must not accidentally bypass the gate.
+          run = bool(relevant) or not changed
+          print("PR changes:", *changed, sep="\n  ")
+          print("Native benchmark inputs:", *relevant, sep="\n  ")
+          print("Run native benchmark:", run)
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
               output.write(f"run={'true' if run else 'false'}\n")
           PY

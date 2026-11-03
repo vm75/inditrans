@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inditrans Vedic accent positioning comparison</title>
+<style>
+@font-face {font-family:Inditrans;src:url("./inditrans-indic-fallback.woff2") format("woff2");}
+@font-face {font-family:NativeDeva;src:url("../../out/demo-font-sources/NotoSerifDevanagari-Regular.ttf");}
+@font-face {font-family:NativeBeng;src:url("../../out/demo-font-sources/NotoSerifBengali-Regular.ttf");}
+@font-face {font-family:NativeGujr;src:url("../../out/demo-font-sources/NotoSerifGujarati-Regular.ttf");}
+@font-face {font-family:NativeGuru;src:url("../../out/demo-font-sources/NotoSerifGurmukhi-Regular.ttf");}
+@font-face {font-family:NativeOrya;src:url("../../out/demo-font-sources/NotoSerifOriya-Regular.ttf");}
+@font-face {font-family:NativeTaml;src:url("../../out/demo-font-sources/NotoSerifTamil-Regular.ttf");}
+@font-face {font-family:NativeTelu;src:url("../../out/demo-font-sources/NotoSerifTelugu-Regular.ttf");}
+@font-face {font-family:NativeKnda;src:url("../../out/demo-font-sources/NotoSerifKannada-Regular.ttf");}
+@font-face {font-family:NativeMlym;src:url("../../out/demo-font-sources/NotoSerifMalayalam-Regular.ttf");}
+@font-face {font-family:NativeSinh;src:url("../../out/demo-font-sources/NotoSerifSinhala-Regular.ttf");}
+:root {font-family:system-ui,sans-serif;color-scheme:light;background:#fafafa;}
+body {max-width:1400px;padding:1.2rem;margin:auto;}
+p {max-width:78ch;line-height:1.5;}
+header {position:sticky;top:0;background:#fafafa;padding:.5rem 0;border-bottom:1px solid #bbb;z-index:1}
+input {vertical-align:middle;}
+main {display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1rem;margin-top:1rem;}
+section {border:1px solid #bbb;background:#fff;border-radius:6px;padding:.7rem;overflow:hidden;}
+h2 {font-size:1rem;margin:.2rem 0 .6rem;}
+.comparison {display:grid;grid-template-columns:1fr 1fr;gap:.4rem;}
+.visual {font-size:38px;line-height:var(--leading,1.25);padding:.3rem 0;white-space:pre-wrap;overflow:visible;}
+.column {border-left:1px dotted #aaa;padding-left:.5rem;}
+small {color:#555}
+</style>
+</head>
+<body>
+<header>
+<h1>Vedic accent placement: pinned Noto Serif vs Inditrans combined font</h1>
+<p>Run <code>uv run scripts/generate_demo_font.py</code> to cache the pinned Noto fonts, then serve the repository root via <code>python3 -m http.server 8000</code> and open this page. Source fonts are <em>not</em> embedded in the repository. Inspect consecutive lines, dependent vowels, conjuncts, and Tamil annotations at different leading; unavailable native font files are indicated by your browser's fallback.</p>
+<label>Line height <output id="value">1.25</output> em
+<input id="leading" type="range" min="0.95" max="1.9" step="0.05" value="1.25"></label>
+</header>
+<main id="grid"></main>
+<script>
+const cases = [
+ ["Devanagari","NativeDeva","अ॑ अ॒ क॑ क॒\nकि॑ कु॒ क्ति॑ क्त॒"],
+ ["Bengali","NativeBeng","অ॑ অ॒ ক॑ ক॒\nকি॑ কু॒ ক্তি॑ ক্ত॒"],
+ ["Gurmukhi","NativeGuru","ਅ॑ ਅ॒ ਕ॑ ਕ॒\nਕਿ॑ ਕੁ॒ ਕ੍ਤਿ॑ ਕ੍ਤ॒"],
+ ["Gujarati","NativeGujr","અ॑ અ॒ ક॑ ક॒\nકિ॑ કુ॒ ક્તિ॑ ક્ત॒"],
+ ["Oriya","NativeOrya","ଅ॑ ଅ॒ କ॑ କ॒\nକି॑ କୁ॒ କ୍ତି॑ କ୍ତ॒"],
+ ["Tamil","NativeTaml","அ॑ அ॒ க॑ க॒\nகி॑ கு॒ க்தி॑ க்த॒\nக²॑ கி³॒ க்ஷ⁴॑"],
+ ["Telugu","NativeTelu","అ॑ అ॒ క॑ క॒\nకి॑ కు॒ క్తి॑ క్త॒"],
+ ["Kannada","NativeKnda","ಅ॑ ಅ॒ ಕ॑ ಕ॒\nಕಿ॑ ಕು॒ ಕ್ತಿ॑ ಕ್ತ॒"],
+ ["Malayalam","NativeMlym","അ॑ അ॒ ക॑ ക॒\nകി॑ കു॒ ക്തി॑ ക്ത॒"],
+ ["Sinhala","NativeSinh","අ॑ අ॒ ක॑ ක॒\nකි॑ කු॒ ක්ති॑ ක්ත॒"],
+];
+const grid=document.querySelector("#grid");
+for(const [label,native,text] of cases){
+ const section=document.createElement("section");
+ const h=document.createElement("h2");h.textContent=label;section.append(h);
+ const pair=document.createElement("div");pair.className="comparison";
+ for(const [title,family] of [["Pinned native",native],["Combined","Inditrans"]]){
+  const col=document.createElement("div");col.className="column";
+  const caption=document.createElement("small");caption.textContent=title;
+  const preview=document.createElement("div");preview.className="visual";
+  preview.style.fontFamily=family;preview.textContent=text;
+  col.append(caption,preview);pair.append(col);
+ }
+ section.append(pair);grid.append(section);
+}
+const slider=document.querySelector("#leading");
+slider.addEventListener("input",()=>{
+ document.documentElement.style.setProperty("--leading",slider.value);
+ document.querySelector("#value").textContent=slider.value;
+});
+</script>
+</body>
+</html>
