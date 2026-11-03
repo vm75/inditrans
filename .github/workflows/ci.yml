@@ -132,10 +132,10 @@ jobs:
               "scripts/tests/test_stage_pages_demo.py",
           }
           run = not changed or any(path not in pages_only for path in changed)
-          print("Changed paths:", *changed, sep="\\n  ")
+          print("Changed paths:", *changed, sep="\n  ")
           print("Run native benchmarks:", run)
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-              output.write(f"run={'true' if run else 'false'}\\n")
+              output.write(f"run={'true' if run else 'false'}\n")
           PY
 
       - name: Select one runner CPU
