@@ -89,11 +89,12 @@ def _cases(font, script):
             cluster = root + chr(virama) + chr(next_cp)
             stems.append(cluster)
             stems.extend(cluster + chr(sign) for sign in signs)
-        if script == "Tamil":
-            stems.extend(root + digit for digit in "²³⁴")
         for stem in stems:
             for mark in TARGET_GAP:
                 yield stem + chr(mark), mark
+                if script == "Tamil":
+                    for digit in "²³⁴":
+                        yield stem + digit + chr(mark), mark
 
 
 def _install(font, script, rules):
@@ -185,10 +186,21 @@ def repair_contextual_vedic_anchors(font):
             gap = _ink_gap(glyphs, mark_index, mark)
             if gap is None:
                 continue
+            # Tamil annotation glyphs should not change accent attachment:
+            # retain the SAME positional correction as the unannotated syllable
+            # even if the extra digit makes the ink-union gap appear small.
+            measured_gap = gap
+            if script == "Tamil" and any(digit in text for digit in "²³⁴"):
+                clean = text.translate(str.maketrans("", "", "²³⁴"))
+                clean_glyphs = shape(clean)
+                clean_indices = [i for i, (name, _) in enumerate(clean_glyphs)
+                                 if name == accent_names[mark]]
+                if len(clean_indices) == 1:
+                    measured_gap = _ink_gap(clean_glyphs, clean_indices[0], mark)
             desired = 0
-            if gap > EXCESS_GAP:
-                desired = round(TARGET_GAP[mark] - gap) if mark == 0x0951 else (
-                    round(gap - TARGET_GAP[mark]))
+            if measured_gap is not None and measured_gap > EXCESS_GAP:
+                desired = round(TARGET_GAP[mark] - measured_gap) if mark == 0x0951 else (
+                    round(measured_gap - TARGET_GAP[mark]))
             key = (FEATURE[script][mark], tuple(name for name, _ in glyphs),
                    mark_index, mark)
             measured[key] = desired
