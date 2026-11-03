@@ -39,7 +39,7 @@ and uses Dart plus Chromium to exercise the Urdu lexicon FFI path in a browser.
 Wine runtime check. Maintenance and verification commands themselves stay here.
 
 `generate_demo_font.py` and `verify_demo_font.py` maintain and check the demo's
-bundled Indic fallback font. Their optional dependencies are pinned inline and
+bundled Indic fallback font. Their optional dependencies (including HarfBuzz for the generator's localized accent lookup) are pinned inline and
 isolated by `uv run`; see [font sources and reproduction](../demo/fonts/README.md).
 They are not needed to serve the demo or run the standard-library script tests.
 
@@ -119,3 +119,14 @@ The reference fonts are cached in `out/demo-font-sources/`.
 `make testall` runs native, standalone Wasm, Flutter, Node.js, demo and maintenance
 tests. The Flutter target builds the Linux shared library and runs `flutter test`;
 it does not launch the interactive Chrome example.
+
+## Indic Vedic font diagnostics
+
+Use `uv run scripts/measure_vedic_font.py` after generating the bundled
+WOFF2 to compare `head`, `hhea`, `OS/2`, script GPOS features, and
+HarfBuzz-positioned glyph rectangles against the hash-pinned Noto sources.
+It writes `out/vedic-font-measurements.json` and prints script-by-script
+accent gaps in 1000-unit em coordinates. For live browser comparison,
+serve the repo root and open `demo/fonts/vedic-accent-comparison.html`.
+The CI font job re-runs the generator deterministically, executes the
+geometry verifier, and captures a Chromium comparison artifact.

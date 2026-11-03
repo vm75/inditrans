@@ -9,10 +9,15 @@ import io
 import hashlib
 from urllib.request import urlopen
 import json
+from collections import Counter
 from pathlib import Path
 import subprocess
+import unicodedata
 
 from fontTools.ttLib import TTFont
+from measure_vedic_font import SAMPLES, shape, native
+from generate_demo_font import SOURCES
+from refine_vedic_anchors import SCRIPTS
 import uharfbuzz as hb
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -85,6 +90,114 @@ def verify_reference_fonts(roman_font):
         print(f"{script}: forward Roman output has complete bundled font coverage")
 
 
+
+def verify_vertical_accent_geometry(bundled, binary):
+    """Check ink placement after HarfBuzz GPOS, not just nonzero offsets.
+
+    Independent vowels have a clean top/bottom and a reliable one-mark ink-gap
+    measurement. For more complex clusters, protect shaping/spacing and check
+    that the same glyphs remain attached; their ink unions are not reliable
+    stand-ins for the contour-by-contour vowel/conjunct attachment zone.
+    """
+    checked = 0
+    for script, samples in SAMPLES.items():
+        glyphs = {}
+        for accent in ("॑", "॒"):
+            reference = shape(bundled, binary, samples[0][0] + accent)
+            glyphs[accent] = reference["glyphs"][-1]["glyph"]
+        for index, sample in enumerate(samples):
+            result = shape(bundled, binary, sample, accent_glyph=glyphs[sample[-1]])
+            if result["missing"] or result["dotted"]:
+                raise AssertionError(f"Unshaped Vedic cluster: {script} {sample!r}")
+            without = shape(bundled, binary, sample[:-1])
+            present = Counter(g["glyph"] for g in without["glyphs"])
+            extra = []
+            for glyph in result["glyphs"]:
+                if present[glyph["glyph"]]:
+                    present[glyph["glyph"]] -= 1
+                else:
+                    extra.append(glyph)
+            # GSUB may choose different accent forms after a dependent vowel.
+            # Count the extra, zero-advance GDEF mark rather than assuming that
+            # the cmap or bare-vowel glyph name survives those substitutions.
+            accents = [g for g in extra if g["class"] == 3 and g["advance"][0] == 0]
+            if not accents:
+                raise AssertionError(f"Missing/nonspacing accent: {script} {sample!r}")
+            # Independent vowels are the first two corpus entries. Their bounds
+            # are unlike a conjunct's combined glyph bounds or a split vowel.
+            if index < 2:
+                gap = result["gap"]
+                if gap is None or not 38 <= gap <= 125:
+                    raise AssertionError(
+                        f"Excessive/colliding Vedic vowel gap: {script} {sample!r}: {gap}")
+            checked += 1
+        print(f"{script}: {len(samples)} positioned U+0951/U+0952 samples verified")
+    sources = [native(family) for family in SOURCES if family != "NotoSerif"]
+    max_source_box = max(font["hhea"].ascent - font["hhea"].descent
+                         + font["hhea"].lineGap for font in sources)
+    actual = (bundled["hhea"].ascent - bundled["hhea"].descent
+              + bundled["hhea"].lineGap)
+    os2 = bundled["OS/2"]
+    if actual > max_source_box:
+        raise AssertionError(f"Inflated merged line box: {actual} vs {max_source_box}")
+    if (os2.sTypoAscender, os2.sTypoDescender, os2.sTypoLineGap) != (
+            bundled["hhea"].ascent, bundled["hhea"].descent,
+            bundled["hhea"].lineGap):
+        raise AssertionError("Typographic and hhea line metrics disagree")
+    if os2.usWinAscent < bundled["head"].yMax or os2.usWinDescent < -bundled["head"].yMin:
+        # Noto sources themselves can overflow their Windows clip bounds.
+        # Do not enforce this unless the source set is normalized as a whole.
+        print("Note: some inherited glyph extrema exceed OS/2 Win clip metrics")
+    print(f"Validated {checked} shaped Vedic ink cases; line box {actual}/{max_source_box} units")
+
+
+
+def verify_contextual_vedic_geometry(font, data):
+    """Check consonant and dependent-vowel ink, not just the independent vowels.
+
+    These cases caught the original large gaps (e.g. Tamil க॑ / Telugu క॒)
+    that the old independent-vowel-only quality assertions never measured.
+    """
+    representative = {
+        "Bengali": ["ক", "কা", "কি", "কু", "কে"],
+        "Tamil": ["க", "கா", "கி", "கு", "கே", "கை"],
+        "Telugu": ["క", "కా", "కి", "కు", "కే"],
+        "Kannada": ["ಕ", "ಕಾ", "ಕಿ", "ಕು", "ಕೇ"],
+        "Malayalam": ["ക", "കാ", "കി", "കു", "കേ"],
+    }
+    total = 0
+    cmap = font.getBestCmap()
+    for script, (span, _, _, _) in SCRIPTS.items():
+        checked = 0
+        for base in representative[script]:
+            for accent in ("॑", "॒"):
+                trial = shape(font, data, base + accent)
+                if trial["missing"] or trial["dotted"]:
+                    raise AssertionError(f"Unshaped {script} contextual accent: {base + accent!r}")
+                # Split vowels and reordered signs sometimes give negative ink
+                # union gaps despite no collision; enforce the clearly excessive
+                # positive clearances identified by the shaped test corpus.
+                if trial["gap"] is not None and trial["gap"] > 160:
+                    raise AssertionError(
+                        f"Excessive {script} contextual Vedic gap: {base + accent!r}: {trial['gap']}")
+                checked += 1
+        start, stop = span
+        for cp in range(start, stop):
+            if cp not in cmap or unicodedata.category(chr(cp)) != "Lo":
+                continue
+            for accent in ("॑", "॒"):
+                trial = shape(font, data, chr(cp) + accent)
+                if trial["missing"] or trial["dotted"]:
+                    raise AssertionError(f"Unshaped {script} consonant: {chr(cp) + accent!r}")
+                if len(trial["glyphs"]) == 2 and trial["gap"] is not None and trial["gap"] > 160:
+                    raise AssertionError(
+                        f"Excessive {script} bare-consonant gap: {chr(cp) + accent!r}: {trial['gap']}")
+                checked += 1
+        print(f"{script}: {checked} consonant and vowel-sign Vedic ink gaps checked")
+        total += checked
+    print(f"{total} contextual Vedic ink cases passed")
+
+
 def main():
     # Use the demo's real data; newly added scripts and keyboard symbols are checked too.
     extract = r"""
@@ -111,6 +224,8 @@ console.log(JSON.stringify({scripts: Object.fromEntries(Object.entries(data.scri
     decompressed = io.BytesIO()
     bundled.save(decompressed)
     font = hb.Font(hb.Face(decompressed.getvalue()))
+    verify_vertical_accent_geometry(bundled, decompressed.getvalue())
+    verify_contextual_vedic_geometry(bundled, decompressed.getvalue())
     marks = ["", "॑", "॒", "᳚", "᳴", "॒᳴"]
     count = 0
 

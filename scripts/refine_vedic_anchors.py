@@ -1,0 +1,284 @@
+"""Repair Vedic accent gaps with sparse context-sensitive GPOS adjustments.
+
+A bare consonant and a consonant with a vowel sign can share a base anchor.
+We measure their HarfBuzz-shaped ink separately, then add residual ContextPos
+adjustments. Longer glyph sequences compensate shorter matches as needed.
+Non-Vedic mark classes, GSUB, glyph outlines and advances stay unchanged.
+"""
+from collections import defaultdict
+import io
+import unicodedata
+
+from fontTools.otlLib.builder import buildCoverage, buildLookup, buildSinglePosSubtable, buildValue
+from fontTools.pens.boundsPen import BoundsPen
+from fontTools.ttLib.tables import otTables
+import uharfbuzz as hb
+
+# consonant range, dependent-mark range, virama, OpenType script tags
+SCRIPTS = {
+    "Bengali": ((0x0995, 0x09BA), (0x09BC, 0x09E3), 0x09CD, ("beng", "bng2")),
+    "Tamil": ((0x0B95, 0x0BBA), (0x0BBE, 0x0BD0), 0x0BCD, ("taml", "tml2")),
+    "Telugu": ((0x0C15, 0x0C3A), (0x0C3E, 0x0C63), 0x0C4D, ("telu", "tel2")),
+    "Kannada": ((0x0C95, 0x0CBA), (0x0CBE, 0x0CE3), 0x0CCD, ("knda", "knd2")),
+    "Malayalam": ((0x0D15, 0x0D3A), (0x0D3E, 0x0D63), 0x0D4D, ("mlym", "mlm2")),
+}
+FEATURE = {
+    "Bengali": {0x0951: "blwm", 0x0952: "blwm"},
+    "Tamil": {0x0951: "abvm", 0x0952: "blwm"},
+    "Telugu": {0x0951: "abvm", 0x0952: "abvm"},
+    "Kannada": {0x0951: "abvm", 0x0952: "abvm"},
+    "Malayalam": {0x0951: "blwm", 0x0952: "blwm"},
+}
+TARGET_GAP = {0x0951: 64, 0x0952: 76}
+EXCESS_GAP = 145
+
+
+def _shaper(font):
+    stream = io.BytesIO()
+    font.save(stream)
+    hb_font = hb.Font(hb.Face(stream.getvalue()))
+    order = font.getGlyphOrder()
+    glyphs = font.getGlyphSet()
+    bounds = {}
+
+    def shape(text):
+        buffer = hb.Buffer()
+        buffer.add_str(text)
+        buffer.guess_segment_properties()
+        hb.shape(hb_font, buffer)
+        x = y = 0
+        result = []
+        for info, pos in zip(buffer.glyph_infos, buffer.glyph_positions):
+            name = order[info.codepoint]
+            if name not in bounds:
+                pen = BoundsPen(glyphs)
+                glyphs[name].draw(pen)
+                bounds[name] = pen.bounds
+            rect = bounds[name]
+            if rect:
+                rect = (rect[0] + x + pos.x_offset, rect[1] + y + pos.y_offset,
+                        rect[2] + x + pos.x_offset, rect[3] + y + pos.y_offset)
+            result.append((name, rect))
+            x += pos.x_advance
+            y += pos.y_advance
+        return result
+
+    return shape
+
+
+def _ink_gap(glyphs, mark_index, mark):
+    rect = glyphs[mark_index][1]
+    others = [r for index, (_, r) in enumerate(glyphs) if index != mark_index and r]
+    if not rect or not others:
+        return None
+    return (rect[1] - max(r[3] for r in others)) if mark == 0x0951 else (
+        min(r[1] for r in others) - rect[3])
+
+
+def _cases(font, script):
+    (lo, hi), (start, stop), virama, _ = SCRIPTS[script]
+    cmap = font.getBestCmap()
+    letters = [cp for cp in range(lo, hi) if cp in cmap
+               and unicodedata.category(chr(cp)) == "Lo"]
+    # These signs are the highest-use local contexts, including all vowel
+    # signs in the browser regression fixture. Materializing *every* matra and
+    # conjunct as separate GPOS rules overflows the merged LookupList.
+    common = {
+        "Bengali": "ািুে",
+        "Tamil": "ாிீுேை",
+        "Telugu": "ాిుే",
+        "Kannada": "ಾಿುೇ",
+        "Malayalam": "ാിുേ",
+    }
+    signs = [sign for sign in common[script] if ord(sign) in cmap]
+    for cp in letters:
+        root = chr(cp)
+        stems = [root] + [root + sign for sign in signs]
+        stems.append(root + chr(virama) + chr(letters[0]))
+        for stem in stems:
+            for mark in TARGET_GAP:
+                yield stem + chr(mark), mark
+
+
+def _install_all(font, plans, shared_lookups):
+    """Share entire extension-context lookups across script-specific features.
+
+    A merged Indic font already has many native lookups. Adding separate
+    context lookups per script overflows GPOS LookupList's 16-bit offsets.
+    Lookups can be shared: the coverage glyphs themselves are script-specific.
+    """
+    gpos = font["GPOS"].table
+    glyph_map = font.getReverseGlyphMap()
+
+    def context(names, index, lookup_index):
+        table = otTables.ContextPos()
+        table.Format = 3
+        table.GlyphCount = len(names)
+        table.PosCount = 1
+        table.Coverage = [buildCoverage([name], glyph_map) for name in names]
+        record = otTables.PosLookupRecord()
+        record.SequenceIndex = index
+        record.LookupListIndex = lookup_index
+        table.PosLookupRecord = [record]
+        return table
+
+    groups = defaultdict(list)
+    for rules in plans.values():
+        for (tag, names, index, mark), delta in rules.items():
+            if delta:
+                groups[(tag, len(names))].append(context(names, index, shared_lookups[delta]))
+
+    feature_lookups = defaultdict(list)
+    for (tag, length), subtables in sorted(groups.items()):
+        # Offset16 points only to the ExtensionPos wrappers; their data uses
+        # Offset32. Limit wrapper arrays to keep the lookup header compact.
+        for i in range(0, len(subtables), 1200):
+            index = len(gpos.LookupList.Lookup)
+            gpos.LookupList.Lookup.append(
+                buildLookup(subtables[i:i + 1200], extension=True, table="GPOS"))
+            feature_lookups[tag].append(index)
+    gpos.LookupList.LookupCount = len(gpos.LookupList.Lookup)
+
+    patched = set()
+    for script, (_, _, _, script_tags) in SCRIPTS.items():
+        required = {FEATURE[script][mark] for (_, _, _, mark) in plans[script]}
+        found = set()
+        for script_record in gpos.ScriptList.ScriptRecord:
+            if script_record.ScriptTag not in script_tags:
+                continue
+            languages = [script_record.Script.DefaultLangSys] + [
+                entry.LangSys for entry in script_record.Script.LangSysRecord]
+            for language in filter(None, languages):
+                for feature_index in language.FeatureIndex:
+                    feature = gpos.FeatureList.FeatureRecord[feature_index]
+                    if feature.FeatureTag not in required:
+                        continue
+                    found.add(feature.FeatureTag)
+                    if feature_index in patched:
+                        continue
+                    feature.Feature.LookupListIndex.extend(feature_lookups[feature.FeatureTag])
+                    feature.Feature.LookupCount = len(feature.Feature.LookupListIndex)
+                    patched.add(feature_index)
+        if required - found:
+            raise ValueError(f"Missing {script} native GPOS features: {required - found}")
+    return sum(map(len, groups.values())), sum(map(len, feature_lookups.values()))
+
+
+
+def repair_contextual_vedic_anchors(font):
+    """Measure consonant/matra contexts and install only needed Vedic offsets."""
+    shape = _shaper(font)
+    stats = {}
+    plans = {}
+    for script in SCRIPTS:
+        sample_letter = chr(SCRIPTS[script][0][0])
+        accent_names = {
+            mark: shape(sample_letter + chr(mark))[-1][0] for mark in TARGET_GAP
+        }
+        measured = {}
+        for text, mark in _cases(font, script):
+            glyphs = shape(text)
+            if not 2 <= len(glyphs) <= 7 or any(name == ".notdef" for name, _ in glyphs):
+                continue
+            matches = [i for i, (name, _) in enumerate(glyphs)
+                       if name == accent_names[mark]]
+            if len(matches) != 1:
+                continue
+            mark_index = matches[0]
+            gap = _ink_gap(glyphs, mark_index, mark)
+            if gap is None:
+                continue
+            measured_gap = gap
+            desired = 0
+            if measured_gap is not None and measured_gap > EXCESS_GAP:
+                raw = TARGET_GAP[mark] - measured_gap if mark == 0x0951 else (
+                    measured_gap - TARGET_GAP[mark])
+                # Quantize to 32 font units (at most 16 units' deviation) to
+                # bound the shared GPOS lookup count without outline changes.
+                desired = 32 * round(raw / 32)
+            key = (FEATURE[script][mark], tuple(name for name, _ in glyphs),
+                   mark_index, mark)
+            measured[key] = desired
+
+        rules = {}
+        for key, desired in sorted(measured.items(), key=lambda pair: len(pair[0][1])):
+            tag, sequence, accent_index, mark = key
+            # Short lookup matches inside longer Indic clusters. Compensate
+            # their shifts with residual longer-context rules; this preserves
+            # vowel-sign/conjunct examples that already have adequate gaps.
+            inherited = 0
+            for (prior_tag, pattern, prior_index, prior_mark), delta in rules.items():
+                if prior_tag != tag or prior_mark != mark:
+                    continue
+                for start in range(len(sequence) - len(pattern) + 1):
+                    if (sequence[start:start + len(pattern)] == pattern
+                            and start + prior_index == accent_index):
+                        inherited += delta
+            residual = desired - inherited
+            if residual:
+                rules[key] = residual
+        stats[script] = {"measured": len(measured)}
+        plans[script] = rules
+
+    # Tamil superscript annotations must follow the *exact same positional
+    # adjustments* as their unannotated base, even when a conjunct isn't in
+    # the compact measurement corpus. The original Noto offsets match; the
+    # context corrections must therefore also match.
+    tamil = plans["Tamil"]
+
+    def matching_shift(rules, tag, names, accent_index, mark):
+        total = 0
+        for (feature, pattern, index, source_mark), value in rules.items():
+            if feature != tag or source_mark != mark:
+                continue
+            for begin in range(len(names) - len(pattern) + 1):
+                if names[begin:begin + len(pattern)] == pattern and begin + index == accent_index:
+                    total += value
+        return total
+
+    for stem in ("க", "கி", "கு", "கீ", "க்ஷ", "த்யே", "ஃக"):
+        for mark in TARGET_GAP:
+            tag = FEATURE["Tamil"][mark]
+            glyph_name = shape("க" + chr(mark))[-1][0]
+            plain = shape(stem + chr(mark))
+            plain_positions = [i for i, (name, _) in enumerate(plain) if name == glyph_name]
+            if len(plain_positions) != 1:
+                continue
+            plain_names = tuple(name for name, _ in plain)
+            desired = matching_shift(tamil, tag, plain_names, plain_positions[0], mark)
+            for digit in "²³⁴":
+                annotated = shape(stem + digit + chr(mark))
+                positions = [i for i, (name, _) in enumerate(annotated) if name == glyph_name]
+                if len(positions) != 1:
+                    continue
+                names = tuple(name for name, _ in annotated)
+                current = matching_shift(tamil, tag, names, positions[0], mark)
+                correction = desired - current
+                if correction:
+                    key = (tag, names, positions[0], mark)
+                    tamil[key] = tamil.get(key, 0) + correction
+
+    # One SinglePos lookup can serve all script-specific accent glyphs sharing
+    # the same quantized YPlacement. This avoids the 16-bit GPOS LookupList
+    # overflow caused by thousands of one-mark adjustment lookups.
+    deltas = defaultdict(set)
+    for rules in plans.values():
+        for (_, sequence, index, _), amount in rules.items():
+            deltas[amount].add(sequence[index])
+    gpos = font["GPOS"].table
+    glyph_map = font.getReverseGlyphMap()
+    shared_lookups = {}
+    for amount, names in sorted(deltas.items()):
+        mapping = {name: buildValue({"YPlacement": amount}) for name in names}
+        subtable = buildSinglePosSubtable(mapping, glyph_map)
+        shared_lookups[amount] = len(gpos.LookupList.Lookup)
+        gpos.LookupList.Lookup.append(buildLookup([subtable]))
+    gpos.LookupList.LookupCount = len(gpos.LookupList.Lookup)
+
+    for script, rules in plans.items():
+        stats[script]["context_rules"] = len(rules)
+    total, shared_contexts = _install_all(font, plans, shared_lookups)
+    stats["shared_shift_lookups"] = len(shared_lookups)
+    stats["shared_context_lookups"] = shared_contexts
+    stats["total_context_rules"] = total
+    return stats

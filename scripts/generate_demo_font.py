@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["fonttools[woff]==4.67.0"]
+# dependencies = ["fonttools[woff]==4.67.0", "uharfbuzz==0.57.0"]
 # ///
 """Build the demo's complete-cluster fallback: uv run scripts/generate_demo_font.py."""
 
 import hashlib
+import io
+import copy
 import unicodedata
 from pathlib import Path
 from urllib.request import urlopen
@@ -16,6 +18,8 @@ from fontTools.otlLib.builder import buildAnchor, buildLookup, buildMarkBasePosS
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.ttLib.tables import otTables
 from fontTools.ttLib import TTFont
+from refine_vedic_anchors import repair_contextual_vedic_anchors
+import uharfbuzz as hb
 
 ROOT = Path(__file__).resolve().parents[1]
 REVISION = "ffebf8c1ee449e544955a7e813c54f9b73848eac"
@@ -163,6 +167,148 @@ def add_shared_mark_positioning(font, source_coverage):
                 language.ReqFeatureIndex = remap[language.ReqFeatureIndex]
 
 
+
+# These source families already contain U+0951/U+0952 and native abvm/blwm
+# anchors, but some position them hundreds of units away from ordinary vowels.
+# Glyphs with dependent vowels or conjunct components can need that additional
+# room, so repair only the distinct *independent vowel* anchors.
+VEDIC_VOWEL_ZONES = {
+    "Bengali": range(0x0985, 0x0995),
+    "Tamil": range(0x0B85, 0x0B95),
+    "Telugu": range(0x0C05, 0x0C15),
+    "Kannada": range(0x0C85, 0x0C95),
+    "Malayalam": range(0x0D05, 0x0D15),
+}
+VEDIC_LOOKUP_TAGS = {
+    "Bengali": {0x0951: "blwm", 0x0952: "blwm"},
+    "Tamil": {0x0951: "abvm", 0x0952: "blwm"},
+    "Telugu": {0x0951: "abvm", 0x0952: "abvm"},
+    "Kannada": {0x0951: "abvm", 0x0952: "abvm"},
+    "Malayalam": {0x0951: "blwm", 0x0952: "blwm"},
+}
+# Typical unobstructed native Devanagari, Gujarati, Gurmukhi and Oriya
+# reference marks have around 54-80 units above and 64-90 units below.
+VEDIC_CLEARANCE = {0x0951: 64, 0x0952: 76}
+
+
+def repair_native_vedic_vowel_anchors(font):
+    """Give Vedic marks independent native GPOS classes for ordinary vowels.
+
+    Never rewrite a shared base anchor: its class is used by other diacritics.
+    Preserve native mark-to-mark lookups, consonants, conjuncts, vowel signs
+    and the Tamil localized superscript classification.
+    """
+    cmap = font.getBestCmap()
+    glyph_set = font.getGlyphSet()
+    bounds = {}
+
+    def ink(name):
+        if name not in bounds:
+            pen = BoundsPen(glyph_set)
+            glyph_set[name].draw(pen)
+            bounds[name] = pen.bounds
+        return bounds[name]
+
+    buffer = io.BytesIO()
+    font.save(buffer)
+    shaping_font = hb.Font(hb.Face(buffer.getvalue()))
+    glyph_order = font.getGlyphOrder()
+    gpos = font["GPOS"].table
+
+    for script, vowels in VEDIC_VOWEL_ZONES.items():
+        vowel_names = {cmap[code] for code in vowels if code in cmap}
+        sample = chr(next(code for code in vowels if code in cmap))
+        for code, feature_tag in VEDIC_LOOKUP_TAGS[script].items():
+            shaped = hb.Buffer()
+            shaped.add_str(sample + chr(code))
+            shaped.guess_segment_properties()
+            hb.shape(shaping_font, shaped)
+            mark_name = glyph_order[shaped.glyph_infos[-1].codepoint]
+            mark_ink = ink(mark_name)
+            if not mark_ink:
+                raise ValueError(f"Missing {script} mark bounds for U+{code:04X}")
+            patched = False
+            for record in gpos.ScriptList.ScriptRecord:
+                if record.ScriptTag not in SCRIPT_TAGS[script]:
+                    continue
+                language = record.Script.DefaultLangSys
+                if language is None:
+                    continue
+                for index in language.FeatureIndex:
+                    feature = gpos.FeatureList.FeatureRecord[index]
+                    if feature.FeatureTag != feature_tag:
+                        continue
+                    for lookup_index in feature.Feature.LookupListIndex:
+                        lookup = gpos.LookupList.Lookup[lookup_index]
+                        for wrapper in lookup.SubTable:
+                            subtable = getattr(wrapper, "ExtSubTable", wrapper)
+                            if not isinstance(subtable, otTables.MarkBasePos):
+                                continue
+                            if mark_name not in subtable.MarkCoverage.glyphs:
+                                continue
+                            mark_index = subtable.MarkCoverage.glyphs.index(mark_name)
+                            mark_record = subtable.MarkArray.MarkRecord[mark_index]
+                            old_class = mark_record.Class
+                            mark_anchor = mark_record.MarkAnchor
+                            new_class = subtable.ClassCount
+                            modified = False
+                            for base_name, base_record in zip(
+                                    subtable.BaseCoverage.glyphs, subtable.BaseArray.BaseRecord):
+                                original = base_record.BaseAnchor[old_class]
+                                anchor = copy.deepcopy(original)
+                                if anchor is not None and base_name in vowel_names:
+                                    base_ink = ink(base_name)
+                                    if base_ink:
+                                        if code == 0x0951:
+                                            gap = (original.YCoordinate - mark_anchor.YCoordinate
+                                                   + mark_ink[1] - base_ink[3])
+                                            amount = max(0, round(gap - VEDIC_CLEARANCE[code]))
+                                            anchor.YCoordinate -= amount
+                                        else:
+                                            gap = (base_ink[1] - original.YCoordinate
+                                                   + mark_anchor.YCoordinate - mark_ink[3])
+                                            amount = max(0, round(gap - VEDIC_CLEARANCE[code]))
+                                            anchor.YCoordinate += amount
+                                        modified |= amount > 0
+                                base_record.BaseAnchor.append(anchor)
+                            if modified:
+                                mark_record.Class = new_class
+                                subtable.ClassCount += 1
+                                patched = True
+                            else:
+                                for base_record in subtable.BaseArray.BaseRecord:
+                                    base_record.BaseAnchor.pop()
+                            if patched:
+                                break
+                        if patched:
+                            break
+                    if patched:
+                        break
+                if patched:
+                    break
+            if not patched:
+                raise ValueError(f"Missing native {script} U+{code:04X} {feature_tag} vowel anchors")
+
+
+def compact_merged_line_metrics(font, source_metrics):
+    """Avoid stacking unrelated fonts' independent ascent/descent extrema.
+
+    Preserve true head glyph bounds and the conservative OS/2 Win clip limits;
+    compact only the browser-facing hhea/typographic line-box metrics.
+    """
+    line_height = max(asc - desc + gap for asc, desc, gap in source_metrics)
+    ascent = max(asc for asc, _, _ in source_metrics)
+    descent = ascent - line_height
+    assert descent < 0
+    font["hhea"].ascent = ascent
+    font["hhea"].descent = descent
+    font["hhea"].lineGap = 0
+    os2 = font["OS/2"]
+    os2.sTypoAscender = ascent
+    os2.sTypoDescender = descent
+    os2.sTypoLineGap = 0
+
+
 def main():
     cache = ROOT / "out/demo-font-sources"
     output = ROOT / "demo/fonts"
@@ -171,6 +317,7 @@ def main():
     files = []
     copyrights = set()
     source_coverage = {}
+    source_metrics = []
     for family, expected_hash in SOURCES.items():
         name = family + "-Regular.ttf"
         path = cache / name
@@ -181,6 +328,7 @@ def main():
             raise ValueError(f"Source checksum mismatch: {path}")
         with TTFont(path) as source:
             source_coverage[family.removeprefix("NotoSerif")] = set(source.getBestCmap())
+            source_metrics.append((source["hhea"].ascent, source["hhea"].descent, source["hhea"].lineGap))
             copyrights.update(record.toUnicode() for record in source["name"].names if record.nameID == 0)
         files.append(str(path))
 
@@ -195,6 +343,10 @@ def main():
     subsetter.subset(font)
     classify_tamil_annotations(font)
     add_shared_mark_positioning(font, source_coverage)
+    repair_native_vedic_vowel_anchors(font)
+    report = repair_contextual_vedic_anchors(font)
+    print("Contextual Vedic corrections:", report)
+    compact_merged_line_metrics(font, source_metrics)
     family = "Inditrans Indic Fallback"
     names = {
         0: "\n".join(sorted(copyrights)), 1: family, 2: "Regular",
@@ -206,7 +358,12 @@ def main():
     for name_id, value in names.items():
         font["name"].setName(value, name_id, 3, 1, 0x409)
     font.recalcTimestamp = False
-    font["head"].modified = 2082844800 + 1674654016
+    # Merger builds a new head table, so its *created* timestamp otherwise
+    # depends on wall-clock time even with recalcTimestamp disabled. That
+    # changes the whole-font checksum and WOFF2 bytes on every build.
+    fixed_timestamp = 2082844800 + 1674654016
+    font["head"].created = fixed_timestamp
+    font["head"].modified = fixed_timestamp
     font.flavor = "woff2"
     destination = output / "inditrans-indic-fallback.woff2"
     font.save(destination)
