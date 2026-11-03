@@ -18,6 +18,7 @@ from fontTools.otlLib.builder import buildAnchor, buildLookup, buildMarkBasePosS
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.ttLib.tables import otTables
 from fontTools.ttLib import TTFont
+from refine_vedic_anchors import repair_contextual_vedic_anchors
 import uharfbuzz as hb
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -343,6 +344,8 @@ def main():
     classify_tamil_annotations(font)
     add_shared_mark_positioning(font, source_coverage)
     repair_native_vedic_vowel_anchors(font)
+    report = repair_contextual_vedic_anchors(font)
+    print("Contextual Vedic corrections:", report)
     compact_merged_line_metrics(font, source_metrics)
     family = "Inditrans Indic Fallback"
     names = {
