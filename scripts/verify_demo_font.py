@@ -12,10 +12,12 @@ import json
 from collections import Counter
 from pathlib import Path
 import subprocess
+import unicodedata
 
 from fontTools.ttLib import TTFont
 from measure_vedic_font import SAMPLES, shape, native
 from generate_demo_font import SOURCES
+from refine_vedic_anchors import SCRIPTS
 import uharfbuzz as hb
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -149,6 +151,53 @@ def verify_vertical_accent_geometry(bundled, binary):
     print(f"Validated {checked} shaped Vedic ink cases; line box {actual}/{max_source_box} units")
 
 
+
+def verify_contextual_vedic_geometry(font, data):
+    """Check consonant and dependent-vowel ink, not just the independent vowels.
+
+    These cases caught the original large gaps (e.g. Tamil க॑ / Telugu క॒)
+    that the old independent-vowel-only quality assertions never measured.
+    """
+    representative = {
+        "Bengali": ["ক", "কা", "কি", "কু", "কে"],
+        "Tamil": ["க", "கா", "கி", "கு", "கே", "கை"],
+        "Telugu": ["క", "కా", "కి", "కు", "కే"],
+        "Kannada": ["ಕ", "ಕಾ", "ಕಿ", "ಕು", "ಕೇ"],
+        "Malayalam": ["ക", "കാ", "കി", "കു", "കേ"],
+    }
+    total = 0
+    cmap = font.getBestCmap()
+    for script, (span, _, _, _) in SCRIPTS.items():
+        checked = 0
+        for base in representative[script]:
+            for accent in ("॑", "॒"):
+                trial = shape(font, data, base + accent)
+                if trial["missing"] or trial["dotted"]:
+                    raise AssertionError(f"Unshaped {script} contextual accent: {base + accent!r}")
+                # Split vowels and reordered signs sometimes give negative ink
+                # union gaps despite no collision; enforce the clearly excessive
+                # positive clearances identified by the shaped test corpus.
+                if trial["gap"] is not None and trial["gap"] > 160:
+                    raise AssertionError(
+                        f"Excessive {script} contextual Vedic gap: {base + accent!r}: {trial['gap']}")
+                checked += 1
+        start, stop = span
+        for cp in range(start, stop):
+            if cp not in cmap or unicodedata.category(chr(cp)) != "Lo":
+                continue
+            for accent in ("॑", "॒"):
+                trial = shape(font, data, chr(cp) + accent)
+                if trial["missing"] or trial["dotted"]:
+                    raise AssertionError(f"Unshaped {script} consonant: {chr(cp) + accent!r}")
+                if len(trial["glyphs"]) == 2 and trial["gap"] is not None and trial["gap"] > 160:
+                    raise AssertionError(
+                        f"Excessive {script} bare-consonant gap: {chr(cp) + accent!r}: {trial['gap']}")
+                checked += 1
+        print(f"{script}: {checked} consonant and vowel-sign Vedic ink gaps checked")
+        total += checked
+    print(f"{total} contextual Vedic ink cases passed")
+
+
 def main():
     # Use the demo's real data; newly added scripts and keyboard symbols are checked too.
     extract = r"""
@@ -176,6 +225,7 @@ console.log(JSON.stringify({scripts: Object.fromEntries(Object.entries(data.scri
     bundled.save(decompressed)
     font = hb.Font(hb.Face(decompressed.getvalue()))
     verify_vertical_accent_geometry(bundled, decompressed.getvalue())
+    verify_contextual_vedic_geometry(bundled, decompressed.getvalue())
     marks = ["", "॑", "॒", "᳚", "᳴", "॒᳴"]
     count = 0
 
