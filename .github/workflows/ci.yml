@@ -176,6 +176,7 @@ jobs:
               "scripts/README.md",
               "scripts/generate_demo_font.py",
               "scripts/measure_vedic_font.py",
+              "scripts/refine_vedic_anchors.py",
               "scripts/verify_demo_font.py",
           }
           run = not changed or any(path not in native_neutral for path in changed)
