@@ -1,5 +1,10 @@
 # Inditrans demo
 
+The bundled font is also available for client applications as matching
+[TTF and WOFF2 files](../fonts/README.md#use-in-client-applications), with minimal
+browser and Flutter examples for editable and read-only text. The demo uses
+the same generated font, preferring WOFF2 with TTF as a fallback.
+
 A standalone, buildless page for comparing scripts and fonts, with a script
 keyboard and live transliteration. Open `index.html` in a browser, or serve it
 from the repository root:
@@ -10,7 +15,7 @@ python3 -m http.server 8000
 
 Visit <http://localhost:8000/demo/>. Build matching engine assets with `make wasm`
 first. Internet access is required for hosted fonts; engine assets are loaded
-from this checkout. Pages deploys the demo and matching checked-in JS/Wasm
+from this checkout. Pages deploys the demo, shared `fonts/`, and matching checked-in JS/Wasm
 bundle together, with the site root redirecting to `demo/`.
 
 ## GitHub Pages PR previews
@@ -37,6 +42,9 @@ The default input is the mixed-script sample, with **Mixed Indic** as the source
 and **Indlish** as the output. The **reset icon** restores the current input
 script's bundled sample. Each input script retains its own edits when switching
 scripts; appearance and conversion preferences are retained.
+Tamil vowel signs typed after superscripted consonants are reordered in the input
+(for example, `க²ி` becomes `கி²`). This also applies to pasted text and on-screen
+keys, and waits for IME composition to finish.
 
 Script choices are grouped as **Indic**, **Roman**, and **Perso-Arabic**, with
 **Mixed Indic** remaining a separate input choice. Tamil is in Indic and retains
@@ -49,7 +57,7 @@ Conversion options include **Skip-start** and **Skip-end**, both defaulting to
 the output. Empty delimiter fields use `##`. Delimiters are saved with the session.
 
 In the normal **Full fallback** mode, a restricted registration of the
-[bundled Indic fallback](fonts/README.md) is prioritized for covered Indic
+[bundled Indic fallback](../fonts/README.md) is prioritized for covered Indic
 characters, shared Vedic marks, and Tamil superscript annotations. Keeping
 these characters in one face lets complete accented syllables render even
 when individual script fonts lack a mark. Its Unicode range leaves ordinary
@@ -145,6 +153,11 @@ removed from proverbs to manufacture readable examples. Protected spans in the
 mixed sample intentionally remain unchanged. See the root README's
 [symbol coverage and limitations](../README.md#symbol-coverage-and-limitations)
 for deferred characters and tracking issues.
+
+For visual Vedic accent diagnostics, open [the review page](../fonts/vedic-review.html).
+It offers script and combination filters, all three accents, per-sample problem
+markers, local saving, JSON export, and a native editable preview. See the
+[font documentation](../fonts/README.md#visual-failure-review) for corpus coverage.
 
 ## Mobile
 

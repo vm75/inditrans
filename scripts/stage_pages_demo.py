@@ -28,6 +28,9 @@ def stage_demo(source: Path, destination: Path) -> str:
     version = match.group(1)
 
     shutil.copytree(source / "demo", destination / "demo")
+    # Older PR checkouts keep fonts inside demo/; newer ones share root fonts/.
+    if (source / "fonts").is_dir():
+        shutil.copytree(source / "fonts", destination / "fonts")
     (destination / "js/public").mkdir(parents=True, exist_ok=True)
     shutil.copy2(source / "js/public/inditrans.js", destination / "js/public/inditrans.js")
     shutil.copy2(source / "js/inditrans-standalone.js", destination / "js/inditrans-standalone.js")

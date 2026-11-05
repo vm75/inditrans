@@ -96,6 +96,27 @@ jobs:
           yarn install --frozen-lockfile
           yarn test
 
+      - name: Rebuild and verify release fonts
+        run: |
+          python3 -m pip install 'fonttools[woff]==4.67.0' 'uharfbuzz==0.57.0'
+          python3 scripts/generate_demo_font.py
+          git diff --exit-code -- fonts/inditrans-indic-fallback.ttf fonts/inditrans-indic-fallback.woff2 fonts/OFL.txt
+          python3 scripts/verify_demo_font.py
+          make test_fonts
+
+      - name: Package release fonts
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python3 scripts/package_fonts.py --tag "$RELEASE_TAG"
+
+      - name: Upload font release archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: inditrans-fonts
+          path: out/inditrans-fonts-*.zip
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Verify compiled artifacts and packaging dry-runs
         run: |
           python3 scripts/verify_release.py \
@@ -226,9 +247,16 @@ jobs:
         with:
           name: release-notes
 
+      - name: Download font release archive
+        uses: actions/download-artifact@v4
+        with:
+          name: inditrans-fonts
+          path: release-assets
+
       - name: Create GitHub Release
         run: |
           gh release create "${{ github.ref_name }}" \
+            "release-assets/inditrans-fonts-${{ github.ref_name }}.zip" \
             --title "Release ${{ github.ref_name }}" \
             --notes-file release_notes.md \
             --verify-tag

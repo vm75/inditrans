@@ -124,6 +124,7 @@ js/         WASM build output consumed by nodejs/
 native/     Canonical C++23 engine (source, tests, CLI, and benchmarks)
 scripts/    Build, code-generation, release, and maintenance commands
 demo/       Browser demo and its component tests
+fonts/      Reusable Indic TTF/WOFF2 fonts, license, and usage examples
 tests/      Integration tests against built artifacts
 test-files/ Shared test-case JSON used by all distributions
 ```

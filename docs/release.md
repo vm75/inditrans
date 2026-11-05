@@ -73,6 +73,7 @@ The tag-triggered release workflow strictly enforces the canonical path:
      - Standalone WASM (`flutter/assets/inditrans.wasm`) and JS WASM (`js/public/inditrans.js`) via Emscripten (`make wasm`).
      - Linux native shared library for Flutter FFI tests.
      - Node.js package build (`cd nodejs && yarn build`).
+     - Indic TTF/WOFF2 fonts with pinned FontTools/HarfBuzz, checked against the committed assets and verified with the shaping suite and `make test_fonts`.
    - Runs full test suites across all distributions:
      - Native C++ engine tests (`make test`).
      - Flutter tests and static analysis (`dart analyze`, `flutter test`).
@@ -86,6 +87,10 @@ The tag-triggered release workflow strictly enforces the canonical path:
 5. **`github-release`**:
    - Creates a GitHub Release for tag `vX.Y.Z` using `gh release create`.
    - Attaches the release notes extracted during the `validate` step.
+   - Attaches `inditrans-fonts-vX.Y.Z.zip`, built during `test-and-build` using
+     `python3 scripts/package_fonts.py --tag vX.Y.Z`. The archive contains the
+     TTF, WOFF2, OFL license, and a standalone README with browser and Flutter
+     usage instructions. Review tools and font-development notes are excluded.
 
 ## Safe testing and validation
 
@@ -105,7 +110,7 @@ To verify the release pipeline safely without creating a real release or publish
   against `perf-00-baseline`, using the current harness with unchanged tagged engine sources.
   Multi-platform acceptance (macOS, Windows MSVC, and Android arm64) is maintained in a separate workflow (`.github/workflows/platform.yml`), triggered explicitly on `platform-*` tags or manual `workflow_dispatch`.
   Its Flutter builds use an isolated copy made by `python3 scripts/prepare_flutter_package.py --output out/flutter-package`, exercising bundled sources rather than the monorepo layout.
-- **Demo deployment**: `.github/workflows/pages.yml` stages `demo/` and the matching
+- **Demo deployment**: `.github/workflows/pages.yml` stages `demo/`, shared `fonts/`, and the matching
   checkout's `js/` engine assets together, with the site root redirecting to `demo/`.
   Rebuild the engine before shipping mapping changes; the demo no longer loads an
   independently pinned release from a CDN.

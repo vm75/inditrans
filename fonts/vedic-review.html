@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vedic accent visual review</title>
+<style>
+@font-face {font-family:ReviewIndic;src:url('./inditrans-indic-fallback.woff2?rev=be0346d1') format('woff2');font-weight:400;font-style:normal}
+:root {font-family:system-ui,sans-serif;color:#202b38;background:#f5f6fa;--sample-size:40px}
+* {box-sizing:border-box}
+body {margin:0}
+header {position:sticky;top:0;z-index:2;background:#f5f6fa;border-bottom:1px solid #c3cad4;padding:10px 16px;box-shadow:0 2px 8px #202b3810}
+p {max-width:85ch;line-height:1.5}
+.tools {display:flex;flex-wrap:wrap;align-items:end;gap:8px}
+label {display:grid;gap:3px;font-size:12px}
+button,select,input,textarea {font:inherit;padding:7px;border:1px solid #a3adba;border-radius:5px;background:white;color:inherit}
+select {max-width:240px} input[type=number] {width:72px}
+button {cursor:pointer} button:disabled {cursor:default;opacity:.5}
+button:focus-visible,select:focus-visible {outline:3px solid #3567bf;outline-offset:2px}
+.summary {display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-top:8px;font-size:12px}
+#status:empty {display:none}
+.samples {overflow:auto;height:calc(100dvh - var(--toolbar-height,160px));padding:8px;scroll-padding-top:8px;scroll-padding-left:130px}
+.pattern-row {display:grid;grid-template-columns:120px repeat(var(--columns),calc(var(--sample-size)*2.8));gap:4px;width:max-content;margin-bottom:4px}
+.row-heading {position:sticky;left:0;z-index:1;background:#f5f6fa;white-space:normal;font-size:12px;max-width:120px}
+.row-heading span {display:block;font-family:ReviewIndic,serif;font-size:18px;line-height:1.8}
+.empty-cell {min-height:calc(var(--sample-size)*2.2 + 18px)}
+.card {background:white;border:1px solid #c3cad4;border-radius:4px;min-width:0;padding:8px 4px;overflow-wrap:anywhere;scroll-margin:8px;position:relative;content-visibility:auto;contain-intrinsic-size:auto calc(var(--sample-size)*2.2 + 18px)}
+.card[data-selected=true] {outline:2px solid #3567bf;outline-offset:-3px}
+.card[data-active=true] {box-shadow:inset 0 0 0 4px #3567bf55}
+.card[data-complete=false] {border-style:dashed}
+.card[data-status=collision]::before,.card[data-status=gap]::before,.card[data-status=unsure]::before,
+.card[data-horizontal=left]::after,.card[data-horizontal=right]::after,.card[data-horizontal=unsure]::after {
+  position:absolute;top:3px;right:4px;width:18px;height:18px;border-radius:50%;
+  display:grid;place-items:center;font:700 14px/1 system-ui,sans-serif;color:white;pointer-events:none}
+.card[data-status=collision]::before,.card[data-status=gap]::before,.card[data-status=unsure]::before {left:4px;right:auto}
+.card[data-status=collision]::before {content:'−';background:#b62f3b}
+.card[data-status=gap]::before {content:'+';background:#925400}
+.card[data-horizontal=left]::after {content:'←';background:#2459a6}
+.card[data-horizontal=right]::after {content:'→';background:#7940a0}
+.card[data-status=unsure]::before,.card[data-horizontal=unsure]::after {content:'?';background:#586274}
+fieldset {border:1px solid #c3cad4;border-radius:6px;margin:12px 0;padding:12px}
+button[aria-pressed=true] {outline:2px solid #3567bf;outline-offset:2px}
+#review-note {width:100%}
+.visual,.edit {font-family:ReviewIndic,serif;font-size:var(--sample-size);font-weight:400;font-style:normal;line-height:2.2}
+.edit {width:100%;min-height:160px;padding:16px}
+dialog {width:min(640px,calc(100% - 24px));max-height:90dvh;overflow:auto;border:1px solid #a3adba;border-radius:10px;padding:20px}
+dialog::backdrop {background:#202b3866}
+dialog h2 {margin:0;font-size:1.2rem}
+.dialog-heading {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+#custom {width:100%}
+#review-text {text-align:center;overflow-wrap:anywhere}
+.choices {display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+#font-status {color:#586274}
+</style>
+</head>
+<body>
+<header>
+<div class="tools">
+<label>Script<select id="script"></select></label>
+<label>Combinations<select id="group">
+<option value="vowels">Independent vowels</option><option value="consonants">Consonants</option>
+<option value="signs">Consonants + vowel signs</option><option value="diacritics">Vowels / consonants + diacritics</option>
+<option value="conjuncts">Two-consonant conjuncts</option><option value="conjunctSigns">Conjuncts + vowel signs</option>
+<option value="all">All combinations</option><option value="custom">Custom combinations</option></select></label>
+<label>Accent<select id="accent"><option value="all">All three accents</option></select></label>
+<label>Font size <input id="size" type="number" min="20" max="100" value="40"></label>
+<label>Show<select id="filter"><option value="all">All samples</option><option value="unreviewed">Unreviewed</option><option value="problems">Problems</option><option value="reviewed">Reviewed</option><option value="incomplete">Incomplete / unsure</option></select></label>
+<button id="open-custom">Custom</button>
+<button id="open-editor" disabled>Edit selected</button>
+<button id="export" disabled>Export JSON</button>
+<button id="open-about">About</button>
+</div>
+<div class="summary"><span id="sample-count"></span>
+<span id="selection-count"></span><button id="select-all">Select all</button><button id="clear-selection">Clear selection</button><span id="count"></span><span id="font-status" role="status">Loading bundled font…</span><span id="status" role="status"></span></div>
+</header>
+<dialog id="about-modal" aria-labelledby="about-title">
+<div class="dialog-heading"><h2 id="about-title">About Vedic review</h2><button data-close>Close</button></div>
+<p>Click a character to rate vertical spacing and horizontal placement independently. All cells stay white. Small colored markers indicate non-okay ratings: red − for too close, amber + for too far away, blue ← for too far left, purple → for too far right, and gray ? for unsure. Vertical markers sit at the top left; horizontal markers at the top right. Okay ratings have no marker. Dashed borders mean at least one axis is unreviewed or unsure; a solid border with no markers means both axes are explicitly okay. Only explicit reviews are exported. Reviews save in this browser.</p>
+<p>Choose a script, combination group, accent, and font size in the pinned toolbar. Export JSON includes exact Unicode text, decisions, font size, browser, and font fingerprint. Select a character and use “Edit selected” to try it in a native text area.</p>
+<p>On a focused character, use arrow keys to navigate, Home/End for the first or last sample, and Page Up/Down to move by a screenful. Press 1 for too close, 2 for okay, 3 for too far away. Press 4 for too far left, 5 for horizontally okay, 6 for too far right, or E to edit. The dialog lets you mark either axis unsure and add a note. Rate both axes independently; leaving one blank does not mark it okay. Enter opens the choices. Shortcuts do not run while typing in a field. View settings and the selected character are restored from browser storage.</p>
+<p>Columns keep the same character order. Bare consonants come before vowel-sign rows; each accent has its own row. Click a row heading to select that row. Shift-click or Shift+arrows selects a rectangle; Ctrl/Cmd-click toggles individual cells. Ctrl/Cmd+A selects the displayed cells; Escape clears selection. Ratings 1–6 apply to every selected cell. Click a cell for the rating dialog; Enter opens it for the current selection. Notes in the dialog also apply to all selected cells. Edit applies to the focused cell only.</p>
+<p>The corpus uses distinct native keyboard vowels and consonants (including Tamil superscripted consonants), native vowel signs and diacritics, and ordered two-consonant combinations with vowel signs. These are mechanical combinations, not all linguistically valid syllables. Only Indic scripts declaring Vedic accent support are listed. Add longer conjuncts and words through Custom.</p>
+<p><a href="../demo/index.html">Demo</a> · <a href="vedic-accent-comparison.html">Font comparison</a></p>
+</dialog>
+<dialog id="custom-modal" aria-labelledby="custom-title">
+<div class="dialog-heading"><h2 id="custom-title">Custom combinations</h2><button data-close>Close</button></div>
+<p>For the selected script, enter one stem per line. Unaccented lines receive all three accents. Lines already containing an accent retain its exact position.</p>
+<textarea id="custom" class="edit" rows="4" aria-label="Custom combinations"></textarea>
+<button id="add">Add to selected script</button>
+</dialog>
+<dialog id="editor-modal" aria-labelledby="editor-title">
+<div class="dialog-heading"><h2 id="editor-title">Editable preview</h2><button data-close>Close</button></div>
+<p>Edit the text and save it as a custom case. The original case and its review are preserved.</p>
+<textarea id="editor" class="edit" aria-label="Native editable preview" spellcheck="false"></textarea>
+<button id="save-edit">Save as custom case</button>
+</dialog>
+<dialog id="review-modal" aria-label="Review accent spacing">
+<div class="dialog-heading"><h2>Accent spacing</h2><button data-close>Close</button></div>
+<div id="review-text" class="visual"></div>
+<fieldset><legend>Vertical spacing</legend><div class="choices"><button data-axis="vertical" data-review="collision" class="choice-close">1 · Too close</button><button data-axis="vertical" data-review="good">2 · Okay</button><button data-axis="vertical" data-review="gap" class="choice-far">3 · Too far away</button><button data-axis="vertical" data-review="unsure">Unsure</button></div></fieldset>
+<fieldset><legend>Horizontal placement</legend><div class="choices">
+<button data-axis="horizontal" data-review="left">4 · Too far left</button>
+<button data-axis="horizontal" data-review="good">5 · Okay</button>
+<button data-axis="horizontal" data-review="right">6 · Too far right</button>
+<button data-axis="horizontal" data-review="unsure">Unsure</button></div></fieldset>
+<label>Optional note<textarea id="review-note" rows="2"></textarea></label>
+<p id="review-save-status" role="status"></p>
+<button data-close>Done</button>
+</dialog>
+<main id="samples" class="samples"></main>
+<script src="../demo/keyboard-data.js"></script>
+<script src="vedic-review-data.js"></script>
+<script src="vedic-review.js"></script>
+</body>
+</html>

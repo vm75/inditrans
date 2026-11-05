@@ -27,14 +27,14 @@ class StagePagesDemoTest(unittest.TestCase):
         (root / "flutter/pubspec.yaml").write_text(
             f"name: inditrans\nversion: {version}\n", encoding="utf-8"
         )
-        (root / "demo/fonts").mkdir(parents=True)
+        (root / "demo").mkdir(parents=True)
+        (root / "fonts").mkdir()
         (root / "demo/index.html").write_text(
             '<!doctype html><meta name="inditrans-version" content="development">'
             '<script src="../js/public/inditrans.js"></script>', encoding="utf-8"
         )
-        (root / "demo/fonts/inditrans-indic-fallback.woff2").write_bytes(
-            engine.encode("utf-8")
-        )
+        for name in ["inditrans-indic-fallback.woff2", "inditrans-indic-fallback.ttf", "OFL.txt"]:
+            (root / "fonts" / name).write_bytes(engine.encode("utf-8"))
         (root / "js/public").mkdir(parents=True)
         (root / "js/public/inditrans.js").write_text(engine, encoding="utf-8")
         (root / "js/inditrans-standalone.js").write_text(engine, encoding="utf-8")
@@ -52,9 +52,20 @@ class StagePagesDemoTest(unittest.TestCase):
         for path in ["js/public/inditrans.js", "js/inditrans-standalone.js"]:
             self.assertEqual((live / path).read_text(), "main-engine")
             self.assertEqual((preview / path).read_text(), "pr-engine")
-        self.assertEqual((live / "demo/fonts/inditrans-indic-fallback.woff2").read_bytes(), b"main-engine")
-        self.assertEqual((preview / "demo/fonts/inditrans-indic-fallback.woff2").read_bytes(), b"pr-engine")
+        for name in ["inditrans-indic-fallback.woff2", "inditrans-indic-fallback.ttf", "OFL.txt"]:
+            self.assertEqual((live / "fonts" / name).read_bytes(), b"main-engine")
+            self.assertEqual((preview / "fonts" / name).read_bytes(), b"pr-engine")
         self.assertIn('url=demo/', (preview / "index.html").read_text())
+
+    def test_legacy_checkout_keeps_demo_fonts(self) -> None:
+        source = self.checkout("legacy", "0.13.0", "legacy-engine")
+        (source / "fonts").rename(source / "demo/fonts")
+        destination = self.root / "site"
+        MODULE.stage_demo(source, destination)
+        self.assertEqual(
+            (destination / "demo/fonts/inditrans-indic-fallback.woff2").read_bytes(),
+            b"legacy-engine",
+        )
 
     def test_invalid_version_fails(self) -> None:
         source = self.checkout("bad", "0.13.0", "engine")

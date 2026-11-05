@@ -13,6 +13,7 @@ import uharfbuzz as hb
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.ttLib import TTFont
 from generate_demo_font import ROOT, BASE_URL, SOURCES, SCRIPT_TAGS
+from refine_vedic_anchors import accent_glyph_names, TARGET_GAP
 
 SAMPLES = {
  "Devanagari": ["अ॑", "अ॒", "क॑", "क॒", "कि॑", "कु॒", "क्ति॑", "क्त॒"],
@@ -84,12 +85,13 @@ def shape(font, binary, sample, features=None, accent_glyph=None):
                   "rect":rect})
   x += pos.x_advance; y += pos.y_advance
  accent = accent_glyph or cmap.get(ord(sample[-1]))
- mark = next((g for g in reversed(entries) if g["glyph"]==accent),None)
+ forms = accent_glyph_names(font, ord(sample[-1])) if sample and ord(sample[-1]) in TARGET_GAP and ord(sample[-1]) in cmap and not accent_glyph else {accent}
+ mark = next((g for g in reversed(entries) if g["glyph"] in forms),None)
  gap = None
  if mark and mark["rect"]:
   others = [g["rect"] for g in entries if g is not mark and g["rect"]]
   if others:
-   if sample.endswith("॑"): gap = round(mark["rect"][1]-max(b[3] for b in others),1)
+   if sample.endswith(("॑", "᳚")): gap = round(mark["rect"][1]-max(b[3] for b in others),1)
    elif sample.endswith("॒"): gap = round(min(b[1] for b in others)-mark["rect"][3],1)
  return {"text":sample,"missing":any(g["glyph"]==".notdef" for g in entries),
          "dotted":any(g["glyph"]==cmap.get(0x25CC) for g in entries),
@@ -106,7 +108,7 @@ def native(family):
  return TTFont(path)
 
 def main():
- combined = TTFont(ROOT/"demo/fonts/inditrans-indic-fallback.woff2")
+ combined = TTFont(ROOT/"fonts/inditrans-indic-fallback.woff2")
  cb = font_bytes(combined)
  data = {"combined_metrics":metrics(combined),"scripts":{}}
  print("COMBINED METRICS",json.dumps(metrics(combined)))

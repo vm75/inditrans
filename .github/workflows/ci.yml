@@ -70,10 +70,13 @@ jobs:
       - name: Rebuild pinned font reproducibly
         run: |
           python3 scripts/generate_demo_font.py
-          git diff --exit-code -- demo/fonts/inditrans-indic-fallback.woff2 demo/fonts/OFL.txt
+          git diff --exit-code -- fonts/inditrans-indic-fallback.ttf fonts/inditrans-indic-fallback.woff2 fonts/OFL.txt
 
       - name: Verify positioned accents and complete shaping
         run: python3 scripts/verify_demo_font.py
+
+      - name: Run font review regressions
+        run: make test_fonts
 
       - name: Set up Chrome
         uses: browser-actions/setup-chrome@v1
@@ -90,7 +93,7 @@ jobs:
             --disable-gpu --hide-scrollbars --virtual-time-budget=2000 \
             --window-size=1800,2200 \
             --screenshot=out/vedic-accent-comparison.png \
-            http://127.0.0.1:18775/demo/fonts/vedic-accent-comparison.html
+            http://127.0.0.1:18775/fonts/vedic-accent-comparison.html
           test -s out/vedic-accent-comparison.png
 
       - name: Upload visual comparison

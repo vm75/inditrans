@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Inditrans Vedic accent positioning comparison</title>
 <style>
-@font-face {font-family:Inditrans;src:url("./inditrans-indic-fallback.woff2?rev=c7954381") format("woff2");}
-@font-face {font-family:NativeDeva;src:url("../../out/demo-font-sources/NotoSerifDevanagari-Regular.ttf");}
-@font-face {font-family:NativeBeng;src:url("../../out/demo-font-sources/NotoSerifBengali-Regular.ttf");}
-@font-face {font-family:NativeGujr;src:url("../../out/demo-font-sources/NotoSerifGujarati-Regular.ttf");}
-@font-face {font-family:NativeGuru;src:url("../../out/demo-font-sources/NotoSerifGurmukhi-Regular.ttf");}
-@font-face {font-family:NativeOrya;src:url("../../out/demo-font-sources/NotoSerifOriya-Regular.ttf");}
-@font-face {font-family:NativeTaml;src:url("../../out/demo-font-sources/NotoSerifTamil-Regular.ttf");}
-@font-face {font-family:NativeTelu;src:url("../../out/demo-font-sources/NotoSerifTelugu-Regular.ttf");}
-@font-face {font-family:NativeKnda;src:url("../../out/demo-font-sources/NotoSerifKannada-Regular.ttf");}
-@font-face {font-family:NativeMlym;src:url("../../out/demo-font-sources/NotoSerifMalayalam-Regular.ttf");}
-@font-face {font-family:NativeSinh;src:url("../../out/demo-font-sources/NotoSerifSinhala-Regular.ttf");}
+@font-face {font-family:Inditrans;src:url("./inditrans-indic-fallback.woff2?rev=be0346d1") format("woff2");}
+@font-face {font-family:NativeDeva;src:url("../out/demo-font-sources/NotoSerifDevanagari-Regular.ttf");}
+@font-face {font-family:NativeBeng;src:url("../out/demo-font-sources/NotoSerifBengali-Regular.ttf");}
+@font-face {font-family:NativeGujr;src:url("../out/demo-font-sources/NotoSerifGujarati-Regular.ttf");}
+@font-face {font-family:NativeGuru;src:url("../out/demo-font-sources/NotoSerifGurmukhi-Regular.ttf");}
+@font-face {font-family:NativeOrya;src:url("../out/demo-font-sources/NotoSerifOriya-Regular.ttf");}
+@font-face {font-family:NativeTaml;src:url("../out/demo-font-sources/NotoSerifTamil-Regular.ttf");}
+@font-face {font-family:NativeTelu;src:url("../out/demo-font-sources/NotoSerifTelugu-Regular.ttf");}
+@font-face {font-family:NativeKnda;src:url("../out/demo-font-sources/NotoSerifKannada-Regular.ttf");}
+@font-face {font-family:NativeMlym;src:url("../out/demo-font-sources/NotoSerifMalayalam-Regular.ttf");}
+@font-face {font-family:NativeSinh;src:url("../out/demo-font-sources/NotoSerifSinhala-Regular.ttf");}
 :root {font-family:system-ui,sans-serif;color-scheme:light;background:#fafafa;}
 body {max-width:1400px;padding:1.2rem;margin:auto;}
 p {max-width:78ch;line-height:1.5;}
@@ -41,13 +41,13 @@ small {color:#555}
 <script>
 const cases = [
  ["Devanagari","NativeDeva","अ॑ अ॒ क॑ क॒\nकि॑ कु॒ क्ति॑ क्त॒"],
- ["Bengali","NativeBeng","অ॑ অ॒ ক॑ ক॒\nকি॑ কু॒ ক্তি॑ ক্ত॒"],
+ ["Bengali","NativeBeng","অ॑ অ॒ ক॑ ক॒\nকি॑ কি᳚ কঁ᳚ কু॒ ক্তি॑ ক্ত॒"],
  ["Gurmukhi","NativeGuru","ਅ॑ ਅ॒ ਕ॑ ਕ॒\nਕਿ॑ ਕੁ॒ ਕ੍ਤਿ॑ ਕ੍ਤ॒"],
  ["Gujarati","NativeGujr","અ॑ અ॒ ક॑ ક॒\nકિ॑ કુ॒ ક્તિ॑ ક્ત॒"],
  ["Oriya","NativeOrya","ଅ॑ ଅ॒ କ॑ କ॒\nକି॑ କୁ॒ କ୍ତି॑ କ୍ତ॒"],
- ["Tamil","NativeTaml","அ॑ அ॒ க॑ க॒\nகி॑ கு॒ க்தி॑ க்த॒\nக²॑ கி³॒ க்ஷ⁴॑"],
- ["Telugu","NativeTelu","అ॑ అ॒ క॑ క॒\nకి॑ కు॒ క్తి॑ క్త॒"],
- ["Kannada","NativeKnda","ಅ॑ ಅ॒ ಕ॑ ಕ॒\nಕಿ॑ ಕು॒ ಕ್ತಿ॑ ಕ್ತ॒"],
+ ["Tamil","NativeTaml","அ॑ அ॒ க॑ க॒\nகி॑ கு॒ க்தி॑ க்த॒\nக²॑ கி³॒ க்ஷ⁴॑ க᳚\nகம்ˮ॑ க꞉॒ கஃ॑"],
+ ["Telugu","NativeTelu","అ॑ అ॒ క॑ క॒\nకి॑ కు॒ కీ॒ కో॒ క᳚ క్తి॑ క్త॒"],
+ ["Kannada","NativeKnda","ಅ॑ ಅ॒ ಕ॑ ಕ॒\nಕಿ॑ ಕು॒ ಕೋ॒ ಕೌ॒ ಕ್ತಿ॑ ಕ್ತ॒"],
  ["Malayalam","NativeMlym","അ॑ അ॒ ക॑ ക॒\nകി॑ കു॒ ക്തി॑ ക്ത॒"],
  ["Sinhala","NativeSinh","අ॑ අ॒ ක॑ ක॒\nකි॑ කු॒ ක්ති॑ ක්ත॒"],
 ];

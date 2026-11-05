@@ -3,10 +3,9 @@
 # requires-python = ">=3.10"
 # dependencies = ["fonttools[woff]==4.67.0", "uharfbuzz==0.57.0"]
 # ///
-"""Build the demo's complete-cluster fallback: uv run scripts/generate_demo_font.py."""
+"""Build reusable TTF/WOFF2 fonts: uv run scripts/generate_demo_font.py."""
 
 import hashlib
-import io
 import copy
 import unicodedata
 from pathlib import Path
@@ -14,14 +13,14 @@ from urllib.request import urlopen
 
 from fontTools import subset
 from fontTools.merge import Merger
-from fontTools.otlLib.builder import buildAnchor, buildLookup, buildMarkBasePosSubtable
+from fontTools.otlLib.builder import buildAnchor, buildCoverage, buildLookup, buildMarkBasePosSubtable
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.ttLib.tables import otTables
 from fontTools.ttLib import TTFont
-from refine_vedic_anchors import repair_contextual_vedic_anchors
-import uharfbuzz as hb
+from refine_vedic_anchors import _shaper, append_feature_lookups, repair_contextual_vedic_anchors
 
 ROOT = Path(__file__).resolve().parents[1]
+LICENSE_SHA256 = "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb"
 REVISION = "ffebf8c1ee449e544955a7e813c54f9b73848eac"
 BASE_URL = f"https://raw.githubusercontent.com/notofonts/noto-fonts/{REVISION}"
 # All regular faces use 1000 units/em. Pin inputs as well as the build tool.
@@ -168,126 +167,69 @@ def add_shared_mark_positioning(font, source_coverage):
 
 
 
-# These source families already contain U+0951/U+0952 and native abvm/blwm
-# anchors, but some position them hundreds of units away from ordinary vowels.
-# Glyphs with dependent vowels or conjunct components can need that additional
-# room, so repair only the distinct *independent vowel* anchors.
-VEDIC_VOWEL_ZONES = {
-    "Bengali": range(0x0985, 0x0995),
-    "Tamil": range(0x0B85, 0x0B95),
-    "Telugu": range(0x0C05, 0x0C15),
-    "Kannada": range(0x0C85, 0x0C95),
-    "Malayalam": range(0x0D05, 0x0D15),
-}
-VEDIC_LOOKUP_TAGS = {
-    "Bengali": {0x0951: "blwm", 0x0952: "blwm"},
-    "Tamil": {0x0951: "abvm", 0x0952: "blwm"},
-    "Telugu": {0x0951: "abvm", 0x0952: "abvm"},
-    "Kannada": {0x0951: "abvm", 0x0952: "abvm"},
-    "Malayalam": {0x0951: "blwm", 0x0952: "blwm"},
-}
-# Typical unobstructed native Devanagari, Gujarati, Gurmukhi and Oriya
-# reference marks have around 54-80 units above and 64-90 units below.
-VEDIC_CLEARANCE = {0x0951: 64, 0x0952: 76}
+def repair_tamil_modifier_attachment(font):
+    """Repair spacing modifier attachment within a Tamil shaping run.
 
-
-def repair_native_vedic_vowel_anchors(font):
-    """Give Vedic marks independent native GPOS classes for ordinary vowels.
-
-    Never rewrite a shared base anchor: its class is used by other diacritics.
-    Preserve native mark-to-mark lookups, consonants, conjuncts, vowel signs
-    and the Tamil localized superscript classification.
+    Unicode's Indic syllable parser inserts a dotted circle before an accent
+    following these modifier letters. Localize the modifier as a GDEF mark
+    (preserving its advance), then remove ONLY that inserted circle in calt,
+    after Indic reordering. An isolated malformed Tamil syllable retains its circle.
     """
     cmap = font.getBestCmap()
-    glyph_set = font.getGlyphSet()
-    bounds = {}
-
-    def ink(name):
-        if name not in bounds:
-            pen = BoundsPen(glyph_set)
-            glyph_set[name].draw(pen)
-            bounds[name] = pen.bounds
-        return bounds[name]
-
-    buffer = io.BytesIO()
-    font.save(buffer)
-    shaping_font = hb.Font(hb.Face(buffer.getvalue()))
-    glyph_order = font.getGlyphOrder()
-    gpos = font["GPOS"].table
-
-    for script, vowels in VEDIC_VOWEL_ZONES.items():
-        vowel_names = {cmap[code] for code in vowels if code in cmap}
-        sample = chr(next(code for code in vowels if code in cmap))
-        for code, feature_tag in VEDIC_LOOKUP_TAGS[script].items():
-            shaped = hb.Buffer()
-            shaped.add_str(sample + chr(code))
-            shaped.guess_segment_properties()
-            hb.shape(shaping_font, shaped)
-            mark_name = glyph_order[shaped.glyph_infos[-1].codepoint]
-            mark_ink = ink(mark_name)
-            if not mark_ink:
-                raise ValueError(f"Missing {script} mark bounds for U+{code:04X}")
-            patched = False
-            for record in gpos.ScriptList.ScriptRecord:
-                if record.ScriptTag not in SCRIPT_TAGS[script]:
-                    continue
-                language = record.Script.DefaultLangSys
-                if language is None:
-                    continue
-                for index in language.FeatureIndex:
-                    feature = gpos.FeatureList.FeatureRecord[index]
-                    if feature.FeatureTag != feature_tag:
-                        continue
-                    for lookup_index in feature.Feature.LookupListIndex:
-                        lookup = gpos.LookupList.Lookup[lookup_index]
-                        for wrapper in lookup.SubTable:
-                            subtable = getattr(wrapper, "ExtSubTable", wrapper)
-                            if not isinstance(subtable, otTables.MarkBasePos):
-                                continue
-                            if mark_name not in subtable.MarkCoverage.glyphs:
-                                continue
-                            mark_index = subtable.MarkCoverage.glyphs.index(mark_name)
-                            mark_record = subtable.MarkArray.MarkRecord[mark_index]
-                            old_class = mark_record.Class
-                            mark_anchor = mark_record.MarkAnchor
-                            new_class = subtable.ClassCount
-                            modified = False
-                            for base_name, base_record in zip(
-                                    subtable.BaseCoverage.glyphs, subtable.BaseArray.BaseRecord):
-                                original = base_record.BaseAnchor[old_class]
-                                anchor = copy.deepcopy(original)
-                                if anchor is not None and base_name in vowel_names:
-                                    base_ink = ink(base_name)
-                                    if base_ink:
-                                        if code == 0x0951:
-                                            gap = (original.YCoordinate - mark_anchor.YCoordinate
-                                                   + mark_ink[1] - base_ink[3])
-                                            amount = max(0, round(gap - VEDIC_CLEARANCE[code]))
-                                            anchor.YCoordinate -= amount
-                                        else:
-                                            gap = (base_ink[1] - original.YCoordinate
-                                                   + mark_anchor.YCoordinate - mark_ink[3])
-                                            amount = max(0, round(gap - VEDIC_CLEARANCE[code]))
-                                            anchor.YCoordinate += amount
-                                        modified |= amount > 0
-                                base_record.BaseAnchor.append(anchor)
-                            if modified:
-                                mark_record.Class = new_class
-                                subtable.ClassCount += 1
-                                patched = True
-                            else:
-                                for base_record in subtable.BaseArray.BaseRecord:
-                                    base_record.BaseAnchor.pop()
-                            if patched:
-                                break
-                        if patched:
-                            break
-                    if patched:
-                        break
-                if patched:
-                    break
-            if not patched:
-                raise ValueError(f"Missing native {script} U+{code:04X} {feature_tag} vowel anchors")
+    order = font.getGlyphOrder()
+    substitution = otTables.SingleSubst(); substitution.mapping = {}
+    modifiers = []
+    for char in "ˮʼ꞉":
+        original = cmap[ord(char)]; localized = original + ".vedicTaml"
+        order.append(localized)
+        font["glyf"][localized] = copy.deepcopy(font["glyf"][original])
+        font["hmtx"][localized] = font["hmtx"][original]
+        font["GDEF"].table.GlyphClassDef.classDefs[localized] = 3
+        substitution.mapping[original] = localized
+        modifiers.append(localized)
+    font.setGlyphOrder(order)
+    table = font["GSUB"].table
+    index = len(table.LookupList.Lookup)
+    table.LookupList.Lookup.append(buildLookup([substitution]))
+    append_feature_lookups(font, "GSUB", SCRIPT_TAGS["Tamil"], "locl", [index])
+    # Aytham used as a trailing visarga needs the preceding Tamil base too.
+    # Localize it only in that context, preserving standalone aytham and its
+    # normal use before a consonant in loanword spellings.
+    original = cmap[0x0B83]; localized = original + ".vedicTaml"
+    order = font.getGlyphOrder(); order.append(localized); font.setGlyphOrder(order)
+    font["glyf"][localized] = copy.deepcopy(font["glyf"][original])
+    font["hmtx"][localized] = font["hmtx"][original]
+    classes = font["GDEF"].table.GlyphClassDef.classDefs
+    classes[localized] = 3
+    substitution = otTables.SingleSubst(); substitution.mapping = {original: localized}
+    aytham_index = len(table.LookupList.Lookup)
+    table.LookupList.Lookup.append(buildLookup([substitution]))
+    table.LookupList.LookupCount = len(table.LookupList.Lookup)
+    shape = _shaper(font)
+    accents = {cmap[cp] for cp in (0x0951, 0x0952, 0x1CDA, 0x1CF4)}
+    accents.update(shape("க" + chr(cp))[-1][0] for cp in (0x0951, 0x0952, 0x1CDA, 0x1CF4))
+    eligible = [name for name in font.getGlyphOrder() if classes.get(name) in (1, 2, 3) and name != cmap[0x25CC]]
+    def context(coverages, sequence_index, lookup_index):
+        sub = otTables.ContextSubst(); sub.Format = 3
+        sub.GlyphCount = len(coverages); sub.SubstCount = 1
+        sub.Coverage = [buildCoverage(names, font.getReverseGlyphMap()) for names in coverages]
+        record = otTables.SubstLookupRecord(); record.SequenceIndex = sequence_index; record.LookupListIndex = lookup_index
+        sub.SubstLookupRecord = [record]
+        return sub
+    aytham_context = context([eligible, [original], [cmap[0x25CC]], accents], 1, aytham_index)
+    aytham_context_index = len(table.LookupList.Lookup)
+    table.LookupList.Lookup.append(buildLookup([aytham_context]))
+    modifiers.append(localized)
+    modifiers.extend(shape("க" + digit)[-1][0] for digit in "²³⁴")
+    deletion = otTables.MultipleSubst(); deletion.mapping = {cmap[0x25CC]: []}
+    delete_index = len(table.LookupList.Lookup)
+    table.LookupList.Lookup.append(buildLookup([deletion]))
+    following = accents | {name for name, cls in classes.items() if cls == 3 and name not in modifiers}
+    sub = context([modifiers, [cmap[0x25CC]], following], 1, delete_index)
+    context_index = len(table.LookupList.Lookup)
+    table.LookupList.Lookup.append(buildLookup([sub]))
+    table.LookupList.LookupCount = len(table.LookupList.Lookup)
+    append_feature_lookups(font, "GSUB", SCRIPT_TAGS["Tamil"], "calt", [aytham_context_index, context_index])
 
 
 def compact_merged_line_metrics(font, source_metrics):
@@ -311,9 +253,17 @@ def compact_merged_line_metrics(font, source_metrics):
 
 def main():
     cache = ROOT / "out/demo-font-sources"
-    output = ROOT / "demo/fonts"
+    output = ROOT / "fonts"
     cache.mkdir(parents=True, exist_ok=True)
     output.mkdir(parents=True, exist_ok=True)
+    license_path = cache / "LICENSE"
+    if not license_path.exists():
+        with urlopen(f"{BASE_URL}/LICENSE", timeout=60) as response:
+            license_path.write_bytes(response.read())
+    license_data = license_path.read_bytes()
+    if hashlib.sha256(license_data).hexdigest() != LICENSE_SHA256:
+        raise ValueError("Source license checksum mismatch")
+    license_text = license_data.decode("utf-8")
     files = []
     copyrights = set()
     source_coverage = {}
@@ -343,8 +293,8 @@ def main():
     subsetter.subset(font)
     classify_tamil_annotations(font)
     add_shared_mark_positioning(font, source_coverage)
-    repair_native_vedic_vowel_anchors(font)
-    report = repair_contextual_vedic_anchors(font)
+    repair_tamil_modifier_attachment(font)
+    report = repair_contextual_vedic_anchors(font, SCRIPT_TAGS)
     print("Contextual Vedic corrections:", report)
     compact_merged_line_metrics(font, source_metrics)
     family = "Inditrans Indic Fallback"
@@ -364,13 +314,12 @@ def main():
     fixed_timestamp = 2082844800 + 1674654016
     font["head"].created = fixed_timestamp
     font["head"].modified = fixed_timestamp
-    font.flavor = "woff2"
-    destination = output / "inditrans-indic-fallback.woff2"
-    font.save(destination)
-    with urlopen(f"{BASE_URL}/LICENSE", timeout=60) as response:
-        license_text = response.read().decode("utf-8")
+    for extension, flavor in [("ttf", None), ("woff2", "woff2")]:
+        font.flavor = flavor
+        destination = output / f"inditrans-indic-fallback.{extension}"
+        font.save(destination)
+        print(f"Wrote {destination.relative_to(ROOT)} ({destination.stat().st_size:,} bytes)")
     (output / "OFL.txt").write_text("\n".join(sorted(copyrights)) + "\n\n" + license_text, encoding="utf-8")
-    print(f"Wrote {destination.relative_to(ROOT)} ({destination.stat().st_size:,} bytes)")
 
 
 if __name__ == "__main__":

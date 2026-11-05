@@ -48,7 +48,8 @@
       font-style: normal;
       font-weight: 400;
       font-display: swap;
-      src: url('fonts/inditrans-indic-fallback.woff2?rev=c7954381') format('woff2');
+      src: url('../fonts/inditrans-indic-fallback.woff2?rev=be0346d1') format('woff2'),
+        url('../fonts/inditrans-indic-fallback.ttf?rev=be0346d1') format('truetype');
     }
 
     /* Keep covered Indic syllables, shared Vedic marks and Tamil superscript
@@ -58,7 +59,8 @@
       font-style: normal;
       font-weight: 400;
       font-display: swap;
-      src: url('fonts/inditrans-indic-fallback.woff2?rev=c7954381') format('woff2');
+      src: url('../fonts/inditrans-indic-fallback.woff2?rev=be0346d1') format('woff2'),
+        url('../fonts/inditrans-indic-fallback.ttf?rev=be0346d1') format('truetype');
       unicode-range: U+00B2-00B3, U+00B9, U+0900-0DFF, U+1CD0-1CFF,
         U+2070-2079, U+A8E0-A8F1;
     }
@@ -3509,6 +3511,16 @@
         let internalInput = false;
         let beforeEdit;
         let compositionBefore;
+        function reorderTamilSigns() {
+          const value = sourceText.value.replace(/([க-ஹ])([¹²³⁴])([ாிீுூெேைொோௌ்ௗ]+)/gu, '$1$3$2');
+          if (value === sourceText.value) return false;
+          const { selectionStart, selectionEnd, selectionDirection, scrollTop, scrollLeft } = sourceText;
+          sourceText.value = value;
+          sourceText.setSelectionRange(selectionStart, selectionEnd, selectionDirection);
+          sourceText.scrollTop = scrollTop;
+          sourceText.scrollLeft = scrollLeft;
+          return true;
+        }
         function snapshot() {
           return {
             value: sourceText.value, start: sourceText.selectionStart, end: sourceText.selectionEnd,
@@ -3560,6 +3572,7 @@
         });
         sourceText.addEventListener('input', event => {
           if (internalInput) return;
+          if (!compositionBefore && !event.isComposing) reorderTamilSigns();
           const after = snapshot();
           if (!compositionBefore && !event.isComposing) history.record(beforeEdit || lastSnapshot, after);
           beforeEdit = undefined;
@@ -3568,9 +3581,11 @@
         });
         sourceText.addEventListener('compositionstart', () => { compositionBefore = snapshot(); });
         sourceText.addEventListener('compositionend', () => {
+          const reordered = reorderTamilSigns();
           if (compositionBefore) history.record(compositionBefore, snapshot());
           compositionBefore = beforeEdit = undefined;
           lastSnapshot = snapshot();
+          if (reordered) notifyInput();
           updateHistoryButtons();
         });
         document.addEventListener('keydown', event => {
@@ -3603,6 +3618,7 @@
         function replaceInputRange(start, end, replacement) {
           const before = snapshot();
           sourceText.setRangeText(replacement, start, end, 'end');
+          reorderTamilSigns();
           focusInputAt(sourceText.selectionEnd);
           history.record(before, snapshot());
           notifyInput();

@@ -1,0 +1,57 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Native browser Vedic font regression</title>
+<style>
+@font-face {font-family:VedicFixture;src:url('../../fonts/inditrans-indic-fallback.woff2') format('woff2');font-weight:400}
+body {font-family:system-ui,sans-serif;margin:24px;background:#fafafa;color:#202b38}
+h1 {font-size:22px} p {max-width:90ch}
+.native {font-family:VedicFixture,serif;font-weight:400;font-size:40px;line-height:2.2;padding:12px;background:white;border:1px solid #aaa;white-space:pre-wrap}
+textarea {box-sizing:border-box;width:100%;min-height:240px}
+#test-results[data-status=failed] {color:#a00}
+</style>
+<h1>Vedic font: native display and editing</h1>
+<p>Vowel signs, double svarita, lower accents, Tamil annotations and modifier spellings, plus conjuncts. The viewer, text area, and editable element use the same font and literal Unicode.</p>
+<p>U+02BC (ʼ) has a script-extension boundary excluding Tamil; that separate apostrophe spelling cannot attach across Chrome’s shaping runs. This fixture checks the reviewed U+02EE (ˮ) spelling.</p>
+<div id="test-results" data-status="running" data-count="0" data-failures="0"></div>
+<div id="viewer" class="native"></div>
+<textarea id="editor" class="native" aria-label="Vedic editable sample" spellcheck="false"></textarea>
+<div id="editable" class="native" contenteditable="true" aria-label="Vedic contenteditable sample" spellcheck="false"></div>
+<script>
+(async () => {
+  const result = document.querySelector('#test-results');
+  let count = 0;
+  const check = (value, message) => { if (!value) throw new Error(message); count++; };
+  try {
+    const text = 'कि॑ कु॒ क्ति᳚ · কি᳚ খি᳚ কঁ᳚ · ਉ॒ ਊ॒ ઍ॑\nకీ॒ కొ॒ కో॒ క᳚ · ಕೋ॒ ಕೌ॒ · க᳚ கி²॒ க்ஷ²॑ கம்ˮ॑ க꞉॒ கஃ॑';
+    document.querySelector('#viewer').textContent = text;
+    const editor = document.querySelector('#editor'); editor.value = text;
+    const editable = document.querySelector('#editable'); editable.textContent = text;
+    const faces = await document.fonts.load('40px VedicFixture', text);
+    check(faces.length === 1 && faces[0].status === 'loaded', 'Bundled font loaded');
+    const ctx = document.createElement('canvas').getContext('2d'); ctx.font = '40px VedicFixture';
+    const metrics = text => ctx.measureText(text);
+    check(metrics('కీ॒').actualBoundingBoxDescent < 10, 'Telugu lower accent no longer 570 units below its base');
+    check(metrics('ಕೋ॒').actualBoundingBoxDescent < 14, 'Kannada reordered length sign retains a close lower accent');
+    check(metrics('কি᳚').actualBoundingBoxAscent > metrics('কি').actualBoundingBoxAscent + 5, 'Double svarita clears the Bengali i-matra');
+    for (const stem of ['க꞉', 'கம்ˮ', 'கஃ', 'கி²', 'க்ஷ²', 'కీ', 'ಕೋ']) {
+      for (const accent of ['॑', '॒', '᳚']) {
+        check(Math.abs(metrics(stem + accent).width - metrics(stem).width) < .1, 'No inserted accent/circle width: ' + stem + accent + ' (' + metrics(stem).width + ' -> ' + metrics(stem + accent).width + ')');
+      }
+    }
+    for (const element of [document.querySelector('#viewer'), editor, editable]) {
+      check(getComputedStyle(element).fontFamily.includes('VedicFixture'), 'Same face in native viewer and editors');
+    }
+    editor.focus(); editor.setSelectionRange(0, 3); editor.setRangeText('কি᳚', 0, 3, 'select');
+    check(editor.value.startsWith('কি᳚') && editor.value.slice(editor.selectionStart, editor.selectionEnd) === 'কি᳚', 'Native editing preserves Unicode and selection');
+    editable.focus();
+    const range = document.createRange(); range.selectNodeContents(editable);
+    const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
+    check(selection.toString() === text, 'Contenteditable selects literal Unicode');
+    selection.removeAllRanges(); editable.blur();
+    result.dataset.status = 'passed'; result.dataset.count = count;
+    result.textContent = `${count} native browser checks passed`;
+  } catch (error) {
+    result.dataset.status = 'failed'; result.dataset.count = count; result.dataset.failures = '1'; result.textContent = error.stack;
+  }
+})();
+</script>

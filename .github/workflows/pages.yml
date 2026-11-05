@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'demo/**'
+      - 'fonts/**'
       - 'js/public/inditrans.js'
       - 'js/inditrans-standalone.js'
       - 'flutter/pubspec.yaml'

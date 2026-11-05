@@ -29,6 +29,7 @@ scripts/python/         Shared code-generation logic for script, option, and tri
 scripts/reader_data.json Canonical accents, exclusive symbols, Tamil prefixes
 scripts/tests/          Regression tests for maintenance commands
 demo/tests/             Browser demo component tests (Node.js)
+fonts/                  Reusable Indic fonts, license, usage guide, and visual review tools
 tests/integration/      Browser, standalone WASM, and Windows DLL smoke tests
 test-files/             Shared test-case JSON used by all distributions
 Makefile                Top-level build, test, and publish targets
@@ -60,6 +61,7 @@ Makefile                Top-level build, test, and publish targets
 - **Make performance regressions fail**: `BENCH_STRICT=1 make bench-compare`
 - **Run all tests**: `make testall`
 - **Run demo keyboard and session regressions**: `make test_demo` (Node.js; no browser or dependencies required)
+- **Run font review regressions**: `make test_fonts` (Node.js; no browser or dependencies required)
 - **Run maintenance script regressions**: `make test_scripts` (Python standard library)
 - **Validate release/version**: `make validate`
 - **Publish all**: `make publish` (local manual fallback; prefer tag-based CI release)
@@ -149,6 +151,8 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - Before a Flutter package publish/dry-run, run `python3 scripts/prepare_flutter_package.py` to bundle canonical `native/src/` into Git-ignored `flutter/src/` (included by `.pubignore`) and copy the changelog. `verify_release.py --check-packages` does this and runs `tests/integration/flutter_package_smoke.py` to build outside the monorepo. Platform builds use canonical sources in a checkout and bundled sources in installed packages.
 - Releases are tag-based (`vX.Y.Z`), validated by `scripts/verify_release.py`, and
   published via `.github/workflows/release.yml` with pub.dev OIDC and npm trusted publishing.
+  Each GitHub Release includes `inditrans-fonts-vX.Y.Z.zip` with TTF/WOFF2 fonts,
+  the OFL license, and usage instructions, packaged by `scripts/package_fonts.py`.
 - For pub.dev, `dart-lang/setup-dart@v1` must initialize OIDC credentials even
   when Flutter is installed with `subosito/flutter-action`. For npm, do not set
   `registry-url` in `actions/setup-node` in the Yarn-based release job: its
@@ -162,7 +166,7 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
   multi-platform acceptance (macOS, Windows MSVC, Android) is isolated in
   `.github/workflows/platform.yml` on `platform-*` tags or manual dispatch;
   release tags are handled by the separate release workflow.
-- Pages stages `demo/` with the matching checkout's `js/` engine assets. Rebuild
+- Pages stages `demo/` and `fonts/` with the matching checkout's `js/` engine assets. Rebuild
   them together when output conventions change; see `demo/README.md`.
 - The shared test-case suite is at `test-files/test-cases.json`; changes to the engine that
   affect expected output must be reflected there.
@@ -182,6 +186,7 @@ via `git worktree remove out/perf/worktrees/<tag>` (or `git worktree prune` if `
 - Flutter package usage: [`flutter/README.md`](flutter/README.md)
 - Node.js package usage: [`nodejs/README.md`](nodejs/README.md)
 - Browser demo usage and tests: [`demo/README.md`](demo/README.md)
+- Font usage, generation, and validation: [`fonts/README.md`](fonts/README.md)
 - Lexicon input contract and runtime: [`docs/lexicons.md`](docs/lexicons.md)
 - Maintenance scripts and test organization: [`scripts/README.md`](scripts/README.md)
 - Engine internals, pipeline, data structures: [`ARCHITECTURE.md`](ARCHITECTURE.md)

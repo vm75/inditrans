@@ -146,14 +146,17 @@ flutter/lib/src/bindings.dart: $(NATIVE_SRC)/exports.h scripts/generate_bindings
 flutter: flutter/lib/src/bindings.dart flutter/assets/inditrans.wasm
 
 # test
-.PHONY: test_demo test_scripts
-testall: test test_wasm test_flutter test_nodejs test_demo test_scripts
+.PHONY: test_demo test_fonts test_scripts
+testall: test test_wasm test_flutter test_nodejs test_demo test_fonts test_scripts
 
 test_scripts:
 	python3 -m unittest discover -s scripts/tests
 
 test_demo:
 	node --test demo/tests/*.test.cjs
+
+test_fonts:
+	node --test fonts/tests/*.test.cjs
 
 test: $(NATIVE_TEST) test-files/test-cases.json
 	$(NATIVE_TEST)

@@ -17,7 +17,8 @@ import unicodedata
 from fontTools.ttLib import TTFont
 from measure_vedic_font import SAMPLES, shape, native
 from generate_demo_font import SOURCES
-from refine_vedic_anchors import SCRIPTS
+from refine_vedic_anchors import SCRIPTS, TARGET_GAP, _shaper, accent_index, ignored_annotation_glyphs, canonical_stems, compact_rules
+from vedic_geometry import InkGeometry, _OutlinePen
 import uharfbuzz as hb
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -198,7 +199,114 @@ def verify_contextual_vedic_geometry(font, data):
     print(f"{total} contextual Vedic ink cases passed")
 
 
+def verify_geometry_sampling():
+    class Rectangle:
+        def __init__(self, width, height): self.width, self.height = width, height
+        def draw(self, pen):
+            pen.moveTo((0, 0)); pen.lineTo((self.width, 0)); pen.lineTo((self.width, self.height))
+            pen.lineTo((0, self.height)); pen.closePath()
+    class Face:
+        def getGlyphSet(self): return {'body': Rectangle(100, 100), 'mark': Rectangle(10, 20), 'side': Rectangle(20, 200)}
+    geometry = InkGeometry(Face())
+    glyphs = [('body', (0, 0, 100, 100)), ('mark', (25, 150, 35, 170))]
+    if geometry.gaps(glyphs, 1, 0x0951) != (50, 50): raise AssertionError('Rectangle clearance measurement')
+    glyphs.append(('side', (120, 0, 140, 200)))
+    if geometry.gaps(glyphs, 1, 0x0951) != (-50, 50): raise AssertionError('Disjoint ink mistaken for collision')
+    pen = _OutlinePen({}); pen.moveTo((0, 0)); pen.qCurveTo((1000, 0), (100, 0)); pen.closePath()
+    if max(point[0] for edge in pen.edges for point in edge) < 525:
+        raise AssertionError('Collinear Bezier overshoot lost by flattening')
+    bare = (('base', 'accent'), 1)
+    sign = (('base', 'accent', 'vowel'), 1)
+    longer = (('prefix', 'base', 'accent', 'vowel'), 2)
+    compact = compact_rules({bare: (0, -100), sign: (0, 0), longer: (0, 0)})
+    if compact != {bare: (0, -100), sign: (0, 0)}:
+        raise AssertionError('Reordered-vowel zero guard lost during rule compression')
+    print('Outline envelopes, Bezier extrema and reordered-vowel rule compression checks passed')
+
+
+def verify_recorded_reviews(font):
+    """Replay the full incomplete human review, including accepted controls."""
+    fixture = json.loads((ROOT / "test-files/vedic-font-review.json").read_text())
+    shape_run = _shaper(font)
+    geometry = InkGeometry(font, ignored_annotation_glyphs(font, shape_run))
+    checked = 0
+    for script, rows in fixture["cases"].items():
+        for text, vertical, horizontal in rows:
+            glyphs = shape_run(text)
+            if any(name == '.notdef' for name, _ in glyphs):
+                raise AssertionError(f"Missing reviewed glyph: {script} {text!r}")
+            index = accent_index(font, glyphs, ord(text[-1]))
+            gaps = geometry.gaps(glyphs, index, ord(text[-1]))
+            if not gaps: raise AssertionError(f"Unmeasurable reviewed case: {text!r}")
+            union, contour = gaps
+            maximum = 200 if text.endswith('᳚') and 'ా' in text else 145
+            if union > maximum + 2 or (contour is not None and contour < -6):
+                raise AssertionError(f"Reviewed spacing still broken: {text!r}: bounds/ink={gaps}")
+            if glyphs.advances[index][0] != 0:
+                raise AssertionError(f"Reviewed accent adds character width: {text!r}")
+            if horizontal:
+                before = fixture['horizontalAccentBounds'][text]
+                shift = glyphs[index][1][0] - before[0]
+                if not 48 <= shift <= 180:
+                    raise AssertionError(f"Bengali i-matra horizontal repair missing: {text!r}: {shift}")
+            if vertical == 'good':
+                before = fixture['okayAccentBounds'][text]
+                after = glyphs[index][1]
+                # Replacing old overlapping rules can normalize a native
+                # context by one clearance; never move it onto another base.
+                if abs(after[0] - before[0]) > 1 or abs(after[1] - before[1]) > 80:
+                    raise AssertionError(f"Accepted control displaced: {text!r}: {before} -> {after}")
+            checked += 1
+    # These alternatives got different review labels despite identical base
+    # and accent ink. Preserve a consistent font policy rather than overfitting
+    # the lower vowel's spelling to move an otherwise identical upper accent.
+    for bad, good in [('টৃ॑', 'টৄ॑'), ('ঠৃ॑', 'ঠৄ॑')]:
+        left, right = shape_run(bad), shape_run(good)
+        li, ri = accent_index(font, left, 0x0951), accent_index(font, right, 0x0951)
+        if left[li][1] != right[ri][1]:
+            raise AssertionError('Inconsistent equivalent upper-accent placement')
+    for text in ['க꞉॒', 'கம்ˮ॑', 'கம்ʼ᳚', 'கஃ॑', 'க²ி॒']:
+        glyphs = shape_run(text)
+        if any(name == font.getBestCmap()[0x25CC] for name, _ in glyphs):
+            raise AssertionError(f"Spurious Tamil modifier circle: {text!r}")
+        plain = shape_run(text[:-1])
+        if sum(p[0] for p in glyphs.advances) != sum(p[0] for p in plain.advances):
+            raise AssertionError(f"Tamil modifier spacing changed: {text!r}")
+    # An actual isolated mark still receives its missing-base indicator.
+    if not any(name == font.getBestCmap()[0x25CC] for name, _ in shape_run('ஃ॑')):
+        raise AssertionError('Isolated Tamil accent lost its dotted circle')
+    reordered = shape_run('ಕೋ॒')
+    if accent_index(font, reordered, 0x0952) == len(reordered) - 1:
+        raise AssertionError('Kannada trailing-length-sign regression fixture no longer exercises reordering')
+    print(f"{checked} recorded Vedic reviews, 88 accepted controls, 50 horizontal reports and Tamil modifier/reordering checks passed")
+
+
+def verify_generated_corpus(font):
+    shape_run = _shaper(font)
+    geometry = InkGeometry(font, ignored_annotation_glyphs(font, shape_run))
+    count = 0
+    failures = []
+    for family, stems in canonical_stems().items():
+        for stem in stems:
+            for code in TARGET_GAP:
+                text = stem + chr(code)
+                glyphs = shape_run(text)
+                if any(name == '.notdef' for name, _ in glyphs):
+                    raise AssertionError(f"Missing canonical glyph: {family} {text!r}")
+                index = accent_index(font, glyphs, code)
+                gaps = geometry.gaps(glyphs, index, code)
+                if not gaps: continue
+                union, contour = gaps
+                maximum = 200 if code == 0x1CDA and 'ా' in stem else 145
+                if union > maximum + 2 or (contour is not None and contour < -6):
+                    failures.append((family, text, gaps))
+                count += 1
+    if failures: raise AssertionError(f"{len(failures)} canonical Vedic geometry failures: {failures[:25]!r}")
+    print(f"{count:,} canonical vowel/consonant/sign/diacritic/conjunct accent placements checked after WOFF2 decoding")
+
+
 def main():
+    verify_geometry_sampling()
     # Use the demo's real data; newly added scripts and keyboard symbols are checked too.
     extract = r"""
 const fs = require('node:fs');
@@ -219,13 +327,20 @@ console.log(JSON.stringify({scripts: Object.fromEntries(Object.entries(data.scri
     data = json.loads(subprocess.check_output(["node", "-e", extract], cwd=ROOT, text=True))
     # Other catalog entries use hosted/reference fonts, not the bundled face.
     corpus = {script: layout for script, layout in data["scripts"].items() if script in BUNDLED_SCRIPTS}
-    bundled = TTFont(ROOT / "demo/fonts/inditrans-indic-fallback.woff2")
+    bundled = TTFont(ROOT / "fonts/inditrans-indic-fallback.woff2")
     bundled.flavor = None
     decompressed = io.BytesIO()
     bundled.save(decompressed)
     font = hb.Font(hb.Face(decompressed.getvalue()))
+    ttf_data = (ROOT / "fonts/inditrans-indic-fallback.ttf").read_bytes()
+    ttf = TTFont(io.BytesIO(ttf_data))
+    if ttf.flavor is not None or ttf.getBestCmap() != bundled.getBestCmap():
+        raise AssertionError("TTF must be an uncompressed font with matching WOFF2 coverage")
+    ttf_font = hb.Font(hb.Face(ttf_data))
     verify_vertical_accent_geometry(bundled, decompressed.getvalue())
     verify_contextual_vedic_geometry(bundled, decompressed.getvalue())
+    verify_recorded_reviews(bundled)
+    verify_generated_corpus(bundled)
     marks = ["", "॑", "॒", "᳚", "᳴", "॒᳴"]
     count = 0
 
@@ -235,6 +350,16 @@ console.log(JSON.stringify({scripts: Object.fromEntries(Object.entries(data.scri
         buffer.add_str(text)
         buffer.guess_segment_properties()
         hb.shape(font, buffer)
+        ttf_buffer = hb.Buffer()
+        ttf_buffer.add_str(text)
+        ttf_buffer.guess_segment_properties()
+        hb.shape(ttf_font, ttf_buffer)
+        def signature(shaped):
+            return [(info.codepoint, info.cluster, pos.x_advance, pos.y_advance,
+                     pos.x_offset, pos.y_offset)
+                    for info, pos in zip(shaped.glyph_infos, shaped.glyph_positions)]
+        if signature(buffer) != signature(ttf_buffer):
+            raise AssertionError(f"TTF/WOFF2 shaping differs: {text!r}")
         if any(glyph.codepoint == 0 for glyph in buffer.glyph_infos):
             raise AssertionError(f"Missing glyph after shaping: {text!r}")
         count += 1

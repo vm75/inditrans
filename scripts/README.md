@@ -21,12 +21,13 @@ Tests of these commands live in `scripts/tests/`. Run them with `make test_scrip
 or `python3 -m unittest discover -s scripts/tests`. They also run in `make validate`,
 `make testall`, and CI.
 
-Component tests stay with their components: `demo/tests/`, `native/tests/`,
+Component tests stay with their components: `demo/tests/`, `fonts/tests/`, `native/tests/`,
 `flutter/test/`, and `nodejs/test/`. Shared artifact smoke tests live in
 `tests/integration/`; shared transliteration cases remain in `test-files/`.
 
 ```sh
 make test_demo
+make test_fonts
 make test_wasm
 python3 tests/integration/browser_smoke.py --browser chromium
 python3 tests/integration/dart_web_smoke.py
@@ -38,10 +39,15 @@ and uses Dart plus Chromium to exercise the Urdu lexicon FFI path in a browser.
 `scripts/verify_dll.sh` uses `tests/integration/windows_smoke.cpp` for its optional
 Wine runtime check. Maintenance and verification commands themselves stay here.
 
-`generate_demo_font.py` and `verify_demo_font.py` maintain and check the demo's
-bundled Indic fallback font. Their optional dependencies (including HarfBuzz for the generator's localized accent lookup) are pinned inline and
-isolated by `uv run`; see [font sources and reproduction](../demo/fonts/README.md).
+`generate_demo_font.py` and `verify_demo_font.py` maintain and check the reusable
+Indic TTF/WOFF2 fonts in `fonts/`, also consumed by the demo. Their optional dependencies (including HarfBuzz for the generator's localized accent lookup) are pinned inline and
+isolated by `uv run`; see [font sources and reproduction](../fonts/README.md).
 They are not needed to serve the demo or run the standard-library script tests.
+
+`package_fonts.py --tag vX.Y.Z` writes `out/inditrans-fonts-vX.Y.Z.zip` from
+the checked-in fonts, OFL license, and client usage section of `fonts/README.md`.
+The release workflow verifies the fonts first, then attaches this archive to
+the matching GitHub Release.
 
 ## Generation and validation
 
@@ -127,6 +133,6 @@ WOFF2 to compare `head`, `hhea`, `OS/2`, script GPOS features, and
 HarfBuzz-positioned glyph rectangles against the hash-pinned Noto sources.
 It writes `out/vedic-font-measurements.json` and prints script-by-script
 accent gaps in 1000-unit em coordinates. For live browser comparison,
-serve the repo root and open `demo/fonts/vedic-accent-comparison.html`.
+serve the repo root and open `fonts/vedic-accent-comparison.html`.
 The CI font job re-runs the generator deterministically, executes the
 geometry verifier, and captures a Chromium comparison artifact.
