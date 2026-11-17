@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.18.0]
+* Fix Android 16 KiB page-size compatibility by pinning NDK r30 and aligning native library segments (fixes #72 and #76).
+* Add APK/AAB native-library alignment checks to Android platform acceptance.
+
 ## [0.17.4]
 * Bundle reusable Indic fonts and Vedic review tools with native-script samples and Tamil superscript ordering.
 * Reorder Tamil vowel signs before superscripts in demo input, preserving undo and IME composition.
