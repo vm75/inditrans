@@ -21,6 +21,15 @@ add_library(inditrans SHARED
   "inditrans.cpp"
 )
 
+# Explicitly request 16 KiB ELF PT_LOAD alignment on Android, including when
+# a downstream Flutter app uses an older NDK that defaults to 4 KiB.
+if (ANDROID)
+  target_link_options(inditrans PRIVATE
+    "-Wl,-z,max-page-size=16384"
+    "-Wl,-z,common-page-size=16384"
+  )
+endif()
+
 set_target_properties(inditrans PROPERTIES
   PUBLIC_HEADER inditrans.h
   OUTPUT_NAME "inditrans"
