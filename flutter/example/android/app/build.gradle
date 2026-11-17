@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "org.duckdns.vm75.inditrans_example"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // Match the NDK used to build the Inditrans FFI plugin.
+    ndkVersion = "30.0.16248370"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

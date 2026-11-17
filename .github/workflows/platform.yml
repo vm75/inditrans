@@ -130,8 +130,18 @@ jobs:
       - name: Stage isolated Flutter package
         run: python3 scripts/prepare_flutter_package.py --output out/flutter-package
 
-      - name: Build Android arm64 Flutter example from packaged sources
+      - name: Install Android NDK r30 LTS
+        run: sdkmanager --install "ndk;30.0.16248370"
+
+      - name: Test 16 KiB alignment checker
+        run: python3 -m unittest discover -s scripts/tests -p 'test_android_page_alignment.py'
+
+      - name: Build and check Android arm64 APK and AAB from packaged sources
         run: |
           cd out/flutter-package/example
           flutter pub get
           flutter build apk --release --target-platform android-arm64
+          flutter build appbundle --release --target-platform android-arm64
+          python3 ../../../scripts/check_android_page_alignment.py \
+            build/app/outputs/flutter-apk/app-release.apk \
+            build/app/outputs/bundle/release/app-release.aab
